@@ -512,7 +512,6 @@ namespace Notus.Block
                     {
                         foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[Obj_Settings.Layer][Obj_Settings.Network])
                         {
-                            Console.WriteLine(Obj_Settings.IpInfo.Public + " - " + item.IpAddress);
                             if (string.Equals(Obj_Settings.IpInfo.Public, item.IpAddress) == false)
                             {
                                 string NodeAddress = Notus.Network.Node.MakeHttpListenerPath(item.IpAddress, item.Port);

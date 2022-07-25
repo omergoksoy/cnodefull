@@ -11,7 +11,13 @@ namespace Notus.Validator
     public class Queue : IDisposable
     {
         public DateTime StartingTimeAfterEnoughNode;
-        public bool ExitFromStartFunction = false;
+        
+        private bool WaitForEnoughNode_Val = true;
+        public bool WaitForEnoughNode
+        {
+            get { return WaitForEnoughNode_Val; }
+        }
+
         public bool NotEnoughNode_Printed = false;
         public bool NotEnoughNode_Val = true;
         public bool NotEnoughNode
@@ -584,9 +590,9 @@ namespace Notus.Validator
             ActiveNodeCount_Val = nodeCount;
             if (ActiveNodeCount_Val > 1)
             {
-                Console.WriteLine("ActiveNodeCount : " + ActiveNodeCount_Val.ToString());
                 if (NotEnoughNode_Val == true) // ilk aşamada buraya girecek
                 {
+                    Notus.Print.Basic(Obj_Settings, "ActiveNodeCount : " + ActiveNodeCount_Val.ToString());
                     SortedDictionary<BigInteger, string> tmpWalletList = new SortedDictionary<BigInteger, string>();
                     foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
                     {
@@ -636,11 +642,12 @@ namespace Notus.Validator
                     OrganizeQueue();
                 }
                 NotEnoughNode_Val = false;
-                NotEnoughNode_Printed = true;
+                NotEnoughNode_Printed = false;
             }
             else
             {
                 NotEnoughNode_Val = true;
+                WaitForEnoughNode_Val = true;
                 if (NotEnoughNode_Printed == false)
                 {
                     NotEnoughNode_Printed = true;
@@ -722,16 +729,7 @@ namespace Notus.Validator
             }
             NodeList[MyNodeHexKey].Time.Node = DateTime.Now;
             NodeList[MyNodeHexKey].Time.World = NtpTime;
-            ExitFromStartFunction = true;
-        }
-        public void WaitUntilEnoughNode()
-        {
-            Console.WriteLine("WaitUntilEnoughNode - 1");
-            while (ExitFromStartFunction == false)
-            {
-
-            }
-            Console.WriteLine("WaitUntilEnoughNode - 2");
+            WaitForEnoughNode_Val = false;
         }
         public void Start()
         {

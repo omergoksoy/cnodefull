@@ -64,7 +64,13 @@ namespace Notus.Validator
                     {
                         EmptyBlockTimerIsRunning = true;
                         int howManySeconds = (int)Math.Floor((DateTime.Now - EmptyBlockTime).TotalSeconds);
-                        //Notus.Print.Basic(InfoModeActive,"Notus.Validator.Main - Timer Schedule -> " + howManySeconds.ToString());
+
+                        Notus.Print.Basic(Obj_Settings,"Notus.Validator.Main - Timer Schedule -> " +
+                            (Obj_Settings.Genesis.Empty.Interval.Time * Obj_Settings.Genesis.Empty.SlowBlock.Multiply)
+                            + " / " + 
+                            howManySeconds.ToString()
+                        );
+
                         bool executeEmptyBlock = false;
                         if (Obj_Settings.Genesis.Empty.SlowBlock.Count >= Obj_Integrity.EmptyBlockCount)
                         {
@@ -87,9 +93,17 @@ namespace Notus.Validator
 
                         if (executeEmptyBlock == true)
                         {
-                            Notus.Print.Basic(Obj_Settings, "Empty Block Executed");
-                            Obj_BlockQueue.AddEmptyBlock();
-                            EmptyBlockTime = DateTime.Now;
+                            if (ValidatorQueueObj.MyTurn)
+                            {
+                                Notus.Print.Basic(Obj_Settings, "Empty Block Executed");
+
+                                //Obj_BlockQueue.AddEmptyBlock();
+                                EmptyBlockTime = DateTime.Now;
+                            }
+                            else
+                            {
+                                Notus.Print.Basic(Obj_Settings, "Not My Turn For Empty Block");
+                            }
                         }
                         EmptyBlockTimerIsRunning = false;
                     }
@@ -561,6 +575,13 @@ namespace Notus.Validator
                 }  //if (CryptoTransferTimerIsRunning == false)
             }, true);  //TimerObj.Start(() =>
         }
+        private void WaitUntilEnoughNode()
+        {
+            while (ValidatorQueueObj.WaitForEnoughNode == true)
+            {
+
+            }
+        }
         public void Start()
         {
             // control-point
@@ -682,8 +703,6 @@ namespace Notus.Validator
             ValidatorQueueObj.PreStart();
             ValidatorQueueObj.Start();
 
-            ValidatorQueueObj.WaitUntilEnoughNode();
-
             // genesisi oluşturulduktan sonra diğer node lar ile iletişime geçip, senkronizasyona başlatılmalı
 
 
@@ -703,6 +722,7 @@ namespace Notus.Validator
             //Console.ReadLine();
 
             //Console.WriteLine(EmptyTimerActive);
+            EmptyTimerActive = true;
             if (Obj_Settings.GenesisCreated == false)
             {
                 if (Obj_Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer1)
@@ -731,6 +751,8 @@ namespace Notus.Validator
             bool tmpExitMainLoop = false;
             while (tmpExitMainLoop == false)
             {
+                WaitUntilEnoughNode();
+
                 (bool bStatus, Notus.Variable.Struct.PoolBlockRecordStruct TmpBlockStruct) = Obj_BlockQueue.Get();
                 if (bStatus == true)
                 {

@@ -759,7 +759,12 @@ namespace Notus.Validator
                 {
                     if (Console.KeyAvailable == true)
                     {
-                        if(Console.ReadKey().Key== ConsoleKey.Enter)
+                        var readKeyObj = Console.ReadKey().Key;
+                        if (readKeyObj== ConsoleKey.UpArrow || readKeyObj == ConsoleKey.DownArrow)
+                        {
+                            Console.Clear();
+                        }
+                        if(readKeyObj == ConsoleKey.Enter)
                         {
                             return 0;
                         }
