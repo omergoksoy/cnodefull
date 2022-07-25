@@ -104,7 +104,11 @@ namespace Notus.Validator
             double secondVal = MaxMinuteCount + (MaxMinuteCount - (ulong.Parse(afterMiliSecondTime.ToString("ss")) % MaxMinuteCount));
             return afterMiliSecondTime.AddSeconds(secondVal);
         }
-
+        public DateTime GetUtcTime()
+        {
+            //CalculateTimeDifference(true);
+            return NtpTime;
+        }
         private void CalculateTimeDifference(bool useLocalValue)
         {
             if ((DateTime.Now - NtpCheckTime).TotalMinutes > 10 && useLocalValue == false)

@@ -63,35 +63,16 @@ namespace Notus.Validator
                     if (EmptyBlockTimerIsRunning == false)
                     {
                         EmptyBlockTimerIsRunning = true;
-                        int howManySeconds = (int)Math.Floor((DateTime.Now - EmptyBlockTime).TotalSeconds);
+                        int howManySeconds = Obj_Settings.Genesis.Empty.Interval.Time;
 
-                        Notus.Print.Basic(Obj_Settings,"Notus.Validator.Main - Timer Schedule -> " +
-                            (Obj_Settings.Genesis.Empty.Interval.Time * Obj_Settings.Genesis.Empty.SlowBlock.Multiply)
-                            + " / " + 
-                            howManySeconds.ToString()
-                        );
-
-                        bool executeEmptyBlock = false;
                         if (Obj_Settings.Genesis.Empty.SlowBlock.Count >= Obj_Integrity.EmptyBlockCount)
                         {
-                            executeEmptyBlock = (
-                                (howManySeconds >
-                                    (Obj_Settings.Genesis.Empty.Interval.Time * Obj_Settings.Genesis.Empty.SlowBlock.Multiply)
-                                ) ?
-                                true :
-                                false
-                            );
-                        }
-                        else
-                        {
-                            executeEmptyBlock = (
-                                (howManySeconds > Obj_Settings.Genesis.Empty.Interval.Time) ?
-                                true :
-                                false
-                            );
+                            howManySeconds = (Obj_Settings.Genesis.Empty.Interval.Time * Obj_Settings.Genesis.Empty.SlowBlock.Multiply);
                         }
 
-                        if (executeEmptyBlock == true)
+                        DateTime tmpLastTime = Notus.Date.ToDateTime(Obj_Settings.LastBlock.info.time).AddSeconds(howManySeconds);
+                        // get utc time from validatır Queue
+                        if (ValidatorQueueObj.GetUtcTime() > tmpLastTime)
                         {
                             if (ValidatorQueueObj.MyTurn)
                             {
