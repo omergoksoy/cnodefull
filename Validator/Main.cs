@@ -38,8 +38,9 @@ namespace Notus.Validator
         private bool CryptoTransferTimerIsRunning = false;
         private DateTime CryptoTransferTime = DateTime.Now;
 
+        private bool EmptyBlockNotMyTurnPrinted = false;
         private bool EmptyBlockTimerIsRunning = false;
-        private DateTime EmptyBlockTime = DateTime.Now;
+        private DateTime EmptyBlockGeneratedTime = new DateTime(2000, 01, 1, 0, 00, 00);
 
         //private bool ImageWaterMarkTimerIsRunning = false;
         //private DateTime ImageWaterMarkTime = DateTime.Now;
@@ -76,14 +77,21 @@ namespace Notus.Validator
                         {
                             if (ValidatorQueueObj.MyTurn)
                             {
-                                Notus.Print.Basic(Obj_Settings, "Empty Block Executed");
-
-                                //Obj_BlockQueue.AddEmptyBlock();
-                                EmptyBlockTime = DateTime.Now;
+                                if ((DateTime.Now - EmptyBlockGeneratedTime).TotalSeconds > 30)
+                                {
+                                    Notus.Print.Basic(Obj_Settings, "Empty Block Executed");
+                                    //Obj_BlockQueue.AddEmptyBlock();
+                                    EmptyBlockGeneratedTime = DateTime.Now;
+                                }
+                                EmptyBlockNotMyTurnPrinted = false;
                             }
                             else
                             {
-                                Notus.Print.Basic(Obj_Settings, "Not My Turn For Empty Block");
+                                if (EmptyBlockNotMyTurnPrinted == false)
+                                {
+                                    Notus.Print.Basic(Obj_Settings, "Not My Turn For Empty Block");
+                                    EmptyBlockNotMyTurnPrinted = true;
+                                }
                             }
                         }
                         EmptyBlockTimerIsRunning = false;
@@ -309,7 +317,7 @@ namespace Notus.Validator
                 {
                     CryptoTransferTimerIsRunning = true;
                     bool executedCryptoTransfer = false;
-                    int howManySeconds = (int)Math.Floor((DateTime.Now - EmptyBlockTime).TotalSeconds);
+                    //int howManySeconds = (int)Math.Floor((DateTime.Now - EmptyBlockTime).TotalSeconds);
                     int tmpRequestSend_ListCount = Obj_Api.RequestSend_ListCount();
                     if (tmpRequestSend_ListCount > 0)
                     {
@@ -681,7 +689,14 @@ namespace Notus.Validator
 
             Notus.Print.Info(Obj_Settings, "Waiting For Node Sync", false);
             ValidatorQueueObj.Settings = Obj_Settings;
-            ValidatorQueueObj.PreStart();
+            if (Obj_Settings.GenesisCreated == true)
+            {
+                ValidatorQueueObj.PreStart(0);
+            }
+            else
+            {
+                ValidatorQueueObj.PreStart(Obj_Settings.LastBlock.info.rowNo);
+            }
             ValidatorQueueObj.Start();
 
             // genesisi oluşturulduktan sonra diğer node lar ile iletişime geçip, senkronizasyona başlatılmalı
@@ -787,13 +802,19 @@ namespace Notus.Validator
                             //Console.WriteLine("ValidatorQueueObj.OnlineNodeCount : " + ValidatorQueueObj.OnlineNodeCount.ToString());
 
                             // Notus.Print.Basic(DebugModeActive, "Wait For Request");
+                            Thread.Sleep(5);
                         }
                     }
-                    Thread.Sleep(5);
-                    //Notus.Core.Function.Sleep(5, true);
                 }
             }
-            Notus.Print.Warning(Obj_Settings, "Main Class Ended");
+            if (Obj_Settings.GenesisCreated == true) 
+            {
+                Notus.Print.Warning(Obj_Settings, "Main Class Temporary Ended");
+            }
+            else
+            {
+                Notus.Print.Warning(Obj_Settings, "Main Class Ended");
+            }
         }
 
         private void OrganizeEachBlock(Notus.Variable.Class.BlockData Obj_BlockData, bool NewBlock)

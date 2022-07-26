@@ -477,6 +477,10 @@ namespace Notus.Block
             Notus.Variable.Genesis.GenesisBlockData currentGenesisData = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(System.Text.Encoding.ASCII.GetString(System.Convert.FromBase64String(genesisText)));
             return currentGenesisData.Info.Creation;
         }
+        public void Synchronous()
+        {
+
+        }
         public void ControlGenesisBlock()
         {
             string[] ZipFileList = GetZipFiles();

@@ -1,17 +1,13 @@
 ﻿using Notus.Variable.Struct;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Numerics;
 using System.Text.Json;
-using System.Threading.Tasks;
 namespace Notus.Validator
 {
     public class Queue : IDisposable
     {
         public DateTime StartingTimeAfterEnoughNode;
-        
+
         private bool WaitForEnoughNode_Val = true;
         public bool WaitForEnoughNode
         {
@@ -620,7 +616,7 @@ namespace Notus.Validator
                         Console.WriteLine("Send When Time");
                         foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
                         {
-                            if (entry.Value.Status == NodeStatus.Online && entry.Value.ErrorCount == 0) 
+                            if (entry.Value.Status == NodeStatus.Online && entry.Value.ErrorCount == 0)
                             {
                                 SendMessage(
                                     entry.Value.IP.IpAddress,
@@ -743,7 +739,7 @@ namespace Notus.Validator
             });
         }
 
-        public void PreStart()
+        public void PreStart(long lastBlockRowNo)
         {
             MyPortNo = Notus.Toolbox.Network.GetNetworkPort(Obj_Settings);
 
@@ -794,7 +790,8 @@ namespace Notus.Validator
                 {
                     IpAddress = MyIpAddress,
                     Port = MyPortNo
-                }
+                },
+                LastRowNo = lastBlockRowNo
             });
 
 
@@ -818,7 +815,8 @@ namespace Notus.Validator
                         {
                             IpAddress = entry.Value.IpAddress,
                             Port = entry.Value.Port,
-                        }
+                        },
+                        LastRowNo = 0
                     });
                 }
             }
