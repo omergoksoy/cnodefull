@@ -283,7 +283,12 @@ namespace Notus.Wallet
             string publicKeyX = (yPubKey.point.y % 2 == 0 ? "02" : "03") + pkPointVal.ToString("x");
 
             string keyPrefix = Notus.Variable.Constant.Prefix_MainNetwork;
-            string networkByteStr = "10";
+            string networkByteStr = "00";
+            if (WhichNetworkFor == Notus.Variable.Enum.NetworkType.MainNet)
+            {
+                keyPrefix = Notus.Variable.Constant.Prefix_MainNetwork;
+                networkByteStr = "10";
+            }
             if (WhichNetworkFor == Notus.Variable.Enum.NetworkType.TestNet)
             {
                 keyPrefix = Notus.Variable.Constant.Prefix_TestNetwork;
