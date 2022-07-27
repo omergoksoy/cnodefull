@@ -476,6 +476,7 @@ namespace Notus.Variable.Struct
         public NodeQueueInfo_Time Time { get; set; }             // node'un son hata verme zamanı
         public int ErrorCount { get; set; }                 // node'un verdiği error sayısı peşpeşe 10 olursa, kontrol sıklığı azalacak
         public long LastRowNo { get; set; }                 // node'un sahip olduğu son blok numarası
+        public string LastSign { get; set; }                 // node'un sahip olduğu son blok numarası
     }
 }
 

@@ -80,7 +80,7 @@ namespace Notus.Validator
                                 if ((DateTime.Now - EmptyBlockGeneratedTime).TotalSeconds > 30)
                                 {
                                     Notus.Print.Basic(Obj_Settings, "Empty Block Executed");
-                                    //Obj_BlockQueue.AddEmptyBlock();
+                                    Obj_BlockQueue.AddEmptyBlock();
                                     EmptyBlockGeneratedTime = DateTime.Now;
                                 }
                                 EmptyBlockNotMyTurnPrinted = false;
@@ -564,12 +564,37 @@ namespace Notus.Validator
                 }  //if (CryptoTransferTimerIsRunning == false)
             }, true);  //TimerObj.Start(() =>
         }
+        private void SetTimeStatusForBeginSync(bool status)
+        {
+            if (Obj_Settings.GenesisCreated == false)
+            {
+                if (Obj_Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer1)
+                {
+                    if (EmptyTimerActive == true)
+                    {
+                        EmptyBlockTimerIsRunning = status;
+                    }
+                    if (CryptoTimerActive == true)
+                    {
+                        CryptoTransferTimerIsRunning = status;
+                    }
+                }
+                if (Obj_Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer2)
+                {
+                }
+                if (Obj_Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer3)
+                {
+                }
+            }
+        }
         private void WaitUntilEnoughNode()
         {
+            SetTimeStatusForBeginSync(true);        // stop timer
             while (ValidatorQueueObj.WaitForEnoughNode == true)
             {
-
+                Thread.Sleep(100);
             }
+            SetTimeStatusForBeginSync(false);       // release timer
         }
         public void Start()
         {
@@ -691,11 +716,12 @@ namespace Notus.Validator
             ValidatorQueueObj.Settings = Obj_Settings;
             if (Obj_Settings.GenesisCreated == true)
             {
-                ValidatorQueueObj.PreStart(0);
+                ValidatorQueueObj.PreStart(0,string.Empty);
             }
             else
             {
-                ValidatorQueueObj.PreStart(Obj_Settings.LastBlock.info.rowNo);
+                //Console.WriteLine(JsonSerializer.Serialize(Obj_Settings.LastBlock));
+                ValidatorQueueObj.PreStart(Obj_Settings.LastBlock.info.rowNo, Obj_Settings.LastBlock.sign);
             }
             ValidatorQueueObj.Start();
 

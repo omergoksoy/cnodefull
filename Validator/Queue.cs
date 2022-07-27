@@ -32,7 +32,7 @@ namespace Notus.Validator
             get { return Obj_Settings; }
             set { Obj_Settings = value; }
         }
-        private bool Val_Ready;
+        private bool Val_Ready = false;
         public bool Ready
         {
             get { return Val_Ready; }
@@ -577,6 +577,16 @@ namespace Notus.Validator
                 }
             }
         }
+        private void CheckBlockSync()
+        {
+            // omergoksoy
+            // omergoksoy
+            // omergoksoy
+            // controlpoint
+            // controlpoint
+            Console.WriteLine(JsonSerializer.Serialize(NodeList, new JsonSerializerOptions() { WriteIndented = true }));
+            Console.ReadLine();
+        }
         private void CheckNodeCount()
         {
             int nodeCount = 0;
@@ -592,6 +602,9 @@ namespace Notus.Validator
             {
                 if (NotEnoughNode_Val == true) // ilk aşamada buraya girecek
                 {
+                    // sync block
+                    // sync block
+                    CheckBlockSync();
                     Notus.Print.Basic(Obj_Settings, "ActiveNodeCount : " + ActiveNodeCount_Val.ToString());
                     SortedDictionary<BigInteger, string> tmpWalletList = new SortedDictionary<BigInteger, string>();
                     foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
@@ -739,7 +752,7 @@ namespace Notus.Validator
             });
         }
 
-        public void PreStart(long lastBlockRowNo)
+        public void PreStart(long lastBlockRowNo, string lastBlockSign)
         {
             MyPortNo = Notus.Toolbox.Network.GetNetworkPort(Obj_Settings);
 
@@ -791,7 +804,8 @@ namespace Notus.Validator
                     IpAddress = MyIpAddress,
                     Port = MyPortNo
                 },
-                LastRowNo = lastBlockRowNo
+                LastRowNo = lastBlockRowNo,
+                LastSign = lastBlockSign
             });
 
 
@@ -816,7 +830,8 @@ namespace Notus.Validator
                             IpAddress = entry.Value.IpAddress,
                             Port = entry.Value.Port,
                         },
-                        LastRowNo = 0
+                        LastRowNo = 0,
+                        LastSign = string.Empty
                     });
                 }
             }
