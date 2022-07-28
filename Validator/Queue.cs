@@ -584,7 +584,23 @@ namespace Notus.Validator
             // omergoksoy
             // controlpoint
             // controlpoint
+            Dictionary<string, long> nodeRowList = new Dictionary<string, long>();
+            long shortestRowNo = long.MaxValue;
+            long myLastRowNo = NodeList[MyNodeHexKey].LastRowNo;
+            foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
+            {
+                if (string.Equals(entry.Key, MyNodeHexKey) == false)
+                {
+                    if(shortestRowNo > entry.Value.LastRowNo)
+                    {
+                        shortestRowNo = entry.Value.LastRowNo;
+                    }
+                }
+            }
+
             Console.WriteLine(JsonSerializer.Serialize(NodeList, new JsonSerializerOptions() { WriteIndented = true }));
+            Console.WriteLine(shortestRowNo);
+            Console.WriteLine(shortestRowNo);
             Console.ReadLine();
         }
         private void CheckNodeCount()
