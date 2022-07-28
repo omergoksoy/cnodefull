@@ -1415,7 +1415,8 @@ namespace Notus.Validator
                 (bool blockFound, Notus.Variable.Class.BlockData tmpResultBlock) = GetBlockWithRowNo(BlockNumber);
                 if (blockFound == true)
                 {
-                    if (Obj_Settings.PrettyJson == true)
+                    bool tmpPrettyJson = Obj_Settings.PrettyJson;
+                    if (tmpPrettyJson == true)
                     {
                         return JsonSerializer.Serialize(tmpResultBlock, new JsonSerializerOptions() { WriteIndented = true });
                     }

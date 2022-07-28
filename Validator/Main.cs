@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Concurrent;
 using System.Net;
 using System.Numerics;
 using System.Text.Json;
-using System.Threading;
 
 namespace Notus.Validator
 {
@@ -48,6 +45,7 @@ namespace Notus.Validator
         private bool FileStorageTimerIsRunning = false;
         private DateTime FileStorageTime = DateTime.Now;
 
+        public ConcurrentQueue<Notus.Variable.Class.BlockData> IncomeBlockList = new ConcurrentQueue<Notus.Variable.Class.BlockData>();
         private Notus.Block.Queue Obj_BlockQueue = new Notus.Block.Queue();
         private Notus.Validator.Queue ValidatorQueueObj = new Notus.Validator.Queue();
 
@@ -716,7 +714,7 @@ namespace Notus.Validator
             ValidatorQueueObj.Settings = Obj_Settings;
             if (Obj_Settings.GenesisCreated == true)
             {
-                ValidatorQueueObj.PreStart(0,string.Empty);
+                ValidatorQueueObj.PreStart(0, string.Empty);
             }
             else
             {
@@ -724,6 +722,32 @@ namespace Notus.Validator
                 ValidatorQueueObj.PreStart(Obj_Settings.LastBlock.info.rowNo, Obj_Settings.LastBlock.sign);
             }
             ValidatorQueueObj.Start();
+
+            while (ValidatorQueueObj.IncomeBlockListDone == false)
+            {
+                Thread.Sleep(50);
+            }
+            bool quitFromWhileLoop = false;
+            while (quitFromWhileLoop == false)
+            {
+                if (ValidatorQueueObj.IncomeBlockList.TryDequeue(out Variable.Class.BlockData? retValue))
+                {
+                    if (retValue != null)
+                    {
+                        IncomeBlockList.Enqueue(retValue);
+                    }
+                    else
+                    {
+                        quitFromWhileLoop = true;
+                    }
+                }
+                else
+                {
+                    quitFromWhileLoop = true;
+                }
+            }
+            Console.WriteLine(JsonSerializer.Serialize(IncomeBlockList, new JsonSerializerOptions() { WriteIndented = true }));
+            Console.ReadLine();
 
             // genesisi oluşturulduktan sonra diğer node lar ile iletişime geçip, senkronizasyona başlatılmalı
 
@@ -833,7 +857,7 @@ namespace Notus.Validator
                     }
                 }
             }
-            if (Obj_Settings.GenesisCreated == true) 
+            if (Obj_Settings.GenesisCreated == true)
             {
                 Notus.Print.Warning(Obj_Settings, "Main Class Temporary Ended");
             }

@@ -1,4 +1,5 @@
 ﻿using Notus.Variable.Struct;
+using System.Collections.Concurrent;
 using System.Globalization;
 using System.Numerics;
 using System.Text.Json;
@@ -25,6 +26,9 @@ namespace Notus.Validator
         {
             get { return ActiveNodeCount_Val; }
         }
+
+        public bool IncomeBlockListDone = false;
+        public ConcurrentQueue<Notus.Variable.Class.BlockData> IncomeBlockList = new ConcurrentQueue<Notus.Variable.Class.BlockData>();
 
         private Notus.Variable.Common.ClassSetting Obj_Settings;
         public Notus.Variable.Common.ClassSetting Settings
@@ -577,30 +581,136 @@ namespace Notus.Validator
                 }
             }
         }
+        private bool CheckBlockSync_SubRoutine(Dictionary<long, IpInfo> blockRequestList, long orderNumber)
+        {
+            Console.WriteLine("Getting Block : " + orderNumber.ToString());
+            if (blockRequestList.ContainsKey(orderNumber) == false)
+            {
+                IncomeBlockListDone = true;
+                return true;
+            }
+
+            string urlPath =
+                Notus.Network.Node.MakeHttpListenerPath(
+                    blockRequestList[orderNumber].IpAddress, 
+                    blockRequestList[orderNumber].Port
+                ) +
+                "block/" + orderNumber.ToString();
+            string incodeResponse = Notus.Communication.Request.GetSync(
+                urlPath,
+                2,
+                true,
+                false
+            );
+            try
+            {
+                if (incodeResponse != null && incodeResponse != string.Empty && incodeResponse.Length>0)
+                {
+                    Notus.Variable.Class.BlockData tmpResultBlock = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(incodeResponse);
+                    if(tmpResultBlock!= null)
+                    {
+                        IncomeBlockList.Enqueue(tmpResultBlock);
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+            Console.WriteLine("income : " + incodeResponse);
+            orderNumber++;
+            return CheckBlockSync_SubRoutine(blockRequestList, orderNumber);
+        }
         private void CheckBlockSync()
         {
             // omergoksoy
             // omergoksoy
             // omergoksoy
-            // controlpoint
-            // controlpoint
+            Dictionary<long, IpInfo> blockRequestList = new Dictionary<long, IpInfo>();
             Dictionary<string, long> nodeRowList = new Dictionary<string, long>();
+            int totalActiveNodeCount = 0;
+            long biggestRowNo = 0;
             long shortestRowNo = long.MaxValue;
             long myLastRowNo = NodeList[MyNodeHexKey].LastRowNo;
             foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
             {
-                if (string.Equals(entry.Key, MyNodeHexKey) == false)
+                if (entry.Value.Status == NodeStatus.Online)
                 {
-                    if(shortestRowNo > entry.Value.LastRowNo)
+                    if (entry.Value.ErrorCount == 0)
                     {
-                        shortestRowNo = entry.Value.LastRowNo;
+                        totalActiveNodeCount++;
+                        nodeRowList.Add(entry.Key, entry.Value.LastRowNo);
+                        if (entry.Value.LastRowNo > biggestRowNo)
+                        {
+                            biggestRowNo = entry.Value.LastRowNo;
+                        }
+
+                        if (shortestRowNo > entry.Value.LastRowNo)
+                        {
+                            shortestRowNo = entry.Value.LastRowNo;
+                        }
+
+                        if (string.Equals(entry.Key, MyNodeHexKey) == false)
+                        {
+                        }
                     }
                 }
             }
-
-            Console.WriteLine(JsonSerializer.Serialize(NodeList, new JsonSerializerOptions() { WriteIndented = true }));
-            Console.WriteLine(shortestRowNo);
-            Console.WriteLine(shortestRowNo);
+            long controlNo = myLastRowNo + 1;
+            for (long rStart = controlNo; rStart < (1 + biggestRowNo); rStart++)
+            {
+                blockRequestList.Add(rStart, new IpInfo()
+                {
+                    IpAddress = "",
+                    Port = 0
+                });
+            }
+            //Console.WriteLine(JsonSerializer.Serialize(blockRequestList, new JsonSerializerOptions() { WriteIndented = true }));
+            bool breakInnerWhileLoop = false;
+            while (breakInnerWhileLoop == false)
+            {
+                foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
+                {
+                    if (entry.Value.Status == NodeStatus.Online)
+                    {
+                        if (entry.Value.ErrorCount == 0)
+                        {
+                            if (string.Equals(entry.Key, MyNodeHexKey) == false)
+                            {
+                                if (blockRequestList.ContainsKey(controlNo))
+                                {
+                                    blockRequestList[controlNo].IpAddress = entry.Value.IP.IpAddress;
+                                    blockRequestList[controlNo].Port = entry.Value.IP.Port;
+                                    controlNo++;
+                                }
+                                else
+                                {
+                                    breakInnerWhileLoop = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            Console.WriteLine(JsonSerializer.Serialize(blockRequestList, new JsonSerializerOptions() { WriteIndented = true }));
+            //Console.WriteLine(JsonSerializer.Serialize(NodeList, new JsonSerializerOptions() { WriteIndented = true }));
+            Console.WriteLine("totalActiveNodeCount : " + totalActiveNodeCount.ToString());
+            Console.WriteLine("myLastRowNo : " + myLastRowNo.ToString());
+            Console.WriteLine("shortestRowNo : " + shortestRowNo.ToString());
+            Console.WriteLine("controlNo : " + controlNo.ToString());
+            if (myLastRowNo > shortestRowNo)
+            {
+                IncomeBlockListDone = true;
+                Console.WriteLine("ilerideyim");
+                Console.ReadLine();
+            }
+            else
+            {
+                controlNo = myLastRowNo + 1;
+                Console.WriteLine("gerideyim");
+                CheckBlockSync_SubRoutine(blockRequestList, controlNo);
+            }
+            Console.WriteLine("is done");
             Console.ReadLine();
         }
         private void CheckNodeCount()
