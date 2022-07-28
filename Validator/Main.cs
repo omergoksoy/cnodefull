@@ -809,6 +809,7 @@ namespace Notus.Validator
                     // oluşturulan blok burada diğer node'lara dağıtılmalı
                     // omergoksoy
                     // omergoksoy
+
                     // omergoksoy
                     Notus.Variable.Enum.ValidatorOrder NodeOrder = ValidatorQueueObj.Distrubute(PreBlockData);
 
