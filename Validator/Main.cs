@@ -718,11 +718,9 @@ namespace Notus.Validator
             }
             else
             {
-                //Console.WriteLine(JsonSerializer.Serialize(Obj_Settings.LastBlock));
                 ValidatorQueueObj.PreStart(Obj_Settings.LastBlock.info.rowNo, Obj_Settings.LastBlock.sign);
             }
             ValidatorQueueObj.Start();
-
             while (ValidatorQueueObj.IncomeBlockListDone == false)
             {
                 Thread.Sleep(50);
@@ -730,30 +728,33 @@ namespace Notus.Validator
             bool quitFromWhileLoop = false;
             while (quitFromWhileLoop == false)
             {
+                quitFromWhileLoop = true;
                 if (ValidatorQueueObj.IncomeBlockList.TryDequeue(out Variable.Class.BlockData? retValue))
                 {
                     if (retValue != null)
                     {
                         IncomeBlockList.Enqueue(retValue);
+                        quitFromWhileLoop = false;
                     }
-                    else
-                    {
-                        quitFromWhileLoop = true;
-                    }
-                }
-                else
-                {
-                    quitFromWhileLoop = true;
                 }
             }
-            Console.WriteLine(JsonSerializer.Serialize(IncomeBlockList, new JsonSerializerOptions() { WriteIndented = true }));
-            Console.ReadLine();
-
-            // genesisi oluşturulduktan sonra diğer node lar ile iletişime geçip, senkronizasyona başlatılmalı
-
-
+            
+            quitFromWhileLoop = false;
+            while (quitFromWhileLoop == false)
+            {
+                quitFromWhileLoop = true;
+                if (IncomeBlockList.TryDequeue(out Variable.Class.BlockData? retValue))
+                {
+                    if (retValue != null)
+                    {
+                        AddedNewBlock(retValue);
+                        quitFromWhileLoop = false;
+                    }
+                }
+            }
 
             //burada hangi node'un empty timer'dan sorumlu olacağı seçiliyor...
+            /*
             if (Obj_Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer1)
             {
                 Notus.Variable.Enum.ValidatorOrder EmptyNodeOrder = ValidatorQueueObj.EmptyTimer();
@@ -762,12 +763,8 @@ namespace Notus.Validator
 
                 }
             }
-            //Console.WriteLine(EmptyTimerActive);
-            //Console.WriteLine(EmptyTimerActive);
-            //Console.WriteLine(JsonSerializer.Serialize(Obj_Settings, new JsonSerializerOptions(){WriteIndented = true}));
-            //Console.ReadLine();
+            */
 
-            //Console.WriteLine(EmptyTimerActive);
             EmptyTimerActive = true;
             if (Obj_Settings.GenesisCreated == false)
             {
@@ -793,6 +790,8 @@ namespace Notus.Validator
                     FileStorageTimer();
                 }
             }
+            Notus.Print.Basic(Obj_Settings, "First Synchronization Is Done");
+
             DateTime LastPrintTime = DateTime.Now;
             bool tmpExitMainLoop = false;
             while (tmpExitMainLoop == false)
@@ -802,38 +801,30 @@ namespace Notus.Validator
                 (bool bStatus, Notus.Variable.Struct.PoolBlockRecordStruct TmpBlockStruct) = Obj_BlockQueue.Get();
                 if (bStatus == true)
                 {
-                    /*
-                    Notus.Print.Basic(
-                        Obj_Settings.DebugMode,
-                        JsonSerializer.Serialize(
-                            TmpBlockStruct,
-                            new JsonSerializerOptions()
-                            {
-                                WriteIndented = true
-                            }
-                        )
-                    );
-					*/
                     Notus.Variable.Class.BlockData PreBlockData = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(TmpBlockStruct.data);
 
+                    // oluşturulan blok burada diğer node'lara dağıtılmalı
+                    // oluşturulan blok burada diğer node'lara dağıtılmalı
+                    // oluşturulan blok burada diğer node'lara dağıtılmalı
+                    // oluşturulan blok burada diğer node'lara dağıtılmalı
+                    // omergoksoy
+                    // omergoksoy
+                    // omergoksoy
                     Notus.Variable.Enum.ValidatorOrder NodeOrder = ValidatorQueueObj.Distrubute(PreBlockData);
+
+                    /*
                     if (NodeOrder == Notus.Variable.Enum.ValidatorOrder.Primary)
                     {
 
                     }
+                    */
 
                     //blok sıra ve önceki değerleri düzenleniyor...
                     PreBlockData = Obj_BlockQueue.OrganizeBlockOrder(PreBlockData);
 
                     Notus.Print.Basic(Obj_Settings, "NodeOrder : " + NodeOrder.ToString());
                     Notus.Variable.Class.BlockData PreparedBlockData = new Notus.Block.Generate(Obj_Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
-                    Obj_BlockQueue.Settings.LastBlock = PreparedBlockData;
-                    Obj_Settings.LastBlock = PreparedBlockData;
-
-                    Obj_Api.Settings.LastBlock = Obj_Settings.LastBlock;
-
-                    Notus.Print.Basic(Obj_Settings, "Block Generated [" + PreparedBlockData.info.type.ToString() + "]: " + PreparedBlockData.info.uID);
-                    OrganizeEachBlock(PreparedBlockData, true);
+                    AddedNewBlock(PreparedBlockData);
                     Thread.Sleep(500);
                 }
                 else
@@ -867,6 +858,16 @@ namespace Notus.Validator
             }
         }
 
+        private void AddedNewBlock(Notus.Variable.Class.BlockData Obj_BlockData)
+        {
+            Obj_BlockQueue.Settings.LastBlock = Obj_BlockData;
+            Obj_Settings.LastBlock = Obj_BlockData;
+
+            Obj_Api.Settings.LastBlock = Obj_Settings.LastBlock;
+
+            Notus.Print.Basic(Obj_Settings, "Block Generated [" + Obj_BlockData.info.type.ToString() + "]: " + Obj_BlockData.info.uID);
+            OrganizeEachBlock(Obj_BlockData, true);
+        }
         private void OrganizeEachBlock(Notus.Variable.Class.BlockData Obj_BlockData, bool NewBlock)
         {
             if (NewBlock == true)

@@ -606,9 +606,11 @@ namespace Notus.Validator
             {
                 if (incodeResponse != null && incodeResponse != string.Empty && incodeResponse.Length>0)
                 {
+                    Console.WriteLine("control-point-1");
                     Notus.Variable.Class.BlockData tmpResultBlock = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(incodeResponse);
                     if(tmpResultBlock!= null)
                     {
+                        Console.WriteLine("added-to-queue-1");
                         IncomeBlockList.Enqueue(tmpResultBlock);
                     }
                 }
@@ -702,7 +704,7 @@ namespace Notus.Validator
             {
                 IncomeBlockListDone = true;
                 Console.WriteLine("ilerideyim");
-                Console.ReadLine();
+                //Console.ReadLine();
             }
             else
             {
@@ -711,7 +713,7 @@ namespace Notus.Validator
                 CheckBlockSync_SubRoutine(blockRequestList, controlNo);
             }
             Console.WriteLine("is done");
-            Console.ReadLine();
+            //Console.ReadLine();
         }
         private void CheckNodeCount()
         {
