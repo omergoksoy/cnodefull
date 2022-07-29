@@ -52,7 +52,8 @@ namespace Notus.Validator
         //private System.Action<string, Notus.Variable.Class.BlockData> OnReadFromChainFuncObj = null;
         public void EmptyBlockTimerFunc()
         {
-            if (Obj_Settings.Genesis.Empty.Active)
+            Console.WriteLine("EmptyBlockTimerFunc - Line");
+            Console.WriteLine(Obj_Settings.Genesis.Empty.Active);
             {
                 Notus.Print.Basic(Obj_Settings, "Timer Has Started");
 
@@ -68,8 +69,13 @@ namespace Notus.Validator
                         {
                             howManySeconds = (Obj_Settings.Genesis.Empty.Interval.Time * Obj_Settings.Genesis.Empty.SlowBlock.Multiply);
                         }
-
+                        //blok zamanı ve utc zamanı çakışıyor
                         DateTime tmpLastTime = Notus.Date.ToDateTime(Obj_Settings.LastBlock.info.time).AddSeconds(howManySeconds);
+                        Console.WriteLine(
+                            ValidatorQueueObj.GetUtcTime().ToString(Notus.Variable.Constant.DefaultDateTimeFormatText) + 
+                            " - " + 
+                            tmpLastTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
+                        );
                         // get utc time from validatır Queue
                         if (ValidatorQueueObj.GetUtcTime() > tmpLastTime)
                         {
@@ -712,19 +718,51 @@ namespace Notus.Validator
 
             Notus.Print.Info(Obj_Settings, "Waiting For Node Sync", false);
             ValidatorQueueObj.Settings = Obj_Settings;
+            /*
+            Obj_Api.Func_OnReadFromChain = blockKeyIdStr =>
+            {
+                (bool tmpBlockExist, Notus.Variable.Class.BlockData tmpBlockResult) = Obj_BlockQueue.ReadFromChain(blockKeyIdStr);
+                if (tmpBlockExist == true)
+                {
+                    return tmpBlockResult;
+                }
+                return null;
+            };
+            
+            ValidatorQueueObj.Func_NewBlockIncome
+            */
+            ValidatorQueueObj.Func_NewBlockIncome = tmpNewBlockIncome =>
+            {
+                Console.WriteLine("Arrived New Block : " + tmpNewBlockIncome.info.uID);
+                AddedNewBlock(tmpNewBlockIncome);
+                return true;
+            };
+            //Console.ReadLine();
+
             if (Obj_Settings.GenesisCreated == true)
             {
-                ValidatorQueueObj.PreStart(0, string.Empty);
+                ValidatorQueueObj.PreStart(0, 
+                    string.Empty,
+                    string.Empty,
+                    string.Empty
+                );
             }
             else
             {
-                ValidatorQueueObj.PreStart(Obj_Settings.LastBlock.info.rowNo, Obj_Settings.LastBlock.sign);
+                ValidatorQueueObj.PreStart(
+                    Obj_Settings.LastBlock.info.rowNo,
+                    Obj_Settings.LastBlock.info.uID,
+                    Obj_Settings.LastBlock.sign,
+                    Obj_Settings.LastBlock.prev
+                );
             }
             ValidatorQueueObj.Start();
+            Console.WriteLine("Step-Control-1111");
             while (ValidatorQueueObj.IncomeBlockListDone == false)
             {
                 Thread.Sleep(50);
             }
+            Console.WriteLine("Step-Control-2222");
             bool quitFromWhileLoop = false;
             while (quitFromWhileLoop == false)
             {
@@ -738,7 +776,7 @@ namespace Notus.Validator
                     }
                 }
             }
-            
+            Console.WriteLine("Step-Control-3333");
             quitFromWhileLoop = false;
             while (quitFromWhileLoop == false)
             {
@@ -752,7 +790,7 @@ namespace Notus.Validator
                     }
                 }
             }
-
+            Console.WriteLine("Step-Control-4444");
             //burada hangi node'un empty timer'dan sorumlu olacağı seçiliyor...
             /*
             if (Obj_Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer1)
@@ -766,8 +804,11 @@ namespace Notus.Validator
             */
 
             EmptyTimerActive = true;
+            Console.WriteLine("Obj_Settings.GenesisCreated");
+            Console.WriteLine(Obj_Settings.GenesisCreated);
             if (Obj_Settings.GenesisCreated == false)
             {
+                Console.WriteLine(Obj_Settings.Layer.ToString());
                 if (Obj_Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer1)
                 {
                     if (EmptyTimerActive == true)
@@ -813,7 +854,6 @@ namespace Notus.Validator
 
                         // omergoksoy
                         //Notus.Variable.Enum.ValfwidatorOrder NodeOrder = ValidatorQueueObj.Distrubute(PreBlockData);
-                        ValidatorQueueObj.Distrubute(PreBlockData);
 
                         /*
                         if (NodeOrder == Notus.Variable.Enum.ValidatorOrder.Primary)
@@ -828,6 +868,7 @@ namespace Notus.Validator
                         //Notus.Print.Basic(Obj_Settings, "NodeOrder : " + NodeOrder.ToString());
                         Notus.Variable.Class.BlockData PreparedBlockData = new Notus.Block.Generate(Obj_Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
                         AddedNewBlock(PreparedBlockData);
+                        ValidatorQueueObj.Distrubute(PreBlockData);
                         Thread.Sleep(500);
                     }
                     else
