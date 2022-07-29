@@ -797,54 +797,57 @@ namespace Notus.Validator
             while (tmpExitMainLoop == false)
             {
                 WaitUntilEnoughNode();
-
-                (bool bStatus, Notus.Variable.Struct.PoolBlockRecordStruct TmpBlockStruct) = Obj_BlockQueue.Get();
-                if (bStatus == true)
+                if (ValidatorQueueObj.MyTurn==true)
                 {
-                    Notus.Variable.Class.BlockData PreBlockData = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(TmpBlockStruct.data);
-
-                    // oluşturulan blok burada diğer node'lara dağıtılmalı
-                    // oluşturulan blok burada diğer node'lara dağıtılmalı
-                    // oluşturulan blok burada diğer node'lara dağıtılmalı
-                    // oluşturulan blok burada diğer node'lara dağıtılmalı
-                    // omergoksoy
-                    // omergoksoy
-
-                    // omergoksoy
-                    Notus.Variable.Enum.ValidatorOrder NodeOrder = ValidatorQueueObj.Distrubute(PreBlockData);
-
-                    /*
-                    if (NodeOrder == Notus.Variable.Enum.ValidatorOrder.Primary)
+                    (bool bStatus, Notus.Variable.Struct.PoolBlockRecordStruct TmpBlockStruct) = Obj_BlockQueue.Get();
+                    if (bStatus == true)
                     {
+                        Notus.Variable.Class.BlockData PreBlockData = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(TmpBlockStruct.data);
 
-                    }
-                    */
+                        // oluşturulan blok burada diğer node'lara dağıtılmalı
+                        // oluşturulan blok burada diğer node'lara dağıtılmalı
+                        // oluşturulan blok burada diğer node'lara dağıtılmalı
+                        // oluşturulan blok burada diğer node'lara dağıtılmalı
+                        // omergoksoy
+                        // omergoksoy
 
-                    //blok sıra ve önceki değerleri düzenleniyor...
-                    PreBlockData = Obj_BlockQueue.OrganizeBlockOrder(PreBlockData);
+                        // omergoksoy
+                        //Notus.Variable.Enum.ValfwidatorOrder NodeOrder = ValidatorQueueObj.Distrubute(PreBlockData);
+                        ValidatorQueueObj.Distrubute(PreBlockData);
 
-                    Notus.Print.Basic(Obj_Settings, "NodeOrder : " + NodeOrder.ToString());
-                    Notus.Variable.Class.BlockData PreparedBlockData = new Notus.Block.Generate(Obj_Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
-                    AddedNewBlock(PreparedBlockData);
-                    Thread.Sleep(500);
-                }
-                else
-                {
-                    if ((DateTime.Now - LastPrintTime).TotalSeconds > 20)
-                    {
-                        LastPrintTime = DateTime.Now;
-                        if (Obj_Settings.GenesisCreated == true)
+                        /*
+                        if (NodeOrder == Notus.Variable.Enum.ValidatorOrder.Primary)
                         {
-                            tmpExitMainLoop = true;
+
                         }
-                        else
-                        {
-                            Console.Write(".");
-                            //Console.WriteLine("ValidatorQueueObj.TotalNodeCount : " + ValidatorQueueObj.TotalNodeCount.ToString());
-                            //Console.WriteLine("ValidatorQueueObj.OnlineNodeCount : " + ValidatorQueueObj.OnlineNodeCount.ToString());
+                        */
 
-                            // Notus.Print.Basic(DebugModeActive, "Wait For Request");
-                            Thread.Sleep(5);
+                        //blok sıra ve önceki değerleri düzenleniyor...
+                        PreBlockData = Obj_BlockQueue.OrganizeBlockOrder(PreBlockData);
+
+                        //Notus.Print.Basic(Obj_Settings, "NodeOrder : " + NodeOrder.ToString());
+                        Notus.Variable.Class.BlockData PreparedBlockData = new Notus.Block.Generate(Obj_Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
+                        AddedNewBlock(PreparedBlockData);
+                        Thread.Sleep(500);
+                    }
+                    else
+                    {
+                        if ((DateTime.Now - LastPrintTime).TotalSeconds > 20)
+                        {
+                            LastPrintTime = DateTime.Now;
+                            if (Obj_Settings.GenesisCreated == true)
+                            {
+                                tmpExitMainLoop = true;
+                            }
+                            else
+                            {
+                                Console.Write(".");
+                                //Console.WriteLine("ValidatorQueueObj.TotalNodeCount : " + ValidatorQueueObj.TotalNodeCount.ToString());
+                                //Console.WriteLine("ValidatorQueueObj.OnlineNodeCount : " + ValidatorQueueObj.OnlineNodeCount.ToString());
+
+                                // Notus.Print.Basic(DebugModeActive, "Wait For Request");
+                                Thread.Sleep(5);
+                            }
                         }
                     }
                 }
