@@ -214,7 +214,7 @@ namespace Notus.Block
                         }
                         else
                         {
-                            Console.WriteLine("Block Error. [45abcfe713] : " + SmallestBlockHeight.ToString());
+                            Notus.Print.Basic(Obj_Settings, "Block Error. [45abcfe713] : " + SmallestBlockHeight.ToString());
                             Console.ReadLine();
                         }
                     }
@@ -240,7 +240,7 @@ namespace Notus.Block
                     }
                     else
                     {
-                        Console.WriteLine("Block Error. [7745abcfe4] : " + controlNumber.ToString());
+                        Notus.Print.Basic(Obj_Settings, "Block Error. [7745abcfe4] : " + controlNumber.ToString());
                         Console.ReadLine();
                     }
 
@@ -253,11 +253,11 @@ namespace Notus.Block
             {
                 return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
             }
-            Console.WriteLine("------------------------------------");
-            Console.WriteLine(JsonSerializer.Serialize(BlockOrderList, new JsonSerializerOptions() { WriteIndented = true }));
-            Console.WriteLine("------------------------------------");
-            Console.WriteLine(JsonSerializer.Serialize(BlockPreviousList, new JsonSerializerOptions() { WriteIndented = true }));
-            Console.WriteLine("------------------------------------");
+            Notus.Print.Basic(Obj_Settings, "------------------------------------");
+            Notus.Print.Basic(Obj_Settings, JsonSerializer.Serialize(BlockOrderList, new JsonSerializerOptions() { WriteIndented = true }));
+            Notus.Print.Basic(Obj_Settings, "------------------------------------");
+            Notus.Print.Basic(Obj_Settings, JsonSerializer.Serialize(BlockPreviousList, new JsonSerializerOptions() { WriteIndented = true }));
+            Notus.Print.Basic(Obj_Settings, "------------------------------------");
 
             Console.ReadLine();
 
@@ -463,7 +463,8 @@ namespace Notus.Block
                     "block/" + Notus.Variable.Constant.GenesisBlockUid,
                     Obj_Settings.Network,
                     Notus.Variable.Enum.NetworkLayer.Layer1,
-                    Obj_Settings.DebugMode
+                    Obj_Settings.DebugMode,
+                    Obj_Settings
                 );
                 Notus.Variable.Class.BlockData ControlBlock = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(tmpResult);
                 Obj_Settings.Genesis = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(
@@ -504,7 +505,7 @@ namespace Notus.Block
             DateTime localGenesisTime = DateTime.Now;
             if (ZipFileList.Length > 0) // we have genesis
             {
-                Console.WriteLine("We Have Block - Lets Check Genesis Time And Hash");
+                Notus.Print.Basic(Obj_Settings,"We Have Block - Lets Check Genesis Time And Hash");
                 using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
                 {
                     BS_Storage.Network = Obj_Settings.Network;
@@ -535,8 +536,12 @@ namespace Notus.Block
                             if (string.Equals(Obj_Settings.IpInfo.Public, item.IpAddress) == false)
                             {
                                 string NodeAddress = Notus.Network.Node.MakeHttpListenerPath(item.IpAddress, item.Port);
-                                (bool NoError, Notus.Variable.Class.BlockData tmpBlockData) = Notus.Validator.Query.GetBlock(
-                                    NodeAddress, blockRowNo, Obj_Settings.DebugMode
+                                (bool NoError, Notus.Variable.Class.BlockData tmpBlockData) = 
+                                Notus.Validator.Query.GetBlock(
+                                    NodeAddress, 
+                                    blockRowNo, 
+                                    Obj_Settings.DebugMode, 
+                                    Obj_Settings
                                 );
                                 if (NoError == true)
                                 {
@@ -545,21 +550,21 @@ namespace Notus.Block
                                     {
                                         if (string.Equals(localGenesisSign, tmpBlockData.sign) == false)
                                         {
-                                            Console.WriteLine("Remote Genesis Block Are Different");
+                                            Notus.Print.Basic(Obj_Settings, "Remote Genesis Block Are Different");
                                             remoteGenesisTime = GetGenesisCreationTimeFromString(tmpBlockData.cipher.data);
                                             if (localGenesisTime > remoteGenesisTime)
                                             {
-                                                Console.WriteLine("Remote Genesis Older Than Me");
+                                                Notus.Print.Basic(Obj_Settings, "Remote Genesis Older Than Me");
                                                 storeBlock = true;
                                             }
                                             else
                                             {
-                                                Console.WriteLine("Remote Genesis Newer Than Me");
+                                                Notus.Print.Basic(Obj_Settings, "Remote Genesis Newer Than Me");
                                             }
                                         }
                                         else
                                         {
-                                            Console.WriteLine("Remote Genesis Block Sign Are Equal");
+                                            Notus.Print.Basic(Obj_Settings, "Remote Genesis Block Sign Are Equal");
                                         }
                                     }
 
@@ -588,12 +593,12 @@ namespace Notus.Block
                                             BS_Storage.Layer = Obj_Settings.Layer;
                                             if (weResetTheAllBlock == false)
                                             {
-                                                Console.WriteLine("Current Block Were Deleted");
+                                                Notus.Print.Basic(Obj_Settings, "Current Block Were Deleted");
                                                 BS_Storage.ClearStorage();
                                                 weResetTheAllBlock = true;
                                             }
                                             BS_Storage.AddSync(tmpBlockData, true);
-                                            Console.WriteLine("Added Block : " + tmpBlockData.info.uID);
+                                            Notus.Print.Basic(Obj_Settings, "Added Block : " + tmpBlockData.info.uID);
                                         }
                                         SleepWithoutBlocking(250);
                                     }

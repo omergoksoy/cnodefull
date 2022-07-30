@@ -353,7 +353,12 @@ namespace Notus.Validator
                         // burada çekilen block node'un kendi havuzuna eklenecek
                         // burada çekilen block node'un kendi havuzuna eklenecek
                         (bool tmpNoError, Variable.Class.BlockData? tmpBlockData) =
-                            Notus.Toolbox.Network.GetBlockFromNode(tmpIpAddress, tmpPortNo, tmpBlockNo);
+                            Notus.Toolbox.Network.GetBlockFromNode(
+                                tmpIpAddress, 
+                                tmpPortNo, 
+                                tmpBlockNo,
+                                Obj_Settings
+                            );
                         if (tmpNoError == true)
                         {
                             if (Func_NewBlockIncome != null)
@@ -669,7 +674,8 @@ namespace Notus.Validator
             Notus.Toolbox.Network.GetBlockFromNode(
                 blockRequestList[orderNumber].IpAddress,
                 blockRequestList[orderNumber].Port,
-                orderNumber
+                orderNumber,
+                Obj_Settings
             );
             if (tmpError == false)
             {

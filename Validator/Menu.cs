@@ -1287,6 +1287,7 @@ namespace Notus.Validator
         }
         public Menu()
         {
+            Console.ResetColor();
             foreach (KeyValuePair<Notus.Variable.Enum.NetworkLayer, string> entry in Notus.Variable.Constant.LayerText)
             {
                 if (entry.Value.Length > longestLayerText)

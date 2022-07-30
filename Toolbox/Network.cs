@@ -1,10 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Net;
+﻿using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text.Json;
-using System.Threading;
 
 namespace Notus.Toolbox
 {
@@ -12,10 +9,21 @@ namespace Notus.Toolbox
     {
         private static bool Error_TestIpAddress = true;
         private static readonly string DefaultControlTestData = "notus-network-test-result-data";
-        public static (bool,Notus.Variable.Class.BlockData) GetBlockFromNode(string ipAddress,int portNo,long blockNo)
+        public static (bool, Notus.Variable.Class.BlockData) GetBlockFromNode(
+            string ipAddress,
+            int portNo,
+            long blockNo,
+            Notus.Variable.Common.ClassSetting objSettings = null
+        )
         {
-            string urlPath = Notus.Network.Node.MakeHttpListenerPath(ipAddress,portNo) + "block/" + blockNo.ToString();
-            string incodeResponse = Notus.Communication.Request.GetSync(urlPath,2,true,false);
+            string urlPath = Notus.Network.Node.MakeHttpListenerPath(ipAddress, portNo) + "block/" + blockNo.ToString();
+            string incodeResponse = Notus.Communication.Request.GetSync(
+                urlPath, 
+                2, 
+                true, 
+                false,
+                objSettings
+            );
             try
             {
                 if (incodeResponse != null && incodeResponse != string.Empty && incodeResponse.Length > 0)
@@ -23,7 +31,7 @@ namespace Notus.Toolbox
                     Notus.Variable.Class.BlockData tmpResultBlock = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(incodeResponse);
                     if (tmpResultBlock != null)
                     {
-                        return (false,tmpResultBlock);
+                        return (false, tmpResultBlock);
                     }
                 }
             }
@@ -33,7 +41,7 @@ namespace Notus.Toolbox
             }
             return (true, null);
         }
-            
+
         public static int GetNetworkPort(Notus.Variable.Common.ClassSetting Obj_Settings)
         {
             if (Obj_Settings.Network == Variable.Enum.NetworkType.TestNet)
@@ -41,10 +49,10 @@ namespace Notus.Toolbox
 
             if (Obj_Settings.Network == Variable.Enum.NetworkType.DevNet)
                 return Obj_Settings.Port.DevNet;
-            
+
             return Obj_Settings.Port.MainNet;
         }
-        public static Notus.Variable.Common.ClassSetting IdentifyNodeType(Notus.Variable.Common.ClassSetting Obj_Settings,int Timeout=5)
+        public static Notus.Variable.Common.ClassSetting IdentifyNodeType(Notus.Variable.Common.ClassSetting Obj_Settings, int Timeout = 5)
         {
             Obj_Settings.IpInfo = Notus.Toolbox.Network.GetNodeIP();
             if (Obj_Settings.LocalNode == true)
@@ -80,7 +88,7 @@ namespace Notus.Toolbox
             Obj_Settings.NodeType = Notus.Variable.Enum.NetworkNodeType.Replicant;
             return Obj_Settings;
         }
-        
+
         public static int FindFreeTcpPort()
         {
             TcpListener l = new TcpListener(IPAddress.Loopback, 0);
@@ -89,17 +97,17 @@ namespace Notus.Toolbox
             l.Stop();
             return port;
         }
-        
+
         public static void WaitUntilPortIsAvailable(int PortNo)
         {
             bool PortAvailable = false;
-            while(PortAvailable == false)
+            while (PortAvailable == false)
             {
                 PortAvailable = PortIsAvailable(PortNo);
                 Thread.Sleep(150);
             }
         }
-        
+
         public static bool PortIsAvailable(int PortNo)
         {
             bool isAvailable = true;
@@ -165,7 +173,7 @@ namespace Notus.Toolbox
 
         public static string GetLocalIPAddress(bool returnLocalIp)
         {
-            bool tmpNetworkAvailable=System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable();
+            bool tmpNetworkAvailable = System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable();
             /*
             if (tmpNetworkAvailable == true)
             {
@@ -201,7 +209,7 @@ namespace Notus.Toolbox
             return "127.0.0.1";
         }
 
-        private static bool PublicIpIsConnectable(Notus.Variable.Common.ClassSetting Obj_Settings,int Timeout)
+        private static bool PublicIpIsConnectable(Notus.Variable.Common.ClassSetting Obj_Settings, int Timeout)
         {
             Error_TestIpAddress = false;
             try
@@ -210,15 +218,13 @@ namespace Notus.Toolbox
                 using (Notus.Communication.Http tmp_HttpObj = new Notus.Communication.Http())
                 {
                     tmp_HttpObj.ResponseType = "text/html";
-                    tmp_HttpObj.DebugMode = Obj_Settings.DebugMode;
                     tmp_HttpObj.StoreUrl = false;
-                    tmp_HttpObj.InfoMode = Obj_Settings.InfoMode;
                     tmp_HttpObj.Timeout = 5;
                     tmp_HttpObj.DefaultResult_OK = DefaultControlTestData;
                     tmp_HttpObj.DefaultResult_ERR = DefaultControlTestData;
+                    tmp_HttpObj.Settings = Obj_Settings;
                     tmp_HttpObj.OnReceive(Fnc_TestLinkData);
                     IPAddress testAddress = IPAddress.Parse(Obj_Settings.IpInfo.Public);
-                    tmp_HttpObj.Settings = Obj_Settings;
                     tmp_HttpObj.Start(testAddress, ControlPortNo);
                     DateTime twoSecondsLater = DateTime.Now.AddSeconds(Timeout);
                     while (twoSecondsLater > DateTime.Now && tmp_HttpObj.Started == false)
