@@ -253,6 +253,13 @@ namespace Notus.Block
             {
                 return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
             }
+            Console.WriteLine("------------------------------------");
+            Console.WriteLine(JsonSerializer.Serialize(BlockOrderList, new JsonSerializerOptions() { WriteIndented = true }));
+            Console.WriteLine("------------------------------------");
+            Console.WriteLine(JsonSerializer.Serialize(BlockPreviousList, new JsonSerializerOptions() { WriteIndented = true }));
+            Console.WriteLine("------------------------------------");
+
+            Console.ReadLine();
 
             bool whileExit = false;
             while (whileExit == false)
@@ -277,6 +284,15 @@ namespace Notus.Block
                     string controlBlockPrevStr = BlockOrderList[BiggestBlockHeight - 1];
                     if (string.Equals(PreviousBlockKey, controlBlockPrevStr) == false)
                     {
+                        Console.Write("Hatali Blok : ");
+                        Console.WriteLine(BiggestBlockHeight - 1);
+
+                        Console.Write("Silinecek Blok : ");
+                        Console.WriteLine(BlockOrderList[BiggestBlockHeight - 1]);
+
+                        Console.WriteLine("controlBlockPrevStr : " + controlBlockPrevStr);
+                        Console.WriteLine("PreviousBlockKey : " +PreviousBlockKey);
+                        Console.ReadLine();
                         prevBlockRownNumberError = true;
                         whileExit = true;
                     }

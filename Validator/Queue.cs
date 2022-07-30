@@ -328,6 +328,7 @@ namespace Notus.Validator
                 Console.WriteLine("incomeDataStr : " + incomeDataStr);
                 if (incomeDataStr.IndexOf(":") >= 0)
                 {
+                    Console.WriteLine("burada");
                     string[] tmpArr = incomeDataStr.Split(":");
                     long tmpBlockNo = long.Parse(tmpArr[0]);
                     string tmpNodeWalletKey = tmpArr[1];
@@ -361,14 +362,26 @@ namespace Notus.Validator
                                 bool fncResult = Func_NewBlockIncome(tmpBlockData);
                                 if (fncResult == true)
                                 {
+                                    Console.WriteLine("step-3333");
                                     return "fncResult-true";
                                 }
+                                Console.WriteLine("step-4444");
                                 return "fncResult-false";
                             }
+                            else
+                            {
+                                Console.WriteLine("step-1111");
+                            }
                         }
+                        Console.WriteLine("step-77777");
                         return "tmpNoError-false";
                     }
+                    else
+                    {
+                        Console.WriteLine("step-9999");
+                    }
                 }
+                Console.WriteLine("step-0880888088");
                 return "done";
             }
             if (CheckXmlTag(incomeData, "when"))
@@ -684,9 +697,15 @@ namespace Notus.Validator
 
             //Int64 myLastBlockUid = Int64.Parse(Notus.Block.Key.GetTimeFromKey(NodeList[MyNodeHexKey].LastUid));
             long myLastRowNo = NodeList[MyNodeHexKey].LastRowNo;
+
             foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
             {
-                if (entry.Value.Status == NodeStatus.Online && entry.Value.ErrorCount == 0)
+                
+                if (
+                    string.Equals(MyNodeHexKey, entry.Key)==false &&
+                    entry.Value.Status == NodeStatus.Online &&
+                    entry.Value.ErrorCount == 0
+                )
                 {
                     totalActiveNodeCount++;
                     if (entry.Value.LastRowNo > biggestRowNo)
@@ -754,6 +773,7 @@ namespace Notus.Validator
                 if (shortestRowNo == myLastRowNo)
                 {
                     Console.WriteLine("Blok sayısı eşit");
+                    Console.ReadLine();
                     IncomeBlockListDone = true;
                     /*
                     if (myLastBlockUid > shortestBlockUid)
@@ -772,12 +792,13 @@ namespace Notus.Validator
                 else
                 {
                     Console.WriteLine("gerideyim");
-                    Console.ReadLine();
                     controlNo = myLastRowNo + 1;
                     CheckBlockSync_SubRoutine(blockRequestList, controlNo);
                 }
             }
             Console.WriteLine("is done");
+            Console.WriteLine(JsonSerializer.Serialize(NodeList, new JsonSerializerOptions() { WriteIndented = true }));
+            Console.ReadLine();
             Console.ReadLine();
         }
         private void CheckNodeCount()
