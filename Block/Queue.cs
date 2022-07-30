@@ -14,7 +14,6 @@ namespace Notus.Block
             set { Obj_Settings = value; }
         }
 
-        private const string Const_DefaultPreText = "notus-block-queue";
         private Notus.Mempool MP_BlockPoolList;
         private Notus.Block.Storage BS_Storage;
         private Queue<Notus.Variable.Struct.List_PoolBlockRecordStruct> Queue_PoolTransaction = new Queue<Notus.Variable.Struct.List_PoolBlockRecordStruct>();
@@ -45,8 +44,9 @@ namespace Notus.Block
 
 
         //bu fonksiyon ile işlem yapılacak aynı türden bloklar sırası ile listeden çekilip geri gönderilecek
-        public (bool, Notus.Variable.Struct.PoolBlockRecordStruct) Get()
+        public (bool, Notus.Variable.Struct.PoolBlockRecordStruct) Get(DateTime currentUtcTime)
         {
+            DateTime startingTime = DateTime.Now;
             if (Queue_PoolTransaction.Count == 0)
             {
                 return (false, null);
@@ -168,6 +168,13 @@ namespace Notus.Block
             }
             else
             {
+                //BLOCK UNIQUE ID'Sİ BURADA EKLENİYOR....
+                //BLOCK UNIQUE ID'Sİ BURADA EKLENİYOR....
+                //BLOCK UNIQUE ID'Sİ BURADA EKLENİYOR....
+                //BLOCK UNIQUE ID'Sİ BURADA EKLENİYOR....
+                //BLOCK UNIQUE ID'Sİ BURADA EKLENİYOR....
+                // buraya UTC time verisi parametre olarak gönderilecek
+                // böylece blok için alınan zaman bilgisi ortak bir zaman olacak
                 BlockStruct.info.uID = Notus.Block.Key.Generate(
                     true,
                     Notus.Variable.Constant.Seed_ForMainNet_BlockKeyGenerate,

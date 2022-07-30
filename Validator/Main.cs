@@ -840,7 +840,10 @@ namespace Notus.Validator
                 WaitUntilEnoughNode();
                 if (ValidatorQueueObj.MyTurn==true)
                 {
-                    (bool bStatus, Notus.Variable.Struct.PoolBlockRecordStruct TmpBlockStruct) = Obj_BlockQueue.Get();
+                    // geçerli utc zaman bilgisini alıp block oluşturma işlemi için parametre olarak gönder böylece
+                    // her blok utc zamanı ile oluşturulmuş olsun
+                    DateTime currentUtcTime = ValidatorQueueObj.GetUtcTime();
+                    (bool bStatus, Notus.Variable.Struct.PoolBlockRecordStruct TmpBlockStruct) = Obj_BlockQueue.Get(currentUtcTime);
                     if (bStatus == true)
                     {
                         Notus.Variable.Class.BlockData PreBlockData = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(TmpBlockStruct.data);
