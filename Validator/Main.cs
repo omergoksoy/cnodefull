@@ -239,7 +239,7 @@ namespace Notus.Validator
                                     string tmpCurrentList = ObjMp_FileList.Get(tmpStorageId + "_chunk", "");
                                     //try
                                     //{
-                                    string tmpWalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(tmpFileObj.PublicKey);
+                                    string tmpWalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(tmpFileObj.PublicKey,Obj_Settings.Network);
                                     string tmpOutputFolder = Notus.IO.GetFolderName(
                                         Obj_Settings.Network,
                                         Obj_Settings.Layer,

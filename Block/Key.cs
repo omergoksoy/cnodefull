@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Json;
-
-namespace Notus.Block
+﻿namespace Notus.Block
 {
     public static class Key
     {
@@ -45,13 +41,13 @@ namespace Notus.Block
                 new Notus.Hash().CommonHash("ripemd160", PreText).Substring(0, 10) +
                 RandomHashStr1.Substring(0, 31) + RandomHashStr2.Substring(0, 31);
         }
-        public static string Generate(DateTime currentUtcTime,string nodeWalletKey)
+        public static string Generate(DateTime currentUtcTime, string nodeWalletKey)
         {
             return SubGenerateBlockKey(currentUtcTime, nodeWalletKey, "");
         }
         public static string Generate()
         {
-            return Notus.Convert.ToBase35(SubGenerateBlockKey("", ""));
+            return Notus.Convert.ToBase35(SubGenerateBlockKey(DateTime.Now, "", ""));
         }
         public static string Generate(bool ResultAsHex)
         {
@@ -69,9 +65,9 @@ namespace Notus.Block
         {
             if (ResultAsHex == true)
             {
-                return SubGenerateBlockKey(DateTime.Now,SeedForKey, "");
+                return SubGenerateBlockKey(DateTime.Now, SeedForKey, "");
             }
-            return Notus.Convert.ToBase35(SubGenerateBlockKey(DateTime.Now,SeedForKey, ""));
+            return Notus.Convert.ToBase35(SubGenerateBlockKey(DateTime.Now, SeedForKey, ""));
             //DateTime.Now.ToString("yyyyMMddHHmmssffffff")
         }
         public static int CalculateStorageNumber(string timeKey)

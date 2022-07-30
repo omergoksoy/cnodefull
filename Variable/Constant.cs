@@ -13,6 +13,7 @@ namespace Notus.Variable
             public int Difficulty { get; set; }
         }
         */
+        public static readonly DateTime DefaultTime = new DateTime(2000, 01, 1, 0, 00, 00);
         public static readonly string MainCoinTagName = "NOTUS";
         public static readonly string DefaultDateTimeFormatText = "yyyyMMddHHmmssfff";
         public static readonly string DefaultHexAlphabetString = "0123456789abcdef";

@@ -61,7 +61,6 @@ namespace Notus.Validator
         private Dictionary<string, DateTime> MessageTimeList = new Dictionary<string, DateTime>();
         private Dictionary<int, string> NodeOrderList = new Dictionary<int, string>();
 
-        private readonly DateTime DefaultTime = new DateTime(2000, 01, 1, 0, 00, 00);
         private Notus.Mempool ObjMp_NodeList;
         private bool ExitFromLoop = false;
         private string LastHashForStoreList = "#####";
@@ -451,7 +450,7 @@ namespace Notus.Validator
             {
                 NodeList[nodeHexText].ErrorCount = 0;
                 NodeList[nodeHexText].Status = NodeStatus.Online;
-                NodeList[nodeHexText].Time.Error = DefaultTime;
+                NodeList[nodeHexText].Time.Error = Notus.Variable.Constant.DefaultTime;
             }
         }
         private string SendMessage(string receiverIpAddress, int receiverPortNo, string messageText, bool executeErrorControl)
@@ -477,7 +476,7 @@ namespace Notus.Validator
                 {
                     NodeList[tmpNodeHexStr].ErrorCount = 0;
                     NodeList[tmpNodeHexStr].Status = NodeStatus.Online;
-                    NodeList[tmpNodeHexStr].Time.Error = DefaultTime;
+                    NodeList[tmpNodeHexStr].Time.Error = Notus.Variable.Constant.DefaultTime;
                     return incodeResponse;
                 }
                 NodeError(tmpNodeHexStr);
@@ -1016,7 +1015,7 @@ namespace Notus.Validator
                 {
                     Node = NtpCheckTime,
                     World = NtpTime,
-                    Error = DefaultTime
+                    Error = Notus.Variable.Constant.DefaultTime
                 },
                 Wallet = MyWallet,
                 IP = new IpInfo()
@@ -1041,9 +1040,9 @@ namespace Notus.Validator
                         Status = NodeStatus.Unknown,
                         Time = new NodeQueueInfo_Time()
                         {
-                            Node = DefaultTime,
-                            World = DefaultTime,
-                            Error = DefaultTime
+                            Node = Notus.Variable.Constant.DefaultTime,
+                            World = Notus.Variable.Constant.DefaultTime,
+                            Error = Notus.Variable.Constant.DefaultTime
                         },
                         Wallet = "#",
                         IP = new IpInfo()
@@ -1064,9 +1063,9 @@ namespace Notus.Validator
         {
             NodeList.Clear();
             MessageTimeList.Clear();
-            NtpCheckTime = DefaultTime;
-            LastPingTime = DefaultTime;
-            NextQueueValidNtpTime = DefaultTime;
+            NtpCheckTime = Notus.Variable.Constant.DefaultTime;
+            LastPingTime = Notus.Variable.Constant.DefaultTime;
+            NextQueueValidNtpTime = Notus.Variable.Constant.DefaultTime;
             ObjMp_NodeList = new Notus.Mempool("node_pool_list");
             ObjMp_NodeList.AsyncActive = false;
         }
