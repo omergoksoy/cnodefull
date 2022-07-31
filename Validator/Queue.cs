@@ -352,14 +352,14 @@ namespace Notus.Validator
                         // burada çekilen block node'un kendi havuzuna eklenecek
                         // burada çekilen block node'un kendi havuzuna eklenecek
                         // burada çekilen block node'un kendi havuzuna eklenecek
-                        (bool tmpNoError, Variable.Class.BlockData? tmpBlockData) =
+                        (bool tmpError, Variable.Class.BlockData? tmpBlockData) =
                             Notus.Toolbox.Network.GetBlockFromNode(
-                                tmpIpAddress, 
-                                tmpPortNo, 
+                                tmpIpAddress,
+                                tmpPortNo,
                                 tmpBlockNo,
                                 Obj_Settings
                             );
-                        if (tmpNoError == true)
+                        if (tmpError == false)
                         {
                             if (Func_NewBlockIncome != null)
                             {
@@ -698,31 +698,47 @@ namespace Notus.Validator
                         Obj_Settings.Genesis.Info.Creation.ToString(
                             Notus.Variable.Constant.DefaultDateTimeFormatText
                         )
-                    ) 
+                    )
                 }
             };
+            /*
+            Console.WriteLine(MyNodeHexKey + " - " +
+                Obj_Settings.Genesis.Info.Creation.ToString(
+                    Notus.Variable.Constant.DefaultDateTimeFormatText
+                )
+            );
+            */
+
             foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
             {
                 if (string.Equals(MyNodeHexKey, entry.Key) == false)
                 {
-                    if(entry.Value.ErrorCount==0 && entry.Value.Status == NodeStatus.Online)
+                    if (entry.Value.ErrorCount == 0 && entry.Value.Status == NodeStatus.Online)
                     {
-                        (bool tmpNoError, Variable.Class.BlockData? tmpBlockData) =
+                        (bool tmpError, Variable.Class.BlockData? tmpBlockData) =
                             Notus.Toolbox.Network.GetBlockFromNode(
                                 entry.Value.IP.IpAddress,
                                 entry.Value.IP.Port,
                                 1,
                                 Obj_Settings
                             );
-                        if (tmpNoError == true)
+                        if (tmpError == false)
                         {
                             Variable.Genesis.GenesisBlockData? tmpGenesis = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(
                                 System.Convert.FromBase64String(
                                     tmpBlockData.cipher.data
                                 )
                             );
+                            /*
+                            Console.WriteLine(entry.Key + " - " +
+                                tmpGenesis.Info.Creation.ToString(
+                                    Notus.Variable.Constant.DefaultDateTimeFormatText
+                                )
+                            );
+                            */
+
                             genesisTimeList.Add(
-                                entry.Key, 
+                                entry.Key,
                                 Int64.Parse(
                                     tmpGenesis.Info.Creation.ToString(
                                         Notus.Variable.Constant.DefaultDateTimeFormatText
@@ -733,8 +749,20 @@ namespace Notus.Validator
                     }
                 }
             }
-            Console.WriteLine("Line-736");
-            Console.WriteLine(JsonSerializer.Serialize(genesisTimeList, new JsonSerializerOptions() { WriteIndented = true }));
+
+            //Notus.Print.Basic(Obj_Settings, JsonSerializer.Serialize(genesisTimeList, new JsonSerializerOptions() { WriteIndented = true }));
+
+            foreach (KeyValuePair<string, Int64> entry in genesisTimeList)
+            {
+                if (string.Equals(entry.Key, MyNodeHexKey) == false)
+                {
+                    if (entry.Value > genesisTimeList[MyNodeHexKey])
+                    {
+                        Console.WriteLine("Genesis daha yeni");
+                        //Notus.IO.ClearBlocks(Obj_Settings.Network, Obj_Settings.Layer);
+                    }
+                }
+            }
             Console.ReadLine();
         }
         private void CheckBlockSync()
@@ -755,9 +783,9 @@ namespace Notus.Validator
 
             foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
             {
-                
+
                 if (
-                    string.Equals(MyNodeHexKey, entry.Key)==false &&
+                    string.Equals(MyNodeHexKey, entry.Key) == false &&
                     entry.Value.Status == NodeStatus.Online &&
                     entry.Value.ErrorCount == 0
                 )
@@ -1028,9 +1056,9 @@ namespace Notus.Validator
         }
 
         public void PreStart(
-            long lastBlockRowNo, 
-            string lastBlockUid, 
-            string lastBlockSign, 
+            long lastBlockRowNo,
+            string lastBlockUid,
+            string lastBlockSign,
             string lastBlockPrev
         )
         {
@@ -1039,7 +1067,7 @@ namespace Notus.Validator
 
             MyIpAddress = (Obj_Settings.LocalNode == true ? Obj_Settings.IpInfo.Local : Obj_Settings.IpInfo.Public);
             MyNodeHexKey = IpPortToKey(MyIpAddress, MyPortNo);
-            Notus.Print.Basic(Obj_Settings,"My Node Hex Key : " + MyNodeHexKey);
+            Notus.Print.Basic(Obj_Settings, "My Node Hex Key : " + MyNodeHexKey);
             if (Obj_Settings.LocalNode == true)
             {
                 AddToMainAddressList(Obj_Settings.IpInfo.Local, MyPortNo, false);

@@ -9,35 +9,34 @@ namespace Notus.Toolbox
     {
         private static bool Error_TestIpAddress = true;
         private static readonly string DefaultControlTestData = "notus-network-test-result-data";
+        
         public static (bool, Notus.Variable.Class.BlockData) GetBlockFromNode(
-            string ipAddress,
-            int portNo,
-            long blockNo,
-            Notus.Variable.Common.ClassSetting objSettings = null
+            string ipAddress, int portNo,
+            long blockNo, Notus.Variable.Common.ClassSetting objSettings = null
         )
         {
-            string urlPath = Notus.Network.Node.MakeHttpListenerPath(ipAddress, portNo) + "block/" + blockNo.ToString();
+            string urlPath = Notus.Network.Node.MakeHttpListenerPath(ipAddress, portNo) + "block/" + blockNo.ToString() + "/raw";
             string incodeResponse = Notus.Communication.Request.GetSync(
-                urlPath, 
-                2, 
-                true, 
-                false,
-                objSettings
+                urlPath, 2, true, false, objSettings
             );
             try
             {
                 if (incodeResponse != null && incodeResponse != string.Empty && incodeResponse.Length > 0)
                 {
-                    Notus.Variable.Class.BlockData tmpResultBlock = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(incodeResponse);
+                    Notus.Variable.Class.BlockData tmpResultBlock = 
+                        JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(incodeResponse);
                     if (tmpResultBlock != null)
                     {
                         return (false, tmpResultBlock);
                     }
                 }
             }
-            catch
+            catch(Exception err)
             {
-
+                if (objSettings != null)
+                {
+                    Notus.Print.Danger(objSettings,err.Message);
+                }
             }
             return (true, null);
         }

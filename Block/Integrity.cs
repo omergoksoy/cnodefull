@@ -595,7 +595,7 @@ namespace Notus.Block
                                             if (weResetTheAllBlock == false)
                                             {
                                                 Notus.Print.Basic(Obj_Settings, "Current Block Were Deleted");
-                                                BS_Storage.ClearStorage();
+                                                Notus.IO.ClearBlocks(Obj_Settings.Network, Obj_Settings.Layer);
                                                 weResetTheAllBlock = true;
                                             }
                                             BS_Storage.AddSync(tmpBlockData, true);

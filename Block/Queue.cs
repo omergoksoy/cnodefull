@@ -307,7 +307,7 @@ namespace Notus.Block
 
         public void Reset()
         {
-            BS_Storage.ClearStorage();
+            Notus.IO.ClearBlocks(Obj_Settings.Network, Obj_Settings.Layer);
             MP_BlockPoolList.Clear();
             Queue_PoolTransaction.Clear();
         }

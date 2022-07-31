@@ -1388,6 +1388,14 @@ namespace Notus.Validator
 
         private string Request_Block(Notus.Variable.Struct.HttpRequestDetails IncomeData)
         {
+            bool prettyJson = Obj_Settings.PrettyJson;
+            if (IncomeData.UrlList.Length > 2)
+            {
+                if (string.Equals(IncomeData.UrlList[2].ToLower(), "raw"))
+                {
+                    prettyJson = false;
+                }
+            }
             if (IncomeData.UrlList[1].Length == 90)
             {
                 try
@@ -1395,7 +1403,7 @@ namespace Notus.Validator
                     Notus.Variable.Class.BlockData tmpStoredBlock = Func_OnReadFromChain(IncomeData.UrlList[1]);
                     if (tmpStoredBlock != null)
                     {
-                        if (Obj_Settings.PrettyJson == true)
+                        if (prettyJson == true)
                         {
                             return JsonSerializer.Serialize(tmpStoredBlock, new JsonSerializerOptions() { WriteIndented = true });
                         }
@@ -1404,7 +1412,7 @@ namespace Notus.Validator
                 }
                 catch (Exception err)
                 {
-                    Notus.Print.Basic(Obj_Settings.DebugMode, "Error Text [4a821b]: " + err.Message);
+                    Notus.Print.Danger(Obj_Settings, "Error Text [4a821b]: " + err.Message);
                     return JsonSerializer.Serialize(false);
                 }
             }
@@ -1416,8 +1424,7 @@ namespace Notus.Validator
                 (bool blockFound, Notus.Variable.Class.BlockData tmpResultBlock) = GetBlockWithRowNo(BlockNumber);
                 if (blockFound == true)
                 {
-                    bool tmpPrettyJson = Obj_Settings.PrettyJson;
-                    if (tmpPrettyJson == true)
+                    if (prettyJson == true)
                     {
                         return JsonSerializer.Serialize(tmpResultBlock, new JsonSerializerOptions() { WriteIndented = true });
                     }
