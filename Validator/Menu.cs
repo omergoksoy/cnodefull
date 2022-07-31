@@ -1288,6 +1288,7 @@ namespace Notus.Validator
         public Menu()
         {
             Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Gray;
             foreach (KeyValuePair<Notus.Variable.Enum.NetworkLayer, string> entry in Notus.Variable.Constant.LayerText)
             {
                 if (entry.Value.Length > longestLayerText)

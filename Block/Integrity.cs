@@ -9,6 +9,9 @@ namespace Notus.Block
 {
     public class Integrity : IDisposable
     {
+        private DateTime LastNtpTime = Notus.Variable.Constant.DefaultTime;
+        private TimeSpan NtpTimeDifference;
+        private bool NodeTimeAfterNtpTime = false;      // time difference before or after NTP Server
         private Notus.Variable.Common.ClassSetting Obj_Settings;
         public Notus.Variable.Common.ClassSetting Settings
         {
@@ -431,12 +434,7 @@ namespace Notus.Block
             FreeBlockStruct.info.type = 300;
             FreeBlockStruct.info.rowNo = 2;
             FreeBlockStruct.info.multi = false;
-            FreeBlockStruct.info.uID = Notus.Block.Key.Generate(
-                true,
-                Notus.Variable.Constant.Seed_ForMainNet_BlockKeyGenerate,
-                Const_DefaultPreText
-            );
-
+            FreeBlockStruct.info.uID = Notus.Block.Key.Generate(GetNtpTime(), Obj_Settings.NodeWallet.WalletKey);
             FreeBlockStruct.info.time = Notus.Block.Key.GetTimeFromKey(FreeBlockStruct.info.uID, true);
             FreeBlockStruct.cipher.ver = "NE";
             FreeBlockStruct.cipher.data = System.Convert.ToBase64String(
@@ -669,6 +667,30 @@ namespace Notus.Block
                 Obj_Settings.GenesisCreated = false;
                 Obj_Settings.LastBlock = LastBlock;
             }
+        }
+        private DateTime GetNtpTime()
+        {
+            if (
+                string.Equals(
+                    LastNtpTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText),
+                    Notus.Variable.Constant.DefaultTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
+                )
+            )
+            {
+                LastNtpTime = Notus.Time.GetFromNtpServer();
+                DateTime tmpNtpCheckTime = DateTime.Now;
+                NodeTimeAfterNtpTime = (tmpNtpCheckTime > LastNtpTime);
+                NtpTimeDifference = (NodeTimeAfterNtpTime == true ? (tmpNtpCheckTime - LastNtpTime) : (LastNtpTime - tmpNtpCheckTime));
+                return LastNtpTime;
+            }
+
+            if (NodeTimeAfterNtpTime == true)
+            {
+                LastNtpTime = DateTime.Now.Subtract(NtpTimeDifference);
+                return LastNtpTime;
+            }
+            LastNtpTime = DateTime.Now.Add(NtpTimeDifference);
+            return LastNtpTime;
         }
         public static void SleepWithoutBlocking(int SleepTime, bool UseAsSecond = false)
         {

@@ -5,6 +5,10 @@ namespace Notus.Validator
 {
     public class Api : IDisposable
     {
+        private DateTime LastNtpTime = Notus.Variable.Constant.DefaultTime;
+        private TimeSpan NtpTimeDifference;
+        private bool NodeTimeAfterNtpTime = false;      // time difference before or after NTP Server
+
         private List<string> AllMainList = new List<string>();
         private List<string> AllNodeList = new List<string>();
         private List<string> AllMasterList = new List<string>();
@@ -388,7 +392,7 @@ namespace Notus.Validator
                             string tmpReceiverAddress = IncomeData.UrlList[3];
                             string tmpVolume = IncomeData.UrlList[4];
 
-                            string tmpSenderWalletKey = Notus.Wallet.ID.GetAddress(tmpPrivateKeyStr,Obj_Settings.Network);
+                            string tmpSenderWalletKey = Notus.Wallet.ID.GetAddress(tmpPrivateKeyStr, Obj_Settings.Network);
 
                             Notus.Variable.Struct.CryptoTransactionStruct tmpSignedTrans = Notus.Wallet.Transaction.Sign(new Notus.Variable.Struct.CryptoTransactionBeforeStruct()
                             {
@@ -674,7 +678,7 @@ namespace Notus.Validator
             }
 
             string tmpStorageIdKey = tmpChunkData.UID;
-            string tmpChunkIdKey = Notus.Block.Key.Generate(true);
+            string tmpChunkIdKey = Notus.Block.Key.Generate(GetNtpTime(), Obj_Settings.NodeWallet.WalletKey);
             int tmpStorageNo = Notus.Block.Key.CalculateStorageNumber(Notus.Convert.Hex2BigInteger(tmpChunkIdKey).ToString());
 
             using (Notus.Mempool ObjMp_FileChunkList =
@@ -820,7 +824,7 @@ namespace Notus.Validator
                 });
             }
 
-            string tmpTransferIdKey = Notus.Block.Key.Generate(true);
+            string tmpTransferIdKey = Notus.Block.Key.Generate(GetNtpTime(), Obj_Settings.NodeWallet.WalletKey);
             using (Notus.Mempool ObjMp_FileChunkList =
                 new Notus.Mempool(
                     Notus.IO.GetFolderName(
@@ -888,7 +892,7 @@ namespace Notus.Validator
             }
 
             string tmpStorageIdKey = tmpChunkData.UID;
-            string tmpChunkIdKey = Notus.Block.Key.Generate(true);
+            string tmpChunkIdKey = Notus.Block.Key.Generate(GetNtpTime(), Obj_Settings.NodeWallet.WalletKey);
             int tmpStorageNo = Notus.Block.Key.CalculateStorageNumber(Notus.Convert.Hex2BigInteger(tmpChunkIdKey).ToString());
 
             using (Notus.Mempool ObjMp_FileChunkList =
@@ -1288,7 +1292,7 @@ namespace Notus.Validator
             }
 
             // transfer process status is saved
-            string tmpTransferIdKey = Notus.Block.Key.Generate(true);
+            string tmpTransferIdKey = Notus.Block.Key.Generate(GetNtpTime(), Obj_Settings.NodeWallet.WalletKey);
             ObjMp_CryptoTranStatus.Add(
                 tmpTransferIdKey,
                 JsonSerializer.Serialize(
@@ -1978,6 +1982,30 @@ namespace Notus.Validator
                 return tmpFullList;
             }
             return new List<string>();
+        }
+        private DateTime GetNtpTime()
+        {
+            if (
+                string.Equals(
+                    LastNtpTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText),
+                    Notus.Variable.Constant.DefaultTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
+                )
+            )
+            {
+                LastNtpTime = Notus.Time.GetFromNtpServer();
+                DateTime tmpNtpCheckTime = DateTime.Now;
+                NodeTimeAfterNtpTime = (tmpNtpCheckTime > LastNtpTime);
+                NtpTimeDifference = (NodeTimeAfterNtpTime == true ? (tmpNtpCheckTime - LastNtpTime) : (LastNtpTime - tmpNtpCheckTime));
+                return LastNtpTime;
+            }
+
+            if (NodeTimeAfterNtpTime == true)
+            {
+                LastNtpTime = DateTime.Now.Subtract(NtpTimeDifference);
+                return LastNtpTime;
+            }
+            LastNtpTime = DateTime.Now.Add(NtpTimeDifference);
+            return LastNtpTime;
         }
         public Api()
         {

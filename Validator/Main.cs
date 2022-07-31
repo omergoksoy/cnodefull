@@ -69,13 +69,27 @@ namespace Notus.Validator
                         {
                             howManySeconds = (Obj_Settings.Genesis.Empty.Interval.Time * Obj_Settings.Genesis.Empty.SlowBlock.Multiply);
                         }
-                        //blok zamanı ve utc zamanı çakışıyor
-                        DateTime tmpLastTime = Notus.Date.ToDateTime(Obj_Settings.LastBlock.info.time).AddSeconds(howManySeconds);
-                        Console.WriteLine(
-                            ValidatorQueueObj.GetUtcTime().ToString(Notus.Variable.Constant.DefaultDateTimeFormatText) +
-                            " - " +
-                            tmpLastTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
+
+                        /*
+                        Console.Write(JsonSerializer.Serialize(
+                            Obj_Settings.LastBlock.info, new JsonSerializerOptions() { WriteIndented = true })
                         );
+                        */
+                        //blok zamanı ve utc zamanı çakışıyor
+                        DateTime tmpLastTime = Notus.Date.ToDateTime(
+                            Obj_Settings.LastBlock.info.time
+                        ).AddSeconds(howManySeconds);
+
+                        Int64 kalanSure=
+                            Int64.Parse(ValidatorQueueObj.GetUtcTime().ToString(Notus.Variable.Constant.DefaultDateTimeFormatText))
+                            -
+                            Int64.Parse(tmpLastTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText));
+
+                        Console.WriteLine(kalanSure);
+                        /*
+                        2022 07 30 23 50 53 472 - 
+                        2022 07 31 02 57 31 008
+                        */
                         // get utc time from validatır Queue
                         if (ValidatorQueueObj.GetUtcTime() > tmpLastTime)
                         {

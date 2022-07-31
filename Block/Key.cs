@@ -45,6 +45,7 @@
         {
             return SubGenerateBlockKey(currentUtcTime, nodeWalletKey, "");
         }
+        /*
         public static string Generate()
         {
             return Notus.Convert.ToBase35(SubGenerateBlockKey(DateTime.Now, "", ""));
@@ -61,6 +62,7 @@
             }
             return Notus.Convert.ToBase35(SubGenerateBlockKey(DateTime.Now, SeedForKey, PreText));
         }
+
         public static string Generate(bool ResultAsHex = false, string SeedForKey = "")
         {
             if (ResultAsHex == true)
@@ -70,6 +72,7 @@
             return Notus.Convert.ToBase35(SubGenerateBlockKey(DateTime.Now, SeedForKey, ""));
             //DateTime.Now.ToString("yyyyMMddHHmmssffffff")
         }
+        */
         public static int CalculateStorageNumber(string timeKey)
         {
             return int.Parse(timeKey.Substring(8, 6)) % Notus.Variable.Constant.BlockStorageMonthlyGroupCount;

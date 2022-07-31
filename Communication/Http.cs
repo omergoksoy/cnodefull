@@ -143,11 +143,11 @@ namespace Notus.Communication
             string ResponseStr = Val_DefaultResult_OK;
             if (OnReceiveFunctionDefined == false)
             {
-                Notus.Print.Basic(Obj_Settings, "Url Doesn't Exist -> " + incomeData.Url);
+                Notus.Print.Danger(Obj_Settings, "Url Doesn't Exist -> " + incomeData.Url);
             }
             else
             {
-                Notus.Print.Basic(Obj_Settings, "Url Call : " + incomeData.RawUrl);
+                Notus.Print.Basic(Obj_Settings.DebugMode, "Url Call : " + incomeData.RawUrl);
                 ResponseStr = OnReceiveFunction(incomeData);
             }
             byte[] headerArray = Encoding.ASCII.GetBytes(
@@ -198,14 +198,14 @@ namespace Notus.Communication
                 ListenerObj.Begin(true);
                 ListenerObj.OnError((int errorCode, string errorText) =>
                 {
-                    Notus.Print.Basic(Obj_Settings, "Error Code : " + errorCode.ToString());
-                    Notus.Print.Basic(Obj_Settings, "Error Text : " + errorText);
+                    Notus.Print.Danger(Obj_Settings, "Error Code : " + errorCode.ToString());
+                    Notus.Print.Danger(Obj_Settings, "Error Text : " + errorText);
                 });
                 ListenerObj.OnReceive(IncomeTextFunction);
             }
             catch (Exception e)
             {
-                Notus.Print.Basic(Obj_Settings, "An Exception Occurred while Listening :" + e.ToString());
+                Notus.Print.Danger(Obj_Settings, "An Exception Occurred while Listening :" + e.ToString());
             }
         }
 
@@ -345,7 +345,7 @@ namespace Notus.Communication
                 }
             }
 
-            Notus.Print.Basic(Obj_Settings, urlLine);
+            //Notus.Print.Basic(Obj_Settings.DebugMode, urlLine);
 
             return new Notus.Variable.Struct.HttpRequestDetails()
             {
