@@ -85,7 +85,7 @@ namespace Notus.Validator
                             -
                             Int64.Parse(tmpLastTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText));
 
-                        Console.WriteLine(kalanSure);
+                        Console.WriteLine("kalanSure : "+ kalanSure.ToString());
                         /*
                         2022 07 30 23 50 53 472 - 
                         2022 07 31 02 57 31 008
@@ -829,9 +829,11 @@ namespace Notus.Validator
             EmptyTimerActive = true;
             if (Obj_Settings.GenesisCreated == false)
             {
-                Console.WriteLine("Obj_Settings.GenesisCreated");
-                Console.WriteLine(Obj_Settings.GenesisCreated);
-                Console.WriteLine(Obj_Settings.Layer.ToString());
+                //burada block senronizasyonu tamamlanmalı
+                ValidatorQueueObj.CheckNodeGenesis();
+                Console.ReadLine();
+                Console.ReadLine();
+
                 if (Obj_Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer1)
                 {
                     if (EmptyTimerActive == true)

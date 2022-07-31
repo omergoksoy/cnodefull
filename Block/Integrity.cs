@@ -256,13 +256,16 @@ namespace Notus.Block
             {
                 return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
             }
+            /*
+            Notus.Print.Basic(Obj_Settings, "Notus.Block.Integrity -> Line 260");
             Notus.Print.Basic(Obj_Settings, "------------------------------------");
             Notus.Print.Basic(Obj_Settings, JsonSerializer.Serialize(BlockOrderList, new JsonSerializerOptions() { WriteIndented = true }));
             Notus.Print.Basic(Obj_Settings, "------------------------------------");
             Notus.Print.Basic(Obj_Settings, JsonSerializer.Serialize(BlockPreviousList, new JsonSerializerOptions() { WriteIndented = true }));
             Notus.Print.Basic(Obj_Settings, "------------------------------------");
-
+            Notus.Print.Basic(Obj_Settings, "Press Enter to Continue");
             Console.ReadLine();
+            */
 
             bool whileExit = false;
             while (whileExit == false)
@@ -603,7 +606,7 @@ namespace Notus.Block
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Error Happened While Trying To Get Genesis From Other Node");
+                                    Notus.Print.Danger(Obj_Settings, "Error Happened While Trying To Get Genesis From Other Node");
                                     exitForLoop = true;
                                     SleepWithoutBlocking(100);
                                 }

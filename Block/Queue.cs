@@ -160,6 +160,8 @@ namespace Notus.Block
             string LongNonceText;
 
             BlockStruct.cipher.ver = "NE";
+            BlockStruct.info.uID = Notus.Block.Key.Generate(GetNtpTime(), Obj_Settings.NodeWallet.WalletKey);
+
             if (CurrentBlockType == 360)
             {
                 LongNonceText = TempPoolTransactionList[0].data;
