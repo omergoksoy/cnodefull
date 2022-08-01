@@ -629,7 +629,8 @@ namespace Notus.Validator
 
             Obj_Integrity = new Notus.Block.Integrity();
             Obj_Integrity.Settings = Obj_Settings;
-            Obj_Integrity.GetLastBlock();
+            Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with onther node
+            Obj_Integrity.GetLastBlock();        // get last block from current node
 
             Obj_Settings.GenesisCreated = Obj_Integrity.Settings.GenesisCreated;
             Obj_Settings.LastBlock = Obj_Integrity.Settings.LastBlock;
@@ -756,17 +757,7 @@ namespace Notus.Validator
             };
             //Console.ReadLine();
 
-            if (Obj_Settings.GenesisCreated == true)
-            {
-                /*
-                ValidatorQueueObj.PreStart(0,
-                    string.Empty,
-                    string.Empty,
-                    string.Empty
-                );
-                */
-            }
-            else
+            if (Obj_Settings.GenesisCreated == false)
             {
                 ValidatorQueueObj.PreStart(
                     Obj_Settings.LastBlock.info.rowNo,
@@ -830,9 +821,9 @@ namespace Notus.Validator
             if (Obj_Settings.GenesisCreated == false)
             {
                 //burada block senronizasyonu tamamlanmalı
-                ValidatorQueueObj.CheckNodeGenesis();
-                Console.ReadLine();
-                Console.ReadLine();
+                //ValidatorQueueObj.CheckNodeGenesis();
+                //Console.ReadLine();
+                //Console.ReadLine();
 
                 if (Obj_Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer1)
                 {
