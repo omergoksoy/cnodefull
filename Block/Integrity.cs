@@ -44,7 +44,7 @@ namespace Notus.Block
             }
             if (ResetBlocksIfNonValid == true)
             {
-                string[] ZipFileList = GetZipFiles();
+                string[] ZipFileList = Notus.IO.GetZipFiles(Obj_Settings);
                 foreach (string fileName in ZipFileList)
                 {
                     try
@@ -60,20 +60,12 @@ namespace Notus.Block
             }
             return (false, null);
         }
-        private string[] GetZipFiles()
-        {
-            if (Directory.Exists(Notus.IO.GetFolderName(Obj_Settings.Network, Obj_Settings.Layer, Notus.Variable.Constant.StorageFolderName.Block)) == false)
-            {
-                return new string[] { };
-            }
-            return Directory.GetFiles(Notus.IO.GetFolderName(Obj_Settings.Network, Obj_Settings.Layer, Notus.Variable.Constant.StorageFolderName.Block), "*.zip");
-        }
         private (Notus.Variable.Enum.BlockIntegrityStatus, Notus.Variable.Class.BlockData) ControlBlockIntegrity()
         {
             Notus.Wallet.Fee.ClearFeeData(Obj_Settings.Network, Obj_Settings.Layer);
 
             Notus.Variable.Class.BlockData LastBlock = Notus.Variable.Class.Block.GetEmpty();
-            string[] ZipFileList = GetZipFiles();
+            string[] ZipFileList = Notus.IO.GetZipFiles(Obj_Settings);
 
             if (ZipFileList.Length == 0)
             {
@@ -486,31 +478,18 @@ namespace Notus.Block
             );
             return new Notus.Block.Generate(Obj_Settings.NodeWallet.WalletKey).Make(GenBlockStruct, 1000);
         }
-        public DateTime GetGenesisCreationTimeFromString(string genesisText)
-        {
-            Notus.Variable.Genesis.GenesisBlockData currentGenesisData = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(System.Text.Encoding.ASCII.GetString(System.Convert.FromBase64String(genesisText)));
-            return currentGenesisData.Info.Creation;
-        }
         public void Synchronous()
         {
 
         }
         public bool ControlGenesisBlock()
         {
-            /*
-            önce güvenilir kaynaklardan genesis bloğunu çek
-            kendi genesisi bloğun ile güvenilir genesis bloğunu karşılaştır
-            sonra diğer node'un son bloğunu çekiyor ve diğer senkroniasyonları sırayla
-            yapıyor
-
-            */
-
-            string[] ZipFileList = GetZipFiles();
+            string[] ZipFileList = Notus.IO.GetZipFiles(Obj_Settings);
             string myGenesisSign = string.Empty;
-            DateTime myGenesisTime = DateTime.Now;
-            
+            DateTime myGenesisTime = DateTime.Now.AddDays(1);
+
             // we have genesis
-            if (ZipFileList.Length > 0) 
+            if (ZipFileList.Length > 0)
             {
                 Notus.Print.Basic(Obj_Settings, "We Have Block - Lets Check Genesis Time And Hash");
                 using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
@@ -523,7 +502,7 @@ namespace Notus.Block
                         if (blockData.info.type == 360)
                         {
                             myGenesisSign = blockData.sign;
-                            myGenesisTime = GetGenesisCreationTimeFromString(blockData.cipher.data);
+                            myGenesisTime = Notus.Date.GetGenesisCreationTimeFromString(blockData);
                         }
                     }
                 }
@@ -538,18 +517,21 @@ namespace Notus.Block
             {
                 return false;
             }
-            
+
             //there is no Network on constant
             if (Notus.Validator.List.Main[Obj_Settings.Layer].ContainsKey(Obj_Settings.Network) == false)
             {
                 return false;
             }
-            
+
             Dictionary<string, Notus.Variable.Class.BlockData> signBlock = new Dictionary<string, Notus.Variable.Class.BlockData>();
             signBlock.Clear();
-                
+
             Dictionary<string, int> signCount = new Dictionary<string, int>();
             signCount.Clear();
+
+            Dictionary<string, List<Notus.Variable.Struct.IpInfo>> signNode = new Dictionary<string, List<Notus.Variable.Struct.IpInfo>>();
+            signNode.Clear();
 
             foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[Obj_Settings.Layer][Obj_Settings.Network])
             {
@@ -561,15 +543,23 @@ namespace Notus.Block
                     {
                         if (signCount.ContainsKey(tmpInnerBlockData.sign) == false)
                         {
+                            signNode.Add(tmpInnerBlockData.sign, new List<Notus.Variable.Struct.IpInfo>() { });
                             signCount.Add(tmpInnerBlockData.sign, 0);
                             signBlock.Add(tmpInnerBlockData.sign, tmpInnerBlockData);
                         }
+                        signNode[tmpInnerBlockData.sign].Add(
+                            new Notus.Variable.Struct.IpInfo()
+                            {
+                                IpAddress = item.IpAddress,
+                                Port = item.Port
+                            }
+                        );
                         signCount[tmpInnerBlockData.sign] = signCount[tmpInnerBlockData.sign] + 1;
                     }
                     else
                     {
                         Notus.Print.Danger(Obj_Settings, "Error Happened While Trying To Get Genesis From Other Node");
-                        SleepWithoutBlocking(100);
+                        Notus.Date.SleepWithoutBlocking(100);
                     }
                 }
             }
@@ -588,25 +578,53 @@ namespace Notus.Block
                     tmpBiggestSign = entry.Key;
                 }
             }
-            Console.WriteLine("tmpBiggestSign : " + tmpBiggestSign);
-            Console.WriteLine("myGenesisSign : " + myGenesisSign);
-
             if (string.Equals(tmpBiggestSign, myGenesisSign) == false)
             {
-                using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
+                DateTime otherNodeGenesisTime = Notus.Date.GetGenesisCreationTimeFromString(signBlock[tmpBiggestSign]);
+                Int64 otherNodeGenesisTimeVal = Int64.Parse(
+                    otherNodeGenesisTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
+                );
+                Int64 myGenesisTimeVal = Int64.Parse(
+                    myGenesisTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
+                );
+                if (myGenesisTimeVal > otherNodeGenesisTimeVal)
                 {
-                    BS_Storage.Network = Obj_Settings.Network;
-                    BS_Storage.Layer = Obj_Settings.Layer;
-                    Notus.Print.Basic(Obj_Settings, "Current Block Were Deleted");
-                    Notus.IO.ClearBlocks(Obj_Settings.Network, Obj_Settings.Layer);
-                    BS_Storage.AddSync(signBlock[tmpBiggestSign], true);
-                    Notus.Print.Basic(Obj_Settings, "Added Block : " + signBlock[tmpBiggestSign].info.uID);
+                    using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
+                    {
+                        BS_Storage.Network = Obj_Settings.Network;
+                        BS_Storage.Layer = Obj_Settings.Layer;
+                        Notus.Print.Basic(Obj_Settings, "Current Block Were Deleted");
+                        Notus.IO.ClearBlocks(Obj_Settings.Network, Obj_Settings.Layer);
+                        BS_Storage.AddSync(signBlock[tmpBiggestSign], true);
+                        Notus.Print.Basic(Obj_Settings, "Added Block : " + signBlock[tmpBiggestSign].info.uID);
+                        //Console.WriteLine(JsonSerializer.Serialize(signNode));
+                        bool secondBlockAdded = false;
+                        foreach (Variable.Struct.IpInfo? entry in signNode[tmpBiggestSign])
+                        {
+                            if (secondBlockAdded == false)
+                            {
+                                (bool tmpError, Notus.Variable.Class.BlockData tmpInnerBlockData) =
+                                Notus.Toolbox.Network.GetBlockFromNode(entry.IpAddress, entry.Port, 2, Obj_Settings);
+                                if (tmpError == false)
+                                {
+                                    Notus.Print.Basic(Obj_Settings, "Added Block : " + tmpInnerBlockData.info.uID);
+                                    BS_Storage.AddSync(tmpInnerBlockData, true);
+                                    secondBlockAdded = true;
+                                }
+                            }
+                        }
+                    }
+                    //Console.WriteLine("enter for continue");
+                    //Console.ReadLine();
+                    Notus.Date.SleepWithoutBlocking(150);
+                }
+                else
+                {
+                    Notus.Print.Basic(Obj_Settings, "Hold Your Genesis Block - We Are Older");
                 }
             }
-
-            SleepWithoutBlocking(250);
-            // Console.WriteLine("Press Enter To Continue - Integrity - Line 607");
-            // Console.ReadLine();
+            //Console.WriteLine("Press Enter To Continue");
+            //Console.ReadLine();
             return true;
         }
         public void GetLastBlock()
@@ -686,14 +704,6 @@ namespace Notus.Block
             }
             LastNtpTime = DateTime.Now.Add(NtpTimeDifference);
             return LastNtpTime;
-        }
-        public static void SleepWithoutBlocking(int SleepTime, bool UseAsSecond = false)
-        {
-            DateTime NextTime = (UseAsSecond == true ? DateTime.Now.AddSeconds(SleepTime) : DateTime.Now.AddMilliseconds(SleepTime));
-            while (NextTime > DateTime.Now)
-            {
-
-            }
         }
         public Integrity()
         {

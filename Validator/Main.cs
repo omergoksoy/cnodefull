@@ -84,7 +84,11 @@ namespace Notus.Validator
                             Int64.Parse(ValidatorQueueObj.GetUtcTime().ToString(Notus.Variable.Constant.DefaultDateTimeFormatText))
                             -
                             Int64.Parse(tmpLastTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText));
-
+                        Console.WriteLine(
+                            ValidatorQueueObj.GetUtcTime().ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)+
+                            " - " +
+                            tmpLastTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
+                        );
                         Console.WriteLine("kalanSure : "+ kalanSure.ToString());
                         /*
                         2022 07 30 23 50 53 472 - 
@@ -821,7 +825,6 @@ namespace Notus.Validator
             if (Obj_Settings.GenesisCreated == false)
             {
                 //burada block senronizasyonu tamamlanmalı
-                //ValidatorQueueObj.CheckNodeGenesis();
                 //Console.ReadLine();
                 //Console.ReadLine();
 

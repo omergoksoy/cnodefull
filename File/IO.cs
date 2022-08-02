@@ -26,6 +26,28 @@ namespace Notus
             }
 
         }
+        public static string[] GetZipFiles(
+            Notus.Variable.Enum.NetworkType networkType,
+            Notus.Variable.Enum.NetworkLayer networkLayer
+        )
+        {
+            if (Directory.Exists(Notus.IO.GetFolderName(networkType, networkLayer, Notus.Variable.Constant.StorageFolderName.Block)) == false)
+            {
+                return new string[] { };
+            }
+            return Directory.GetFiles(
+                Notus.IO.GetFolderName(
+                    networkType, 
+                    networkLayer, 
+                    Notus.Variable.Constant.StorageFolderName.Block
+                ), 
+                "*.zip"
+            );
+        }
+        public static string[] GetZipFiles(Notus.Variable.Common.ClassSetting objSettings)
+        {
+            return GetZipFiles(objSettings.Network, objSettings.Layer);
+        }
 
         public static string GetFolderName(Variable.Enum.NetworkType networkType, Variable.Enum.NetworkLayer networkLayer, string folderName)
         {
