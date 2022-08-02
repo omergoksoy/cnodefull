@@ -77,7 +77,7 @@ namespace Notus.Block
 
             if (ZipFileList.Length == 0)
             {
-                Notus.Print.Basic(Obj_Settings, "Block Integrity = GenesisNeed");
+                Notus.Print.Info(Obj_Settings, "Genesis Block Needs");
                 return (Notus.Variable.Enum.BlockIntegrityStatus.GenesisNeed, null);
             }
             SortedDictionary<long, string> BlockOrderList = new SortedDictionary<long, string>();
@@ -528,6 +528,10 @@ namespace Notus.Block
                     }
                 }
             }
+            else
+            {
+                Notus.Print.Basic(Obj_Settings, "We Do Not Have Any Block");
+            }
 
             //there is no layer on constant
             if (Notus.Validator.List.Main.ContainsKey(Obj_Settings.Layer) == false)
@@ -547,7 +551,6 @@ namespace Notus.Block
             Dictionary<string, int> signCount = new Dictionary<string, int>();
             signCount.Clear();
 
-            Notus.Variable.Class.BlockData tmpBlockData = null;
             foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[Obj_Settings.Layer][Obj_Settings.Network])
             {
                 if (string.Equals(Obj_Settings.IpInfo.Public, item.IpAddress) == false)
@@ -579,12 +582,14 @@ namespace Notus.Block
             string tmpBiggestSign = string.Empty;
             foreach (KeyValuePair<string, int> entry in signCount)
             {
-                if (tmpBiggestCount > entry.Value)
+                if (entry.Value > tmpBiggestCount)
                 {
                     tmpBiggestCount = entry.Value;
                     tmpBiggestSign = entry.Key;
                 }
             }
+            Console.WriteLine("tmpBiggestSign : " + tmpBiggestSign);
+            Console.WriteLine("myGenesisSign : " + myGenesisSign);
 
             if (string.Equals(tmpBiggestSign, myGenesisSign) == false)
             {
@@ -594,14 +599,14 @@ namespace Notus.Block
                     BS_Storage.Layer = Obj_Settings.Layer;
                     Notus.Print.Basic(Obj_Settings, "Current Block Were Deleted");
                     Notus.IO.ClearBlocks(Obj_Settings.Network, Obj_Settings.Layer);
-                    BS_Storage.AddSync(tmpBlockData, true);
-                    Notus.Print.Basic(Obj_Settings, "Added Block : " + tmpBlockData.info.uID);
+                    BS_Storage.AddSync(signBlock[tmpBiggestSign], true);
+                    Notus.Print.Basic(Obj_Settings, "Added Block : " + signBlock[tmpBiggestSign].info.uID);
                 }
             }
 
             SleepWithoutBlocking(250);
-
-            Console.ReadLine();
+            // Console.WriteLine("Press Enter To Continue - Integrity - Line 607");
+            // Console.ReadLine();
             return true;
         }
         public void GetLastBlock()
