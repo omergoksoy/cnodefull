@@ -239,11 +239,15 @@ namespace Notus.Validator
         }
         private string CalculateMyNodeListHash()
         {
+            Dictionary<string, NodeQueueInfo>? tmpNodeList = JsonSerializer.Deserialize<Dictionary<string, NodeQueueInfo>>(JsonSerializer.Serialize(NodeList));
+            if (tmpNodeList == null)
+            {
+                return string.Empty;
+            }
+
             List<string> tmpAllAddressList = new List<string>();
             List<string> tmpAllWalletList = new List<string>();
             List<long> tmpAllWordlTimeList = new List<long>();
-            Dictionary<string, NodeQueueInfo> tmpNodeList = JsonSerializer.Deserialize<Dictionary<string, NodeQueueInfo>>(JsonSerializer.Serialize(NodeList));
-
             foreach (KeyValuePair<string, NodeQueueInfo> entry in tmpNodeList)
             {
                 string tmpAddressListHex = IpPortToKey(entry.Value.IP.IpAddress, entry.Value.IP.Port);
@@ -410,7 +414,11 @@ namespace Notus.Validator
             if (CheckXmlTag(incomeData, "list"))
             {
                 incomeData = GetPureText(incomeData, "list");
-                SortedDictionary<string, IpInfo> tmpNodeList = JsonSerializer.Deserialize<SortedDictionary<string, IpInfo>>(incomeData);
+                SortedDictionary<string, IpInfo>? tmpNodeList = JsonSerializer.Deserialize<SortedDictionary<string, IpInfo>>(incomeData);
+                if (tmpNodeList == null)
+                {
+                    return "<err>1</err>";
+                }
                 foreach (KeyValuePair<string, IpInfo> entry in tmpNodeList)
                 {
                     AddToMainAddressList(entry.Value.IpAddress, entry.Value.Port, true);
