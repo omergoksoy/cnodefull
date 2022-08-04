@@ -757,7 +757,7 @@ namespace Notus.Validator
                         Notus.Variable.Class.BlockData PreparedBlockData = new Notus.Block.Generate(Obj_Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
                         AddedNewBlock(PreparedBlockData);
                         ValidatorQueueObj.Distrubute(PreBlockData);
-                        Thread.Sleep(500);
+                        Thread.Sleep(1);
                     }
                     else
                     {
@@ -770,12 +770,12 @@ namespace Notus.Validator
                             }
                             else
                             {
-                                Console.Write(".");
+                                //Console.Write(".");
                                 //Console.WriteLine("ValidatorQueueObj.TotalNodeCount : " + ValidatorQueueObj.TotalNodeCount.ToString());
                                 //Console.WriteLine("ValidatorQueueObj.OnlineNodeCount : " + ValidatorQueueObj.OnlineNodeCount.ToString());
 
                                 // Notus.Print.Basic(DebugModeActive, "Wait For Request");
-                                Thread.Sleep(5);
+                                Thread.Sleep(1);
                             }
                         }
                     }
@@ -800,6 +800,9 @@ namespace Notus.Validator
 
             Notus.Print.Basic(Obj_Settings, "Block Generated [" + Obj_BlockData.info.type.ToString() + "]: " + Obj_BlockData.info.uID);
             OrganizeEachBlock(Obj_BlockData, true);
+
+            Notus.Print.Info(Obj_Settings, "Last Block UID    : " + Obj_Settings.LastBlock.info.uID);
+            Notus.Print.Info(Obj_Settings, "Last Block Row No : " + Obj_Settings.LastBlock.info.rowNo.ToString());
         }
         private void OrganizeEachBlock(Notus.Variable.Class.BlockData Obj_BlockData, bool NewBlock)
         {

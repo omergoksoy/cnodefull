@@ -96,7 +96,7 @@ namespace Notus.Validator
                 string tmpNodeHexStr = IpPortToKey(entry.Value.IpAddress, entry.Value.Port);
                 if (string.Equals(MyNodeHexKey, tmpNodeHexStr) == false)
                 {
-                    Console.WriteLine(entry.Value.IpAddress + " - " + entry.Value.Port.ToString() + " > " + BlockData.info.rowNo.ToString());
+                    Notus.Print.Basic(Obj_Settings, "Distrubuting " + BlockData.info.rowNo.ToString() + ". Block To " + entry.Value.IpAddress);
                     SendMessage(entry.Value.IpAddress, entry.Value.Port,
                         "<block>" +
                             BlockData.info.rowNo.ToString() + ":" + Obj_Settings.NodeWallet.WalletKey +
@@ -108,7 +108,7 @@ namespace Notus.Validator
             //return Notus.Variable.Enum.ValidatorOrder.Primary;
         }
 
-        private DateTime RefreshNtpTime(ulong MaxMinuteCount)
+        private DateTime RefreshNtpTime(ulong MaxSecondCount)
         {
             DateTime tmpNtpTime = NtpTime;
             const ulong secondPointConst = 1000;
@@ -116,7 +116,7 @@ namespace Notus.Validator
             DateTime afterMiliSecondTime = tmpNtpTime.AddMilliseconds(
                 secondPointConst + (secondPointConst - (Notus.Date.ToLong(NtpTime) % secondPointConst))
             );
-            double secondVal = MaxMinuteCount + (MaxMinuteCount - (ulong.Parse(afterMiliSecondTime.ToString("ss")) % MaxMinuteCount));
+            double secondVal = MaxSecondCount + (MaxSecondCount - (ulong.Parse(afterMiliSecondTime.ToString("ss")) % MaxSecondCount));
             return afterMiliSecondTime.AddSeconds(secondVal);
         }
         public DateTime GetUtcTime()
@@ -837,7 +837,7 @@ namespace Notus.Validator
                     if (string.Equals(tmpFirstWallet, MyWallet))
                     {
                         StartingTimeAfterEnoughNode = RefreshNtpTime(20);
-                        Console.WriteLine("Send When Time");
+                        Notus.Print.Info(Obj_Settings, "I'm Sending Starting (When) Time : " + StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff"));
                         foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
                         {
                             if (entry.Value.Status == NodeStatus.Online && entry.Value.ErrorCount == 0)
@@ -852,14 +852,16 @@ namespace Notus.Validator
                                 );
                             }
                         }
-                        //send and wait
                     }
                     else
                     {
-                        Console.WriteLine("Wait When Time");
                         //listen and wait
+                        for(int x=0;x<40; x++)
+                        {
+                            Thread.Sleep(5);
+                        }
+                        Notus.Print.Basic(Obj_Settings, "I'm Waiting Starting (When) Time: " + StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff"));
                     }
-                    Console.WriteLine(StartingTimeAfterEnoughNode);
                 }
                 if (DateTime.Now > StartingTimeAfterEnoughNode)
                 {
@@ -875,7 +877,7 @@ namespace Notus.Validator
                 if (NotEnoughNode_Printed == false)
                 {
                     NotEnoughNode_Printed = true;
-                    Console.WriteLine("Not enough node");
+                    Notus.Print.Basic(Obj_Settings,"Not enough node");
                 }
             }
         }
@@ -926,7 +928,7 @@ namespace Notus.Validator
             MyTurn_Val = (string.Equals(MyWallet, NodeOrderList[1]));
             if (MyTurn_Val == true)
             {
-                Notus.Print.Info(Obj_Settings, "My Turn");
+                //Notus.Print.Info(Obj_Settings, "My Turn");
 
                 CalculateTimeDifference(false);
                 NextQueueValidNtpTime = RefreshNtpTime(3);
@@ -949,7 +951,7 @@ namespace Notus.Validator
             }
             else
             {
-                Notus.Print.Info(Obj_Settings, "Waiting For Turn");
+                //Notus.Print.Info(Obj_Settings, "Waiting For Turn");
             }
             NodeList[MyNodeHexKey].Time.Node = DateTime.Now;
             NodeList[MyNodeHexKey].Time.World = NtpTime;
@@ -957,6 +959,10 @@ namespace Notus.Validator
         }
         public void Start()
         {
+            Notus.Print.Info(Obj_Settings, "Getting UTC Time From NTP Server");
+
+            CalculateTimeDifference(false);
+
             Task.Run(() =>
             {
                 MainLoop();
@@ -1061,8 +1067,10 @@ namespace Notus.Validator
         {
             NodeList.Clear();
             MessageTimeList.Clear();
+
             NtpCheckTime = Notus.Variable.Constant.DefaultTime;
             LastPingTime = Notus.Variable.Constant.DefaultTime;
+
             NextQueueValidNtpTime = Notus.Variable.Constant.DefaultTime;
             ObjMp_NodeList = new Notus.Mempool("node_pool_list");
             ObjMp_NodeList.AsyncActive = false;
