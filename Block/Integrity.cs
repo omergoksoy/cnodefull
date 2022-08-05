@@ -212,7 +212,6 @@ namespace Notus.Block
             long controlNumber = 1;
             bool rowNumberError = false;
             bool prevBlockRownNumberError = false;
-
             foreach (KeyValuePair<long, string> item in BlockOrderList)
             {
                 if (item.Key != controlNumber)
@@ -227,8 +226,9 @@ namespace Notus.Block
                     }
                     else
                     {
-                        Notus.Print.Basic(Obj_Settings, "Block Error. [7745abcfe4] : " + controlNumber.ToString());
-                        Console.ReadLine();
+
+                        Notus.Print.Danger(Obj_Settings, "Block Order Error > " + controlNumber.ToString() + " > " + item.Value);
+                        Notus.Archive.DeleteFromInside(item.Value , Obj_Settings);
                     }
 
                     controlNumber = item.Key;
@@ -240,16 +240,6 @@ namespace Notus.Block
             {
                 return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
             }
-            /*
-            Notus.Print.Basic(Obj_Settings, "Notus.Block.Integrity -> Line 260");
-            Notus.Print.Basic(Obj_Settings, "------------------------------------");
-            Notus.Print.Basic(Obj_Settings, JsonSerializer.Serialize(BlockOrderList, new JsonSerializerOptions() { WriteIndented = true }));
-            Notus.Print.Basic(Obj_Settings, "------------------------------------");
-            Notus.Print.Basic(Obj_Settings, JsonSerializer.Serialize(BlockPreviousList, new JsonSerializerOptions() { WriteIndented = true }));
-            Notus.Print.Basic(Obj_Settings, "------------------------------------");
-            Notus.Print.Basic(Obj_Settings, "Press Enter to Continue");
-            Console.ReadLine();
-            */
 
             bool whileExit = false;
             while (whileExit == false)

@@ -4,16 +4,18 @@
     {
         public static bool Block(Notus.Variable.Common.ClassSetting objSettings)
         {
+            /*
             burada blok zinciri içeriği ve senkronizasyonu kontrol edilecek.
             burada blok zinciri içeriği ve senkronizasyonu kontrol edilecek.
             burada blok zinciri içeriği ve senkronizasyonu kontrol edilecek.
             burada blok zinciri içeriği ve senkronizasyonu kontrol edilecek.
+            */
 
-            return true;
             Console.WriteLine(objSettings.LastBlock.info.uID);
             Console.WriteLine(objSettings.LastBlock.info.type);
             Console.WriteLine(objSettings.LastBlock.info.rowNo);
             Console.ReadLine();
+            return true;
             string[] ZipFileList = Notus.IO.GetZipFiles(objSettings);
             string myGenesisSign = string.Empty;
             DateTime myGenesisTime = DateTime.Now.AddDays(1);
