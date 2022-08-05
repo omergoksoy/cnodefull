@@ -873,7 +873,7 @@ namespace Notus.Validator
                 if (NotEnoughNode_Printed == false)
                 {
                     NotEnoughNode_Printed = true;
-                    Notus.Print.Basic(Obj_Settings,"Not enough node");
+                    Notus.Print.Basic(Obj_Settings,"Waiting For Enough Node");
                 }
             }
         }
