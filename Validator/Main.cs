@@ -48,60 +48,57 @@ namespace Notus.Validator
         //private System.Action<string, Notus.Variable.Class.BlockData> OnReadFromChainFuncObj = null;
         public void EmptyBlockTimerFunc()
         {
+            Notus.Print.Basic(Obj_Settings, "Empty Block Timer Has Started");
+            Notus.Threads.Timer TimerObj = new Notus.Threads.Timer(1000);
+            TimerObj.Start(() =>
             {
-                Notus.Print.Basic(Obj_Settings, "Timer Has Started");
-
-                Notus.Threads.Timer TimerObj = new Notus.Threads.Timer(1000);
-                TimerObj.Start(() =>
+                if (EmptyBlockTimerIsRunning == false)
                 {
-                    if (EmptyBlockTimerIsRunning == false)
+                    EmptyBlockTimerIsRunning = true;
+                    int howManySeconds = Obj_Settings.Genesis.Empty.Interval.Time;
+
+                    if (Obj_Settings.Genesis.Empty.SlowBlock.Count >= Obj_Integrity.EmptyBlockCount)
                     {
-                        EmptyBlockTimerIsRunning = true;
-                        int howManySeconds = Obj_Settings.Genesis.Empty.Interval.Time;
-
-                        if (Obj_Settings.Genesis.Empty.SlowBlock.Count >= Obj_Integrity.EmptyBlockCount)
-                        {
-                            howManySeconds = (Obj_Settings.Genesis.Empty.Interval.Time * Obj_Settings.Genesis.Empty.SlowBlock.Multiply);
-                        }
-
-                        /*
-                        Console.Write(JsonSerializer.Serialize(
-                            Obj_Settings.LastBlock.info, new JsonSerializerOptions() { WriteIndented = true })
-                        );
-                        */
-                        //blok zamanı ve utc zamanı çakışıyor
-                        DateTime tmpLastTime = Notus.Date.ToDateTime(Obj_Settings.LastBlock.info.time).AddSeconds(howManySeconds);
-
-                        /*
-                        2022 07 30 23 50 53 472 - 
-                        2022 07 31 02 57 31 008
-                        */
-                        // get utc time from validatır Queue
-                        if (ValidatorQueueObj.GetUtcTime() > tmpLastTime)
-                        {
-                            if (ValidatorQueueObj.MyTurn)
-                            {
-                                if ((DateTime.Now - EmptyBlockGeneratedTime).TotalSeconds > 30)
-                                {
-                                    Notus.Print.Basic(Obj_Settings, "Empty Block Executed");
-                                    Obj_BlockQueue.AddEmptyBlock();
-                                    EmptyBlockGeneratedTime = DateTime.Now;
-                                }
-                                EmptyBlockNotMyTurnPrinted = false;
-                            }
-                            else
-                            {
-                                if (EmptyBlockNotMyTurnPrinted == false)
-                                {
-                                    Notus.Print.Basic(Obj_Settings, "Not My Turn For Empty Block");
-                                    EmptyBlockNotMyTurnPrinted = true;
-                                }
-                            }
-                            EmptyBlockTimerIsRunning = false;
-                        }
+                        howManySeconds = (Obj_Settings.Genesis.Empty.Interval.Time * Obj_Settings.Genesis.Empty.SlowBlock.Multiply);
                     }
-                }, true);
-            }
+
+                    /*
+                    Console.Write(JsonSerializer.Serialize(
+                        Obj_Settings.LastBlock.info, new JsonSerializerOptions() { WriteIndented = true })
+                    );
+                    */
+                    //blok zamanı ve utc zamanı çakışıyor
+                    DateTime tmpLastTime = Notus.Date.ToDateTime(Obj_Settings.LastBlock.info.time).AddSeconds(howManySeconds);
+
+                    /*
+                    2022 07 30 23 50 53 472 - 
+                    2022 07 31 02 57 31 008
+                    */
+                    // get utc time from validatır Queue
+                    if (ValidatorQueueObj.GetUtcTime() > tmpLastTime)
+                    {
+                        if (ValidatorQueueObj.MyTurn)
+                        {
+                            if ((DateTime.Now - EmptyBlockGeneratedTime).TotalSeconds > 30)
+                            {
+                                Notus.Print.Basic(Obj_Settings, "Empty Block Executed");
+                                Obj_BlockQueue.AddEmptyBlock();
+                                EmptyBlockGeneratedTime = DateTime.Now;
+                            }
+                            EmptyBlockNotMyTurnPrinted = false;
+                        }
+                        else
+                        {
+                            if (EmptyBlockNotMyTurnPrinted == false)
+                            {
+                                Notus.Print.Basic(Obj_Settings, "Not My Turn For Empty Block");
+                                EmptyBlockNotMyTurnPrinted = true;
+                            }
+                        }
+                        EmptyBlockTimerIsRunning = false;
+                    }
+                }
+            }, true);
         }
         public void FileStorageTimer()
         {

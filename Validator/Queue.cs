@@ -807,14 +807,10 @@ namespace Notus.Validator
                 if (NotEnoughNode_Val == true) // ilk aşamada buraya girecek
                 {
                     Notus.Print.Basic(Obj_Settings, "Notus.Validator.Queue -> Line 820");
-                    //Notus.Print.Basic(Obj_Settings, "Notus.Validator.Queue -> Line 821");
 
                     Notus.Print.Basic(Obj_Settings, "Node Blocks Are Checking For Sync");
-                    //Notus.Print.Basic(Obj_Settings, "Node Blocks Are Checking For Sync");
                     Notus.Sync.Block(Obj_Settings);
-                    
                     //IncomeBlockListDone = true;     // burada geçici olarak devre dışı bırakılıyor
-                    //Console.ReadLine();
                     //CheckBlockSync();
                     Notus.Print.Basic(Obj_Settings, "ActiveNodeCount : " + ActiveNodeCount_Val.ToString());
                     SortedDictionary<BigInteger, string> tmpWalletList = new SortedDictionary<BigInteger, string>();

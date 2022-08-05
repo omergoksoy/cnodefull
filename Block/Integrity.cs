@@ -84,6 +84,7 @@ namespace Notus.Block
             {
                 List<Int64> tmpUpdateBlockRowList = new List<Int64>();
                 List<string> tmpDeleteFileList = new List<string>();
+                bool returnForCheckAgain = false;
                 using (ZipArchive archive = ZipFile.OpenRead(fileName))
                 {
                     foreach (ZipArchiveEntry entry in archive.Entries)
@@ -94,7 +95,7 @@ namespace Notus.Block
                         }
                         else
                         {
-                            ZipArchiveEntry zipEntry = archive.GetEntry(entry.FullName);
+                            ZipArchiveEntry? zipEntry = archive.GetEntry(entry.FullName);
                             if (zipEntry != null)
                             {
                                 System.IO.FileInfo fif = new System.IO.FileInfo(entry.FullName);
@@ -108,18 +109,23 @@ namespace Notus.Block
                                         if (Val_BlockVerify == false)
                                         {
                                             Notus.Print.Basic(Obj_Settings, "Block Integrity = NonValid");
+                                            tmpDeleteFileList.Add(entry.FullName);
                                         }
                                         else
                                         {
                                             if (BlockOrderList.ContainsKey(ControlBlock.info.rowNo))
                                             {
-                                                Notus.Print.Basic(Obj_Settings, "Block Integrity = MultipleHeight");
+                                                Notus.Print.Basic(Obj_Settings, "Block Integrity = MultipleHeight -> " + ControlBlock.info.rowNo.ToString());
+                                                tmpDeleteFileList.Add(entry.FullName);
+                                                returnForCheckAgain = true;
                                             }
                                             else
                                             {
                                                 if (BlockPreviousList.ContainsKey(ControlBlock.info.uID))
                                                 {
-                                                    Notus.Print.Basic(Obj_Settings, "Block Integrity = MultipleId");
+                                                    Notus.Print.Basic(Obj_Settings, "Block Integrity = MultipleId -> " + ControlBlock.info.uID);
+                                                    tmpDeleteFileList.Add(entry.FullName);
+                                                    returnForCheckAgain = true;
                                                 }
                                                 else
                                                 {
@@ -160,25 +166,15 @@ namespace Notus.Block
                         }
                     }
                 }
-                //if (tmpReDownloadBlockList.Count > 0)
-                //{
-                //Console.WriteLine("hatali blogu tekrar indir");
-                //}
 
                 if (tmpDeleteFileList.Count > 0)
                 {
-                    using (ZipArchive archive = ZipFile.Open(fileName, ZipArchiveMode.Update))
-                    {
-                        for (int i = 0; i < tmpDeleteFileList.Count; i++)
-                        {
-                            ZipArchiveEntry entry = archive.GetEntry(tmpDeleteFileList[i]);
-                            if (entry != null)
-                            {
-                                entry.Delete();
-                            }
-                        }
-                    }
+                    Notus.Archive.DeleteFromInside(fileName, tmpDeleteFileList);
                     Notus.Print.Basic(Obj_Settings, "Extra Data Was Deleted");
+                    if(returnForCheckAgain == true)
+                    {
+                        return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
+                    }
                 }
             }
 
