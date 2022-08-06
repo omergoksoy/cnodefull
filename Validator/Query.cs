@@ -30,20 +30,6 @@ namespace Notus.Validator
             }
             return (false, null);
         }
-        public static (bool, Notus.Variable.Class.BlockData) GetLastBlock(string NodeAddress)
-        {
-            try
-            {
-                string MainResultStr = Notus.Communication.Request.Get(NodeAddress + "block/last", 10, true).GetAwaiter().GetResult();
-                Notus.Variable.Class.BlockData PreBlockData = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(MainResultStr);
-                return (true, PreBlockData);
-            }
-            catch
-            {
-
-            }
-            return (false, null);
-        }
         public static (bool, Notus.Variable.Struct.LastBlockInfo) GetLastBlockInfo(string NodeAddress)
         {
             try

@@ -4,6 +4,28 @@ namespace Notus
 {
     public static class Archive
     {
+        public static void ClearBlocks(Notus.Variable.Common.ClassSetting objSettings)
+        {
+            ClearBlocks(objSettings.Network, objSettings.Layer);
+        }
+        public static void ClearBlocks(
+            Notus.Variable.Enum.NetworkType networkType,
+            Notus.Variable.Enum.NetworkLayer networkLayer
+        )
+        {
+            DirectoryInfo d = new DirectoryInfo(
+                Notus.IO.GetFolderName(
+                    networkType,
+                    networkLayer,
+                    Notus.Variable.Constant.StorageFolderName.Block
+                )
+            );
+            FileInfo[] filesList = d.GetFiles("*.zip");
+            foreach (FileInfo fileObj in filesList)
+            {
+                File.Delete(fileObj.FullName);
+            }
+        }
         public static void DeleteFromInside(string blockUid, Notus.Variable.Common.ClassSetting objSettings)
         {
             DeleteFromInside(blockUid, objSettings.Network, objSettings.Layer);
@@ -26,7 +48,7 @@ namespace Notus
             {
                 for (int i = 0; i < insideFileList.Count; i++)
                 {
-                    ZipArchiveEntry? entry = archive.GetEntry(AddExtension(insideFileList[i]));
+                    ZipArchiveEntry? entry = archive.GetEntry(AddExtensionToBlockUid(insideFileList[i]));
                     if (entry != null)
                     {
                         entry.Delete();
@@ -38,14 +60,14 @@ namespace Notus
         {
             using (ZipArchive archive = ZipFile.Open(ZipFileName, ZipArchiveMode.Update))
             {
-                ZipArchiveEntry? entry = archive.GetEntry(AddExtension(insideFileName));
+                ZipArchiveEntry? entry = archive.GetEntry(AddExtensionToBlockUid(insideFileName));
                 if (entry != null)
                 {
                     entry.Delete();
                 }
             }
         }
-        private static string AddExtension(string blockUid)
+        private static string AddExtensionToBlockUid(string blockUid)
         {
             return blockUid + (blockUid.IndexOf(".") >= 0 ? "" : ".json");
         }

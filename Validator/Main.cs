@@ -41,6 +41,7 @@ namespace Notus.Validator
         private bool FileStorageTimerIsRunning = false;
         private DateTime FileStorageTime = DateTime.Now;
 
+        //bu liste diğer nodelardan gelen yeni blokları tutan liste
         public ConcurrentQueue<Notus.Variable.Class.BlockData> IncomeBlockList = new ConcurrentQueue<Notus.Variable.Class.BlockData>();
         private Notus.Block.Queue Obj_BlockQueue = new Notus.Block.Queue();
         private Notus.Validator.Queue ValidatorQueueObj = new Notus.Validator.Queue();
@@ -517,6 +518,7 @@ namespace Notus.Validator
             Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with onther node
             Obj_Integrity.GetLastBlock();        // get last block from current node
 
+
             Obj_Settings.GenesisCreated = Obj_Integrity.Settings.GenesisCreated;
             Obj_Settings.LastBlock = Obj_Integrity.Settings.LastBlock;
             Obj_Settings.Genesis = Obj_Integrity.Settings.Genesis;
@@ -634,10 +636,16 @@ namespace Notus.Validator
             
             ValidatorQueueObj.Func_NewBlockIncome
             */
+            /*
+
+            her gelen blok bir listeye eklenmeli ve o liste ile sıra ile eklenmeli
+
+            */
             ValidatorQueueObj.Func_NewBlockIncome = tmpNewBlockIncome =>
             {
-                AddedNewBlock(tmpNewBlockIncome);
+                IncomeBlockList.Enqueue(tmpNewBlockIncome);
                 Notus.Print.Info(Obj_Settings, "Arrived New Block : " + tmpNewBlockIncome.info.uID);
+                //AddedNewBlock(tmpNewBlockIncome);
                 return true;
             };
 
@@ -651,8 +659,6 @@ namespace Notus.Validator
                 );
             }
             ValidatorQueueObj.Start();
-            Notus.Print.Basic(Obj_Settings, "Node Blocks Are Checking For Sync");
-            Notus.Sync.Block(Obj_Settings);
 
             /*
             if (Obj_Settings.GenesisCreated == false)
@@ -715,6 +721,14 @@ namespace Notus.Validator
                 }
                 Notus.Print.Basic(Obj_Settings, "First Synchronization Is Done");
             }
+
+            if (Obj_Settings.GenesisCreated == false)
+            {
+                Notus.Print.Basic(Obj_Settings, "Node Blocks Are Checking For Sync");
+                Notus.Sync.Block(Obj_Settings, ValidatorQueueObj.GiveMeNodeList());
+                ValidatorQueueObj.MyNodeIsReady();
+            }
+
 
             DateTime LastPrintTime = DateTime.Now;
             bool tmpExitMainLoop = false;

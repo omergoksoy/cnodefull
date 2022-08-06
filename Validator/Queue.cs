@@ -1,5 +1,4 @@
 ﻿using Notus.Variable.Struct;
-using System.Collections.Concurrent;
 using System.Globalization;
 using System.Numerics;
 using System.Text.Json;
@@ -27,8 +26,8 @@ namespace Notus.Validator
             get { return ActiveNodeCount_Val; }
         }
 
-        public bool IncomeBlockListDone = false;
-        public ConcurrentQueue<Notus.Variable.Class.BlockData> IncomeBlockList = new ConcurrentQueue<Notus.Variable.Class.BlockData>();
+        //public bool IncomeBlockListDone = false;
+        //public ConcurrentQueue<Notus.Variable.Class.BlockData> IncomeBlockList = new ConcurrentQueue<Notus.Variable.Class.BlockData>();
 
         private Notus.Variable.Common.ClassSetting Obj_Settings;
         public Notus.Variable.Common.ClassSetting Settings
@@ -189,6 +188,22 @@ namespace Notus.Validator
             }
             tmpAllWordlTimeList.Sort();
             return new Notus.Hash().CommonHash("sha1", JsonSerializer.Serialize(tmpAllWordlTimeList));
+        }
+        public List<IpInfo> GiveMeNodeList()
+        {
+            List<IpInfo> tmpNodeList = new List<IpInfo>();
+            foreach (KeyValuePair<string, IpInfo> entry in MainAddressList)
+            {
+                if (string.Equals(entry.Key, MyNodeHexKey) == false)
+                {
+                    tmpNodeList.Add(new IpInfo()
+                    {
+                        IpAddress = entry.Value.IpAddress,
+                        Port = entry.Value.Port
+                    });
+                }
+            }
+            return tmpNodeList;
         }
         private void AddToMainAddressList(string ipAddress, int portNo, bool storeToDb = true)
         {
@@ -642,7 +657,6 @@ namespace Notus.Validator
                         if (NtpTime > NextQueueValidNtpTime)
                         {
                             CheckNodeCount();
-                            Val_Ready = true;
                         }
                         StoreNodeListToDb();
                     }
@@ -850,7 +864,7 @@ namespace Notus.Validator
                     else
                     {
                         //listen and wait
-                        for(int x=0;x<40; x++)
+                        for (int x = 0; x < 40; x++)
                         {
                             Thread.Sleep(5);
                         }
@@ -871,7 +885,7 @@ namespace Notus.Validator
                 if (NotEnoughNode_Printed == false)
                 {
                     NotEnoughNode_Printed = true;
-                    Notus.Print.Basic(Obj_Settings,"Waiting For Enough Node");
+                    Notus.Print.Basic(Obj_Settings, "Waiting For Enough Node");
                 }
             }
         }
@@ -890,7 +904,7 @@ namespace Notus.Validator
 
             foreach (KeyValuePair<string, NodeQueueInfo> entry in PreviousNodeList)
             {
-                if (entry.Value.ErrorCount == 0)
+                if (entry.Value.ErrorCount == 0 && entry.Value.Ready == true)
                 {
                     BigInteger walletNo = Notus.Convert.FromBase58(entry.Value.Wallet);
                     tmpWalletList.Add(walletNo, entry.Value.Wallet);
@@ -1006,7 +1020,7 @@ namespace Notus.Validator
             AddToNodeList(new NodeQueueInfo()
             {
                 ErrorCount = 0,
-                Ready=false,
+                Ready = false,
                 NodeHash = "#",
                 Status = NodeStatus.Online,
                 Time = new NodeQueueInfo_Time()
@@ -1033,6 +1047,7 @@ namespace Notus.Validator
                 {
                     AddToNodeList(new NodeQueueInfo()
                     {
+                        Ready = false,
                         ErrorCount = 0,
                         NodeHash = "#",
                         Status = NodeStatus.Unknown,
@@ -1056,6 +1071,11 @@ namespace Notus.Validator
                 }
             }
             NodeList[MyNodeHexKey].NodeHash = CalculateMyNodeListHash();
+        }
+        public void MyNodeIsReady()
+        {
+            NodeList[MyNodeHexKey].Ready = true;
+            Val_Ready = true;
         }
         public Queue()
         {

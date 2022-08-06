@@ -170,8 +170,8 @@ namespace Notus.Block
                 if (tmpDeleteFileList.Count > 0)
                 {
                     Notus.Archive.DeleteFromInside(fileName, tmpDeleteFileList);
-                    Notus.Print.Basic(Obj_Settings, "Extra Data Was Deleted");
-                    if(returnForCheckAgain == true)
+                    Notus.Print.Info(Obj_Settings, "Repair Block Integrity = Contains Wrong / Extra Data");
+                    if (returnForCheckAgain == true)
                     {
                         return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
                     }
@@ -180,7 +180,7 @@ namespace Notus.Block
 
             if (SmallestBlockHeight > 1)
             {
-                Notus.Print.Basic(Obj_Settings, "Missing Block Available");
+                Notus.Print.Info(Obj_Settings, "Repair Block Integrity = Missing Block Available");
                 bool exitInnerLoop = false;
                 while (exitInnerLoop == false)
                 {
@@ -201,8 +201,9 @@ namespace Notus.Block
                         }
                         else
                         {
-                            Notus.Print.Basic(Obj_Settings, "Block Error. [45abcfe713] : " + SmallestBlockHeight.ToString());
-                            Console.ReadLine();
+                            Notus.Archive.DeleteFromInside(BlockOrderList[BiggestBlockHeight - 1], Obj_Settings);
+                            Notus.Print.Info(Obj_Settings, "Repair Block Integrity = Missing Block [45abcfe713]");
+
                         }
                     }
                 }
@@ -257,32 +258,23 @@ namespace Notus.Block
                     }
                 }
 
-                string PreviousBlockKey = BlockPreviousList[BlockIdStr];
-                if (PreviousBlockKey.Length > 0)
+                if (BlockPreviousList[BlockIdStr].Length > 0)
                 {
-                    PreviousBlockKey = PreviousBlockKey.Substring(0, BlockIdStr.Length);
-                    string controlBlockPrevStr = BlockOrderList[BiggestBlockHeight - 1];
-                    if (string.Equals(PreviousBlockKey, controlBlockPrevStr) == false)
+                    if (
+                        string.Equals(
+                            BlockPreviousList[BlockIdStr].Substring(0, BlockIdStr.Length), 
+                            BlockOrderList[BiggestBlockHeight - 1]
+                        ) == false
+                    )
                     {
-                        Console.Write("Hatali Blok : ");
-                        Console.WriteLine(BiggestBlockHeight - 1);
-
-                        Console.Write("Silinecek Blok : ");
-                        Console.WriteLine(BlockOrderList[BiggestBlockHeight - 1]);
-
-                        Console.WriteLine("controlBlockPrevStr : " + controlBlockPrevStr);
-                        Console.WriteLine("PreviousBlockKey : " + PreviousBlockKey);
-                        Console.ReadLine();
+                        Notus.Archive.DeleteFromInside(BlockOrderList[BiggestBlockHeight - 1],Obj_Settings);
                         prevBlockRownNumberError = true;
                         whileExit = true;
                     }
                 }
                 else
                 {
-                    if (
-                        BiggestBlockHeight == 1 &&
-                        string.Equals(Notus.Variable.Constant.GenesisBlockUid, BlockIdStr)
-                    )
+                    if ( BiggestBlockHeight == 1 && string.Equals(Notus.Variable.Constant.GenesisBlockUid, BlockIdStr))
                     {
                         whileExit = true;
                     }
@@ -298,10 +290,10 @@ namespace Notus.Block
             }
             if (prevBlockRownNumberError == true)
             {
-                Notus.Print.Basic(Obj_Settings, "Block Integrity = WrongBlockOrder");
-                return (Notus.Variable.Enum.BlockIntegrityStatus.WrongBlockOrder, null);
+                Notus.Print.Info(Obj_Settings, "Repair Block Integrity = Wrong Block Order");
+                return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
             }
-            Notus.Print.Basic(Obj_Settings, "Block Integrity = Valid");
+            Notus.Print.Info(Obj_Settings, "Block Integrity Valid");
 
             using (Notus.Mempool ObjMp_BlockOrder =
                 new Notus.Mempool(
@@ -580,7 +572,7 @@ namespace Notus.Block
                         BS_Storage.Network = Obj_Settings.Network;
                         BS_Storage.Layer = Obj_Settings.Layer;
                         Notus.Print.Basic(Obj_Settings, "Current Block Were Deleted");
-                        Notus.IO.ClearBlocks(Obj_Settings.Network, Obj_Settings.Layer);
+                        Notus.Archive.ClearBlocks(Obj_Settings);
                         BS_Storage.AddSync(signBlock[tmpBiggestSign], true);
                         Notus.Print.Basic(Obj_Settings, "Added Block : " + signBlock[tmpBiggestSign].info.uID);
                         //Console.WriteLine(JsonSerializer.Serialize(signNode));

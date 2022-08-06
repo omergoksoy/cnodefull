@@ -1,8 +1,9 @@
-﻿namespace Notus
+﻿using System.Text.Json;
+namespace Notus
 {
     public class Sync
     {
-        public static bool Block(Notus.Variable.Common.ClassSetting objSettings)
+        public static bool Block(Notus.Variable.Common.ClassSetting objSettings, List<Notus.Variable.Struct.IpInfo> nodeList)
         {
             /*
             burada blok zinciri içeriği ve senkronizasyonu kontrol edilecek.
@@ -10,12 +11,75 @@
             burada blok zinciri içeriği ve senkronizasyonu kontrol edilecek.
             burada blok zinciri içeriği ve senkronizasyonu kontrol edilecek.
             */
-
+            long smallestBlockRow = long.MaxValue;
+            Console.WriteLine(JsonSerializer.Serialize(nodeList));
+            foreach (Variable.Struct.IpInfo? tmpEntry in nodeList)
+            {
+                Notus.Variable.Class.BlockData? nodeLastBlock = Notus.Toolbox.Network.GetLastBlock(tmpEntry);
+                if (nodeLastBlock != null)
+                {
+                    if (smallestBlockRow > nodeLastBlock.info.rowNo)
+                    {
+                        smallestBlockRow = nodeLastBlock.info.rowNo;
+                    }
+                }
+            }
+            Console.WriteLine("smallestBlockRow : " + smallestBlockRow.ToString());
             Console.WriteLine(objSettings.LastBlock.info.uID);
             Console.WriteLine(objSettings.LastBlock.info.type);
             Console.WriteLine(objSettings.LastBlock.info.rowNo);
             Console.ReadLine();
             return true;
+
+            //önce son blokları çek
+            //önce son blokları çek
+            /*
+            AllMasterList.Clear();
+            bool stayInTheLoop = true;
+            // burada main node'lardaki en küçük row numarası alınıyor...
+            string NodeAddress = "";
+            Int64 smallestBlockRownNo = Int64.MaxValue;
+            bool notEmpty = false;
+            Dictionary<string, Notus.Variable.Class.BlockData> tmpMasterList = new Dictionary<string, Notus.Variable.Class.BlockData>();
+            while (stayInTheLoop == true)
+            {
+                (notEmpty, tmpMasterList) = Notus.Validator.Query.LastBlockList(
+                    Notus.Variable.Enum.NetworkNodeType.Master,
+                    Obj_Settings.Network,
+                    Obj_Settings.Layer
+                );
+                bool listChecked = false;
+                foreach (KeyValuePair<string, Notus.Variable.Class.BlockData> tmpEntry in tmpMasterList)
+                {
+                    if (smallestBlockRownNo > tmpEntry.Value.info.rowNo)
+                    {
+                        smallestBlockRownNo = tmpEntry.Value.info.rowNo;
+                        NodeAddress = tmpEntry.Key;
+                        listChecked = true;
+                    }
+                }
+                if (listChecked == true)
+                {
+                    stayInTheLoop = false;
+                }
+            }
+
+
+            */
+
+            foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[objSettings.Layer][objSettings.Network])
+            {
+                if (string.Equals(objSettings.IpInfo.Public, item.IpAddress) == false)
+                {
+                    (bool tmpError, Notus.Variable.Class.BlockData tmpInnerBlockData) =
+                    Notus.Toolbox.Network.GetBlockFromNode(item.IpAddress, item.Port, 1, objSettings);
+                }
+            }
+
+
+
+
+
             string[] ZipFileList = Notus.IO.GetZipFiles(objSettings);
             string myGenesisSign = string.Empty;
             DateTime myGenesisTime = DateTime.Now.AddDays(1);
@@ -115,7 +179,7 @@
                         BS_Storage.Network = objSettings.Network;
                         BS_Storage.Layer = objSettings.Layer;
                         Notus.Print.Basic(objSettings, "Current Block Were Deleted");
-                        Notus.IO.ClearBlocks(objSettings.Network, objSettings.Layer);
+                        Notus.Archive.ClearBlocks(objSettings);
                         BS_Storage.AddSync(signBlock[tmpBiggestSign], true);
                         Notus.Print.Basic(objSettings, "Added Block : " + signBlock[tmpBiggestSign].info.uID);
                     }

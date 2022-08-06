@@ -9,7 +9,7 @@ namespace Notus.Toolbox
     {
         private static bool Error_TestIpAddress = true;
         private static readonly string DefaultControlTestData = "notus-network-test-result-data";
-        
+
         public static (bool, Notus.Variable.Class.BlockData) GetBlockFromNode(
             string ipAddress, int portNo,
             long blockNo, Notus.Variable.Common.ClassSetting objSettings = null
@@ -23,7 +23,7 @@ namespace Notus.Toolbox
             {
                 if (incodeResponse != null && incodeResponse != string.Empty && incodeResponse.Length > 0)
                 {
-                    Notus.Variable.Class.BlockData tmpResultBlock = 
+                    Notus.Variable.Class.BlockData tmpResultBlock =
                         JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(incodeResponse);
                     if (tmpResultBlock != null)
                     {
@@ -31,14 +31,37 @@ namespace Notus.Toolbox
                     }
                 }
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 if (objSettings != null)
                 {
-                    Notus.Print.Danger(objSettings,err.Message);
+                    Notus.Print.Danger(objSettings, err.Message);
                 }
             }
             return (true, null);
+        }
+        public static Notus.Variable.Class.BlockData? GetLastBlock(Notus.Variable.Struct.IpInfo NodeIp)
+        {
+            return GetLastBlock(Notus.Network.Node.MakeHttpListenerPath(NodeIp.IpAddress, NodeIp.Port));
+        }
+        public static Notus.Variable.Class.BlockData? GetLastBlock(string NodeAddress)
+        {
+            try
+            {
+                string MainResultStr = Notus.Communication.Request.Get(NodeAddress + "block/last/raw", 10, true).GetAwaiter().GetResult();
+                Notus.Variable.Class.BlockData? PreBlockData =
+                    JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(MainResultStr);
+                //Console.WriteLine(JsonSerializer.Serialize(PreBlockData));
+                if (PreBlockData != null)
+                {
+                    return PreBlockData;
+                }
+            }
+            catch(Exception err)
+            {
+                Console.WriteLine("err : " + err.Message);
+            }
+            return null;
         }
 
         public static int GetNetworkPort(Notus.Variable.Common.ClassSetting Obj_Settings)
