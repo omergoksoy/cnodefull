@@ -651,6 +651,8 @@ namespace Notus.Validator
                 );
             }
             ValidatorQueueObj.Start();
+            Notus.Print.Basic(Obj_Settings, "Node Blocks Are Checking For Sync");
+            Notus.Sync.Block(Obj_Settings);
 
             /*
             if (Obj_Settings.GenesisCreated == false)

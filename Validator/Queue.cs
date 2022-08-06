@@ -808,8 +808,6 @@ namespace Notus.Validator
                 {
                     Notus.Print.Basic(Obj_Settings, "Notus.Validator.Queue -> Line 820");
 
-                    Notus.Print.Basic(Obj_Settings, "Node Blocks Are Checking For Sync");
-                    Notus.Sync.Block(Obj_Settings);
                     //IncomeBlockListDone = true;     // burada geçici olarak devre dışı bırakılıyor
                     //CheckBlockSync();
                     Notus.Print.Basic(Obj_Settings, "ActiveNodeCount : " + ActiveNodeCount_Val.ToString());
@@ -956,7 +954,6 @@ namespace Notus.Validator
         public void Start()
         {
             Notus.Print.Info(Obj_Settings, "Getting UTC Time From NTP Server");
-
             CalculateTimeDifference(false);
 
             Task.Run(() =>
@@ -1009,6 +1006,7 @@ namespace Notus.Validator
             AddToNodeList(new NodeQueueInfo()
             {
                 ErrorCount = 0,
+                Ready=false,
                 NodeHash = "#",
                 Status = NodeStatus.Online,
                 Time = new NodeQueueInfo_Time()
