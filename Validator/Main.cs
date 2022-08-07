@@ -13,6 +13,9 @@ namespace Notus.Validator
             get { return Obj_Settings; }
             set { Obj_Settings = value; }
         }
+
+        //this variable hold current processing block number
+        private long CurrentBlockRowNo = 1;
         private int SelectedPortVal = 0;
 
         //bu nesnenin görevi network'e bağlı nodeların listesini senkronize etmek
@@ -593,6 +596,8 @@ namespace Notus.Validator
                                 else
                                 {
                                     Notus.Print.Danger(Obj_Settings, "Notus.Block.Integrity -> Block Does Not Exist");
+                                    Notus.Print.Danger(Obj_Settings, "Reset Block");
+                                    Notus.Print.ReadLine();
                                 }
                             }
                         }
@@ -725,7 +730,18 @@ namespace Notus.Validator
             if (Obj_Settings.GenesisCreated == false)
             {
                 Notus.Print.Basic(Obj_Settings, "Node Blocks Are Checking For Sync");
-                Notus.Sync.Block(Obj_Settings, ValidatorQueueObj.GiveMeNodeList());
+                //ValidatorQueueObj.Func_NewBlockIncome = ;
+
+                Notus.Sync.Block(
+                    Obj_Settings, ValidatorQueueObj.GiveMeNodeList(),
+                    tmpNewBlockIncome =>
+                    {
+                        Notus.Print.Info(Obj_Settings, "Temprorary Arrived New Block : " + tmpNewBlockIncome.info.uID);
+                        //IncomeBlockList.Enqueue(tmpNewBlockIncome);
+                        //AddedNewBlock(tmpNewBlockIncome);
+                        //AddedNewBlock(PreparedBlockData);
+                    }
+                );
                 ValidatorQueueObj.MyNodeIsReady();
             }
 
@@ -806,6 +822,27 @@ namespace Notus.Validator
 
         private void AddedNewBlock(Notus.Variable.Class.BlockData Obj_BlockData)
         {
+            burası "OrganizeEachBlock" fonksiyonu ile senkron çalışacak
+            ve sadece 1 tane fonksiyon olsun.
+
+            if (Obj_BlockData.info.rowNo > CurrentBlockRowNo)
+            {
+                Console.WriteLine("Insert Block To Tmporary Block List");
+            }
+            if (CurrentBlockRowNo > Obj_BlockData.info.rowNo)
+            {
+                Console.WriteLine("We Already Processed The Block");
+            }
+
+            // control-point
+            // control-point
+            // control-point
+            // control-point
+            // burada blok eklenirken blok numarasını artan şekilde ekleyecek
+            // önreğin;
+            // önce 1 numaralı blok, sonra 2 numaralı blok ve öyle devam edecek
+            // eğer aradan 6 numaralı blok gelirse bu bloğu önce geçici listeye atacak 
+            // ve 5 numaralı blok geldikten bu bloğu işleme alacak
             Obj_BlockQueue.Settings.LastBlock = Obj_BlockData;
             Obj_Settings.LastBlock = Obj_BlockData;
 
@@ -816,6 +853,7 @@ namespace Notus.Validator
 
             Notus.Print.Info(Obj_Settings, "Last Block UID    : " + Obj_Settings.LastBlock.info.uID);
             Notus.Print.Info(Obj_Settings, "Last Block Row No : " + Obj_Settings.LastBlock.info.rowNo.ToString());
+            CurrentBlockRowNo++;
         }
         private void OrganizeEachBlock(Notus.Variable.Class.BlockData Obj_BlockData, bool NewBlock)
         {
