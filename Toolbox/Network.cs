@@ -10,9 +10,16 @@ namespace Notus.Toolbox
         private static bool Error_TestIpAddress = true;
         private static readonly string DefaultControlTestData = "notus-network-test-result-data";
 
-        public static (bool, Notus.Variable.Class.BlockData) GetBlockFromNode(
+        public static Notus.Variable.Class.BlockData? GetBlockFromNode(
+            Variable.Struct.IpInfo? ipNode,
+            long blockNo, Notus.Variable.Common.ClassSetting? objSettings = null
+        )
+        {
+            return GetBlockFromNode(ipNode.IpAddress, ipNode.Port, blockNo, objSettings);
+        }
+        public static Notus.Variable.Class.BlockData? GetBlockFromNode(
             string ipAddress, int portNo,
-            long blockNo, Notus.Variable.Common.ClassSetting objSettings = null
+            long blockNo, Notus.Variable.Common.ClassSetting? objSettings = null
         )
         {
             string urlPath = Notus.Network.Node.MakeHttpListenerPath(ipAddress, portNo) + "block/" + blockNo.ToString() + "/raw";
@@ -23,11 +30,11 @@ namespace Notus.Toolbox
             {
                 if (incodeResponse != null && incodeResponse != string.Empty && incodeResponse.Length > 0)
                 {
-                    Notus.Variable.Class.BlockData tmpResultBlock =
+                    Notus.Variable.Class.BlockData? tmpResultBlock =
                         JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(incodeResponse);
                     if (tmpResultBlock != null)
                     {
-                        return (false, tmpResultBlock);
+                        return tmpResultBlock;
                     }
                 }
             }
@@ -38,7 +45,7 @@ namespace Notus.Toolbox
                     Notus.Print.Danger(objSettings, err.Message);
                 }
             }
-            return (true, null);
+            return null;
         }
         public static Notus.Variable.Class.BlockData? GetLastBlock(Notus.Variable.Struct.IpInfo NodeIp)
         {

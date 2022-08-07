@@ -515,9 +515,9 @@ namespace Notus.Block
             {
                 if (string.Equals(Obj_Settings.IpInfo.Public, item.IpAddress) == false)
                 {
-                    (bool tmpError, Notus.Variable.Class.BlockData tmpInnerBlockData) =
+                    Notus.Variable.Class.BlockData? tmpInnerBlockData =
                     Notus.Toolbox.Network.GetBlockFromNode(item.IpAddress, item.Port, 1, Obj_Settings);
-                    if (tmpError == false)
+                    if (tmpInnerBlockData != null)
                     {
                         if (signCount.ContainsKey(tmpInnerBlockData.sign) == false)
                         {
@@ -581,9 +581,9 @@ namespace Notus.Block
                         {
                             if (secondBlockAdded == false)
                             {
-                                (bool tmpError, Notus.Variable.Class.BlockData tmpInnerBlockData) =
+                                Notus.Variable.Class.BlockData? tmpInnerBlockData =
                                 Notus.Toolbox.Network.GetBlockFromNode(entry.IpAddress, entry.Port, 2, Obj_Settings);
-                                if (tmpError == false)
+                                if (tmpInnerBlockData != null)
                                 {
                                     Notus.Print.Basic(Obj_Settings, "Added Block : " + tmpInnerBlockData.info.uID);
                                     BS_Storage.AddSync(tmpInnerBlockData, true);

@@ -5,120 +5,76 @@ namespace Notus
     {
         public static bool Block(Notus.Variable.Common.ClassSetting objSettings, List<Notus.Variable.Struct.IpInfo> nodeList)
         {
-            /*
-            burada blok zinciri içeriği ve senkronizasyonu kontrol edilecek.
-            burada blok zinciri içeriği ve senkronizasyonu kontrol edilecek.
-            burada blok zinciri içeriği ve senkronizasyonu kontrol edilecek.
-            burada blok zinciri içeriği ve senkronizasyonu kontrol edilecek.
-            */
             long smallestBlockRow = long.MaxValue;
-            Console.WriteLine(JsonSerializer.Serialize(nodeList));
+            bool weFindOtherNode = false;
             foreach (Variable.Struct.IpInfo? tmpEntry in nodeList)
             {
-                Notus.Variable.Class.BlockData? nodeLastBlock = Notus.Toolbox.Network.GetLastBlock(tmpEntry);
-                if (nodeLastBlock != null)
+                if (tmpEntry != null)
                 {
-                    if (smallestBlockRow > nodeLastBlock.info.rowNo)
+                    Notus.Variable.Class.BlockData? nodeLastBlock = Notus.Toolbox.Network.GetLastBlock(tmpEntry);
+                    if (nodeLastBlock != null)
                     {
-                        smallestBlockRow = nodeLastBlock.info.rowNo;
-                    }
-                }
-            }
-            Console.WriteLine("smallestBlockRow : " + smallestBlockRow.ToString());
-            Console.WriteLine(objSettings.LastBlock.info.uID);
-            Console.WriteLine(objSettings.LastBlock.info.type);
-            Console.WriteLine(objSettings.LastBlock.info.rowNo);
-            Console.ReadLine();
-            return true;
-
-            //önce son blokları çek
-            //önce son blokları çek
-            /*
-            AllMasterList.Clear();
-            bool stayInTheLoop = true;
-            // burada main node'lardaki en küçük row numarası alınıyor...
-            string NodeAddress = "";
-            Int64 smallestBlockRownNo = Int64.MaxValue;
-            bool notEmpty = false;
-            Dictionary<string, Notus.Variable.Class.BlockData> tmpMasterList = new Dictionary<string, Notus.Variable.Class.BlockData>();
-            while (stayInTheLoop == true)
-            {
-                (notEmpty, tmpMasterList) = Notus.Validator.Query.LastBlockList(
-                    Notus.Variable.Enum.NetworkNodeType.Master,
-                    Obj_Settings.Network,
-                    Obj_Settings.Layer
-                );
-                bool listChecked = false;
-                foreach (KeyValuePair<string, Notus.Variable.Class.BlockData> tmpEntry in tmpMasterList)
-                {
-                    if (smallestBlockRownNo > tmpEntry.Value.info.rowNo)
-                    {
-                        smallestBlockRownNo = tmpEntry.Value.info.rowNo;
-                        NodeAddress = tmpEntry.Key;
-                        listChecked = true;
-                    }
-                }
-                if (listChecked == true)
-                {
-                    stayInTheLoop = false;
-                }
-            }
-
-
-            */
-
-            foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[objSettings.Layer][objSettings.Network])
-            {
-                if (string.Equals(objSettings.IpInfo.Public, item.IpAddress) == false)
-                {
-                    (bool tmpError, Notus.Variable.Class.BlockData tmpInnerBlockData) =
-                    Notus.Toolbox.Network.GetBlockFromNode(item.IpAddress, item.Port, 1, objSettings);
-                }
-            }
-
-
-
-
-
-            string[] ZipFileList = Notus.IO.GetZipFiles(objSettings);
-            string myGenesisSign = string.Empty;
-            DateTime myGenesisTime = DateTime.Now.AddDays(1);
-
-            // we have genesis
-            if (ZipFileList.Length > 0)
-            {
-                Notus.Print.Basic(objSettings, "We Have Block - Lets Check Genesis Time And Hash");
-                using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
-                {
-                    BS_Storage.Network = objSettings.Network;
-                    BS_Storage.Layer = objSettings.Layer;
-                    (bool blockExist, Notus.Variable.Class.BlockData blockData) = BS_Storage.ReadBlock(Notus.Variable.Constant.GenesisBlockUid);
-                    if (blockExist == true)
-                    {
-                        if (blockData.info.type == 360)
+                        weFindOtherNode = true;
+                        if (smallestBlockRow > nodeLastBlock.info.rowNo)
                         {
-                            myGenesisSign = blockData.sign;
-                            myGenesisTime = Notus.Date.GetGenesisCreationTimeFromString(blockData);
+                            smallestBlockRow = nodeLastBlock.info.rowNo;
                         }
                     }
                 }
             }
+            if (weFindOtherNode==true)
+            {
+                Console.WriteLine("weFindOtherNode");
+            }
+
+            Console.WriteLine("smallestBlockRow : " + smallestBlockRow.ToString());
+            Console.WriteLine(objSettings.LastBlock.info.uID);
+            Console.WriteLine(objSettings.LastBlock.info.type);
+            Console.WriteLine(objSettings.LastBlock.info.rowNo);
+            if(objSettings.LastBlock.info.rowNo> smallestBlockRow)
+            {
+                Console.WriteLine("My Node Higher Than Other");
+                Console.ReadLine();
+            }
             else
             {
-                Notus.Print.Basic(objSettings, "We Do Not Have Any Block");
+                Console.WriteLine("My Node Smaller Than Other");
             }
-
-            //there is no layer on constant
-            if (Notus.Validator.List.Main.ContainsKey(objSettings.Layer) == false)
+            bool exitForLoop = false;
+            int nCount = 0;
+            for (long blockNo = objSettings.LastBlock.info.rowNo; blockNo < smallestBlockRow && exitForLoop == false; blockNo++)
             {
-                return false;
+                for(int iCount=0; iCount<8; iCount++)
+                {
+                    Notus.Variable.Struct.IpInfo? currentNode = nodeList[nCount];
+                    if (currentNode != null)
+                    {
+                        Notus.Variable.Class.BlockData? nodeLastBlock =
+                            Notus.Toolbox.Network.GetBlockFromNode(
+                                currentNode,
+                                blockNo,
+                                objSettings
+                            );
+                        if (nodeLastBlock != null)
+                        {
+                            weFindOtherNode = true;
+                            if (smallestBlockRow > nodeLastBlock.info.rowNo)
+                            {
+                                smallestBlockRow = nodeLastBlock.info.rowNo;
+                            }
+                        }
+                    }
+                    nCount++;
+                    if (nodeList.Count == nCount)
+                    {
+                        nCount = 0;
+                    }
+                }
             }
-
-            //there is no Network on constant
-            if (Notus.Validator.List.Main[objSettings.Layer].ContainsKey(objSettings.Network) == false)
-            {
-                return false;
-            }
+            Console.ReadLine();
+            return true;
+            //önce son blokları çek
+            //önce son blokları çek
 
             Dictionary<string, Notus.Variable.Class.BlockData> signBlock = new Dictionary<string, Notus.Variable.Class.BlockData>();
             signBlock.Clear();
@@ -130,9 +86,9 @@ namespace Notus
             {
                 if (string.Equals(objSettings.IpInfo.Public, item.IpAddress) == false)
                 {
-                    (bool tmpError, Notus.Variable.Class.BlockData tmpInnerBlockData) =
+                    Notus.Variable.Class.BlockData? tmpInnerBlockData =
                     Notus.Toolbox.Network.GetBlockFromNode(item.IpAddress, item.Port, 1, objSettings);
-                    if (tmpError == false)
+                    if (tmpInnerBlockData != null)
                     {
                         if (signCount.ContainsKey(tmpInnerBlockData.sign) == false)
                         {
@@ -193,6 +149,14 @@ namespace Notus
             //Console.WriteLine("Press Enter To Continue");
             //Console.ReadLine();
             return true;
+        }
+
+
+        burada verilen blok numarasını tüm nodelardan sorgula
+        alınan blok özetlerini kontrol et ve en çok olan özeti kabul et
+        private static Notus.Variable.Class.BlockData GetValidBlock()
+        {
+
         }
     }
 }

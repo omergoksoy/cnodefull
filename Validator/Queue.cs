@@ -360,7 +360,11 @@ namespace Notus.Validator
                         tmpIpAddress = entry.Value.IP.IpAddress;
                         tmpPortNo = entry.Value.IP.Port;
                     }
-                    if (entry.Value.Status == NodeStatus.Online && entry.Value.ErrorCount == 0)
+                    if (
+                        entry.Value.Status == NodeStatus.Online &&
+                        entry.Value.Ready == true &&
+                        entry.Value.ErrorCount == 0
+                    )
                     {
 
                     }
@@ -369,9 +373,9 @@ namespace Notus.Validator
                 {
                     return "fncResult-port-zero";
                 }
-                (bool tmpError, Variable.Class.BlockData? tmpBlockData) =
+                Variable.Class.BlockData? tmpBlockData =
                     Notus.Toolbox.Network.GetBlockFromNode(tmpIpAddress, tmpPortNo, tmpBlockNo, Obj_Settings);
-                if (tmpError == true)
+                if (tmpBlockData == null)
                 {
                     return "tmpError-true";
                 }
@@ -448,6 +452,7 @@ namespace Notus.Validator
             {
                 NodeList[nodeHexText].ErrorCount++;
                 NodeList[nodeHexText].Status = NodeStatus.Offline;
+                NodeList[nodeHexText].Ready = false;
                 NodeList[nodeHexText].Time.Error = DateTime.Now;
             }
         }
@@ -945,6 +950,7 @@ namespace Notus.Validator
                     if (
                         entry.Value.ErrorCount == 0 &&
                         entry.Value.Status == NodeStatus.Online &&
+                        entry.Value.Ready==true &&
                         string.Equals(entry.Value.Wallet, MyWallet) == false
                     )
                     {
