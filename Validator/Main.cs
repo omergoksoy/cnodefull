@@ -820,8 +820,10 @@ namespace Notus.Validator
 
         private bool ProcessBlock(Notus.Variable.Class.BlockData blockData)
         {
-            Console.WriteLine("blockData.info.rowNo : " + blockData.info.rowNo.ToString());
-            Console.WriteLine("CurrentBlockRowNo    : " + CurrentBlockRowNo.ToString());
+            Console.WriteLine("blockData.info.rowNo              : " + blockData.info.rowNo.ToString());
+            Console.WriteLine("CurrentBlockRowNo                 : " + CurrentBlockRowNo.ToString());
+            Console.WriteLine("Obj_Settings.LastBlock.info.rowNo : " + Obj_Settings.LastBlock.info.rowNo.ToString());
+
             if (blockData.info.rowNo > CurrentBlockRowNo)
             {
                 Notus.Variable.Class.BlockData? tmpBlockData = 

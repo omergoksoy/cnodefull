@@ -81,7 +81,6 @@ namespace Notus
                                 if (Func_NewBlockIncome != null)
                                 {
                                     Func_NewBlockIncome(nodeLastBlock);
-                                    Console.WriteLine("done");
                                 }
                             }
                         }
