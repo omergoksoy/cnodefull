@@ -45,7 +45,8 @@ namespace Notus.Validator
         private DateTime FileStorageTime = DateTime.Now;
 
         //bu liste diğer nodelardan gelen yeni blokları tutan liste
-        public ConcurrentQueue<Notus.Variable.Class.BlockData> IncomeBlockList = new ConcurrentQueue<Notus.Variable.Class.BlockData>();
+        public SortedDictionary<long,Notus.Variable.Class.BlockData> IncomeBlockList = new SortedDictionary<long, Notus.Variable.Class.BlockData>();
+        //public ConcurrentQueue<Notus.Variable.Class.BlockData> IncomeBlockList = new ConcurrentQueue<Notus.Variable.Class.BlockData>();
         private Notus.Block.Queue Obj_BlockQueue = new Notus.Block.Queue();
         private Notus.Validator.Queue ValidatorQueueObj = new Notus.Validator.Queue();
 
@@ -591,7 +592,7 @@ namespace Notus.Validator
                                 (bool tmpBlockExist, Notus.Variable.Class.BlockData tmpBlockData) = Obj_Storage.ReadBlock(BlockOrder.Key);
                                 if (tmpBlockExist == true)
                                 {
-                                    OrganizeEachBlock(tmpBlockData, false);
+                                    ProcessBlock(tmpBlockData);
                                 }
                                 else
                                 {
@@ -648,9 +649,8 @@ namespace Notus.Validator
             */
             ValidatorQueueObj.Func_NewBlockIncome = tmpNewBlockIncome =>
             {
-                IncomeBlockList.Enqueue(tmpNewBlockIncome);
+                ProcessBlock(tmpNewBlockIncome);
                 Notus.Print.Info(Obj_Settings, "Arrived New Block : " + tmpNewBlockIncome.info.uID);
-                //AddedNewBlock(tmpNewBlockIncome);
                 return true;
             };
 
@@ -696,7 +696,7 @@ namespace Notus.Validator
                     {
                         if (retValue != null)
                         {
-                            AddedNewBlock(retValue);
+                            ProcessBlock(retValue,true);
                             quitFromWhileLoop = false;
                         }
                     }
@@ -736,10 +736,8 @@ namespace Notus.Validator
                     Obj_Settings, ValidatorQueueObj.GiveMeNodeList(),
                     tmpNewBlockIncome =>
                     {
+                        ProcessBlock(tmpNewBlockIncome);
                         Notus.Print.Info(Obj_Settings, "Temprorary Arrived New Block : " + tmpNewBlockIncome.info.uID);
-                        //IncomeBlockList.Enqueue(tmpNewBlockIncome);
-                        //AddedNewBlock(tmpNewBlockIncome);
-                        //AddedNewBlock(PreparedBlockData);
                     }
                 );
                 ValidatorQueueObj.MyNodeIsReady();
@@ -784,7 +782,7 @@ namespace Notus.Validator
 
                         //Notus.Print.Basic(Obj_Settings, "NodeOrder : " + NodeOrder.ToString());
                         Notus.Variable.Class.BlockData PreparedBlockData = new Notus.Block.Generate(Obj_Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
-                        AddedNewBlock(PreparedBlockData);
+                        ProcessBlock(PreparedBlockData);
                         ValidatorQueueObj.Distrubute(PreBlockData);
                         Thread.Sleep(1);
                     }
@@ -820,61 +818,53 @@ namespace Notus.Validator
             }
         }
 
-        private void AddedNewBlock(Notus.Variable.Class.BlockData Obj_BlockData)
+        private bool ProcessBlock(Notus.Variable.Class.BlockData blockData)
         {
-            burası "OrganizeEachBlock" fonksiyonu ile senkron çalışacak
-            ve sadece 1 tane fonksiyon olsun.
-
-            if (Obj_BlockData.info.rowNo > CurrentBlockRowNo)
+            Console.WriteLine("blockData.info.rowNo : " + blockData.info.rowNo.ToString());
+            Console.WriteLine("CurrentBlockRowNo    : " + CurrentBlockRowNo.ToString());
+            if (blockData.info.rowNo > CurrentBlockRowNo)
             {
+                Notus.Variable.Class.BlockData? tmpBlockData = 
+                    JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(
+                        JsonSerializer.Serialize(blockData)
+                    );
+                if (tmpBlockData != null)
+                {
+                    IncomeBlockList.Add(blockData.info.rowNo, tmpBlockData);
+                }
                 Console.WriteLine("Insert Block To Tmporary Block List");
+                return true;
             }
-            if (CurrentBlockRowNo > Obj_BlockData.info.rowNo)
+            if (CurrentBlockRowNo > blockData.info.rowNo)
             {
                 Console.WriteLine("We Already Processed The Block");
+                return true;
             }
 
-            // control-point
-            // control-point
-            // control-point
-            // control-point
-            // burada blok eklenirken blok numarasını artan şekilde ekleyecek
-            // önreğin;
-            // önce 1 numaralı blok, sonra 2 numaralı blok ve öyle devam edecek
-            // eğer aradan 6 numaralı blok gelirse bu bloğu önce geçici listeye atacak 
-            // ve 5 numaralı blok geldikten bu bloğu işleme alacak
-            Obj_BlockQueue.Settings.LastBlock = Obj_BlockData;
-            Obj_Settings.LastBlock = Obj_BlockData;
-
-            Obj_Api.Settings.LastBlock = Obj_Settings.LastBlock;
-
-            Notus.Print.Basic(Obj_Settings, "Block Generated [" + Obj_BlockData.info.type.ToString() + "]: " + Obj_BlockData.info.uID);
-            OrganizeEachBlock(Obj_BlockData, true);
-
-            Notus.Print.Info(Obj_Settings, "Last Block UID    : " + Obj_Settings.LastBlock.info.uID);
-            Notus.Print.Info(Obj_Settings, "Last Block Row No : " + Obj_Settings.LastBlock.info.rowNo.ToString());
-            CurrentBlockRowNo++;
-        }
-        private void OrganizeEachBlock(Notus.Variable.Class.BlockData Obj_BlockData, bool NewBlock)
-        {
-            if (NewBlock == true)
+            if (blockData.info.rowNo > Obj_Settings.LastBlock.info.rowNo)
             {
-                Obj_BlockQueue.AddToChain(Obj_BlockData);
+                Obj_BlockQueue.Settings.LastBlock = blockData;
+                Obj_Settings.LastBlock = blockData;
 
-                if (Obj_BlockData.info.type == 250)
+                Obj_Api.Settings.LastBlock = Obj_Settings.LastBlock;
+
+                Notus.Print.Basic(Obj_Settings, "Block Generated [" + blockData.info.type.ToString() + "]: " + blockData.info.uID);
+                Obj_BlockQueue.AddToChain(blockData);
+
+                if (blockData.info.type == 250)
                 {
-                    Obj_Api.Layer3_StorageFileDone(Obj_BlockData.info.uID);
+                    Obj_Api.Layer3_StorageFileDone(blockData.info.uID);
                 }
-                if (Obj_BlockData.info.type == 240)
+                if (blockData.info.type == 240)
                 {
                     Console.WriteLine("Notus.Main.OrganizeEachBlock -> Line 705");
                     Console.WriteLine("Notus.Main.OrganizeEachBlock -> Line 705");
                     Console.WriteLine("Make request and add file to layer 3");
-                    Console.WriteLine(JsonSerializer.Serialize(Obj_BlockData, new JsonSerializerOptions() { WriteIndented = true }));
+                    Console.WriteLine(JsonSerializer.Serialize(blockData, new JsonSerializerOptions() { WriteIndented = true }));
 
                     Notus.Variable.Struct.StorageOnChainStruct tmpStorageOnChain = JsonSerializer.Deserialize<Notus.Variable.Struct.StorageOnChainStruct>(System.Text.Encoding.UTF8.GetString(
                         System.Convert.FromBase64String(
-                            Obj_BlockData.cipher.data
+                            blockData.cipher.data
                         )
                     ));
                     Console.WriteLine("----------------------------------------------------------");
@@ -898,7 +888,7 @@ namespace Notus.Validator
                     };
 
                     string responseData = Notus.Network.Node.FindAvailableSync(
-                        "storage/file/new/" + Obj_BlockData.info.uID,
+                        "storage/file/new/" + blockData.info.uID,
                         new Dictionary<string, string>()
                         {
                     {
@@ -912,10 +902,26 @@ namespace Notus.Validator
                     );
                     Console.WriteLine(responseData);
                 }
+                Notus.Print.Info(Obj_Settings, "Last Block UID    : " + Obj_Settings.LastBlock.info.uID);
+                Notus.Print.Info(Obj_Settings, "Last Block Row No : " + Obj_Settings.LastBlock.info.rowNo.ToString());
             }
 
-            Obj_Api.AddForCache(Obj_BlockData);
+            Obj_Api.AddForCache(blockData);
+
+            if (IncomeBlockList.ContainsKey(CurrentBlockRowNo))
+            {
+                IncomeBlockList.Remove(CurrentBlockRowNo);
+            }
+            
+            CurrentBlockRowNo++;
+
+            if (IncomeBlockList.ContainsKey(CurrentBlockRowNo))
+            {
+                ProcessBlock(IncomeBlockList[CurrentBlockRowNo]);
+            }
+            return true;
         }
+
         private void Start_HttpListener()
         {
             /*

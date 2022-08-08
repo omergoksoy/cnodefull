@@ -53,7 +53,9 @@ namespace Notus
             }
             for (long blockNo = objSettings.LastBlock.info.rowNo; blockNo < (smallestBlockRow +1) && exitForLoop == false; blockNo++)
             {
+                /*
                 kontrol edilmemiş olanlar false olarak işaretlenecek
+                */
                 for (int i = 0; i < nodeList.Count; i++)
                 {
                     nodeControlList[i]=false;
