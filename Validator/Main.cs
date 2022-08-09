@@ -80,7 +80,8 @@ namespace Notus.Validator
                     2022 07 31 02 57 31 008
                     */
                     // get utc time from validatır Queue
-                    if (ValidatorQueueObj.GetUtcTime() > tmpLastTime)
+                    DateTime utcTime = ValidatorQueueObj.GetUtcTime();
+                    if (utcTime > tmpLastTime)
                     {
                         if (ValidatorQueueObj.MyTurn)
                         {
@@ -101,6 +102,15 @@ namespace Notus.Validator
                             }
                         }
                         EmptyBlockTimerIsRunning = false;
+                    }
+                    else
+                    {
+                        if(EmptyBlockTimerIsRunning == false)
+                        {
+                            Console.WriteLine("utcTime     : "+utcTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText));
+                            Console.WriteLine("tmpLastTime : " + tmpLastTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText));
+                            EmptyBlockTimerIsRunning = true;
+                        }
                     }
                 }
             }, true);
@@ -740,6 +750,8 @@ namespace Notus.Validator
                         Notus.Print.Info(Obj_Settings, "Temprorary Arrived New Block : " + tmpNewBlockIncome.info.uID);
                     }
                 );
+                //Console.WriteLine("ValidatorQueueObj.MyNodeIsReady();");
+                //Console.WriteLine("ValidatorQueueObj.MyNodeIsReady();");
                 ValidatorQueueObj.MyNodeIsReady();
             }
 

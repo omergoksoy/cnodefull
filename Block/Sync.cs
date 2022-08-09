@@ -92,8 +92,8 @@ namespace Notus
                     }
                 }
             }
-            Console.ReadLine();
             return true;
+            //Console.ReadLine();
             //önce son blokları çek
             //önce son blokları çek
             /*
