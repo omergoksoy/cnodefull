@@ -67,7 +67,7 @@ namespace Notus.Validator
 
                 // if node join the network
                 case Notus.Variable.Enum.NetworkNodeType.Master:
-                    StartAsMaster(NodeSettings);
+                    StartAsMaster(NodeSettings, CryptoTimerActive);
                     break;
 
                 // if node only store the data
@@ -80,9 +80,21 @@ namespace Notus.Validator
             }
             Notus.Print.Warning(NodeSettings, "Task Ended");
         }
-        private static void StartAsMaster(Notus.Variable.Common.ClassSetting NodeSettings)
+        private static void StartAsMaster(Notus.Variable.Common.ClassSetting NodeSettings,bool CryptoTimerActive)
         {
+            bool exitOuterLoop = false;
+            while (exitOuterLoop == false)
+            {
+                using (Notus.Validator.Main MainObj = new Notus.Validator.Main())
+                {
+                    MainObj.Settings = NodeSettings;
+                    MainObj.CryptoTimerActive = CryptoTimerActive;
+                    MainObj.Start();
+                }
 
+                Notus.Print.Basic(NodeSettings, "Sleep For 2.5 Seconds");
+                Thread.Sleep(2500);
+            }
         }
         private static void StartAsMain(Notus.Variable.Common.ClassSetting NodeSettings, bool CryptoTimerActive)
         {

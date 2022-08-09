@@ -150,7 +150,7 @@ namespace Notus.Validator
             {
                 Prepare();
             }
-            Notus.Print.Basic(Obj_Settings.DebugMode, "Request Income - API Class");
+            //Notus.Print.Basic(Obj_Settings.DebugMode, "Request Income - API Class");
             if (Obj_Settings.DebugMode == true)
             {
                 //Console.WriteLine(JsonSerializer.Serialize(IncomeData, new JsonSerializerOptions() { WriteIndented = true }));
