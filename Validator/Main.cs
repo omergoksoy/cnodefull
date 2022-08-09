@@ -67,18 +67,9 @@ namespace Notus.Validator
                         howManySeconds = (Obj_Settings.Genesis.Empty.Interval.Time * Obj_Settings.Genesis.Empty.SlowBlock.Multiply);
                     }
 
-                    /*
-                    Console.Write(JsonSerializer.Serialize(
-                        Obj_Settings.LastBlock.info, new JsonSerializerOptions() { WriteIndented = true })
-                    );
-                    */
                     //blok zamanı ve utc zamanı çakışıyor
                     DateTime tmpLastTime = Notus.Date.ToDateTime(Obj_Settings.LastBlock.info.time).AddSeconds(howManySeconds);
 
-                    /*
-                    2022 07 30 23 50 53 472 - 
-                    2022 07 31 02 57 31 008
-                    */
                     // get utc time from validatır Queue
                     DateTime utcTime = ValidatorQueueObj.GetUtcTime();
                     if (utcTime > tmpLastTime)
@@ -102,15 +93,6 @@ namespace Notus.Validator
                             }
                         }
                         EmptyBlockTimerIsRunning = false;
-                    }
-                    else
-                    {
-                        if(EmptyBlockTimerIsRunning == false)
-                        {
-                            Console.WriteLine("utcTime     : "+utcTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText));
-                            Console.WriteLine("tmpLastTime : " + tmpLastTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText));
-                            EmptyBlockTimerIsRunning = true;
-                        }
                     }
                 }
             }, true);
@@ -602,7 +584,7 @@ namespace Notus.Validator
                                 (bool tmpBlockExist, Notus.Variable.Class.BlockData tmpBlockData) = Obj_Storage.ReadBlock(BlockOrder.Key);
                                 if (tmpBlockExist == true)
                                 {
-                                    ProcessBlock(tmpBlockData);
+                                    ProcessBlock(tmpBlockData,1);
                                 }
                                 else
                                 {
@@ -659,8 +641,8 @@ namespace Notus.Validator
             */
             ValidatorQueueObj.Func_NewBlockIncome = tmpNewBlockIncome =>
             {
-                ProcessBlock(tmpNewBlockIncome);
-                Notus.Print.Info(Obj_Settings, "Arrived New Block : " + tmpNewBlockIncome.info.uID);
+                ProcessBlock(tmpNewBlockIncome,2);
+                //Notus.Print.Info(Obj_Settings, "Arrived New Block : " + tmpNewBlockIncome.info.uID);
                 return true;
             };
 
@@ -746,8 +728,8 @@ namespace Notus.Validator
                     Obj_Settings, ValidatorQueueObj.GiveMeNodeList(),
                     tmpNewBlockIncome =>
                     {
-                        ProcessBlock(tmpNewBlockIncome);
-                        Notus.Print.Info(Obj_Settings, "Temprorary Arrived New Block : " + tmpNewBlockIncome.info.uID);
+                        ProcessBlock(tmpNewBlockIncome,3);
+                        //Notus.Print.Info(Obj_Settings, "Temprorary Arrived New Block : " + tmpNewBlockIncome.info.uID);
                     }
                 );
                 //Console.WriteLine("ValidatorQueueObj.MyNodeIsReady();");
@@ -794,7 +776,7 @@ namespace Notus.Validator
 
                         //Notus.Print.Basic(Obj_Settings, "NodeOrder : " + NodeOrder.ToString());
                         Notus.Variable.Class.BlockData PreparedBlockData = new Notus.Block.Generate(Obj_Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
-                        ProcessBlock(PreparedBlockData);
+                        ProcessBlock(PreparedBlockData,4);
                         ValidatorQueueObj.Distrubute(PreBlockData);
                         Thread.Sleep(1);
                     }
@@ -809,7 +791,7 @@ namespace Notus.Validator
                             }
                             else
                             {
-                                //Console.Write(".");
+                                Console.Write(".");
                                 //Console.WriteLine("ValidatorQueueObj.TotalNodeCount : " + ValidatorQueueObj.TotalNodeCount.ToString());
                                 //Console.WriteLine("ValidatorQueueObj.OnlineNodeCount : " + ValidatorQueueObj.OnlineNodeCount.ToString());
 
@@ -830,12 +812,31 @@ namespace Notus.Validator
             }
         }
 
-        private bool ProcessBlock(Notus.Variable.Class.BlockData blockData)
+        private bool ProcessBlock(Notus.Variable.Class.BlockData blockData,int blockSource)
         {
-            Console.WriteLine("blockData.info.rowNo              : " + blockData.info.rowNo.ToString());
-            Console.WriteLine("CurrentBlockRowNo                 : " + CurrentBlockRowNo.ToString());
-            Console.WriteLine("Obj_Settings.LastBlock.info.rowNo : " + Obj_Settings.LastBlock.info.rowNo.ToString());
-
+            if (blockSource == 1)
+            {
+                Notus.Print.Basic(Obj_Settings, "Block Processed From The Loading DB");
+            }
+            if (blockSource == 2)
+            {
+                Notus.Print.Basic(Obj_Settings, "Block Processed From The Validator Queue");
+            }
+            if (blockSource == 3)
+            {
+                Notus.Print.Basic(Obj_Settings, "Block Processed From The Block Sync");
+            }
+            if (blockSource == 4)
+            {
+                Notus.Print.Basic(Obj_Settings, "Block Processed From The Main Loop");
+            }
+            if (blockSource == 5)
+            {
+                Notus.Print.Basic(Obj_Settings, "Block Processed From The Dictionary List");
+            }
+            //Console.WriteLine("blockData.info.rowNo              : " + blockData.info.rowNo.ToString());
+            //Console.WriteLine("CurrentBlockRowNo                 : " + CurrentBlockRowNo.ToString());
+            //Console.WriteLine("Obj_Settings.LastBlock.info.rowNo : " + Obj_Settings.LastBlock.info.rowNo.ToString());
             if (blockData.info.rowNo > CurrentBlockRowNo)
             {
                 Notus.Variable.Class.BlockData? tmpBlockData = 
@@ -846,12 +847,12 @@ namespace Notus.Validator
                 {
                     IncomeBlockList.Add(blockData.info.rowNo, tmpBlockData);
                 }
-                Console.WriteLine("Insert Block To Tmporary Block List");
+                Notus.Print.Basic(Obj_Settings,"Insert Block To Tmporary Block List");
                 return true;
             }
             if (CurrentBlockRowNo > blockData.info.rowNo)
             {
-                Console.WriteLine("We Already Processed The Block");
+                Notus.Print.Basic(Obj_Settings, "We Already Processed The Block");
                 return true;
             }
 
@@ -931,7 +932,7 @@ namespace Notus.Validator
 
             if (IncomeBlockList.ContainsKey(CurrentBlockRowNo))
             {
-                ProcessBlock(IncomeBlockList[CurrentBlockRowNo]);
+                ProcessBlock(IncomeBlockList[CurrentBlockRowNo], 5);
             }
             return true;
         }

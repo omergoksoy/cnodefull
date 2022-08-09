@@ -28,21 +28,21 @@ namespace Notus
             }
             if (weFindOtherNode==true)
             {
-                Console.WriteLine("weFindOtherNode");
+                //Console.WriteLine("weFindOtherNode");
             }
 
-            Console.WriteLine("smallestBlockRow : " + smallestBlockRow.ToString());
-            Console.WriteLine(objSettings.LastBlock.info.uID);
-            Console.WriteLine(objSettings.LastBlock.info.type);
-            Console.WriteLine(objSettings.LastBlock.info.rowNo);
-            if(objSettings.LastBlock.info.rowNo> smallestBlockRow)
+            //Console.WriteLine("smallestBlockRow : " + smallestBlockRow.ToString());
+            //Console.WriteLine(objSettings.LastBlock.info.uID);
+            //Console.WriteLine(objSettings.LastBlock.info.type);
+            //Console.WriteLine(objSettings.LastBlock.info.rowNo);
+            if (objSettings.LastBlock.info.rowNo> smallestBlockRow)
             {
-                Console.WriteLine("My Node Higher Than Other");
-                Console.ReadLine();
+                //Console.WriteLine("My Node Higher Than Other");
+                //Console.ReadLine();
             }
             else
             {
-                Console.WriteLine("My Node Smaller Than Other");
+                //Console.WriteLine("My Node Smaller Than Other");
             }
             bool exitForLoop = false;
             int nCount = 0;

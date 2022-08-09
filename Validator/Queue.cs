@@ -843,7 +843,7 @@ namespace Notus.Validator
                     Notus.Print.Basic(Obj_Settings, "Notus.Validator.Queue -> Line 820");
                     //IncomeBlockListDone = true;     // burada geçici olarak devre dışı bırakılıyor
                     //CheckBlockSync();
-                    Notus.Print.Basic(Obj_Settings, "ActiveNodeCount : " + ActiveNodeCount_Val.ToString());
+                    Notus.Print.Basic(Obj_Settings, "Active Node Count : " + ActiveNodeCount_Val.ToString());
                     SortedDictionary<BigInteger, string> tmpWalletList = new SortedDictionary<BigInteger, string>();
                     foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
                     {
@@ -959,7 +959,7 @@ namespace Notus.Validator
             MyTurn_Val = (string.Equals(MyWallet, NodeOrderList[1]));
             if (MyTurn_Val == true)
             {
-                Notus.Print.Info(Obj_Settings, "My Turn");
+                //Notus.Print.Info(Obj_Settings, "My Turn");
 
                 CalculateTimeDifference(false);
                 NextQueueValidNtpTime = RefreshNtpTime(3);
@@ -983,7 +983,7 @@ namespace Notus.Validator
             }
             else
             {
-                Notus.Print.Info(Obj_Settings, "Waiting For Turn");
+                //Notus.Print.Info(Obj_Settings, "Waiting For Turn");
             }
             NodeList[MyNodeHexKey].Time.Node = DateTime.Now;
             NodeList[MyNodeHexKey].Time.World = NtpTime;
@@ -1110,7 +1110,7 @@ namespace Notus.Validator
                     "<ready>" + NodeList[MyNodeHexKey].Wallet + "</ready>",
                     true
                 );
-                Console.WriteLine("responseStr : " + responseStr);
+                //Console.WriteLine("responseStr : " + responseStr);
                 if (string.Equals("err", responseStr) == false)
                 {
                     ProcessIncomeData(responseStr);
