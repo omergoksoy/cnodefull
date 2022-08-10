@@ -95,7 +95,7 @@ namespace Notus.Validator
             {
                 if (string.Equals(MyNodeHexKey, entry.Key) == false && entry.Value.Status == NodeStatus.Online)
                 {
-                    Notus.Print.Basic(Obj_Settings, "Distrubuting " + blockRowNo.ToString() + ". Block To " + entry.Value.IP.IpAddress+":"+ entry.Value.IP.Port.ToString());
+                    Notus.Print.Info(Obj_Settings, "Distrubuting " + blockRowNo.ToString() + ". Block To " + entry.Value.IP.IpAddress+":"+ entry.Value.IP.Port.ToString());
                     SendMessage(entry.Value.IP,
                         "<block>" + blockRowNo.ToString() + ":" + Obj_Settings.NodeWallet.WalletKey + "</block>",
                         true
@@ -117,7 +117,6 @@ namespace Notus.Validator
         }
         public DateTime GetUtcTime()
         {
-            //CalculateTimeDifference(true);
             return NtpTime;
         }
         private void CalculateTimeDifference(bool useLocalValue)
@@ -856,7 +855,7 @@ namespace Notus.Validator
                     Notus.Print.Basic(Obj_Settings, "Notus.Validator.Queue -> Line 820");
                     //IncomeBlockListDone = true;     // burada geçici olarak devre dışı bırakılıyor
                     //CheckBlockSync();
-                    Notus.Print.Basic(Obj_Settings, "Active Node Count : " + ActiveNodeCount_Val.ToString());
+                    Notus.Print.Info(Obj_Settings, "Active Node Count : " + ActiveNodeCount_Val.ToString());
                     SortedDictionary<BigInteger, string> tmpWalletList = new SortedDictionary<BigInteger, string>();
                     foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
                     {
@@ -895,7 +894,7 @@ namespace Notus.Validator
                     else
                     {
                         //listen and wait
-                        for (int x = 0; x < 40; x++)
+                        for (int x = 0; x < 100; x++)
                         {
                             Thread.Sleep(5);
                         }
