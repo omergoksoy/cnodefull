@@ -10,9 +10,9 @@ namespace Notus
 {
     public static class Print
     {
-        public static void ReadLine()
+        public static void ReadLine(Notus.Variable.Common.ClassSetting NodeSettings)
         {
-            Info(true, "Press Enter To Continue");
+            Info(NodeSettings, "Press Enter To Continue");
             Console.ReadLine();
         }
         public static void Info(Notus.Variable.Common.ClassSetting NodeSettings, string DetailsStr = "", bool PrintAsync = true)
@@ -31,17 +31,9 @@ namespace Notus
         {
             subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.InfoMode, ConsoleColor.Gray, DetailsStr, PrintAsync);
         }
-        public static void Info(bool ShowOnScreen, string DetailsStr = "", bool PrintAsync = true)
-        {
-            subPrint(Notus.Variable.Enum.NetworkLayer.Unknown, Notus.Variable.Enum.NetworkType.Unknown, ShowOnScreen, ConsoleColor.Cyan, DetailsStr, PrintAsync);
-        }
         public static void Danger(bool ShowOnScreen, string DetailsStr = "", bool PrintAsync = true)
         {
             subPrint(Notus.Variable.Enum.NetworkLayer.Unknown, Notus.Variable.Enum.NetworkType.Unknown, ShowOnScreen, ConsoleColor.Red, DetailsStr, PrintAsync);
-        }
-        public static void Warning(bool ShowOnScreen, string DetailsStr = "", bool PrintAsync = true)
-        {
-            subPrint(Notus.Variable.Enum.NetworkLayer.Unknown, Notus.Variable.Enum.NetworkType.Unknown, ShowOnScreen, ConsoleColor.Yellow, DetailsStr, PrintAsync);
         }
         public static void Basic(bool ShowOnScreen, string DetailsStr = "", bool PrintAsync = true)
         {

@@ -54,7 +54,7 @@ namespace Notus.Block
                     catch (Exception err)
                     {
 
-                        Notus.Print.Basic(Obj_Settings.DebugMode, "Error Text [7abc63]: " + err.Message);
+                        Notus.Print.Danger(Obj_Settings, "Error Text [7abc63]: " + err.Message);
                     }
                 }
             }
@@ -159,7 +159,7 @@ namespace Notus.Block
                                     }
                                     catch (Exception err)
                                     {
-                                        Notus.Print.Basic(Obj_Settings.DebugMode, "Error Text [235abc]: " + err.Message);
+                                        Notus.Print.Danger(Obj_Settings, "Error Text [235abc]: " + err.Message);
                                     }
                                 }
                             }
@@ -196,7 +196,7 @@ namespace Notus.Block
                             Obj_Settings.NodeType != Notus.Variable.Enum.NetworkNodeType.Master
                         )
                         {
-                            Notus.Print.Basic(Obj_Settings.DebugMode, "Getting Block Row No : " + SmallestBlockHeight.ToString());
+                            Notus.Print.Info(Obj_Settings, "Getting Block Row No : " + SmallestBlockHeight.ToString());
                             StoreBlockWithRowNo(SmallestBlockHeight);
                         }
                         else

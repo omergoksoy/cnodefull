@@ -74,6 +74,7 @@ namespace Notus.Validator
         private DateTime NextCheckTime = DateTime.Now;
 
         private DateTime NtpTime;                       // ntp server time
+        private bool NtpTimeWorked = false;               // we get time from ntp server
         private DateTime NtpCheckTime;                  // last check ntp time
         private TimeSpan NtpTimeDifference;             // time difference between NTP server and current node
         private bool NodeTimeAfterNtpTime = false;      // time difference before or after NTP Server
@@ -88,23 +89,19 @@ namespace Notus.Validator
         }
 
         //oluşturulacak blokları kimin oluşturacağını seçen fonksiyon
-        public void Distrubute(Notus.Variable.Class.BlockData BlockData)
+        public void Distrubute(long blockRowNo)
         {
-            foreach (KeyValuePair<string, IpInfo> entry in MainAddressList)
+            foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
             {
-                string tmpNodeHexStr = IpPortToKey(entry.Value.IpAddress, entry.Value.Port);
-                if (string.Equals(MyNodeHexKey, tmpNodeHexStr) == false)
+                if (string.Equals(MyNodeHexKey, entry.Key) == false && entry.Value.Status == NodeStatus.Online)
                 {
-                    Notus.Print.Basic(Obj_Settings, "Distrubuting " + BlockData.info.rowNo.ToString() + ". Block To " + entry.Value.IpAddress);
-                    SendMessage(entry.Value.IpAddress, entry.Value.Port,
-                        "<block>" +
-                            BlockData.info.rowNo.ToString() + ":" + Obj_Settings.NodeWallet.WalletKey +
-                        "</block>",
+                    Notus.Print.Basic(Obj_Settings, "Distrubuting " + blockRowNo.ToString() + ". Block To " + entry.Value.IP.IpAddress+":"+ entry.Value.IP.Port.ToString());
+                    SendMessage(entry.Value.IP,
+                        "<block>" + blockRowNo.ToString() + ":" + Obj_Settings.NodeWallet.WalletKey + "</block>",
                         true
                     );
                 }
             }
-            //return Notus.Variable.Enum.ValidatorOrder.Primary;
         }
 
         private DateTime RefreshNtpTime(ulong MaxSecondCount)
@@ -127,16 +124,29 @@ namespace Notus.Validator
         {
             if ((DateTime.Now - NtpCheckTime).TotalMinutes > 10 && useLocalValue == false)
             {
-                NtpTime = Notus.Time.GetFromNtpServer();
-                NtpCheckTime = DateTime.Now;
-                NodeTimeAfterNtpTime = (NtpCheckTime > NtpTime);
-                if (NodeTimeAfterNtpTime == true)
+                DateTime tmpNtpTime;
+                if (NtpTimeWorked == false)
                 {
-                    NtpTimeDifference = NtpCheckTime - NtpTime;
+                    tmpNtpTime = Notus.Time.GetFromNtpServer(true);
+                    NtpTimeWorked = true;
                 }
                 else
                 {
-                    NtpTimeDifference = NtpTime - NtpCheckTime;
+                    tmpNtpTime = Notus.Time.GetFromNtpServer();
+                }
+                if (tmpNtpTime > NtpTime)
+                {
+                    NtpTime = tmpNtpTime;
+                    NtpCheckTime = DateTime.Now;
+                    NodeTimeAfterNtpTime = (NtpCheckTime > NtpTime);
+                    if (NodeTimeAfterNtpTime == true)
+                    {
+                        NtpTimeDifference = NtpCheckTime - NtpTime;
+                    }
+                    else
+                    {
+                        NtpTimeDifference = NtpTime - NtpCheckTime;
+                    }
                 }
             }
             else
@@ -418,7 +428,6 @@ namespace Notus.Validator
             }
             if (CheckXmlTag(incomeData, "ready"))
             {
-                Console.WriteLine(incomeData);
                 incomeData = GetPureText(incomeData, "ready");
                 foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
                 {
@@ -479,6 +488,10 @@ namespace Notus.Validator
                 NodeList[nodeHexText].Status = NodeStatus.Online;
                 NodeList[nodeHexText].Time.Error = Notus.Variable.Constant.DefaultTime;
             }
+        }
+        private string SendMessage(Notus.Variable.Struct.IpInfo receiverNode, string messageText, bool executeErrorControl)
+        {
+            return SendMessage(receiverNode.IpAddress, receiverNode.Port, messageText, executeErrorControl);
         }
         private string SendMessage(string receiverIpAddress, int receiverPortNo, string messageText, bool executeErrorControl)
         {
@@ -870,8 +883,7 @@ namespace Notus.Validator
                             if (entry.Value.Status == NodeStatus.Online && entry.Value.ErrorCount == 0)
                             {
                                 SendMessage(
-                                    entry.Value.IP.IpAddress,
-                                    entry.Value.IP.Port,
+                                    entry.Value.IP,
                                     "<when>" +
                                         StartingTimeAfterEnoughNode.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText) +
                                     "</when>",
@@ -890,7 +902,7 @@ namespace Notus.Validator
                         Notus.Print.Basic(Obj_Settings, "I'm Waiting Starting (When) Time: " + StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff"));
                     }
                 }
-                
+
                 if (GetUtcTime() > StartingTimeAfterEnoughNode)
                 {
                     OrganizeQueue();
@@ -968,13 +980,12 @@ namespace Notus.Validator
                     if (
                         entry.Value.ErrorCount == 0 &&
                         entry.Value.Status == NodeStatus.Online &&
-                        entry.Value.Ready==true &&
+                        entry.Value.Ready == true &&
                         string.Equals(entry.Value.Wallet, MyWallet) == false
                     )
                     {
                         SendMessage(
-                            entry.Value.IP.IpAddress,
-                            entry.Value.IP.Port,
+                            entry.Value.IP,
                             "<time>" + Notus.Date.ToString(NextQueueValidNtpTime) + "</time>",
                             true
                         );
@@ -1139,6 +1150,7 @@ namespace Notus.Validator
             NodeList.Clear();
             MessageTimeList.Clear();
 
+            NtpTime = Notus.Variable.Constant.DefaultTime;
             NtpCheckTime = Notus.Variable.Constant.DefaultTime;
             LastPingTime = Notus.Variable.Constant.DefaultTime;
 

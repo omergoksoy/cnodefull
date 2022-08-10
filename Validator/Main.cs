@@ -187,7 +187,7 @@ namespace Notus.Validator
                                     }
                                     catch (Exception err3)
                                     {
-                                        Notus.Print.Basic(Obj_Settings.DebugMode, "Error Text : [9abc546ac] : " + err3.Message);
+                                        Notus.Print.Danger(Obj_Settings, "Error Text : [9abc546ac] : " + err3.Message);
                                     }
                                     //}
                                     //catch (Exception err)
@@ -590,7 +590,7 @@ namespace Notus.Validator
                                 {
                                     Notus.Print.Danger(Obj_Settings, "Notus.Block.Integrity -> Block Does Not Exist");
                                     Notus.Print.Danger(Obj_Settings, "Reset Block");
-                                    Notus.Print.ReadLine();
+                                    Notus.Print.ReadLine(Obj_Settings);
                                 }
                             }
                         }
@@ -777,7 +777,7 @@ namespace Notus.Validator
                         //Notus.Print.Basic(Obj_Settings, "NodeOrder : " + NodeOrder.ToString());
                         Notus.Variable.Class.BlockData PreparedBlockData = new Notus.Block.Generate(Obj_Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
                         ProcessBlock(PreparedBlockData,4);
-                        ValidatorQueueObj.Distrubute(PreBlockData);
+                        ValidatorQueueObj.Distrubute(PreBlockData.info.rowNo);
                         Thread.Sleep(1);
                     }
                     else

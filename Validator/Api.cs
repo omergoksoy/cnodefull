@@ -596,7 +596,7 @@ namespace Notus.Validator
             }
             catch (Exception err)
             {
-                Notus.Print.Danger(Obj_Settings.DebugMode, "Error Text [a46cbe8d9] : " + err.Message);
+                Notus.Print.Danger(Obj_Settings, "Error Text [a46cbe8d9] : " + err.Message);
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
                 {
                     UID = string.Empty,
@@ -668,7 +668,7 @@ namespace Notus.Validator
             }
             catch (Exception err)
             {
-                Notus.Print.Danger(Obj_Settings.DebugMode, "Error Text [a354cd67] : " + err.Message);
+                Notus.Print.Danger(Obj_Settings, "Error Text [a354cd67] : " + err.Message);
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
                 {
                     UID = string.Empty,
@@ -815,7 +815,7 @@ namespace Notus.Validator
             }
             catch (Exception err)
             {
-                Notus.Print.Danger(Obj_Settings.DebugMode, "Error Text [a46cbe8d9] : " + err.Message);
+                Notus.Print.Danger(Obj_Settings, "Error Text [a46cbe8d9] : " + err.Message);
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
                 {
                     UID = string.Empty,
@@ -882,7 +882,7 @@ namespace Notus.Validator
             }
             catch (Exception err)
             {
-                Notus.Print.Danger(Obj_Settings.DebugMode, "Error Text [a354cd67] : " + err.Message);
+                Notus.Print.Danger(Obj_Settings, "Error Text [a354cd67] : " + err.Message);
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
                 {
                     UID = string.Empty,
@@ -1023,7 +1023,7 @@ namespace Notus.Validator
             }
             catch (Exception err)
             {
-                Notus.Print.Danger(Obj_Settings.DebugMode, "Error Text [bad849506] : " + err.Message);
+                Notus.Print.Danger(Obj_Settings, "Error Text [bad849506] : " + err.Message);
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
                 {
                     UID = string.Empty,
@@ -1147,7 +1147,7 @@ namespace Notus.Validator
             }
             catch (Exception err)
             {
-                Notus.Print.Danger(Obj_Settings.DebugMode, "Error Text [abc875768] : " + err.Message);
+                Notus.Print.Danger(Obj_Settings, "Error Text [abc875768] : " + err.Message);
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
                 {
                     ErrorNo = 9618,
@@ -1447,7 +1447,7 @@ namespace Notus.Validator
                 }
                 catch (Exception err)
                 {
-                    Notus.Print.Basic(Obj_Settings.DebugMode, "Error Text [1f95ce]: " + err.Message);
+                    Notus.Print.Danger(Obj_Settings, "Error Text [1f95ce]: " + err.Message);
                 }
                 return JsonSerializer.Serialize(false);
             }
