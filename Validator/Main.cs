@@ -623,28 +623,27 @@ namespace Notus.Validator
             Obj_BlockQueue.Settings.LastBlock = Obj_Settings.LastBlock;
             //BlockStatObj = Obj_BlockQueue.CurrentBlockStatus();
             Start_HttpListener();
-
-            Notus.Print.Info(Obj_Settings, "Waiting For Node Sync", false);
             ValidatorQueueObj.Settings = Obj_Settings;
-            /*
-            Obj_Api.Func_OnReadFromChain = blockKeyIdStr =>
-            {
-                (bool tmpBlockExist, Notus.Variable.Class.BlockData tmpBlockResult) = Obj_BlockQueue.ReadFromChain(blockKeyIdStr);
-                if (tmpBlockExist == true)
+
+                /*
+                Obj_Api.Func_OnReadFromChain = blockKeyIdStr =>
                 {
-                    return tmpBlockResult;
-                }
-                return null;
-            };
-            
-            ValidatorQueueObj.Func_NewBlockIncome
-            */
-            /*
+                    (bool tmpBlockExist, Notus.Variable.Class.BlockData tmpBlockResult) = Obj_BlockQueue.ReadFromChain(blockKeyIdStr);
+                    if (tmpBlockExist == true)
+                    {
+                        return tmpBlockResult;
+                    }
+                    return null;
+                };
 
-            her gelen blok bir listeye eklenmeli ve o liste ile sıra ile eklenmeli
+                ValidatorQueueObj.Func_NewBlockIncome
+                */
+                /*
 
-            */
-            ValidatorQueueObj.Func_NewBlockIncome = tmpNewBlockIncome =>
+                her gelen blok bir listeye eklenmeli ve o liste ile sıra ile eklenmeli
+
+                */
+                ValidatorQueueObj.Func_NewBlockIncome = tmpNewBlockIncome =>
             {
                 ProcessBlock(tmpNewBlockIncome,2);
                 //Notus.Print.Info(Obj_Settings, "Arrived New Block : " + tmpNewBlockIncome.info.uID);
@@ -660,6 +659,14 @@ namespace Notus.Validator
                     Obj_Settings.LastBlock.prev
                 );
             }
+
+            if (Obj_Settings.GenesisCreated == false)
+            {
+                Notus.Print.Info(Obj_Settings, "Waiting For Node Sync", false);
+                ValidatorQueueObj.PingOtherNodes();
+                //burada ping ve pong yaparak bekleyecek
+            }
+
             ValidatorQueueObj.Start();
 
             if (Obj_Settings.GenesisCreated == false)

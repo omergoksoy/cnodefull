@@ -221,6 +221,10 @@ namespace Notus.Validator
 
             if (IncomeData.UrlList.Length > 0)
             {
+                if (IncomeData.UrlList[0].ToLower() == "ping")
+                {
+                    return "pong";
+                }
                 if (IncomeData.UrlList[0].ToLower() == "metrics")
                 {
                     return Request_Metrics(IncomeData);

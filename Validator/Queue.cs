@@ -185,6 +185,41 @@ namespace Notus.Validator
         {
             return PortNo.ToString("x").PadLeft(5, '0');
         }
+        public void PingOtherNodes()
+        {
+            bool tmpExitWhileLoop = false;
+            while (tmpExitWhileLoop == false)
+            {
+                int tmpNodeCount = 0;
+                foreach (KeyValuePair<string, IpInfo> entry in MainAddressList)
+                {
+                    if (string.Equals(entry.Key, MyNodeHexKey) == false)
+                    {
+                        string urlPath =
+                            Notus.Network.Node.MakeHttpListenerPath(
+                                entry.Value.IpAddress, 
+                                entry.Value.Port
+                            ) + "ping/";
+                        string incodeResponse = Notus.Communication.Request.GetSync(
+                            urlPath, 2, true, false, null
+                        );
+                        if (string.Equals(incodeResponse, "pong"))
+                        {
+                            tmpNodeCount++;
+                        }
+                    }
+                }
+                if (tmpNodeCount > 0)
+                {
+                    tmpExitWhileLoop = true;
+                }
+                else
+                {
+                    Thread.Sleep(5500);
+                }
+            }
+            Thread.Sleep(500);
+        }
         private string CalculateMainAddressListHash()
         {
             List<UInt64> tmpAllWordlTimeList = new List<UInt64>();
