@@ -631,8 +631,6 @@ namespace Notus.Validator
             if (Obj_Settings.GenesisCreated == false)
             {
                 Notus.Print.Info(Obj_Settings, "Node Blocks Are Checking For Sync");
-                //ValidatorQueueObj.Func_NewBlockIncome = ;
-
                 Notus.Sync.Block(
                     Obj_Settings, ValidatorQueueObj.GiveMeNodeList(),
                     tmpNewBlockIncome =>
@@ -652,7 +650,6 @@ namespace Notus.Validator
                 if (Obj_Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer1)
                 {
                     EmptyBlockTimerFunc();
-
                     CryptoTransferTimerFunc();
                 }
                 if (Obj_Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer2)

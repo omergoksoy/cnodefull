@@ -829,10 +829,10 @@ namespace Notus.Validator
 
         private void OrganizeQueue()
         {
-            /*
             Console.WriteLine(
                 JsonSerializer.Serialize(NodeList, new JsonSerializerOptions() { WriteIndented = true })
             );
+            /*
             */
 
             //önce geçerli node listesinin bir yedeği alınıyor ve önceki node listesi değişkeninde tutuluyor.
@@ -1036,6 +1036,8 @@ namespace Notus.Validator
                     "<ready>" + NodeList[MyNodeHexKey].Wallet + "</ready>",
                     true
                 );
+                Console.WriteLine("_ipAddress / _portNo: " + _ipAddress + " : "+ _portNo.ToString());
+                Console.WriteLine("responseStr : " + responseStr);
                 if (string.Equals("done", responseStr.Trim()) == true)
                 {
                     ProcessIncomeData(responseStr);
@@ -1053,6 +1055,9 @@ namespace Notus.Validator
 
         public void MyNodeIsReady()
         {
+            Console.WriteLine("ActiveNodeCount_Val : " + ActiveNodeCount_Val+ToString());
+            Console.WriteLine("ActiveNodeCount_Val : " + ActiveNodeCount_Val+ToString());
+            Console.ReadLine();
             if (ActiveNodeCount_Val > 1)
             {
                 Notus.Print.Info(Obj_Settings, "Sending Ready Signal To Other Nodes");
