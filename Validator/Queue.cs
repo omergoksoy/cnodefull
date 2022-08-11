@@ -834,10 +834,10 @@ namespace Notus.Validator
 
         private void OrganizeQueue()
         {
+            /*
             Console.WriteLine(
                 JsonSerializer.Serialize(NodeList, new JsonSerializerOptions() { WriteIndented = true })
             );
-            /*
             */
 
             //önce geçerli node listesinin bir yedeği alınıyor ve önceki node listesi değişkeninde tutuluyor.
