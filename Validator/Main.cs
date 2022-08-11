@@ -63,11 +63,17 @@ namespace Notus.Validator
 
                     if (Obj_Settings.Genesis.Empty.SlowBlock.Count >= Obj_Integrity.EmptyBlockCount)
                     {
-                        howManySeconds = (Obj_Settings.Genesis.Empty.Interval.Time * Obj_Settings.Genesis.Empty.SlowBlock.Multiply);
+                        howManySeconds = (
+                            Obj_Settings.Genesis.Empty.Interval.Time 
+                                * 
+                            Obj_Settings.Genesis.Empty.SlowBlock.Multiply
+                        );
                     }
 
                     //blok zamanı ve utc zamanı çakışıyor
-                    DateTime tmpLastTime = Notus.Date.ToDateTime(Obj_Settings.LastBlock.info.time).AddSeconds(howManySeconds);
+                    DateTime tmpLastTime = Notus.Date.ToDateTime(
+                        Obj_Settings.LastBlock.info.time
+                    ).AddSeconds(howManySeconds);
 
                     // get utc time from validatır Queue
                     DateTime utcTime = ValidatorQueueObj.GetUtcTime();
@@ -77,9 +83,10 @@ namespace Notus.Validator
                         {
                             if ((DateTime.Now - EmptyBlockGeneratedTime).TotalSeconds > 30)
                             {
+                                Console.WriteLine((DateTime.Now - EmptyBlockGeneratedTime).TotalSeconds);
+                                EmptyBlockGeneratedTime = DateTime.Now;
                                 Notus.Print.Success(Obj_Settings, "Empty Block Executed");
                                 Obj_BlockQueue.AddEmptyBlock();
-                                EmptyBlockGeneratedTime = DateTime.Now;
                             }
                             EmptyBlockNotMyTurnPrinted = false;
                         }
@@ -693,11 +700,17 @@ namespace Notus.Validator
 
 
             DateTime LastPrintTime = DateTime.Now;
+            bool tmpStartWorkingPrinted = false;
             bool tmpExitMainLoop = false;
             while (tmpExitMainLoop == false)
             {
                 //Console.WriteLine(EmptyBlockTimerIsRunning);
                 WaitUntilEnoughNode();
+                if (tmpStartWorkingPrinted == false)
+                {
+                    tmpStartWorkingPrinted = true;
+                    Notus.Print.Success(Obj_Settings, "Node Starts");
+                }
                 if (ValidatorQueueObj.MyTurn == true || Obj_Settings.GenesisCreated == true)
                 {
                     // geçerli utc zaman bilgisini alıp block oluşturma işlemi için parametre olarak gönder böylece
@@ -803,13 +816,17 @@ namespace Notus.Validator
 
             if (blockData.info.rowNo > Obj_Settings.LastBlock.info.rowNo)
             {
+                if (blockData.info.type == 300)
+                {
+                    EmptyBlockGeneratedTime = Notus.Date.ToDateTime(blockData.info.time);
+                }
+
                 Obj_BlockQueue.Settings.LastBlock = blockData;
                 Obj_Settings.LastBlock = blockData;
 
                 Obj_Api.Settings.LastBlock = Obj_Settings.LastBlock;
 
                 Obj_BlockQueue.AddToChain(blockData);
-
                 if (blockData.info.type == 250)
                 {
                     Obj_Api.Layer3_StorageFileDone(blockData.info.uID);
@@ -861,10 +878,6 @@ namespace Notus.Validator
                     );
                     Console.WriteLine(responseData);
                 }
-                if (blockData.info.type == 300)
-                {
-                    EmptyBlockGeneratedTime = Notus.Date.ToDateTime(blockData.info.time);
-                }
                 Notus.Print.Success(Obj_Settings, "Generated Last Block UID  [" + blockData.info.type.ToString() + "] : " + Obj_Settings.LastBlock.info.uID.Substring(0, 10) + "...." + Obj_Settings.LastBlock.info.uID.Substring(80) + " -> " +Obj_Settings.LastBlock.info.rowNo.ToString());
             }
 
@@ -886,17 +899,6 @@ namespace Notus.Validator
 
         private void Start_HttpListener()
         {
-            /*
-            if (Obj_Settings.LocalNode == true)
-            {
-                Console.WriteLine("Listining : " + Notus.Network.Node.MakeHttpListenerPath(Obj_Settings.IpInfo.Local, SelectedPortVal));
-            }
-            else
-            {
-                Console.WriteLine( "Listining : " +Notus.Network.Node.MakeHttpListenerPath(Obj_Settings.IpInfo.Public, SelectedPortVal));
-            }
-            */
-
             if (Obj_Settings.LocalNode == true)
             {
                 Notus.Print.Basic(Obj_Settings, "Listining : " +
@@ -908,14 +910,14 @@ namespace Notus.Validator
                 Notus.Network.Node.MakeHttpListenerPath(Obj_Settings.IpInfo.Public, SelectedPortVal), false);
             }
             HttpObj.OnReceive(Fnc_OnReceiveData);
-
             HttpObj.ResponseType = "application/json";
-
-            IPAddress NodeIpAddress = IPAddress.Parse(Obj_Settings.IpInfo.Public);
-            if (Obj_Settings.LocalNode == true)
-            {
-                NodeIpAddress = IPAddress.Parse(Obj_Settings.IpInfo.Local);
-            }
+            IPAddress NodeIpAddress = IPAddress.Parse(
+                (
+                    Obj_Settings.LocalNode == false ? 
+                    Obj_Settings.IpInfo.Public : 
+                    Obj_Settings.IpInfo.Local
+                )
+            );
             HttpObj.Settings = Obj_Settings;
             HttpObj.StoreUrl = false;
             HttpObj.Start(NodeIpAddress, SelectedPortVal);

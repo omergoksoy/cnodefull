@@ -15,7 +15,7 @@ namespace Notus
             {
                 if (tmpEntry != null)
                 {
-                    Notus.Variable.Class.BlockData? nodeLastBlock = Notus.Toolbox.Network.GetLastBlock(tmpEntry);
+                    Notus.Variable.Class.BlockData? nodeLastBlock = Notus.Toolbox.Network.GetLastBlock(tmpEntry, objSettings);
                     if (nodeLastBlock != null)
                     {
                         weFindOtherNode = true;
@@ -155,7 +155,7 @@ namespace Notus
                     {
                         BS_Storage.Network = objSettings.Network;
                         BS_Storage.Layer = objSettings.Layer;
-                        Notus.Print.Basic(objSettings, "Current Block Were Deleted");
+                        Notus.Print.Warning(objSettings, "Current Block Were Deleted");
                         Notus.Archive.ClearBlocks(objSettings);
                         BS_Storage.AddSync(signBlock[tmpBiggestSign], true);
                         Notus.Print.Basic(objSettings, "Added Block : " + signBlock[tmpBiggestSign].info.uID);

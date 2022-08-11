@@ -26,9 +26,6 @@ namespace Notus.Validator
             get { return ActiveNodeCount_Val; }
         }
 
-        //public bool IncomeBlockListDone = false;
-        //public ConcurrentQueue<Notus.Variable.Class.BlockData> IncomeBlockList = new ConcurrentQueue<Notus.Variable.Class.BlockData>();
-
         private Notus.Variable.Common.ClassSetting Obj_Settings;
         public Notus.Variable.Common.ClassSetting Settings
         {
@@ -80,7 +77,7 @@ namespace Notus.Validator
         private bool NodeTimeAfterNtpTime = false;      // time difference before or after NTP Server
         private DateTime NextQueueValidNtpTime;         // New Queue will be usable after this NTP time
 
-        public System.Func<Notus.Variable.Class.BlockData, bool> Func_NewBlockIncome = null;
+        public System.Func<Notus.Variable.Class.BlockData, bool>? Func_NewBlockIncome = null;
 
         //empty blok için kontrolü yapacak olan node'u seçen fonksiyon
         public Notus.Variable.Enum.ValidatorOrder EmptyTimer()
@@ -401,7 +398,9 @@ namespace Notus.Validator
 
             if (CheckXmlTag(incomeData, "when"))
             {
+                //Console.WriteLine("When = Is Come");
                 StartingTimeAfterEnoughNode = Notus.Date.ToDateTime(GetPureText(incomeData, "when"));
+                //Console.WriteLine(StartingTimeAfterEnoughNode);
                 return "done";
             }
             if (CheckXmlTag(incomeData, "hash"))
@@ -598,31 +597,34 @@ namespace Notus.Validator
                         }
                         catch { }
                     }
-                    SortedDictionary<string, IpInfo> tmpMainAddressList = JsonSerializer.Deserialize<SortedDictionary<string, IpInfo>>(tmpData);
+                    SortedDictionary<string, IpInfo>? tmpMainAddressList = JsonSerializer.Deserialize<SortedDictionary<string, IpInfo>>(tmpData);
                     bool tmpRefreshNodeDetails = false;
-                    foreach (KeyValuePair<string, IpInfo> entry in tmpMainAddressList)
+                    if (tmpMainAddressList != null)
                     {
-                        string tmpNodeHexStr = IpPortToKey(entry.Value.IpAddress, entry.Value.Port);
-                        if (string.Equals(MyNodeHexKey, tmpNodeHexStr) == false)
+                        foreach (KeyValuePair<string, IpInfo> entry in tmpMainAddressList)
                         {
-                            string tmpReturnStr = Message_Hash_ViaSocket(entry.Value.IpAddress, entry.Value.Port, "hash");
-                            if (tmpReturnStr == "1") // list not equal
+                            string tmpNodeHexStr = IpPortToKey(entry.Value.IpAddress, entry.Value.Port);
+                            if (string.Equals(MyNodeHexKey, tmpNodeHexStr) == false)
                             {
-                                Message_List_ViaSocket(entry.Value.IpAddress, entry.Value.Port, tmpNodeHexStr);
-                            }
+                                string tmpReturnStr = Message_Hash_ViaSocket(entry.Value.IpAddress, entry.Value.Port, "hash");
+                                if (tmpReturnStr == "1") // list not equal
+                                {
+                                    Message_List_ViaSocket(entry.Value.IpAddress, entry.Value.Port, tmpNodeHexStr);
+                                }
 
-                            if (tmpReturnStr == "2") // list equal but node hash different
-                            {
-                                tmpRefreshNodeDetails = true;
-                            }
+                                if (tmpReturnStr == "2") // list equal but node hash different
+                                {
+                                    tmpRefreshNodeDetails = true;
+                                }
 
-                            if (tmpReturnStr == "0") // list and node hash are equal
-                            {
-                            }
+                                if (tmpReturnStr == "0") // list and node hash are equal
+                                {
+                                }
 
-                            if (tmpReturnStr == "err") // socket comm error
-                            {
-                                tmpRefreshNodeDetails = true;
+                                if (tmpReturnStr == "err") // socket comm error
+                                {
+                                    tmpRefreshNodeDetails = true;
+                                }
                             }
                         }
                     }
@@ -696,147 +698,6 @@ namespace Notus.Validator
             }
         }
 
-        /*
-        private bool CheckBlockSync_SubRoutine(Dictionary<long, IpInfo> blockRequestList, long orderNumber)
-        {
-            if (blockRequestList.ContainsKey(orderNumber) == false)
-            {
-                IncomeBlockListDone = true;
-                return true;
-            }
-
-            (bool tmpError, Notus.Variable.Class.BlockData tmpResultBlock) =
-            Notus.Toolbox.Network.GetBlockFromNode(
-                blockRequestList[orderNumber].IpAddress,
-                blockRequestList[orderNumber].Port,
-                orderNumber,
-                Obj_Settings
-            );
-            if (tmpError == false)
-            {
-                IncomeBlockList.Enqueue(tmpResultBlock);
-            }
-            orderNumber++;
-            return CheckBlockSync_SubRoutine(blockRequestList, orderNumber);
-        }
-
-        private void CheckBlockSync()
-        {
-            Dictionary<long, IpInfo> blockRequestList = new Dictionary<long, IpInfo>();
-            int totalActiveNodeCount = 0;
-
-            //Int64 biggestBlockUid = Int64.MaxValue;
-            long biggestRowNo = 0;
-
-            //Int64 shortestBlockUid = Int64.MaxValue;
-            long shortestRowNo = long.MaxValue;
-
-            //Int64 myLastBlockUid = Int64.Parse(Notus.Block.Key.GetTimeFromKey(NodeList[MyNodeHexKey].LastUid));
-            long myLastRowNo = NodeList[MyNodeHexKey].LastRowNo;
-
-            foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
-            {
-
-                if (
-                    string.Equals(MyNodeHexKey, entry.Key) == false &&
-                    entry.Value.Status == NodeStatus.Online &&
-                    entry.Value.ErrorCount == 0
-                )
-                {
-                    totalActiveNodeCount++;
-                    if (entry.Value.LastRowNo > biggestRowNo)
-                    {
-                        biggestRowNo = entry.Value.LastRowNo;
-                        //biggestBlockUid = Int64.Parse(Notus.Block.Key.GetTimeFromKey(entry.Value.LastUid));
-                    }
-
-                    if (shortestRowNo > entry.Value.LastRowNo)
-                    {
-                        shortestRowNo = entry.Value.LastRowNo;
-                        //shortestBlockUid = Int64.Parse(Notus.Block.Key.GetTimeFromKey(entry.Value.LastUid));
-                    }
-                }
-            }
-            long controlNo = myLastRowNo + 1;
-            for (long rStart = controlNo; rStart < (1 + biggestRowNo); rStart++)
-            {
-                blockRequestList.Add(rStart, new IpInfo()
-                {
-                    IpAddress = "",
-                    Port = 0
-                });
-            }
-            //Console.WriteLine(JsonSerializer.Serialize(blockRequestList, new JsonSerializerOptions() { WriteIndented = true }));
-            bool breakInnerWhileLoop = false;
-            while (breakInnerWhileLoop == false)
-            {
-                foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
-                {
-                    if (entry.Value.Status == NodeStatus.Online)
-                    {
-                        if (entry.Value.ErrorCount == 0)
-                        {
-                            if (string.Equals(entry.Key, MyNodeHexKey) == false)
-                            {
-                                if (blockRequestList.ContainsKey(controlNo))
-                                {
-                                    blockRequestList[controlNo].IpAddress = entry.Value.IP.IpAddress;
-                                    blockRequestList[controlNo].Port = entry.Value.IP.Port;
-                                    controlNo++;
-                                }
-                                else
-                                {
-                                    breakInnerWhileLoop = true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            Console.WriteLine(JsonSerializer.Serialize(blockRequestList, new JsonSerializerOptions() { WriteIndented = true }));
-            //Console.WriteLine(JsonSerializer.Serialize(NodeList, new JsonSerializerOptions() { WriteIndented = true }));
-            Console.WriteLine("Notus.Validator.Queue -> Line 767");
-            Console.WriteLine("totalActiveNodeCount : " + totalActiveNodeCount.ToString());
-            Console.WriteLine("myLastRowNo : " + myLastRowNo.ToString());
-            Console.WriteLine("shortestRowNo : " + shortestRowNo.ToString());
-            Console.WriteLine("controlNo : " + controlNo.ToString());
-            if (myLastRowNo > shortestRowNo)
-            {
-                IncomeBlockListDone = true;
-                Console.WriteLine("ilerideyim");
-            }
-            else
-            {
-                if (shortestRowNo == myLastRowNo)
-                {
-                    Console.WriteLine("Blok sayısı eşit");
-                    Console.ReadLine();
-                    IncomeBlockListDone = true;
-                    /*
-                    // if (myLastBlockUid > shortestBlockUid)
-                    // {
-                        // Console.WriteLine("eskiyim");
-                        // Console.ReadLine();
-                    // }
-                    // else
-                    // {
-                        // Console.WriteLine("yeniyim");
-                        // Console.ReadLine();
-                        // CheckBlockSync_SubRoutine(blockRequestList, 1);
-                    // }
-                else
-                {
-                    Console.WriteLine("gerideyim");
-                    controlNo = myLastRowNo + 1;
-                    CheckBlockSync_SubRoutine(blockRequestList, controlNo);
-                }
-            }
-            Console.WriteLine("is done");
-            Console.WriteLine(JsonSerializer.Serialize(NodeList, new JsonSerializerOptions() { WriteIndented = true }));
-            Console.ReadLine();
-            Console.ReadLine();
-        }
-        */
         private void CheckNodeCount()
         {
             int nodeCount = 0;
@@ -853,8 +714,6 @@ namespace Notus.Validator
                 if (NotEnoughNode_Val == true) // ilk aşamada buraya girecek
                 {
                     Notus.Print.Basic(Obj_Settings, "Notus.Validator.Queue -> Line 820");
-                    //IncomeBlockListDone = true;     // burada geçici olarak devre dışı bırakılıyor
-                    //CheckBlockSync();
                     Notus.Print.Info(Obj_Settings, "Active Node Count : " + ActiveNodeCount_Val.ToString());
                     SortedDictionary<BigInteger, string> tmpWalletList = new SortedDictionary<BigInteger, string>();
                     foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
@@ -901,7 +760,6 @@ namespace Notus.Validator
                         Notus.Print.Basic(Obj_Settings, "I'm Waiting Starting (When) Time: " + StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff"));
                     }
                 }
-
                 if (GetUtcTime() > StartingTimeAfterEnoughNode)
                 {
                     OrganizeQueue();
@@ -971,7 +829,6 @@ namespace Notus.Validator
             if (MyTurn_Val == true)
             {
                 //Notus.Print.Info(Obj_Settings, "My Turn");
-
                 CalculateTimeDifference(false);
                 NextQueueValidNtpTime = RefreshNtpTime(3);
                 foreach (KeyValuePair<string, NodeQueueInfo> entry in PreviousNodeList)
