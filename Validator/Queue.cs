@@ -879,7 +879,7 @@ namespace Notus.Validator
                 NodeOrderList.Add(counter, entry.Value);
             }
             //Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
-            //Console.WriteLine(JsonSerializer.Serialize(NodeOrderList));
+            Console.WriteLine(JsonSerializer.Serialize(NodeOrderList));
             MyTurn_Val = (string.Equals(MyWallet, NodeOrderList[1]));
             //Console.WriteLine(MyTurn_Val);
             //Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
@@ -1056,8 +1056,8 @@ namespace Notus.Validator
             if (ActiveNodeCount_Val > 1)
             {
                 Notus.Print.Info(Obj_Settings, "Sending Ready Signal To Other Nodes");
-                Console.WriteLine("MyNodeIsReady");
-                Console.WriteLine("MyNodeIsReady");
+                //Console.WriteLine("MyNodeIsReady");
+                //Console.WriteLine("MyNodeIsReady");
                 NodeList[MyNodeHexKey].Ready = true;
                 Val_Ready = true;
                 foreach (KeyValuePair<string, IpInfo> entry in MainAddressList)
