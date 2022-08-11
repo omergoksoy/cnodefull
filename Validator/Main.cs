@@ -641,6 +641,7 @@ namespace Notus.Validator
                 );
                 //Console.WriteLine("ValidatorQueueObj.MyNodeIsReady();");
                 //Console.WriteLine("ValidatorQueueObj.MyNodeIsReady();");
+                Console.WriteLine("Control-Point-1");
                 ValidatorQueueObj.MyNodeIsReady();
             }
 

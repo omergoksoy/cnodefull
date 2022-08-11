@@ -749,6 +749,11 @@ namespace Notus.Validator
             ActiveNodeCount_Val = nodeCount;
             if (ActiveNodeCount_Val > 1)
             {
+                Console.WriteLine("Control-Point-2");
+                if (NodeList[MyNodeHexKey].Ready == false)
+                {
+                    MyNodeIsReady();
+                }
                 if (NotEnoughNode_Val == true) // ilk aşamada buraya girecek
                 {
                     //Notus.Print.Basic(Obj_Settings, "Notus.Validator.Queue -> Line 820");
@@ -1055,14 +1060,9 @@ namespace Notus.Validator
 
         public void MyNodeIsReady()
         {
-            Console.WriteLine("ActiveNodeCount_Val : " + ActiveNodeCount_Val+ToString());
-            Console.WriteLine("ActiveNodeCount_Val : " + ActiveNodeCount_Val+ToString());
-            Console.ReadLine();
             if (ActiveNodeCount_Val > 1)
             {
                 Notus.Print.Info(Obj_Settings, "Sending Ready Signal To Other Nodes");
-                //Console.WriteLine("MyNodeIsReady");
-                //Console.WriteLine("MyNodeIsReady");
                 NodeList[MyNodeHexKey].Ready = true;
                 Val_Ready = true;
                 foreach (KeyValuePair<string, IpInfo> entry in MainAddressList)
