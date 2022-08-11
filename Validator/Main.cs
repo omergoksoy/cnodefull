@@ -693,8 +693,8 @@ namespace Notus.Validator
                         //Notus.Print.Info(Obj_Settings, "Temprorary Arrived New Block : " + tmpNewBlockIncome.info.uID);
                     }
                 );
-                //Console.WriteLine("ValidatorQueueObj.MyNodeIsReady();");
-                //Console.WriteLine("ValidatorQueueObj.MyNodeIsReady();");
+                Console.WriteLine("ValidatorQueueObj.MyNodeIsReady();");
+                Console.WriteLine("ValidatorQueueObj.MyNodeIsReady();");
                 ValidatorQueueObj.MyNodeIsReady();
             }
 
