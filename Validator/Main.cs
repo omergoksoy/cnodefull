@@ -597,6 +597,7 @@ namespace Notus.Validator
                         }
                     }, 0
                     );
+                    Notus.Print.Info(Obj_Settings, "All Blocks Loaded");
                 }
                 SelectedPortVal = Notus.Toolbox.Network.GetNetworkPort(Obj_Settings);
             }
@@ -654,47 +655,6 @@ namespace Notus.Validator
             }
             ValidatorQueueObj.Start();
 
-            /*
-            if (Obj_Settings.GenesisCreated == false)
-            {
-                Console.WriteLine("Step-Control-1111");
-                while (ValidatorQueueObj.IncomeBlockListDone == false)
-                {
-                    Thread.Sleep(50);
-                }
-                Console.WriteLine("Step-Control-2222");
-                bool quitFromWhileLoop = false;
-                while (quitFromWhileLoop == false)
-                {
-                    quitFromWhileLoop = true;
-                    if (ValidatorQueueObj.IncomeBlockList.TryDequeue(out Variable.Class.BlockData? retValue))
-                    {
-                        if (retValue != null)
-                        {
-                            IncomeBlockList.Enqueue(retValue);
-                            quitFromWhileLoop = false;
-                        }
-                    }
-                }
-                Console.WriteLine("Step-Control-3333");
-                quitFromWhileLoop = false;
-                while (quitFromWhileLoop == false)
-                {
-                    quitFromWhileLoop = true;
-                    if (IncomeBlockList.TryDequeue(out Variable.Class.BlockData? retValue))
-                    {
-                        if (retValue != null)
-                        {
-                            ProcessBlock(retValue,true);
-                            quitFromWhileLoop = false;
-                        }
-                    }
-                }
-                Console.WriteLine("Step-Control-4444");
-            }
-            Notus.Print.ReadLine();
-            */
-
             if (Obj_Settings.GenesisCreated == false)
             {
                 if (Obj_Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer1)
@@ -747,13 +707,6 @@ namespace Notus.Validator
                     if (bStatus == true)
                     {
                         Notus.Variable.Class.BlockData? PreBlockData = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(TmpBlockStruct.data);
-
-                        // oluşturulan blok burada diğer node'lara dağıtılmalı
-                        // oluşturulan blok burada diğer node'lara dağıtılmalı
-                        // oluşturulan blok burada diğer node'lara dağıtılmalı
-                        // oluşturulan blok burada diğer node'lara dağıtılmalı
-                        // omergoksoy
-                        // omergoksoy
 
                         // omergoksoy
                         //Notus.Variable.Enum.ValfwidatorOrder NodeOrder = ValidatorQueueObj.Distrubute(PreBlockData);
@@ -966,7 +919,7 @@ namespace Notus.Validator
             HttpObj.Settings = Obj_Settings;
             HttpObj.StoreUrl = false;
             HttpObj.Start(NodeIpAddress, SelectedPortVal);
-            Notus.Print.Basic(Obj_Settings, "Http Has Started", false);
+            Notus.Print.Success(Obj_Settings, "Http Has Started", false);
         }
 
         private string Fnc_OnReceiveData(Notus.Variable.Struct.HttpRequestDetails IncomeData)

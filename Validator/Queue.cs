@@ -1130,17 +1130,20 @@ namespace Notus.Validator
 
         public void MyNodeIsReady()
         {
-            Notus.Print.Info(Obj_Settings, "Sending Ready Signal To Other Nodes");
-            //Console.WriteLine("MyNodeIsReady");
-            //Console.WriteLine("MyNodeIsReady");
-            NodeList[MyNodeHexKey].Ready = true;
-            Val_Ready = true;
-            foreach (KeyValuePair<string, IpInfo> entry in MainAddressList)
+            if (ActiveNodeCount_Val > 1)
             {
-                string tmpNodeHexStr = IpPortToKey(entry.Value.IpAddress, entry.Value.Port);
-                if (string.Equals(MyNodeHexKey, tmpNodeHexStr) == false)
+                Notus.Print.Info(Obj_Settings, "Sending Ready Signal To Other Nodes");
+                //Console.WriteLine("MyNodeIsReady");
+                //Console.WriteLine("MyNodeIsReady");
+                NodeList[MyNodeHexKey].Ready = true;
+                Val_Ready = true;
+                foreach (KeyValuePair<string, IpInfo> entry in MainAddressList)
                 {
-                    Message_Ready_ViaSocket(entry.Value.IpAddress, entry.Value.Port, tmpNodeHexStr);
+                    string tmpNodeHexStr = IpPortToKey(entry.Value.IpAddress, entry.Value.Port);
+                    if (string.Equals(MyNodeHexKey, tmpNodeHexStr) == false)
+                    {
+                        Message_Ready_ViaSocket(entry.Value.IpAddress, entry.Value.Port, tmpNodeHexStr);
+                    }
                 }
             }
         }

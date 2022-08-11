@@ -202,7 +202,7 @@ namespace Notus.Block
                         else
                         {
                             Notus.Archive.DeleteFromInside(BlockOrderList[BiggestBlockHeight - 1], Obj_Settings);
-                            Notus.Print.Info(Obj_Settings, "Repair Block Integrity = Missing Block [45abcfe713]");
+                            Notus.Print.Danger(Obj_Settings, "Repair Block Integrity = Missing Block [45abcfe713]");
 
                         }
                     }
@@ -290,10 +290,10 @@ namespace Notus.Block
             }
             if (prevBlockRownNumberError == true)
             {
-                Notus.Print.Info(Obj_Settings, "Repair Block Integrity = Wrong Block Order");
+                Notus.Print.Danger(Obj_Settings, "Repair Block Integrity = Wrong Block Order");
                 return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
             }
-            Notus.Print.Info(Obj_Settings, "Block Integrity Valid");
+            Notus.Print.Success(Obj_Settings, "Block Integrity Valid");
 
             using (Notus.Mempool ObjMp_BlockOrder =
                 new Notus.Mempool(
@@ -487,7 +487,7 @@ namespace Notus.Block
             }
             else
             {
-                Notus.Print.Basic(Obj_Settings, "We Do Not Have Any Block");
+                //Notus.Print.Basic(Obj_Settings, "We Do Not Have Any Block");
             }
 
             //there is no layer on constant
