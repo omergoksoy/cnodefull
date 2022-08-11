@@ -749,9 +749,9 @@ namespace Notus.Validator
             ActiveNodeCount_Val = nodeCount;
             if (ActiveNodeCount_Val > 1)
             {
-                Console.WriteLine("Control-Point-2");
                 if (NodeList[MyNodeHexKey].Ready == false)
                 {
+                    Console.WriteLine("Control-Point-2");
                     MyNodeIsReady();
                 }
                 if (NotEnoughNode_Val == true) // ilk aşamada buraya girecek
