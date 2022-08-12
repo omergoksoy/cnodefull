@@ -23,7 +23,11 @@ namespace Notus.Wallet
         /// <summary>
         /// DONE
         /// </summary>
-        public static Notus.Variable.Enum.BlockStatusCode Status(string TransferId, Notus.Variable.Enum.NetworkType WhichNetwork = Notus.Variable.Enum.NetworkType.MainNet, Notus.Variable.Enum.NetworkLayer WhichLayer = Notus.Variable.Enum.NetworkLayer.Layer1)
+        public static Notus.Variable.Enum.BlockStatusCode Status(
+            string TransferId, 
+            Notus.Variable.Enum.NetworkType WhichNetwork = Notus.Variable.Enum.NetworkType.MainNet, 
+            Notus.Variable.Enum.NetworkLayer WhichLayer = Notus.Variable.Enum.NetworkLayer.Layer1
+        )
         {
             using(
                 Notus.Mempool ObjMp_CryptoTranStatus= new Notus.Mempool(

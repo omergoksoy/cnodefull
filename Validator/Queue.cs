@@ -1041,8 +1041,8 @@ namespace Notus.Validator
                     "<ready>" + NodeList[MyNodeHexKey].Wallet + "</ready>",
                     true
                 );
-                Console.WriteLine("_ipAddress / _portNo: " + _ipAddress + " : "+ _portNo.ToString());
-                Console.WriteLine("responseStr : " + responseStr);
+                //Console.WriteLine("_ipAddress / _portNo: " + _ipAddress + " : "+ _portNo.ToString());
+                //Console.WriteLine("responseStr : " + responseStr);
                 if (string.Equals("done", responseStr.Trim()) == true)
                 {
                     ProcessIncomeData(responseStr);
