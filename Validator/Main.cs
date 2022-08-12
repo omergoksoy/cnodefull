@@ -82,7 +82,7 @@ namespace Notus.Validator
                         {
                             if ((DateTime.Now - EmptyBlockGeneratedTime).TotalSeconds > 30)
                             {
-                                Console.WriteLine((DateTime.Now - EmptyBlockGeneratedTime).TotalSeconds);
+                                // Console.WriteLine((DateTime.Now - EmptyBlockGeneratedTime).TotalSeconds);
                                 EmptyBlockGeneratedTime = DateTime.Now;
                                 Notus.Print.Success(Obj_Settings, "Empty Block Executed");
                                 Obj_BlockQueue.AddEmptyBlock();
@@ -639,7 +639,6 @@ namespace Notus.Validator
                         //Notus.Print.Info(Obj_Settings, "Temprorary Arrived New Block : " + tmpNewBlockIncome.info.uID);
                     }
                 );
-                //Console.WriteLine("ValidatorQueueObj.MyNodeIsReady();");
                 //Console.WriteLine("ValidatorQueueObj.MyNodeIsReady();");
                 Console.WriteLine("Control-Point-1");
                 ValidatorQueueObj.MyNodeIsReady();
