@@ -228,7 +228,7 @@ namespace Notus.Block
                     else
                     {
 
-                        Notus.Print.Danger(Obj_Settings, "Block Order Error > " + controlNumber.ToString() + " > " + item.Value);
+                        Notus.Print.Danger(Obj_Settings, "Block Order Error > " + controlNumber.ToString() + " / "+ item.Key + " > " + item.Value);
                         Notus.Archive.DeleteFromInside(item.Value , Obj_Settings);
                     }
 
