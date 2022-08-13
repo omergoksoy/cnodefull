@@ -15,5 +15,18 @@ static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEv
     Console.ReadLine();
 }
 
+/*
+Console.ForegroundColor = ConsoleColor.DarkGreen;
+Console.Write(((char)30));
+Console.ForegroundColor = ConsoleColor.Gray;
+Console.ForegroundColor = ConsoleColor.DarkMagenta;
+Console.Write(((char)31));
+Console.ForegroundColor = ConsoleColor.Gray;
+
+Console.ReadLine();
+Console.ReadLine();
+Console.ReadLine();
+Console.WriteLine();
+*/
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 Notus.Validator.Node.Start(args);
