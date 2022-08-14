@@ -24,16 +24,30 @@ namespace Notus.Reward
                 if (TimerIsRunning == false)
                 {
                     TimerIsRunning = true;
-                    if (LastBlockUid.Length > 0 && LastTypeUid.Length > 0)
-                    {
-                        string tmpLastTypeStr=Notus.Block.Key.GetTimeFromKey(LastTypeUid).Substring(0, 17);
-                        string tmpLastBlockStr=Notus.Block.Key.GetTimeFromKey(LastBlockUid).Substring(0, 17);
-                        Console.WriteLine("tmpLastTypeStr : " + tmpLastTypeStr);
-                        Console.WriteLine("tmpLastBlockStr : " + tmpLastBlockStr);
-                    }
+
                     Console.WriteLine("LastTypeUid : " + LastTypeUid);
                     Console.WriteLine("LastBlockUid : " + LastBlockUid);
                     Console.WriteLine("RewardList.Count : " + RewardList.Count.ToString());
+
+                    if (LastBlockUid.Length > 0 && LastTypeUid.Length > 0)
+                    {
+                        DateTime tmpLastTypeStr =Notus.Date.ToDateTime(Notus.Block.Key.GetTimeFromKey(LastTypeUid));
+                        DateTime tmpLastBlockStr = Notus.Date.ToDateTime(Notus.Block.Key.GetTimeFromKey(LastBlockUid));
+                        TimeSpan ts = tmpLastBlockStr - tmpLastTypeStr;
+                        int dayAsSecond = 24 * 60 * 60;
+                        int howManySecondAgo = (int)ts.TotalSeconds;
+
+                        Console.WriteLine("tmpLastTypeStr : " + ((int)ts.TotalSeconds).ToString());
+                        Console.WriteLine("tmpLastTypeStr : " + tmpLastTypeStr);
+                        Console.WriteLine("tmpLastBlockStr : " + tmpLastBlockStr);
+
+                        if (howManySecondAgo> dayAsSecond)
+                        {
+                            Console.WriteLine("Calculate Empty Block Reward");
+                            Console.WriteLine("Calculate Empty Block Reward");
+                            Console.WriteLine("Calculate Empty Block Reward");
+                        }
+                    }
                     /*
                     Console.WriteLine(JsonSerializer.Serialize(RewardList));
                     //blok zamanı ve utc zamanı çakışıyor
