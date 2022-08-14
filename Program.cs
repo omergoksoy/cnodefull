@@ -16,6 +16,15 @@ static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEv
 }
 
 /*
+for(int a=0; a < 256; a++)
+{
+    Console.Write(a);
+    Console.Write( " -> ");
+    Console.Write((char)a);
+    Console.Write("  ");
+}
+Console.ReadLine();
+Console.ReadLine();
 Console.ForegroundColor = ConsoleColor.DarkGreen;
 Console.Write(((char)30));
 Console.ForegroundColor = ConsoleColor.Gray;
