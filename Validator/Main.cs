@@ -809,6 +809,10 @@ namespace Notus.Validator
                 Notus.Print.Status(Obj_Settings, "Block Came From The Dictionary List");
             }
 
+            if (blockData.info.type == 360)
+            {
+                RewardBlockObj.RewardList.Clear();
+            }
             if (blockData.info.type == 255)
             {
                 RewardBlockObj.RewardList.Clear();

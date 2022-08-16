@@ -35,10 +35,6 @@ namespace Notus.Reward
                         int dayAsSecond = 24 * 60 * 60;
                         int howManySecondAgo = (int)ts.TotalSeconds;
 
-                        //Console.WriteLine("tmpLastTypeStr : " + ((int)ts.TotalSeconds).ToString());
-                        //Console.WriteLine("tmpLastTypeStr : " + tmpLastTypeStr);
-                        //Console.WriteLine("tmpLastBlockStr : " + tmpLastBlockStr);
-
                         if (howManySecondAgo > dayAsSecond)
                         {
                             List<long> blockRowNo = new List<long>();
@@ -46,6 +42,7 @@ namespace Notus.Reward
                             Notus.Block.Storage storageObj = new Notus.Block.Storage(false);
                             storageObj.Network = objSettings.Network;
                             storageObj.Layer = objSettings.Layer;
+                            bool tmpNullPrinted = false;
                             bool tmpExitLoop = false;
                             while (tmpExitLoop == false)
                             {
@@ -60,15 +57,21 @@ namespace Notus.Reward
                                     minerCount[blockValidator] = minerCount[blockValidator] + 1;
                                     blockRowNo.Add(tmpBlockData.info.rowNo);
 
-                                    LastBlockUid = tmpBlockData.prev.Substring(0, 90);
+                                    //LastBlockUid = tmpBlockData.prev.Substring(0, 90);
+                                    LastBlockUid = tmpBlockData.info.uID;
                                     if (string.Equals(LastTypeUid, LastBlockUid) == true)
                                     {
                                         tmpExitLoop = true;
                                     }
+                                    tmpNullPrinted = false;
                                 }
                                 else
                                 {
-                                    Console.WriteLine("tmpBlockData = NULL;");
+                                    if (tmpNullPrinted == false)
+                                    {
+                                        tmpNullPrinted = true;
+                                        Console.WriteLine("tmpBlockData = NULL;");
+                                    }
                                 }
                             }
                             Console.WriteLine("Reward Distribution");
