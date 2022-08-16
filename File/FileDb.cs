@@ -1,4 +1,9 @@
-﻿// https://github.com/mbdavid/FileDB
+﻿// FileDB is a free, fast, lightweight C# Library project to store,
+// retrieve and delete files using a single archive file as a container on disk. 
+// It's ideal for storing files (all kind, all sizes) without databases and
+// keeping them organized on a single disk file.
+// The code is provided in mbdavid's repo and the repo can be found here:
+// https://github.com/mbdavid/FileDB
 
 using System.Text;
 using System.Security.Cryptography;
@@ -31,7 +36,7 @@ namespace Notus
                 FileDB.CreateEmptyFile(fileName);
 
             // Não permite acesso somente gravação (transforma em leitura/gravação)
-            var fa = fileAccess == FileAccess.Write || fileAccess == FileAccess.ReadWrite ? FileAccess.ReadWrite : FileAccess.Read;
+            FileAccess fa = fileAccess == FileAccess.Write || fileAccess == FileAccess.ReadWrite ? FileAccess.ReadWrite : FileAccess.Read;
 
             _fileStream = new FileStream(fileName, FileMode.Open, fa, FileShare.ReadWrite, (int)BasePage.PAGE_SIZE, FileOptions.None);
 
@@ -111,7 +116,7 @@ namespace Notus
         /// <returns>EntryInfo with file information or null with not found</returns>
         public EntryInfo Search(Guid id)
         {
-            var indexNode = _engine.Search(id);
+            IndexNode? indexNode = _engine.Search(id);
 
             if (indexNode == null)
                 return null;

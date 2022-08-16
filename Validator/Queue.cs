@@ -59,6 +59,7 @@ namespace Notus.Validator
             get { return PreviousNodeList; }
             set { PreviousNodeList = value; }
         }
+        private Dictionary<string, int> NodeTurnCount = new Dictionary<string, int>();
         private Dictionary<string, NodeQueueInfo> NodeList = new Dictionary<string, NodeQueueInfo>();
         private Dictionary<string, DateTime> MessageTimeList = new Dictionary<string, DateTime>();
         private Dictionary<int, string> NodeOrderList = new Dictionary<int, string>();
@@ -889,11 +890,40 @@ namespace Notus.Validator
                 counter++;
                 NodeOrderList.Add(counter, entry.Value);
             }
-            //Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
-            //Console.WriteLine(JsonSerializer.Serialize(NodeOrderList));
+
+            NodeTurnCount.Clear();
+            foreach (KeyValuePair<int, string> entry in NodeOrderList)
+            {
+                if (NodeTurnCount.ContainsKey(entry.Value) == false)
+                {
+                    NodeTurnCount.Add(entry.Value, 0);
+                }
+            }
+
+            int myRewardCount = NodeTurnCount[NodeOrderList[1]];
+            int minRewardCount = int.MaxValue;
+            int maxRewardCount = 0;
+            foreach (KeyValuePair<string, int> entry in NodeTurnCount)
+            {
+                if (entry.Value > maxRewardCount)
+                {
+                    maxRewardCount = entry.Value;
+                }
+                if (minRewardCount> entry.Value)
+                {
+                    minRewardCount = entry.Value;
+                }
+            }
+
+
+            // Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
+            // Console.WriteLine(JsonSerializer.Serialize(NodeOrderList));
             MyTurn_Val = (string.Equals(MyWallet, NodeOrderList[1]));
-            //Console.WriteLine(MyTurn_Val);
-            //Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
+
+
+            // if(NodeTurnCount)
+            // Console.WriteLine(MyTurn_Val);
+            // Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
             if (MyTurn_Val == true)
             {
                 //Notus.Print.Info(Obj_Settings, "My Turn");
