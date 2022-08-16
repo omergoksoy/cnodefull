@@ -899,7 +899,21 @@ namespace Notus.Validator
                     NodeTurnCount.Add(entry.Value, 0);
                 }
             }
+            /*
 
+            empty blok sayısı toplanacak
+
+
+            empty blok + transaction sayısı + blok sayısı
+            ---------------------------------------------= İşlem başına ödül miktarı
+                             ödül miktarı
+
+
+            toplam ödül miktarından vakıf payı çıkarılacak ( % 2 )
+            ayrıca 10 blok ödülü seçilecek bir kişiye verilecek
+
+
+            */
             int myRewardCount = NodeTurnCount[NodeOrderList[1]];
             int minRewardCount = int.MaxValue;
             int maxRewardCount = 0;
