@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Linq;
+﻿using System.Text.Json;
 
 namespace Notus.Reward
 {

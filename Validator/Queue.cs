@@ -754,7 +754,7 @@ namespace Notus.Validator
                 }
             }
             ActiveNodeCount_Val = nodeCount;
-            if (ActiveNodeCount_Val > 1)
+            if (ActiveNodeCount_Val > 1 && Val_Ready == true)
             {
                 if (NodeList[MyNodeHexKey].Ready == false)
                 {
@@ -1113,7 +1113,6 @@ namespace Notus.Validator
             {
                 Notus.Print.Info(Obj_Settings, "Sending Ready Signal To Other Nodes");
                 NodeList[MyNodeHexKey].Ready = true;
-                Val_Ready = true;
                 foreach (KeyValuePair<string, IpInfo> entry in MainAddressList)
                 {
                     string tmpNodeHexStr = IpPortToKey(entry.Value.IpAddress, entry.Value.Port);
