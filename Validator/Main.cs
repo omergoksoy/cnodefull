@@ -639,6 +639,13 @@ namespace Notus.Validator
 
             ValidatorQueueObj.Start();
 
+            kontrol noktası
+            // burada dışardan gelen blok datalarının tamamlandığı durumda node hazırım sinyalini diğer
+            // nodelara gönderecek
+            // node hazır olmadan HAZIR sinyalini gönderdiği için
+            // senkronizasyon hatası oluyor ve gelen bloklar hatalı birşekilde kaydediliyor.
+            // sonrasında gelen bloklar explorer'da aranırken hata oluşturuyor.
+
             if (Obj_Settings.GenesisCreated == false)
             {
                 Notus.Print.Info(Obj_Settings, "Node Blocks Are Checking For Sync");
@@ -880,12 +887,13 @@ namespace Notus.Validator
                     Obj_Settings.LastBlock.info.rowNo.ToString()
                 );
 
-                /*
                 Obj_Settings.LastBlock = blockData;
-                */
+
+                /*
                 Obj_Settings.LastBlock = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(
                     JsonSerializer.Serialize(blockData)
                 );
+                */
                 Notus.Print.Basic(Obj_Settings,
                     "[Obj_Settings.LastBlock] After Set Last Block UID  [" +
                     Obj_Settings.LastBlock.info.type.ToString() +

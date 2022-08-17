@@ -1107,7 +1107,6 @@ namespace Notus.Validator
                 //Console.WriteLine("Ready Signal Were Sended Before");
             }
         }
-
         public void MyNodeIsReady()
         {
             if (ActiveNodeCount_Val > 1)
