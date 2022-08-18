@@ -708,7 +708,9 @@ namespace Notus.Validator
                     {
                         if (IncomeBlockList.Count == 0)
                         {
-                            Console.WriteLine("Control-Point-1-AAA");
+                            FirstSyncIsDone = true;
+                            MyReadyMessageSended = true;
+                            Console.WriteLine("Control-Point-1-DDDD");
                             ValidatorQueueObj.MyNodeIsReady();
                         }
                     }
