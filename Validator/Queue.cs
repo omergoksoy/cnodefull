@@ -194,6 +194,7 @@ namespace Notus.Validator
         }
         public void PingOtherNodes()
         {
+            Notus.Print.Info(Obj_Settings, "Waiting For Node Sync", false);
             bool tmpExitWhileLoop = false;
             while (tmpExitWhileLoop == false)
             {
@@ -469,7 +470,7 @@ namespace Notus.Validator
             if (CheckXmlTag(incomeData, "ready"))
             {
                 incomeData = GetPureText(incomeData, "ready");
-                //Console.WriteLine("Ready Income : " + incomeData);
+                Console.WriteLine("Ready Income : " + incomeData);
                 foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
                 {
                     if (string.Equals(entry.Value.Wallet, incomeData) == true)
@@ -754,8 +755,10 @@ namespace Notus.Validator
                 }
             }
             ActiveNodeCount_Val = nodeCount;
-            burada ready olduğu seçilmediğinden dolayı
-            sending ready mesajı gönderilemiyor
+
+            //burada ready olduğu seçilmediğinden dolayı
+            //sending ready mesajı gönderilemiyor
+
             if (ActiveNodeCount_Val > 1 && Val_Ready == true)
             {
                 if (NodeList[MyNodeHexKey].Ready == false)

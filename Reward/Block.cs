@@ -21,6 +21,8 @@ namespace Notus.Reward
             System.Action<Notus.Variable.Class.BlockData>? Func_NewBlockIncome = null
         )
         {
+            Console.WriteLine("Control-Point-7-774455");
+            Console.WriteLine(LastBlockUid + " - " + LastTypeUid);
             TimerObj = new Notus.Threads.Timer(60000);
             TimerObj.Start(() =>
             {
@@ -113,7 +115,8 @@ namespace Notus.Reward
                     */
                     TimerIsRunning = false;
                 }
-            }, true);
+            }, false);
+            Console.WriteLine("Control-Point-77-99886655");
         }
         public Block()
         {
