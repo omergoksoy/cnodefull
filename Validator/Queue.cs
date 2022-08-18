@@ -754,6 +754,8 @@ namespace Notus.Validator
                 }
             }
             ActiveNodeCount_Val = nodeCount;
+            burada ready olduğu seçilmediğinden dolayı
+            sending ready mesajı gönderilemiyor
             if (ActiveNodeCount_Val > 1 && Val_Ready == true)
             {
                 if (NodeList[MyNodeHexKey].Ready == false)
