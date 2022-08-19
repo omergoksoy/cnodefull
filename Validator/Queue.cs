@@ -777,8 +777,8 @@ namespace Notus.Validator
 
             //burada ready olduğu seçilmediğinden dolayı
             //sending ready mesajı gönderilemiyor
-            //  && Val_Ready == true
-            if (ActiveNodeCount_Val > 1)
+
+            if (ActiveNodeCount_Val > 1 && Val_Ready == true)
             {
                 if (NodeList[MyNodeHexKey].Ready == false)
                 {

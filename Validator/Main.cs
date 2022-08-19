@@ -897,7 +897,6 @@ namespace Notus.Validator
             {
                 ProcessBlock_PrintSection(blockData, blockSource);
                 Notus.Print.Warning(Obj_Settings, "We Already Processed The Block");
-                Console.WriteLine(CurrentBlockRowNo.ToString() + " ->> " + blockData.info.rowNo.ToString());
                 return true;
             }
 
