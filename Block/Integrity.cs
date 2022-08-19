@@ -192,7 +192,11 @@ namespace Notus.Block
                 if (tmpDeleteFileList.Count > 0)
                 {
                     Thread.Sleep(1);
-                    Notus.Archive.DeleteFromInside(fileName, tmpDeleteFileList , true);
+                    Notus.Archive.DeleteFromInside(
+                        fileName,
+                        tmpDeleteFileList,
+                        true
+                    );
 
                     Notus.Print.Danger(Obj_Settings, "Repair Block Integrity = Contains Wrong / Extra Data");
                     if (returnForCheckAgain == true)
@@ -225,7 +229,11 @@ namespace Notus.Block
                         }
                         else
                         {
-                            Notus.Archive.DeleteFromInside(BlockOrderList[BiggestBlockHeight - 1], Obj_Settings,true);
+                            Notus.Archive.DeleteFromInside(
+                                BlockOrderList[BiggestBlockHeight - 1],
+                                Obj_Settings,
+                                true
+                            );
                             Notus.Print.Danger(Obj_Settings, "Repair Block Integrity = Missing Block [45abcfe713]");
                         }
                     }
@@ -245,19 +253,23 @@ namespace Notus.Block
             {
                 if (item.Key != controlNumber)
                 {
+                    StoreBlockWithRowNo(controlNumber);
+                    //Console.WriteLine("We Need This Block :" + controlNumber.ToString());
+                    Notus.Print.Info(Obj_Settings, "We Get Block From Other Node > " + controlNumber.ToString());
+                    /*
                     if (
                         Obj_Settings.NodeType != Notus.Variable.Enum.NetworkNodeType.Main &&
                         Obj_Settings.NodeType != Notus.Variable.Enum.NetworkNodeType.Master
                     )
                     {
-                        StoreBlockWithRowNo(controlNumber);
                     }
                     else
                     {
-                        Notus.Print.Danger(Obj_Settings, "Block Order Error > " + controlNumber.ToString() + " / " + item.Key + " > " + item.Value.Substring(0, 10) + ".." + item.Value.Substring(80));
-                        Notus.Archive.DeleteFromInside(item.Value, Obj_Settings, true);
+                        //Notus.Print.Danger(Obj_Settings, "Block Order Error > " + controlNumber.ToString() + " / " + item.Key + " > " + item.Value.Substring(0, 10) + ".." + item.Value.Substring(80));
+                        //Notus.Archive.DeleteFromInside(item.Value, Obj_Settings, true);
                     }
-                    //controlNumber = item.Key;
+                    */
+                    controlNumber = item.Key;
                     rowNumberError = true;
                 }
                 controlNumber++;
@@ -424,7 +436,7 @@ namespace Notus.Block
                             Notus.Variable.Class.BlockData? tmpEmptyBlock = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(MainResultStr);
                             if (tmpEmptyBlock != null)
                             {
-                                Notus.Print.Info(Obj_Settings, "Getting Block Row No [ "+ nodeUrl + " ]: " + BlockRowNo.ToString());
+                                Notus.Print.Info(Obj_Settings, "Getting Block Row No [ " + nodeUrl + " ]: " + BlockRowNo.ToString());
                                 using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
                                 {
                                     BS_Storage.Network = Obj_Settings.Network;
