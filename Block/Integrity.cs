@@ -264,6 +264,9 @@ namespace Notus.Block
             }
             if (rowNumberError == true)
             {
+                //Console.WriteLine(JsonSerializer.Serialize(BlockOrderList, new JsonSerializerOptions() { WriteIndented = true }));
+                //Console.ReadLine();
+
                 return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
             }
 

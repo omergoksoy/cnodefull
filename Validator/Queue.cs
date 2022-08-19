@@ -119,6 +119,21 @@ namespace Notus.Validator
             double secondVal = MaxSecondCount + (MaxSecondCount - (ulong.Parse(afterMiliSecondTime.ToString("ss")) % MaxSecondCount));
             return afterMiliSecondTime.AddSeconds(secondVal);
         }
+        public void GetUtcTimeFromServer()
+        {
+            NtpTime = Notus.Time.GetFromNtpServer(true);
+            NtpCheckTime = DateTime.Now;
+            NodeTimeAfterNtpTime = (NtpCheckTime > NtpTime);
+            if (NodeTimeAfterNtpTime == true)
+            {
+                NtpTimeDifference = NtpCheckTime - NtpTime;
+            }
+            else
+            {
+                NtpTimeDifference = NtpTime - NtpCheckTime;
+            }
+            NtpTimeWorked = true;
+        }
         public DateTime GetUtcTime()
         {
             return NtpTime;
@@ -441,9 +456,9 @@ namespace Notus.Validator
 
             if (CheckXmlTag(incomeData, "when"))
             {
-                //Console.WriteLine("When = Is Come");
+                Console.WriteLine("When = Is Come");
                 StartingTimeAfterEnoughNode = Notus.Date.ToDateTime(GetPureText(incomeData, "when"));
-                //Console.WriteLine(StartingTimeAfterEnoughNode);
+                Console.WriteLine(StartingTimeAfterEnoughNode);
                 return "done";
             }
             if (CheckXmlTag(incomeData, "hash"))
@@ -749,7 +764,11 @@ namespace Notus.Validator
             int nodeCount = 0;
             foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
             {
-                if (entry.Value.Status == NodeStatus.Online && entry.Value.ErrorCount == 0)
+                if (
+                    entry.Value.Status == NodeStatus.Online && 
+                    entry.Value.ErrorCount == 0 &&
+                    entry.Value.Ready==true
+                )
                 {
                     nodeCount++;
                 }
@@ -979,7 +998,6 @@ namespace Notus.Validator
         {
             Notus.Print.Info(Obj_Settings, "Getting UTC Time From NTP Server");
             CalculateTimeDifference(false);
-
             Task.Run(() =>
             {
                 MainLoop();
@@ -1114,6 +1132,8 @@ namespace Notus.Validator
         }
         public void MyNodeIsReady()
         {
+            NodeList[MyNodeHexKey].Ready = true;
+            Val_Ready = true;
             if (ActiveNodeCount_Val > 1)
             {
                 Notus.Print.Info(Obj_Settings, "Sending Ready Signal To Other Nodes");
