@@ -492,9 +492,11 @@ namespace Notus.Variable.Struct
 
     public class EmptyBlockRewardStruct
     {
-        public int Order { get; set; }
-        public int Spend { get; set; }
-        public int Left { get; set; }
+        public ulong TotalSupply { get; set; }
+        public ulong Order { get; set; }
+        public ulong Spend { get; set; }
+        public ulong Left { get; set; }
+        public Dictionary<string, Dictionary<ulong, string>> Addition { get; set; }  // after 
         public Dictionary<string,List<long>> List { get; set; }
     }
 }

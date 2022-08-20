@@ -88,7 +88,8 @@ namespace Notus.Block
                 Empty = new EmptyBlockType()
                 {
                     TotalSupply = 550000000,
-                    Reward=2,
+                    LuckyReward = 50,
+                    Reward =2,
                     Active = true,
                     Interval = new IntervalType()
                     {

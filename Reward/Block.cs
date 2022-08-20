@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Numerics;
 using System.Text.Json;
 
 namespace Notus.Reward
@@ -39,81 +37,166 @@ namespace Notus.Reward
 
                         if (howManySecondAgo > dayAsSecond)
                         {
-                            Notus.Variable.Struct.EmptyBlockRewardStruct rewardBlock=new Notus.Variable.Struct.EmptyBlockRewardStruct()
+                            try
                             {
-                                Order = 0,
-                                Spend = 0,
-                                Left = 0,
-                                List = new Dictionary<string, List<long>>()
-                            };
-                            List<long> blockRowNo = new List<long>();
-                            Dictionary<long,int> blockTypeRowNo = new Dictionary<long, int>();
-                            Dictionary<string, int> minerCount = new Dictionary<string, int>();
-                            Notus.Block.Storage storageObj = new Notus.Block.Storage(false);
-                            storageObj.Network = objSettings.Network;
-                            storageObj.Layer = objSettings.Layer;
-                            bool tmpNullPrinted = false;
-                            bool tmpExitLoop = false;
-                            while (tmpExitLoop == false)
-                            {
-                                Notus.Variable.Class.BlockData? tmpBlockData = storageObj.ReadBlock(LastBlockUid);
-                                if (tmpBlockData != null)
+                                Notus.Variable.Struct.EmptyBlockRewardStruct rewardBlock = new Notus.Variable.Struct.EmptyBlockRewardStruct()
                                 {
-                                    //Console.WriteLine("Row No : " + tmpBlockData.info.rowNo.ToString());
-                                    if (tmpBlockData.info.type == 300)
+                                    Order = 0,
+                                    Spend = 0,
+                                    Left = 0,
+                                    List = new Dictionary<string, List<long>>(),
+                                    Addition = new Dictionary<string, Dictionary<ulong, string>>()
+                                };
+                                ulong rewardCount = 0;
+                                //List<long> blockRowNo = new List<long>();
+                                Dictionary<long, ulong> blockRowTimeList = new Dictionary<long, ulong>();
+                                //Dictionary<long, int> blockTypeRowNo = new Dictionary<long, int>();
+                                Dictionary<string, int> minerCount = new Dictionary<string, int>();
+                                Notus.Block.Storage storageObj = new Notus.Block.Storage(false);
+                                storageObj.Network = objSettings.Network;
+                                storageObj.Layer = objSettings.Layer;
+                                bool tmpNullPrinted = false;
+                                bool tmpExitLoop = false;
+                                while (tmpExitLoop == false)
+                                {
+                                    Notus.Variable.Class.BlockData? tmpBlockData = storageObj.ReadBlock(LastBlockUid);
+                                    if (tmpBlockData != null)
                                     {
-                                        string blockValidator = tmpBlockData.miner.count.First().Key;
-                                        if (minerCount.ContainsKey(blockValidator) == false)
+                                        //Console.WriteLine("Row No : " + tmpBlockData.info.rowNo.ToString());
+                                        if (tmpBlockData.info.type == 300)
                                         {
-                                            minerCount.Add(blockValidator, 0);
-                                        }
-                                        minerCount[blockValidator] = minerCount[blockValidator] + 1;
-                                        blockRowNo.Add(tmpBlockData.info.rowNo);
-                                        blockTypeRowNo.Add(tmpBlockData.info.rowNo, tmpBlockData.info.type);
+                                            string blockValidator = tmpBlockData.miner.count.First().Key;
+                                            if (minerCount.ContainsKey(blockValidator) == false)
+                                            {
+                                                minerCount.Add(blockValidator, 0);
+                                            }
+                                            minerCount[blockValidator] = minerCount[blockValidator] + 1;
+                                            //blockRowNo.Add(tmpBlockData.info.rowNo);
+                                            rewardCount++;
+                                            //blockTypeRowNo.Add(tmpBlockData.info.rowNo, tmpBlockData.info.type);
+                                            
+                                            blockRowTimeList.Add(tmpBlockData.info.rowNo,
+                                                Notus.Date.ToLong(tmpBlockData.info.time)
+                                            );
 
-                                        if (rewardBlock.List.ContainsKey(blockValidator) == false)
-                                        {
-                                            rewardBlock.List.Add(blockValidator, new List<long>() { });
-                                        }
+                                            if (rewardBlock.List.ContainsKey(blockValidator) == false)
+                                            {
+                                                rewardBlock.List.Add(blockValidator, new List<long>() { });
+                                            }
 
-                                        if (rewardBlock.List[blockValidator].IndexOf(tmpBlockData.info.rowNo) == -1)
-                                        {
-                                            rewardBlock.List[blockValidator].Add(tmpBlockData.info.rowNo);
+                                            if (rewardBlock.List[blockValidator].IndexOf(tmpBlockData.info.rowNo) == -1)
+                                            {
+                                                rewardBlock.List[blockValidator].Add(tmpBlockData.info.rowNo);
+                                            }
                                         }
+                                        LastBlockUid = tmpBlockData.prev.Substring(0, 90);
+                                        if (string.Equals(LastTypeUid, tmpBlockData.info.uID) == true)
+                                        {
+                                            tmpExitLoop = true;
+                                        }
+                                        tmpNullPrinted = false;
                                     }
-                                    LastBlockUid = tmpBlockData.prev.Substring(0, 90);
-                                    if (string.Equals(LastTypeUid, tmpBlockData.info.uID) == true)
+                                    else
                                     {
+                                        if (tmpNullPrinted == false)
+                                        {
+                                            tmpNullPrinted = true;
+                                            Console.WriteLine("tmpBlockData = NULL;");
+                                        }
                                         tmpExitLoop = true;
                                     }
-                                    tmpNullPrinted = false;
                                 }
-                                else
-                                {
-                                    if (tmpNullPrinted == false)
-                                    {
-                                        tmpNullPrinted = true;
-                                        Console.WriteLine("tmpBlockData = NULL;");
-                                    }
-                                    tmpExitLoop = true;
-                                }
-                            }
 
-                            Console.WriteLine("Reward Distribution");
-                            Console.WriteLine(JsonSerializer.Serialize(minerCount, new JsonSerializerOptions() { WriteIndented = true }));
-                            Console.WriteLine(JsonSerializer.Serialize(blockTypeRowNo, new JsonSerializerOptions() { WriteIndented = true }));
-                            Console.WriteLine(JsonSerializer.Serialize(rewardBlock, new JsonSerializerOptions() { WriteIndented = true }));
-                            Console.WriteLine(JsonSerializer.Serialize(blockRowNo));
-                            int rewardCount = blockRowNo.Count;
-                            int rewardVolume = rewardCount * objSettings.Genesis.Empty.Reward;
-                            int rewardLeft = objSettings.Genesis.Empty.TotalSupply - rewardVolume;
-                            rewardBlock.Order = 1;
-                            rewardBlock.Spend = rewardVolume;
-                            rewardBlock.Left = rewardLeft;
-                            Func_NewBlockIncome(rewardBlock);
-                            Console.ReadLine();
+                                Console.WriteLine("Reward Distribution");
+                                //Console.WriteLine(JsonSerializer.Serialize(minerCount, new JsonSerializerOptions() { WriteIndented = true }));
+                                //Console.WriteLine(JsonSerializer.Serialize(blockRowTimeList, new JsonSerializerOptions() { WriteIndented = true }));
+                                //Console.WriteLine(JsonSerializer.Serialize(blockTypeRowNo, new JsonSerializerOptions() { WriteIndented = true }));
+                                //Console.WriteLine(JsonSerializer.Serialize(blockRowNo));
+                                ulong decimalNumber = (ulong)Math.Pow(10, (double)objSettings.Genesis.Reserve.Decimal);
+
+                                // genesisi oluşturulmadan önce bu değerler olmadığı için 
+                                // burada atanıyor...
+                                objSettings.Genesis.Empty.TotalSupply = 550000000;
+                                objSettings.Genesis.Empty.LuckyReward = 50;
+                                objSettings.Genesis.Empty.Reward = 2;
+
+                                ulong rewardVolume = (rewardCount * objSettings.Genesis.Empty.Reward) * decimalNumber;
+                                ulong totalSuppply = objSettings.Genesis.Empty.TotalSupply * decimalNumber;
+                                ulong luckyReward = objSettings.Genesis.Empty.LuckyReward * decimalNumber;
+                                ulong emptyRewardVolume = rewardVolume - luckyReward;
+                                ulong rewardPerBlock = (ulong)Math.Floor((decimal)emptyRewardVolume / rewardCount);
+
+                                ulong rewardLeft = totalSuppply - rewardVolume;
+                                ulong checkBlockReardDist = rewardPerBlock * rewardCount;
+                                ulong rewardDiff = emptyRewardVolume - checkBlockReardDist;
+                                luckyReward = luckyReward + rewardDiff;
+                                Console.WriteLine("rewardLeft    : " + rewardLeft.ToString());
+                                Console.WriteLine("luckyReward   : " + luckyReward.ToString());
+                                Console.WriteLine("totalSuppply  : " + totalSuppply.ToString());
+                                Console.WriteLine("rewardVolume  : " + rewardVolume.ToString());
+                                Console.WriteLine("emptyRewardVolume  : " + emptyRewardVolume.ToString());
+                                Console.WriteLine("decimalNumber : " + decimalNumber.ToString());
+                                Console.WriteLine("Block count : " + rewardCount.ToString());
+                                Console.WriteLine("rewardPerBlock : " + rewardPerBlock.ToString());
+                                Console.WriteLine("rewardDiff : " + rewardDiff.ToString());
+                                //if (checkBlockReardDist== emptyRewardVolume)
+                                rewardBlock.Order = 1;
+                                rewardBlock.Spend = rewardVolume;
+                                rewardBlock.Left = rewardLeft;
+                                foreach (KeyValuePair<string, List<long>> entry in rewardBlock.List)
+                                {
+                                    string tmpNodeWallet = entry.Key;
+                                    if (rewardBlock.Addition.ContainsKey(tmpNodeWallet) == false)
+                                    {
+                                        rewardBlock.Addition.Add(tmpNodeWallet, new Dictionary<ulong, string>());
+                                    }
+                                    foreach (long innerEntry in entry.Value)
+                                    {
+                                        ulong bTime = blockRowTimeList[innerEntry];
+                                        if (rewardBlock.Addition[tmpNodeWallet].ContainsKey(bTime) == false)
+                                        {
+                                            rewardBlock.Addition[tmpNodeWallet].Add(bTime, "0");
+                                        }
+
+                                        //Console.WriteLine((rewardBlock.Addition[tmpNodeWallet][bTime]));
+                                        //Console.ReadLine();
+
+                                        BigInteger tmpTotalForNode =
+                                            BigInteger.Parse(rewardBlock.Addition[tmpNodeWallet][bTime]) +
+                                            rewardPerBlock;
+
+                                        rewardBlock.Addition[tmpNodeWallet][bTime] =
+                                        tmpTotalForNode.ToString();
+                                    }
+                                    /*
+                                    */
+                                }
+                                /*
+                                Notus.Variable.Struct.EmptyBlockRewardStruct rewardBlock = new Notus.Variable.Struct.EmptyBlockRewardStruct()
+                                {
+                                    Order = 0,
+                                    Spend = 0,
+                                    Left = 0,
+                                    List = new Dictionary<string, List<long>>(),
+                                    Add = new Dictionary<string, Dictionary<ulong, string>>()
+                                };
+
+                                */
+                                Console.WriteLine();
+                                Console.WriteLine(JsonSerializer.Serialize(rewardBlock));
+                                Console.WriteLine();
+                                // Console.WriteLine(JsonSerializer.Serialize(rewardBlock, new JsonSerializerOptions() { WriteIndented = true }));
+                                Console.ReadLine();
+                                Func_NewBlockIncome(rewardBlock);
+                                Console.ReadLine();
+                            }
+                            catch (Exception err)
+                            {
+                                Console.WriteLine(err.Message);
+                            }
                         }
                     }
+
                     /*
                     Console.WriteLine(JsonSerializer.Serialize(RewardList));
                     //blok zamanı ve utc zamanı çakışıyor
@@ -148,7 +231,7 @@ namespace Notus.Reward
                     */
                     TimerIsRunning = false;
                 }
-            }, false);
+            }, true);
             //Console.WriteLine("Control-Point-77-99886655");
         }
         public Block()
