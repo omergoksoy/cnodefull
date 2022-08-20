@@ -84,7 +84,7 @@ namespace Notus.Block
                 {
                     tmpGetListAgain = true;
                     Thread.Sleep(1);
-                    Console.WriteLine("Delete Zip : " + fileName);
+                    //Console.WriteLine("Delete Zip : " + fileName);
                     File.Delete(fileName);
                 }
             }
@@ -92,6 +92,38 @@ namespace Notus.Block
             {
                 return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
             }
+
+            bool multiBlockFound = false;
+            foreach (string fileName in ZipFileList)
+            {
+                List<string> deleteInnerFileList = new List<string>();
+                using (ZipArchive archive = ZipFile.OpenRead(fileName))
+                {
+                    List<string> fileNameList = new List<string>();
+                    foreach (ZipArchiveEntry entry in archive.Entries)
+                    {
+                        //Console.WriteLine("Entry Name : " + entry.FullName);
+                        if (fileNameList.IndexOf(entry.FullName) == -1)
+                        {
+                            fileNameList.Add(entry.FullName);
+                        }
+                        else
+                        {
+                            deleteInnerFileList.Add(entry.FullName);
+                        }
+                    }
+                }
+                if (deleteInnerFileList.Count > 0)
+                {
+                    Notus.Archive.DeleteFromInside(fileName, deleteInnerFileList, true);
+                    multiBlockFound = true;
+                }
+            }
+            if(multiBlockFound == true)
+            {
+                return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
+            }
+
             SortedDictionary<long, string> BlockOrderList = new SortedDictionary<long, string>();
             Dictionary<string, int> BlockTypeList = new Dictionary<string, int>();
             Dictionary<string, string> BlockPreviousList = new Dictionary<string, string>();
@@ -102,6 +134,7 @@ namespace Notus.Block
 
             foreach (string fileName in ZipFileList)
             {
+                //Console.WriteLine("Zip File Name : " + fileName);
                 List<Int64> tmpUpdateBlockRowList = new List<Int64>();
                 List<string> tmpDeleteFileList = new List<string>();
                 bool returnForCheckAgain = false;
@@ -109,6 +142,7 @@ namespace Notus.Block
                 {
                     foreach (ZipArchiveEntry entry in archive.Entries)
                     {
+                        //Console.WriteLine("Entry Name : " + entry.FullName);
                         if (entry.FullName.EndsWith(".json", StringComparison.OrdinalIgnoreCase) == false)
                         {
                             tmpDeleteFileList.Add(entry.FullName);
@@ -191,14 +225,17 @@ namespace Notus.Block
                 }
                 if (tmpDeleteFileList.Count > 0)
                 {
+                    //Console.WriteLine(JsonSerializer.Serialize(BlockOrderList));
+                    //Console.WriteLine(JsonSerializer.Serialize(tmpDeleteFileList));
                     Thread.Sleep(1);
                     Notus.Archive.DeleteFromInside(
                         fileName,
                         tmpDeleteFileList,
                         true
                     );
-
+                    Console.WriteLine(returnForCheckAgain);
                     Notus.Print.Danger(Obj_Settings, "Repair Block Integrity = Contains Wrong / Extra Data");
+                    Console.ReadLine();
                     if (returnForCheckAgain == true)
                     {
                         return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
@@ -224,7 +261,6 @@ namespace Notus.Block
                             Obj_Settings.NodeType != Notus.Variable.Enum.NetworkNodeType.Master
                         )
                         {
-                            Notus.Print.Info(Obj_Settings, "Getting Block Row No : " + SmallestBlockHeight.ToString());
                             StoreBlockWithRowNo(SmallestBlockHeight);
                         }
                         else
@@ -254,8 +290,8 @@ namespace Notus.Block
                 if (item.Key != controlNumber)
                 {
                     StoreBlockWithRowNo(controlNumber);
-                    //Console.WriteLine("We Need This Block :" + controlNumber.ToString());
-                    Notus.Print.Info(Obj_Settings, "We Get Block From Other Node > " + controlNumber.ToString());
+                    // Console.WriteLine("We Need This Block :" + controlNumber.ToString());
+                    // Notus.Print.Info(Obj_Settings, "We Get Block From Other Node > " + controlNumber.ToString());
                     /*
                     if (
                         Obj_Settings.NodeType != Notus.Variable.Enum.NetworkNodeType.Main &&
