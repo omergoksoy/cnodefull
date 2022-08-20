@@ -18,7 +18,7 @@ namespace Notus.Reward
         private Notus.Threads.Timer TimerObj;
         public void Execute(
             Notus.Variable.Common.ClassSetting objSettings,
-            System.Action<Notus.Variable.Class.BlockData>? Func_NewBlockIncome = null
+            System.Action<Notus.Variable.Struct.EmptyBlockRewardStruct> Func_NewBlockIncome
         )
         {
             //Console.WriteLine("Control-Point-7-774455");
@@ -39,7 +39,15 @@ namespace Notus.Reward
 
                         if (howManySecondAgo > dayAsSecond)
                         {
+                            Notus.Variable.Struct.EmptyBlockRewardStruct rewardBlock=new Notus.Variable.Struct.EmptyBlockRewardStruct()
+                            {
+                                Order = 0,
+                                Spend = 0,
+                                Left = 0,
+                                List = new Dictionary<string, List<long>>()
+                            };
                             List<long> blockRowNo = new List<long>();
+                            Dictionary<long,int> blockTypeRowNo = new Dictionary<long, int>();
                             Dictionary<string, int> minerCount = new Dictionary<string, int>();
                             Notus.Block.Storage storageObj = new Notus.Block.Storage(false);
                             storageObj.Network = objSettings.Network;
@@ -51,17 +59,30 @@ namespace Notus.Reward
                                 Notus.Variable.Class.BlockData? tmpBlockData = storageObj.ReadBlock(LastBlockUid);
                                 if (tmpBlockData != null)
                                 {
-                                    string blockValidator = tmpBlockData.miner.count.First().Key;
-                                    if (minerCount.ContainsKey(blockValidator) == false)
+                                    //Console.WriteLine("Row No : " + tmpBlockData.info.rowNo.ToString());
+                                    if (tmpBlockData.info.type == 300)
                                     {
-                                        minerCount.Add(blockValidator, 0);
-                                    }
-                                    minerCount[blockValidator] = minerCount[blockValidator] + 1;
-                                    blockRowNo.Add(tmpBlockData.info.rowNo);
+                                        string blockValidator = tmpBlockData.miner.count.First().Key;
+                                        if (minerCount.ContainsKey(blockValidator) == false)
+                                        {
+                                            minerCount.Add(blockValidator, 0);
+                                        }
+                                        minerCount[blockValidator] = minerCount[blockValidator] + 1;
+                                        blockRowNo.Add(tmpBlockData.info.rowNo);
+                                        blockTypeRowNo.Add(tmpBlockData.info.rowNo, tmpBlockData.info.type);
 
-                                    //LastBlockUid = tmpBlockData.prev.Substring(0, 90);
-                                    LastBlockUid = tmpBlockData.info.uID;
-                                    if (string.Equals(LastTypeUid, LastBlockUid) == true)
+                                        if (rewardBlock.List.ContainsKey(blockValidator) == false)
+                                        {
+                                            rewardBlock.List.Add(blockValidator, new List<long>() { });
+                                        }
+
+                                        if (rewardBlock.List[blockValidator].IndexOf(tmpBlockData.info.rowNo) == -1)
+                                        {
+                                            rewardBlock.List[blockValidator].Add(tmpBlockData.info.rowNo);
+                                        }
+                                    }
+                                    LastBlockUid = tmpBlockData.prev.Substring(0, 90);
+                                    if (string.Equals(LastTypeUid, tmpBlockData.info.uID) == true)
                                     {
                                         tmpExitLoop = true;
                                     }
@@ -74,11 +95,23 @@ namespace Notus.Reward
                                         tmpNullPrinted = true;
                                         Console.WriteLine("tmpBlockData = NULL;");
                                     }
+                                    tmpExitLoop = true;
                                 }
                             }
+
                             Console.WriteLine("Reward Distribution");
                             Console.WriteLine(JsonSerializer.Serialize(minerCount, new JsonSerializerOptions() { WriteIndented = true }));
+                            Console.WriteLine(JsonSerializer.Serialize(blockTypeRowNo, new JsonSerializerOptions() { WriteIndented = true }));
+                            Console.WriteLine(JsonSerializer.Serialize(rewardBlock, new JsonSerializerOptions() { WriteIndented = true }));
                             Console.WriteLine(JsonSerializer.Serialize(blockRowNo));
+                            int rewardCount = blockRowNo.Count;
+                            int rewardVolume = rewardCount * objSettings.Genesis.Empty.Reward;
+                            int rewardLeft = objSettings.Genesis.Empty.TotalSupply - rewardVolume;
+                            rewardBlock.Order = 1;
+                            rewardBlock.Spend = rewardVolume;
+                            rewardBlock.Left = rewardLeft;
+                            Func_NewBlockIncome(rewardBlock);
+                            Console.ReadLine();
                         }
                     }
                     /*

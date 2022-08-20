@@ -18,6 +18,8 @@ namespace Notus.Variable.Genesis
     public class EmptyBlockType
     {
         public bool Active { get; set; }
+        public int TotalSupply { get; set; }           // total reward supply
+        public int Reward { get; set; }           // total reward supply
         public IntervalType Interval { get; set; }
         public SlowBlockType SlowBlock { get; set; }
         public EmptyBlockNonceType Nonce { get; set; }
