@@ -39,19 +39,18 @@ namespace Notus.Reward
                         {
                             try
                             {
+                                ulong earliestBlockTime = ulong.MaxValue;
                                 Notus.Variable.Struct.EmptyBlockRewardStruct rewardBlock = new Notus.Variable.Struct.EmptyBlockRewardStruct()
                                 {
                                     Order = 0,
                                     Spend = 0,
                                     Left = 0,
                                     List = new Dictionary<string, List<long>>(),
-                                    Addition = new Dictionary<string, Dictionary<ulong, string>>()
+                                    Addition = new Dictionary<string, Dictionary<ulong, string>>(),
+                                    LuckyNode = new Dictionary<string, Dictionary<ulong, string>>()
                                 };
                                 ulong rewardCount = 0;
-                                //List<long> blockRowNo = new List<long>();
                                 Dictionary<long, ulong> blockRowTimeList = new Dictionary<long, ulong>();
-                                //Dictionary<long, int> blockTypeRowNo = new Dictionary<long, int>();
-                                Dictionary<string, int> minerCount = new Dictionary<string, int>();
                                 Notus.Block.Storage storageObj = new Notus.Block.Storage(false);
                                 storageObj.Network = objSettings.Network;
                                 storageObj.Layer = objSettings.Layer;
@@ -66,18 +65,14 @@ namespace Notus.Reward
                                         if (tmpBlockData.info.type == 300)
                                         {
                                             string blockValidator = tmpBlockData.miner.count.First().Key;
-                                            if (minerCount.ContainsKey(blockValidator) == false)
-                                            {
-                                                minerCount.Add(blockValidator, 0);
-                                            }
-                                            minerCount[blockValidator] = minerCount[blockValidator] + 1;
-                                            //blockRowNo.Add(tmpBlockData.info.rowNo);
                                             rewardCount++;
-                                            //blockTypeRowNo.Add(tmpBlockData.info.rowNo, tmpBlockData.info.type);
-                                            
-                                            blockRowTimeList.Add(tmpBlockData.info.rowNo,
-                                                Notus.Date.ToLong(tmpBlockData.info.time)
-                                            );
+                                            ulong tmpBlockTime = Notus.Date.ToLong(tmpBlockData.info.time);
+                                            if (earliestBlockTime > tmpBlockTime)
+                                            {
+                                                earliestBlockTime = tmpBlockTime;
+                                            }
+
+                                            blockRowTimeList.Add(tmpBlockData.info.rowNo, tmpBlockTime);
 
                                             if (rewardBlock.List.ContainsKey(blockValidator) == false)
                                             {
@@ -108,10 +103,6 @@ namespace Notus.Reward
                                 }
 
                                 Console.WriteLine("Reward Distribution");
-                                //Console.WriteLine(JsonSerializer.Serialize(minerCount, new JsonSerializerOptions() { WriteIndented = true }));
-                                //Console.WriteLine(JsonSerializer.Serialize(blockRowTimeList, new JsonSerializerOptions() { WriteIndented = true }));
-                                //Console.WriteLine(JsonSerializer.Serialize(blockTypeRowNo, new JsonSerializerOptions() { WriteIndented = true }));
-                                //Console.WriteLine(JsonSerializer.Serialize(blockRowNo));
                                 ulong decimalNumber = (ulong)Math.Pow(10, (double)objSettings.Genesis.Reserve.Decimal);
 
                                 // genesisi oluşturulmadan önce bu değerler olmadığı için 
@@ -130,16 +121,8 @@ namespace Notus.Reward
                                 ulong checkBlockReardDist = rewardPerBlock * rewardCount;
                                 ulong rewardDiff = emptyRewardVolume - checkBlockReardDist;
                                 luckyReward = luckyReward + rewardDiff;
-                                Console.WriteLine("rewardLeft    : " + rewardLeft.ToString());
-                                Console.WriteLine("luckyReward   : " + luckyReward.ToString());
-                                Console.WriteLine("totalSuppply  : " + totalSuppply.ToString());
-                                Console.WriteLine("rewardVolume  : " + rewardVolume.ToString());
-                                Console.WriteLine("emptyRewardVolume  : " + emptyRewardVolume.ToString());
-                                Console.WriteLine("decimalNumber : " + decimalNumber.ToString());
-                                Console.WriteLine("Block count : " + rewardCount.ToString());
-                                Console.WriteLine("rewardPerBlock : " + rewardPerBlock.ToString());
-                                Console.WriteLine("rewardDiff : " + rewardDiff.ToString());
-                                //if (checkBlockReardDist== emptyRewardVolume)
+
+                                rewardBlock.Count = rewardCount;
                                 rewardBlock.Order = 1;
                                 rewardBlock.Spend = rewardVolume;
                                 rewardBlock.Left = rewardLeft;
@@ -152,7 +135,12 @@ namespace Notus.Reward
                                     }
                                     foreach (long innerEntry in entry.Value)
                                     {
-                                        ulong bTime = blockRowTimeList[innerEntry];
+                                        ulong bTime = Notus.Date.ToLong(
+                                            Notus.Date.ToDateTime(
+                                                blockRowTimeList[innerEntry]
+                                            ).AddDays(30)
+                                        );
+
                                         if (rewardBlock.Addition[tmpNodeWallet].ContainsKey(bTime) == false)
                                         {
                                             rewardBlock.Addition[tmpNodeWallet].Add(bTime, "0");
@@ -171,6 +159,8 @@ namespace Notus.Reward
                                     /*
                                     */
                                 }
+
+
                                 /*
                                 Notus.Variable.Struct.EmptyBlockRewardStruct rewardBlock = new Notus.Variable.Struct.EmptyBlockRewardStruct()
                                 {
@@ -182,6 +172,19 @@ namespace Notus.Reward
                                 };
 
                                 */
+
+                                string luckyNodeWalletStr = "lucky-node-wallet";
+                                rewardBlock.LuckyNode.Add(luckyNodeWalletStr, new Dictionary<ulong, string>()
+                                {
+                                    {
+                                        Notus.Date.ToLong(
+                                            Notus.Date.ToDateTime(
+                                                earliestBlockTime
+                                            ).AddDays(30)
+                                        ), 
+                                        luckyReward.ToString() 
+                                    }
+                                });
                                 Console.WriteLine();
                                 Console.WriteLine(JsonSerializer.Serialize(rewardBlock));
                                 Console.WriteLine();
