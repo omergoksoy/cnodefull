@@ -64,7 +64,7 @@ namespace Notus.Validator
             Notus.Threads.Timer TimerObj = new Notus.Threads.Timer(1000);
             TimerObj.Start(() =>
             {
-                if (EmptyBlockTimerIsRunning == false)
+                if (ValidatorQueueObj.MyTurn==true && EmptyBlockTimerIsRunning == false)
                 {
                     EmptyBlockTimerIsRunning = true;
                     int howManySeconds = Obj_Settings.Genesis.Empty.Interval.Time;
@@ -698,18 +698,21 @@ namespace Notus.Validator
                 /*
                 RewardBlockObj.Execute(Obj_Settings);
                 */
+
+                /*
                 RewardBlockObj.Execute(Obj_Settings, tmpPreBlockIncome =>
                 {
                     //Console.WriteLine(JsonSerializer.Serialize(BlockRewardList));
                     Console.WriteLine(JsonSerializer.Serialize(tmpPreBlockIncome));
-                    Console.WriteLine(JsonSerializer.Serialize(tmpPreBlockIncome));
-                    Console.ReadLine();
-                    Obj_BlockQueue.Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
-                    {
-                        type = 255, // empty block ödülleri
-                        data = JsonSerializer.Serialize(tmpPreBlockIncome)
-                    });
+                    //Console.WriteLine(JsonSerializer.Serialize(tmpPreBlockIncome));
+                    //Console.ReadLine();
+                    //Obj_BlockQueue.Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
+                    //{
+                        //type = 255, // empty block ödülleri
+                        //data = JsonSerializer.Serialize(tmpPreBlockIncome)
+                    //});
                 });
+                */
                 //Console.WriteLine("Control-Point-4-99665588");
 
                 if (Obj_Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer1)
