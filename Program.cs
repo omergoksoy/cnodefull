@@ -14,7 +14,9 @@ static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEv
     Console.WriteLine("press enter to continue");
     Console.ReadLine();
 }
-
+// DLL 'in version bilgisini çekiyor.
+// Console.WriteLine("{0}", System.Reflection.AssemblyName.GetAssemblyName("Microsoft.Data.Sqlite.dll").Version);
+// Console.ReadLine();
 /*
 for(int a=0; a < 256; a++)
 {
