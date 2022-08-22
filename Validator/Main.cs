@@ -440,6 +440,8 @@ namespace Notus.Validator
                                 }
                             }
                         }
+
+
                         if (transactionCount > 0)
                         {
                             foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> walletEntry in tmpBlockCipherData.Out)
@@ -461,12 +463,16 @@ namespace Notus.Validator
                                 }
                             }
                             tmpBlockCipherData.Validator.Reward = totalBlockReward.ToString();
-
-                            Obj_BlockQueue.Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
+                            //omergoksoy                            
+                            bool tmpAddResult=Obj_BlockQueue.Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
                             {
                                 type = 120,
                                 data = JsonSerializer.Serialize(tmpBlockCipherData)
                             });
+                            if (tmpAddResult == false)
+                            {
+
+                            }
                         }
                         foreach (KeyValuePair<string, Notus.Variable.Class.BlockStruct_120_In_Struct> entry in tmpBlockCipherData.In)
                         {

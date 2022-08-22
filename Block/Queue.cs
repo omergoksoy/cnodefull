@@ -324,7 +324,7 @@ namespace Notus.Block
             MP_BlockPoolList.Clear();
             Queue_PoolTransaction.Clear();
         }
-        public void Add(Notus.Variable.Struct.PoolBlockRecordStruct PreBlockData)
+        public bool Add(Notus.Variable.Struct.PoolBlockRecordStruct PreBlockData)
         {
             Queue_PoolTransaction.Enqueue(new Notus.Variable.Struct.List_PoolBlockRecordStruct()
             {
@@ -333,12 +333,27 @@ namespace Notus.Block
                 data = PreBlockData.data
             });
 
-
+            string PreBlockDataStr = JsonSerializer.Serialize(PreBlockData);
+            if (PreBlockDataStr.IndexOf("}:{") > 0)
+            {
+                Console.WriteLine("Notus.Block.Queue.Add -> Line 339 -> On blok hazırlama hatasi");
+                Console.WriteLine(PreBlockDataStr);
+                Console.ReadLine();
+            }
+            /*
+            "Set" fonksiyonu ile bazı durumlarda çakışma olduğu için Add fonksiyonu ile yer değiştirildi
             MP_BlockPoolList.Set(
                 GiveBlockKey(PreBlockData.data),
                 JsonSerializer.Serialize(
                     PreBlockData
                 ), true
+            );
+            */
+            return MP_BlockPoolList.Add(
+                GiveBlockKey(PreBlockData.data),
+                JsonSerializer.Serialize(
+                    PreBlockData
+                )
             );
         }
 
@@ -352,7 +367,9 @@ namespace Notus.Block
         }
         public string GiveBlockKey(string BlockDataStr)
         {
-            return new Notus.Hash().CommonHash("md5", BlockDataStr) + new Notus.Hash().CommonHash("sha1", BlockDataStr);
+            return 
+                new Notus.Hash().CommonHash("md5", BlockDataStr) + 
+                new Notus.Hash().CommonHash("sha1", BlockDataStr);
         }
         public void Start()
         {
