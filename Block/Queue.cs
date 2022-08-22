@@ -324,7 +324,7 @@ namespace Notus.Block
             MP_BlockPoolList.Clear();
             Queue_PoolTransaction.Clear();
         }
-        public bool Add(Notus.Variable.Struct.PoolBlockRecordStruct PreBlockData)
+        public void Add(Notus.Variable.Struct.PoolBlockRecordStruct PreBlockData)
         {
             Queue_PoolTransaction.Enqueue(new Notus.Variable.Struct.List_PoolBlockRecordStruct()
             {
@@ -340,21 +340,20 @@ namespace Notus.Block
                 Console.WriteLine(PreBlockDataStr);
                 Console.ReadLine();
             }
-            /*
-            "Set" fonksiyonu ile bazı durumlarda çakışma olduğu için Add fonksiyonu ile yer değiştirildi
             MP_BlockPoolList.Set(
                 GiveBlockKey(PreBlockData.data),
                 JsonSerializer.Serialize(
                     PreBlockData
                 ), true
             );
-            */
+            /*
             return MP_BlockPoolList.Add(
                 GiveBlockKey(PreBlockData.data),
                 JsonSerializer.Serialize(
                     PreBlockData
                 )
             );
+            */
         }
 
         public void AddEmptyBlock()
