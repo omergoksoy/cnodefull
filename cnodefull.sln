@@ -6,10 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cnodefull", "cnodefull.csproj", "{7BE102E8-FAB6-417F-A541-75A509E4A02E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6D3E8A21-7DF8-40F1-9C08-5065B44D3B88}"
-	ProjectSection(SolutionItems) = preProject
-		bin\Debug\net6.0\1348b96233650f1a4b1712c97de3393b90909b5e65c35fc8a1f6ef13a14aa43da99f3ff95bdaa8435b13c33d54.json = bin\Debug\net6.0\1348b96233650f1a4b1712c97de3393b90909b5e65c35fc8a1f6ef13a14aa43da99f3ff95bdaa8435b13c33d54.json
-		EmptyTextFile.txt = EmptyTextFile.txt
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
