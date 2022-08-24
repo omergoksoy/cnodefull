@@ -759,8 +759,8 @@ namespace Notus.Validator
                     // geçerli utc zaman bilgisini alıp block oluşturma işlemi için parametre olarak gönder böylece
                     // her blok utc zamanı ile oluşturulmuş olsun
                     DateTime currentUtcTime = ValidatorQueueObj.GetUtcTime();
-                    (bool bStatus, Notus.Variable.Struct.PoolBlockRecordStruct TmpBlockStruct) = Obj_BlockQueue.Get(currentUtcTime);
-                    if (bStatus == true)
+                    Notus.Variable.Struct.PoolBlockRecordStruct? TmpBlockStruct = Obj_BlockQueue.Get(currentUtcTime);
+                    if (TmpBlockStruct != null)
                     {
                         Notus.Variable.Class.BlockData? PreBlockData = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(TmpBlockStruct.data);
 
@@ -780,7 +780,7 @@ namespace Notus.Validator
                             PreBlockData = Obj_BlockQueue.OrganizeBlockOrder(PreBlockData);
                             Notus.Variable.Class.BlockData PreparedBlockData = new Notus.Block.Generate(Obj_Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
                             ProcessBlock(PreparedBlockData, 4);
-                            ValidatorQueueObj.Distrubute(PreBlockData.info.rowNo);
+                            ValidatorQueueObj.Distrubute(PreBlockData.info.rowNo, PreBlockData.info.type);
                             Thread.Sleep(1);
                         }
                         else

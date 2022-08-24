@@ -93,15 +93,23 @@ namespace Notus.Validator
         }
 
         //oluşturulacak blokları kimin oluşturacağını seçen fonksiyon
-        public void Distrubute(long blockRowNo)
+        public void Distrubute(long blockRowNo,int blockType=0)
         {
             foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
             {
                 if (string.Equals(MyNodeHexKey, entry.Key) == false && entry.Value.Status == NodeStatus.Online)
                 {
-                    Notus.Print.Info(Obj_Settings, "Distrubuting " + blockRowNo.ToString() + ". Block To " + entry.Value.IP.IpAddress+":"+ entry.Value.IP.Port.ToString());
+                    Notus.Print.Info(Obj_Settings, 
+                        "Distrubuting " + 
+                        blockRowNo.ToString() +"[ " +
+                        blockType.ToString()+ 
+                        " ] . Block To " + 
+                        entry.Value.IP.IpAddress+":"+ 
+                        entry.Value.IP.Port.ToString()
+                    );
                     SendMessage(entry.Value.IP,
-                        "<block>" + blockRowNo.ToString() + ":" + Obj_Settings.NodeWallet.WalletKey + "</block>",
+                        "<block>" + blockRowNo.ToString() + ":" + 
+                        Obj_Settings.NodeWallet.WalletKey + "</block>",
                         true
                     );
                 }
