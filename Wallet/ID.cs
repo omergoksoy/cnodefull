@@ -20,6 +20,11 @@ namespace Notus.Wallet
     /// </summary>
     public class ID
     {
+        public static bool NewMultiKey()
+        {
+            return false;
+        }
+
         /// <summary>
         /// Verifies data and returns verify status
         /// </summary>
