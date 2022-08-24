@@ -548,6 +548,11 @@ namespace Notus.Validator
             Obj_BlockQueue.Settings = Obj_Settings;
             Obj_BlockQueue.Start();
 
+            Obj_Api.Func_GetPoolList = blockTypeNo =>
+            {
+                return Obj_BlockQueue.GetPoolList(blockTypeNo);
+            };
+
             Obj_Api.Func_OnReadFromChain = blockKeyIdStr =>
             {
                 Notus.Variable.Class.BlockData? tmpBlockResult = Obj_BlockQueue.ReadFromChain(blockKeyIdStr);

@@ -53,8 +53,8 @@ namespace Notus.Validator
         private SortedDictionary<string, IpInfo> MainAddressList = new SortedDictionary<string, IpInfo>();
         private string MainAddressListHash = string.Empty;
 
-        private Dictionary<string, NodeQueueInfo> PreviousNodeList = new Dictionary<string, NodeQueueInfo>();
-        public Dictionary<string, NodeQueueInfo> SyncNodeList
+        private Dictionary<string, NodeQueueInfo>? PreviousNodeList = new Dictionary<string, NodeQueueInfo>();
+        public Dictionary<string, NodeQueueInfo>? SyncNodeList
         {
             get { return PreviousNodeList; }
             set { PreviousNodeList = value; }

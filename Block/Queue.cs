@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace Notus.Block
 {
@@ -20,9 +17,20 @@ namespace Notus.Block
 
         private Notus.Mempool MP_BlockPoolList;
         private Notus.Block.Storage BS_Storage;
+        private Dictionary<int, List<Notus.Variable.Struct.List_PoolBlockRecordStruct>> Obj_PoolTransactionList =
+            new Dictionary<int, List<Notus.Variable.Struct.List_PoolBlockRecordStruct>>();
         private Queue<Notus.Variable.Struct.List_PoolBlockRecordStruct> Queue_PoolTransaction = new Queue<Notus.Variable.Struct.List_PoolBlockRecordStruct>();
 
         //bu foknsiyonun görevi blok sırası ve önceki değerlerini blok içeriğine eklemek
+        public List<Notus.Variable.Struct.List_PoolBlockRecordStruct>? GetPoolList(int BlockType)
+        {
+            if (Obj_PoolTransactionList.ContainsKey(BlockType))
+            {
+                return Obj_PoolTransactionList[BlockType];
+            }
+            return null;
+        }
+
         public Notus.Variable.Class.BlockData OrganizeBlockOrder(Notus.Variable.Class.BlockData CurrentBlock)
         {
             CurrentBlock.info.rowNo = Obj_Settings.LastBlock.info.rowNo + 1;
@@ -87,7 +95,7 @@ namespace Notus.Block
                             if (CurrentBlockType == 120)
                             {
                                 Notus.Variable.Class.BlockStruct_120? tmpBlockCipherData = JsonSerializer.Deserialize<Notus.Variable.Class.BlockStruct_120>(TmpPoolRecord.data);
-                                if(tmpBlockCipherData== null)
+                                if (tmpBlockCipherData == null)
                                 {
                                     addToList = false;
                                 }
@@ -106,9 +114,10 @@ namespace Notus.Block
                                         }
                                     }
 
-                                    if(addToList == false)
+                                    if (addToList == false)
                                     {
                                         Queue_PoolTransaction.Enqueue(TmpPoolRecord);
+                                        Obj_PoolTransactionList[CurrentBlockType].Add(TmpPoolRecord);
                                         exitLoop = true;
                                     }
                                 }
@@ -120,6 +129,7 @@ namespace Notus.Block
                                 TempBlockList.Add(TmpPoolRecord.data);
                             }
                             Queue_PoolTransaction.Dequeue();
+                            Obj_PoolTransactionList[CurrentBlockType].RemoveAt(0);
                             if (
                                 TempPoolTransactionList.Count == 1000 ||
                                 CurrentBlockType == 240 || // layer1 - > dosya ekleme isteği
@@ -177,7 +187,7 @@ namespace Notus.Block
                 BlockStruct.info.nonce.difficulty = Notus.Variable.Constant.Default_BlockDifficulty;  // block difficulty level
             }
 
-            string LongNonceText=string.Empty;
+            string LongNonceText = string.Empty;
 
             BlockStruct.cipher.ver = "NE";
             BlockStruct.info.uID = Notus.Block.Key.Generate(GetNtpTime(), Obj_Settings.NodeWallet.WalletKey);
@@ -218,7 +228,7 @@ namespace Notus.Block
                 }
                 if (CurrentBlockType == 120)
                 {
-                    Console.WriteLine("control-point-11-bcbc");
+                    //Console.WriteLine("control-point-11-bcbc");
                     if (TempBlockList.Count > 1)
                     {
                         Console.WriteLine("--------------------------------------");
@@ -234,8 +244,8 @@ namespace Notus.Block
                     }
                     else
                     {
-                        Console.WriteLine("control-point-14-bcbc");
-                        Console.WriteLine(JsonSerializer.Serialize(TempBlockList, new JsonSerializerOptions() { WriteIndented = true }));
+                        //Console.WriteLine("control-point-14-bcbc");
+                        //Console.WriteLine(JsonSerializer.Serialize(TempBlockList, new JsonSerializerOptions() { WriteIndented = true }));
                     }
                 }
 
@@ -306,7 +316,7 @@ namespace Notus.Block
 
         private DateTime GetNtpTime()
         {
-            if(
+            if (
                 string.Equals(
                     LastNtpTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText),
                     Notus.Variable.Constant.DefaultTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
@@ -316,7 +326,7 @@ namespace Notus.Block
                 LastNtpTime = Notus.Time.GetFromNtpServer();
                 DateTime tmpNtpCheckTime = DateTime.Now;
                 NodeTimeAfterNtpTime = (tmpNtpCheckTime > LastNtpTime);
-                NtpTimeDifference = (NodeTimeAfterNtpTime == true ? (tmpNtpCheckTime - LastNtpTime) : (LastNtpTime - tmpNtpCheckTime)) ;
+                NtpTimeDifference = (NodeTimeAfterNtpTime == true ? (tmpNtpCheckTime - LastNtpTime) : (LastNtpTime - tmpNtpCheckTime));
                 return LastNtpTime;
             }
 
@@ -350,41 +360,28 @@ namespace Notus.Block
             Notus.Archive.ClearBlocks(Obj_Settings);
             MP_BlockPoolList.Clear();
             Queue_PoolTransaction.Clear();
+            Obj_PoolTransactionList.Clear();
         }
-        public void Add(Notus.Variable.Struct.PoolBlockRecordStruct PreBlockData)
+        public void Add(Notus.Variable.Struct.PoolBlockRecordStruct? PreBlockData)
         {
-            Queue_PoolTransaction.Enqueue(new Notus.Variable.Struct.List_PoolBlockRecordStruct()
+            if (PreBlockData != null)
             {
-                key = Notus.Block.Key.Generate(GetNtpTime(), Obj_Settings.NodeWallet.WalletKey),
-                type = PreBlockData.type,
-                data = PreBlockData.data
-            });
-
-            string PreBlockDataStr = JsonSerializer.Serialize(PreBlockData);
-            //testpoint
-            //testpoint
-            //testpoint
-            //testpoint
-            if (PreBlockDataStr.IndexOf("}:{") > 0)
-            {
-                Console.WriteLine("Notus.Block.Queue.Add -> Line 339 -> On blok hazırlama hatasi");
-                Console.WriteLine(PreBlockDataStr);
-                Console.ReadLine();
+                string blockKeyStr = Notus.Block.Key.Generate(GetNtpTime(), Obj_Settings.NodeWallet.WalletKey);
+                Add2Queue(PreBlockData, blockKeyStr);
+                
+                //testpoint
+                //testpoint
+                //testpoint
+                //testpoint
+                string PreBlockDataStr = JsonSerializer.Serialize(PreBlockData);
+                if (PreBlockDataStr.IndexOf("}:{") > 0)
+                {
+                    Console.WriteLine("Notus.Block.Queue.Add -> Line 339 -> On blok hazırlama hatasi");
+                    Console.WriteLine(PreBlockDataStr);
+                    Console.ReadLine();
+                }
+                MP_BlockPoolList.Set(GiveBlockKey(PreBlockData.data), PreBlockDataStr, true);
             }
-            MP_BlockPoolList.Set(
-                GiveBlockKey(PreBlockData.data),
-                JsonSerializer.Serialize(
-                    PreBlockData
-                ), true
-            );
-            /*
-            return MP_BlockPoolList.Add(
-                GiveBlockKey(PreBlockData.data),
-                JsonSerializer.Serialize(
-                    PreBlockData
-                )
-            );
-            */
         }
 
         public void AddEmptyBlock()
@@ -397,9 +394,36 @@ namespace Notus.Block
         }
         public string GiveBlockKey(string BlockDataStr)
         {
-            return 
-                new Notus.Hash().CommonHash("md5", BlockDataStr) + 
+            return
+                new Notus.Hash().CommonHash("md5", BlockDataStr) +
                 new Notus.Hash().CommonHash("sha1", BlockDataStr);
+        }
+        private void Add2Queue(Notus.Variable.Struct.PoolBlockRecordStruct? PreBlockData, string BlockKeyStr)
+        {
+            if (PreBlockData != null)
+            {
+                if (Obj_PoolTransactionList.ContainsKey(PreBlockData.type) == false)
+                {
+                    Obj_PoolTransactionList.Add(
+                        PreBlockData.type,
+                        new List<Variable.Struct.List_PoolBlockRecordStruct>() { }
+                    );
+                }
+                Obj_PoolTransactionList[PreBlockData.type].Add(
+                    new Notus.Variable.Struct.List_PoolBlockRecordStruct()
+                    {
+                        key = BlockKeyStr,
+                        type = PreBlockData.type,
+                        data = PreBlockData.data
+                    }
+                );
+                Queue_PoolTransaction.Enqueue(new Notus.Variable.Struct.List_PoolBlockRecordStruct()
+                {
+                    key = BlockKeyStr,
+                    type = PreBlockData.type,
+                    data = PreBlockData.data
+                });
+            }
         }
         public void Start()
         {
@@ -417,17 +441,14 @@ namespace Notus.Block
                 Notus.Variable.Struct.PoolBlockRecordStruct? PreBlockData = JsonSerializer.Deserialize<Notus.Variable.Struct.PoolBlockRecordStruct>(TextBlockDataString);
                 if (PreBlockData != null)
                 {
-                    Queue_PoolTransaction.Enqueue(new Notus.Variable.Struct.List_PoolBlockRecordStruct()
-                    {
-                        key = blockTransactionKey,
-                        type = PreBlockData.type,
-                        data = PreBlockData.data
-                    });
+                    Add2Queue(PreBlockData, blockTransactionKey);
                 }
             });
         }
         public Queue()
         {
+            Obj_PoolTransactionList.Clear();
+
             Queue_PoolTransaction.Clear();
         }
         ~Queue()
