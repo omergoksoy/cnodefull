@@ -18,10 +18,15 @@ namespace Notus.Variable
         */
 
         // wallet constant
-        public static readonly int WalletTextLength = 38;
-        public static readonly string Prefix_MainNetwork = "NR";
-        public static readonly string Prefix_TestNetwork = "NT";
-        public static readonly string Prefix_DevelopmentNetwork = "ND";
+        public static readonly int SingleWalletTextLength = 39;
+        public static readonly int MultiWalletTextLength = 39;
+        public static readonly string SingleWalletPrefix_MainNetwork = "NTS";
+        public static readonly string SingleWalletPrefix_TestNetwork = "not";
+        public static readonly string SingleWalletPrefix_DevelopmentNetwork = "NOD";
+
+        public static readonly string MultiWalletPrefix_MainNetwork = "NMR";
+        public static readonly string MultiWalletPrefix_TestNetwork = "NMT";
+        public static readonly string MultiWalletPrefix_DevelopmentNetwork = "NMD";
 
         //notus coin
         public static readonly string MainCoinTagName = "NOTUS";
