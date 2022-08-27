@@ -549,29 +549,28 @@ namespace Notus.Validator
             IncomeData.PostParams["data"] = JsonSerializer.Serialize(tmpSignedTrans);
             return Request_Send(IncomeData);
         }
-        private (bool, Notus.Variable.Class.BlockData) GetBlockWithRowNo(Int64 BlockRowNo)
+        private Notus.Variable.Class.BlockData? GetBlockWithRowNo(Int64 BlockRowNo)
         {
             if (Func_OnReadFromChain == null)
             {
-                //Console.WriteLine("Func_OnReadFromChain = NULL");
-                return (false, null);
+                return null;
             }
             if (Obj_Settings.LastBlock.info.rowNo >= BlockRowNo)
             {
                 if (Obj_Settings.LastBlock.info.rowNo == BlockRowNo)
                 {
-                    return (true, Obj_Settings.LastBlock);
+                    return Obj_Settings.LastBlock;
                 }
                 bool exitPrevWhile = false;
                 string PrevBlockIdStr = Obj_Settings.LastBlock.prev;
                 while (exitPrevWhile == false)
                 {
-                    Notus.Variable.Class.BlockData tmpStoredBlock = Func_OnReadFromChain(PrevBlockIdStr.Substring(0, 90));
+                    Notus.Variable.Class.BlockData? tmpStoredBlock = Func_OnReadFromChain(PrevBlockIdStr.Substring(0, 90));
                     if (tmpStoredBlock != null)
                     {
                         if (tmpStoredBlock.info.rowNo == BlockRowNo)
                         {
-                            return (true, tmpStoredBlock);
+                            return tmpStoredBlock;
                         }
                         PrevBlockIdStr = tmpStoredBlock.prev;
                     }
@@ -581,7 +580,7 @@ namespace Notus.Validator
                     }
                 }
             }
-            return (false, null);
+            return null;
         }
 
         private string Request_TransactionStatus(Notus.Variable.Struct.HttpRequestDetails IncomeData)
@@ -1443,14 +1442,8 @@ namespace Notus.Validator
 
         private string Request_Block(Notus.Variable.Struct.HttpRequestDetails IncomeData)
         {
-            bool prettyJson = Obj_Settings.PrettyJson;
-            if (IncomeData.UrlList.Length > 2)
-            {
-                if (string.Equals(IncomeData.UrlList[2].ToLower(), "raw"))
-                {
-                    prettyJson = false;
-                }
-            }
+
+            bool prettyJson = PrettyCheckForRaw(IncomeData, 2);
             if (IncomeData.UrlList[1].Length == 90)
             {
                 try
@@ -1476,8 +1469,8 @@ namespace Notus.Validator
             bool isNumeric = Int64.TryParse(IncomeData.UrlList[1], out BlockNumber);
             if (isNumeric == true)
             {
-                (bool blockFound, Notus.Variable.Class.BlockData tmpResultBlock) = GetBlockWithRowNo(BlockNumber);
-                if (blockFound == true)
+                Notus.Variable.Class.BlockData? tmpResultBlock = GetBlockWithRowNo(BlockNumber);
+                if (tmpResultBlock != null)
                 {
                     if (prettyJson == true)
                     {
@@ -1510,8 +1503,8 @@ namespace Notus.Validator
             bool isNumeric2 = Int64.TryParse(IncomeData.UrlList[2], out BlockNumber2);
             if (isNumeric2 == true)
             {
-                (bool blockFound, Notus.Variable.Class.BlockData tmpResultBlock) = GetBlockWithRowNo(BlockNumber2);
-                if (blockFound == true)
+                Notus.Variable.Class.BlockData? tmpResultBlock = GetBlockWithRowNo(BlockNumber2);
+                if (tmpResultBlock != null)
                 {
                     return tmpResultBlock.info.uID + tmpResultBlock.sign;
                 }
@@ -1703,14 +1696,7 @@ namespace Notus.Validator
 
         private string Request_Balance(Notus.Variable.Struct.HttpRequestDetails IncomeData)
         {
-            bool prettyJson = Obj_Settings.PrettyJson;
-            if (IncomeData.UrlList.Length > 2)
-            {
-                if (string.Equals(IncomeData.UrlList[2] , "raw"))
-                {
-                    prettyJson = false;
-                }
-            }
+            bool prettyJson = PrettyCheckForRaw(IncomeData, 2);
 
             Notus.Variable.Struct.WalletBalanceStruct balanceResult = new Notus.Variable.Struct.WalletBalanceStruct()
             {
@@ -2000,7 +1986,7 @@ namespace Notus.Validator
         }
         private string Request_Online(Notus.Variable.Struct.HttpRequestDetails IncomeData)
         {
-            if (Obj_Settings.PrettyJson == true)
+            if (PrettyCheckForRaw(IncomeData, 1))
             {
                 return JsonSerializer.Serialize(IncomeData, new JsonSerializerOptions() { WriteIndented = true });
             }
