@@ -19,7 +19,7 @@ namespace Notus.Wallet
     /// </summary>
     public class ID
     {
-        public static bool NewMultiKey()
+        public static bool NewMultiKey(List<string> WalletList)
         {
             return false;
         }

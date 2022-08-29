@@ -501,5 +501,20 @@ namespace Notus.Variable.Struct
         public Dictionary<string, Dictionary<ulong, string>> Addition { get; set; }  // after 
         public Dictionary<string,List<long>> List { get; set; }
     }
+
+    public class LockWalletStruct
+    {
+        public string WalletKey { get; set; }
+        public ulong LockTime { get; set; }
+        public string PublicKey { get; set; }
+        public string Sign { get; set; }
+    }
+
+    public class MultiWalletPart
+    {
+        public string PublicKey { get; set; }
+        public string Sign { get; set; }
+        //public 
+    }
 }
 

@@ -320,6 +320,10 @@ namespace Notus.Validator
                         return JsonSerializer.Serialize(false);
                     }
 
+                    if (string.Equals(IncomeData.UrlList[0].ToLower(), "lock"))
+                    {
+                        return Request_LockAccount(IncomeData,true);
+                    }
                     if (string.Equals(IncomeData.UrlList[0].ToLower(), "balance"))
                     {
                         return Request_Balance(IncomeData);
@@ -1691,6 +1695,44 @@ namespace Notus.Validator
             return JsonSerializer.Serialize(false);
         }
 
+        private string Request_LockAccount(Notus.Variable.Struct.HttpRequestDetails IncomeData)
+        {
+            if (IncomeData.UrlList[1].Length != Notus.Variable.Constant.SingleWalletTextLength)
+            {
+                return JsonSerializer.Serialize(false);
+            }
+
+            if (IncomeData.PostParams.ContainsKey("data") ==false)
+            {
+                return JsonSerializer.Serialize(false);
+            }
+
+            string tmpLockAccountStr = IncomeData.PostParams["data"];
+            Notus.Variable.Struct.LockWalletStruct? LockObj = JsonSerializer.Deserialize<Notus.Variable.Struct.LockWalletStruct>(tmpLockAccountStr);
+            if (LockObj == null)
+            {
+                return JsonSerializer.Serialize(false);
+            }
+
+            if (Func_AddToChainPool == null)
+            {
+                return JsonSerializer.Serialize(false);
+            }
+            //omergoksoy - kontrol point
+            //omergoksoy - kontrol point
+            //omergoksoy - kontrol point
+            //omergoksoy - kontrol point
+            bool tmpAddResult = Func_AddToChainPool(new Notus.Variable.Struct.PoolBlockRecordStruct()
+            {
+                type = 40,
+                data = JsonSerializer.Serialize(LockObj)
+            });
+            if (tmpAddResult == true)
+            {
+                return JsonSerializer.Serialize("added");
+            }
+            return JsonSerializer.Serialize(false);
+        }
         private string Request_Balance(Notus.Variable.Struct.HttpRequestDetails IncomeData)
         {
             Notus.Variable.Struct.WalletBalanceStruct balanceResult = new Notus.Variable.Struct.WalletBalanceStruct()
