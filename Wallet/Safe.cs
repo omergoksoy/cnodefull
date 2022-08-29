@@ -18,7 +18,6 @@ namespace Notus.Wallet
             string publicKey=Notus.Wallet.ID.GetAddress(privateKey, networkType);
             string rawData=Notus.Core.MergeRawData.WalletSafe(walletKey, publicKey,pass, unlockTime);
             string sign=Notus.Wallet.ID.Sign(rawData, privateKey);
-
         }
     }
 }
