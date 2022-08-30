@@ -15,9 +15,9 @@ namespace Notus.Wallet
             Notus.Variable.Enum.NetworkType networkType
         )
         {
-            string publicKey=Notus.Wallet.ID.GetAddress(privateKey, networkType);
-            string rawData=Notus.Core.MergeRawData.WalletSafe(walletKey, publicKey,pass, unlockTime);
-            string sign=Notus.Wallet.ID.Sign(rawData, privateKey);
+            //string publicKey=Notus.Wallet.ID.GetAddress(privateKey, networkType);
+            //string rawData=Notus.Core.MergeRawData.WalletSafe(walletKey, publicKey,pass, unlockTime);
+            //string sign =Notus.Wallet.ID.Sign(rawData, privateKey);
         }
     }
 }

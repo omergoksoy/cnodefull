@@ -319,7 +319,7 @@ namespace Notus.Validator
 
                     if (string.Equals(IncomeData.UrlList[0].ToLower(), "lock"))
                     {
-                        return Request_LockAccount(IncomeData, true);
+                        return Request_LockAccount(IncomeData);
                     }
                     if (string.Equals(IncomeData.UrlList[0].ToLower(), "balance"))
                     {
@@ -1772,7 +1772,7 @@ namespace Notus.Validator
             {
                 UID = tmpChunkIdKey,
                 WalletKey = LockObj.WalletKey,
-                LockTime = LockObj.LockTime,
+                UnlockTime = LockObj.UnlockTime,
                 PublicKey = LockObj.PublicKey,
                 Sign = LockObj.Sign
             };
@@ -1797,6 +1797,7 @@ namespace Notus.Validator
                 Result = Notus.Variable.Enum.BlockStatusCode.Rejected
             });
         }
+
         private string Request_Balance(Notus.Variable.Struct.HttpRequestDetails IncomeData)
         {
             Notus.Variable.Struct.WalletBalanceStruct balanceResult = new Notus.Variable.Struct.WalletBalanceStruct()

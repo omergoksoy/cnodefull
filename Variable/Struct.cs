@@ -506,7 +506,7 @@ namespace Notus.Variable.Struct
     {
         public string UID { get; set; }
         public string WalletKey { get; set; }
-        public ulong LockTime { get; set; }
+        public ulong UnlockTime { get; set; }
         public string PublicKey { get; set; }
         public string Sign { get; set; }
     }
@@ -514,7 +514,7 @@ namespace Notus.Variable.Struct
     public class LockWalletStruct
     {
         public string WalletKey { get; set; }
-        public ulong LockTime { get; set; }
+        public ulong UnlockTime { get; set; }
         public string PublicKey { get; set; }
         public string Sign { get; set; }
     }
