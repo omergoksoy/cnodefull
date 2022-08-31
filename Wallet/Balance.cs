@@ -154,6 +154,20 @@ namespace Notus.Wallet
             balanceObj.Balance[coinTagName][unlockTime] = totalVolume.ToString();
             return balanceObj;
         }
+        public bool HasEnoughCoin(string walletKey, BigInteger howMuchCoinNeed, string CoinTagName = string.Empty)
+        {
+            if (CoinTagName == string.Empty)
+            {
+                CoinTagName = Obj_Settings.Genesis.CoinInfo.Tag;
+            }
+            Notus.Variable.Struct.WalletBalanceStruct tmpGeneratorBalanceObj = Get(walletKey, 0);
+            BigInteger currentVolume = GetCoinBalance(tmpGeneratorBalanceObj, CoinTagName);
+            if (howMuchCoinNeed > currentVolume)
+            {
+                return false;
+            }
+            return true;
+        }
         public BigInteger GetCoinBalance(Notus.Variable.Struct.WalletBalanceStruct tmpBalanceObj, string CoinTagName)
         {
             if (tmpBalanceObj.Balance.ContainsKey(CoinTagName) == false)

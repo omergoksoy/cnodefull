@@ -227,6 +227,13 @@ namespace Notus.Block
                     );
                 }
 
+
+                //control-point
+                //control-point
+                //omergoksoy
+                //omergoksoy
+                //control-point
+                //control-point
                 if (CurrentBlockType == 40)
                 {
                     string tmpLockWalletKey = TempBlockList[0];
@@ -239,7 +246,10 @@ namespace Notus.Block
                             JsonSerializer.Serialize(
                                 new Notus.Variable.Struct.LockWalletStruct()
                                 {
-                                    WalletKey = "", UnlockTime = 0, PublicKey = "", Sign = ""
+                                    WalletKey = "", 
+                                    UnlockTime = 0, 
+                                    PublicKey = "", 
+                                    Sign = ""
                                 }
                             )
                         );
