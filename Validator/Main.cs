@@ -875,7 +875,7 @@ namespace Notus.Validator
                 RewardBlockObj.RewardList.Enqueue(
                     new KeyValuePair<string, string>(
                         blockData.info.uID,
-                        blockData.miner.count.First().Key
+                        blockData.validator.count.First().Key
                     )
                 );
 
