@@ -269,12 +269,15 @@ namespace Notus.Block
                         }
                         else
                         {
-                            Notus.Archive.DeleteFromInside(
-                                BlockOrderList[BiggestBlockHeight - 1],
-                                Obj_Settings,
-                                true
-                            );
-                            Notus.Print.Danger(Obj_Settings, "Repair Block Integrity = Missing Block [45abcfe713]");
+                            if(BlockOrderList.ContainsKey(BiggestBlockHeight - 1))
+                            {
+                                Notus.Archive.DeleteFromInside(
+                                    BlockOrderList[BiggestBlockHeight - 1],
+                                    Obj_Settings,
+                                    true
+                                );
+                                Notus.Print.Danger(Obj_Settings, "Repair Block Integrity = Missing Block [45abcfe713]");
+                            }
                         }
                     }
                 }
