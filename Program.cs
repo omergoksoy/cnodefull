@@ -1,4 +1,5 @@
 ﻿using System.Runtime.ExceptionServices;
+using System.Text.Json;
 
 static void FirstChanceExceptionEventHandler(object sender, FirstChanceExceptionEventArgs e)
 {
@@ -41,4 +42,22 @@ Console.ReadLine();
 Console.WriteLine();
 */
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+/*
+Notus.Variable.Struct.BlockResponse bs1 = new Notus.Variable.Struct.BlockResponse()
+{
+    Result = Notus.Variable.Enum.BlockStatusCode.InQueue,
+    Status = "status-1",
+    UID = "uid-1"
+};
+
+Notus.Variable.Struct.BlockResponse bs2 = bs1;
+//Notus.Variable.Struct.BlockResponse bs2 = bs1.ShallowCopy();
+bs2.Status = "status-2";
+bs2.UID = "uid-2";
+
+Console.WriteLine(JsonSerializer.Serialize(bs1));
+Console.WriteLine(JsonSerializer.Serialize(bs2));
+Console.ReadLine();
+*/
 Notus.Validator.Node.Start(args);

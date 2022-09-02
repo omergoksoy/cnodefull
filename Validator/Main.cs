@@ -820,7 +820,6 @@ namespace Notus.Validator
         }
         private void ProcessBlock_PrintSection(Notus.Variable.Class.BlockData blockData, int blockSource)
         {
-            
             if (blockSource == 1)
             {
                 if (
@@ -848,9 +847,6 @@ namespace Notus.Validator
             {
                 Notus.Print.Status(Obj_Settings, "Block Came From The Dictionary List [ " + fixedRowNoLength(blockData) + " ]");
             }
-            /*
-
-*/
             if (blockData.info.type == 360)
             {
                 RewardBlockObj.RewardList.Clear();
@@ -910,36 +906,8 @@ namespace Notus.Validator
                     EmptyBlockGeneratedTime = Notus.Date.ToDateTime(blockData.info.time);
                 }
 
-                /*
-                Notus.Print.Info(Obj_Settings,
-                    "[Obj_Settings.LastBlock] Before Last Block UID  [" +
-                    Obj_Settings.LastBlock.info.type.ToString() +
-                    "] : " +
-                    Obj_Settings.LastBlock.info.uID.Substring(0, 10) +
-                    "...." +
-                    Obj_Settings.LastBlock.info.uID.Substring(80, 10) +
-                    " -> " +
-                    Obj_Settings.LastBlock.info.rowNo.ToString()
-                );
-                */
+                Obj_Settings.LastBlock = blockData.Clone();
 
-                Obj_Settings.LastBlock = blockData;
-
-                /*
-                Obj_Settings.LastBlock = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(
-                    JsonSerializer.Serialize(blockData)
-                );
-                Notus.Print.Basic(Obj_Settings,
-                    "[Obj_Settings.LastBlock] After Set Last Block UID  [" +
-                    Obj_Settings.LastBlock.info.type.ToString() +
-                    "] : " +
-                    Obj_Settings.LastBlock.prev.Substring(0, 10) +
-                    "...." +
-                    Obj_Settings.LastBlock.prev.Substring(80, 10) +
-                    " -> " +
-                    Obj_Settings.LastBlock.info.rowNo.ToString()
-                );
-                */
                 Obj_BlockQueue.Settings = Obj_Settings;
                 Obj_Api.Settings = Obj_Settings;
 

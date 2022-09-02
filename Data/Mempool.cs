@@ -311,6 +311,10 @@ namespace Notus
         }
         public void Remove(string KeyName)
         {
+            if (Obj_DataList.ContainsKey(KeyName) == false)
+            {
+                Console.WriteLine("KeyName Does Not Exist -> " + KeyName);
+            }
             Obj_DataList.Remove(KeyName);
             DeleteFromTable(KeyName);
         }

@@ -38,8 +38,8 @@ namespace Notus.Block
         public Notus.Variable.Class.BlockData OrganizeBlockOrder(Notus.Variable.Class.BlockData CurrentBlock)
         {
             CurrentBlock.info.rowNo = Obj_Settings.LastBlock.info.rowNo + 1;
-            Console.WriteLine("Queue.cs -> Line 29");
-            Console.WriteLine("CurrentBlock.info.rowNo : " + CurrentBlock.info.rowNo.ToString());
+            //Console.WriteLine("Queue.cs -> Line 29");
+            //Console.WriteLine("CurrentBlock.info.rowNo : " + CurrentBlock.info.rowNo.ToString());
 
             CurrentBlock.prev = Obj_Settings.LastBlock.info.uID + Obj_Settings.LastBlock.sign;
             CurrentBlock.info.prevList.Clear();
