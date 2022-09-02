@@ -120,6 +120,7 @@ namespace Notus.Variable.Enum
         WrongWallet_Sender = 6,
         WrongWallet_Receiver = 9,
 
+        WalletNotAllowed = 90,
         WalletDoesntExist = 11,
         InsufficientBalance = 12,
         PendingPreviousTransaction = 13,

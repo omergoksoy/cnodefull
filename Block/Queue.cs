@@ -452,11 +452,25 @@ namespace Notus.Block
         public void AddToChain(Notus.Variable.Class.BlockData NewBlock)
         {
             BS_Storage.Add(NewBlock);
-            string RemoveKeyStr = GiveBlockKey(
-                Notus.Toolbox.Text.RawCipherData2String(
-                    NewBlock.cipher.data
-                )
+
+            string rawDataStr = Notus.Toolbox.Text.RawCipherData2String(
+                NewBlock.cipher.data
             );
+
+            string RemoveKeyStr = string.Empty;
+            if (NewBlock.info.type == 40)
+            {
+                Notus.Variable.Struct.LockWalletStruct? tmpTransferResult = 
+                    JsonSerializer.Deserialize<Notus.Variable.Struct.LockWalletStruct>(rawDataStr);
+                if (tmpTransferResult != null)
+                {
+                    RemoveKeyStr = Notus.Toolbox.Text.ToHex("lock-" + tmpTransferResult.WalletKey);
+                }
+            }
+            else
+            {
+                RemoveKeyStr = GiveBlockKey(rawDataStr);
+            }
             MP_BlockPoolList.Remove(RemoveKeyStr);
         }
 
@@ -478,7 +492,24 @@ namespace Notus.Block
                         string blockKeyStr = Notus.Block.Key.Generate(GetNtpTime(), Obj_Settings.NodeWallet.WalletKey);
                         Add2Queue(PreBlockData, blockKeyStr);
                         string PreBlockDataStr = JsonSerializer.Serialize(PreBlockData);
-                        MP_BlockPoolList.Set(GiveBlockKey(PreBlockData.data), PreBlockDataStr, true);
+                        string keyStr = GiveBlockKey(PreBlockData.data);
+                        if (PreBlockData.type == 40)
+                        {
+                            Notus.Variable.Struct.LockWalletBeforeStruct? tmpLockWalletData = JsonSerializer.Deserialize<Notus.Variable.Struct.LockWalletBeforeStruct>(PreBlockData.data);
+                            if (tmpLockWalletData != null)
+                            {
+                                keyStr = Notus.Toolbox.Text.ToHex("lock-" + tmpLockWalletData.WalletKey);
+                            }
+                            else
+                            {
+                                keyStr = "";
+                            }
+                        }
+
+                        if (keyStr.Length > 0)
+                        {
+                            MP_BlockPoolList.Set(keyStr, PreBlockDataStr, true);
+                        }
                     }
                 }
             }

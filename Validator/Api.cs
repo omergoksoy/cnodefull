@@ -139,6 +139,24 @@ namespace Notus.Validator
                     }
                 }
             }
+            if (Obj_BlockData.info.type == 40)
+            {
+                /*
+                Notus.Variable.Class.BlockStruct_120? tmpBalanceVal = JsonSerializer.Deserialize<Notus.Variable.Class.BlockStruct_120>(System.Text.Encoding.UTF8.GetString(
+                    System.Convert.FromBase64String(
+                        Obj_BlockData.cipher.data
+                    )
+                ));
+                if (tmpBalanceVal != null)
+                {
+                    Console.WriteLine("Node.Api.AddToBalanceDB [cba09834] : " + Obj_BlockData.info.type);
+                    foreach (KeyValuePair<string, Notus.Variable.Class.BlockStruct_120_In_Struct> entry in tmpBalanceVal.In)
+                    {
+                        RequestSend_Done(entry.Key, Obj_BlockData.info.rowNo, Obj_BlockData.info.uID);
+                    }
+                }
+                */
+            }
         }
 
         //layer -1 kontrolünü sağla
@@ -1236,6 +1254,16 @@ namespace Notus.Validator
                     ErrorNo = 4928,
                     ID = string.Empty,
                     Result = Notus.Variable.Enum.BlockStatusCode.WrongParameter
+                });
+            }
+            bool accountLocked = BalanceObj.AccountIsLock(tmpTransfer.Sender);
+            if (accountLocked == true)
+            {
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
+                {
+                    ErrorNo = 3827,
+                    ID = string.Empty,
+                    Result = Notus.Variable.Enum.BlockStatusCode.WalletNotAllowed
                 });
             }
 

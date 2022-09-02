@@ -203,7 +203,11 @@ namespace Notus.Wallet
         }
         public bool AccountIsLock(string WalletKey)
         {
-            string unlockTimeStr = ObjMp_LockWallet.Get(WalletKey, string.Empty);
+            
+            string unlockTimeStr = ObjMp_LockWallet.Get(
+                Notus.Toolbox.Text.ToHex(WalletKey), 
+                ""
+            );
             if (unlockTimeStr.Length > 0)
             {
                 if (ulong.TryParse(unlockTimeStr, out ulong unlockTimeLong))
@@ -341,6 +345,41 @@ namespace Notus.Wallet
                 Notus.Print.Basic(Obj_Settings, "Balance.Cs -> Control function -> Line 178 -> Block type -> " + tmpBlockForBalance.info.type.ToString() + " -> " + tmpBlockForBalance.info.rowNo.ToString());
             }
 
+            if (tmpBlockForBalance.info.type == 40)
+            {
+                string tmpRawDataStr = System.Text.Encoding.UTF8.GetString(
+                    System.Convert.FromBase64String(
+                        tmpBlockForBalance.cipher.data
+                    )
+                );
+                Notus.Variable.Struct.LockWalletStruct? tmpLockBalance =
+                    JsonSerializer.Deserialize<Notus.Variable.Struct.LockWalletStruct>(
+                        tmpRawDataStr
+                    );
+                if (tmpLockBalance != null)
+                {
+                    if (tmpLockBalance.Out != null)
+                    {
+                        StoreToDb(new Notus.Variable.Struct.WalletBalanceStruct()
+                        {
+                            UID = tmpBlockForBalance.info.uID,
+                            RowNo = tmpBlockForBalance.info.rowNo,
+                            Wallet = tmpLockBalance.WalletKey,
+                            Balance = tmpLockBalance.Out
+                        });
+                    }
+                    string pureStr = System.Text.Encoding.UTF8.GetString(
+                        System.Convert.FromBase64String(
+                            tmpBlockForBalance.cipher.data
+                        )
+                    );
+                        ObjMp_LockWallet.Set(
+                            Notus.Toolbox.Text.ToHex(tmpLockBalance.WalletKey),
+                            tmpLockBalance.UnlockTime.ToString(),
+                            true
+                        );
+                }
+            }
             if (tmpBlockForBalance.info.type == 120)
             {
                 string tmpRawDataStr = System.Text.Encoding.UTF8.GetString(
@@ -348,17 +387,10 @@ namespace Notus.Wallet
                         tmpBlockForBalance.cipher.data
                     )
                 );
-                //Console.WriteLine(tmpRawDataStr);
-                //Console.ReadLine();
-
                 Notus.Variable.Class.BlockStruct_120? tmpBalanceVal =
                     JsonSerializer.Deserialize<Notus.Variable.Class.BlockStruct_120>(
                         tmpRawDataStr
                     );
-                //Console.WriteLine(JsonSerializer.Serialize( tmpBalanceVal));
-                //Console.WriteLine(tmpBalanceVal);
-                //Console.ReadLine();
-
                 foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> entry in tmpBalanceVal.Out)
                 {
                     StoreToDb(new Notus.Variable.Struct.WalletBalanceStruct()
@@ -390,24 +422,6 @@ namespace Notus.Wallet
             }
 
             */
-
-            if (tmpBlockForBalance.info.type == 40)
-            {
-                string pureStr = System.Text.Encoding.UTF8.GetString(
-                    System.Convert.FromBase64String(
-                        tmpBlockForBalance.cipher.data
-                    )
-                );
-                Notus.Variable.Struct.LockWalletStruct? tmpLockBalance = JsonSerializer.Deserialize<Notus.Variable.Struct.LockWalletStruct>(pureStr);
-                if (tmpLockBalance != null)
-                {
-                    ObjMp_LockWallet.Set(
-                        tmpLockBalance.WalletKey,
-                        tmpLockBalance.UnlockTime.ToString(),
-                        true
-                    );
-                }
-            }
 
             if (tmpBlockForBalance.info.type == 160)
             {
