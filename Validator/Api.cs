@@ -522,7 +522,7 @@ namespace Notus.Validator
                 tmpKeyPair = ObjMp_Genesis.Get("seed_key");
             }
 
-            bool prettyJson = PrettyCheckForRaw(IncomeData, 3);
+            bool prettyJson = PrettyCheckForRaw(IncomeData, 2);
 
             if (tmpKeyPair.Length == 0)
             {

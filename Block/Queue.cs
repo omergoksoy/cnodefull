@@ -232,11 +232,11 @@ namespace Notus.Block
 
                 if (CurrentBlockType == 40)
                 {
-                    Console.WriteLine(JsonSerializer.Serialize(TempBlockList, Notus.Variable.Constant.JsonSetting));
+                    //Console.WriteLine(JsonSerializer.Serialize(TempBlockList, Notus.Variable.Constant.JsonSetting));
 
                     string tmpLockWalletKey = TempBlockList[0];
                     Notus.Variable.Struct.LockWalletBeforeStruct? tmpLockWalletStruct = JsonSerializer.Deserialize<Notus.Variable.Struct.LockWalletBeforeStruct>(tmpLockWalletKey);
-                    Console.WriteLine(JsonSerializer.Serialize(tmpLockWalletStruct, Notus.Variable.Constant.JsonSetting));
+                    //Console.WriteLine(JsonSerializer.Serialize(tmpLockWalletStruct, Notus.Variable.Constant.JsonSetting));
 
                     TempBlockList.Clear();
                     if (tmpLockWalletStruct == null)
@@ -270,6 +270,19 @@ namespace Notus.Block
                             );
                         if (tmpBalanceResult == false)
                         {
+                            /*
+                            foreach (KeyValuePair<string, Dictionary<ulong, string>> curEntry in tmpNewGeneratorBalance.Balance)
+                            {
+                                foreach (KeyValuePair<ulong, string> balanceEntry in curEntry.Value)
+                                {
+                                    if (tmpLockWalletStruct.UnlockTime > balanceEntry.Key){
+
+                                        tmpNewGeneratorBalance.Balance[curEntry.Key]
+                                    }
+                                }
+                            }
+                            */
+
                             TempBlockList.Add(
                                 JsonSerializer.Serialize(
                                     new Notus.Variable.Struct.LockWalletStruct()
