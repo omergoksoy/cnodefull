@@ -179,41 +179,42 @@ namespace Notus.Toolbox
             };
         }
 
-        public static string GetPublicIPAddress()
+        private static string ReadFromNet(string urlPath)
         {
             try
             {
-                string address = "";
-                WebRequest request = WebRequest.Create("https://api.ipify.org");
-                using (WebResponse response = request.GetResponse())
-                using (StreamReader stream = new StreamReader(response.GetResponseStream()))
-                {
-                    address = stream.ReadToEnd();
-                }
-                return address;
+                HttpClient client = new HttpClient();
+                HttpResponseMessage response = client.GetAsync(urlPath).GetAwaiter().GetResult();
+                response.EnsureSuccessStatusCode();
+                return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             }
             catch
             {
-                try
-                {
-                    string address = "";
-                    WebRequest request = WebRequest.Create("http://checkip.dyndns.org/");
-                    using (WebResponse response = request.GetResponse())
-                    using (StreamReader stream = new StreamReader(response.GetResponseStream()))
-                    {
-                        address = stream.ReadToEnd();
-                    }
 
+            }
+            return string.Empty;
+        }
+        public static string GetPublicIPAddress()
+        {
+            string address = ReadFromNet("https://api.ipify.org");
+            if (address.Length > 0)
+            {
+                return address;
+            }
+            
+            address = ReadFromNet("http://checkip.dyndns.org/");
+            if (address.Length > 0)
+            {
+                if(address.Contains("</body>")==true && address.Contains("Address: ")==true)
+                {
                     int first = address.IndexOf("Address: ") + 9;
-                    int last = address.LastIndexOf("</body>");
-                    address = address.Substring(first, last - first);
-                    return address;
-                }
-                catch
-                {
-
+                    return address.Substring(
+                        first, 
+                        address.LastIndexOf("</body>") - first
+                    );
                 }
             }
+
             return string.Empty;
         }
 
@@ -239,7 +240,6 @@ namespace Notus.Toolbox
             {
                 string dnsResult = Dns.GetHostName();
                 IPHostEntry host = Dns.GetHostEntry(dnsResult);
-                //Console.WriteLine(JsonSerializer.Serialize(host, Notus.Variable.Constant.JsonSetting);
                 foreach (IPAddress ip in host.AddressList)
                 {
                     if (ip.AddressFamily == AddressFamily.InterNetwork)

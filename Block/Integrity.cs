@@ -521,7 +521,6 @@ namespace Notus.Block
             FreeBlockStruct.info.prevList.Add(360, PrevStr);
             return new Notus.Block.Generate(Obj_Settings.NodeWallet.WalletKey).Make(FreeBlockStruct, 1000);
         }
-
         private Notus.Variable.Class.BlockData GiveMeGenesisBlock(Notus.Variable.Class.BlockData GenBlockStruct)
         {
             if (Obj_Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer1)
@@ -537,12 +536,15 @@ namespace Notus.Block
                     Obj_Settings.DebugMode,
                     Obj_Settings
                 );
-                Notus.Variable.Class.BlockData ControlBlock = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(tmpResult);
-                Obj_Settings.Genesis = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(
-                    System.Convert.FromBase64String(
-                        ControlBlock.cipher.data
-                    )
-                );
+                Notus.Variable.Class.BlockData? ControlBlock = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(tmpResult);
+                if (ControlBlock != null)
+                {
+                    Obj_Settings.Genesis = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(
+                        System.Convert.FromBase64String(
+                            ControlBlock.cipher.data
+                        )
+                    );
+                }
             }
 
             GenBlockStruct.info.type = 360;
@@ -705,8 +707,6 @@ namespace Notus.Block
                     Notus.Print.Basic(Obj_Settings, "Hold Your Genesis Block - We Are Older");
                 }
             }
-            //Console.WriteLine("Press Enter To Continue");
-            //Console.ReadLine();
             return true;
         }
         public void GetLastBlock()
