@@ -42,6 +42,14 @@ namespace Notus.Wallet
                     }
                     catch (Exception err)
                     {
+                        Notus.Print.Log(
+                            Notus.Variable.Enum.LogLevel.Info,
+                            2354874,
+                            err.Message,
+                            "BlockRowNo",
+                            null,
+                            err
+                        );
                         Notus.Print.Basic(true, "Error Text [8ae5cf]: " + err.Message);
                     }
                 }
@@ -518,7 +526,16 @@ namespace Notus.Wallet
                     ObjMp_Balance.Dispose();
                 }
             }
-            catch { }
+            catch(Exception err) {
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    897989784,
+                    err.Message,
+                    "BlockRowNo",
+                    null,
+                    err
+                );
+            }
             try
             {
                 if (ObjMp_LockWallet != null)
@@ -526,7 +543,16 @@ namespace Notus.Wallet
                     ObjMp_LockWallet.Dispose();
                 }
             }
-            catch { }
+            catch (Exception err){
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    8754213,
+                    err.Message,
+                    "BlockRowNo",
+                    null,
+                    err
+                );
+            }
         }
     }
 }

@@ -10,9 +10,41 @@ namespace Notus
 {
     public static class Print
     {
-        public static void Log(Notus.Variable.Struct.LogStruct logObject)
+        public static void Log(
+            Notus.Variable.Enum.LogLevel logType,
+            int logNo,
+            string messageText,
+            string blockRowNo,
+            Notus.Variable.Common.ClassSetting? objSettings,
+            Exception? objException
+        )
         {
-            (bool durum, string reult)=Notus.Communication.Request.PostSync(
+            Notus.Variable.Struct.LogStruct logObject = new Notus.Variable.Struct.LogStruct()
+            {
+                BlockRowNo = blockRowNo,
+                LogNo = logNo,
+                LogType = logType,
+                Message = messageText,
+                WalletKey = "",
+                StackTrace = "",
+                ExceptionType = ""
+            };
+            if (objSettings != null)
+            {
+                if (objSettings.NodeWallet != null)
+                {
+                    logObject.WalletKey = objSettings.NodeWallet.WalletKey;
+                }
+            }
+            if (objException != null)
+            {
+                if (objException.StackTrace != null)
+                {
+                    logObject.StackTrace = objException.StackTrace;
+                }
+            }
+
+            (bool durum, string reult) = Notus.Communication.Request.PostSync(
                 "http://3.121.218.78:3000/log",
                 new Dictionary<string, string>()
                 {

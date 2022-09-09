@@ -607,6 +607,15 @@ namespace Notus.Block
             }
             catch (Exception err)
             {
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    864578,
+                    err.Message,
+                    "BlockRowNo",
+                    Obj_Settings,
+                    err
+                );
+
                 Notus.Print.Danger(Obj_Settings, "Error -> Notus.Block.Queue");
                 Notus.Print.Danger(Obj_Settings, err.Message);
                 Notus.Print.Danger(Obj_Settings, "Error -> Notus.Block.Queue");

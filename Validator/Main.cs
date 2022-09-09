@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Net;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
 using System.Numerics;
 using System.Text.Json;
-using System.Linq;
-using System.IO;
 using System.Threading;
 
 namespace Notus.Validator
@@ -64,7 +64,7 @@ namespace Notus.Validator
             Notus.Threads.Timer TimerObj = new Notus.Threads.Timer(1000);
             TimerObj.Start(() =>
             {
-                if (ValidatorQueueObj.MyTurn==true && EmptyBlockTimerIsRunning == false)
+                if (ValidatorQueueObj.MyTurn == true && EmptyBlockTimerIsRunning == false)
                 {
                     EmptyBlockTimerIsRunning = true;
                     int howManySeconds = Obj_Settings.Genesis.Empty.Interval.Time;
@@ -201,6 +201,14 @@ namespace Notus.Validator
                                     }
                                     catch (Exception err3)
                                     {
+                                        Notus.Print.Log(
+                                            Notus.Variable.Enum.LogLevel.Info,
+                                            88008800,
+                                            err3.Message,
+                                            "BlockRowNo",
+                                            null,
+                                            err3
+                                        );
                                         Notus.Print.Danger(Obj_Settings, "Error Text : [9abc546ac] : " + err3.Message);
                                     }
                                     //}
@@ -738,7 +746,7 @@ namespace Notus.Validator
                     // geçerli utc zaman bilgisini alıp block oluşturma işlemi için parametre olarak gönder böylece
                     // her blok utc zamanı ile oluşturulmuş olsun
                     DateTime currentUtcTime = ValidatorQueueObj.GetUtcTime();
-                    
+
                     Notus.Variable.Struct.PoolBlockRecordStruct? TmpBlockStruct = Obj_BlockQueue.Get(
                         currentUtcTime,
                         Obj_Api.BalanceObj
@@ -815,7 +823,7 @@ namespace Notus.Validator
 
         private string fixedRowNoLength(Notus.Variable.Class.BlockData blockData)
         {
-            string tmpStr=blockData.info.rowNo.ToString();
+            string tmpStr = blockData.info.rowNo.ToString();
             return tmpStr.PadLeft(15, '_');
         }
         private void ProcessBlock_PrintSection(Notus.Variable.Class.BlockData blockData, int blockSource)
@@ -828,7 +836,7 @@ namespace Notus.Validator
                     blockData.info.type != 360
                 )
                 {
-                    Notus.Print.Status(Obj_Settings, "Block Came From The Loading DB [ "+ fixedRowNoLength(blockData) + " ]");
+                    Notus.Print.Status(Obj_Settings, "Block Came From The Loading DB [ " + fixedRowNoLength(blockData) + " ]");
                 }
             }
             if (blockSource == 2)
@@ -1002,7 +1010,7 @@ namespace Notus.Validator
             {
                 ProcessBlock(IncomeBlockList[CurrentBlockRowNo], 5);
             }
-            
+
             if (FirstSyncIsDone == false && MyReadyMessageSended == false)
             {
                 if (blockSource == 2)
@@ -1069,7 +1077,16 @@ namespace Notus.Validator
                 {
                     Obj_BlockQueue.Dispose();
                 }
-                catch { }
+                catch (Exception err){
+                    Notus.Print.Log(
+                        Notus.Variable.Enum.LogLevel.Info,
+                        66000505,
+                        err.Message,
+                        "BlockRowNo",
+                        null,
+                        err
+                    );
+                }
             }
 
             if (ValidatorQueueObj != null)
@@ -1078,7 +1095,16 @@ namespace Notus.Validator
                 {
                     ValidatorQueueObj.Dispose();
                 }
-                catch { }
+                catch(Exception err) {
+                    Notus.Print.Log(
+                        Notus.Variable.Enum.LogLevel.Info,
+                        900000845,
+                        err.Message,
+                        "BlockRowNo",
+                        null,
+                        err
+                    );
+                }
             }
 
             if (Obj_Api != null)
@@ -1087,7 +1113,16 @@ namespace Notus.Validator
                 {
                     Obj_Api.Dispose();
                 }
-                catch { }
+                catch (Exception err){
+                    Notus.Print.Log(
+                        Notus.Variable.Enum.LogLevel.Info,
+                        7000777,
+                        err.Message,
+                        "BlockRowNo",
+                        null,
+                        err
+                    );
+                }
             }
 
             if (HttpObj != null)
@@ -1096,7 +1131,16 @@ namespace Notus.Validator
                 {
                     HttpObj.Dispose();
                 }
-                catch { }
+                catch (Exception err){
+                    Notus.Print.Log(
+                        Notus.Variable.Enum.LogLevel.Info,
+                        9000805,
+                        err.Message,
+                        "BlockRowNo",
+                        null,
+                        err
+                    );
+                }
             }
 
             if (Obj_Integrity != null)
@@ -1105,7 +1149,16 @@ namespace Notus.Validator
                 {
                     Obj_Integrity.Dispose();
                 }
-                catch { }
+                catch (Exception err){
+                    Notus.Print.Log(
+                        Notus.Variable.Enum.LogLevel.Info,
+                        10012540,
+                        err.Message,
+                        "BlockRowNo",
+                        null,
+                        err
+                    );
+                }
             }
 
         }

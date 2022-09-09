@@ -43,6 +43,15 @@ namespace Notus.Toolbox
             }
             catch (Exception err)
             {
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    1001124,
+                    err.Message,
+                    "BlockRowNo",
+                    objSettings,
+                    err
+                );
+
                 if (objSettings != null)
                 {
                     Notus.Print.Danger(objSettings, err.Message);
@@ -75,6 +84,15 @@ namespace Notus.Toolbox
             }
             catch(Exception err)
             {
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    90877404,
+                    err.Message,
+                    "BlockRowNo",
+                    objSettings,
+                    err
+                );
+
                 if (objSettings == null)
                 {
                     Console.WriteLine("err : " + err.Message);
@@ -188,9 +206,16 @@ namespace Notus.Toolbox
                 response.EnsureSuccessStatusCode();
                 return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             }
-            catch
+            catch(Exception err)
             {
-
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    90000854,
+                    err.Message,
+                    "BlockRowNo",
+                    null,
+                    err
+                );
             }
             return string.Empty;
         }
@@ -250,7 +275,14 @@ namespace Notus.Toolbox
             }
             catch (Exception err)
             {
-                //Console.WriteLine(err.Message);
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    98798700,
+                    err.Message,
+                    "BlockRowNo",
+                    null,
+                    err
+                );
             }
             return "127.0.0.1";
         }
@@ -285,6 +317,14 @@ namespace Notus.Toolbox
                         }
                         catch (Exception errInner)
                         {
+                            Notus.Print.Log(
+                                Notus.Variable.Enum.LogLevel.Info,
+                                50000005,
+                                errInner.Message,
+                                "BlockRowNo",
+                                objSettings,
+                                errInner
+                            );
                             Notus.Print.Basic(objSettings, "Error [75fde6374]: " + errInner.Message);
                         }
                     }
@@ -297,6 +337,14 @@ namespace Notus.Toolbox
             }
             catch (Exception err)
             {
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    88800880,
+                    err.Message,
+                    "BlockRowNo",
+                    objSettings,
+                    err
+                );
                 Notus.Print.Danger(objSettings, "Error [065]: " + err.Message);
                 Error_TestIpAddress = true;
             }

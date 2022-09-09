@@ -60,17 +60,18 @@ Console.WriteLine(JsonSerializer.Serialize(bs1));
 Console.WriteLine(JsonSerializer.Serialize(bs2));
 Console.ReadLine();
 */
-
+/*
 Notus.Print.Log(new Notus.Variable.Struct.LogStruct()
 {
-     BlockRowNo=DateTime.Now.ToLongTimeString(),
-      LogNo=123,
-       LogType= Notus.Variable.Enum.LogLevel.Info,
-        Message="deneme mesaji",
-         WalletKey="cuzdan_adresi",
-          StackTrace="stack trace",
-           ExceptionType= "exception type"
+    BlockRowNo = DateTime.Now.ToLongTimeString(),
+    LogNo = 123,
+    LogType = Notus.Variable.Enum.LogLevel.Info,
+    Message = "deneme mesaji",
+    WalletKey = "cuzdan_adresi",
+    StackTrace = "stack trace",
+    ExceptionType = "exception type"
 });
-Console.ReadLine();
+*/
+//Console.ReadLine();
 
 Notus.Validator.Node.Start(args);

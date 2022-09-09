@@ -640,6 +640,14 @@ namespace Notus.Validator
                 }
                 catch (Exception err)
                 {
+                    Notus.Print.Log(
+                        Notus.Variable.Enum.LogLevel.Info,
+                        700077707,
+                        err.Message,
+                        "BlockRowNo",
+                        null,
+                        err
+                    );
                     Console.WriteLine("Error Text [ba09c83fe] : " + err.Message);
                 }
             }
@@ -671,6 +679,15 @@ namespace Notus.Validator
             }
             catch (Exception err)
             {
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    650870450,
+                    err.Message,
+                    "BlockRowNo",
+                    null,
+                    err
+                );
+
                 Notus.Print.Danger(Obj_Settings, "Error Text [a46cbe8d9] : " + err.Message);
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
                 {
@@ -743,6 +760,14 @@ namespace Notus.Validator
             }
             catch (Exception err)
             {
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    88000740,
+                    err.Message,
+                    "BlockRowNo",
+                    null,
+                    err
+                );
                 Notus.Print.Danger(Obj_Settings, "Error Text [a354cd67] : " + err.Message);
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
                 {
@@ -804,8 +829,16 @@ namespace Notus.Validator
                     {
                         tmpChunkList = JsonSerializer.Deserialize<Dictionary<int, string>>(tmpCurrentList);
                     }
-                    catch
+                    catch(Exception err)
                     {
+                        Notus.Print.Log(
+                            Notus.Variable.Enum.LogLevel.Info,
+                            50004044,
+                            err.Message,
+                            "BlockRowNo",
+                            null,
+                            err
+                        );
                         Console.WriteLine("Notus.Validator.Api.Request_StoreFileUpdate -> Convertion Error - Line 595");
                         Console.WriteLine("Notus.Validator.Api.Request_StoreFileUpdate -> Convertion Error - Line 595");
                     }
@@ -866,9 +899,16 @@ namespace Notus.Validator
                         Result = tmpUploadStatus
                     });
                 }
-                catch
+                catch(Exception err)
                 {
-
+                    Notus.Print.Log(
+                        Notus.Variable.Enum.LogLevel.Info,
+                        90008880,
+                        err.Message,
+                        "BlockRowNo",
+                        null,
+                        err
+                    );
                 }
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
                 {
@@ -890,6 +930,14 @@ namespace Notus.Validator
             }
             catch (Exception err)
             {
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    90008800,
+                    err.Message,
+                    "BlockRowNo",
+                    null,
+                    err
+                );
                 Notus.Print.Danger(Obj_Settings, "Error Text [a46cbe8d9] : " + err.Message);
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
                 {
@@ -957,6 +1005,14 @@ namespace Notus.Validator
             }
             catch (Exception err)
             {
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    88000880,
+                    err.Message,
+                    "BlockRowNo",
+                    null,
+                    err
+                );
                 Notus.Print.Danger(Obj_Settings, "Error Text [a354cd67] : " + err.Message);
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
                 {
@@ -1012,8 +1068,16 @@ namespace Notus.Validator
                     {
                         tmpChunkList = JsonSerializer.Deserialize<Dictionary<int, string>>(tmpCurrentList);
                     }
-                    catch
+                    catch(Exception err)
                     {
+                        Notus.Print.Log(
+                            Notus.Variable.Enum.LogLevel.Info,
+                            7000787,
+                            err.Message,
+                            "BlockRowNo",
+                            null,
+                            err
+                        );
                         Console.WriteLine("Notus.Validator.Api.Request_StoreFileUpdate -> Convertion Error - Line 595");
                         Console.WriteLine("Notus.Validator.Api.Request_StoreFileUpdate -> Convertion Error - Line 595");
                     }
@@ -1074,9 +1138,16 @@ namespace Notus.Validator
                         Result = tmpUploadStatus
                     });
                 }
-                catch
+                catch(Exception err)
                 {
-
+                    Notus.Print.Log(
+                        Notus.Variable.Enum.LogLevel.Info,
+                        99080780,
+                        err.Message,
+                        "BlockRowNo",
+                        null,
+                        err
+                    );
                 }
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
                 {
@@ -1200,9 +1271,16 @@ namespace Notus.Validator
                         Result = tmpUploadStatus
                     });
                 }
-                catch
+                catch(Exception err)
                 {
-
+                    Notus.Print.Log(
+                        Notus.Variable.Enum.LogLevel.Info,
+                        65700787,
+                        err.Message,
+                        "BlockRowNo",
+                        null,
+                        err
+                    );
                 }
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
                 {
@@ -1222,6 +1300,15 @@ namespace Notus.Validator
             }
             catch (Exception err)
             {
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    44450000,
+                    err.Message,
+                    "BlockRowNo",
+                    null,
+                    err
+                );
+
                 Notus.Print.Danger(Obj_Settings, "Error Text [abc875768] : " + err.Message);
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
                 {
@@ -1510,6 +1597,14 @@ namespace Notus.Validator
                 }
                 catch (Exception err)
                 {
+                    Notus.Print.Log(
+                        Notus.Variable.Enum.LogLevel.Info,
+                        5000065,
+                        err.Message,
+                        "BlockRowNo",
+                        null,
+                        err
+                    );
                     Notus.Print.Danger(Obj_Settings, "Error Text [4a821b]: " + err.Message);
                     return JsonSerializer.Serialize(false);
                 }
@@ -1545,6 +1640,14 @@ namespace Notus.Validator
                 }
                 catch (Exception err)
                 {
+                    Notus.Print.Log(
+                        Notus.Variable.Enum.LogLevel.Info,
+                        5532145,
+                        err.Message,
+                        "BlockRowNo",
+                        null,
+                        err
+                    );
                     Notus.Print.Danger(Obj_Settings, "Error Text [1f95ce]: " + err.Message);
                 }
                 return JsonSerializer.Serialize(false);
@@ -1733,6 +1836,15 @@ namespace Notus.Validator
                 }
                 catch (Exception err)
                 {
+                    Notus.Print.Log(
+                        Notus.Variable.Enum.LogLevel.Info,
+                        660000505,
+                        err.Message,
+                        "BlockRowNo",
+                        null,
+                        err
+                    );
+
                     Console.WriteLine("Notus.Validator.Api - Line 843 [ 897abcd ] : " + err.Message);
                     return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponseStruct()
                     {
@@ -2277,7 +2389,16 @@ namespace Notus.Validator
                 {
                     Obj_Balance.Dispose();
                 }
-                catch { }
+                catch (Exception err){
+                    Notus.Print.Log(
+                        Notus.Variable.Enum.LogLevel.Info,
+                        10001111,
+                        err.Message,
+                        "BlockRowNo",
+                        null,
+                        err
+                    );
+                }
             }
         }
     }
