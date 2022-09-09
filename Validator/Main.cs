@@ -901,10 +901,9 @@ namespace Notus.Validator
         {
             if (blockData.info.rowNo > CurrentBlockRowNo)
             {
+                string tmpBlockDataStr = JsonSerializer.Serialize(blockData);
                 Notus.Variable.Class.BlockData? tmpBlockData =
-                    JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(
-                        JsonSerializer.Serialize(blockData)
-                    );
+                    JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(tmpBlockDataStr);
                 if (tmpBlockData != null)
                 {
                     IncomeBlockList.Add(blockData.info.rowNo, tmpBlockData);
@@ -913,6 +912,14 @@ namespace Notus.Validator
                 }
                 else
                 {
+                    Notus.Print.Log(
+                        Notus.Variable.Enum.LogLevel.Error,
+                        300000099,
+                        tmpBlockDataStr,
+                        "BlockRowNo",
+                        Obj_Settings,
+                        null
+                    );
                     ProcessBlock_PrintSection(blockData, blockSource);
                 }
                 return true;
