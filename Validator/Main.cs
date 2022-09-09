@@ -841,6 +841,15 @@ namespace Notus.Validator
             }
             if (blockSource == 2)
             {
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    100000002,
+                    JsonSerializer.Serialize(blockData),
+                    blockData.info.rowNo.ToString(),
+                    Obj_Settings,
+                    null
+                );
+
                 Notus.Print.Status(Obj_Settings, "Block Came From The Validator Queue [ " + fixedRowNoLength(blockData) + " ]");
             }
             if (blockSource == 3)
@@ -849,6 +858,14 @@ namespace Notus.Validator
             }
             if (blockSource == 4)
             {
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    100000004,
+                    JsonSerializer.Serialize(blockData),
+                    blockData.info.rowNo.ToString(),
+                    Obj_Settings,
+                    null
+                );
                 Notus.Print.Status(Obj_Settings, "Block Came From The Main Loop [ " + fixedRowNoLength(blockData) + " ]");
             }
             if (blockSource == 5)
