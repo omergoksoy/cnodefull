@@ -152,4 +152,13 @@ namespace Notus.Variable.Enum
         DataStorage = 7                 /* blok içeriğinde kaydedilen verinin her byte'ı için  */
 
     }
+
+    public enum LogLevel
+    {
+        Info = 0,
+        Error = 1,
+        Fatal=9,
+        Warning = 2
+    }
+
 }

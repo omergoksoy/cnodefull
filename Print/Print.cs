@@ -10,6 +10,19 @@ namespace Notus
 {
     public static class Print
     {
+        public static void Log(Notus.Variable.Struct.LogStruct logObject)
+        {
+            (bool durum, string reult)=Notus.Communication.Request.PostSync(
+                "http://3.121.218.78:3000/log",
+                new Dictionary<string, string>()
+                {
+                    { "data", JsonSerializer.Serialize(logObject) }
+                },
+                0,
+                true,
+                true
+            );
+        }
         public static void ReadLine(Notus.Variable.Common.ClassSetting NodeSettings)
         {
             Info(NodeSettings, "Press Enter To Continue");

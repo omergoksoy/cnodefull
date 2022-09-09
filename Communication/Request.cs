@@ -50,10 +50,9 @@ namespace Notus.Communication
                         client.Timeout = (UseTimeoutAsSecond == true ? TimeSpan.FromSeconds(TimeOut * 1000) : TimeSpan.FromMilliseconds(TimeOut));
                     }
                     HttpResponseMessage response = client.PostAsync(UrlAddress, formContent).GetAwaiter().GetResult();
-
+                    HttpContent responseContent = response.Content;
                     if (response.IsSuccessStatusCode)
                     {
-                        HttpContent responseContent = response.Content;
                         return (true,responseContent.ReadAsStringAsync().GetAwaiter().GetResult());
                     }
                 }
