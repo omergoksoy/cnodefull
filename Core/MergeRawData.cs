@@ -1,9 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Notus.Core
 {
     public class MergeRawData
     {
+        public static string MultiWalletID
+        (
+            string creatorWallet,
+            List<string> walletList,
+            Notus.Variable.Enum.MultiWalletType walletType
+        )
+        {
+            walletList.Sort();
+            string walletListText = string.Join(Notus.Variable.Constant.CommonDelimeterChar, walletList.ToArray());
+            string signRawStr =
+                creatorWallet + Notus.Variable.Constant.CommonDelimeterChar +
+                walletListText + Notus.Variable.Constant.CommonDelimeterChar +
+                walletType.ToString();
+
+            return signRawStr;
+        }
         public static string WalletSafe(
             string walletKey,
             string publicKey,
