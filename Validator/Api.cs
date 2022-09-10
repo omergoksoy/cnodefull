@@ -49,6 +49,7 @@ namespace Notus.Validator
         private Dictionary<string, Notus.Variable.Enum.BlockStatusCode> Obj_TransferStatusList;
 
         public System.Func<int, List<Notus.Variable.Struct.List_PoolBlockRecordStruct>?>? Func_GetPoolList = null;
+        public System.Func<Dictionary<int, int>?>? Func_GetPoolCount = null;
         public System.Func<string, Notus.Variable.Class.BlockData?>? Func_OnReadFromChain = null;
         public System.Func<Notus.Variable.Struct.PoolBlockRecordStruct, bool>? Func_AddToChainPool = null;
 
@@ -340,9 +341,9 @@ namespace Notus.Validator
                         }
                     }
                 }
-                if (IncomeData.UrlList.Length > 1)
+                if (IncomeData.UrlList[0].ToLower() == "pool")
                 {
-                    if (IncomeData.UrlList[0].ToLower() == "pool")
+                    if (IncomeData.UrlList.Length > 1)
                     {
                         if (int.TryParse(IncomeData.UrlList[1], out int blockTypeNo))
                         {
@@ -370,9 +371,16 @@ namespace Notus.Validator
                                 }
                             }
                         }
-                        return JsonSerializer.Serialize(false);
                     }
 
+                    if (Func_GetPoolCount != null)
+                    {
+                        return JsonSerializer.Serialize(Func_GetPoolCount());
+                    }
+                    return JsonSerializer.Serialize(false);
+                }
+
+                if (IncomeData.UrlList.Length > 1) {
                     if (string.Equals(IncomeData.UrlList[0].ToLower(), "lock"))
                     {
                         return Request_LockAccount(IncomeData);
@@ -2010,7 +2018,7 @@ namespace Notus.Validator
             }
 
 
-            ulong totalCoinNeed = (ulong) WalletObj.WalletList.Count * (ulong)Obj_Settings.Genesis.Fee.MultiWallet.Addition;
+            ulong totalCoinNeed = (ulong)WalletObj.WalletList.Count * (ulong)Obj_Settings.Genesis.Fee.MultiWallet.Addition;
             bool hasCoin = Obj_Balance.HasEnoughCoin(
                 WalletObj.Founder.WalletKey,
                 BigInteger.Parse(totalCoinNeed.ToString())
@@ -2024,7 +2032,7 @@ namespace Notus.Validator
                     Result = Notus.Variable.Enum.BlockStatusCode.InsufficientBalance
                 });
             }
-
+            //omergoksoy
             return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
             {
                 UID = string.Empty,

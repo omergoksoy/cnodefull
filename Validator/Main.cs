@@ -534,6 +534,10 @@ namespace Notus.Validator
             {
                 return Obj_BlockQueue.GetPoolList(blockTypeNo);
             };
+            Obj_Api.Func_GetPoolCount = () =>
+            {
+                return Obj_BlockQueue.GetPoolCount();
+            };
 
             Obj_Api.Func_OnReadFromChain = blockKeyIdStr =>
             {

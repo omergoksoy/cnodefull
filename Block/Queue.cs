@@ -34,6 +34,15 @@ namespace Notus.Block
             }
             return null;
         }
+        public Dictionary<int,int>? GetPoolCount()
+        {
+            Dictionary<int, int> resultList = new Dictionary<int, int>();
+            foreach (KeyValuePair<int, List<Notus.Variable.Struct.List_PoolBlockRecordStruct>> entry in Obj_PoolTransactionList)
+            {
+                resultList.Add(entry.Key, entry.Value.Count);
+            }
+            return resultList;
+        }
 
         public Notus.Variable.Class.BlockData OrganizeBlockOrder(Notus.Variable.Class.BlockData CurrentBlock)
         {
