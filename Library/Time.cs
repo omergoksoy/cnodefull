@@ -60,11 +60,19 @@ namespace Notus
         }
         public static ulong NowToUlong()
         {
-            return ulong.Parse(DateTime.Now.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText));
+            return ulong.Parse(
+                DateTime.Now.ToString(
+                    Notus.Variable.Constant.DefaultDateTimeFormatText
+                )
+            );
         }
         public static ulong DateTimeToUlong(DateTime ConvertTime)
         {
-            return ulong.Parse(ConvertTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText));
+            return ulong.Parse(
+                ConvertTime.ToString(
+                    Notus.Variable.Constant.DefaultDateTimeFormatText
+                )
+            );
         }
 
         private static ulong GetExactTime_UTC_SubFunc(string server)
