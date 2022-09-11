@@ -2017,11 +2017,23 @@ namespace Notus.Validator
                 });
             }
 
+            
+            bool walletUsed = Obj_Balance.StartWalletUsage(WalletObj.Founder.WalletKey);
+            if (walletUsed == false)
+            {
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
+                {
+                    UID = string.Empty,
+                    Status = "WalletUsing",
+                    Result = Notus.Variable.Enum.BlockStatusCode.WalletUsing
+                });
+            }
 
             BigInteger howMuchCoinNeed = BigInteger.Parse((WalletObj.WalletList.Count * Obj_Settings.Genesis.Fee.MultiWallet.Addition).ToString());
             bool hasCoin = Obj_Balance.HasEnoughCoin(WalletObj.Founder.WalletKey,howMuchCoinNeed);
             if (hasCoin == false)
             {
+                Obj_Balance.StopWalletUsage(WalletObj.Founder.WalletKey);
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
                 {
                     UID = string.Empty,
@@ -2031,6 +2043,7 @@ namespace Notus.Validator
             }
             if (Func_AddToChainPool == null)
             {
+                Obj_Balance.StopWalletUsage(WalletObj.Founder.WalletKey);
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
                 {
                     UID = string.Empty,
@@ -2040,6 +2053,7 @@ namespace Notus.Validator
             }
             if (Notus.Wallet.ID.CheckAddress(WalletObj.Founder.WalletKey, Obj_Settings.Network) == false)
             {
+                Obj_Balance.StopWalletUsage(WalletObj.Founder.WalletKey);
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
                 {
                     UID = string.Empty,
@@ -2048,13 +2062,15 @@ namespace Notus.Validator
                 });
             }
 
-
+            /*
+            Obj_Balance.StopWalletUsage(WalletObj.Founder.WalletKey);
             return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
             {
                 UID = string.Empty,
                 Status = "NotFinishedYet : " + howMuchCoinNeed.ToString(),
                 Result = Notus.Variable.Enum.BlockStatusCode.InsufficientBalance
             });
+            */
 
             Notus.Variable.Struct.WalletBalanceStruct tmpGeneratorBalanceObj =
                 Obj_Balance.Get(WalletObj.Founder.WalletKey, 0);
@@ -2066,6 +2082,7 @@ namespace Notus.Validator
 
             if (howMuchCoinNeed > currentVolume)
             {
+                Obj_Balance.StopWalletUsage(WalletObj.Founder.WalletKey);
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
                 {
                     UID = string.Empty,
@@ -2073,19 +2090,6 @@ namespace Notus.Validator
                     Result = Notus.Variable.Enum.BlockStatusCode.InsufficientBalance
                 });
             }
-
-            /*
-
-
-            controlpoint
-            controlpoint
-            controlpoint
-            controlpoint
-
-            burada cüzdan kilitlenecek...
-            burada cüzdan kilitlenecek...
-            burada cüzdan kilitlenecek...
-            */
 
             // cüzdanın kilitlenme ve açılma işlemleri eklenecek
             (bool volumeError, Notus.Variable.Struct.WalletBalanceStruct newBalance) =
@@ -2095,7 +2099,16 @@ namespace Notus.Validator
                     Obj_Settings.Genesis.CoinInfo.Tag,
                     0
                 );
-            
+            if (volumeError == true)
+            {
+                Obj_Balance.StopWalletUsage(WalletObj.Founder.WalletKey);
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
+                {
+                    UID = string.Empty,
+                    Status = "AnErrorOccurred",
+                    Result = Notus.Variable.Enum.BlockStatusCode.AnErrorOccurred
+                });
+            }
             string tmpChunkIdKey = Notus.Block.Key.Generate(GetNtpTime(),Obj_Settings.NodeWallet.WalletKey);
             Notus.Variable.Struct.MultiWalletStoreStruct tmpLockObj = new Notus.Variable.Struct.MultiWalletStoreStruct()
             {
@@ -2115,6 +2128,7 @@ namespace Notus.Validator
             };
             bool tmpAddResult = Func_AddToChainPool(new Notus.Variable.Struct.PoolBlockRecordStruct()
             {
+                omergoksoy
                 type = 40,
                 data = JsonSerializer.Serialize(tmpLockObj)
             });
@@ -2127,6 +2141,7 @@ namespace Notus.Validator
                     Result = Notus.Variable.Enum.BlockStatusCode.AddedToQueue
                 });
             }
+            Obj_Balance.StopWalletUsage(WalletObj.Founder.WalletKey);
             return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
             {
                 UID = string.Empty,

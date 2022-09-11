@@ -13,9 +13,31 @@ namespace Notus.Wallet
             get { return Obj_Settings; }
             set { Obj_Settings = value; }
         }
+        private Notus.Mempool ObjMp_WalletUsage;
         private Notus.Mempool ObjMp_LockWallet;
         private Notus.Mempool ObjMp_Balance;
 
+
+        // bu fonksiyonlar ile cüzdanın kilitlenmesi durumuna bakalım
+        public bool WalletUsageAvailable(string walletKey)
+        {
+            return (ObjMp_WalletUsage.Get(walletKey, "").Length == 0 ? true : false);
+        }
+        public bool StartWalletUsage(string walletKey)
+        {
+            if (WalletUsageAvailable(walletKey) == false)
+            {
+                return ObjMp_WalletUsage.Add(
+                    walletKey,
+                    DateTime.Now.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
+                );
+            }
+            return false;
+        }
+        public void StopWalletUsage(string walletKey)
+        {
+            ObjMp_WalletUsage.Remove(walletKey);
+        }
         private void StoreToDb(Notus.Variable.Struct.WalletBalanceStruct BalanceObj)
         {
             ObjMp_Balance.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj), true);
@@ -304,6 +326,7 @@ namespace Notus.Wallet
 
                 ObjMp_Balance.Clear();
                 ObjMp_LockWallet.Clear();
+                ObjMp_WalletUsage.Clear();
                 string tmpBalanceStr = Obj_Settings.Genesis.Premining.PreSeed.Volume.ToString();
                 if (Obj_Settings.Genesis.Premining.PreSeed.DecimalContains == false)
                 {
@@ -553,6 +576,13 @@ namespace Notus.Wallet
             );
             ObjMp_LockWallet.AsyncActive = false;
             ObjMp_LockWallet.Clear();
+
+            ObjMp_WalletUsage = new Notus.Mempool(
+                Notus.IO.GetFolderName(Obj_Settings.Network, Obj_Settings.Layer, Notus.Variable.Constant.StorageFolderName.Balance) +
+                "wallet_usage"
+            );
+            ObjMp_WalletUsage.AsyncActive = false;
+            ObjMp_WalletUsage.Clear();
         }
         public Balance()
         {
@@ -593,6 +623,24 @@ namespace Notus.Wallet
                 Notus.Print.Log(
                     Notus.Variable.Enum.LogLevel.Info,
                     8754213,
+                    err.Message,
+                    "BlockRowNo",
+                    null,
+                    err
+                );
+            }
+            try
+            {
+                if (ObjMp_WalletUsage != null)
+                {
+                    ObjMp_WalletUsage.Dispose();
+                }
+            }
+            catch (Exception err)
+            {
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    8754293,
                     err.Message,
                     "BlockRowNo",
                     null,
