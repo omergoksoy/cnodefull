@@ -107,6 +107,14 @@ namespace Notus.Wallet
             }
             return tmpResult;
         }
+
+        BURAYA CÜZDAN KİLİTLEME İŞLEMİ EKLE
+        KİLİTLEME OLAYI ŞU : AYNI ANDA BİRDEN FAZLA BAKİYE GİRİŞ VE ÇIKIŞI İŞLEMİNE İZİN VERMEMESİ
+        İÇİN GEÇİCİ OLARAK İŞLEMİN KİLİTLENMESİ DURUMU
+
+        AYRICA ÇÖZMEK İÇİNDE BİR FONKSİYON VEYA İŞLEM EKLE
+
+
         public (bool, Notus.Variable.Struct.WalletBalanceStruct) SubtractVolumeWithUnlockTime(
             Notus.Variable.Struct.WalletBalanceStruct balanceObj,
             string volume,
