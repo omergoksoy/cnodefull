@@ -2074,9 +2074,18 @@ namespace Notus.Validator
                 });
             }
 
+            /*
+
+
+            controlpoint
+            controlpoint
+            controlpoint
+            controlpoint
+
             burada cüzdan kilitlenecek...
             burada cüzdan kilitlenecek...
             burada cüzdan kilitlenecek...
+            */
 
             // cüzdanın kilitlenme ve açılma işlemleri eklenecek
             (bool volumeError, Notus.Variable.Struct.WalletBalanceStruct newBalance) =
