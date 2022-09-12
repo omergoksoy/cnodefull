@@ -42,4 +42,7 @@ Console.ReadLine();
 Console.ReadLine();
 */
 
+// kontrol kelimesi
+// wallet-lock
+
 Notus.Validator.Node.Start(args);

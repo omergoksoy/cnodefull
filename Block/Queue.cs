@@ -497,7 +497,7 @@ namespace Notus.Block
             Queue_PoolTransaction.Clear();
             Obj_PoolTransactionList.Clear();
         }
-        public void Add(Notus.Variable.Struct.PoolBlockRecordStruct? PreBlockData)
+        public bool Add(Notus.Variable.Struct.PoolBlockRecordStruct? PreBlockData)
         {
             if (PreBlockData != null)
             {
@@ -526,9 +526,11 @@ namespace Notus.Block
                         {
                             MP_BlockPoolList.Set(keyStr, PreBlockDataStr, true);
                         }
+                        return true;
                     }
                 }
             }
+            return false;
         }
 
         public void AddEmptyBlock()

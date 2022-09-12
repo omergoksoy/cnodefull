@@ -21,6 +21,7 @@ namespace Notus.Wallet
         // bu fonksiyonlar ile cüzdanın kilitlenmesi durumuna bakalım
         public bool WalletUsageAvailable(string walletKey)
         {
+
             return (ObjMp_WalletUsage.Get(walletKey, "").Length == 0 ? true : false);
         }
         public bool StartWalletUsage(string walletKey)
@@ -41,6 +42,9 @@ namespace Notus.Wallet
         private void StoreToDb(Notus.Variable.Struct.WalletBalanceStruct BalanceObj)
         {
             ObjMp_Balance.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj), true);
+            
+            //burada cüzdan kilidi açılacak...
+            StopWalletUsage(BalanceObj.Wallet);
         }
         public Notus.Variable.Struct.WalletBalanceResponseStruct ReadFromNode(string WalletKey)
         {
@@ -79,7 +83,6 @@ namespace Notus.Wallet
             }
             return null;
         }
-
         public Notus.Variable.Struct.WalletBalanceStruct Get(string WalletKey, ulong timeYouCanUse)
         {
             string BalanceValStr = ObjMp_Balance.Get(WalletKey, string.Empty);
@@ -477,7 +480,25 @@ namespace Notus.Wallet
                     });
                 }
             }
-
+            if (tmpBlockForBalance.info.type == 90)
+            {
+                string tmpRawDataStr = System.Text.Encoding.UTF8.GetString(
+                    System.Convert.FromBase64String(
+                        tmpBlockForBalance.cipher.data
+                    )
+                );
+                Notus.Variable.Struct.MultiWalletStoreStruct? tmpBalanceVal = JsonSerializer.Deserialize<Notus.Variable.Struct.MultiWalletStoreStruct>(tmpRawDataStr);
+                if (tmpBalanceVal == null)
+                {
+                    Console.WriteLine("tmpRawDataStr -> Balance.Cs -> 493. Line");
+                    Console.WriteLine(tmpRawDataStr);
+                }
+                else
+                {
+                    Console.WriteLine("Multi Signature Wallet -> Balance.Cs -> 498. Line");
+                    Console.WriteLine(JsonSerializer.Serialize(tmpBalanceVal, Notus.Variable.Constant.JsonSetting));
+                }
+            }
             /*
             if (tmpBlockForBalance.info.type == 240)
             {
