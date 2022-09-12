@@ -278,8 +278,15 @@ namespace Notus.Validator
                         ulong transactionCount = 0;
                         foreach (KeyValuePair<string, Notus.Variable.Struct.MempoolDataList> entry in tmpTransactionList)
                         {
+                            // buraya cüzdan kilitleme işlemi eklenecek...
+                            // buraya cüzdan kilitleme işlemi eklenecek...
+                            // buraya cüzdan kilitleme işlemi eklenecek...
+                            her cüzdan tek tek kontrol edilecek ve
+
                             bool walletHaveEnoughCoinOrToken = true;
                             Notus.Variable.Struct.CryptoTransactionStoreStruct tmpObjPoolCrypto = JsonSerializer.Deserialize<Notus.Variable.Struct.CryptoTransactionStoreStruct>(entry.Value.Data);
+                            bool senderUsing = Obj_Api.BalanceObj.WalletUsageAvailable(tmpObjPoolCrypto.Sender);
+                            bool receiverUsing = Obj_Api.BalanceObj.WalletUsageAvailable(tmpObjPoolCrypto.Receiver);
 
                             bool senderExist = tmpWalletList.IndexOf(tmpObjPoolCrypto.Sender) >= 0 ? true : false;
                             bool receiverExist = tmpWalletList.IndexOf(tmpObjPoolCrypto.Receiver) >= 0 ? true : false;
@@ -287,9 +294,7 @@ namespace Notus.Validator
                             {
                                 tmpWalletList.Add(tmpObjPoolCrypto.Sender);
                                 tmpWalletList.Add(tmpObjPoolCrypto.Receiver);
-                            }
-                            if (senderExist == false && receiverExist == false)
-                            {
+
                                 Notus.Variable.Struct.WalletBalanceStruct tmpSenderBalance = Obj_Api.BalanceObj.Get(tmpObjPoolCrypto.Sender, unlockTimeForNodeWallet);
                                 Notus.Variable.Struct.WalletBalanceStruct tmpReceiverBalance = Obj_Api.BalanceObj.Get(tmpObjPoolCrypto.Receiver, unlockTimeForNodeWallet);
                                 string tmpTokenTagStr = "";
