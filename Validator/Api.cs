@@ -336,6 +336,7 @@ namespace Notus.Validator
                             {
                                 return Request_AddMultiWallet(IncomeData);
                             }
+                            return JsonSerializer.Serialize(false);
                         }
                     }
                     if (IncomeData.UrlList.Length > 1)
@@ -353,15 +354,22 @@ namespace Notus.Validator
                             singlePrefix = Notus.Variable.Constant.SingleWalletPrefix_TestNetwork;
                             multiPrefix = Notus.Variable.Constant.MultiWalletPrefix_TestNetwork;
                         }
-                        if (string.Equals(singlePrefix, tmpWallet.Substring(0, singlePrefix.Length)))
+                        if (tmpWallet.Length >= singlePrefix.Length)
                         {
-                            Console.WriteLine("single wallet");
+                            if (string.Equals(singlePrefix, tmpWallet.Substring(0, singlePrefix.Length)))
+                            {
+                                return JsonSerializer.Serialize(BalanceObj.WalletsICanApprove(tmpWallet));
+                            }
                         }
-                        if (string.Equals(multiPrefix, tmpWallet.Substring(0, multiPrefix.Length)))
+                        if (tmpWallet.Length >= multiPrefix.Length)
                         {
-                            Console.WriteLine("single wallet");
+                            if (string.Equals(multiPrefix, tmpWallet.Substring(0, multiPrefix.Length)))
+                            {
+                                return JsonSerializer.Serialize(BalanceObj.GetParticipant(tmpWallet));
+                            }
                         }
                     }
+                    return JsonSerializer.Serialize(false);
                 }
                 if (IncomeData.UrlList[0].ToLower() == "pool")
                 {
@@ -402,7 +410,8 @@ namespace Notus.Validator
                     return JsonSerializer.Serialize(false);
                 }
 
-                if (IncomeData.UrlList.Length > 1) {
+                if (IncomeData.UrlList.Length > 1)
+                {
                     if (string.Equals(IncomeData.UrlList[0].ToLower(), "lock"))
                     {
                         return Request_LockAccount(IncomeData);
@@ -1955,7 +1964,7 @@ namespace Notus.Validator
                         );
 
                     tmpTokenObj.Out = tmpNewGeneratorBalance.Balance;
-                        
+
                     // wallet-lock
                     bool tmpAddResult = Func_AddToChainPool(new Notus.Variable.Struct.PoolBlockRecordStruct()
                     {
@@ -2058,7 +2067,8 @@ namespace Notus.Validator
             }
             Console.WriteLine(JsonSerializer.Serialize(WalletObj, Notus.Variable.Constant.JsonSetting));
             Console.WriteLine("--------------------------------------------");
-            if (Obj_Balance.WalletUsageAvailable(WalletObj.Founder.WalletKey) == false) {
+            if (Obj_Balance.WalletUsageAvailable(WalletObj.Founder.WalletKey) == false)
+            {
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
                 {
                     UID = string.Empty,
@@ -2162,8 +2172,8 @@ namespace Notus.Validator
                 WalletList = WalletObj.WalletList,
                 Sign = WalletObj.Sign,
                 Fee = howMuchCoinNeed.ToString(),
-                Balance= tmpGeneratorBalanceObj,
-                Out= newBalance.Balance
+                Balance = tmpGeneratorBalanceObj,
+                Out = newBalance.Balance
             };
 
             // wallet-lock
@@ -2322,7 +2332,7 @@ namespace Notus.Validator
                 PublicKey = LockObj.PublicKey,
                 Sign = LockObj.Sign
             };
-            
+
             // wallet-lock
             bool tmpAddResult = Func_AddToChainPool(new Notus.Variable.Struct.PoolBlockRecordStruct()
             {

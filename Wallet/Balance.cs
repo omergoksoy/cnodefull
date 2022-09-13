@@ -17,7 +17,29 @@ namespace Notus.Wallet
         private Notus.Mempool ObjMp_LockWallet;
         private Notus.Mempool ObjMp_Balance;
         private Notus.Mempool ObjMp_MultiWalletParticipant;
+        private Notus.Mempool ObjMp_WalletsICanApprove;
         
+        public List<string> WalletsICanApprove(string WalletId)
+        {
+            string multiParticipantStr = ObjMp_WalletsICanApprove.Get(WalletId, "");
+            if (multiParticipantStr == "")
+            {
+                return new List<string>();
+            }
+            List<string>? participantList = new List<string>();
+            try
+            {
+                participantList = JsonSerializer.Deserialize<List<string>>(multiParticipantStr);
+            }
+            catch
+            {
+            }
+            if (participantList == null)
+            {
+                return new List<string>();
+            }
+            return participantList;
+        }
         public List<string> GetParticipant(string MultiSignatureWalletId)
         {
             string multiParticipantStr = ObjMp_MultiWalletParticipant.Get(MultiSignatureWalletId, "");
@@ -355,6 +377,7 @@ namespace Notus.Wallet
                 ObjMp_LockWallet.Clear();
                 ObjMp_WalletUsage.Clear();
                 ObjMp_MultiWalletParticipant.Clear();
+                ObjMp_WalletsICanApprove.Clear();
                 string tmpBalanceStr = Obj_Settings.Genesis.Premining.PreSeed.Volume.ToString();
                 if (Obj_Settings.Genesis.Premining.PreSeed.DecimalContains == false)
                 {
@@ -532,9 +555,30 @@ namespace Notus.Wallet
                         {
                             participantList.Add(tmpBalanceVal.WalletList[i]);
                         }
-                    }
-                    Console.WriteLine(JsonSerializer.Serialize(participantList, Notus.Variable.Constant.JsonSetting));
 
+                        List<string> walletIcanApprove = WalletsICanApprove(tmpBalanceVal.WalletList[i]);
+                        if (walletIcanApprove.IndexOf(tmpBalanceVal.MultiWalletKey) == -1)
+                        {
+                            walletIcanApprove.Add(tmpBalanceVal.MultiWalletKey);
+                            ObjMp_WalletsICanApprove.Set(
+                                tmpBalanceVal.WalletList[i],
+                                JsonSerializer.Serialize(walletIcanApprove),
+                                true
+                            );
+                        }
+
+                        //WalletsICanApprove()
+                        //
+                    }
+
+                    ObjMp_MultiWalletParticipant.Set(
+                        tmpBalanceVal.MultiWalletKey,
+                        JsonSerializer.Serialize(participantList),
+                        true
+                    );
+
+
+                    //Console.WriteLine(JsonSerializer.Serialize(participantList, Notus.Variable.Constant.JsonSetting));
                     //multi wallet cüzdanın katılımcılarını tutan mempool listesi
                     //List<string> participantList = GetParticipant(tmpBalanceVal.MultiWalletKey);
 
@@ -563,8 +607,8 @@ namespace Notus.Wallet
                     }
                     });
 
-                    Console.WriteLine("Multi Signature Wallet -> Balance.Cs -> 498. Line");
-                    Console.WriteLine(JsonSerializer.Serialize(tmpBalanceVal, Notus.Variable.Constant.JsonSetting));
+                    //Console.WriteLine("Multi Signature Wallet -> Balance.Cs -> 498. Line");
+                    //Console.WriteLine(JsonSerializer.Serialize(tmpBalanceVal, Notus.Variable.Constant.JsonSetting));
                 }
             }
             /*
@@ -686,6 +730,14 @@ namespace Notus.Wallet
             
             ObjMp_MultiWalletParticipant.AsyncActive = false;
             ObjMp_MultiWalletParticipant.Clear();
+
+            ObjMp_WalletsICanApprove = new Notus.Mempool(
+                Notus.IO.GetFolderName(Obj_Settings.Network, Obj_Settings.Layer, Notus.Variable.Constant.StorageFolderName.Balance) +
+                "wallet_i_can_approve"
+            );
+
+            ObjMp_WalletsICanApprove.AsyncActive = false;
+            ObjMp_WalletsICanApprove.Clear();
             
         }
         public Balance()
@@ -764,6 +816,25 @@ namespace Notus.Wallet
                 Notus.Print.Log(
                     Notus.Variable.Enum.LogLevel.Info,
                     8754279,
+                    err.Message,
+                    "BlockRowNo",
+                    null,
+                    err
+                );
+            }
+            
+            try
+            {
+                if (ObjMp_WalletsICanApprove != null)
+                {
+                    ObjMp_WalletsICanApprove.Dispose();
+                }
+            }
+            catch (Exception err)
+            {
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    8754290,
                     err.Message,
                     "BlockRowNo",
                     null,
