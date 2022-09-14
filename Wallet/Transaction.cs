@@ -206,15 +206,29 @@ namespace Notus.Wallet
         {
             try
             {
-                bool transactionVerify = Verify(preTransfer);
-                if (transactionVerify == false)
+                if (Notus.Wallet.MultiID.IsMultiId(preTransfer.Sender, currentNetwork) == true)
                 {
-                    return new Notus.Variable.Struct.CryptoTransactionResult()
+                    if (MultiSignatureVerify(preTransfer) == false)
                     {
-                        ErrorText = "WrongSignature",
-                        ID = string.Empty,
-                        Result = Notus.Variable.Enum.BlockStatusCode.WrongSignature,
-                    };
+                        return new Notus.Variable.Struct.CryptoTransactionResult()
+                        {
+                            ErrorText = "WrongSignature",
+                            ID = string.Empty,
+                            Result = Notus.Variable.Enum.BlockStatusCode.WrongSignature,
+                        };
+                    }
+                }
+                else
+                {
+                    if (Verify(preTransfer) == false)
+                    {
+                        return new Notus.Variable.Struct.CryptoTransactionResult()
+                        {
+                            ErrorText = "WrongSignature",
+                            ID = string.Empty,
+                            Result = Notus.Variable.Enum.BlockStatusCode.WrongSignature,
+                        };
+                    }
                 }
 
                 bool exitInnerLoop = false;
@@ -339,6 +353,34 @@ namespace Notus.Wallet
             );
         }
 
+        /// <summary>
+        /// Validates sent transaction information.
+        /// </summary>
+        /// <param name="preTransfer">Crypto Transaction informations.</param>
+        /// <returns>Returns Result of the Verification.</returns>
+        public static bool MultiSignatureVerify(Notus.Variable.Struct.CryptoTransactionStruct preTransfer)
+        {
+            if (Notus.Wallet.ID.CheckAddress(preTransfer.Sender, preTransfer.Network) == false)
+            {
+                return false;
+            }
+
+            if (Notus.Wallet.ID.CheckAddress(preTransfer.Receiver, preTransfer.Network) == false)
+            {
+                return false;
+            }
+
+            return Notus.Wallet.ID.Verify(Notus.Core.MergeRawData.Transaction(
+                   preTransfer.Sender,
+                   preTransfer.Receiver,
+                   preTransfer.Volume,
+                   preTransfer.UnlockTime.ToString(),
+                   preTransfer.Currency
+                ), preTransfer.Sign,
+                preTransfer.PublicKey,
+                preTransfer.CurveName
+            );
+        }
         /// <summary>
         /// Signs current transaction informations
         /// </summary>

@@ -1385,8 +1385,21 @@ namespace Notus.Validator
             Notus.Variable.Struct.CryptoTransactionStruct tmpTransfer
         )
         {
-
-            return string.Empty;
+            buradaki kodu yaz
+            // burada multi wallet için yapılan gönderim işlemi havuza alınacak
+            // eğer bu işlem için yeterli kullanıcı mevcut ise işlem doğrudan havuza alınarak gerçekleştirilecek
+            // burada ayrıca public adresi verilen cüzdanın multi wallet için yetkili olup olmadığı
+            // eğer yetkili ise ve yeterli oranda oy var ise
+            // işlem bloğu oluşturulacak ve havuza alınacak
+            // ayrıca api ile multi wallet katılımcılarının onay vermeleri gereken işlem olduğunu sorgulayacakları
+            // bir API oluştur
+            return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
+            {
+                ErrorNo = 7546,
+                ErrorText = "multi signature send",
+                ID = string.Empty,
+                Result = Notus.Variable.Enum.BlockStatusCode.WrongWallet_Sender
+            });
         }
         private string Request_Send(Notus.Variable.Struct.HttpRequestDetails IncomeData)
         {
@@ -1455,8 +1468,7 @@ namespace Notus.Validator
                     Result = Notus.Variable.Enum.BlockStatusCode.WalletNotAllowed
                 });
             }
-
-            if (Notus.Wallet.MultiID.IsMultiId(tmpTransfer.Sender) == true)
+            if (Notus.Wallet.MultiID.IsMultiId(tmpTransfer.Sender,Obj_Settings.Network) == true)
             {
                 return Request_MultiSignatureSend(IncomeData, tmpTransfer);
             }
@@ -1472,7 +1484,6 @@ namespace Notus.Validator
                     Result = Notus.Variable.Enum.BlockStatusCode.WrongWallet_Sender
                 });
             }
-
             //receiver
             if (tmpTransfer.Receiver.Length != Notus.Variable.Constant.SingleWalletTextLength)
             {
@@ -1493,6 +1504,18 @@ namespace Notus.Validator
                     ErrorText = "WrongWallet_Receiver",
                     ID = string.Empty,
                     Result = Notus.Variable.Enum.BlockStatusCode.WrongWallet_Receiver
+                });
+            }
+
+            string calculatedWalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(tmpTransfer.PublicKey, Obj_Settings.Network);
+            if (string.Equals(calculatedWalletKey, tmpTransfer.Sender) == false)
+            {
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
+                {
+                    ErrorNo = 5245,
+                    ErrorText = "WrongWallet_Sender",
+                    ID = string.Empty,
+                    Result = Notus.Variable.Enum.BlockStatusCode.WrongWallet_Sender
                 });
             }
 
