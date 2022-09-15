@@ -616,6 +616,7 @@ namespace Notus.Validator
                     airdropStr = Notus.Variable.Constant.AirDropVolume[Obj_Settings.Layer][Obj_Settings.Network];
                 }
             }
+            DateTime exactTime = DateTime.Now;
             string ReceiverWalletKey = IncomeData.UrlList[1];
             Notus.Variable.Struct.CryptoTransactionStruct tmpSignedTrans = Notus.Wallet.Transaction.Sign(
                 new Notus.Variable.Struct.CryptoTransactionBeforeStruct()
@@ -624,7 +625,8 @@ namespace Notus.Validator
                     PrivateKey = KeyPair_PreSeed.PrivateKey,
                     Receiver = ReceiverWalletKey,
                     Sender = KeyPair_PreSeed.WalletKey,
-                    UnlockTime = Date.ToLong(DateTime.Now),
+                    CurrentTime = Date.ToLong(exactTime),
+                    UnlockTime = Date.ToLong(exactTime),
                     Volume = airdropStr,
                     Network = Obj_Settings.Network,
                     CurveName = Notus.Variable.Constant.Default_EccCurveName
@@ -1385,7 +1387,71 @@ namespace Notus.Validator
             Notus.Variable.Struct.CryptoTransactionStruct tmpTransfer
         )
         {
+            /*
+
+                {
+                  "ErrorNo": 0,
+                  "CurrentTime": 20220916004937881,
+                  "UnlockTime": 20220916004937946,
+                  "Currency": "NOTUS",
+                  "Sender": "NMDLAJMBVaCJA1V7pZ7zsCcWSfecmh29ZVxoHNQ",
+                  "Receiver": "NODVZ9W9cKf1AEDCUtBZmvrnBoPpnxEAunFmTzS",
+                  "Volume": "500000",
+                  "PublicKey": "e2b4d61ed58cf3a1bff61a7e77470c233a97ab405ebe27449ac0a6bd4ba98fa5bf9041ae06a54eb0fa46bd8fff448265bc7ab6f8561bc00ae3064d88ff416831",
+                  "Sign": "304402202bc5e778d8909eaff7a85a297a6dfca78c6de25567cf79d38cb9cf9e01bb742802204e3b88976b252e09a4bc1129376c964006553aa509c70926ae78b443db7d8a9f",
+                }
+
+            */
+            //Notus.Variable.Enum.NetworkType networkType=string participantWalletId = Notus.Wallet.ID.GetNetworkType();
+
+            burada yapılan işlem mempool'a eklenecek
+            sonra diğer işlemler gelene kadar bekleyecek...
+
+            string controlKey=
+                tmpTransfer.Sender
+                tmpTransfer.Receiver
+
+            CurrentTime: 20220916004937881,
+            UnlockTime: 20220916004937946,
+            Currency: "NOTUS",
+            Receiver "NODVZ9W9cKf1AEDCUtBZmvrnBoPpnxEAunFmTzS",
+            Volume "500000",
+            Sign "304402202bc5e778d8909eaff7a85a297a6dfca78c6de25567cf79d38cb9cf9e01bb742802204e3b88976b252e09a4bc1129376c964006553aa509c70926ae78b443db7d8a9f",
+
+                tmpt
+            List<string> participantList=BalanceObj.GetParticipant(tmpTransfer.Sender);
+            string participantWalletId=Notus.Wallet.ID.GetAddressWithPublicKey(
+                tmpTransfer.PublicKey, 
+                Obj_Settings.Network
+            );
+
+            if (participantList.IndexOf(participantWalletId) == -1)
+            {
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
+                {
+                    ErrorNo = 7546,
+                    ErrorText = "NotParticipant",
+                    ID = string.Empty,
+                    Result = Notus.Variable.Enum.BlockStatusCode.NotParticipant
+                });
+            }
+            Console.WriteLine(JsonSerializer.Serialize(tmpTransfer, Notus.Variable.Constant.JsonSetting));
+            List<string> walletsICanApprove=BalanceObj.WalletsICanApprove(participantWalletId);
+            if (walletsICanApprove.IndexOf(tmpTransfer.Sender) == -1)
+            {
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
+                {
+                    ErrorNo = 7546,
+                    ErrorText = "RejectedMultiWalletAccess",
+                    ID = string.Empty,
+                    Result = Notus.Variable.Enum.BlockStatusCode.RejectedMultiWalletAccess
+                });
+            }
+            
+
+            /*
             buradaki kodu yaz
+            */
             // burada multi wallet için yapılan gönderim işlemi havuza alınacak
             // eğer bu işlem için yeterli kullanıcı mevcut ise işlem doğrudan havuza alınarak gerçekleştirilecek
             // burada ayrıca public adresi verilen cüzdanın multi wallet için yetkili olup olmadığı
@@ -1444,6 +1510,8 @@ namespace Notus.Validator
                 tmpTransfer.Sign == null ||
                 tmpTransfer.PublicKey == null ||
                 tmpTransfer.Sender == null ||
+                tmpTransfer.CurrentTime == 0 ||
+                tmpTransfer.UnlockTime == 0 ||
                 tmpTransfer.Currency == null ||
                 tmpTransfer.Receiver == null
             )
@@ -1506,6 +1574,20 @@ namespace Notus.Validator
                     Result = Notus.Variable.Enum.BlockStatusCode.WrongWallet_Receiver
                 });
             }
+            DateTime rightNow = DateTime.Now;
+            DateTime currentTime = Notus.Date.ToDateTime(tmpTransfer.CurrentTime);
+            double totaSeconds = Math.Abs((rightNow - currentTime).TotalSeconds);
+            // iki günden eski ise  zaman aşımı olarak işaretle
+            if(totaSeconds > (2*86400))
+            {
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
+                {
+                    ErrorNo = 5245,
+                    ErrorText = "OldTransaction",
+                    ID = string.Empty,
+                    Result = Notus.Variable.Enum.BlockStatusCode.OldTransaction
+                });
+            }
 
             string calculatedWalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(tmpTransfer.PublicKey, Obj_Settings.Network);
             if (string.Equals(calculatedWalletKey, tmpTransfer.Sender) == false)
@@ -1531,19 +1613,9 @@ namespace Notus.Validator
             }
 
 
+            string rawDataStr = Notus.Core.MergeRawData.Transaction(tmpTransfer);
             //transaction sign
-            if (
-                Notus.Wallet.ID.Verify(
-                    Notus.Core.MergeRawData.Transaction(
-                        tmpTransfer.Sender,
-                        tmpTransfer.Receiver,
-                        tmpTransfer.Volume,
-                        tmpTransfer.UnlockTime.ToString(),
-                        tmpTransfer.Currency
-                    ),
-                    tmpTransfer.Sign,
-                    tmpTransfer.PublicKey
-                ) == false)
+            if (Notus.Wallet.ID.Verify(rawDataStr,tmpTransfer.Sign,tmpTransfer.PublicKey) == false)
             {
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
                 {
@@ -1649,6 +1721,7 @@ namespace Notus.Validator
             {
                 Version = 1000,
                 TransferId = tmpTransferIdKey,
+                CurrentTime = tmpTransfer.CurrentTime,
                 UnlockTime = tmpTransfer.UnlockTime,
                 Currency = tmpTransfer.Currency,
                 Sender = tmpTransfer.Sender,

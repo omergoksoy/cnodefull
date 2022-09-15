@@ -19,6 +19,63 @@ namespace Notus.Wallet
     /// </summary>
     public class ID
     {
+        public static Notus.Variable.Enum.NetworkType GetNetworkType(string walletId)
+        {
+            
+            if (
+                walletId.Length == Notus.Variable.Constant.SingleWalletTextLength
+                ||
+                walletId.Length == Notus.Variable.Constant.MultiWalletTextLength
+            )
+            {
+                if (
+                    string.Equals(
+                        walletId.Substring(0, Notus.Variable.Constant.SingleWalletPrefix_MainNetwork.Length),
+                        Notus.Variable.Constant.SingleWalletPrefix_MainNetwork
+                    )
+                    ||
+                    string.Equals(
+                        walletId.Substring(0, Notus.Variable.Constant.MultiWalletPrefix_MainNetwork.Length),
+                        Notus.Variable.Constant.MultiWalletPrefix_MainNetwork
+                    )
+                )
+                {
+                    return Notus.Variable.Enum.NetworkType.MainNet;
+                }
+                
+                if (
+                    string.Equals(
+                        walletId.Substring(0, Notus.Variable.Constant.SingleWalletPrefix_TestNetwork.Length),
+                        Notus.Variable.Constant.SingleWalletPrefix_TestNetwork
+                    )
+                    ||
+                    string.Equals(
+                        walletId.Substring(0, Notus.Variable.Constant.MultiWalletPrefix_TestNetwork.Length),
+                        Notus.Variable.Constant.MultiWalletPrefix_TestNetwork
+                    )
+                )
+                {
+                    return Notus.Variable.Enum.NetworkType.TestNet;
+                }
+                if (
+                    string.Equals(
+                        walletId.Substring(0, Notus.Variable.Constant.SingleWalletPrefix_DevelopmentNetwork.Length),
+                        Notus.Variable.Constant.SingleWalletPrefix_DevelopmentNetwork
+                    )
+                    ||
+                    string.Equals(
+                        walletId.Substring(0, Notus.Variable.Constant.MultiWalletPrefix_DevelopmentNetwork.Length),
+                        Notus.Variable.Constant.MultiWalletPrefix_DevelopmentNetwork
+                    )
+                )
+                {
+                    return Notus.Variable.Enum.NetworkType.DevNet;
+                }
+
+            }
+
+            return Notus.Variable.Enum.NetworkType.Unknown;
+        }
         /// <summary>
         /// Verifies data and returns verify status
         /// </summary>

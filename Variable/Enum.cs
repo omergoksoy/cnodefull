@@ -129,6 +129,10 @@ namespace Notus.Variable.Enum
         InQueue = 1,
         Completed = 22,
         Rejected = 97,
+        
+        OldTransaction = 71,
+        NotParticipant=35,
+        RejectedMultiWalletAccess=38,
         Unknown = 78
     }
 
