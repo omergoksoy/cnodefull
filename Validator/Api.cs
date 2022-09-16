@@ -38,6 +38,7 @@ namespace Notus.Validator
             get { return Obj_Balance; }
             set { Obj_Balance = value; }
         }
+        private Notus.Mempool ObjMp_MultiSignPool;
         private Notus.Mempool ObjMp_BlockOrderList;
         private Notus.Mempool ObjMp_CryptoTranStatus;
         public Notus.Mempool CryptoTranStatus
@@ -83,6 +84,13 @@ namespace Notus.Validator
 
                 ObjMp_BlockOrderList.AsyncActive = false;
                 ObjMp_BlockOrderList.Clear();
+
+                ObjMp_MultiSignPool = new Notus.Mempool(
+                    Notus.IO.GetFolderName(
+                        Obj_Settings, Notus.Variable.Constant.StorageFolderName.Pool
+                    ) + "multi_sign_tx");
+
+                ObjMp_MultiSignPool.AsyncActive = false;
             }
         }
         private void Prepare_Layer2()
@@ -1403,11 +1411,20 @@ namespace Notus.Validator
 
             */
             //Notus.Variable.Enum.NetworkType networkType=string participantWalletId = Notus.Wallet.ID.GetNetworkType();
+            /*
+            */
+            List<string> uidList = new List<string>();
+            string dbKeyStr = Notus.Toolbox.Text.ToHex(tmpTransfer.Sender, 90);
+            string dbText = ObjMp_MultiSignPool.Get(dbKeyStr, "");
+            if (dbText.Length > 0)
+            {
+                uidList = JsonSerializer.Deserialize<List<string>>(dbText);
+            }
 
             burada yapılan işlem mempool'a eklenecek
             sonra diğer işlemler gelene kadar bekleyecek...
 
-            string controlKey=
+            string controlKey =
                 tmpTransfer.Sender
                 tmpTransfer.Receiver
 
@@ -1419,9 +1436,9 @@ namespace Notus.Validator
             Sign "304402202bc5e778d8909eaff7a85a297a6dfca78c6de25567cf79d38cb9cf9e01bb742802204e3b88976b252e09a4bc1129376c964006553aa509c70926ae78b443db7d8a9f",
 
                 tmpt
-            List<string> participantList=BalanceObj.GetParticipant(tmpTransfer.Sender);
-            string participantWalletId=Notus.Wallet.ID.GetAddressWithPublicKey(
-                tmpTransfer.PublicKey, 
+            List<string> participantList = BalanceObj.GetParticipant(tmpTransfer.Sender);
+            string participantWalletId = Notus.Wallet.ID.GetAddressWithPublicKey(
+                tmpTransfer.PublicKey,
                 Obj_Settings.Network
             );
 
@@ -1436,7 +1453,7 @@ namespace Notus.Validator
                 });
             }
             Console.WriteLine(JsonSerializer.Serialize(tmpTransfer, Notus.Variable.Constant.JsonSetting));
-            List<string> walletsICanApprove=BalanceObj.WalletsICanApprove(participantWalletId);
+            List<string> walletsICanApprove = BalanceObj.WalletsICanApprove(participantWalletId);
             if (walletsICanApprove.IndexOf(tmpTransfer.Sender) == -1)
             {
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
@@ -1447,7 +1464,7 @@ namespace Notus.Validator
                     Result = Notus.Variable.Enum.BlockStatusCode.RejectedMultiWalletAccess
                 });
             }
-            
+
 
             /*
             buradaki kodu yaz
@@ -1536,7 +1553,7 @@ namespace Notus.Validator
                     Result = Notus.Variable.Enum.BlockStatusCode.WalletNotAllowed
                 });
             }
-            if (Notus.Wallet.MultiID.IsMultiId(tmpTransfer.Sender,Obj_Settings.Network) == true)
+            if (Notus.Wallet.MultiID.IsMultiId(tmpTransfer.Sender, Obj_Settings.Network) == true)
             {
                 return Request_MultiSignatureSend(IncomeData, tmpTransfer);
             }
@@ -1578,7 +1595,7 @@ namespace Notus.Validator
             DateTime currentTime = Notus.Date.ToDateTime(tmpTransfer.CurrentTime);
             double totaSeconds = Math.Abs((rightNow - currentTime).TotalSeconds);
             // iki günden eski ise  zaman aşımı olarak işaretle
-            if(totaSeconds > (2*86400))
+            if (totaSeconds > (2 * 86400))
             {
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
                 {
@@ -1615,7 +1632,7 @@ namespace Notus.Validator
 
             string rawDataStr = Notus.Core.MergeRawData.Transaction(tmpTransfer);
             //transaction sign
-            if (Notus.Wallet.ID.Verify(rawDataStr,tmpTransfer.Sign,tmpTransfer.PublicKey) == false)
+            if (Notus.Wallet.ID.Verify(rawDataStr, tmpTransfer.Sign, tmpTransfer.PublicKey) == false)
             {
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
                 {

@@ -250,6 +250,7 @@ namespace Notus.Variable
             public const string File = "file";
             public const string Storage = "storage";
             public const string TempBlock = "temp_block";
+            public const string Pool = "pool";
         }
 
 
