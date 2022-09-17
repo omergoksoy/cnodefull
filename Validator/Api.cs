@@ -1395,34 +1395,23 @@ namespace Notus.Validator
             Notus.Variable.Struct.CryptoTransactionStruct tmpTransfer
         )
         {
-            /*
-
-                {
-                  "ErrorNo": 0,
-                  "CurrentTime": 20220916004937881,
-                  "UnlockTime": 20220916004937946,
-                  "Currency": "NOTUS",
-                  "Sender": "NMDLAJMBVaCJA1V7pZ7zsCcWSfecmh29ZVxoHNQ",
-                  "Receiver": "NODVZ9W9cKf1AEDCUtBZmvrnBoPpnxEAunFmTzS",
-                  "Volume": "500000",
-                  "PublicKey": "e2b4d61ed58cf3a1bff61a7e77470c233a97ab405ebe27449ac0a6bd4ba98fa5bf9041ae06a54eb0fa46bd8fff448265bc7ab6f8561bc00ae3064d88ff416831",
-                  "Sign": "304402202bc5e778d8909eaff7a85a297a6dfca78c6de25567cf79d38cb9cf9e01bb742802204e3b88976b252e09a4bc1129376c964006553aa509c70926ae78b443db7d8a9f",
-                }
-
-            */
-            //Notus.Variable.Enum.NetworkType networkType=string participantWalletId = Notus.Wallet.ID.GetNetworkType();
-            /*
-            */
-            List<ulong> uidList = new List<ulong>();
+            // ulong, 
+            // current Time,
+            
+            Dictionary<ulong, Notus.Variable.Struct.MultiWalletTransactionVoteStruct> uidList =
+                new Dictionary<ulong, Notus.Variable.Struct.MultiWalletTransactionVoteStruct>();
             string dbKeyStr = Notus.Toolbox.Text.ToHex(tmpTransfer.Sender, 90);
             string dbText = ObjMp_MultiSignPool.Get(dbKeyStr, "");
             if (dbText.Length > 0)
             {
-                uidList = JsonSerializer.Deserialize<List<ulong>>(dbText);
+                uidList = JsonSerializer.Deserialize<Dictionary<
+                    ulong,
+                    Notus.Variable.Struct.MultiWalletTransactionVoteStruct>
+                >(dbText);
             }
 
             
-            if (uidList.IndexOf(tmpTransfer.CurrentTime)>=0)
+            if (uidList.ContainsKey(tmpTransfer.CurrentTime)==false)
             {
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
                 {
@@ -1433,7 +1422,21 @@ namespace Notus.Validator
                 });
             }
 
-            uidList.Add(tmpTransfer.CurrentTime);
+            burada tüm diğer imzalayacıları ekle
+            imzalanmamış olarak ekle
+            imzalayınca kaydı imzalandı olarak değiştir ve imzalarını yaz
+            timeout olarak 2 hafta ekle
+
+
+            uidList.Add(tmpTransfer.CurrentTime,new Variable.Struct.MultiWalletTransactionVoteStruct()
+            {
+                 Sender= tmpTransfer,
+                  Approve=new Dictionary<string, Variable.Struct.MultiWalletTransactionApproveStruct>()
+                  {
+
+                  }
+            });
+
             ObjMp_MultiSignPool.Set(dbKeyStr, JsonSerializer.Serialize(uidList),true);
 
             //burada yapılan işlem mempool'a eklenecek
