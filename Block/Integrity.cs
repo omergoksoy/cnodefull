@@ -392,6 +392,7 @@ namespace Notus.Block
             }
             if (prevBlockRownNumberError == true)
             {
+                //BlockIdStr
                 Notus.Print.Danger(Obj_Settings, "Repair Block Integrity = Wrong Block Order");
                 return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
             }

@@ -1395,11 +1395,7 @@ namespace Notus.Validator
             Notus.Variable.Struct.CryptoTransactionStruct tmpTransfer
         )
         {
-            // ulong, 
-            // current Time,
-            
-            Dictionary<ulong, Notus.Variable.Struct.MultiWalletTransactionVoteStruct> uidList =
-                new Dictionary<ulong, Notus.Variable.Struct.MultiWalletTransactionVoteStruct>();
+            Dictionary<ulong, Notus.Variable.Struct.MultiWalletTransactionVoteStruct>? uidList = null;
             string dbKeyStr = Notus.Toolbox.Text.ToHex(tmpTransfer.Sender, 90);
             string dbText = ObjMp_MultiSignPool.Get(dbKeyStr, "");
             if (dbText.Length > 0)
@@ -1409,99 +1405,64 @@ namespace Notus.Validator
                     Notus.Variable.Struct.MultiWalletTransactionVoteStruct>
                 >(dbText);
             }
+            if (uidList == null)
+            {
+                uidList = new Dictionary<ulong, Notus.Variable.Struct.MultiWalletTransactionVoteStruct>();
+            }
 
-            
-            if (uidList.ContainsKey(tmpTransfer.CurrentTime)==false)
+            if (uidList.ContainsKey(tmpTransfer.CurrentTime) == true)
             {
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
                 {
                     ErrorNo = 7546,
-                    ErrorText = "InAlreadyQueue",
-                    ID = string.Empty,
-                    Result = Notus.Variable.Enum.BlockStatusCode.InAlreadyQueue
+                    ErrorText = uidList[tmpTransfer.CurrentTime].Status.ToString(),
+                    ID = uidList[tmpTransfer.CurrentTime].BlockUid,
+                    Result = uidList[tmpTransfer.CurrentTime].Status
                 });
             }
-
-            burada tüm diğer imzalayacıları ekle
-            imzalanmamış olarak ekle
-            imzalayınca kaydı imzalandı olarak değiştir ve imzalarını yaz
-            timeout olarak 2 hafta ekle
-
-
-            uidList.Add(tmpTransfer.CurrentTime,new Variable.Struct.MultiWalletTransactionVoteStruct()
+            
+            string tmpBlockUid=Notus.Block.Key.Generate(Notus.Date.ToDateTime(tmpTransfer.CurrentTime),Obj_Settings.NodeWallet.WalletKey);
+            List<string>? participant = BalanceObj.GetParticipant(tmpTransfer.Sender);
+            uidList.Add(tmpTransfer.CurrentTime, new Variable.Struct.MultiWalletTransactionVoteStruct()
             {
-                 Sender= tmpTransfer,
-                  Approve=new Dictionary<string, Variable.Struct.MultiWalletTransactionApproveStruct>()
-                  {
+                BlockUid = tmpBlockUid,
+                Sender = tmpTransfer,
+                VoteType = BalanceObj.GetMultiWalletType(tmpTransfer.Sender),
+                Status = Variable.Enum.BlockStatusCode.AddedToQueue,
+                Approve = new Dictionary<string, Variable.Struct.MultiWalletTransactionApproveStruct>()
+                {
 
-                  }
+                }
             });
-
-            ObjMp_MultiSignPool.Set(dbKeyStr, JsonSerializer.Serialize(uidList),true);
-
-            //burada yapılan işlem mempool'a eklenecek
-            //sonra diğer işlemler gelene kadar bekleyecek...
-
-            /*
-            string controlKey =
-                tmpTransfer.Sender
-                tmpTransfer.Receiver
-
-            CurrentTime: 20220916004937881,
-            UnlockTime: 20220916004937946,
-            Currency: "NOTUS",
-            Receiver "NODVZ9W9cKf1AEDCUtBZmvrnBoPpnxEAunFmTzS",
-            Volume "500000",
-            Sign "304402202bc5e778d8909eaff7a85a297a6dfca78c6de25567cf79d38cb9cf9e01bb742802204e3b88976b252e09a4bc1129376c964006553aa509c70926ae78b443db7d8a9f",
-            tmpt
-            */
-
-            List<string> participantList = BalanceObj.GetParticipant(tmpTransfer.Sender);
-            string participantWalletId = Notus.Wallet.ID.GetAddressWithPublicKey(
-                tmpTransfer.PublicKey,
-                Obj_Settings.Network
+            string calculatedWalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(tmpTransfer.PublicKey, Obj_Settings.Network);
+            for (int i = 0; i < participant.Count; i++)
+            {
+                if (string.Equals(participant[i], calculatedWalletKey) == false)
+                {
+                    uidList[tmpTransfer.CurrentTime].Approve.Add(
+                        participant[i], new Variable.Struct.MultiWalletTransactionApproveStruct()
+                        {
+                            TransferTime = 0,
+                            CurrentTime = 0,
+                            PublicKey = "",
+                            Sign = ""
+                        }
+                    );
+                }
+            }
+            
+            ObjMp_MultiSignPool.Add(
+                dbKeyStr, 
+                JsonSerializer.Serialize(uidList), 
+                Notus.Variable.Constant.MultiWalletTransactionTimeout
             );
 
-            if (participantList.IndexOf(participantWalletId) == -1)
-            {
-                return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
-                {
-                    ErrorNo = 7546,
-                    ErrorText = "NotParticipant",
-                    ID = string.Empty,
-                    Result = Notus.Variable.Enum.BlockStatusCode.NotParticipant
-                });
-            }
-            Console.WriteLine(JsonSerializer.Serialize(tmpTransfer, Notus.Variable.Constant.JsonSetting));
-            List<string> walletsICanApprove = BalanceObj.WalletsICanApprove(participantWalletId);
-            if (walletsICanApprove.IndexOf(tmpTransfer.Sender) == -1)
-            {
-                return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
-                {
-                    ErrorNo = 7546,
-                    ErrorText = "RejectedMultiWalletAccess",
-                    ID = string.Empty,
-                    Result = Notus.Variable.Enum.BlockStatusCode.RejectedMultiWalletAccess
-                });
-            }
-
-
-            /*
-            buradaki kodu yaz
-            */
-            // burada multi wallet için yapılan gönderim işlemi havuza alınacak
-            // eğer bu işlem için yeterli kullanıcı mevcut ise işlem doğrudan havuza alınarak gerçekleştirilecek
-            // burada ayrıca public adresi verilen cüzdanın multi wallet için yetkili olup olmadığı
-            // eğer yetkili ise ve yeterli oranda oy var ise
-            // işlem bloğu oluşturulacak ve havuza alınacak
-            // ayrıca api ile multi wallet katılımcılarının onay vermeleri gereken işlem olduğunu sorgulayacakları
-            // bir API oluştur
             return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
             {
                 ErrorNo = 7546,
-                ErrorText = "multi signature send",
-                ID = string.Empty,
-                Result = Notus.Variable.Enum.BlockStatusCode.WrongWallet_Sender
+                ErrorText = "AddedToQueue",
+                ID = tmpBlockUid,
+                Result = Notus.Variable.Enum.BlockStatusCode.AddedToQueue
             });
         }
         private string Request_Send(Notus.Variable.Struct.HttpRequestDetails IncomeData)

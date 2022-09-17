@@ -579,8 +579,11 @@ namespace Notus.Variable.Struct
 
     public class MultiWalletTransactionVoteStruct
     {
+        public string BlockUid { get; set; }
         public Notus.Variable.Struct.CryptoTransactionStruct Sender { get; set; }
         public Dictionary<string, MultiWalletTransactionApproveStruct> Approve { get; set; }
+        public Notus.Variable.Enum.BlockStatusCode Status { get; set; }
+        public Notus.Variable.Enum.MultiWalletType VoteType { get; set; }
     }
 
 }

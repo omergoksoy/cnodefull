@@ -23,6 +23,7 @@ namespace Notus.Variable
         public static readonly string MultiWalletPrefix_MainNetwork = "NMR";
         public static readonly string MultiWalletPrefix_TestNetwork = "NMT";
         public static readonly string MultiWalletPrefix_DevelopmentNetwork = "NMD";
+        public static readonly int MultiWalletTransactionTimeout= 604800;
 
         //notus coin
         public static readonly string MainCoinTagName = "NOTUS";

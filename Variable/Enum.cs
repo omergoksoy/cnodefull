@@ -166,6 +166,7 @@ namespace Notus.Variable.Enum
     public enum MultiWalletType
     {
         AllRequired = 0,
-        MajorityRequired = 1
+        MajorityRequired = 1,
+        Unknown=9
     }
 }
