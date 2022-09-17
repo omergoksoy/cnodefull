@@ -1413,17 +1413,33 @@ namespace Notus.Validator
             //Notus.Variable.Enum.NetworkType networkType=string participantWalletId = Notus.Wallet.ID.GetNetworkType();
             /*
             */
-            List<string> uidList = new List<string>();
+            List<ulong> uidList = new List<ulong>();
             string dbKeyStr = Notus.Toolbox.Text.ToHex(tmpTransfer.Sender, 90);
             string dbText = ObjMp_MultiSignPool.Get(dbKeyStr, "");
             if (dbText.Length > 0)
             {
-                uidList = JsonSerializer.Deserialize<List<string>>(dbText);
+                uidList = JsonSerializer.Deserialize<List<ulong>>(dbText);
             }
 
-            burada yapılan işlem mempool'a eklenecek
-            sonra diğer işlemler gelene kadar bekleyecek...
+            
+            if (uidList.IndexOf(tmpTransfer.CurrentTime)>=0)
+            {
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
+                {
+                    ErrorNo = 7546,
+                    ErrorText = "InAlreadyQueue",
+                    ID = string.Empty,
+                    Result = Notus.Variable.Enum.BlockStatusCode.InAlreadyQueue
+                });
+            }
 
+            uidList.Add(tmpTransfer.CurrentTime);
+            ObjMp_MultiSignPool.Set(dbKeyStr, JsonSerializer.Serialize(uidList),true);
+
+            //burada yapılan işlem mempool'a eklenecek
+            //sonra diğer işlemler gelene kadar bekleyecek...
+
+            /*
             string controlKey =
                 tmpTransfer.Sender
                 tmpTransfer.Receiver
@@ -1434,8 +1450,9 @@ namespace Notus.Validator
             Receiver "NODVZ9W9cKf1AEDCUtBZmvrnBoPpnxEAunFmTzS",
             Volume "500000",
             Sign "304402202bc5e778d8909eaff7a85a297a6dfca78c6de25567cf79d38cb9cf9e01bb742802204e3b88976b252e09a4bc1129376c964006553aa509c70926ae78b443db7d8a9f",
+            tmpt
+            */
 
-                tmpt
             List<string> participantList = BalanceObj.GetParticipant(tmpTransfer.Sender);
             string participantWalletId = Notus.Wallet.ID.GetAddressWithPublicKey(
                 tmpTransfer.PublicKey,
