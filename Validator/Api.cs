@@ -208,8 +208,19 @@ namespace Notus.Validator
             {
                 return JsonSerializer.Serialize(false);
             }
+            string incomeFullUrlPath = string.Join("/", IncomeData.UrlList).ToLower();
+            if (incomeFullUrlPath.Length < 2)
+            {
+                return JsonSerializer.Serialize(false);
+            }
+
+            if (string.Equals(incomeFullUrlPath.Substring(incomeFullUrlPath.Length - 1), "/"))
+            {
+                incomeFullUrlPath = incomeFullUrlPath.Substring(0,incomeFullUrlPath.Length - 1);
+            }
 
             // storage işlemleri
+
             if (IncomeData.UrlList.Length > 2)
             {
                 if (string.Equals(IncomeData.UrlList[0].ToLower(), "storage"))
@@ -267,49 +278,152 @@ namespace Notus.Validator
                     }
                 }
             }
+            if(string.Equals(incomeFullUrlPath, "ping"))
+            {
+                return "pong";
+            }
+            if(string.Equals(incomeFullUrlPath, "metrics"))
+            {
+                return Request_Metrics(IncomeData);
+            }
+            if(string.Equals(incomeFullUrlPath, "online"))
+            {
+                return Request_Online(IncomeData);
+            }
+            if(string.Equals(incomeFullUrlPath, "node"))
+            {
+                return Request_Node();
+            }
+            if (string.Equals(incomeFullUrlPath, "main"))
+            {
+                return Request_Main();
+            }
+
+            if (string.Equals(incomeFullUrlPath, "master"))
+            {
+                return Request_Master();
+            }
+
+            if (string.Equals(incomeFullUrlPath, "replicant"))
+            {
+                return Request_Replicant();
+            }
+
+            if (string.Equals(incomeFullUrlPath, "token"))
+            {
+                return Request_GenerateToken(IncomeData);
+            }
+            if (incomeFullUrlPath.StartsWith("multi/"))
+            {
+                if (incomeFullUrlPath.StartsWith("multi/pool/"))
+                {
+                    string controlWalletId = IncomeData.UrlList[2];
+                    bool multiWalletId = Notus.Wallet.MultiID.IsMultiId(controlWalletId, Obj_Settings.Network);
+
+                    Dictionary<string, Notus.Variable.Enum.BlockStatusCode> SignList
+                        = new Dictionary<string, Notus.Variable.Enum.BlockStatusCode>();
+                    ObjMp_MultiSignPool.Each((string multiKeyId, string multiTransferList) =>
+                    {
+                        Console.WriteLine(multiKeyId);
+                        Console.WriteLine(multiTransferList);
+                        Dictionary<ulong, Notus.Variable.Struct.MultiWalletTransactionVoteStruct>? uidList =
+                            JsonSerializer.Deserialize<Dictionary<
+                                ulong,
+                                Notus.Variable.Struct.MultiWalletTransactionVoteStruct>
+                            >(multiTransferList);
+
+                        if (uidList != null)
+                        {
+                            foreach (KeyValuePair<ulong, Variable.Struct.MultiWalletTransactionVoteStruct> entry in uidList)
+                            {
+                                if (multiWalletId == true)
+                                {
+                                    if(string.Equals(entry.Value.Sender.Sender, controlWalletId))
+                                    {
+                                        SignList.Add(entry.Value.BlockUid, entry.Value.Status);
+                                    }
+                                }
+                                else
+                                {
+                                    foreach(var innerEntry in entry.Value.Approve)
+                                    {
+                                        if (string.Equals(innerEntry.Key, controlWalletId))
+                                        {
+                                            SignList.Add(entry.Value.BlockUid, entry.Value.Status);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    return JsonSerializer.Serialize(SignList);
+                }
+
+                if (string.Equals(incomeFullUrlPath, "multi/pool"))
+                {
+                    Dictionary<string, Notus.Variable.Enum.BlockStatusCode> SignList
+                        = new Dictionary<string, Notus.Variable.Enum.BlockStatusCode>();
+                    ObjMp_MultiSignPool.Each((string multiKeyId, string multiTransferList) =>
+                    {
+                        Console.WriteLine(multiKeyId);
+                        Console.WriteLine(multiTransferList);
+                        Dictionary<ulong, Notus.Variable.Struct.MultiWalletTransactionVoteStruct>? uidList =
+                            JsonSerializer.Deserialize<Dictionary<
+                                ulong,
+                                Notus.Variable.Struct.MultiWalletTransactionVoteStruct>
+                            >(multiTransferList);
+
+                        if (uidList != null)
+                        {
+                            foreach (KeyValuePair<ulong, Variable.Struct.MultiWalletTransactionVoteStruct> entry in uidList)
+                            {
+                                SignList.Add(entry.Value.BlockUid, entry.Value.Status);
+                            }
+                        }
+                    });
+                    return JsonSerializer.Serialize(SignList);
+                }
+
+                if (string.Equals(incomeFullUrlPath, "multi/wallet/add"))
+                {
+                    return Request_AddMultiWallet(IncomeData);
+                }
+
+                if (IncomeData.UrlList.Length > 1)
+                {
+                    string tmpWallet = IncomeData.UrlList[1];
+                    string multiPrefix = Notus.Variable.Constant.MultiWalletPrefix_MainNetwork;
+                    string singlePrefix = Notus.Variable.Constant.SingleWalletPrefix_MainNetwork;
+                    if (Obj_Settings.Network == Variable.Enum.NetworkType.DevNet)
+                    {
+                        singlePrefix = Notus.Variable.Constant.SingleWalletPrefix_DevelopmentNetwork;
+                        multiPrefix = Notus.Variable.Constant.MultiWalletPrefix_DevelopmentNetwork;
+                    }
+                    if (Obj_Settings.Network == Variable.Enum.NetworkType.TestNet)
+                    {
+                        singlePrefix = Notus.Variable.Constant.SingleWalletPrefix_TestNetwork;
+                        multiPrefix = Notus.Variable.Constant.MultiWalletPrefix_TestNetwork;
+                    }
+                    if (tmpWallet.Length >= singlePrefix.Length)
+                    {
+                        if (string.Equals(singlePrefix, tmpWallet.Substring(0, singlePrefix.Length)))
+                        {
+                            return JsonSerializer.Serialize(BalanceObj.WalletsICanApprove(tmpWallet));
+                        }
+                    }
+                    if (tmpWallet.Length >= multiPrefix.Length)
+                    {
+                        if (string.Equals(multiPrefix, tmpWallet.Substring(0, multiPrefix.Length)))
+                        {
+                            return JsonSerializer.Serialize(BalanceObj.GetParticipant(tmpWallet));
+                        }
+                    }
+                }
+                return JsonSerializer.Serialize(false);
+            }
 
             if (IncomeData.UrlList.Length > 0)
             {
-                if (IncomeData.UrlList[0].ToLower() == "ping")
-                {
-                    return "pong";
-                }
-                if (IncomeData.UrlList[0].ToLower() == "metrics")
-                {
-                    return Request_Metrics(IncomeData);
-                }
-
-                if (IncomeData.UrlList[0].ToLower() == "online")
-                {
-                    return Request_Online(IncomeData);
-                }
-
-                if (IncomeData.UrlList[0].ToLower() == "node")
-                {
-                    return Request_Node();
-                }
-
-                if (IncomeData.UrlList[0].ToLower() == "main")
-                {
-                    return Request_Main();
-                }
-
-                if (IncomeData.UrlList[0].ToLower() == "master")
-                {
-                    return Request_Master();
-                }
-
-                if (IncomeData.UrlList[0].ToLower() == "replicant")
-                {
-                    return Request_Replicant();
-                }
-
-                if (IncomeData.UrlList[0].ToLower() == "token")
-                {
-                    return Request_GenerateToken(IncomeData);
-                }
-
-
                 //burada nft işlemleri yapılıyor...
                 if (IncomeData.UrlList.Length > 2)
                 {
@@ -334,51 +448,6 @@ namespace Notus.Validator
                     }
                 }
 
-                if (IncomeData.UrlList[0].ToLower() == "multi")
-                {
-                    if (IncomeData.UrlList.Length > 2)
-                    {
-                        if (IncomeData.UrlList[1].ToLower() == "wallet")
-                        {
-                            if (IncomeData.UrlList[2].ToLower() == "add")
-                            {
-                                return Request_AddMultiWallet(IncomeData);
-                            }
-                            return JsonSerializer.Serialize(false);
-                        }
-                    }
-                    if (IncomeData.UrlList.Length > 1)
-                    {
-                        string tmpWallet = IncomeData.UrlList[1];
-                        string multiPrefix = Notus.Variable.Constant.MultiWalletPrefix_MainNetwork;
-                        string singlePrefix = Notus.Variable.Constant.SingleWalletPrefix_MainNetwork;
-                        if (Obj_Settings.Network == Variable.Enum.NetworkType.DevNet)
-                        {
-                            singlePrefix = Notus.Variable.Constant.SingleWalletPrefix_DevelopmentNetwork;
-                            multiPrefix = Notus.Variable.Constant.MultiWalletPrefix_DevelopmentNetwork;
-                        }
-                        if (Obj_Settings.Network == Variable.Enum.NetworkType.TestNet)
-                        {
-                            singlePrefix = Notus.Variable.Constant.SingleWalletPrefix_TestNetwork;
-                            multiPrefix = Notus.Variable.Constant.MultiWalletPrefix_TestNetwork;
-                        }
-                        if (tmpWallet.Length >= singlePrefix.Length)
-                        {
-                            if (string.Equals(singlePrefix, tmpWallet.Substring(0, singlePrefix.Length)))
-                            {
-                                return JsonSerializer.Serialize(BalanceObj.WalletsICanApprove(tmpWallet));
-                            }
-                        }
-                        if (tmpWallet.Length >= multiPrefix.Length)
-                        {
-                            if (string.Equals(multiPrefix, tmpWallet.Substring(0, multiPrefix.Length)))
-                            {
-                                return JsonSerializer.Serialize(BalanceObj.GetParticipant(tmpWallet));
-                            }
-                        }
-                    }
-                    return JsonSerializer.Serialize(false);
-                }
                 if (IncomeData.UrlList[0].ToLower() == "pool")
                 {
                     if (IncomeData.UrlList.Length > 1)
@@ -401,6 +470,7 @@ namespace Notus.Validator
                                                 tmpResultList.Add(tmpItem.key, tmpItem.data);
                                             }
                                         }
+
                                         if (tmpResultList.Count > 0)
                                         {
                                             return JsonSerializer.Serialize(tmpResultList);
@@ -1395,13 +1465,12 @@ namespace Notus.Validator
             Notus.Variable.Struct.CryptoTransactionStruct tmpTransfer
         )
         {
+            /*
             şimdi başka bir API İLE İMZALAMASI GEREKEN DİĞER NODELAR SORGULAMA YAPIP
             İMZA ATABİLECEKLER
             YETERLİ İMZA TOPLANINCA DA İŞLEM HAVUZA ALINACAK
-
             AYRICA BU İŞLEM İŞLEM HAVUZUNDA GÖSTERİLMELİ
-
-
+            */
 
             Dictionary<ulong, Notus.Variable.Struct.MultiWalletTransactionVoteStruct>? uidList = null;
             string dbKeyStr = Notus.Toolbox.Text.ToHex(tmpTransfer.Sender, 90);
@@ -1459,18 +1528,27 @@ namespace Notus.Validator
                 }
             }
             
-            ObjMp_MultiSignPool.Add(
+            bool addingResult=ObjMp_MultiSignPool.Add(
                 dbKeyStr, 
                 JsonSerializer.Serialize(uidList), 
                 Notus.Variable.Constant.MultiWalletTransactionTimeout
             );
-
+            if (addingResult == true)
+            {
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
+                {
+                    ErrorNo = 7546,
+                    ErrorText = "AddedToQueue",
+                    ID = tmpBlockUid,
+                    Result = Notus.Variable.Enum.BlockStatusCode.AddedToQueue
+                });
+            }
             return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
             {
                 ErrorNo = 7546,
-                ErrorText = "AddedToQueue",
-                ID = tmpBlockUid,
-                Result = Notus.Variable.Enum.BlockStatusCode.AddedToQueue
+                ErrorText = "AnErrorOccurred",
+                ID = string.Empty,
+                Result = Notus.Variable.Enum.BlockStatusCode.AnErrorOccurred
             });
         }
         private string Request_Send(Notus.Variable.Struct.HttpRequestDetails IncomeData)
