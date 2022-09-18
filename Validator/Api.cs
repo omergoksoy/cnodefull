@@ -1395,6 +1395,14 @@ namespace Notus.Validator
             Notus.Variable.Struct.CryptoTransactionStruct tmpTransfer
         )
         {
+            şimdi başka bir API İLE İMZALAMASI GEREKEN DİĞER NODELAR SORGULAMA YAPIP
+            İMZA ATABİLECEKLER
+            YETERLİ İMZA TOPLANINCA DA İŞLEM HAVUZA ALINACAK
+
+            AYRICA BU İŞLEM İŞLEM HAVUZUNDA GÖSTERİLMELİ
+
+
+
             Dictionary<ulong, Notus.Variable.Struct.MultiWalletTransactionVoteStruct>? uidList = null;
             string dbKeyStr = Notus.Toolbox.Text.ToHex(tmpTransfer.Sender, 90);
             string dbText = ObjMp_MultiSignPool.Get(dbKeyStr, "");
