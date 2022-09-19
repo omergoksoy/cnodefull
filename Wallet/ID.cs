@@ -108,13 +108,18 @@ namespace Notus.Wallet
             try
             {
                 PublicKey yPubKey = PublicKey.fromString(
-                    Notus.Convert.Hex2Byte(publicKey),
+                    Notus.Convert.Hex2Byte(
+                        CheckPublicKeyPrefix(
+                            publicKey
+                        )
+                    ),
                     curveName,
                     true
                 );
                 verifyResult = Ecdsa.verify(
                     messageData,
-                    Signature.fromBase64(System.Convert.ToBase64String(Notus.Convert.Hex2Byte(signHex))),
+                    Signature.fromBase64(
+                        System.Convert.ToBase64String(Notus.Convert.Hex2Byte(signHex))),
                     yPubKey
                 );
             }
@@ -159,6 +164,7 @@ namespace Notus.Wallet
         private static string Sign_SubFunction(string messageData, string privateKey, string curveName)
         {
             PrivateKey yPrivKey;
+            Console.WriteLine(curveName);
             if (curveName == "secp256k1")
             {
 
@@ -937,11 +943,28 @@ walletAddress : EDAqkHFMPF8v9thkjbzCazUf6uDYzPHHdRXK
             {
                 string hashMessage = hashCalculate(message);
                 BigInteger numberMessage = Notus.Wallet.Toolbox.BinaryAscii_numberFromHex(hashMessage);
+
+                Console.WriteLine("hashMessage : " + hashMessage);
+                Console.WriteLine("numberMessage.ToString() : " + numberMessage.ToString());
+
                 CurveFp curve = privateKey.curve;
-                BigInteger randNum = Notus.Wallet.Toolbox.Integer_randomBetween(BigInteger.One, curve.N - 1);
+
+                //javascript ile senkron yapmak için random değeri 1 ile sabitlendi
+                //javascript ile senkron yapmak için random değeri 1 ile sabitlendi
+                //javascript ile senkron yapmak için random değeri 1 ile sabitlendi
+                //javascript ile senkron yapmak için random değeri 1 ile sabitlendi
+                //javascript ile senkron yapmak için random değeri 1 ile sabitlendi
+                //BigInteger randNum = Notus.Wallet.Toolbox.Integer_randomBetween(BigInteger.One, curve.N - 1);
+                BigInteger randNum = BigInteger.Parse("1");
                 CurvePointStruct randSignPoint = EcdsaMath.multiply(curve.G, randNum, curve.N, curve.A, curve.P);
-                BigInteger r = Notus.Wallet.Toolbox.Integer_modulo(randSignPoint.x, curve.N);
-                BigInteger s = Notus.Wallet.Toolbox.Integer_modulo((numberMessage + r * privateKey.secret) * (EcdsaMath.inv(randNum, curve.N)), curve.N);
+                BigInteger r = Notus.Wallet.Toolbox.Integer_modulo(
+                    randSignPoint.x, 
+                    curve.N
+                );
+                BigInteger s = Notus.Wallet.Toolbox.Integer_modulo(
+                    (numberMessage + r * privateKey.secret) * (EcdsaMath.inv(randNum, curve.N)), 
+                    curve.N
+                );
 
                 return new Signature(r, s);
             }

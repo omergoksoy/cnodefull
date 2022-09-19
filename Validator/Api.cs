@@ -214,6 +214,30 @@ namespace Notus.Validator
                 return JsonSerializer.Serialize(false);
             }
 
+
+            /*
+
+                /valid/publickey/sign/mesaj
+            */
+            if (IncomeData.UrlList.Length > 3)
+            {
+                if (IncomeData.UrlList[0].ToLower() == "valid")
+                {
+                    string pubKeyStr = IncomeData.UrlList[1];
+                    string singStr = IncomeData.UrlList[2];
+                    string rawStr = IncomeData.UrlList[3];
+                    bool validMsg = Notus.Wallet.ID.Verify(rawStr, singStr, pubKeyStr);
+                    if (validMsg == true)
+                    {
+                        return "true";
+                    }
+                    else
+                    {
+                        return "false";
+                    }
+                }
+            }
+
             if (string.Equals(incomeFullUrlPath.Substring(incomeFullUrlPath.Length - 1), "/"))
             {
                 incomeFullUrlPath = incomeFullUrlPath.Substring(0,incomeFullUrlPath.Length - 1);
@@ -1660,8 +1684,13 @@ namespace Notus.Validator
             }
             DateTime rightNow = DateTime.Now;
             DateTime currentTime = Notus.Date.ToDateTime(tmpTransfer.CurrentTime);
+            
             double totaSeconds = Math.Abs((rightNow - currentTime).TotalSeconds);
             // iki günden eski ise  zaman aşımı olarak işaretle
+            //Console.WriteLine(rightNow.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText));
+            //Console.WriteLine(currentTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText));
+            //Console.WriteLine(totaSeconds);
+
             if (totaSeconds > (2 * 86400))
             {
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
@@ -1673,7 +1702,10 @@ namespace Notus.Validator
                 });
             }
 
-            string calculatedWalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(tmpTransfer.PublicKey, Obj_Settings.Network);
+            string calculatedWalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(
+                tmpTransfer.PublicKey, 
+                Obj_Settings.Network
+            );
             if (string.Equals(calculatedWalletKey, tmpTransfer.Sender) == false)
             {
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()

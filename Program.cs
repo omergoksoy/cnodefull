@@ -124,4 +124,50 @@ calculatedPublicKey: bb45c3b5f3c1294062ea6cd6aab2d2ffda4ef8e781a817298b8f0236106
 				   0007f265bf3fe844d60e105ce04e06711583adf8ac02f0feac83647bccfcb18ab
 
 */
+
+
+
+
+/*
+string tmpPublic = "046c429c90e8af7a2ee66e0a228de732390b0954b7ef33738d95b044cff63a4148e5a51ccf43345dfdf3d0be340150f32765ff3c6ade9aadf27bf2fdde2ea29366";
+string tmpSign = "3045022100a60b3dbd73911d001f744d34cb7ca25a69738fadde8e7ec5bd72286a0bf7c09302205ba6162cf2808ee336aefcbccbad99da0a4c62872e472c65f36bb6450c809599";
+//30450220531a6e3cfd9932bd42b865a44974cdfbeafa24cd080cf6329b54ffcdcebc99fd0221008ead3bc51c03a13d021d4ff1a7816dc4c1bb181d27dbca903affbd545201626b
+//3045022100b83c26deb5d7674144f995f1ab2ec5fcd3e65a4f194c4aeabe138f50a7e9873b0220242add68a05145b70877ba52008a49ef936795dbb885a0325a475fc2a555d60f
+//3045022100885b2a4eca469f5e724d1da5633bc7c7e38d19e0b08cba961014e1d9e385425b0220267624e397576266dd813073114125eb2b3413737be2bcdb0930e2cefebffdeb
+string rawDataStr = Notus.Core.MergeRawData.Transaction(new Notus.Variable.Struct.CryptoTransactionStruct()
+{
+    Currency = "NOTUS",
+    CurrentTime = 20220919214903,
+    UnlockTime = 20220919214903,
+    Sender = "NODYEeb5cZ9jZxUA9U6y48KNEG28BPDaBG3PWKG",
+    Receiver = "NODY4Zdqt3ZRTjtuMFR4Mox6EYzUXs9t3W3N2Vc",
+    Volume = "1000000000",
+    PublicKey = tmpPublic,
+    ErrorNo = 0,
+    Network = Notus.Variable.Enum.NetworkType.DevNet,
+    Sign = tmpSign,
+    CurveName = Notus.Variable.Constant.Default_EccCurveName
+
+});
+*/
+/*
+string rawDataStr = "test356235:1230213:ert03104:1230123";
+string privateKeyStr = "dd9ed96c2400cf95e75656eeffc36d00347721bfcecb10cbb287bdb4c575e1d0";
+string calculatedPublicKeyStr = Notus.Wallet.ID.GetPublicKeyFromPrivateKey(privateKeyStr);
+string calculatedSignStr = Notus.Wallet.ID.Sign(rawDataStr, privateKeyStr);
+calculatedSignStr = "30450221008e2ac651e365b175b734906efb3b386676c04642a66cfa856dc532dbc9be9d720220530dfa4a40a193a2c41bb8dc46b5cf2b1c7b6b7245ab43cd5881cb8748a5f0bf";
+
+Console.WriteLine(calculatedSignStr);
+
+//transaction sign
+bool verifyTmp = Notus.Wallet.ID.Verify(
+    rawDataStr,
+    calculatedSignStr,
+    calculatedPublicKeyStr
+);
+Console.WriteLine(verifyTmp);
+Console.ReadLine();
+
+
+*/
 Notus.Validator.Node.Start(args);
