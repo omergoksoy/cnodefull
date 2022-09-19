@@ -1,4 +1,4 @@
-﻿/*
+﻿
 // Copyright (C) 2020-2022 Notus Network
 // 
 // Notus Network is free software distributed under the MIT software license, 
@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Numerics;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Notus.Wallet
 {
@@ -281,7 +282,14 @@ namespace Notus.Wallet
             }
             return false;
         }
-
+        private static string CheckPublicKeyPrefix(string publicKeyHex)
+        {
+            if (publicKeyHex.Length == 130 && publicKeyHex.Substring(0, 2) == "04")
+            {
+                return publicKeyHex.Substring(2);
+            }
+            return publicKeyHex;
+        }
         /// <summary>
         /// Returns wallet key via given public key.
         /// </summary>
@@ -290,7 +298,14 @@ namespace Notus.Wallet
         /// <returns>Returns Wallet Address</returns>
         public static string GetAddressWithPublicKey(string publicKey, Notus.Variable.Enum.NetworkType WhichNetworkFor)
         {
-            return GetAddress_SubFunction_FromPublicKey(PublicKey.fromString(Notus.Convert.Hex2Byte(publicKey), Notus.Variable.Constant.Default_EccCurveName, true), WhichNetworkFor, Notus.Variable.Constant.Default_EccCurveName);
+            return GetAddress_SubFunction_FromPublicKey(
+                PublicKey.fromString(
+                    Notus.Convert.Hex2Byte(
+                        CheckPublicKeyPrefix(publicKey)
+                    ),
+                    Notus.Variable.Constant.Default_EccCurveName,
+                    true
+                ), WhichNetworkFor, Notus.Variable.Constant.Default_EccCurveName);
         }
 
         /// <summary>
@@ -309,7 +324,9 @@ namespace Notus.Wallet
             return GetAddress_SubFunction_FromPublicKey(
                 PublicKey.fromString(
                     Notus.Convert.Hex2Byte(
-                        publicKey
+                        CheckPublicKeyPrefix(
+                            publicKey
+                        )
                     ), 
                     CurveName, 
                     true
@@ -380,10 +397,39 @@ namespace Notus.Wallet
         )
         {
             
-            BigInteger pkPointVal = yPubKey.point.x;
-            string fullPublicKey = yPubKey.point.x.ToString("x") + yPubKey.point.y.ToString("x");
+            //BigInteger pkPointVal = yPubKey.point.x;
+            string pubXval = yPubKey.point.x.ToString("x").PadLeft(64,'0');
+            string pubYval = yPubKey.point.y.ToString("x").PadLeft(64, '0');
+            if (pubXval.Length == 65 && pubXval[0] == '0')
+            {
+                pubXval = pubXval.Substring(1);
+            }
+            if (pubYval.Length == 65 && pubYval[0] == '0')
+            {
+                pubYval = pubYval.Substring(1);
+            }
+            string fullPublicKey = pubXval+ pubYval;
+            /*
+            Console.WriteLine("pubXval : " + pubXval);
+            Console.WriteLine("pubYval : " + pubYval);
+            Console.WriteLine("pubXval : " + pubXval.Length.ToString());
+            Console.WriteLine("pubYval : " + pubYval.Length.ToString());
+            Console.WriteLine("fullPublicKey      : " + fullPublicKey);
 
-            string publicKeyX = (yPubKey.point.y % 2 == 0 ? "02" : "03") + pkPointVal.ToString("x");
+pubCorsX : 0000f5d044d93197f31a147b6a4e373b21d36b9948b3f37349f1afd00c372485
+              0f5d044d93197f31a147b6a4e373b21d36b9948b3f37349f1afd00c372485
+pubCorsY : 03ad8a16c44c21e26806261b1dfb4b5bcd2e6ffea30f2504a40c8685c2551269
+            3ad8a16c44c21e26806261b1dfb4b5bcd2e6ffea30f2504a40c8685c2551269
+pubCorsMain: 030000f5d044d93197f31a147b6a4e373b21d36b9948b3f37349f1afd00c372485
+             030000f5d044d93197f31a147b6a4e373b21d36b9948b3f37349f1afd00c372485
+hashPubKeyStr : 7ba5c091090c84ebb093d2fae98acabe3176ca23d7ed
+checkSumStr : 451829de
+walletAddress : EDAqkHFMPF8v9thkjbzCazUf6uDYzPHHdRXK
+             NTSEDAqkHFMPF8v9thkjbzCazUf6uDYzPHHdRXK
+            Console.WriteLine(fullPublicKey.Length);
+             */
+            //string publicKeyX = (yPubKey.point.y % 2 == 0 ? "02" : "03") + pkPointVal.ToString("x");
+            string publicKeyX = (yPubKey.point.y % 2 == 0 ? "02" : "03") + pubXval;
 
             string keyPrefix = Notus.Variable.Constant.SingleWalletPrefix_MainNetwork;
             string networkByteStr = "10";
@@ -399,14 +445,14 @@ namespace Notus.Wallet
                 keyPrefix = Notus.Variable.Constant.SingleWalletPrefix_DevelopmentNetwork;
                 networkByteStr = "30";
             }
-
+            //Console.WriteLine("publicKeyX : " + publicKeyX);
             Notus.HashLib.Sasha sashaObj = new Notus.HashLib.Sasha();
             string hashPubKeyStr = Notus.Toolbox.Text.ShrinkHex(
                 sashaObj.Calculate(
                     sashaObj.Calculate(publicKeyX)
                 ), 22
             );
-
+            //Console.WriteLine("networkByteStr + fullPublicKey : " + networkByteStr + fullPublicKey);
             string checkSumStr = Notus.Toolbox.Text.ShrinkHex(
                 sashaObj.Calculate(
                     sashaObj.Calculate(networkByteStr + fullPublicKey)
@@ -1396,4 +1442,3 @@ namespace Notus.Wallet
         }
     }
 }
-*/

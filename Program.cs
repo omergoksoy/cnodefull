@@ -44,16 +44,51 @@ Console.ReadLine();
 
 // kontrol kelimesi
 // wallet-lock
+
 /*
+string sender_PublicKey = "04a098229795f2989cb4e0d6c608c674a677ee4f69a80f52e3fdebe6f2c0b787bd9c85e56bcdf7960b9b382e88a913442ed5ecfeddcdfc9d29a6a406fc3f715f7f";
+string sender_PrivateKey = "0000000011111111";
+string sender_WalletKey = "NTSEPDFu7JTq34pBsKm4GLSv63joCiosyrZ3rjM";
 
-string sender_PublicKey = "1da9ee76a0990bff9c56c71a62376f9573bf440f773df783ee6228427e59c09ab2dfd523ca8b9076e25408c45ec9b5a30ce6364e26a1bddef73c20961b4256c4";
-string sender_PrivateKey = "b206cd128422f90b14a9d41f64baf9f88ba05bd3c68c79af81d48f284b7810ac";
-string sender_WalletKey = "NODXtTL7AegjfSTTwMPPw2UQUQC5BzefUopbgZ1";
-
-string calculatedWalletKey1 = Notus.Wallet.ID.GetAddressWithPublicKey(sender_PublicKey, Notus.Variable.Enum.NetworkType.DevNet);
-string calculatedWalletKey2 = Notus.Wallet.ID.GetAddress(sender_PrivateKey, Notus.Variable.Enum.NetworkType.DevNet);
+string calculatedPublicKey= Notus.Wallet.ID.GetPublicKeyFromPrivateKey(sender_PrivateKey);
+Console.WriteLine("calculatedPublicKey : " + calculatedPublicKey);
+Console.WriteLine("sender_PublicKey    : " + sender_PublicKey);
+calculatedPublicKey : 0000f5d044d93197f31a147b6a4e373b21d36b9948b3f37349f1afd00c372485 03ad8a16c44c21e26806261b1dfb4b5bcd2e6ffea30f2504a40c8685c2551269
+sender_PublicKey    :     f5d044d93197f31a147b6a4e373b21d36b9948b3f37349f1afd00c372485  3ad8a16c44c21e26806261b1dfb4b5bcd2e6ffea30f2504a40c8685c2551269
+128 - 123
+public key HATALI
+*********************
+Console.WriteLine(calculatedPublicKey.Length.ToString()+" - " + sender_PublicKey.Length.ToString());
 */
-//Console.WriteLine("sender_WalletKey : " + sender_WalletKey);
+
+/*
+if (string.Equals("04"+calculatedPublicKey, sender_PublicKey))
+{
+        Console.WriteLine("public key esit");
+}
+else
+{
+    Console.WriteLine("public key HATALI");
+}
+Console.WriteLine("*********************");
+string calculatedWalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(sender_PublicKey, Notus.Variable.Enum.NetworkType.MainNet);
+Console.WriteLine("calculatedWalletKey : " + calculatedWalletKey);
+Console.WriteLine("sender_WalletKey    : " + sender_WalletKey);
+if (string.Equals(calculatedWalletKey, sender_WalletKey))
+{
+    Console.WriteLine("wallet key esit");
+}
+else
+{
+    Console.WriteLine("wallet key HATALI");
+}
+Console.ReadLine();
+
+bb45c3b5f3c1294062ea6cd6aab2d2ffda4ef8e781a817298b8f02361062ede0 007f265bf3fe844d60e105ce04e06711583adf8ac02f0feac83647bccfcb18ab
+bb45c3b5f3c1294062ea6cd6aab2d2ffda4ef8e781a817298b8f02361062ede0 7f265bf3fe844d60e105ce04e06711583adf8ac02f0feac83647bccfcb18ab
+*/
+
+//Console.WriteLine("calculatedPublicKey : " + calculatedPublicKey);
 
 //Console.WriteLine("calculatedWalletKey1 : " + calculatedWalletKey1);
 //Console.WriteLine("calculatedWalletKey2 : " + calculatedWalletKey2);
@@ -61,7 +96,7 @@ string calculatedWalletKey2 = Notus.Wallet.ID.GetAddress(sender_PrivateKey, Notu
 //Console.WriteLine("sender_PublicKey : " + sender_PublicKey);
 //Console.WriteLine("calculatedPublicKey : " + calculatedPublicKey);
 
-
+/*
 /*
 
 
@@ -86,7 +121,7 @@ Console.ReadLine();
 fullPublicKeyStr:    bb45c3b5f3c1294062ea6cd6aab2d2ffda4ef8e781a817298b8f02361062ede
 				     07f265bf3fe844d60e105ce04e06711583adf8ac02f0feac83647bccfcb18ab
 calculatedPublicKey: bb45c3b5f3c1294062ea6cd6aab2d2ffda4ef8e781a817298b8f02361062ede
-					0007f265bf3fe844d60e105ce04e06711583adf8ac02f0feac83647bccfcb18ab
+				   0007f265bf3fe844d60e105ce04e06711583adf8ac02f0feac83647bccfcb18ab
 
 */
 Notus.Validator.Node.Start(args);
