@@ -150,14 +150,69 @@ string rawDataStr = Notus.Core.MergeRawData.Transaction(new Notus.Variable.Struc
 
 });
 */
+
+
+
+
 /*
-string rawDataStr = "test356235:1230213:ert03104:1230123";
-string privateKeyStr = "dd9ed96c2400cf95e75656eeffc36d00347721bfcecb10cbb287bdb4c575e1d0";
+
+https://devnet.notus.network/valid/
+049d444e6c831ce1e87a3b1b3da5e996c51216de75914c0f7b0a6cc8ac6670315decd205540e5f7b7638df51dfed076e73d71f2d3d3cc2cd1be261e5ea9961c16d/
+3046022100ab56b88ec3556b44e80720338ccf8ecf802744c2c4943071868cbeb4513f619c022100efcf1a99dbefe76cd0f709586bba71eceeb7c8d4f2a541eb7ea35dfb74a9534c/
+
+
+
+
+calculatedSignStr : 3045022100cd504a92820da36c7eefd45e023064e4726d5b2b20f791d3d0e74b5eeb242ed002201009c45d5b0a12c7f485a8de916da96ef165adfb929e47e5c35125e14b8654fa
+*/
+string rawDataStr = "NODVofLyZLAjRrDXBRN3qTybDP1yBfSfN5yoV6d:NODVofLyZLAjRrDXBRN3qTybDP1yBfSfN5yoV6b:1000000000:20220920082001:20220920082001:NOTUS";
+//Notus.HashLib.BLAKE2B blake2b_obj = new Notus.HashLib.BLAKE2B();
+//Notus.HashLib.MD5 md5_obj = new Notus.HashLib.MD5();
+//Notus.HashLib.SHA1 sha1_obj = new Notus.HashLib.SHA1();
+//Notus.HashLib.RIPEMD160 ripemd160_obj = new Notus.HashLib.RIPEMD160();
+
+/*
+
+282a5ee709a5c22903e34c54b882d625
+d4d7f0bf52acddf96be9a8d075ef5692e98be1f6
+bbe7e6daaaccb778c0371091768946f78f9bd4b4730be526a4e9ebcc961be2985ee82735ff25d811033ce71d23756e7e8448f5e3accb63781197f7694d67a955
+576d277373d50d56c71d34470becd872b885ca15
+
+
+
+SashaHash:  bbe7e6daaaccb778c6d4d4d7f576d2c0371091768946f713420bf52773738f9bd4b4730be5267e4cacddfd50d5a4e9ebcc961be2983df696be96c71d34470a8d0725a25ee82735ff25d811becd85ef56f7b5033ce71d23756e7e72b8892e98bc988448f5e3accb63785ca15be1f677bb1197f7694d67a955
+            bbe7e6daaaccb778c6d4d4d7f576d2c0371091768946f713420bf52773738f9bd4b4730be5267e4cacddfd50d5a4e9ebcc961be2983df696be96c71d34470a8d0725a25ee82735ff25d811becd85ef56f7b5033ce71d23756e7e72b8892e98bc988448f5e3accb63785ca15be1f677bb1197f7694d67a955
+Blake2BHash:  bbe7e6daaaccb778c0371091768946f78f9bd4b4730be526a4e9ebcc961be2985ee82735ff25d811033ce71d23756e7e8448f5e3accb63781197f7694d67a955
+Ripemd160Hash:  576d277373d50d56c71d34470becd872b885ca15
+Sha1Hash:  d4d7f0bf52acddf96be9a8d075ef5692e98be1f6
+Md5Hash:  c6d413427e4c3df625a2f7b5bc9877bb
+Console.WriteLine(
+    new Notus.Hash().CommonHash("sasha", rawDataStr)
+);
+Console.WriteLine(
+    new Notus.Hash().CommonHash("md5", rawDataStr)
+);
+Console.WriteLine(
+    new Notus.Hash().CommonHash("sha1", rawDataStr)
+);
+Console.WriteLine(
+    new Notus.Hash().CommonHash("blake2b", rawDataStr)
+);
+Console.WriteLine(
+    new Notus.Hash().CommonHash("ripemd160", rawDataStr)
+);
+*/
+
+//string rawDataStr = "NOTUS";
+string privateKeyStr = "63d6cee7ca7a9571e9bcd2eb2794519fe06ade63ea4ed55573e4b7ab0fcb62fd";
 string calculatedPublicKeyStr = Notus.Wallet.ID.GetPublicKeyFromPrivateKey(privateKeyStr);
 string calculatedSignStr = Notus.Wallet.ID.Sign(rawDataStr, privateKeyStr);
-calculatedSignStr = "30450221008e2ac651e365b175b734906efb3b386676c04642a66cfa856dc532dbc9be9d720220530dfa4a40a193a2c41bb8dc46b5cf2b1c7b6b7245ab43cd5881cb8748a5f0bf";
+//calculatedSignStr = "3046022100ab56b88ec3556b44e80720338ccf8ecf802744c2c4943071868cbeb4513f619c022100efcf1a99dbefe76cd0f709586bba71eceeb7c8d4f2a541eb7ea35dfb74a9534c";
 
-Console.WriteLine(calculatedSignStr);
+//calculatedPublicKeyStr = "049d444e6c831ce1e87a3b1b3da5e996c51216de75914c0f7b0a6cc8ac6670315decd205540e5f7b7638df51dfed076e73d71f2d3d3cc2cd1be261e5ea9961c16d";
+Console.WriteLine("calculatedPublicKeyStr : " + calculatedPublicKeyStr);
+//Console.WriteLine();
+Console.WriteLine("calculatedSignStr : " + calculatedSignStr);
 
 //transaction sign
 bool verifyTmp = Notus.Wallet.ID.Verify(
@@ -169,5 +224,6 @@ Console.WriteLine(verifyTmp);
 Console.ReadLine();
 
 
+/*
 */
 Notus.Validator.Node.Start(args);

@@ -164,10 +164,8 @@ namespace Notus.Wallet
         private static string Sign_SubFunction(string messageData, string privateKey, string curveName)
         {
             PrivateKey yPrivKey;
-            Console.WriteLine(curveName);
             if (curveName == "secp256k1")
             {
-
                 yPrivKey = new PrivateKey("secp256k1", Notus.Wallet.Toolbox.BinaryAscii_numberFromHex(privateKey));
             }
             else
@@ -944,8 +942,8 @@ walletAddress : EDAqkHFMPF8v9thkjbzCazUf6uDYzPHHdRXK
                 string hashMessage = hashCalculate(message);
                 BigInteger numberMessage = Notus.Wallet.Toolbox.BinaryAscii_numberFromHex(hashMessage);
 
-                Console.WriteLine("hashMessage : " + hashMessage);
-                Console.WriteLine("numberMessage.ToString() : " + numberMessage.ToString());
+                //Console.WriteLine("hashMessage [sign]: " + hashMessage);
+                //Console.WriteLine("numberMessage.ToString() : " + numberMessage.ToString());
 
                 CurveFp curve = privateKey.curve;
 
@@ -954,8 +952,8 @@ walletAddress : EDAqkHFMPF8v9thkjbzCazUf6uDYzPHHdRXK
                 //javascript ile senkron yapmak için random değeri 1 ile sabitlendi
                 //javascript ile senkron yapmak için random değeri 1 ile sabitlendi
                 //javascript ile senkron yapmak için random değeri 1 ile sabitlendi
-                //BigInteger randNum = Notus.Wallet.Toolbox.Integer_randomBetween(BigInteger.One, curve.N - 1);
-                BigInteger randNum = BigInteger.Parse("1");
+                BigInteger randNum = Notus.Wallet.Toolbox.Integer_randomBetween(BigInteger.One, curve.N - 1);
+                //BigInteger randNum = BigInteger.Parse("1");
                 CurvePointStruct randSignPoint = EcdsaMath.multiply(curve.G, randNum, curve.N, curve.A, curve.P);
                 BigInteger r = Notus.Wallet.Toolbox.Integer_modulo(
                     randSignPoint.x, 
@@ -972,6 +970,8 @@ walletAddress : EDAqkHFMPF8v9thkjbzCazUf6uDYzPHHdRXK
             public static bool verify(string message, Signature signature, PublicKey publicKey)
             {
                 string hashMessage = hashCalculate(message);
+                //Console.WriteLine("hashMessage [verify]: " + hashMessage);
+
                 BigInteger numberMessage = Notus.Wallet.Toolbox.BinaryAscii_numberFromHex(hashMessage);
                 CurveFp curve = publicKey.curve;
                 BigInteger sigR = signature.r;
