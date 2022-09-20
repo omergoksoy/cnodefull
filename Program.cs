@@ -203,6 +203,7 @@ Console.WriteLine(
 );
 */
 
+/*
 //string rawDataStr = "NOTUS";
 string privateKeyStr = "63d6cee7ca7a9571e9bcd2eb2794519fe06ade63ea4ed55573e4b7ab0fcb62fd";
 string calculatedPublicKeyStr = Notus.Wallet.ID.GetPublicKeyFromPrivateKey(privateKeyStr);
@@ -224,6 +225,5 @@ Console.WriteLine(verifyTmp);
 Console.ReadLine();
 
 
-/*
 */
 Notus.Validator.Node.Start(args);
