@@ -313,6 +313,8 @@ namespace Notus.Validator
             {
                 return Request_GenerateToken(IncomeData);
             }
+
+
             if (incomeFullUrlPath.StartsWith("multi/"))
             {
                 if (incomeFullUrlPath.StartsWith("multi/pool/"))
