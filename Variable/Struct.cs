@@ -569,6 +569,7 @@ namespace Notus.Variable.Struct
 
     public class MultiWalletTransactionApproveStruct
     {
+        public bool Approve { get; set; }
         public string TransactionId { get; set; }
         public ulong CurrentTime { get; set; }
         public string Sign { get; set; }
