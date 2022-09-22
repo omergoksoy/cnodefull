@@ -2374,10 +2374,38 @@ namespace Notus.Validator
                 }
             });
 
-            burada yapılan işlem sayıları kontrol edilecek ve yeterli sayıda işlem yapıldı ise
-            yapılan işlem eğer tamamlandı ise havuza alınacak
+            if (multiTxText.Length == 0)
+            {
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
+                {
+                    UID = string.Empty,
+                    Status = "AnErrorOccurred",
+                    Result = Notus.Variable.Enum.BlockStatusCode.AnErrorOccurred
+                });
+            }
 
-            uidList[txTime]
+            Dictionary<ulong, Notus.Variable.Struct.MultiWalletTransactionVoteStruct>? uidList =
+                JsonSerializer.Deserialize<Dictionary<
+                    ulong,
+                    Notus.Variable.Struct.MultiWalletTransactionVoteStruct>
+                >(multiTxText);
+
+            if (uidList == null)
+            {
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
+                {
+                    UID = string.Empty,
+                    Status = "AnErrorOccurred",
+                    Result = Notus.Variable.Enum.BlockStatusCode.AnErrorOccurred
+                });
+            }
+            //burada yapılan işlem sayıları kontrol edilecek ve yeterli sayıda işlem yapıldı ise
+            //yapılan işlem eğer tamamlandı ise havuza alınacak
+
+            if (TransctionApproveObj.Approve == false)
+            {
+                uidList[txTime].
+            }
             if (multiTxText.Length > 0) { }
             Console.WriteLine(multiTxText);
             return JsonSerializer.Serialize(false);
