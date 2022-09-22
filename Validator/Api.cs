@@ -2356,7 +2356,6 @@ namespace Notus.Validator
                             ulong,
                             Notus.Variable.Struct.MultiWalletTransactionVoteStruct>
                         >(multiTransferList);
-                    Console.WriteLine(JsonSerializer.Serialize(uidList, Notus.Variable.Constant.JsonSetting));
                     if (uidList != null)
                     {
                         foreach (KeyValuePair<ulong, Variable.Struct.MultiWalletTransactionVoteStruct> entry in uidList)
@@ -2367,6 +2366,7 @@ namespace Notus.Validator
                                 if (entry.Value.Approve.ContainsKey(voter_WalletKey))
                                 {
                                     multiTxText = multiTransferList;
+                                    multiKeyId = tmpMultiKeyId;
                                 }
                             }
                         }
@@ -2402,12 +2402,76 @@ namespace Notus.Validator
             //burada yapılan işlem sayıları kontrol edilecek ve yeterli sayıda işlem yapıldı ise
             //yapılan işlem eğer tamamlandı ise havuza alınacak
 
-            if (TransctionApproveObj.Approve == false)
+            uidList[txTime].Approve[voter_WalletKey].Approve = TransctionApproveObj.Approve;
+            uidList[txTime].Approve[voter_WalletKey].TransactionId= TransctionApproveObj.TransactionId;
+            uidList[txTime].Approve[voter_WalletKey].CurrentTime= TransctionApproveObj.CurrentTime;
+            uidList[txTime].Approve[voter_WalletKey].Sign = TransctionApproveObj.Sign;
+            uidList[txTime].Approve[voter_WalletKey].PublicKey = TransctionApproveObj.PublicKey;
+
+            int voterCount = 0;
+            int approveCount = 0;
+            int refuseCount = 0;
+            foreach (KeyValuePair<string, Variable.Struct.MultiWalletTransactionApproveStruct> entry in uidList[txTime].Approve)
             {
-                uidList[txTime].
+                voterCount++;
+                if (entry.Value.Approve == true) 
+                {
+                    approveCount++;
+                }
+                else
+                {
+                    if (entry.Value.PublicKey.Length > 0)
+                    {
+                        refuseCount++;
+                    }
+                }
             }
-            if (multiTxText.Length > 0) { }
-            Console.WriteLine(multiTxText);
+            bool acceptTx = false;
+            bool refuseTx = false;
+            if (uidList[txTime].VoteType == Variable.Enum.MultiWalletType.AllRequired)
+            {
+                if (refuseCount == 0) {
+                    if (voterCount == approveCount)
+                    {
+                        acceptTx = true;
+                    }
+                }
+                else
+                {
+                    refuseTx = true;
+                }
+            }
+            if (uidList[txTime].VoteType == Variable.Enum.MultiWalletType.MajorityRequired)
+            {
+                int needVote = System.Convert.ToInt32(Math.Ceiling((decimal)voterCount / 2));
+                if (approveCount>= needVote)
+                {
+                    acceptTx = true;
+                }
+            }
+
+            if (acceptTx == true)
+            {
+                Console.WriteLine("TX Accepted");
+                uidList[txTime].Status = Variable.Enum.BlockStatusCode.InProgress;
+            }
+            else
+            {
+                if (refuseTx == true)
+                {
+                    Console.WriteLine("TX Refused");
+                    uidList[txTime].Status = Variable.Enum.BlockStatusCode.Rejected;
+                }
+                else
+                {
+                    Console.WriteLine("TX Status Unknown");
+                    uidList[txTime].Status = Variable.Enum.BlockStatusCode.Pending;
+                    ObjMp_MultiSignPool.Set(multiKeyId, JsonSerializer.Serialize(uidList));
+                }
+            }
+            alsdajlakjdlas
+            Console.WriteLine(JsonSerializer.Serialize(uidList, Notus.Variable.Constant.JsonSetting));
+            //Console.WriteLine(multiTxText);
             return JsonSerializer.Serialize(false);
 
             /*
