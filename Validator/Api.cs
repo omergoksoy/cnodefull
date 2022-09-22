@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
@@ -2308,19 +2309,102 @@ namespace Notus.Validator
                 {
                     UID = string.Empty,
                     Status = "AnErrorOccurred",
-                    Result = Notus.Variable.Enum.BlockStatusCode.AnErrorOccurred
+                    Result = Variable.Enum.BlockStatusCode.AnErrorOccurred
                 });
             }
-            Console.WriteLine(JsonSerializer.Serialize(IncomeData, Notus.Variable.Constant.JsonSetting));
-            Console.WriteLine(JsonSerializer.Serialize(TransctionApproveObj, Notus.Variable.Constant.JsonSetting));
-            Console.WriteLine("--------------------------------------------");
 
-            return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
+            string multiWalletKey=IncomeData.UrlList[3];
+
+            //Console.WriteLine(JsonSerializer.Serialize(TransctionApproveObj, Notus.Variable.Constant.JsonSetting));
+            //Console.WriteLine("--------------------------------------------");
+
+            string rawDataStr = Core.MergeRawData.ApproveMultiWalletTransaction(
+                TransctionApproveObj.Approve,
+                TransctionApproveObj.TransactionId,
+                TransctionApproveObj.CurrentTime
+            );
+
+            bool verifyTx=Notus.Wallet.ID.Verify(
+                rawDataStr,
+                TransctionApproveObj.Sign,
+                TransctionApproveObj.PublicKey
+            );
+            if (verifyTx == false)
             {
-                UID = string.Empty,
-                Status = "WalletUsing",
-                Result = Notus.Variable.Enum.BlockStatusCode.WalletUsing
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
+                {
+                    UID = string.Empty,
+                    Status = "WrongSignature",
+                    Result = Notus.Variable.Enum.BlockStatusCode.WrongSignature
+                });
+            }
+            string voter_WalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(
+                TransctionApproveObj.PublicKey,
+                Obj_Settings.Network
+            );
+            Dictionary<string, Notus.Variable.Enum.BlockStatusCode> SignList
+                = new Dictionary<string, Notus.Variable.Enum.BlockStatusCode>();
+            string multiTxText = string.Empty;
+            ulong txTime = 0;
+            string multiKeyId = string.Empty;
+            ObjMp_MultiSignPool.Each((string tmpMultiKeyId, string multiTransferList) =>
+            {
+                if (multiTxText.Length==0)
+                {
+                    Dictionary<ulong, Notus.Variable.Struct.MultiWalletTransactionVoteStruct>? uidList =
+                        JsonSerializer.Deserialize<Dictionary<
+                            ulong,
+                            Notus.Variable.Struct.MultiWalletTransactionVoteStruct>
+                        >(multiTransferList);
+                    Console.WriteLine(JsonSerializer.Serialize(uidList, Notus.Variable.Constant.JsonSetting));
+                    if (uidList != null)
+                    {
+                        foreach (KeyValuePair<ulong, Variable.Struct.MultiWalletTransactionVoteStruct> entry in uidList)
+                        {
+                            if (string.Equals(TransctionApproveObj.TransactionId, entry.Value.TransactionId))
+                            {
+                                txTime = entry.Key;
+                                if (entry.Value.Approve.ContainsKey(voter_WalletKey))
+                                {
+                                    multiTxText = multiTransferList;
+                                }
+                            }
+                        }
+                    }
+                }
             });
+
+            burada yapılan işlem sayıları kontrol edilecek ve yeterli sayıda işlem yapıldı ise
+            yapılan işlem eğer tamamlandı ise havuza alınacak
+
+            uidList[txTime]
+            if (multiTxText.Length > 0) { }
+            Console.WriteLine(multiTxText);
+            return JsonSerializer.Serialize(false);
+
+            /*
+            Dictionary<ulong, Notus.Variable.Struct.MultiWalletTransactionVoteStruct>? uidList =
+                JsonSerializer.Deserialize<Dictionary<
+                    ulong,
+                    Notus.Variable.Struct.MultiWalletTransactionVoteStruct>
+                >(multiTxText);
+            }
+
+            entry.Value.Approve[voter_WalletKey].CurrentTime = TransctionApproveObj.CurrentTime;
+            entry.Value.Approve[voter_WalletKey].Approve = TransctionApproveObj.Approve;
+            entry.Value.Approve[voter_WalletKey].Sign = TransctionApproveObj.Sign;
+            entry.Value.Approve[voter_WalletKey].PublicKey = TransctionApproveObj.PublicKey;
+
+            if (tmpResult == null)
+            {
+            }
+            return JsonSerializer.Serialize(tmpResult);
+
+            */
+
+
+
+
             /*
             if (Obj_Balance.WalletUsageAvailable(WalletObj.Founder.WalletKey) == false)
             {
