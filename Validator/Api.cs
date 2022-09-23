@@ -2262,6 +2262,13 @@ namespace Notus.Validator
 
         private string Request_ApproveMultiTransaction(Notus.Variable.Struct.HttpRequestDetails IncomeData)
         {
+
+
+            1573.satır
+            1573.satır
+            1573.satır
+            1573.satır
+
             if (IncomeData.PostParams.ContainsKey("data") == false)
             {
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
@@ -2362,11 +2369,15 @@ namespace Notus.Validator
                         {
                             if (string.Equals(TransctionApproveObj.TransactionId, entry.Value.TransactionId))
                             {
-                                txTime = entry.Key;
-                                if (entry.Value.Approve.ContainsKey(voter_WalletKey))
+                                // burada 
+                                if(entry.Value.Status!= Variable.Enum.BlockStatusCode.Pending)
                                 {
-                                    multiTxText = multiTransferList;
-                                    multiKeyId = tmpMultiKeyId;
+                                    txTime = entry.Key;
+                                    if (entry.Value.Approve.ContainsKey(voter_WalletKey))
+                                    {
+                                        multiTxText = multiTransferList;
+                                        multiKeyId = tmpMultiKeyId;
+                                    }
                                 }
                             }
                         }
@@ -2469,9 +2480,18 @@ namespace Notus.Validator
                     ObjMp_MultiSignPool.Set(multiKeyId, JsonSerializer.Serialize(uidList));
                 }
             }
-            alsdajlakjdlas
+            if(uidList[txTime].Status != Variable.Enum.BlockStatusCode.InProgress)
+            {
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
+                {
+                    UID = uidList[txTime].TransactionId,
+                    Status = uidList[txTime].Status.ToString(),
+                    Result = uidList[txTime].Status
+                });
+            }
+
+            // işlem havuza eklenecek ise burası devreye girecek..
             Console.WriteLine(JsonSerializer.Serialize(uidList, Notus.Variable.Constant.JsonSetting));
-            //Console.WriteLine(multiTxText);
             return JsonSerializer.Serialize(false);
 
             /*
@@ -2683,6 +2703,17 @@ namespace Notus.Validator
                     Result = Notus.Variable.Enum.BlockStatusCode.AnErrorOccurred
                 });
             }
+
+            if (2 > WalletObj.WalletList.Count)
+            {
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
+                {
+                    UID = string.Empty,
+                    Status = "NotEnoughParticipant",
+                    Result = Notus.Variable.Enum.BlockStatusCode.NotEnoughParticipant
+                });
+            }
+
             Console.WriteLine(JsonSerializer.Serialize(WalletObj, Notus.Variable.Constant.JsonSetting));
             Console.WriteLine("--------------------------------------------");
             if (Obj_Balance.WalletUsageAvailable(WalletObj.Founder.WalletKey) == false)
