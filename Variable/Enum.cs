@@ -4,6 +4,17 @@ using System.Numerics;
 
 namespace Notus.Variable.Enum
 {
+    public enum BlockTypeList
+    {
+        GenesisBlock,
+        CryptoTransfer,
+        MultiWalletCryptoTransfer,
+
+        TokenGeneration,
+        LockAccount,
+        MultiWalletContract
+    }
+
     public enum NetworkNodeType
     {
         All = 2048,
@@ -71,7 +82,7 @@ namespace Notus.Variable.Enum
 
     public enum NetworkLayer
     {
-        Unknown=99999,
+        Unknown = 99999,
         // MainLayer = 1,     // crypto and token transfer & token generation
         Layer1 = 1,     // crypto and token transfer & token generation
 
@@ -129,7 +140,7 @@ namespace Notus.Variable.Enum
         InQueue = 1,
         Completed = 22,
         Rejected = 97,
-        
+
         OldTransaction = 71,
         NotParticipant = 35,
         NotEnoughParticipant = 39,
@@ -162,13 +173,13 @@ namespace Notus.Variable.Enum
     {
         Info = 0,
         Error = 1,
-        Fatal=9,
+        Fatal = 9,
         Warning = 2
     }
     public enum MultiWalletType
     {
         AllRequired = 0,
         MajorityRequired = 1,
-        Unknown=9
+        Unknown = 9
     }
 }

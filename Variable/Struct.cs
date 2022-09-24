@@ -514,11 +514,13 @@ namespace Notus.Variable.Struct
         public string PublicKey { get; set; }
         public string Sign { get; set; }
     }
+    /*
     public class WitnessBlock
     {
         public Int64 RowNo { get; set; }           // witness row no
         public string UID { get; set; }            // witness uid
     }
+    */
     public class LockWalletStruct
     {
         public string WalletKey { get; set; }
@@ -553,7 +555,6 @@ namespace Notus.Variable.Struct
         public Notus.Variable.Struct.WalletBalanceStruct? Balance { get; set; }
         public Dictionary<string, Dictionary<ulong, string>>? Out { get; set; }
         public string Fee { get; set; }
-
         public string Sign { get; set; }
     }
     public class LogStruct
@@ -585,5 +586,12 @@ namespace Notus.Variable.Struct
         public Notus.Variable.Enum.MultiWalletType VoteType { get; set; }
     }
 
+    /*
+    public class MultiWalletTransactionVoteStruct
+    {
+        public Dictionary<string, Dictionary<ulong, string>>? Out { get; set; }
+        public string Fee { get; set; }
+    }
+    */
 }
 

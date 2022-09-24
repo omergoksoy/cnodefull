@@ -487,10 +487,11 @@ namespace Notus.Validator
                             }
                             tmpBlockCipherData.Validator.Reward = totalBlockReward.ToString();
                             
-                            // wallet-lock
+                            // crypto / token transfer
                             Obj_BlockQueue.Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
                             {
-                                type = 120,
+                                //type = 120,
+                                type = Notus.Variable.Constant.BlockTypeList[Notus.Variable.Enum.BlockTypeList.LockAccount],
                                 data = JsonSerializer.Serialize(tmpBlockCipherData)
                             });
                         }
