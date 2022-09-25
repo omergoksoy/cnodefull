@@ -163,6 +163,8 @@ namespace Notus.Variable.Enum
         CryptoTransfer_NoName = 3,      /* para transfer işlemi için */
         CryptoTransfer_ByPieces = 4,    /* para transfer işlemi için */
 
+        CryptoTransfer_MultiSign = 10,  /* çoklu para gönderim işlemi için genel işlem için */
+
         TokenGeneration = 5,            /* token oluşturma işlemi için */
         TokenUpdate = 6,                /* token supplye veya diğer güncellemeler için işlem tutarı*/
 

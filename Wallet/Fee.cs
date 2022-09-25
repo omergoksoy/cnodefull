@@ -98,7 +98,7 @@ namespace Notus.Wallet
             Notus.Variable.Enum.NetworkLayer networkLayer
         )
         {
-            Notus.Variable.Genesis.GenesisBlockData Obj_Genesis = null;
+            Notus.Variable.Genesis.GenesisBlockData? Obj_Genesis = null;
 
             using (
                 Notus.Mempool ObjMp_BlockOrder = new Notus.Mempool(
@@ -113,6 +113,15 @@ namespace Notus.Wallet
                 {
                     Obj_Genesis = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(tmpReturnVal);
                 }
+            }
+            if (Obj_Genesis == null)
+            {
+                return 1000000;
+            }
+
+            if (FeeConstant == Notus.Variable.Enum.Fee.CryptoTransfer_MultiSign)
+            {
+                return Obj_Genesis.Fee.Transfer.Common * 2;
             }
 
             if (FeeConstant == Notus.Variable.Enum.Fee.CryptoTransfer)
