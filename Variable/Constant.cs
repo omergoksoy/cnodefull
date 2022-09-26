@@ -232,20 +232,6 @@ namespace Notus.Variable
             { 360, 1 }
         };
 
-        
-        public readonly static Dictionary<Notus.Variable.Enum.BlockTypeList, int> BlockTypeList = 
-            new Dictionary<Notus.Variable.Enum.BlockTypeList, int>()
-        {
-            { Notus.Variable.Enum.BlockTypeList.GenesisBlock, 360},
-            { Notus.Variable.Enum.BlockTypeList.CryptoTransfer, 120},
-            { Notus.Variable.Enum.BlockTypeList.MultiWalletCryptoTransfer, 120},
-
-            //embedded contract
-            { Notus.Variable.Enum.BlockTypeList.TokenGeneration, 160},
-            { Notus.Variable.Enum.BlockTypeList.LockAccount, 40},
-            { Notus.Variable.Enum.BlockTypeList.MultiWalletContract, 90}
-        };
-
         public readonly static List<int> BalanceBlockTypeList = new List<int>()
         {
             360, 120

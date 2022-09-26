@@ -350,12 +350,23 @@ namespace Notus
             }
             Obj_DataList.Remove(KeyName);
             DeleteFromTable(KeyName);
-        }
-        public string Get(string KeyName, string ReturnIfKeyDoesntExist = null)
+        }   
+        public string Get(string KeyName, string? ReturnIfKeyDoesntExist = null)
         {
+            //Console.WriteLine(KeyName);
+            //Console.WriteLine(ReturnIfKeyDoesntExist);
             if (Obj_DataList.ContainsKey(KeyName))
             {
+                //Console.WriteLine(Obj_DataList[KeyName].Data);
                 return Obj_DataList[KeyName].Data;
+            }
+            if (ReturnIfKeyDoesntExist == null)
+            {
+                return string.Empty;
+            }
+            if (ReturnIfKeyDoesntExist.Length==0)
+            {
+                return string.Empty;
             }
             return ReturnIfKeyDoesntExist;
         }

@@ -586,6 +586,7 @@ namespace Notus.Variable.Struct
         public Notus.Variable.Enum.MultiWalletType VoteType { get; set; }
     }
 
+
     /*
     public class MultiWalletTransactionVoteStruct
     {

@@ -4,15 +4,15 @@ using System.Numerics;
 
 namespace Notus.Variable.Enum
 {
-    public enum BlockTypeList
+    public static class BlockTypeList
     {
-        GenesisBlock,
-        CryptoTransfer,
-        MultiWalletCryptoTransfer,
+        public const int GenesisBlock = 360;
+        public const int CryptoTransfer= 120;
+        public const int MultiWalletCryptoTransfer = 100;
 
-        TokenGeneration,
-        LockAccount,
-        MultiWalletContract
+        public const int TokenGeneration = 160;
+        public const int LockAccount = 40;
+        public const int MultiWalletContract = 90;
     }
 
     public enum NetworkNodeType

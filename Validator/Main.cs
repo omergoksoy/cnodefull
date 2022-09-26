@@ -491,7 +491,7 @@ namespace Notus.Validator
                             Obj_BlockQueue.Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
                             {
                                 //type = 120,
-                                type = Notus.Variable.Constant.BlockTypeList[Notus.Variable.Enum.BlockTypeList.LockAccount],
+                                type = Notus.Variable.Enum.BlockTypeList.LockAccount,
                                 data = JsonSerializer.Serialize(tmpBlockCipherData)
                             });
                         }

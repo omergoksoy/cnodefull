@@ -367,10 +367,10 @@ namespace Notus.Validator
         private void StoreNodeListToDb()
         {
             bool storeList = true;
-            string tmpNodeListStr = ObjMp_NodeList.Get("ip_list", string.Empty);
-            if (tmpNodeListStr != string.Empty)
+            string tmpNodeListStr = ObjMp_NodeList.Get("ip_list", "");
+            if (tmpNodeListStr.Length>0)
             {
-                SortedDictionary<string, IpInfo> tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, IpInfo>>(tmpNodeListStr);
+                SortedDictionary<string, IpInfo>? tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, IpInfo>>(tmpNodeListStr);
                 if (
                     string.Equals(
                         JsonSerializer.Serialize(tmpDbNodeList),
@@ -1051,17 +1051,20 @@ namespace Notus.Validator
             MyWallet = Obj_Settings.NodeWallet.WalletKey;
             CalculateTimeDifference(false);
 
-            string tmpNodeListStr = ObjMp_NodeList.Get("ip_list", string.Empty);
-            if (tmpNodeListStr == string.Empty)
+            string tmpNodeListStr = ObjMp_NodeList.Get("ip_list", "");
+            if (tmpNodeListStr.Length == 0)
             {
                 StoreNodeListToDb();
             }
             else
             {
-                SortedDictionary<string, IpInfo> tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, IpInfo>>(tmpNodeListStr);
-                foreach (KeyValuePair<string, IpInfo> entry in tmpDbNodeList)
+                SortedDictionary<string, IpInfo>? tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, IpInfo>>(tmpNodeListStr);
+                if (tmpDbNodeList != null)
                 {
-                    AddToMainAddressList(entry.Value.IpAddress, entry.Value.Port);
+                    foreach (KeyValuePair<string, IpInfo> entry in tmpDbNodeList)
+                    {
+                        AddToMainAddressList(entry.Value.IpAddress, entry.Value.Port);
+                    }
                 }
             }
             AddToNodeList(new NodeQueueInfo()
