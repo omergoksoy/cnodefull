@@ -137,30 +137,46 @@ namespace Notus.Wallet
         public Notus.Variable.Struct.WalletBalanceStruct Get(string WalletKey, ulong timeYouCanUse)
         {
             string BalanceValStr = ObjMp_Balance.Get(WalletKey, string.Empty);
-            if (BalanceValStr == string.Empty)
+            if (BalanceValStr != string.Empty)
             {
-                if (timeYouCanUse == 0)
+                Notus.Variable.Struct.WalletBalanceStruct? tmpBalanceVal = JsonSerializer.Deserialize<Notus.Variable.Struct.WalletBalanceStruct>(BalanceValStr);
+                if (tmpBalanceVal != null)
                 {
-                    timeYouCanUse = Notus.Time.NowToUlong();
+                    return tmpBalanceVal;
                 }
-                return new Notus.Variable.Struct.WalletBalanceStruct()
-                {
-                    Balance = new Dictionary<string, Dictionary<ulong, string>>()
-                    {
-                        {
-                            Settings.Genesis.CoinInfo.Tag,
-                            new Dictionary<ulong, string>(){
-                                { Notus.Time.NowToUlong(),"0" }
-                            }
-                        },
-                    },
-                    RowNo = 0,
-                    UID = "",
-                    Wallet = WalletKey
-                };
             }
-            Notus.Variable.Struct.WalletBalanceStruct tmpBalanceVal = JsonSerializer.Deserialize<Notus.Variable.Struct.WalletBalanceStruct>(BalanceValStr);
-            return tmpBalanceVal;
+
+            string defaultCoinTag = Notus.Variable.Constant.MainCoinTagName;
+            if (Obj_Settings != null)
+            {
+                if (Obj_Settings.Genesis != null)
+                {
+                    if (Obj_Settings.Genesis.CoinInfo != null)
+                    {
+                        if (Obj_Settings.Genesis.CoinInfo.Tag.Length > 0)
+                        {
+                            defaultCoinTag = Obj_Settings.Genesis.CoinInfo.Tag;
+                        }
+                    }
+
+                }
+            }
+            timeYouCanUse=(timeYouCanUse == 0 ? Notus.Time.NowToUlong(false) : timeYouCanUse) ;
+            return new Notus.Variable.Struct.WalletBalanceStruct()
+            {
+                Balance = new Dictionary<string, Dictionary<ulong, string>>()
+                {
+                    {
+                        defaultCoinTag,
+                        new Dictionary<ulong, string>(){
+                            { timeYouCanUse ,"0" }
+                        }
+                    },
+                },
+                RowNo = 0,
+                UID = "",
+                Wallet = WalletKey
+            };
         }
         /*
         public BigInteger GetCoinBalance(string WalletKey)
@@ -198,6 +214,23 @@ namespace Notus.Wallet
         AYRICA ÇÖZMEK İÇİNDE BİR FONKSİYON VEYA İŞLEM EKLE
 
         */
+        public Dictionary<ulong, string> RemoveZeroUnlockTime(Dictionary<ulong, string> currentBalance)
+        {
+            ulong removeKey = 0;
+            foreach(var entry in currentBalance)
+            {
+                if (entry.Value == "0")
+                {
+                    removeKey = entry.Key;
+                }
+            }
+            if (removeKey > 0)
+            {
+                currentBalance.Remove(removeKey);
+                currentBalance = RemoveZeroUnlockTime(currentBalance);
+            }
+            return currentBalance;
+        }
         public (bool, Notus.Variable.Struct.WalletBalanceStruct) SubtractVolumeWithUnlockTime(
             Notus.Variable.Struct.WalletBalanceStruct balanceObj,
             string volume,
@@ -241,11 +274,17 @@ namespace Notus.Wallet
 
             if (volumeNeeded == 0)
             {
+                //balanceObj.Balance[coinTagName] = RemoveZeroUnlockTime(balanceObj.Balance[coinTagName]);
                 return (false, balanceObj);
             }
             return (true, balanceObj);
         }
-        public Notus.Variable.Struct.WalletBalanceStruct AddVolumeWithUnlockTime(Notus.Variable.Struct.WalletBalanceStruct balanceObj, string volume, string coinTagName, ulong unlockTime)
+        public Notus.Variable.Struct.WalletBalanceStruct AddVolumeWithUnlockTime(
+            Notus.Variable.Struct.WalletBalanceStruct balanceObj, 
+            string volume, 
+            string coinTagName, 
+            ulong unlockTime
+        )
         {
             if (balanceObj.Balance.ContainsKey(coinTagName) == false)
             {
@@ -263,6 +302,7 @@ namespace Notus.Wallet
             }
             BigInteger totalVolume = BigInteger.Parse(balanceObj.Balance[coinTagName][unlockTime]) + BigInteger.Parse(volume);
             balanceObj.Balance[coinTagName][unlockTime] = totalVolume.ToString();
+            //balanceObj.Balance[coinTagName] = RemoveZeroUnlockTime(balanceObj.Balance[coinTagName]);
             return balanceObj;
         }
         public bool HasEnoughCoin(string walletKey, BigInteger howMuchCoinNeed, string CoinTagName = "")

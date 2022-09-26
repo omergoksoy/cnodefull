@@ -1,0 +1,137 @@
+﻿{
+  "20220924211651": {
+    "TransactionId": "1348bfc33ac30000005224dbd5db58db02762c8d536e357325879b1d5f31a584950913b6a31a4322961014a4f2",
+    "Sender": {
+      "ErrorNo": 0,
+      "CurrentTime": 20220924211651,
+      "UnlockTime": 20220924211652,
+      "Currency": "NOTUS",
+      "Sender": "NMDN1zpKQ3jrR8TvhGbD9tN5uoGefenzr37jwC1",
+      "Receiver": "NODZGjyzoDnEGmtHGPWFEwU6CVJRAgmt8ehCEw6",
+      "Volume": "50000000",
+      "PublicKey": "30646943031ef2e540f130376572ca026a04110508f5471a02882ce84d5c0b662c8c283cafe5477f162e8fe05802e08402846a1bb9b521f9a9c8bc62c390448f",
+      "Sign": "3046022100f675e64e8976b4a7230100455abf380d0ce19e1876136dc7a540d8a8b632aebb022100cf3d80179d3b656e6d88766f140eba50b200c35c79a9bef2b64fd1de0609bf7f",
+      "CurveName": "prime256v1",
+      "Network": 30
+    },
+    "Approve": {
+      "NODbV6NAhnGUq72nyeNUvdv1wBSc1PGbN4xsjhb": {
+        "Approve": false,
+        "TransactionId": "",
+        "CurrentTime": 0,
+        "Sign": "",
+        "PublicKey": ""
+      },
+      "NODWnve5Dd82Xp9WjCnKpcFTdJHBG1SuzgHmG3q": {
+        "Approve": true,
+        "TransactionId": "1348bfc33ac30000005224dbd5db58db02762c8d536e357325879b1d5f31a584950913b6a31a4322961014a4f2",
+        "CurrentTime": 20220926124321,
+        "Sign": "304402205485c5e2edef82bacab2db8090a22f4126a78779355e8afeea2d4813fd1794c102204c707c1a179132f198ef0ffe2ae921a5026b6808d41960b506cb9a9d2ac52edc",
+        "PublicKey": "993a18731c35e3d21c8589c8a1e3abc71dd1c07bad07467d15512b5341e6da6ce0499ea2028fab0e530ca884c888036a37a01b34b6c9ba33540fd0e03cf69c20"
+      },
+      "NODZNHVB39MjS3cWAcBgpgu1pM2nAPMQv6hSSBf": {
+        "Approve": true,
+        "TransactionId": "1348bfc33ac30000005224dbd5db58db02762c8d536e357325879b1d5f31a584950913b6a31a4322961014a4f2",
+        "CurrentTime": 20220924212216,
+        "Sign": "3045022048bc94a3ba5a3ad045448782d39cf5599d324c28881a76213160dfd225f374b7022100f69d1093f41bd21f4207be223fe24e4bf077c0b026f6b81bad1cba1ccd4f2137",
+        "PublicKey": "d328c9e2dac3e290c35e8a2b4c102a7f8a03c26f981af290f8ac3394af8c260ba9178f951ce4e44397423c10bab6042dffba132b8dfc29b61fc5249785a48660"
+      },
+      "NODZRQH2MBUEpRTAgieGuFmyGejDfD12G8rCq4j": {
+        "Approve": false,
+        "TransactionId": "",
+        "CurrentTime": 0,
+        "Sign": "",
+        "PublicKey": ""
+      }
+    },
+    "Status": 89,
+    "VoteType": 1
+  }
+}
+needVote     : 3
+voterCount   : 4
+approveCount : 3
+refuseCount  : 0
+TX Accepted
+******************************************************
+{
+  "Sender": {
+    "ErrorNo": 0,
+    "CurrentTime": 20220924211651,
+    "UnlockTime": 20220924211652,
+    "Currency": "NOTUS",
+    "Sender": "NMDN1zpKQ3jrR8TvhGbD9tN5uoGefenzr37jwC1",
+    "Receiver": "NODZGjyzoDnEGmtHGPWFEwU6CVJRAgmt8ehCEw6",
+    "Volume": "50000000",
+    "PublicKey": "30646943031ef2e540f130376572ca026a04110508f5471a02882ce84d5c0b662c8c283cafe5477f162e8fe05802e08402846a1bb9b521f9a9c8bc62c390448f",
+    "Sign": "3046022100f675e64e8976b4a7230100455abf380d0ce19e1876136dc7a540d8a8b632aebb022100cf3d80179d3b656e6d88766f140eba50b200c35c79a9bef2b64fd1de0609bf7f",
+    "CurveName": "prime256v1",
+    "Network": 30
+  },
+  "Approve": {
+    "NODbV6NAhnGUq72nyeNUvdv1wBSc1PGbN4xsjhb": {
+      "Approve": false,
+      "TransactionId": "",
+      "CurrentTime": 0,
+      "Sign": "",
+      "PublicKey": ""
+    },
+    "NODWnve5Dd82Xp9WjCnKpcFTdJHBG1SuzgHmG3q": {
+      "Approve": true,
+      "TransactionId": "1348bfc33ac30000005224dbd5db58db02762c8d536e357325879b1d5f31a584950913b6a31a4322961014a4f2",
+      "CurrentTime": 20220926124321,
+      "Sign": "304402205485c5e2edef82bacab2db8090a22f4126a78779355e8afeea2d4813fd1794c102204c707c1a179132f198ef0ffe2ae921a5026b6808d41960b506cb9a9d2ac52edc",
+      "PublicKey": "993a18731c35e3d21c8589c8a1e3abc71dd1c07bad07467d15512b5341e6da6ce0499ea2028fab0e530ca884c888036a37a01b34b6c9ba33540fd0e03cf69c20"
+    },
+    "NODZNHVB39MjS3cWAcBgpgu1pM2nAPMQv6hSSBf": {
+      "Approve": true,
+      "TransactionId": "1348bfc33ac30000005224dbd5db58db02762c8d536e357325879b1d5f31a584950913b6a31a4322961014a4f2",
+      "CurrentTime": 20220924212216,
+      "Sign": "3045022048bc94a3ba5a3ad045448782d39cf5599d324c28881a76213160dfd225f374b7022100f69d1093f41bd21f4207be223fe24e4bf077c0b026f6b81bad1cba1ccd4f2137",
+      "PublicKey": "d328c9e2dac3e290c35e8a2b4c102a7f8a03c26f981af290f8ac3394af8c260ba9178f951ce4e44397423c10bab6042dffba132b8dfc29b61fc5249785a48660"
+    },
+    "NODZRQH2MBUEpRTAgieGuFmyGejDfD12G8rCq4j": {
+      "Approve": true,
+      "TransactionId": "1348bfc33ac30000005224dbd5db58db02762c8d536e357325879b1d5f31a584950913b6a31a4322961014a4f2",
+      "CurrentTime": 20220927002628,
+      "Sign": "304502205cff1e2f69a49eeae80a7386f073bf0fd0c4ee180608ec6ed137a7142966f77b022100980458fb7af4438e008b01f874318c0bee5b431c2183a2178881f1a267c4a319",
+      "PublicKey": "c7d3dfbb2cbd5b9be72cb925cb1589b87fb2682b352cdf05ee66eaa248bfe04444668c399a3d37d72413288349b2a406dd8001333594e6a9d5b6cd6e69d70c60"
+    }
+  },
+  "Before": {
+    "NMDN1zpKQ3jrR8TvhGbD9tN5uoGefenzr37jwC1": {
+      "Balance": {
+        "NOTUS": {
+          "20220921182300808": "2000000000"
+        }
+      },
+      "Witness": {
+        "RowNo": 153,
+        "UID": "1348bf9252f001269b75ce5a7477eb548203a6bc8999efa9837c44f92d456252f569ad7fca878c3157140b5f53"
+      }
+    },
+    "NODZGjyzoDnEGmtHGPWFEwU6CVJRAgmt8ehCEw6": {
+      "Balance": {
+        "NOTUS": {
+          "20220927002630": "0"
+        }
+      },
+      "Witness": {
+        "RowNo": 0,
+        "UID": ""
+      }
+    }
+  },
+  "After": {
+    "NMDN1zpKQ3jrR8TvhGbD9tN5uoGefenzr37jwC1": {
+      "NOTUS": {
+        "20220921182300808": "1949999700"
+      }
+    },
+    "NODZGjyzoDnEGmtHGPWFEwU6CVJRAgmt8ehCEw6": {
+      "NOTUS": {
+        "20220924211652": "50000000"
+      }
+    }
+  }
+}

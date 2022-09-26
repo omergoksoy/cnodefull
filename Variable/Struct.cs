@@ -135,6 +135,11 @@ namespace Notus.Variable.Struct
         public Notus.Variable.Enum.BlockStatusCode Result { get; set; }
         public string ID { get; set; }
     }
+    public class BeforeBalanceStruct
+    {
+        public Dictionary<string, Dictionary<ulong, string>> Balance { get; set; }      // account current balance                                                                                        //public string Currency { get; set; }       // account curreny
+        public WitnessBlock Witness { get; set; }           // witness row no
+    }
 
     public class WalletBalanceStruct
     {
@@ -332,6 +337,7 @@ namespace Notus.Variable.Struct
 
     public class PoolBlockRecordStruct
     {
+        public string uid { get; set; }
         public int type { get; set; }
         public string data { get; set; }
     }

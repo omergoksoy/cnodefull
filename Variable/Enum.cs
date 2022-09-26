@@ -7,7 +7,7 @@ namespace Notus.Variable.Enum
     public static class BlockTypeList
     {
         public const int GenesisBlock = 360;
-        public const int CryptoTransfer= 120;
+        public const int CryptoTransfer= 110;
         public const int MultiWalletCryptoTransfer = 100;
 
         public const int TokenGeneration = 160;

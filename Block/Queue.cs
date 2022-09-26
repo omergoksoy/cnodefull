@@ -240,6 +240,7 @@ namespace Notus.Block
                 if (CurrentBlockType == 40)
                 {
                     string tmpLockWalletKey = TempBlockList[0];
+
                     Notus.Variable.Struct.LockWalletBeforeStruct? tmpLockWalletStruct = JsonSerializer.Deserialize<Notus.Variable.Struct.LockWalletBeforeStruct>(tmpLockWalletKey);
                     TempBlockList.Clear();
                     if (tmpLockWalletStruct == null)
@@ -260,6 +261,7 @@ namespace Notus.Block
                     }
                     else
                     {
+                        Console.WriteLine(tmpLockWalletStruct.WalletKey);
                         string lockAccountFee = Obj_Settings.Genesis.Fee.BlockAccount.ToString();
                         Notus.Variable.Struct.WalletBalanceStruct currentBalance =
                             BalanceObj.Get(tmpLockWalletStruct.WalletKey, 0);
