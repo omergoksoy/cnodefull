@@ -353,16 +353,8 @@ namespace Notus
         }   
         public string Get(string KeyName, string? ReturnIfKeyDoesntExist = null)
         {
-            if (KeyName == null)
-            {
-                Console.WriteLine("StackTrace: '{0}'", Environment.StackTrace);
-                Console.WriteLine("2 x null geldi");
-            }
-            //Console.WriteLine(KeyName);
-            //Console.WriteLine(ReturnIfKeyDoesntExist);
             if (Obj_DataList.ContainsKey(KeyName))
             {
-                //Console.WriteLine(Obj_DataList[KeyName].Data);
                 return Obj_DataList[KeyName].Data;
             }
             if (ReturnIfKeyDoesntExist == null)

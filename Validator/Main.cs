@@ -267,7 +267,7 @@ namespace Notus.Validator
                         };
 
                         Dictionary<string, Notus.Variable.Struct.MempoolDataList> tmpTransactionList = Obj_Api.RequestSend_DataList();
-
+                        Console.WriteLine(JsonSerializer.Serialize(tmpTransactionList, Notus.Variable.Constant.JsonSetting));
                         // wallet balances are assigned
                         Int64 transferFee = Notus.Wallet.Fee.Calculate(
                             Notus.Variable.Enum.Fee.CryptoTransfer,
@@ -490,8 +490,9 @@ namespace Notus.Validator
                             // crypto / token transfer
                             Obj_BlockQueue.Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
                             {
-                                //type = 120,
-                                type = Notus.Variable.Enum.BlockTypeList.LockAccount,
+                                // type = 120,
+                                // uid =
+                                type = Notus.Variable.Enum.BlockTypeList.CryptoTransfer,
                                 data = JsonSerializer.Serialize(tmpBlockCipherData)
                             });
                         }

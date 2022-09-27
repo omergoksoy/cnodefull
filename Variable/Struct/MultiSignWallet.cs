@@ -10,8 +10,7 @@ namespace Notus.Variable.Struct
         public Dictionary<string, MultiWalletTransactionApproveStruct> Approve { get; set; }
         public Dictionary<string, Notus.Variable.Struct.BeforeBalanceStruct> Before { get; set; }
         public Dictionary<string, Dictionary<string, Dictionary<ulong, string>>> After { get; set; }
-        //public Notus.Variable.Struct.WalletBalanceStruct Balance { get; set; }
-        //public Dictionary<string, Dictionary<string, Dictionary<ulong, string>>> Out { get; set; }      // account current balance
+        public string Fee { get; set; }
     }
 
     /*

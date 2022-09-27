@@ -538,7 +538,7 @@ namespace Notus.Block
         {
             Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
             {
-                type = 300,
+                type = Notus.Variable.Enum.BlockTypeList.EmptyBlock,
                 data = JsonSerializer.Serialize(Obj_Settings.LastBlock.info.rowNo)
             });
         }
