@@ -521,6 +521,35 @@ namespace Notus.Wallet
                 Notus.Print.Basic(Obj_Settings, "Balance.Cs -> Control function -> Line 178 -> Block type -> " + tmpBlockForBalance.info.type.ToString() + " -> " + tmpBlockForBalance.info.rowNo.ToString());
             }
 
+            // MultiWalletCryptoTransfer
+            if (tmpBlockForBalance.info.type == 100)
+            {
+                string tmpRawDataStr = System.Text.Encoding.UTF8.GetString(
+                    System.Convert.FromBase64String(
+                        tmpBlockForBalance.cipher.data
+                    )
+                );
+                Console.WriteLine(tmpRawDataStr);
+                Notus.Variable.Struct.MultiWalletTransactionStruct? tmpBalanceVal =
+                    JsonSerializer.Deserialize<Notus.Variable.Struct.MultiWalletTransactionStruct>(
+                        tmpRawDataStr
+                    );
+                if (tmpBalanceVal != null)
+                {
+                    foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> entry in tmpBalanceVal.After)
+                    {
+                        StoreToDb(new Notus.Variable.Struct.WalletBalanceStruct()
+                        {
+                            UID = tmpBlockForBalance.info.uID,
+                            RowNo = tmpBlockForBalance.info.rowNo,
+                            Wallet = entry.Key,
+                            Balance = entry.Value
+                        });
+                    }
+                }
+            }
+
+            //LockAccount
             if (tmpBlockForBalance.info.type == 40)
             {
                 string tmpRawDataStr = System.Text.Encoding.UTF8.GetString(
@@ -556,6 +585,8 @@ namespace Notus.Wallet
                     );
                 }
             }
+
+            //CryptoTransfer
             if (tmpBlockForBalance.info.type == 120)
             {
                 string tmpRawDataStr = System.Text.Encoding.UTF8.GetString(
@@ -578,9 +609,10 @@ namespace Notus.Wallet
                     });
                 }
             }
+
+            //MultiWalletContract 
             if (tmpBlockForBalance.info.type == 90)
             {
-                // wallet-lock
                 string tmpRawDataStr = System.Text.Encoding.UTF8.GetString(
                     System.Convert.FromBase64String(
                         tmpBlockForBalance.cipher.data
@@ -688,6 +720,7 @@ namespace Notus.Wallet
             }
             */
 
+            // TokenGeneration
             if (tmpBlockForBalance.info.type == 160)
             {
                 Notus.Variable.Struct.BlockStruct_160? tmpBalanceVal = JsonSerializer.Deserialize<Notus.Variable.Struct.BlockStruct_160>(

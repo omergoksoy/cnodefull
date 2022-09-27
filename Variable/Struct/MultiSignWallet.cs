@@ -6,13 +6,24 @@ namespace Notus.Variable.Struct
 {
     public class MultiWalletTransactionStruct
     {
-        public Notus.Variable.Struct.CryptoTransactionStruct Sender { get; set; }
+        public Notus.Variable.Struct.CryptoTransaction Sender { get; set; }
         public Dictionary<string, MultiWalletTransactionApproveStruct> Approve { get; set; }
         public Dictionary<string, Notus.Variable.Struct.BeforeBalanceStruct> Before { get; set; }
         public Dictionary<string, Dictionary<string, Dictionary<ulong, string>>> After { get; set; }
         public string Fee { get; set; }
     }
 
+    public class CryptoTransaction
+    {
+        public ulong CurrentTime { get; set; }
+        public string Currency { get; set; }
+        public string Sender { get; set; }
+        public string Receiver { get; set; }
+        public string Volume { get; set; }
+        public string PublicKey { get; set; }
+        public string Sign { get; set; }
+        public string CurveName { get; set; }
+    }
     /*
     public class MultiWalletFounderStruct
     {
