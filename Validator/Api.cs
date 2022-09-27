@@ -337,8 +337,8 @@ namespace Notus.Validator
                             = new Dictionary<string, Notus.Variable.Enum.BlockStatusCode>();
                         ObjMp_MultiSignPool.Each((string multiKeyId, string multiTransferList) =>
                         {
-                            Console.WriteLine(multiKeyId);
-                            Console.WriteLine(multiTransferList);
+                            //Console.WriteLine(multiKeyId);
+                            //Console.WriteLine(multiTransferList);
                             if (tmpResult == null)
                             {
                                 Dictionary<ulong, Notus.Variable.Struct.MultiWalletTransactionVoteStruct>? uidList =
@@ -379,8 +379,8 @@ namespace Notus.Validator
                             = new Dictionary<string, Notus.Variable.Enum.BlockStatusCode>();
                         ObjMp_MultiSignPool.Each((string multiKeyId, string multiTransferList) =>
                         {
-                            Console.WriteLine(multiKeyId);
-                            Console.WriteLine(multiTransferList);
+                            //Console.WriteLine(multiKeyId);
+                            //Console.WriteLine(multiTransferList);
                             Dictionary<ulong, Notus.Variable.Struct.MultiWalletTransactionVoteStruct>? uidList =
                                 JsonSerializer.Deserialize<Dictionary<
                                     ulong,
@@ -422,8 +422,8 @@ namespace Notus.Validator
                         = new Dictionary<string, Notus.Variable.Enum.BlockStatusCode>();
                     ObjMp_MultiSignPool.Each((string multiKeyId, string multiTransferList) =>
                     {
-                        Console.WriteLine(multiKeyId);
-                        Console.WriteLine(multiTransferList);
+                        //Console.WriteLine(multiKeyId);
+                        //Console.WriteLine(multiTransferList);
                         Dictionary<ulong, Notus.Variable.Struct.MultiWalletTransactionVoteStruct>? uidList =
                             JsonSerializer.Deserialize<Dictionary<
                                 ulong,
@@ -2485,7 +2485,7 @@ namespace Notus.Validator
             if (uidList[txTime].VoteType == Variable.Enum.MultiWalletType.MajorityRequired)
             {
                 int needVote = System.Convert.ToInt32(Math.Ceiling((decimal)voterCount / 2)) + 1;
-                Console.WriteLine("needVote     : " + needVote.ToString());
+                //Console.WriteLine("needVote     : " + needVote.ToString());
                 if (approveCount >= needVote)
                 {
                     acceptTx = true;
@@ -2493,24 +2493,24 @@ namespace Notus.Validator
             }
 
             //onaylandıysa işlemi ana blok havuzuna atacak
-            Console.WriteLine("voterCount   : " + voterCount.ToString());
-            Console.WriteLine("approveCount : " + approveCount.ToString());
-            Console.WriteLine("refuseCount  : " + refuseCount.ToString());
+            //Console.WriteLine("voterCount   : " + voterCount.ToString());
+            //Console.WriteLine("approveCount : " + approveCount.ToString());
+            //Console.WriteLine("refuseCount  : " + refuseCount.ToString());
             if (acceptTx == true)
             {
-                Console.WriteLine("TX Accepted");
+                //Console.WriteLine("TX Accepted");
                 uidList[txTime].Status = Variable.Enum.BlockStatusCode.InProgress;
             }
             else
             {
                 if (refuseTx == true)
                 {
-                    Console.WriteLine("TX Refused");
+                    //Console.WriteLine("TX Refused");
                     uidList[txTime].Status = Variable.Enum.BlockStatusCode.Rejected;
                 }
                 else
                 {
-                    Console.WriteLine("TX Status Unknown");
+                    //Console.WriteLine("TX Status Unknown");
                     uidList[txTime].Status = Variable.Enum.BlockStatusCode.Pending;
                 }
             }
@@ -2916,8 +2916,8 @@ namespace Notus.Validator
                 });
             }
 
-            Console.WriteLine(JsonSerializer.Serialize(WalletObj, Notus.Variable.Constant.JsonSetting));
-            Console.WriteLine("--------------------------------------------");
+            //Console.WriteLine(JsonSerializer.Serialize(WalletObj, Notus.Variable.Constant.JsonSetting));
+            //Console.WriteLine("--------------------------------------------");
             if (Obj_Balance.WalletUsageAvailable(WalletObj.Founder.WalletKey) == false)
             {
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()

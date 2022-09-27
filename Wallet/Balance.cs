@@ -529,7 +529,7 @@ namespace Notus.Wallet
                         tmpBlockForBalance.cipher.data
                     )
                 );
-                Console.WriteLine(tmpRawDataStr);
+                //Console.WriteLine(tmpRawDataStr);
                 Notus.Variable.Struct.MultiWalletTransactionStruct? tmpBalanceVal =
                     JsonSerializer.Deserialize<Notus.Variable.Struct.MultiWalletTransactionStruct>(
                         tmpRawDataStr
