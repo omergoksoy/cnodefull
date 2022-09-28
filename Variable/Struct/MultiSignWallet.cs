@@ -4,10 +4,18 @@ using System.Numerics;
 
 namespace Notus.Variable.Struct
 {
+    public class MultiTransactionApproveStruct
+    {
+        public bool Approve { get; set; }
+        public ulong CurrentTime { get; set; }
+        public string Sign { get; set; }
+        public string PublicKey { get; set; }
+    }
+
     public class MultiWalletTransactionStruct
     {
         public Notus.Variable.Struct.CryptoTransaction Sender { get; set; }
-        public Dictionary<string, MultiWalletTransactionApproveStruct> Approve { get; set; }
+        public Dictionary<string, MultiTransactionApproveStruct> Approve { get; set; }
         public Dictionary<string, Notus.Variable.Struct.BeforeBalanceStruct> Before { get; set; }
         public Dictionary<string, Dictionary<string, Dictionary<ulong, string>>> After { get; set; }
         public string Fee { get; set; }

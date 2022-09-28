@@ -574,7 +574,7 @@ namespace Notus.Variable.Struct
         public string StackTrace { get; set; }
     }
 
-    public class MultiWalletTransactionApproveStruct
+    public class MultiWalletTransactionApproveStruct    
     {
         public bool Approve { get; set; }
         public string TransactionId { get; set; }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
 using System.Text.Json;
+using Notus.Variable.Struct;
 
 namespace Notus.Validator
 {
@@ -2754,7 +2755,7 @@ namespace Notus.Validator
                         Sign = uidList[txTime].Sender.Sign,
                         Volume = uidList[txTime].Sender.Volume
                     },
-                    Approve = uidList[txTime].Approve,
+                    Approve = new Dictionary<string, MultiTransactionApproveStruct>(),
                     Before = new Dictionary<string, Variable.Struct.BeforeBalanceStruct>()
                     {
                         {
@@ -2805,8 +2806,28 @@ namespace Notus.Validator
                     },
                     Fee = transferFee.ToString()
                 };
-            //Console.WriteLine("******************************************************");
-            //Console.WriteLine(JsonSerializer.Serialize(multiTx, Notus.Variable.Constant.JsonSetting));
+            foreach(KeyValuePair<string, MultiWalletTransactionApproveStruct> entry in uidList[txTime].Approve)
+            {
+                multiTx.Approve.Add(
+                    entry.Key,
+                    new MultiTransactionApproveStruct()
+                    {
+                         Approve=entry.Value.Approve,
+                          CurrentTime=entry.Value.CurrentTime,
+                           PublicKey=entry.Value.PublicKey,
+                            Sign=entry.Value.Sign
+                    }
+                );
+            }
+
+            /*
+            Obj_Balance.StopWalletUsage(multiWalletKey);
+            Obj_Balance.StopWalletUsage(receiverWalletKey);
+            Obj_Balance.StopWalletUsage(Obj_Settings.NodeWallet.WalletKey);
+            */
+
+            Console.WriteLine("******************************************************");
+            Console.WriteLine(JsonSerializer.Serialize(multiTx, Notus.Variable.Constant.JsonSetting));
 
 
             // bu kısım işlem bitiminde yapılacak, şimdilik test amaçlı eklendi

@@ -267,7 +267,7 @@ namespace Notus.Validator
                         };
 
                         Dictionary<string, Notus.Variable.Struct.MempoolDataList> tmpTransactionList = Obj_Api.RequestSend_DataList();
-                        Console.WriteLine(JsonSerializer.Serialize(tmpTransactionList, Notus.Variable.Constant.JsonSetting));
+
                         // wallet balances are assigned
                         Int64 transferFee = Notus.Wallet.Fee.Calculate(
                             Notus.Variable.Enum.Fee.CryptoTransfer,
