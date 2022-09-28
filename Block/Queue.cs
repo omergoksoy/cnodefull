@@ -84,6 +84,7 @@ namespace Notus.Block
             List<string> TempBlockList = new List<string>();
             List<Notus.Variable.Struct.List_PoolBlockRecordStruct> TempPoolTransactionList = new List<Notus.Variable.Struct.List_PoolBlockRecordStruct>();
             bool exitLoop = false;
+            string transactionId = string.Empty;
             while (exitLoop == false)
             {
                 if (Queue_PoolTransaction.Count > 0)
@@ -103,7 +104,29 @@ namespace Notus.Block
                         if (CurrentBlockType == TmpPoolRecord.type)
                         {
                             bool addToList = true;
-                            if (CurrentBlockType == 120)
+                            if (CurrentBlockType == Notus.Variable.Enum.BlockTypeList.MultiWalletCryptoTransfer)
+                            {
+                                Dictionary<string, Notus.Variable.Struct.MultiWalletTransactionStruct>? multiTx= 
+                                    JsonSerializer.Deserialize<
+                                        Dictionary<string, Notus.Variable.Struct.MultiWalletTransactionStruct>
+                                    >(TmpPoolRecord.data);
+                                if(multiTx==null)
+                                {
+                                    addToList = false;
+                                }
+                                else
+                                {
+                                    foreach(var iEntry in multiTx)
+                                    {
+                                        if(transactionId.Length==0)
+                                        {
+                                            transactionId = iEntry.Key;
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (CurrentBlockType == Notus.Variable.Enum.BlockTypeList.CryptoTransfer)
                             {
                                 Notus.Variable.Class.BlockStruct_120? tmpBlockCipherData = JsonSerializer.Deserialize<Notus.Variable.Class.BlockStruct_120>(TmpPoolRecord.data);
                                 if (tmpBlockCipherData == null)
@@ -145,7 +168,8 @@ namespace Notus.Block
                                 TempPoolTransactionList.Count == 1000 ||
                                 CurrentBlockType == 240 || // layer1 - > dosya ekleme isteği
                                 CurrentBlockType == 250 || // layer3 - > dosya içeriği
-                                CurrentBlockType == 300
+                                CurrentBlockType == Notus.Variable.Enum.BlockTypeList.EmptyBlock ||
+                                CurrentBlockType == Notus.Variable.Enum.BlockTypeList.MultiWalletCryptoTransfer
                             )
                             {
                                 exitLoop = true;
@@ -201,9 +225,16 @@ namespace Notus.Block
             string LongNonceText = string.Empty;
 
             BlockStruct.cipher.ver = "NE";
-            BlockStruct.info.uID = Notus.Block.Key.Generate(GetNtpTime(), Obj_Settings.NodeWallet.WalletKey);
+            if(transactionId.Length==0)
+            {
+                BlockStruct.info.uID = Notus.Block.Key.Generate(GetNtpTime(), Obj_Settings.NodeWallet.WalletKey);
+            }
+            else
+            {
+                BlockStruct.info.uID = transactionId;
+            }
 
-            if (CurrentBlockType == 360)
+            if (CurrentBlockType == Notus.Variable.Enum.BlockTypeList.GenesisBlock)
             {
                 LongNonceText = TempPoolTransactionList[0].data;
                 BlockStruct.info.rowNo = 1;
@@ -219,6 +250,7 @@ namespace Notus.Block
                 //BLOCK UNIQUE ID'Sİ BURADA EKLENİYOR....
                 // buraya UTC time verisi parametre olarak gönderilecek
                 // böylece blok için alınan zaman bilgisi ortak bir zaman olacak
+                //Notus.Variable.Enum.BlockTypeList.CryptoTransfer
 
                 if (CurrentBlockType == 240)
                 {
@@ -237,7 +269,7 @@ namespace Notus.Block
                     );
                 }
 
-                if (CurrentBlockType == 40)
+                if (CurrentBlockType == Notus.Variable.Enum.BlockTypeList.LockAccount)
                 {
                     string tmpLockWalletKey = TempBlockList[0];
 
@@ -318,7 +350,7 @@ namespace Notus.Block
                     }
                 }
 
-                if (CurrentBlockType == 120)
+                if (CurrentBlockType == Notus.Variable.Enum.BlockTypeList.CryptoTransfer)
                 {
                     if (TempBlockList.Count > 1)
                     {

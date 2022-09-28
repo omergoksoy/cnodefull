@@ -530,27 +530,30 @@ namespace Notus.Wallet
                     )
                 );
                 //Console.WriteLine(tmpRawDataStr);
-                Notus.Variable.Struct.MultiWalletTransactionStruct? tmpBalanceVal =
-                    JsonSerializer.Deserialize<Notus.Variable.Struct.MultiWalletTransactionStruct>(
+                Dictionary<string, Notus.Variable.Struct.MultiWalletTransactionStruct>? tmpBalanceVal =
+                    JsonSerializer.Deserialize<Dictionary<string, Notus.Variable.Struct.MultiWalletTransactionStruct>>(
                         tmpRawDataStr
                     );
                 if (tmpBalanceVal != null)
                 {
-                    foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> entry in tmpBalanceVal.After)
+                    foreach (KeyValuePair<string, Variable.Struct.MultiWalletTransactionStruct> outerEntry in tmpBalanceVal)
                     {
-                        StoreToDb(new Notus.Variable.Struct.WalletBalanceStruct()
+                        foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> innerEntry in outerEntry.Value.After)
                         {
-                            UID = tmpBlockForBalance.info.uID,
-                            RowNo = tmpBlockForBalance.info.rowNo,
-                            Wallet = entry.Key,
-                            Balance = entry.Value
-                        });
+                            StoreToDb(new Notus.Variable.Struct.WalletBalanceStruct()
+                            {
+                                UID = tmpBlockForBalance.info.uID,
+                                RowNo = tmpBlockForBalance.info.rowNo,
+                                Wallet = innerEntry.Key,
+                                Balance = innerEntry.Value
+                            });
+                        }
                     }
                 }
             }
 
             //LockAccount
-            if (tmpBlockForBalance.info.type == 40)
+            if (tmpBlockForBalance.info.type == Notus.Variable.Enum.BlockTypeList.LockAccount)
             {
                 string tmpRawDataStr = System.Text.Encoding.UTF8.GetString(
                     System.Convert.FromBase64String(
@@ -587,7 +590,7 @@ namespace Notus.Wallet
             }
 
             //CryptoTransfer
-            if (tmpBlockForBalance.info.type == 120)
+            if (tmpBlockForBalance.info.type == Notus.Variable.Enum.BlockTypeList.CryptoTransfer)
             {
                 string tmpRawDataStr = System.Text.Encoding.UTF8.GetString(
                     System.Convert.FromBase64String(
@@ -611,7 +614,7 @@ namespace Notus.Wallet
             }
 
             //MultiWalletContract 
-            if (tmpBlockForBalance.info.type == 90)
+            if (tmpBlockForBalance.info.type == Notus.Variable.Enum.BlockTypeList.MultiWalletContract)
             {
                 string tmpRawDataStr = System.Text.Encoding.UTF8.GetString(
                     System.Convert.FromBase64String(

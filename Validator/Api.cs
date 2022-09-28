@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Notus.Variable.Struct;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
 using System.Text.Json;
-using Notus.Variable.Struct;
 
 namespace Notus.Validator
 {
@@ -161,9 +161,9 @@ namespace Notus.Validator
                 Console.WriteLine("Block Row No Exist");
                 Console.WriteLine("Block Row No Exist");
             }
-
+            
             Obj_Balance.Control(Obj_BlockData);
-            if (Obj_BlockData.info.type == 120)
+            if (Obj_BlockData.info.type == Notus.Variable.Enum.BlockTypeList.CryptoTransfer)
             {
                 Notus.Variable.Class.BlockStruct_120? tmpBalanceVal = JsonSerializer.Deserialize<Notus.Variable.Class.BlockStruct_120>(System.Text.Encoding.UTF8.GetString(
                     System.Convert.FromBase64String(
@@ -2499,19 +2499,19 @@ namespace Notus.Validator
             //Console.WriteLine("refuseCount  : " + refuseCount.ToString());
             if (acceptTx == true)
             {
-                //Console.WriteLine("TX Accepted");
+                Console.WriteLine("TX Accepted");
                 uidList[txTime].Status = Variable.Enum.BlockStatusCode.InProgress;
             }
             else
             {
                 if (refuseTx == true)
                 {
-                    //Console.WriteLine("TX Refused");
+                    Console.WriteLine("TX Refused");
                     uidList[txTime].Status = Variable.Enum.BlockStatusCode.Rejected;
                 }
                 else
                 {
-                    //Console.WriteLine("TX Status Unknown");
+                    Console.WriteLine("TX Status Unknown");
                     uidList[txTime].Status = Variable.Enum.BlockStatusCode.Pending;
                 }
             }
@@ -2702,10 +2702,10 @@ namespace Notus.Validator
                 );
             }
 
-            ulong validatorUnlockTime=Notus.Date.ToLong(
+            ulong validatorUnlockTime = Notus.Date.ToLong(
                 Notus.Date.ToDateTime(uidList[txTime].Sender.CurrentTime).AddDays(30)
             );
-            
+
             tmpValidatorWalletBalanceObj_New = Obj_Balance.AddVolumeWithUnlockTime(
                 tmpValidatorWalletBalanceObj_New,
                 transferFee.ToString(),
@@ -2740,82 +2740,87 @@ namespace Notus.Validator
             */
             // bu kısım işlem bitiminde yapılacak, şimdilik test amaçlı eklendi
             // bu kısım işlem bitiminde yapılacak, şimdilik test amaçlı eklendi
-
-            Notus.Variable.Struct.MultiWalletTransactionStruct multiTx =
-                new Notus.Variable.Struct.MultiWalletTransactionStruct()
+            string transactionId = TransctionApproveObj.TransactionId;
+            Dictionary<string, Notus.Variable.Struct.MultiWalletTransactionStruct> multiTx = new
+                Dictionary<string, Notus.Variable.Struct.MultiWalletTransactionStruct>(){
                 {
-                    Sender = new Variable.Struct.CryptoTransaction()
+                    transactionId, 
+                    new Notus.Variable.Struct.MultiWalletTransactionStruct()
                     {
-                        Currency = uidList[txTime].Sender.Currency,
-                        CurrentTime = uidList[txTime].Sender.CurrentTime,
-                        CurveName = uidList[txTime].Sender.CurveName,
-                        PublicKey = uidList[txTime].Sender.PublicKey,
-                        Receiver = uidList[txTime].Sender.Receiver,
-                        Sender = uidList[txTime].Sender.Sender,
-                        Sign = uidList[txTime].Sender.Sign,
-                        Volume = uidList[txTime].Sender.Volume
-                    },
-                    Approve = new Dictionary<string, MultiTransactionApproveStruct>(),
-                    Before = new Dictionary<string, Variable.Struct.BeforeBalanceStruct>()
-                    {
+                        Sender = new Variable.Struct.CryptoTransaction()
                         {
-                            multiWalletKey,
-                            new Variable.Struct.BeforeBalanceStruct(){
-                                 Balance=tmpMultiWalletBalanceObj_Current.Balance,
-                                 Witness=new Variable.Struct.WitnessBlock()
-                                 {
-                                    RowNo=tmpMultiWalletBalanceObj_Current.RowNo,
-                                    UID=tmpMultiWalletBalanceObj_Current.UID
-                                 }
+                            Currency = uidList[txTime].Sender.Currency,
+                            CurrentTime = uidList[txTime].Sender.CurrentTime,
+                            CurveName = uidList[txTime].Sender.CurveName,
+                            PublicKey = uidList[txTime].Sender.PublicKey,
+                            Receiver = uidList[txTime].Sender.Receiver,
+                            Sender = uidList[txTime].Sender.Sender,
+                            Sign = uidList[txTime].Sender.Sign,
+                            Volume = uidList[txTime].Sender.Volume
+                        },
+                        Approve = new Dictionary<string, MultiTransactionApproveStruct>(),
+                        Before = new Dictionary<string, Variable.Struct.BeforeBalanceStruct>()
+                        {
+                            {
+                                multiWalletKey,
+                                new Variable.Struct.BeforeBalanceStruct(){
+                                     Balance=tmpMultiWalletBalanceObj_Current.Balance,
+                                     Witness=new Variable.Struct.WitnessBlock()
+                                     {
+                                        RowNo=tmpMultiWalletBalanceObj_Current.RowNo,
+                                        UID=tmpMultiWalletBalanceObj_Current.UID
+                                     }
+                                }
+                            },
+                            {
+                                receiverWalletKey,
+                                new Variable.Struct.BeforeBalanceStruct(){
+                                     Balance=tmpReceiverWalletBalanceObj_Current.Balance,
+                                     Witness=new Variable.Struct.WitnessBlock()
+                                     {
+                                        RowNo=tmpReceiverWalletBalanceObj_Current.RowNo,
+                                        UID=tmpReceiverWalletBalanceObj_Current.UID
+                                     }
+                                }
+                            },
+                            {
+                                Obj_Settings.NodeWallet.WalletKey,
+                                new Variable.Struct.BeforeBalanceStruct(){
+                                     Balance=tmpValidatorWalletBalanceObj_Current.Balance,
+                                     Witness=new Variable.Struct.WitnessBlock()
+                                     {
+                                        RowNo=tmpValidatorWalletBalanceObj_Current.RowNo,
+                                        UID=tmpValidatorWalletBalanceObj_Current.UID
+                                     }
+                                }
                             }
                         },
+                        After = new Dictionary<string, Dictionary<string, Dictionary<ulong, string>>>()
                         {
-                            receiverWalletKey,
-                            new Variable.Struct.BeforeBalanceStruct(){
-                                 Balance=tmpReceiverWalletBalanceObj_Current.Balance,
-                                 Witness=new Variable.Struct.WitnessBlock()
-                                 {
-                                    RowNo=tmpReceiverWalletBalanceObj_Current.RowNo,
-                                    UID=tmpReceiverWalletBalanceObj_Current.UID
-                                 }
+                            {
+                                multiWalletKey, tmpMultiWalletBalanceObj_New.Balance
+                            },
+                            {
+                                receiverWalletKey,tmpReceiverWalletBalanceObj_New.Balance
+                            },
+                            {
+                                Obj_Settings.NodeWallet.WalletKey,tmpValidatorWalletBalanceObj_New.Balance
                             }
                         },
-                        {
-                            Obj_Settings.NodeWallet.WalletKey,
-                            new Variable.Struct.BeforeBalanceStruct(){
-                                 Balance=tmpValidatorWalletBalanceObj_Current.Balance,
-                                 Witness=new Variable.Struct.WitnessBlock()
-                                 {
-                                    RowNo=tmpValidatorWalletBalanceObj_Current.RowNo,
-                                    UID=tmpValidatorWalletBalanceObj_Current.UID
-                                 }
-                            }
-                        }
-                    },
-                    After = new Dictionary<string, Dictionary<string, Dictionary<ulong, string>>>()
-                    {
-                        {
-                            multiWalletKey, tmpMultiWalletBalanceObj_New.Balance
-                        },
-                        {
-                            receiverWalletKey,tmpReceiverWalletBalanceObj_New.Balance
-                        },
-                        {
-                            Obj_Settings.NodeWallet.WalletKey,tmpValidatorWalletBalanceObj_New.Balance
-                        }
-                    },
-                    Fee = transferFee.ToString()
-                };
-            foreach(KeyValuePair<string, MultiWalletTransactionApproveStruct> entry in uidList[txTime].Approve)
+                        Fee = transferFee.ToString()
+                    }
+                }
+            };
+            foreach (KeyValuePair<string, MultiWalletTransactionApproveStruct> entry in uidList[txTime].Approve)
             {
-                multiTx.Approve.Add(
+                multiTx[transactionId].Approve.Add(
                     entry.Key,
                     new MultiTransactionApproveStruct()
                     {
-                         Approve=entry.Value.Approve,
-                          CurrentTime=entry.Value.CurrentTime,
-                           PublicKey=entry.Value.PublicKey,
-                            Sign=entry.Value.Sign
+                        Approve = entry.Value.Approve,
+                        CurrentTime = entry.Value.CurrentTime,
+                        PublicKey = entry.Value.PublicKey,
+                        Sign = entry.Value.Sign
                     }
                 );
             }
@@ -2936,7 +2941,6 @@ namespace Notus.Validator
                     Result = Notus.Variable.Enum.BlockStatusCode.NotEnoughParticipant
                 });
             }
-
             //Console.WriteLine(JsonSerializer.Serialize(WalletObj, Notus.Variable.Constant.JsonSetting));
             //Console.WriteLine("--------------------------------------------");
             if (Obj_Balance.WalletUsageAvailable(WalletObj.Founder.WalletKey) == false)

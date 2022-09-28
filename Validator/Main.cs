@@ -868,9 +868,9 @@ namespace Notus.Validator
             if (blockSource == 1)
             {
                 if (
-                    blockData.info.type != 300
+                    blockData.info.type != Notus.Variable.Enum.BlockTypeList.EmptyBlock
                     &&
-                    blockData.info.type != 360
+                    blockData.info.type != Notus.Variable.Enum.BlockTypeList.GenesisBlock
                 )
                 {
                     Notus.Print.Status(Obj_Settings, "Block Came From The Loading DB [ " + fixedRowNoLength(blockData) + " ]");
@@ -909,7 +909,7 @@ namespace Notus.Validator
             {
                 Notus.Print.Status(Obj_Settings, "Block Came From The Dictionary List [ " + fixedRowNoLength(blockData) + " ]");
             }
-            if (blockData.info.type == 360)
+            if (blockData.info.type == Notus.Variable.Enum.BlockTypeList.GenesisBlock)
             {
                 RewardBlockObj.RewardList.Clear();
             }
@@ -918,7 +918,7 @@ namespace Notus.Validator
                 RewardBlockObj.RewardList.Clear();
                 RewardBlockObj.LastTypeUid = blockData.info.uID;
             }
-            if (blockData.info.type == 300)
+            if (blockData.info.type == Notus.Variable.Enum.BlockTypeList.EmptyBlock)
             {
                 RewardBlockObj.RewardList.Enqueue(
                     new KeyValuePair<string, string>(
