@@ -396,7 +396,7 @@ namespace Notus.Wallet
             StoreToTemp(tmpBlockForBalance);
 
             // genesis block
-            if (tmpBlockForBalance.info.type == 360)
+            if (tmpBlockForBalance.info.type == Notus.Variable.Enum.BlockTypeList.GenesisBlock)
             {
                 ulong coinStartingTime = Notus.Time.BlockIdToUlong(tmpBlockForBalance.info.uID);
 
@@ -512,9 +512,9 @@ namespace Notus.Wallet
             }
 
             if (
-                tmpBlockForBalance.info.type != 300
+                tmpBlockForBalance.info.type != Notus.Variable.Enum.BlockTypeList.EmptyBlock
                 &&
-                tmpBlockForBalance.info.type != 360
+                tmpBlockForBalance.info.type != Notus.Variable.Enum.BlockTypeList.GenesisBlock
             )
             {
                 //Notus.Print.Basic(Obj_Settings, tmpBlockForBalance.info.uID);
@@ -522,7 +522,8 @@ namespace Notus.Wallet
             }
 
             // MultiWalletCryptoTransfer
-            if (tmpBlockForBalance.info.type == 100)
+            
+            if (tmpBlockForBalance.info.type == Notus.Variable.Enum.BlockTypeList.MultiWalletCryptoTransfer)
             {
                 string tmpRawDataStr = System.Text.Encoding.UTF8.GetString(
                     System.Convert.FromBase64String(

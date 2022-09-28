@@ -179,9 +179,10 @@ namespace Notus.Validator
                     }
                 }
             }
-            if (Obj_BlockData.info.type == 40)
+            if (Obj_BlockData.info.type == Notus.Variable.Enum.BlockTypeList.LockAccount)
             {
                 /*
+                 
                 Notus.Variable.Class.BlockStruct_120? tmpBalanceVal = JsonSerializer.Deserialize<Notus.Variable.Class.BlockStruct_120>(System.Text.Encoding.UTF8.GetString(
                     System.Convert.FromBase64String(
                         Obj_BlockData.cipher.data
@@ -811,9 +812,6 @@ namespace Notus.Validator
                     Notus.Variable.Class.BlockData? tmpStoredBlock = Func_OnReadFromChain(tmpBlockKey);
                     if (tmpStoredBlock != null)
                     {
-                        // Console.WriteLine("Block Gets From Mempool DB");
-                        // Console.WriteLine("Block Gets From Mempool DB");
-                        // Console.WriteLine("Block Gets From Mempool DB");
                         return tmpStoredBlock;
                     }
                     else
@@ -1056,8 +1054,6 @@ namespace Notus.Validator
                 int calculatedChunkLength = ((int)Math.Ceiling(System.Convert.ToDouble(tmpFileObj.FileSize / tmpFileObj.ChunkSize))) - 1;
                 string tmpCurrentList = ObjMp_FileList.Get(tmpStorageIdKey + "_chunk", "");
                 Dictionary<int, string> tmpChunkList = new Dictionary<int, string>();
-                //Console.WriteLine("([" + tmpCurrentList + "])");
-                //Console.WriteLine(tmpCurrentList.Length);
                 if (tmpCurrentList.Length > 0)
                 {
                     try
@@ -1078,15 +1074,11 @@ namespace Notus.Validator
                         Console.WriteLine("Notus.Validator.Api.Request_StoreFileUpdate -> Convertion Error - Line 595");
                     }
                 }
-                //Console.WriteLine(tmpChunkIdKey);
-                //Console.WriteLine(JsonSerializer.Serialize(tmpChunkList));
                 tmpChunkList.Add(tmpChunkData.Count, tmpChunkIdKey);
                 ObjMp_FileList.Set(tmpStorageIdKey + "_chunk", JsonSerializer.Serialize(tmpChunkList));
 
-                //Console.WriteLine(calculatedChunkLength.ToString() + " -> " + tmpChunkData.Count.ToString());
                 if (calculatedChunkLength == tmpChunkData.Count)
                 {
-                    //Console.WriteLine("Status Update Key : " + tmpStorageIdKey);
                     using (Notus.Mempool ObjMp_FileStatus =
                         new Notus.Mempool(
                             Notus.IO.GetFolderName(
@@ -1153,7 +1145,6 @@ namespace Notus.Validator
                 });
             }
         }
-
 
         private string Request_StoreEncryptedFile_New(Notus.Variable.Struct.HttpRequestDetails IncomeData)
         {
@@ -1295,8 +1286,6 @@ namespace Notus.Validator
                 int calculatedChunkLength = ((int)Math.Ceiling(System.Convert.ToDouble(tmpFileObj.FileSize / tmpFileObj.ChunkSize))) - 1;
                 string tmpCurrentList = ObjMp_FileList.Get(tmpStorageIdKey + "_chunk", "");
                 Dictionary<int, string> tmpChunkList = new Dictionary<int, string>();
-                //Console.WriteLine("([" + tmpCurrentList + "])");
-                //Console.WriteLine(tmpCurrentList.Length);
                 if (tmpCurrentList.Length > 0)
                 {
                     try
@@ -1317,15 +1306,10 @@ namespace Notus.Validator
                         Console.WriteLine("Notus.Validator.Api.Request_StoreFileUpdate -> Convertion Error - Line 595");
                     }
                 }
-                //Console.WriteLine(tmpChunkIdKey);
-                //Console.WriteLine(JsonSerializer.Serialize(tmpChunkList));
                 tmpChunkList.Add(tmpChunkData.Count, tmpChunkIdKey);
                 ObjMp_FileList.Set(tmpStorageIdKey + "_chunk", JsonSerializer.Serialize(tmpChunkList));
-
-                //Console.WriteLine(calculatedChunkLength.ToString() + " -> " + tmpChunkData.Count.ToString());
                 if (calculatedChunkLength == tmpChunkData.Count)
                 {
-                    //Console.WriteLine("Status Update Key : " + tmpStorageIdKey);
                     using (Notus.Mempool ObjMp_FileStatus =
                         new Notus.Mempool(
                             Notus.IO.GetFolderName(
@@ -1531,13 +1515,6 @@ namespace Notus.Validator
             Notus.Variable.Struct.CryptoTransactionStruct tmpTransfer
         )
         {
-            /*
-            şimdi başka bir API İLE İMZALAMASI GEREKEN DİĞER NODELAR SORGULAMA YAPIP
-            İMZA ATABİLECEKLER
-            YETERLİ İMZA TOPLANINCA DA İŞLEM HAVUZA ALINACAK
-            AYRICA BU İŞLEM İŞLEM HAVUZUNDA GÖSTERİLMELİ
-            */
-
             Dictionary<ulong, Notus.Variable.Struct.MultiWalletTransactionVoteStruct>? uidList = null;
             string dbKeyStr = Notus.Toolbox.Text.ToHex(tmpTransfer.Sender, 90);
             string dbText = ObjMp_MultiSignPool.Get(dbKeyStr, "");
@@ -1875,7 +1852,6 @@ namespace Notus.Validator
                 transferTimeOut
             );
 
-            // controlpoint
             Notus.Variable.Struct.CryptoTransactionStoreStruct recordStruct = new Notus.Variable.Struct.CryptoTransactionStoreStruct()
             {
                 Version = 1000,
@@ -2221,7 +2197,6 @@ namespace Notus.Validator
                     //private string Request_GenerateToken(Notus.Variable.Struct.HttpRequestDetails IncomeData)
                     bool tmpAddResult = Func_AddToChainPool(new Notus.Variable.Struct.PoolBlockRecordStruct()
                     {
-                        //type = 160,
                         type = Notus.Variable.Enum.BlockTypeList.TokenGeneration,
                         data = JsonSerializer.Serialize(tmpTokenObj)
                     });
@@ -2268,7 +2243,6 @@ namespace Notus.Validator
             return JsonSerializer.Serialize(false);
         }
 
-        //omergoksoy
         private string Request_ApproveMultiTransaction(Notus.Variable.Struct.HttpRequestDetails IncomeData)
         {
             // önce genel kontroller yapılıyor....
