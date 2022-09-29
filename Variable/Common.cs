@@ -3,11 +3,17 @@ using System.Collections.Generic;
 
 namespace Notus.Variable.Common
 {
+    public class Object
+    {
+        public Notus.TGZArchiver? Archive { get; set; }
+        public Notus.Wallet.Balance? Balance { get; set; }
+
+    }
+
     public class ClassSetting
     {
         public bool LocalNode { get; set; }
         public bool DevelopmentNode { get; set; }
-
         public Notus.Variable.Struct.UTCTimeStruct? UTCTime { get; set; }
         public bool GenesisCreated { get; set; }
         public bool GenesisAssigned { get; set; }
@@ -19,7 +25,7 @@ namespace Notus.Variable.Common
         public Notus.Variable.Enum.NetworkType Network { get; set; }
         public Notus.Variable.Enum.NetworkLayer Layer { get; set; }
         public Notus.Variable.Struct.CommunicationPorts? Port { get; set; }
-    
+
         public bool DebugMode { get; set; }
         public bool InfoMode { get; set; }
         public bool PrettyJson { get; set; }

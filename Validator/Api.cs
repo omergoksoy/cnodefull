@@ -2002,8 +2002,8 @@ namespace Notus.Validator
                 }
                 return JsonSerializer.Serialize(false);
             }
-            Int64 BlockNumber2 = 0;
-            bool isNumeric2 = Int64.TryParse(IncomeData.UrlList[2], out BlockNumber2);
+            //Int64 BlockNumber2 = 0;
+            bool isNumeric2 = Int64.TryParse(IncomeData.UrlList[2], out Int64 BlockNumber2);
             if (isNumeric2 == true)
             {
                 Notus.Variable.Class.BlockData? tmpResultBlock = GetBlockWithRowNo(BlockNumber2);
