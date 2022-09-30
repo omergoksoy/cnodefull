@@ -5,7 +5,7 @@ namespace Notus
     public class Sync
     {
         public static bool Block(
-            Notus.Variable.Common.ClassSetting objSettings, 
+            Notus.Globals.Variable.Settings objSettings, 
             List<Notus.Variable.Struct.IpInfo> nodeList,
             System.Action<Notus.Variable.Class.BlockData>? Func_NewBlockIncome = null
         )
@@ -93,7 +93,7 @@ namespace Notus
         //alınan blok özetlerini kontrol et ve en çok olan özeti kabul et       
         private static Notus.Variable.Class.BlockData? GetValidBlock
         (
-            Notus.Variable.Common.ClassSetting objSettings
+            Notus.Globals.Variable.Settings objSettings
         )
         {
             return null;

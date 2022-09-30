@@ -16,14 +16,14 @@ namespace Notus.Toolbox
 
         public static Notus.Variable.Class.BlockData? GetBlockFromNode(
             Variable.Struct.IpInfo? ipNode,
-            long blockNo, Notus.Variable.Common.ClassSetting? objSettings = null
+            long blockNo, Notus.Globals.Variable.Settings? objSettings = null
         )
         {
             return GetBlockFromNode(ipNode.IpAddress, ipNode.Port, blockNo, objSettings);
         }
         public static Notus.Variable.Class.BlockData? GetBlockFromNode(
             string ipAddress, int portNo,
-            long blockNo, Notus.Variable.Common.ClassSetting? objSettings = null
+            long blockNo, Notus.Globals.Variable.Settings? objSettings = null
         )
         {
             string urlPath = Notus.Network.Node.MakeHttpListenerPath(ipAddress, portNo) + "block/" + blockNo.ToString() + "/raw";
@@ -60,11 +60,11 @@ namespace Notus.Toolbox
             }
             return null;
         }
-        public static Notus.Variable.Class.BlockData? GetLastBlock(Notus.Variable.Struct.IpInfo NodeIp, Notus.Variable.Common.ClassSetting? objSettings = null)
+        public static Notus.Variable.Class.BlockData? GetLastBlock(Notus.Variable.Struct.IpInfo NodeIp, Notus.Globals.Variable.Settings? objSettings = null)
         {
             return GetLastBlock(Notus.Network.Node.MakeHttpListenerPath(NodeIp.IpAddress, NodeIp.Port), objSettings);
         }
-        public static Notus.Variable.Class.BlockData? GetLastBlock(string NodeAddress, Notus.Variable.Common.ClassSetting? objSettings = null)
+        public static Notus.Variable.Class.BlockData? GetLastBlock(string NodeAddress, Notus.Globals.Variable.Settings? objSettings = null)
         {
             try
             {
@@ -106,7 +106,7 @@ namespace Notus.Toolbox
             return null;
         }
 
-        public static int GetNetworkPort(Notus.Variable.Common.ClassSetting Obj_Settings)
+        public static int GetNetworkPort(Notus.Globals.Variable.Settings Obj_Settings)
         {
             if (Obj_Settings.Network == Variable.Enum.NetworkType.TestNet)
                 return Obj_Settings.Port.TestNet;
@@ -116,7 +116,7 @@ namespace Notus.Toolbox
 
             return Obj_Settings.Port.MainNet;
         }
-        public static Notus.Variable.Common.ClassSetting IdentifyNodeType(Notus.Variable.Common.ClassSetting Obj_Settings, int Timeout = 5)
+        public static Notus.Globals.Variable.Settings IdentifyNodeType(Notus.Globals.Variable.Settings Obj_Settings, int Timeout = 5)
         {
             Obj_Settings.IpInfo = Notus.Toolbox.Network.GetNodeIP();
             if (Obj_Settings.LocalNode == true)
@@ -288,7 +288,7 @@ namespace Notus.Toolbox
             return "127.0.0.1";
         }
 
-        private static bool PublicIpIsConnectable(Notus.Variable.Common.ClassSetting objSettings, int Timeout)
+        private static bool PublicIpIsConnectable(Notus.Globals.Variable.Settings objSettings, int Timeout)
         {
             Error_TestIpAddress = false;
             try

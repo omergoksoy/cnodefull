@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Notus.Variable.Common
+namespace Notus.Globals.Variable
 {
     public class Object
     {
@@ -10,7 +10,7 @@ namespace Notus.Variable.Common
 
     }
 
-    public class ClassSetting
+    public class Settings
     {
         public bool LocalNode { get; set; }
         public bool DevelopmentNode { get; set; }

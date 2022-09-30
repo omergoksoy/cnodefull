@@ -21,7 +21,7 @@ namespace Notus
             );
         }
         public static string[] GetFileList(
-            Notus.Variable.Common.ClassSetting objSettings,
+            Notus.Globals.Variable.Settings objSettings,
             string directoryName,
             string extension
         )
@@ -39,12 +39,12 @@ namespace Notus
         {
             return GetFileList(networkType,networkLayer,Notus.Variable.Constant.StorageFolderName.Block,"zip");
         }
-        public static string[] GetZipFiles(Notus.Variable.Common.ClassSetting objSettings)
+        public static string[] GetZipFiles(Notus.Globals.Variable.Settings objSettings)
         {
             return GetZipFiles(objSettings.Network, objSettings.Layer);
         }
 
-        public static string GetFolderName(Notus.Variable.Common.ClassSetting objSettings, string folderName)
+        public static string GetFolderName(Notus.Globals.Variable.Settings objSettings, string folderName)
         {
             return GetFolderName(objSettings.Network, objSettings.Layer, folderName);
         }

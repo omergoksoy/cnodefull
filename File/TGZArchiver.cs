@@ -22,10 +22,10 @@ namespace Notus
         // Private Task List for the Thread
         private ConcurrentDictionary<Guid, (TaskType, object)> TaskList = new ConcurrentDictionary<Guid, (TaskType, object)>();
         private bool isRunning = false;
-        private Notus.Variable.Common.ClassSetting settings = null;
+        private Notus.Globals.Variable.Settings settings = null;
         private string path = "";
 
-        public TGZArchiver(Notus.Variable.Common.ClassSetting settings)
+        public TGZArchiver(Notus.Globals.Variable.Settings settings)
         {
             this.settings = settings;
             path = Notus.IO.GetFolderName(

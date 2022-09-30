@@ -12,7 +12,7 @@ namespace Notus
 {
     public static class Archive
     {
-        public static void ClearBlocks(Notus.Variable.Common.ClassSetting objSettings)
+        public static void ClearBlocks(Notus.Globals.Variable.Settings objSettings)
         {
             ClearBlocks(objSettings.Network, objSettings.Layer);
         }
@@ -44,7 +44,7 @@ namespace Notus
         }
         public static void DeleteFromInside(
             string blockUid,
-            Notus.Variable.Common.ClassSetting objSettings,
+            Notus.Globals.Variable.Settings objSettings,
             bool deleteZipIfEmpty = false
         )
         {

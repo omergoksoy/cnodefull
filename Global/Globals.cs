@@ -13,31 +13,35 @@ namespace Notus.Variable
 {
     static class Globals
     {
-        public static Notus.Variable.Common.ClassSetting Settings { get; set; }
+        public static Notus.Globals.Variable.Settings Settings { get; set; }
 
         static Globals()
         {
-            Settings = new Notus.Variable.Common.ClassSetting()
+            Settings = new Notus.Globals.Variable.Settings()
             {
                 LocalNode = true,
                 InfoMode = true,
                 DebugMode = true,
-
                 EncryptMode = false,
-                HashSalt = Notus.Encryption.Toolbox.GenerateSalt(),
+                SynchronousSocketIsActive = false,
+                PrettyJson = true,
+                GenesisAssigned = false,
+                DevelopmentNode = false,
+
+                WaitTickCount = 4,
+
                 EncryptKey = "key-password-string",
 
-                SynchronousSocketIsActive = false,
+
+                UTCTime = Notus.Time.GetNtpTime(),
+                HashSalt = Notus.Encryption.Toolbox.GenerateSalt(),
+                
+
                 Layer = Notus.Variable.Enum.NetworkLayer.Layer1,
                 Network = Notus.Variable.Enum.NetworkType.MainNet,
                 NodeType = Notus.Variable.Enum.NetworkNodeType.Suitable,
 
-                PrettyJson = true,
-                GenesisAssigned = false,
 
-                WaitTickCount = 4,
-
-                DevelopmentNode = false,
                 NodeWallet = new Notus.Variable.Struct.EccKeyPair()
                 {
                     CurveName = "",
@@ -46,6 +50,7 @@ namespace Notus.Variable
                     WalletKey = "",
                     Words = new string[] { },
                 },
+
                 Port = new Notus.Variable.Struct.CommunicationPorts()
                 {
                     MainNet = 0,
@@ -57,11 +62,15 @@ namespace Notus.Variable
 
         public static class Functions
         {
-            public static Notus.TGZArchiver archiver { get; set; }
+            public static Notus.Wallet.Balance Balance;
+            public static Notus.TGZArchiver Archiver { get; set; }
 
             static Functions()
             {
-                archiver = new Notus.TGZArchiver(Settings);
+                Archiver = new Notus.TGZArchiver(Settings);
+
+                Balance = new Notus.Wallet.Balance();
+                Balance.Start();
             }
         }
     }

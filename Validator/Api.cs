@@ -26,6 +26,8 @@ namespace Notus.Validator
             set { ValidatorKeyStr = value; }
         }
 
+        /*
+        */
         private Notus.Wallet.Balance Obj_Balance = new Notus.Wallet.Balance();
         public Notus.Wallet.Balance BalanceObj
         {

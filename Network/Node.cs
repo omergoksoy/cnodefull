@@ -148,7 +148,7 @@ namespace Notus.Network
             Notus.Variable.Enum.NetworkType currentNetwork,
             Notus.Variable.Enum.NetworkLayer networkLayer,
             bool showError = true,
-            Notus.Variable.Common.ClassSetting objSettings = null
+            Notus.Globals.Variable.Settings objSettings = null
         )
         {
             string MainResultStr = string.Empty;
@@ -192,7 +192,7 @@ namespace Notus.Network
             Dictionary<string, string> PostData,
             Notus.Variable.Enum.NetworkType currentNetwork,
             Notus.Variable.Enum.NetworkLayer networkLayer,
-            Notus.Variable.Common.ClassSetting objSettings = null
+            Notus.Globals.Variable.Settings objSettings = null
         )
         {
             string MainResultStr = string.Empty;
@@ -233,7 +233,7 @@ namespace Notus.Network
             return MainResultStr;
         }
 
-        public static int GetNetworkPort(Notus.Variable.Common.ClassSetting objSetting)
+        public static int GetNetworkPort(Notus.Globals.Variable.Settings objSetting)
         {
             return GetNetworkPort(objSetting.Network, objSetting.Layer);
         }

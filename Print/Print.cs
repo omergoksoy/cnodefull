@@ -15,7 +15,7 @@ namespace Notus
             int logNo,
             string messageText,
             string blockRowNo,
-            Notus.Variable.Common.ClassSetting? objSettings,
+            Notus.Globals.Variable.Settings? objSettings,
             Exception? objException
         )
         {
@@ -55,32 +55,32 @@ namespace Notus
                 true
             );
         }
-        public static void ReadLine(Notus.Variable.Common.ClassSetting NodeSettings)
+        public static void ReadLine(Notus.Globals.Variable.Settings NodeSettings)
         {
             Info(NodeSettings, "Press Enter To Continue");
             Console.ReadLine();
         }
-        public static void Info(Notus.Variable.Common.ClassSetting NodeSettings, string DetailsStr = "", bool PrintAsync = true)
+        public static void Info(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "", bool PrintAsync = true)
         {
             subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.InfoMode, ConsoleColor.Cyan, DetailsStr, PrintAsync);
         }
-        public static void Danger(Notus.Variable.Common.ClassSetting NodeSettings, string DetailsStr = "", bool PrintAsync = true)
+        public static void Danger(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "", bool PrintAsync = true)
         {
             subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.DebugMode, ConsoleColor.Red, DetailsStr, PrintAsync);
         }
-        public static void Warning(Notus.Variable.Common.ClassSetting NodeSettings, string DetailsStr = "", bool PrintAsync = true)
+        public static void Warning(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "", bool PrintAsync = true)
         {
             subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.InfoMode, ConsoleColor.Yellow, DetailsStr, PrintAsync);
         }
-        public static void Status(Notus.Variable.Common.ClassSetting NodeSettings, string DetailsStr = "", bool PrintAsync = true)
+        public static void Status(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "", bool PrintAsync = true)
         {
             subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.InfoMode, ConsoleColor.Blue, DetailsStr, PrintAsync);
         }
-        public static void Basic(Notus.Variable.Common.ClassSetting NodeSettings, string DetailsStr = "", bool PrintAsync = true)
+        public static void Basic(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "", bool PrintAsync = true)
         {
             subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.InfoMode, ConsoleColor.Gray, DetailsStr, PrintAsync);
         }
-        public static void Success(Notus.Variable.Common.ClassSetting NodeSettings, string DetailsStr = "", bool PrintAsync = true)
+        public static void Success(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "", bool PrintAsync = true)
         {
             subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.InfoMode, ConsoleColor.DarkGreen, DetailsStr, PrintAsync);
         }
