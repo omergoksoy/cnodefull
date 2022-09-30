@@ -301,7 +301,6 @@ namespace Notus.Toolbox
                     tmp_HttpObj.Timeout = 5;
                     tmp_HttpObj.DefaultResult_OK = DefaultControlTestData;
                     tmp_HttpObj.DefaultResult_ERR = DefaultControlTestData;
-                    tmp_HttpObj.Settings = objSettings;
                     tmp_HttpObj.OnReceive(Fnc_TestLinkData);
                     IPAddress testAddress = IPAddress.Parse(objSettings.IpInfo.Public);
                     tmp_HttpObj.Start(testAddress, ControlPortNo);

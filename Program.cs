@@ -165,6 +165,27 @@ https://devnet.notus.network/valid/
 
 calculatedSignStr : 3045022100cd504a92820da36c7eefd45e023064e4726d5b2b20f791d3d0e74b5eeb242ed002201009c45d5b0a12c7f485a8de916da96ef165adfb929e47e5c35125e14b8654fa
 */
+
+/*
+DateTime ddd = DateTime.Now;
+bool bulundu = false;
+for(int i = 0; i < 1000 && bulundu ==false; i++)
+{
+    string prvKey = Notus.Wallet.ID.New();
+    string pblKey = Notus.Wallet.ID.GetPublicKeyFromPrivateKey(prvKey);
+    string cuzdan = Notus.Wallet.ID.GetAddressWithPublicKey(pblKey, Notus.Variable.Enum.NetworkType.MainNet);
+    //Console.WriteLine(cuzdan);
+    //Console.WriteLine(cuzdan.Substring(3));
+    if (cuzdan.Substring(3).StartsWith("MEH"))
+    {
+        bulundu = true;
+        Console.WriteLine(JsonSerializer.Serialize(cuzdan, Notus.Variable.Constant.JsonSetting));
+    }
+}
+Console.WriteLine(DateTime.Now - ddd);
+Console.ReadLine();
+*/
+
 string rawDataStr = "NODVofLyZLAjRrDXBRN3qTybDP1yBfSfN5yoV6d:NODVofLyZLAjRrDXBRN3qTybDP1yBfSfN5yoV6b:1000000000:20220920082001:20220920082001:NOTUS";
 //Notus.HashLib.BLAKE2B blake2b_obj = new Notus.HashLib.BLAKE2B();
 //Notus.HashLib.MD5 md5_obj = new Notus.HashLib.MD5();

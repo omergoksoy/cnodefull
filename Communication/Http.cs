@@ -4,18 +4,11 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Web;
-
+using NVG = Notus.Variable.Globals;
 namespace Notus.Communication
 {
     public class Http : IDisposable
     {
-        private Notus.Variable.Common.ClassSetting Obj_Settings;
-        public Notus.Variable.Common.ClassSetting Settings
-        {
-            get { return Obj_Settings; }
-            set { Obj_Settings = value; }
-        }
-
         private int Val_Timeout = 30;
         private IPAddress Val_NodeIPAddress;
         private int Val_PortNo;
@@ -143,11 +136,11 @@ namespace Notus.Communication
             string ResponseStr = Val_DefaultResult_OK;
             if (OnReceiveFunctionDefined == false)
             {
-                Notus.Print.Danger(Obj_Settings, "Url Doesn't Exist -> " + incomeData.Url);
+                Notus.Print.Danger(NVG.Settings, "Url Doesn't Exist -> " + incomeData.Url);
             }
             else
             {
-                //Notus.Print.Basic(Obj_Settings.DebugMode, "Url Call : " + incomeData.RawUrl);
+                //Notus.Print.Basic(NVG.Settings.DebugMode, "Url Call : " + incomeData.RawUrl);
                 ResponseStr = OnReceiveFunction(incomeData);
             }
             byte[] headerArray = Encoding.ASCII.GetBytes(
@@ -174,11 +167,11 @@ namespace Notus.Communication
         {
             if (Val_StoreUrl == true)
             {
-                Mp_UrlList = new Notus.Mempool(Notus.IO.GetFolderName(Obj_Settings.Network, Obj_Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) +
+                Mp_UrlList = new Notus.Mempool(Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) +
                     "url_visit"
                 );
-                Mp_UrlList.DebugMode = Obj_Settings.DebugMode;
-                Mp_UrlList.InfoMode = Obj_Settings.InfoMode;
+                Mp_UrlList.DebugMode = NVG.Settings.DebugMode;
+                Mp_UrlList.InfoMode = NVG.Settings.InfoMode;
             }
 
             Val_NodeIPAddress = NodeIPAddress;
@@ -190,16 +183,16 @@ namespace Notus.Communication
                 ListenerObj = new Notus.Communication.Listener();
                 ListenerObj.KeepAlive = false;
                 ListenerObj.DataEndTextIsActive = false;
-                ListenerObj.SynchronousSocketIsActive = Obj_Settings.SynchronousSocketIsActive;
+                ListenerObj.SynchronousSocketIsActive = NVG.Settings.SynchronousSocketIsActive;
                 ListenerObj.PortNo = PortNo;
                 ListenerObj.IPAddress = NodeIPAddress.ToString();
-                ListenerObj.DebugMode = Obj_Settings.DebugMode;
+                ListenerObj.DebugMode = NVG.Settings.DebugMode;
                 ListenerObj.ReturnByteArray = true;
                 ListenerObj.Begin(true);
                 ListenerObj.OnError((int errorCode, string errorText) =>
                 {
-                    Notus.Print.Danger(Obj_Settings, "Error Code : " + errorCode.ToString());
-                    Notus.Print.Danger(Obj_Settings, "Error Text : " + errorText);
+                    Notus.Print.Danger(NVG.Settings, "Error Code : " + errorCode.ToString());
+                    Notus.Print.Danger(NVG.Settings, "Error Text : " + errorText);
                 });
                 ListenerObj.OnReceive(IncomeTextFunction);
             }
@@ -210,10 +203,10 @@ namespace Notus.Communication
                     356298,
                     e.Message,
                     "BlockRowNo",
-                    Obj_Settings,
+                    NVG.Settings,
                     e
                 );
-                Notus.Print.Danger(Obj_Settings, "An Exception Occurred while Listening :" + e.ToString());
+                Notus.Print.Danger(NVG.Settings, "An Exception Occurred while Listening :" + e.ToString());
             }
         }
 
@@ -353,7 +346,7 @@ namespace Notus.Communication
                 }
             }
 
-            //Notus.Print.Basic(Obj_Settings.DebugMode, urlLine);
+            //Notus.Print.Basic(NVG.Settings.DebugMode, urlLine);
 
             return new Notus.Variable.Struct.HttpRequestDetails()
             {

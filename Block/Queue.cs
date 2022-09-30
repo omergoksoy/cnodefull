@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
 using System.Text.Json;
-
+using NVG = Notus.Variable.Globals;
 namespace Notus.Block
 {
     public class Queue : IDisposable
@@ -11,13 +11,6 @@ namespace Notus.Block
         private DateTime LastNtpTime = Notus.Variable.Constant.DefaultTime;
         private TimeSpan NtpTimeDifference;
         private bool NodeTimeAfterNtpTime = false;      // time difference before or after NTP Server
-
-        private Notus.Variable.Common.ClassSetting Obj_Settings;
-        public Notus.Variable.Common.ClassSetting Settings
-        {
-            get { return Obj_Settings; }
-            set { Obj_Settings = value; }
-        }
 
         private Notus.Mempool MP_BlockPoolList;
         private Notus.Block.Storage BS_Storage;
@@ -46,11 +39,11 @@ namespace Notus.Block
 
         public Notus.Variable.Class.BlockData OrganizeBlockOrder(Notus.Variable.Class.BlockData CurrentBlock)
         {
-            CurrentBlock.info.rowNo = Obj_Settings.LastBlock.info.rowNo + 1;
+            CurrentBlock.info.rowNo = NVG.Settings.LastBlock.info.rowNo + 1;
 
-            CurrentBlock.prev = Obj_Settings.LastBlock.info.uID + Obj_Settings.LastBlock.sign;
+            CurrentBlock.prev = NVG.Settings.LastBlock.info.uID + NVG.Settings.LastBlock.sign;
             CurrentBlock.info.prevList.Clear();
-            foreach (KeyValuePair<int, string> entry in Obj_Settings.LastBlock.info.prevList)
+            foreach (KeyValuePair<int, string> entry in NVG.Settings.LastBlock.info.prevList)
             {
                 if (entry.Value != "")
                 {
@@ -79,7 +72,7 @@ namespace Notus.Block
             }
 
             int CurrentBlockType = -1;
-            List<string> TempWalletList = new List<string>() { Obj_Settings.NodeWallet.WalletKey };
+            List<string> TempWalletList = new List<string>() { NVG.Settings.NodeWallet.WalletKey };
 
             List<string> TempBlockList = new List<string>();
             List<Notus.Variable.Struct.List_PoolBlockRecordStruct> TempPoolTransactionList = new List<Notus.Variable.Struct.List_PoolBlockRecordStruct>();
@@ -227,7 +220,7 @@ namespace Notus.Block
             BlockStruct.cipher.ver = "NE";
             if(transactionId.Length==0)
             {
-                BlockStruct.info.uID = Notus.Block.Key.Generate(GetNtpTime(), Obj_Settings.NodeWallet.WalletKey);
+                BlockStruct.info.uID = Notus.Block.Key.Generate(GetNtpTime(), NVG.Settings.NodeWallet.WalletKey);
             }
             else
             {
@@ -294,14 +287,14 @@ namespace Notus.Block
                     else
                     {
                         Console.WriteLine(tmpLockWalletStruct.WalletKey);
-                        string lockAccountFee = Obj_Settings.Genesis.Fee.BlockAccount.ToString();
+                        string lockAccountFee = NVG.Settings.Genesis.Fee.BlockAccount.ToString();
                         Notus.Variable.Struct.WalletBalanceStruct currentBalance =
                             BalanceObj.Get(tmpLockWalletStruct.WalletKey, 0);
                         (bool tmpBalanceResult, Notus.Variable.Struct.WalletBalanceStruct tmpNewGeneratorBalance) =
                             BalanceObj.SubtractVolumeWithUnlockTime(
                                 BalanceObj.Get(tmpLockWalletStruct.WalletKey, 0),
                                 lockAccountFee,
-                                Obj_Settings.Genesis.CoinInfo.Tag
+                                NVG.Settings.Genesis.CoinInfo.Tag
                             );
                         if (tmpBalanceResult == false)
                         {
@@ -525,7 +518,7 @@ namespace Notus.Block
 
         public void Reset()
         {
-            Notus.Archive.ClearBlocks(Obj_Settings);
+            Notus.Archive.ClearBlocks(NVG.Settings);
             MP_BlockPoolList.Clear();
             Queue_PoolTransaction.Clear();
             Obj_PoolTransactionList.Clear();
@@ -534,11 +527,11 @@ namespace Notus.Block
         {
             if (PreBlockData != null)
             {
-                if (Obj_Settings != null)
+                if (NVG.Settings != null)
                 {
-                    if (Obj_Settings.NodeWallet != null)
+                    if (NVG.Settings.NodeWallet != null)
                     {
-                        string blockKeyStr = Notus.Block.Key.Generate(GetNtpTime(), Obj_Settings.NodeWallet.WalletKey);
+                        string blockKeyStr = Notus.Block.Key.Generate(GetNtpTime(), NVG.Settings.NodeWallet.WalletKey);
                         Add2Queue(PreBlockData, blockKeyStr);
                         string PreBlockDataStr = JsonSerializer.Serialize(PreBlockData);
                         string keyStr = GiveBlockKey(PreBlockData.data);
@@ -571,7 +564,7 @@ namespace Notus.Block
             Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
             {
                 type = Notus.Variable.Enum.BlockTypeList.EmptyBlock,
-                data = JsonSerializer.Serialize(Obj_Settings.LastBlock.info.rowNo)
+                data = JsonSerializer.Serialize(NVG.Settings.LastBlock.info.rowNo)
             });
         }
         public string GiveBlockKey(string BlockDataStr)
@@ -610,12 +603,12 @@ namespace Notus.Block
         public void Start()
         {
             BS_Storage = new Notus.Block.Storage(false);
-            BS_Storage.Network = Obj_Settings.Network;
-            BS_Storage.Layer = Obj_Settings.Layer;
+            BS_Storage.Network = NVG.Settings.Network;
+            BS_Storage.Layer = NVG.Settings.Layer;
             BS_Storage.Start();
 
             MP_BlockPoolList = new Notus.Mempool(
-                Notus.IO.GetFolderName(Obj_Settings.Network, Obj_Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) +
+                Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) +
                 Notus.Variable.Constant.MemoryPoolName["BlockPoolList"]
             );
             MP_BlockPoolList.Each((string blockTransactionKey, string TextBlockDataString) =>
@@ -650,13 +643,13 @@ namespace Notus.Block
                     864578,
                     err.Message,
                     "BlockRowNo",
-                    Obj_Settings,
+                    NVG.Settings,
                     err
                 );
 
-                Notus.Print.Danger(Obj_Settings, "Error -> Notus.Block.Queue");
-                Notus.Print.Danger(Obj_Settings, err.Message);
-                Notus.Print.Danger(Obj_Settings, "Error -> Notus.Block.Queue");
+                Notus.Print.Danger(NVG.Settings, "Error -> Notus.Block.Queue");
+                Notus.Print.Danger(NVG.Settings, err.Message);
+                Notus.Print.Danger(NVG.Settings, "Error -> Notus.Block.Queue");
             }
         }
     }

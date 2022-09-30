@@ -11,4 +11,13 @@
     <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.9" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="File\FileDb.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Global\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Global\" />
+  </ItemGroup>
 </Project>

@@ -59,7 +59,6 @@ namespace Notus.Prepare
                     }
                     try
                     {
-
                         string fullUrlAddress =
                             Notus.Network.Node.MakeHttpListenerPath(
                                 nodeIpAddress,
@@ -96,7 +95,6 @@ namespace Notus.Prepare
                     }
                 }
             }
-
             return new Notus.Variable.Struct.BlockResponseStruct()
             {
                 UID = "",

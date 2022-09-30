@@ -1,5 +1,5 @@
 ﻿using System.IO;
-
+using NVG = Notus.Variable.Globals;
 namespace Notus
 {
     public static class IO
@@ -63,15 +63,16 @@ namespace Notus
             if (!Directory.Exists(DirectoryName))
                 Directory.CreateDirectory(DirectoryName);
         }
-        public static void NodeFolderControl(Variable.Enum.NetworkType networkType, Variable.Enum.NetworkLayer networkLayer)
+        public static void NodeFolderControl()
         {
-            CreateDirectory(GetFolderName(networkType, networkLayer, Variable.Constant.StorageFolderName.TempBlock));
-            CreateDirectory(GetFolderName(networkType, networkLayer, Variable.Constant.StorageFolderName.Balance));
-            CreateDirectory(GetFolderName(networkType, networkLayer, Variable.Constant.StorageFolderName.Block));
-            CreateDirectory(GetFolderName(networkType, networkLayer, Variable.Constant.StorageFolderName.Common));
-            CreateDirectory(GetFolderName(networkType, networkLayer, Variable.Constant.StorageFolderName.File));
-            CreateDirectory(GetFolderName(networkType, networkLayer, Variable.Constant.StorageFolderName.Node));
-            CreateDirectory(GetFolderName(networkType, networkLayer, Variable.Constant.StorageFolderName.Pool));
+            
+            CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.TempBlock));
+            CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.Balance));
+            CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.Block));
+            CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.Common));
+            CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.File));
+            CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.Node));
+            CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.Pool));
         }
     }
 }
