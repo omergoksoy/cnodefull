@@ -52,8 +52,8 @@ namespace Notus.Reward
                                 ulong rewardCount = 0;
                                 Dictionary<long, ulong> blockRowTimeList = new Dictionary<long, ulong>();
                                 Notus.Block.Storage storageObj = new Notus.Block.Storage(false);
-                                storageObj.Network = NVG.Settings.Network;
-                                storageObj.Layer = NVG.Settings.Layer;
+                                //storageObj.Network = NVG.Settings.Network;
+                                //storageObj.Layer = NVG.Settings.Layer;
                                 bool tmpNullPrinted = false;
                                 bool tmpExitLoop = false;
                                 while (tmpExitLoop == false)

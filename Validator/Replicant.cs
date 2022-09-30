@@ -12,7 +12,6 @@ namespace Notus.Validator
             set { LightNodeActive = value; }
         }
         private Notus.Block.Integrity Obj_Integrity;
-        //private Notus.Wallet.Balance Obj_Balance;
 
         private Notus.Block.Storage Obj_Storage;
 
@@ -83,9 +82,6 @@ namespace Notus.Validator
             }
 
             Obj_Storage = new Notus.Block.Storage(false);
-            Obj_Storage.Network = NVG.Settings.Network;
-            Obj_Storage.Layer = NVG.Settings.Layer;
-
             Obj_Integrity = new Notus.Block.Integrity();
 
             Notus.Variable.Class.BlockData tmpLastBlock = Obj_Integrity.GetSatus(true);

@@ -4,6 +4,7 @@ using System.IO;
 using System.Numerics;
 using System.Text.Json;
 using NVG = Notus.Variable.Globals;
+using NGF = Notus.Variable.Globals.Functions;
 namespace Notus.Block
 {
     public class Queue : IDisposable
@@ -63,7 +64,7 @@ namespace Notus.Block
 
 
         //bu fonksiyon ile işlem yapılacak aynı türden bloklar sırası ile listeden çekilip geri gönderilecek
-        public Notus.Variable.Struct.PoolBlockRecordStruct? Get(DateTime currentUtcTime, Notus.Wallet.Balance BalanceObj)
+        public Notus.Variable.Struct.PoolBlockRecordStruct? Get(DateTime currentUtcTime)
         {
             DateTime startingTime = DateTime.Now;
             if (Queue_PoolTransaction.Count == 0)
@@ -289,10 +290,10 @@ namespace Notus.Block
                         Console.WriteLine(tmpLockWalletStruct.WalletKey);
                         string lockAccountFee = NVG.Settings.Genesis.Fee.BlockAccount.ToString();
                         Notus.Variable.Struct.WalletBalanceStruct currentBalance =
-                            BalanceObj.Get(tmpLockWalletStruct.WalletKey, 0);
+                            NGF.Balance.Get(tmpLockWalletStruct.WalletKey, 0);
                         (bool tmpBalanceResult, Notus.Variable.Struct.WalletBalanceStruct tmpNewGeneratorBalance) =
-                            BalanceObj.SubtractVolumeWithUnlockTime(
-                                BalanceObj.Get(tmpLockWalletStruct.WalletKey, 0),
+                            NGF.Balance.SubtractVolumeWithUnlockTime(
+                                NGF.Balance.Get(tmpLockWalletStruct.WalletKey, 0),
                                 lockAccountFee,
                                 NVG.Settings.Genesis.CoinInfo.Tag
                             );
@@ -318,7 +319,7 @@ namespace Notus.Block
                                         WalletKey = tmpLockWalletStruct.WalletKey,
                                         Balance = new Notus.Variable.Class.WalletBalanceStructForTransaction()
                                         {
-                                            Balance = BalanceObj.ReAssign(currentBalance.Balance),
+                                            Balance = NGF.Balance.ReAssign(currentBalance.Balance),
                                             Wallet = tmpLockWalletStruct.WalletKey,
                                             WitnessBlockUid = currentBalance.UID,
                                             WitnessRowNo = currentBalance.RowNo
@@ -603,8 +604,6 @@ namespace Notus.Block
         public void Start()
         {
             BS_Storage = new Notus.Block.Storage(false);
-            BS_Storage.Network = NVG.Settings.Network;
-            BS_Storage.Layer = NVG.Settings.Layer;
             BS_Storage.Start();
 
             MP_BlockPoolList = new Notus.Mempool(

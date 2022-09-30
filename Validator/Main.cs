@@ -7,6 +7,7 @@ using System.Numerics;
 using System.Text.Json;
 using System.Threading;
 using NVG = Notus.Variable.Globals;
+using NGF = Notus.Variable.Globals.Functions;
 namespace Notus.Validator
 {
     public class Main : IDisposable
@@ -17,17 +18,10 @@ namespace Notus.Validator
         private long CurrentBlockRowNo = 1;
         private int SelectedPortVal = 0;
 
-        //bu nesnenin görevi network'e bağlı nodeların listesini senkronize etmek
-        //private Notus.Network.Controller ControllerObj = new Notus.Network.Controller();
         private Notus.Reward.Block RewardBlockObj = new Notus.Reward.Block();
         private Notus.Communication.Http HttpObj = new Notus.Communication.Http(true);
         private Notus.Block.Integrity Obj_Integrity;
         private Notus.Validator.Api Obj_Api;
-        private Notus.TGZArchiver ArchiverObj;
-        //private Notus.Cache.Main Obj_MainCache;
-        //private Notus.Token.Storage Obj_TokenStorage;
-
-        //blok durumlarını tutan değişken
 
         private Dictionary<string, Notus.Variable.Struct.BlockStatus> Obj_BlockStatusList = new Dictionary<string, Notus.Variable.Struct.BlockStatus>();
         public Dictionary<string, Notus.Variable.Struct.BlockStatus> BlockStatusList
@@ -47,11 +41,8 @@ namespace Notus.Validator
 
         //bu liste diğer nodelardan gelen yeni blokları tutan liste
         public SortedDictionary<long, Notus.Variable.Class.BlockData> IncomeBlockList = new SortedDictionary<long, Notus.Variable.Class.BlockData>();
-        //public ConcurrentQueue<Notus.Variable.Class.BlockData> IncomeBlockList = new ConcurrentQueue<Notus.Variable.Class.BlockData>();
         private Notus.Block.Queue Obj_BlockQueue = new Notus.Block.Queue();
         private Notus.Validator.Queue ValidatorQueueObj = new Notus.Validator.Queue();
-
-        //private System.Action<string, Notus.Variable.Class.BlockData> OnReadFromChainFuncObj = null;
         public void EmptyBlockTimerFunc()
         {
             Notus.Print.Basic(NVG.Settings, "Empty Block Timer Has Started");
@@ -222,7 +213,7 @@ namespace Notus.Validator
         }
         private Dictionary<string, Dictionary<ulong, string>> GetWalletBalanceDictionary(string WalletKey, ulong timeYouCanUse)
         {
-            Notus.Variable.Struct.WalletBalanceStruct tmpWalletBalanceObj = Obj_Api.BalanceObj.Get(WalletKey, timeYouCanUse);
+            Notus.Variable.Struct.WalletBalanceStruct tmpWalletBalanceObj = NGF.Balance.Get(WalletKey, timeYouCanUse);
             return tmpWalletBalanceObj.Balance;
         }
 
@@ -239,7 +230,7 @@ namespace Notus.Validator
                     if (tmpRequestSend_ListCount > 0)
                     {
                         ulong unlockTimeForNodeWallet = Notus.Time.NowToUlong();
-                        Notus.Variable.Struct.WalletBalanceStruct tmpValidatorWalletBalance = Obj_Api.BalanceObj.Get(NVG.Settings.NodeWallet.WalletKey, unlockTimeForNodeWallet);
+                        Notus.Variable.Struct.WalletBalanceStruct tmpValidatorWalletBalance = NGF.Balance.Get(NVG.Settings.NodeWallet.WalletKey, unlockTimeForNodeWallet);
                         List<string> tmpWalletList = new List<string>() { };
                         tmpWalletList.Clear();
 
@@ -274,16 +265,16 @@ namespace Notus.Validator
                             if (tmpObjPoolCrypto != null)
                             {
                                 bool thisRecordCanBeAdded = false;
-                                bool senderAvailable = Obj_Api.BalanceObj.WalletUsageAvailable(tmpObjPoolCrypto.Sender);
+                                bool senderAvailable = NGF.Balance.WalletUsageAvailable(tmpObjPoolCrypto.Sender);
                                 if (senderAvailable == true)
                                 {
-                                    bool receiverAvailable = Obj_Api.BalanceObj.WalletUsageAvailable(tmpObjPoolCrypto.Receiver);
+                                    bool receiverAvailable = NGF.Balance.WalletUsageAvailable(tmpObjPoolCrypto.Receiver);
                                     if (receiverAvailable == true)
                                     {
-                                        bool senderLocked = Obj_Api.BalanceObj.StartWalletUsage(tmpObjPoolCrypto.Sender);
+                                        bool senderLocked = NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Sender);
                                         if (senderLocked == true)
                                         {
-                                            bool receiverLocked = Obj_Api.BalanceObj.StartWalletUsage(tmpObjPoolCrypto.Receiver);
+                                            bool receiverLocked = NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Receiver);
                                             if (receiverLocked == true)
                                             {
                                                 thisRecordCanBeAdded = true;
@@ -295,8 +286,8 @@ namespace Notus.Validator
                                 if (thisRecordCanBeAdded == true)
                                 {
                                     bool walletHaveEnoughCoinOrToken = true;
-                                    Obj_Api.BalanceObj.StartWalletUsage(tmpObjPoolCrypto.Sender);
-                                    Obj_Api.BalanceObj.StartWalletUsage(tmpObjPoolCrypto.Receiver);
+                                    NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Sender);
+                                    NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Receiver);
 
                                     bool senderExist = tmpWalletList.IndexOf(tmpObjPoolCrypto.Sender) >= 0 ? true : false;
                                     bool receiverExist = tmpWalletList.IndexOf(tmpObjPoolCrypto.Receiver) >= 0 ? true : false;
@@ -305,15 +296,15 @@ namespace Notus.Validator
                                         tmpWalletList.Add(tmpObjPoolCrypto.Sender);
                                         tmpWalletList.Add(tmpObjPoolCrypto.Receiver);
 
-                                        Notus.Variable.Struct.WalletBalanceStruct tmpSenderBalance = Obj_Api.BalanceObj.Get(tmpObjPoolCrypto.Sender, unlockTimeForNodeWallet);
-                                        Notus.Variable.Struct.WalletBalanceStruct tmpReceiverBalance = Obj_Api.BalanceObj.Get(tmpObjPoolCrypto.Receiver, unlockTimeForNodeWallet);
+                                        Notus.Variable.Struct.WalletBalanceStruct tmpSenderBalance = NGF.Balance.Get(tmpObjPoolCrypto.Sender, unlockTimeForNodeWallet);
+                                        Notus.Variable.Struct.WalletBalanceStruct tmpReceiverBalance = NGF.Balance.Get(tmpObjPoolCrypto.Receiver, unlockTimeForNodeWallet);
                                         string tmpTokenTagStr = "";
                                         BigInteger tmpTokenVolume = 0;
 
                                         if (string.Equals(tmpObjPoolCrypto.Currency, NVG.Settings.Genesis.CoinInfo.Tag))
                                         {
                                             tmpTokenTagStr = NVG.Settings.Genesis.CoinInfo.Tag;
-                                            BigInteger WalletBalanceInt = Obj_Api.BalanceObj.GetCoinBalance(tmpSenderBalance, tmpTokenTagStr);
+                                            BigInteger WalletBalanceInt = NGF.Balance.GetCoinBalance(tmpSenderBalance, tmpTokenTagStr);
                                             BigInteger RequiredBalanceInt = BigInteger.Parse(tmpObjPoolCrypto.Volume);
                                             tmpTokenVolume = RequiredBalanceInt;
                                             if ((RequiredBalanceInt + transferFee) > WalletBalanceInt)
@@ -329,14 +320,14 @@ namespace Notus.Validator
                                             }
                                             else
                                             {
-                                                BigInteger coinFeeBalance = Obj_Api.BalanceObj.GetCoinBalance(tmpSenderBalance, NVG.Settings.Genesis.CoinInfo.Tag);
+                                                BigInteger coinFeeBalance = NGF.Balance.GetCoinBalance(tmpSenderBalance, NVG.Settings.Genesis.CoinInfo.Tag);
                                                 if (transferFee > coinFeeBalance)
                                                 {
                                                     walletHaveEnoughCoinOrToken = false;
                                                 }
                                                 else
                                                 {
-                                                    BigInteger tokenCurrentBalance = Obj_Api.BalanceObj.GetCoinBalance(tmpSenderBalance, tmpObjPoolCrypto.Currency);
+                                                    BigInteger tokenCurrentBalance = NGF.Balance.GetCoinBalance(tmpSenderBalance, tmpObjPoolCrypto.Currency);
                                                     BigInteger RequiredBalanceInt = BigInteger.Parse(tmpObjPoolCrypto.Volume);
                                                     if (RequiredBalanceInt > tokenCurrentBalance)
                                                     {
@@ -388,14 +379,14 @@ namespace Notus.Validator
                                                 Currency = tmpObjPoolCrypto.Currency,
                                                 Receiver = new Notus.Variable.Class.WalletBalanceStructForTransaction()
                                                 {
-                                                    Balance = Obj_Api.BalanceObj.ReAssign(tmpReceiverBalance.Balance),
+                                                    Balance = NGF.Balance.ReAssign(tmpReceiverBalance.Balance),
                                                     Wallet = tmpObjPoolCrypto.Receiver,
                                                     WitnessBlockUid = tmpReceiverBalance.UID,
                                                     WitnessRowNo = tmpReceiverBalance.RowNo
                                                 },
                                                 Sender = new Notus.Variable.Class.WalletBalanceStructForTransaction()
                                                 {
-                                                    Balance = Obj_Api.BalanceObj.ReAssign(tmpSenderBalance.Balance),
+                                                    Balance = NGF.Balance.ReAssign(tmpSenderBalance.Balance),
                                                     Wallet = tmpObjPoolCrypto.Sender,
                                                     WitnessBlockUid = tmpSenderBalance.UID,
                                                     WitnessRowNo = tmpSenderBalance.RowNo
@@ -404,7 +395,7 @@ namespace Notus.Validator
 
                                             // transfer fee added to validator wallet
 
-                                            tmpValidatorWalletBalance = Obj_Api.BalanceObj.AddVolumeWithUnlockTime(
+                                            tmpValidatorWalletBalance = NGF.Balance.AddVolumeWithUnlockTime(
                                                 tmpValidatorWalletBalance,
                                                 transferFee.ToString(),
                                                 NVG.Settings.Genesis.CoinInfo.Tag,
@@ -414,7 +405,7 @@ namespace Notus.Validator
 
                                             // sender pays transfer fee
                                             (bool tmpErrorStatusForFee, Notus.Variable.Struct.WalletBalanceStruct tmpNewResultForFee) =
-                                            Obj_Api.BalanceObj.SubtractVolumeWithUnlockTime(
+                                            NGF.Balance.SubtractVolumeWithUnlockTime(
                                                 tmpSenderBalance,
                                                 transferFee.ToString(),
                                                 NVG.Settings.Genesis.CoinInfo.Tag,
@@ -429,7 +420,7 @@ namespace Notus.Validator
 
                                             // sender give coin or token
                                             (bool tmpErrorStatusForTransaction, Notus.Variable.Struct.WalletBalanceStruct tmpNewResultForTransaction) =
-                                            Obj_Api.BalanceObj.SubtractVolumeWithUnlockTime(
+                                            NGF.Balance.SubtractVolumeWithUnlockTime(
                                                 tmpNewResultForFee,
                                                 tmpTokenVolume.ToString(),
                                                 tmpTokenTagStr,
@@ -444,7 +435,7 @@ namespace Notus.Validator
                                             tmpBlockCipherData.Out[tmpObjPoolCrypto.Sender] = tmpNewResultForTransaction.Balance;
 
                                             //receiver get coin or token
-                                            Notus.Variable.Struct.WalletBalanceStruct tmpNewReceiverBalance = Obj_Api.BalanceObj.AddVolumeWithUnlockTime(
+                                            Notus.Variable.Struct.WalletBalanceStruct tmpNewReceiverBalance = NGF.Balance.AddVolumeWithUnlockTime(
                                                 tmpReceiverBalance,
                                                 tmpObjPoolCrypto.Volume,
                                                 tmpObjPoolCrypto.Currency,
@@ -540,7 +531,6 @@ namespace Notus.Validator
             {
                 Notus.Print.Basic(NVG.Settings, "Notus.Validator.Main -> Genesis Is NULL");
             }
-            ArchiverObj = new TGZArchiver(NVG.Settings);
 
             Obj_Api = new Notus.Validator.Api();
 
@@ -593,8 +583,6 @@ namespace Notus.Validator
                         {
                             using (Notus.Block.Storage Obj_Storage = new Notus.Block.Storage(false))
                             {
-                                Obj_Storage.Network = NVG.Settings.Network;
-                                Obj_Storage.Layer = NVG.Settings.Layer;
                                 Notus.Variable.Class.BlockData? tmpBlockData = Obj_Storage.ReadBlock(BlockOrder.Key);
                                 if (tmpBlockData != null)
                                 {
@@ -765,8 +753,7 @@ namespace Notus.Validator
                     DateTime currentUtcTime = ValidatorQueueObj.GetUtcTime();
 
                     Notus.Variable.Struct.PoolBlockRecordStruct? TmpBlockStruct = Obj_BlockQueue.Get(
-                        currentUtcTime,
-                        Obj_Api.BalanceObj
+                        currentUtcTime
                     );
                     if (TmpBlockStruct != null)
                     {

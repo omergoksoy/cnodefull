@@ -481,8 +481,6 @@ namespace Notus.Block
                     {
                         using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
                         {
-                            BS_Storage.Network = NVG.Settings.Network;
-                            BS_Storage.Layer = NVG.Settings.Layer;
                             BS_Storage.AddSync(tmpBlockData, true);
                         }
                         return true;
@@ -547,8 +545,6 @@ namespace Notus.Block
                                     Notus.Print.Info(NVG.Settings, "Getting Block Row No [ " + nodeUrl + " ]: " + BlockRowNo.ToString());
                                     using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
                                     {
-                                        BS_Storage.Network = NVG.Settings.Network;
-                                        BS_Storage.Layer = NVG.Settings.Layer;
                                         BS_Storage.AddSync(tmpEmptyBlock, true);
                                     }
                                     exitInnerLoop = true;
@@ -664,8 +660,6 @@ namespace Notus.Block
                 //Notus.Print.Basic(NVG.Settings, "We Have Block - Lets Check Genesis Time And Hash");
                 using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
                 {
-                    BS_Storage.Network = NVG.Settings.Network;
-                    BS_Storage.Layer = NVG.Settings.Layer;
                     Notus.Variable.Class.BlockData? blockData = BS_Storage.ReadBlock(Notus.Variable.Constant.GenesisBlockUid);
                     if (blockData != null)
                     {
@@ -761,8 +755,6 @@ namespace Notus.Block
                 {
                     using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
                     {
-                        BS_Storage.Network = NVG.Settings.Network;
-                        BS_Storage.Layer = NVG.Settings.Layer;
                         Notus.Print.Warning(NVG.Settings, "Current Block Were Deleted");
                         Notus.Archive.ClearBlocks(NVG.Settings);
                         BS_Storage.AddSync(signBlock[tmpBiggestSign], true);
@@ -825,8 +817,6 @@ namespace Notus.Block
 
                 using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
                 {
-                    BS_Storage.Network = NVG.Settings.Network;
-                    BS_Storage.Layer = NVG.Settings.Layer;
                     BS_Storage.AddSync(tmpGenesisBlock);
                     if (NVG.Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer1)
                     {

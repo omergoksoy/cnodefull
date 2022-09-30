@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Threading;
 using NVG = Notus.Variable.Globals;
+using NGF = Notus.Variable.Globals.Functions;
 namespace Notus.Validator
 {
     public static class Node
@@ -51,7 +52,7 @@ namespace Notus.Validator
                 Notus.Print.Info(NVG.Settings, "LocalNode Activated");
             }
             Notus.IO.NodeFolderControl();
-
+            NGF.Start();
             Notus.Print.Info(NVG.Settings, "Activated DevNET for " + Notus.Variable.Constant.LayerText[NVG.Settings.Layer]);
             NVG.Settings = Notus.Toolbox.Network.IdentifyNodeType(NVG.Settings, 5);
             switch (NVG.Settings.NodeType)

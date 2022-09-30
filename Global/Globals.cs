@@ -65,12 +65,14 @@ namespace Notus.Variable
             public static Notus.Wallet.Balance Balance;
             public static Notus.TGZArchiver Archiver { get; set; }
 
-            static Functions()
+            public static void Start()
             {
                 Archiver = new Notus.TGZArchiver(Settings);
-
                 Balance = new Notus.Wallet.Balance();
                 Balance.Start();
+            }
+            static Functions()
+            {
             }
         }
     }

@@ -4,24 +4,13 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 using System.Text.Json;
+using NVG = Notus.Variable.Globals;
+using NGF = Notus.Variable.Globals.Functions;
 
 namespace Notus.Block
 {
     public class Storage : IDisposable
     {
-        private Notus.Variable.Enum.NetworkType Val_NetworkType = Notus.Variable.Enum.NetworkType.MainNet;
-        public Notus.Variable.Enum.NetworkType Network
-        {
-            get { return Val_NetworkType; }
-            set { Val_NetworkType = value; }
-        }
-        private Notus.Variable.Enum.NetworkLayer Val_NetworkLayer= Notus.Variable.Enum.NetworkLayer.Layer1;
-        public Notus.Variable.Enum.NetworkLayer Layer
-        {
-            get { return Val_NetworkLayer; }
-            set { Val_NetworkLayer = value; }
-        }
-
         private int DefaultBlockGenerateInterval = 3000;
 
         private string OpenFileName = string.Empty;
@@ -42,18 +31,7 @@ namespace Notus.Block
         {
             get { return StorageHashVal; }
         }
-        private bool DebugModeActivated = false;
-        public bool DebugMode
-        {
-            set
-            {
-                DebugModeActivated = value;
-            }
-            get
-            {
-                return DebugModeActivated;
-            }
-        }
+
         public void Add(Notus.Variable.Class.BlockData NewBlock)
         {
             MP_BlockFile.Add(NewBlock.info.uID, JsonSerializer.Serialize(NewBlock));
@@ -64,11 +42,10 @@ namespace Notus.Block
 
             StoragePreviousHashVal = string.Empty;
             StorageHashVal = string.Empty;
-            //Notus.IO.GetFolderName(Val_NetworkType, Notus.Variable.Constant.StorageFolderName.Block)
-            
+
             foreach (string fileName in 
                 Directory.GetFiles(
-                    Notus.IO.GetFolderName(Val_NetworkType, Val_NetworkLayer, Notus.Variable.Constant.StorageFolderName.Block), "*.zip"
+                    Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Block), "*.zip"
                 )
             )
             {
@@ -94,7 +71,7 @@ namespace Notus.Block
             try
             {
                 string BlockFileName = Notus.Block.Key.GetBlockStorageFileName(BlockUid, true);
-                string ZipFileName = Notus.IO.GetFolderName(Val_NetworkType, Val_NetworkLayer, Notus.Variable.Constant.StorageFolderName.Block) + BlockFileName + ".zip";
+                string ZipFileName = Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Block) + BlockFileName + ".zip";
                 if (File.Exists(ZipFileName) == true)
                 {
                     using (ZipArchive archive = ZipFile.OpenRead(ZipFileName))
@@ -128,7 +105,7 @@ namespace Notus.Block
                     err
                 );
 
-                Notus.Print.Basic(DebugModeActivated, "Storage Error Text : " + err.Message);
+                Notus.Print.Basic(NVG.Settings.DebugMode, "Storage Error Text : " + err.Message);
             }
             return null;
         }
@@ -144,7 +121,7 @@ namespace Notus.Block
             );
 
             string BlockFileName = Notus.Block.Key.GetBlockStorageFileName(NewBlock.info.uID, true);
-            string ZipFileName = Notus.IO.GetFolderName(Val_NetworkType, Val_NetworkLayer, Notus.Variable.Constant.StorageFolderName.Block) + BlockFileName + ".zip";
+            string ZipFileName = Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Block) + BlockFileName + ".zip";
             bool exitInnerLoop = false;
             while (exitInnerLoop == false)
             {
@@ -221,7 +198,7 @@ namespace Notus.Block
         {
             LoadZipFromDirectory();
             MP_BlockFile = new Notus.Mempool(
-                Notus.IO.GetFolderName(Val_NetworkType, Val_NetworkLayer, Notus.Variable.Constant.StorageFolderName.Common) + 
+                Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) + 
                 Notus.Variable.Constant.MemoryPoolName["MempoolListBeforeBlockStorage"]);
 
             TimerObj = new Notus.Threads.Timer(DefaultBlockGenerateInterval);
