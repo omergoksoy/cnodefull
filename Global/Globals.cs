@@ -8,7 +8,7 @@ using System.Text.Json;
 using Notus.Compression.TGZ;
 using System;
 using System.Threading.Tasks;
-
+//using NVG = Notus.Variable.Globals;
 namespace Notus.Variable
 {
     static class Globals
@@ -67,7 +67,7 @@ namespace Notus.Variable
 
             public static void Start()
             {
-                Archiver = new Notus.TGZArchiver(Settings);
+                Archiver = new Notus.TGZArchiver();
                 Balance = new Notus.Wallet.Balance();
                 Balance.Start();
             }

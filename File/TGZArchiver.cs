@@ -8,7 +8,7 @@ using System.Text.Json;
 using Notus.Compression.TGZ;
 using System;
 using System.Threading.Tasks;
-
+using NVG = Notus.Variable.Globals;
 namespace Notus
 {
     public class TGZArchiver
@@ -22,19 +22,16 @@ namespace Notus
         // Private Task List for the Thread
         private ConcurrentDictionary<Guid, (TaskType, object)> TaskList = new ConcurrentDictionary<Guid, (TaskType, object)>();
         private bool isRunning = false;
-        private Notus.Globals.Variable.Settings settings = null;
         private string path = "";
-
-        public TGZArchiver(Notus.Globals.Variable.Settings settings)
+        public TGZArchiver(int intervalTime=1000)
         {
-            this.settings = settings;
             path = Notus.IO.GetFolderName(
-                settings.Network,
-                settings.Layer,
-                Notus.Variable.Constant.StorageFolderName.Block
+                NVG.Settings.Network,
+                NVG.Settings.Layer,
+                Notus.Variable.Constant.StorageFolderName.BlockForTgz
             );
 
-            Notus.Threads.Timer timer = new Notus.Threads.Timer(1000);
+            Notus.Threads.Timer timer = new Notus.Threads.Timer(intervalTime);
             timer.Start(() =>
             {
                 while (TaskList.Count > 0)
@@ -43,49 +40,69 @@ namespace Notus
                     {
                         isRunning = true;
                         KeyValuePair<Guid, (TaskType, object)> task = TaskList.First();
-                        TaskList.TryRemove(task.Key, out _);
+                        bool removeItem = false;
                         switch (task.Value.Item1)
                         {
                             case TaskType.AddFile:
                                 {
                                     (string data, string JsonFileName, string ArchiveFileName) = ((string, string, string))task.Value.Item2;
                                     addFileViaTextToGZPrivate(data, JsonFileName, ArchiveFileName).GetAwaiter().GetResult();
+                                    removeItem = true;
                                 }
                                 break;
                             case TaskType.RemoveFile:
                                 {
                                     (string JsonFileName, string ArchiveFileName) = ((string, string))task.Value.Item2;
                                     removeFileFromGZPrivate(JsonFileName, ArchiveFileName).GetAwaiter().GetResult();
+                                    removeItem = true;
                                 }
                                 break;
                             case TaskType.UpdateFile:
                                 {
                                     (string data, string JsonFileName, string ArchiveFileName) = ((string, string, string))task.Value.Item2;
                                     updateFileFromGZPrivate(data, JsonFileName, ArchiveFileName).GetAwaiter().GetResult();
+                                    removeItem = true;
                                 }
                                 break;
+                        }
+                        if(removeItem == true)
+                        {
+                            TaskList.TryRemove(task.Key, out _);
                         }
                     }
                 }
             });
         }
-
-        public void addFileToGZ(string data, string JsonFileName, string ArchiveFileName)
+        public void WaitUntilIsDone(Guid guid)
         {
+            bool exitLoop=false;
+            while (exitLoop == false)
+            {
+                if (TaskList.ContainsKey(guid) == false)
+                {
+                    exitLoop = true;
+                }
+                Thread.Sleep(50);
+            }
+        }
+        public Guid addFileToGZ(string data, string JsonFileName, string ArchiveFileName)
+        {
+            Guid guid = Guid.NewGuid();
             TaskList.TryAdd(
-                Guid.NewGuid(),
+                guid,
                 (TaskType.AddFile, (data, JsonFileName, ArchiveFileName))
             );
+            return guid;
         }
-
-        public void addFileToGZ(Notus.Variable.Class.BlockData data)
+        public Guid addFileToGZ(Notus.Variable.Class.BlockData data)
         {
+            Guid guid = Guid.NewGuid();
             TaskList.TryAdd(
-                Guid.NewGuid(),
+                guid,
                 (TaskType.AddFile, (JsonSerializer.Serialize(data), getFileName(data.info.uID).JsonFileName, getFileName(data.info.uID).ArchiveFileName))
             );
+            return guid;
         }
-
         public void removeFileFromGZ(string JsonFileName, string ArchiveFileName)
         {
             TaskList.TryAdd(
@@ -93,7 +110,6 @@ namespace Notus
                 (TaskType.RemoveFile, (JsonFileName, ArchiveFileName))
             );
         }
-
         public void removeFileFromGZ(string uid)
         {
             TaskList.TryAdd(
@@ -108,7 +124,6 @@ namespace Notus
                 (TaskType.UpdateFile, (data, getFileName(uid).JsonFileName, getFileName(uid).ArchiveFileName))
             );
         }
-
         public void updateFileFromGZ(string data, string JsonFileName, string ArchiveFileName)
         {
             TaskList.TryAdd(
@@ -116,7 +131,6 @@ namespace Notus
                 (TaskType.UpdateFile, (data, JsonFileName, ArchiveFileName))
             );
         }
-
         private async Task addFileViaTextToGZPrivate(string data, string JsonFileName, string ArchiveFileName)
         {
             try
@@ -370,7 +384,6 @@ namespace Notus
                 return await getFileListFromGZ(ArchiveFileName);
             }
         }
-
         public async Task<string?> getFileFromGZ(string blockUid)
         {
             try
@@ -410,7 +423,6 @@ namespace Notus
                 return await getFileFromGZ(blockUid);
             }
         }
-
         public async Task<string?> GetHash(string ArchiveFileName)
         {
             if (ArchiveFileName.Contains(".tar.gz") == false)
@@ -450,7 +462,6 @@ namespace Notus
                 return await GetHash(ArchiveFileName);
             }
         }
-
         private TarEntry fixHash(TarEntry entry)
         {
             entry.TarHeader.Mode = 420;
@@ -459,7 +470,6 @@ namespace Notus
             entry.TarHeader.ModTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             return entry;
         }
-
         private (string JsonFileName, string ArchiveFileName) getFileName(string blockUid)
         {
             return (blockUid + ".json",

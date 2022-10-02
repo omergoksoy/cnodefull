@@ -66,6 +66,7 @@ namespace Notus
         public static void NodeFolderControl()
         {
             
+            CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.BlockForTgz));
             CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.TempBlock));
             CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.Balance));
             CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.Block));

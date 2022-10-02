@@ -4,8 +4,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 using System.Text.Json;
-using NVG = Notus.Variable.Globals;
 using NGF = Notus.Variable.Globals.Functions;
+using NVG = Notus.Variable.Globals;
 
 namespace Notus.Block
 {
@@ -43,7 +43,7 @@ namespace Notus.Block
             StoragePreviousHashVal = string.Empty;
             StorageHashVal = string.Empty;
 
-            foreach (string fileName in 
+            foreach (string fileName in
                 Directory.GetFiles(
                     Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Block), "*.zip"
                 )
@@ -54,7 +54,7 @@ namespace Notus.Block
                     System.IO.FileInfo fif = new System.IO.FileInfo(fileName);
                     using (FileStream stream = File.OpenRead(fif.FullName))
                     {
-                        
+
                         string tmp_HashStr = Notus.Convert.Byte2Hex(md5.ComputeHash(stream));
                         tmp_hashList.Add(tmp_HashStr);
                     }
@@ -81,7 +81,7 @@ namespace Notus.Block
                         {
                             using (StreamReader zipEntryStream = new StreamReader(zipEntry.Open()))
                             {
-                                Notus.Variable.Class.BlockData? NewBlock = 
+                                Notus.Variable.Class.BlockData? NewBlock =
                                     JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(
                                         zipEntryStream.ReadToEnd()
                                     );
@@ -167,6 +167,14 @@ namespace Notus.Block
                 }
             }
             OpenFileName = string.Empty;
+            
+            Console.WriteLine();
+            Console.WriteLine("Storage.Cs -> Line 171");
+            Console.WriteLine(NewBlock.info.uID);
+            Console.WriteLine();
+            Notus.TGZArchiver BS_Storage = new Notus.TGZArchiver(100);
+            Guid guid = BS_Storage.addFileToGZ(NewBlock);
+            BS_Storage.WaitUntilIsDone(guid);
         }
 
         private void AddToZip()
@@ -198,7 +206,7 @@ namespace Notus.Block
         {
             LoadZipFromDirectory();
             MP_BlockFile = new Notus.Mempool(
-                Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) + 
+                Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) +
                 Notus.Variable.Constant.MemoryPoolName["MempoolListBeforeBlockStorage"]);
 
             TimerObj = new Notus.Threads.Timer(DefaultBlockGenerateInterval);
