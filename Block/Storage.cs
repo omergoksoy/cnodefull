@@ -66,6 +66,7 @@ namespace Notus.Block
                 StorageHashVal = string.Join(";", tmp_hashList.ToArray());
             }
         }
+
         public Notus.Variable.Class.BlockData? ReadBlock(string BlockUid)
         {
             try
