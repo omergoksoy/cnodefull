@@ -480,6 +480,7 @@ namespace Notus.Block
 
         public Notus.Variable.Class.BlockData? ReadFromChain(string BlockId)
         {
+            //control-tgz
             return BS_Storage.ReadBlock(BlockId);
         }
         //yeni blok hesaplanması tamamlandığı zaman buraya gelecek ve geçerli blok ise eklenecek.
@@ -494,7 +495,7 @@ namespace Notus.Block
                 null
             );
 
-            BS_Storage.Add(NewBlock);
+            BS_Storage.AddSync(NewBlock);
 
             string rawDataStr = Notus.Toolbox.Text.RawCipherData2String(
                 NewBlock.cipher.data

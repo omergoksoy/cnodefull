@@ -16,6 +16,7 @@ namespace Notus.Block
         private string OpenFileName = string.Empty;
         private DateTime FileOpeningTime = DateTime.Now;
 
+        private bool AutoStartObj = false;
         private bool BlockStorageIsRunning = false;
         private Notus.Mempool MP_BlockFile;
         private Notus.Threads.Timer TimerObj;
@@ -54,7 +55,6 @@ namespace Notus.Block
                     System.IO.FileInfo fif = new System.IO.FileInfo(fileName);
                     using (FileStream stream = File.OpenRead(fif.FullName))
                     {
-
                         string tmp_HashStr = Notus.Convert.Byte2Hex(md5.ComputeHash(stream));
                         tmp_hashList.Add(tmp_HashStr);
                     }
@@ -69,6 +69,27 @@ namespace Notus.Block
 
         public Notus.Variable.Class.BlockData? ReadBlock(string BlockUid)
         {
+            //control-tgz
+            /*
+            try
+            {
+                Notus.TGZArchiver BS_Storage = new Notus.TGZArchiver(false, 10);
+                string blockDataStr = BS_Storage.getFileFromGZ(BlockUid).GetAwaiter().GetResult();
+                Notus.Variable.Class.BlockData? NewBlock =
+                    JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(
+                        blockDataStr
+                    );
+                if (NewBlock != null)
+                {
+                    return NewBlock;
+                }
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("reading error");
+            }
+            */
+
             try
             {
                 string BlockFileName = Notus.Block.Key.GetBlockStorageFileName(BlockUid, true);
@@ -168,14 +189,21 @@ namespace Notus.Block
                 }
             }
             OpenFileName = string.Empty;
+
+            /*
             
+            //control-tgz
+            //control-tgz
+            //control-tgz
+            //control-tgz
             Console.WriteLine();
             Console.WriteLine("Storage.Cs -> Line 171");
             Console.WriteLine(NewBlock.info.uID);
             Console.WriteLine();
-            Notus.TGZArchiver BS_Storage = new Notus.TGZArchiver(100);
+            Notus.TGZArchiver BS_Storage = new Notus.TGZArchiver(true, 50);
             Guid guid = BS_Storage.addFileToGZ(NewBlock);
             BS_Storage.WaitUntilIsDone(guid);
+            */
         }
 
         private void AddToZip()
@@ -183,10 +211,16 @@ namespace Notus.Block
             MP_BlockFile.GetOne((string blockUniqueId, string BlockText) =>
             {
 
-                Notus.Variable.Class.BlockData NewBlock = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(BlockText);
-                AddSync(NewBlock);
+                Notus.Variable.Class.BlockData? NewBlock = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(BlockText);
+                if (NewBlock != null)
+                {
+                    AddSync(NewBlock);
+                    MP_BlockFile.Remove(blockUniqueId);
+                }
+                else
+                {
 
-                MP_BlockFile.Remove(blockUniqueId);
+                }
                 BlockStorageIsRunning = false;
             });
         }
@@ -229,6 +263,7 @@ namespace Notus.Block
         }
         public Storage(bool AutoStart = true)
         {
+            AutoStartObj = AutoStart;
             if (AutoStart == true)
             {
                 Start();

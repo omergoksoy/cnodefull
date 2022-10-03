@@ -660,6 +660,7 @@ namespace Notus.Block
                 //Notus.Print.Basic(NVG.Settings, "We Have Block - Lets Check Genesis Time And Hash");
                 using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
                 {
+                    //control-tgz
                     Notus.Variable.Class.BlockData? blockData = BS_Storage.ReadBlock(Notus.Variable.Constant.GenesisBlockUid);
                     if (blockData != null)
                     {
@@ -756,6 +757,8 @@ namespace Notus.Block
                     using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
                     {
                         Notus.Print.Warning(NVG.Settings, "Current Block Were Deleted");
+
+                        Notus.TGZArchiver.ClearBlocks();
                         Notus.Archive.ClearBlocks(NVG.Settings);
                         BS_Storage.AddSync(signBlock[tmpBiggestSign], true);
                         Notus.Print.Basic(NVG.Settings, "Added Block : " + signBlock[tmpBiggestSign].info.uID);

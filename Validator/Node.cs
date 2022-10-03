@@ -53,6 +53,19 @@ namespace Notus.Validator
             }
             Notus.IO.NodeFolderControl();
             NGF.Start();
+
+
+            Notus.Block.Storage storageObj = new Notus.Block.Storage(false);
+
+            /*
+            //control-tgz
+            string LastBlockUid = "1348c02274960011734a5d9a654b68e8355d6a80586560b60a9cd4f6314f6234dd43851e7d88da27b4f879f02d";
+            Notus.Variable.Class.BlockData? tmpBlockData = storageObj.ReadBlock(LastBlockUid);
+            Console.WriteLine(JsonSerializer.Serialize(tmpBlockData, Notus.Variable.Constant.JsonSetting));
+            Console.ReadLine();
+            Console.ReadLine();
+            */
+
             Notus.Print.Info(NVG.Settings, "Activated DevNET for " + Notus.Variable.Constant.LayerText[NVG.Settings.Layer]);
             NVG.Settings = Notus.Toolbox.Network.IdentifyNodeType(NVG.Settings, 5);
             switch (NVG.Settings.NodeType)

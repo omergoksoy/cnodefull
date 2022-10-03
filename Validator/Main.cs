@@ -583,6 +583,7 @@ namespace Notus.Validator
                         {
                             using (Notus.Block.Storage Obj_Storage = new Notus.Block.Storage(false))
                             {
+                                //control-tgz
                                 Notus.Variable.Class.BlockData? tmpBlockData = Obj_Storage.ReadBlock(BlockOrder.Key);
                                 if (tmpBlockData != null)
                                 {
