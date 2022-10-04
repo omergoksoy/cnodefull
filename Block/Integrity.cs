@@ -468,6 +468,8 @@ namespace Notus.Block
             return (tmpBlockKeyStr, tmpBlockSignStr);
 
         }
+        
+        //control-local-block
         private bool AddFromLocalTemp(Int64 BlockRowNo)
         {
             string[] ZipFileList = Notus.IO.GetFileList(NVG.Settings, Notus.Variable.Constant.StorageFolderName.TempBlock, "tmp");
@@ -512,7 +514,11 @@ namespace Notus.Block
             );
 
             Console.WriteLine("BlockRowNo Does Not Exist : " + BlockRowNo.ToString());
-            bool localFound=AddFromLocalTemp(BlockRowNo);
+            
+            //control-local-block
+            //bool localFound=AddFromLocalTemp(BlockRowNo);
+            
+            bool localFound = false;
             if (localFound == false)
             {
                 bool debugPrinted= false;
