@@ -8,9 +8,12 @@ namespace Notus.Wallet
 {
     public class Balance : IDisposable
     {
+        //this store balance to Dictionary list
+        private Dictionary<string, Notus.Variable.Struct.WalletBalanceStruct> SummaryList = new Dictionary<string, Notus.Variable.Struct.WalletBalanceStruct>();
+        //private Notus.Mempool ObjMp_Balance;
+
         private Notus.Mempool ObjMp_WalletUsage;
         private Notus.Mempool ObjMp_LockWallet;
-        private Notus.Mempool ObjMp_Balance;
         private Notus.Mempool ObjMp_MultiWalletParticipant;
         private Notus.Mempool ObjMp_WalletsICanApprove;
         private Dictionary<string, Notus.Variable.Enum.MultiWalletType> MultiWalletTypeList=new Dictionary<string, Variable.Enum.MultiWalletType>();
@@ -87,8 +90,17 @@ namespace Notus.Wallet
         }
         private void StoreToDb(Notus.Variable.Struct.WalletBalanceStruct BalanceObj)
         {
-            ObjMp_Balance.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj), true);
-
+            string dictionaryKeyStr = Notus.Toolbox.Text.ToHex(BalanceObj.Wallet, 100);
+            
+            if (SummaryList.ContainsKey(dictionaryKeyStr) == false)
+            {
+                SummaryList.Add(dictionaryKeyStr, BalanceObj);
+            }
+            else
+            {
+                SummaryList[dictionaryKeyStr]= BalanceObj;
+            }
+            //ObjMp_Balance.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj), true);
             //burada cüzdan kilidi açılacak...
             StopWalletUsage(BalanceObj.Wallet);
         }
@@ -131,6 +143,13 @@ namespace Notus.Wallet
         }
         public Notus.Variable.Struct.WalletBalanceStruct Get(string WalletKey, ulong timeYouCanUse)
         {
+            string dictionaryKeyStr = Notus.Toolbox.Text.ToHex(WalletKey, 100);
+            if (SummaryList.ContainsKey(dictionaryKeyStr) == true)
+            {
+                return SummaryList[dictionaryKeyStr];
+            }
+
+            /*
             string BalanceValStr = ObjMp_Balance.Get(WalletKey, string.Empty);
             if (BalanceValStr != string.Empty)
             {
@@ -140,7 +159,7 @@ namespace Notus.Wallet
                     return tmpBalanceVal;
                 }
             }
-
+            */
             string defaultCoinTag = Notus.Variable.Constant.MainCoinTagName;
             if (NVG.Settings != null)
             {
@@ -342,7 +361,6 @@ namespace Notus.Wallet
         }
         public bool AccountIsLock(string WalletKey)
         {
-
             string unlockTimeStr = ObjMp_LockWallet.Get(
                 Notus.Toolbox.Text.ToHex(WalletKey),
                 ""
@@ -420,7 +438,7 @@ namespace Notus.Wallet
                 });
                 //Notus.Wallet.Currency.Add2List(NVG.Settings.Network, NVG.Settings.Genesis.CoinInfo.Tag, tmpBlockForBalance.info.uID);
 
-                ObjMp_Balance.Clear();
+                //ObjMp_Balance.Clear();
                 ObjMp_LockWallet.Clear();
                 ObjMp_WalletUsage.Clear();
                 ObjMp_MultiWalletParticipant.Clear();
@@ -793,13 +811,14 @@ namespace Notus.Wallet
         }
         public void Start()
         {
+            /*
             ObjMp_Balance = new Notus.Mempool(
                 Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Balance) +
                 "account_balance"
             );
-            ObjMp_Balance.AsyncActive = false;
+            ObjMp_Balance.AsyncActive = true;
             ObjMp_Balance.Clear();
-
+            */
             ObjMp_LockWallet = new Notus.Mempool(
                 Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Balance) +
                 "account_lock"
@@ -841,6 +860,7 @@ namespace Notus.Wallet
         }
         public void Dispose()
         {
+            /*
             try
             {
                 if (ObjMp_Balance != null)
@@ -859,6 +879,7 @@ namespace Notus.Wallet
                     err
                 );
             }
+            */
             try
             {
                 if (ObjMp_LockWallet != null)

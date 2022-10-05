@@ -264,32 +264,50 @@ namespace Notus.Validator
                             if (tmpObjPoolCrypto != null)
                             {
                                 bool thisRecordCanBeAdded = false;
-                                bool senderAvailable = NGF.Balance.WalletUsageAvailable(tmpObjPoolCrypto.Sender);
-                                if (senderAvailable == true)
+
+                                //airdrop-exception
+                                if (string.Equals(Obj_Api.AirdropExceptionWalletKey, tmpObjPoolCrypto.Sender) == true)
                                 {
-                                    bool receiverAvailable = NGF.Balance.WalletUsageAvailable(tmpObjPoolCrypto.Receiver);
-                                    if (receiverAvailable == true)
+                                    thisRecordCanBeAdded = true;
+                                }
+                                else
+                                {
+                                    bool senderAvailable = NGF.Balance.WalletUsageAvailable(tmpObjPoolCrypto.Sender);
+                                    if (senderAvailable == true)
                                     {
-                                        bool senderLocked = NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Sender);
-                                        if (senderLocked == true)
+                                        bool receiverAvailable = NGF.Balance.WalletUsageAvailable(tmpObjPoolCrypto.Receiver);
+                                        if (receiverAvailable == true)
                                         {
-                                            bool receiverLocked = NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Receiver);
-                                            if (receiverLocked == true)
+                                            bool senderLocked = NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Sender);
+                                            if (senderLocked == true)
                                             {
-                                                thisRecordCanBeAdded = true;
+                                                bool receiverLocked = NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Receiver);
+                                                if (receiverLocked == true)
+                                                {
+                                                    thisRecordCanBeAdded = true;
+                                                }
                                             }
                                         }
                                     }
                                 }
-
                                 if (thisRecordCanBeAdded == true)
                                 {
                                     bool walletHaveEnoughCoinOrToken = true;
-                                    NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Sender);
+                                    //airdrop-exception
+                                    if (string.Equals(Obj_Api.AirdropExceptionWalletKey, tmpObjPoolCrypto.Sender) == false)
+                                    {
+                                        NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Sender);
+                                    }
                                     NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Receiver);
 
                                     bool senderExist = tmpWalletList.IndexOf(tmpObjPoolCrypto.Sender) >= 0 ? true : false;
                                     bool receiverExist = tmpWalletList.IndexOf(tmpObjPoolCrypto.Receiver) >= 0 ? true : false;
+                                    
+                                    //airdrop-exception
+                                    if (string.Equals(Obj_Api.AirdropExceptionWalletKey, tmpObjPoolCrypto.Sender) == true)
+                                    {
+                                        senderExist = true;
+                                    }
                                     if (senderExist == false && receiverExist == false)
                                     {
                                         tmpWalletList.Add(tmpObjPoolCrypto.Sender);
@@ -914,9 +932,15 @@ namespace Notus.Validator
                     JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(tmpBlockDataStr);
                 if (tmpBlockData != null)
                 {
-                    IncomeBlockList.Add(blockData.info.rowNo, tmpBlockData);
-                    ProcessBlock_PrintSection(blockData, blockSource);
-                    Notus.Print.Status(NVG.Settings, "Insert Block To Temporary Block List");
+                    if (IncomeBlockList.ContainsKey(blockData.info.rowNo) == true)
+                    {
+                        Console.WriteLine("Block Exist -> Line 937");
+                    }
+                    else { 
+                        IncomeBlockList.Add(blockData.info.rowNo, tmpBlockData);
+                        ProcessBlock_PrintSection(blockData, blockSource);
+                        Notus.Print.Status(NVG.Settings, "Insert Block To Temporary Block List");
+                    }
                 }
                 else
                 {

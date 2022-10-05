@@ -15,6 +15,9 @@ namespace Notus.Validator
         private TimeSpan NtpTimeDifference;
         private bool NodeTimeAfterNtpTime = false;      // time difference before or after NTP Server
 
+        //airdrop-exception
+        public string AirdropExceptionWalletKey = string.Empty;
+
         private List<string> AllMainList = new List<string>();
         private List<string> AllNodeList = new List<string>();
         private List<string> AllMasterList = new List<string>();
@@ -738,7 +741,8 @@ namespace Notus.Validator
                     Result = Notus.Variable.Enum.BlockStatusCode.AnErrorOccurred
                 });
             }
-
+            //airdrop-exception
+            AirdropExceptionWalletKey = KeyPair_PreSeed.WalletKey;
             string airdropStr = "2000000";
             if (Notus.Variable.Constant.AirDropVolume.ContainsKey(NVG.Settings.Layer))
             {
@@ -1639,16 +1643,21 @@ namespace Notus.Validator
                 });
             }
 
-            bool accountLocked = NGF.Balance.AccountIsLock(tmpTransfer.Sender);
-            if (accountLocked == true)
+            //airdrop-exception
+            if (string.Equals(tmpTransfer.Sender, AirdropExceptionWalletKey) == false)
             {
-                return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
+                //airdrop devre dışı kalınca if içindeki dışarı çıkartılacak
+                bool accountLocked = NGF.Balance.AccountIsLock(tmpTransfer.Sender);
+                if (accountLocked == true)
                 {
-                    ErrorNo = 3827,
-                    ErrorText = "WalletNotAllowed",
-                    ID = string.Empty,
-                    Result = Notus.Variable.Enum.BlockStatusCode.WalletNotAllowed
-                });
+                    return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
+                    {
+                        ErrorNo = 3827,
+                        ErrorText = "WalletNotAllowed",
+                        ID = string.Empty,
+                        Result = Notus.Variable.Enum.BlockStatusCode.WalletNotAllowed
+                    });
+                }
             }
             if (Notus.Wallet.MultiID.IsMultiId(tmpTransfer.Sender, NVG.Settings.Network) == true)
             {
