@@ -9,7 +9,8 @@ namespace Notus.Wallet
     public class Balance : IDisposable
     {
         //this store balance to Dictionary list
-        private Dictionary<string, Notus.Variable.Struct.WalletBalanceStruct> SummaryList = new Dictionary<string, Notus.Variable.Struct.WalletBalanceStruct>();
+        private Dictionary<string, Notus.Variable.Struct.WalletBalanceStruct> SummaryList =
+            new Dictionary<string, Notus.Variable.Struct.WalletBalanceStruct>();
         //private Notus.Mempool ObjMp_Balance;
 
         private Notus.Mempool ObjMp_WalletUsage;
@@ -91,7 +92,6 @@ namespace Notus.Wallet
         private void StoreToDb(Notus.Variable.Struct.WalletBalanceStruct BalanceObj)
         {
             string dictionaryKeyStr = Notus.Toolbox.Text.ToHex(BalanceObj.Wallet, 100);
-            
             if (SummaryList.ContainsKey(dictionaryKeyStr) == false)
             {
                 SummaryList.Add(dictionaryKeyStr, BalanceObj);
