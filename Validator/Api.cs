@@ -75,7 +75,7 @@ namespace Notus.Validator
                         NVG.Settings, Notus.Variable.Constant.StorageFolderName.Common
                     ) + "ordered_block_list");
 
-                ObjMp_BlockOrderList.AsyncActive = false;
+                ObjMp_BlockOrderList.AsyncActive = true;
                 ObjMp_BlockOrderList.Clear();
 
                 ObjMp_MultiSignPool = new Notus.Mempool(
@@ -135,7 +135,10 @@ namespace Notus.Validator
             string tmpBlockKey = ObjMp_BlockOrderList.Get(Obj_BlockData.info.rowNo.ToString(), string.Empty);
             if (tmpBlockKey.Length == 0)
             {
-                ObjMp_BlockOrderList.Add(Obj_BlockData.info.rowNo.ToString(), Obj_BlockData.info.uID);
+                ObjMp_BlockOrderList.Add(
+                    Obj_BlockData.info.rowNo.ToString(),
+                    Obj_BlockData.info.uID
+                );
             }
             else
             {
@@ -155,7 +158,7 @@ namespace Notus.Validator
                 ));
                 if (tmpBalanceVal != null)
                 {
-                    Console.WriteLine("Node.Api.AddToBalanceDB [cba09834] : " + Obj_BlockData.info.type);
+                    //Console.WriteLine("Node.Api.AddToBalanceDB [cba09834] : " + Obj_BlockData.info.type);
                     foreach (KeyValuePair<string, Notus.Variable.Class.BlockStruct_120_In_Struct> entry in tmpBalanceVal.In)
                     {
                         RequestSend_Done(entry.Key, Obj_BlockData.info.rowNo, Obj_BlockData.info.uID);

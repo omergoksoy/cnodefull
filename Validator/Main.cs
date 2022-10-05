@@ -32,7 +32,7 @@ namespace Notus.Validator
         private bool CryptoTransferTimerIsRunning = false;
         private DateTime CryptoTransferTime = DateTime.Now;
 
-        private bool EmptyBlockNotMyTurnPrinted = false;
+        //private bool EmptyBlockNotMyTurnPrinted = false;
         private bool EmptyBlockTimerIsRunning = false;
         private DateTime EmptyBlockGeneratedTime = new DateTime(2000, 01, 1, 0, 00, 00);
 
@@ -70,29 +70,26 @@ namespace Notus.Validator
 
                     // get utc time from validatır Queue
                     DateTime utcTime = ValidatorQueueObj.GetUtcTime();
+                    Console.WriteLine(
+                        utcTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
+                        + " < - > " +
+                        tmpLastTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
+                    );
                     if (utcTime > tmpLastTime)
                     {
                         if (ValidatorQueueObj.MyTurn)
                         {
                             if ((DateTime.Now - EmptyBlockGeneratedTime).TotalSeconds > 30)
                             {
-                                //Console.WriteLine((DateTime.Now - EmptyBlockGeneratedTime).TotalSeconds);
                                 EmptyBlockGeneratedTime = DateTime.Now;
+                                //EmptyBlockGeneratedTime = utcTime;
+                                Console.WriteLine("EmptyBlockGeneratedTime [1]: " + EmptyBlockGeneratedTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText));
                                 Notus.Print.Success(NVG.Settings, "Empty Block Executed");
                                 Obj_BlockQueue.AddEmptyBlock();
                             }
-                            EmptyBlockNotMyTurnPrinted = false;
                         }
-                        else
-                        {
-                            if (EmptyBlockNotMyTurnPrinted == false)
-                            {
-                                //Notus.Print.Warning(NVG.Settings, "Not My Turn For Empty Block");
-                                EmptyBlockNotMyTurnPrinted = true;
-                            }
-                        }
-                        EmptyBlockTimerIsRunning = false;
                     }
+                    EmptyBlockTimerIsRunning = false;
                 }
             }, true);
         }
@@ -942,12 +939,14 @@ namespace Notus.Validator
 
             if (blockData.info.rowNo > NVG.Settings.LastBlock.info.rowNo)
             {
+                NVG.Settings.LastBlock = blockData.Clone();
+
                 if (blockData.info.type == 300)
                 {
                     EmptyBlockGeneratedTime = Notus.Date.ToDateTime(blockData.info.time);
+                    Console.WriteLine("EmptyBlockGeneratedTime [2]: " + EmptyBlockGeneratedTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText));
                 }
 
-                NVG.Settings.LastBlock = blockData.Clone();
 
                 Obj_BlockQueue.AddToChain(blockData);
 
@@ -1010,23 +1009,13 @@ namespace Notus.Validator
                 }
 
                 ProcessBlock_PrintSection(blockData, blockSource);
-                /*
-                Notus.Print.Success(NVG.Settings,
-                    "Generated Last Block UID  [" +
-                    blockData.info.type.ToString() +
-                    "] : " +
-                    NVG.Settings.LastBlock.info.uID.Substring(0, 10) +
-                    "...." +
-                    NVG.Settings.LastBlock.info.uID.Substring(80) +
-                    " -> " + NVG.Settings.LastBlock.info.rowNo.ToString()
-                );
-                */
             }
             else
             {
                 ProcessBlock_PrintSection(blockData, blockSource);
             }
 
+            //gelen blok burada işleniyor...
             Obj_Api.AddForCache(blockData);
 
             if (IncomeBlockList.ContainsKey(CurrentBlockRowNo))
