@@ -70,11 +70,13 @@ namespace Notus.Validator
 
                     // get utc time from validatır Queue
                     DateTime utcTime = ValidatorQueueObj.GetUtcTime();
+                    /*
                     Console.WriteLine(
                         utcTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
                         + " < - > " +
                         tmpLastTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
                     );
+                    */
                     if (utcTime > tmpLastTime)
                     {
                         if (ValidatorQueueObj.MyTurn)
