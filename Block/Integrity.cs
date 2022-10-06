@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Text.Json;
 using System.Threading;
 using NVG = Notus.Variable.Globals;
+using NGF = Notus.Variable.Globals.Functions;
 namespace Notus.Block
 {
     public class Integrity : IDisposable
@@ -390,28 +391,17 @@ namespace Notus.Block
                 return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
             }
             Notus.Print.Success(NVG.Settings, "Block Integrity Valid");
-
-            using (Notus.Mempool ObjMp_BlockOrder =
-                new Notus.Mempool(
-                    Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) +
-                    "block_order_list"
-                )
-            )
+            foreach (KeyValuePair<long, string> item in BlockOrderList)
             {
-                ObjMp_BlockOrder.AsyncActive = false;
-                ObjMp_BlockOrder.Clear();
-                foreach (KeyValuePair<long, string> item in BlockOrderList)
-                {
-                    ObjMp_BlockOrder.Add(
-                        item.Key.ToString(),
-                        JsonSerializer.Serialize(
-                            new KeyValuePair<string, string>(
-                                item.Value,
-                                new Notus.Hash().CommonSign("sha1", item.Value + NVG.Settings.HashSalt)
-                            )
+                NGF.BlockOrder.Add(
+                    item.Key.ToString(),
+                    JsonSerializer.Serialize(
+                        new KeyValuePair<string, string>(
+                            item.Value,
+                            new Notus.Hash().CommonSign("sha1", item.Value + NVG.Settings.HashSalt)
                         )
-                    );
-                }
+                    )
+                );
             }
             return (Notus.Variable.Enum.BlockIntegrityStatus.Valid, LastBlock);
         }
@@ -656,14 +646,23 @@ namespace Notus.Block
         }
         public bool ControlGenesisBlock()
         {
-            string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
+            //string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
+            string ZipFileName = Notus.IO.GetFolderName(
+                NVG.Settings.Network, 
+                NVG.Settings.Layer, 
+                Notus.Variable.Constant.StorageFolderName.Block
+            ) + 
+            Notus.Block.Key.GetBlockStorageFileName(
+                Notus.Variable.Constant.GenesisBlockUid, 
+                true
+            ) + ".zip";
+
             string myGenesisSign = string.Empty;
             DateTime myGenesisTime = DateTime.Now.AddDays(1);
-
-            // we have genesis
-            if (ZipFileList.Length > 0)
+            
+            //if (ZipFileList.Length > 0)
+            if (File.Exists(ZipFileName) ==true)
             {
-                //Notus.Print.Basic(NVG.Settings, "We Have Block - Lets Check Genesis Time And Hash");
                 using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
                 {
                     //tgz-exception
@@ -678,9 +677,13 @@ namespace Notus.Block
                     }
                 }
             }
-            else
+
+            if (NVG.Settings.LocalNode == false)
             {
-                //Notus.Print.Basic(NVG.Settings, "We Do Not Have Any Block");
+                if (myGenesisSign.Length == 0)
+                {
+                    return false;
+                }
             }
 
             //there is no layer on constant
@@ -694,101 +697,103 @@ namespace Notus.Block
             {
                 return false;
             }
-
-            Dictionary<string, Notus.Variable.Class.BlockData> signBlock = new Dictionary<string, Notus.Variable.Class.BlockData>();
-            signBlock.Clear();
-
-            Dictionary<string, int> signCount = new Dictionary<string, int>();
-            signCount.Clear();
-
-            Dictionary<string, List<Notus.Variable.Struct.IpInfo>> signNode = new Dictionary<string, List<Notus.Variable.Struct.IpInfo>>();
-            signNode.Clear();
-
-            foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
+            if (NVG.Settings.LocalNode == false)
             {
-                if (string.Equals(NVG.Settings.IpInfo.Public, item.IpAddress) == false)
+                Dictionary<string, Notus.Variable.Class.BlockData> signBlock = new Dictionary<string, Notus.Variable.Class.BlockData>();
+                signBlock.Clear();
+
+                Dictionary<string, int> signCount = new Dictionary<string, int>();
+                signCount.Clear();
+
+                Dictionary<string, List<Notus.Variable.Struct.IpInfo>> signNode = new Dictionary<string, List<Notus.Variable.Struct.IpInfo>>();
+                signNode.Clear();
+
+                foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
                 {
-                    Notus.Variable.Class.BlockData? tmpInnerBlockData =
-                    Notus.Toolbox.Network.GetBlockFromNode(item.IpAddress, item.Port, 1, NVG.Settings);
-                    if (tmpInnerBlockData != null)
+                    if (string.Equals(NVG.Settings.IpInfo.Public, item.IpAddress) == false)
                     {
-                        if (signCount.ContainsKey(tmpInnerBlockData.sign) == false)
+                        Notus.Variable.Class.BlockData? tmpInnerBlockData =
+                        Notus.Toolbox.Network.GetBlockFromNode(item.IpAddress, item.Port, 1, NVG.Settings);
+                        if (tmpInnerBlockData != null)
                         {
-                            signNode.Add(tmpInnerBlockData.sign, new List<Notus.Variable.Struct.IpInfo>() { });
-                            signCount.Add(tmpInnerBlockData.sign, 0);
-                            signBlock.Add(tmpInnerBlockData.sign, tmpInnerBlockData);
-                        }
-                        signNode[tmpInnerBlockData.sign].Add(
-                            new Notus.Variable.Struct.IpInfo()
+                            if (signCount.ContainsKey(tmpInnerBlockData.sign) == false)
                             {
-                                IpAddress = item.IpAddress,
-                                Port = item.Port
+                                signNode.Add(tmpInnerBlockData.sign, new List<Notus.Variable.Struct.IpInfo>() { });
+                                signCount.Add(tmpInnerBlockData.sign, 0);
+                                signBlock.Add(tmpInnerBlockData.sign, tmpInnerBlockData);
                             }
-                        );
-                        signCount[tmpInnerBlockData.sign] = signCount[tmpInnerBlockData.sign] + 1;
-                    }
-                    else
-                    {
-                        Notus.Print.Danger(NVG.Settings, "Error Happened While Trying To Get Genesis From Other Node");
-                        Notus.Date.SleepWithoutBlocking(100);
-                    }
-                }
-            }
-
-            if (signCount.Count == 0)
-            {
-                return false;
-            }
-            int tmpBiggestCount = 0;
-            string tmpBiggestSign = string.Empty;
-            foreach (KeyValuePair<string, int> entry in signCount)
-            {
-                if (entry.Value > tmpBiggestCount)
-                {
-                    tmpBiggestCount = entry.Value;
-                    tmpBiggestSign = entry.Key;
-                }
-            }
-            if (string.Equals(tmpBiggestSign, myGenesisSign) == false)
-            {
-                DateTime otherNodeGenesisTime = Notus.Date.GetGenesisCreationTimeFromString(signBlock[tmpBiggestSign]);
-                Int64 otherNodeGenesisTimeVal = Int64.Parse(
-                    otherNodeGenesisTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
-                );
-                Int64 myGenesisTimeVal = Int64.Parse(
-                    myGenesisTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
-                );
-                if (myGenesisTimeVal > otherNodeGenesisTimeVal)
-                {
-                    using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
-                    {
-                        Notus.Print.Warning(NVG.Settings, "Current Block Were Deleted");
-
-                        Notus.TGZArchiver.ClearBlocks();
-                        Notus.Archive.ClearBlocks(NVG.Settings);
-                        BS_Storage.AddSync(signBlock[tmpBiggestSign], true);
-                        Notus.Print.Basic(NVG.Settings, "Added Block : " + signBlock[tmpBiggestSign].info.uID);
-                        bool secondBlockAdded = false;
-                        foreach (Variable.Struct.IpInfo? entry in signNode[tmpBiggestSign])
-                        {
-                            if (secondBlockAdded == false)
-                            {
-                                Notus.Variable.Class.BlockData? tmpInnerBlockData =
-                                Notus.Toolbox.Network.GetBlockFromNode(entry.IpAddress, entry.Port, 2, NVG.Settings);
-                                if (tmpInnerBlockData != null)
+                            signNode[tmpInnerBlockData.sign].Add(
+                                new Notus.Variable.Struct.IpInfo()
                                 {
-                                    Notus.Print.Basic(NVG.Settings, "Added Block : " + tmpInnerBlockData.info.uID);
-                                    BS_Storage.AddSync(tmpInnerBlockData, true);
-                                    secondBlockAdded = true;
+                                    IpAddress = item.IpAddress,
+                                    Port = item.Port
+                                }
+                            );
+                            signCount[tmpInnerBlockData.sign] = signCount[tmpInnerBlockData.sign] + 1;
+                        }
+                        else
+                        {
+                            Notus.Print.Danger(NVG.Settings, "Error Happened While Trying To Get Genesis From Other Node");
+                            Notus.Date.SleepWithoutBlocking(100);
+                        }
+                    }
+                }
+
+                if (signCount.Count == 0)
+                {
+                    return false;
+                }
+                int tmpBiggestCount = 0;
+                string tmpBiggestSign = string.Empty;
+                foreach (KeyValuePair<string, int> entry in signCount)
+                {
+                    if (entry.Value > tmpBiggestCount)
+                    {
+                        tmpBiggestCount = entry.Value;
+                        tmpBiggestSign = entry.Key;
+                    }
+                }
+                if (string.Equals(tmpBiggestSign, myGenesisSign) == false)
+                {
+                    DateTime otherNodeGenesisTime = Notus.Date.GetGenesisCreationTimeFromString(signBlock[tmpBiggestSign]);
+                    Int64 otherNodeGenesisTimeVal = Int64.Parse(
+                        otherNodeGenesisTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
+                    );
+                    Int64 myGenesisTimeVal = Int64.Parse(
+                        myGenesisTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
+                    );
+                    if (myGenesisTimeVal > otherNodeGenesisTimeVal)
+                    {
+                        using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
+                        {
+                            Notus.Print.Warning(NVG.Settings, "Current Block Were Deleted");
+
+                            Notus.TGZArchiver.ClearBlocks();
+                            Notus.Archive.ClearBlocks(NVG.Settings);
+                            BS_Storage.AddSync(signBlock[tmpBiggestSign], true);
+                            Notus.Print.Basic(NVG.Settings, "Added Block : " + signBlock[tmpBiggestSign].info.uID);
+                            bool secondBlockAdded = false;
+                            foreach (Variable.Struct.IpInfo? entry in signNode[tmpBiggestSign])
+                            {
+                                if (secondBlockAdded == false)
+                                {
+                                    Notus.Variable.Class.BlockData? tmpInnerBlockData =
+                                    Notus.Toolbox.Network.GetBlockFromNode(entry.IpAddress, entry.Port, 2, NVG.Settings);
+                                    if (tmpInnerBlockData != null)
+                                    {
+                                        Notus.Print.Basic(NVG.Settings, "Added Block : " + tmpInnerBlockData.info.uID);
+                                        BS_Storage.AddSync(tmpInnerBlockData, true);
+                                        secondBlockAdded = true;
+                                    }
                                 }
                             }
                         }
+                        Notus.Date.SleepWithoutBlocking(150);
                     }
-                    Notus.Date.SleepWithoutBlocking(150);
-                }
-                else
-                {
-                    Notus.Print.Basic(NVG.Settings, "Hold Your Genesis Block - We Are Older");
+                    else
+                    {
+                        Notus.Print.Basic(NVG.Settings, "Hold Your Genesis Block - We Are Older");
+                    }
                 }
             }
             return true;

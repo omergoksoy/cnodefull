@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Notus.Compression.TGZ;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Threading;
 using System.Linq;
-using System.Collections.Concurrent;
 using System.Text.Json;
-using Notus.Compression.TGZ;
-using System;
+using System.Threading;
 using System.Threading.Tasks;
 //using NVG = Notus.Variable.Globals;
 namespace Notus.Variable
@@ -37,7 +37,7 @@ namespace Notus.Variable
 
                 UTCTime = Notus.Time.GetNtpTime(),
                 HashSalt = Notus.Encryption.Toolbox.GenerateSalt(),
-                
+
 
                 Layer = Notus.Variable.Enum.NetworkLayer.Layer1,
                 Network = Notus.Variable.Enum.NetworkType.MainNet,
@@ -58,21 +58,38 @@ namespace Notus.Variable
                     MainNet = 0,
                     TestNet = 0,
                     DevNet = 0
-                }
+                },
+                BlockOrder = new Dictionary<ulong, string>() { }
             };
         }
 
         public static class Functions
         {
+            public static Notus.Mempool BlockOrder { get; set; }
+            public static Notus.Block.Storage Storage { get; set; }
             public static Notus.Wallet.Balance Balance { get; set; }
             public static Notus.TGZArchiver Archiver { get; set; }
             public static Notus.Block.Queue BlockQueue { get; set; }
             public static void Start()
             {
+                Storage = new Notus.Block.Storage();
                 BlockQueue = new Notus.Block.Queue();
                 Archiver = new Notus.TGZArchiver();
                 Balance = new Notus.Wallet.Balance();
-                Balance.Start();
+                if (Settings.GenesisCreated == false)
+                {
+                    Balance.Start();
+                }
+                BlockOrder = new Notus.Mempool(
+                    Notus.IO.GetFolderName(
+                        Settings.Network,
+                        Settings.Layer,
+                        Notus.Variable.Constant.StorageFolderName.Common
+                    ) +
+                    "block_order_list"
+                );
+                BlockOrder.AsyncActive = true;
+                BlockOrder.Clear();
             }
             static Functions()
             {

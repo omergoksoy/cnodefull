@@ -556,26 +556,9 @@ namespace Notus.Validator
 
             NGF.BlockQueue.Start();
 
-            /*
-            Obj_Api.Func_OnReadFromChain = blockKeyIdStr =>
-            {
-                Notus.Variable.Class.BlockData? tmpBlockResult = NGF.BlockQueue.ReadFromChain(blockKeyIdStr);
-                if (tmpBlockResult != null)
-                {
-                    return tmpBlockResult;
-                }
-                return null;
-            };
-            Obj_Api.Func_AddToChainPool = blockStructForQueue =>
-            {
-                
-            };
-            */
             Obj_Api.Prepare();
 
             //Obj_MainCache = new Notus.Cache.Main();
-            //Obj_MainCache.Settings = NVG.Settings;
-            //Obj_MainCache.Start();
             // Obj_TokenStorage = new Notus.Token.Storage();
             // Obj_TokenStorage.Settings = NVG.Settings;
 
@@ -646,8 +629,6 @@ namespace Notus.Validator
             ValidatorQueueObj.GetUtcTimeFromServer();
             if (NVG.Settings.GenesisCreated == false)
             {
-                //Console.ReadLine();
-
                 ValidatorQueueObj.PreStart(
                     NVG.Settings.LastBlock.info.rowNo,
                     NVG.Settings.LastBlock.info.uID,
@@ -655,8 +636,8 @@ namespace Notus.Validator
                     NVG.Settings.LastBlock.prev
                 );
 
-                ValidatorQueueObj.PingOtherNodes();
                 //burada ping ve pong yaparak bekleyecek
+                ValidatorQueueObj.PingOtherNodes();
             }
 
             ValidatorQueueObj.Start();
@@ -668,27 +649,19 @@ namespace Notus.Validator
             // node hazır olmadan HAZIR sinyalini gönderdiği için
             // senkronizasyon hatası oluyor ve gelen bloklar hatalı birşekilde kaydediliyor.
             // sonrasında gelen bloklar explorer'da aranırken hata oluşturuyor.
-            //Console.WriteLine("Control-Point-4-GHJJ");
             if (NVG.Settings.GenesisCreated == false)
             {
-                //Console.WriteLine("Control-Point-4-WRET");
                 Notus.Print.Info(NVG.Settings, "Node Blocks Are Checking For Sync");
                 bool waitForOtherNodes = Notus.Sync.Block(
                     NVG.Settings, ValidatorQueueObj.GiveMeNodeList(),
                     tmpNewBlockIncome =>
                     {
                         ProcessBlock(tmpNewBlockIncome, 3);
-                        //Notus.Print.Info(NVG.Settings, "Temprorary Arrived New Block : " + tmpNewBlockIncome.info.uID);
                     }
                 );
 
-                //Console.WriteLine(waitForOtherNodes);
-                //Console.WriteLine(FirstSyncIsDone);
-                //Console.WriteLine(MyReadyMessageSended);
-                //Console.WriteLine(IncomeBlockList.Count);
                 if (MyReadyMessageSended == false && waitForOtherNodes == false)
                 {
-                    //Console.WriteLine("Control-Point-1");
                     FirstSyncIsDone = true;
                     MyReadyMessageSended = true;
                     ValidatorQueueObj.MyNodeIsReady();
@@ -701,7 +674,6 @@ namespace Notus.Validator
                         {
                             FirstSyncIsDone = true;
                             MyReadyMessageSended = true;
-                            //Console.WriteLine("Control-Point-1-DDDD");
                             ValidatorQueueObj.MyNodeIsReady();
                         }
                     }
@@ -844,8 +816,7 @@ namespace Notus.Validator
 
         private string fixedRowNoLength(Notus.Variable.Class.BlockData blockData)
         {
-            string tmpStr = blockData.info.rowNo.ToString();
-            return tmpStr.PadLeft(15, '_');
+            return blockData.info.rowNo.ToString().PadLeft(15, '_');
         }
         private void ProcessBlock_PrintSection(Notus.Variable.Class.BlockData blockData, int blockSource)
         {

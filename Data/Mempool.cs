@@ -260,13 +260,8 @@ namespace Notus
         }
         public void Clear()
         {
-            if (Obj_DataList.Count > 0)
-            {
-                foreach (KeyValuePair<string, Notus.Variable.Struct.MempoolDataList> entry in Obj_DataList)
-                {
-                    Remove(entry.Key);
-                }
-            }
+            Obj_DataList.Clear();
+            SqlObj.Clear("key_value");
         }
         public int Count()
         {
@@ -454,17 +449,21 @@ namespace Notus
                 LoopIsWorking = true;
                 if (Obj_DataList.Count > 0)
                 {
-                    foreach (KeyValuePair<string, Notus.Variable.Struct.MempoolDataList> entry in Obj_DataList)
+                    try
                     {
-                        if (entry.Value.expire > 0)
+                        foreach (KeyValuePair<string, Notus.Variable.Struct.MempoolDataList> entry in Obj_DataList)
                         {
-                            if (0 > (entry.Value.remove - DateTime.Now).TotalSeconds)
+                            if (entry.Value.expire > 0)
                             {
-                                Obj_DataList.Remove(entry.Key);
-                                DeleteFromTable(entry.Key);
+                                if (0 > (entry.Value.remove - DateTime.Now).TotalSeconds)
+                                {
+                                    Obj_DataList.Remove(entry.Key);
+                                    DeleteFromTable(entry.Key);
+                                }
                             }
                         }
                     }
+                    catch { }
                 }
                 LoopIsWorking = false;
             }

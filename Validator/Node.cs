@@ -42,9 +42,9 @@ namespace Notus.Validator
             NGF.Start();
 
 
+            /*
             Notus.Block.Storage storageObj = new Notus.Block.Storage(false);
 
-            /*
             //tgz-exception
             string LastBlockUid = "1348c02274960011734a5d9a654b68e8355d6a80586560b60a9cd4f6314f6234dd43851e7d88da27b4f879f02d";
             Notus.Variable.Class.BlockData? tmpBlockData = storageObj.ReadBlock(LastBlockUid);

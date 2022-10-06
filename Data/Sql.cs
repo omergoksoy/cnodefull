@@ -143,6 +143,17 @@ namespace Notus.Data
             }
         }
 
+        public bool Clear(string tableName)
+        {
+            SqliteCommand command = conObj.CreateCommand();
+            command.CommandText = "DELETE FROM " + tableName;
+            int result=command.ExecuteNonQuery();
+            if (result >= 0)
+            {
+                return true;
+            }
+            return false;
+        }
         // delete işlemi
         public bool Delete(string tableName, Dictionary<string, string> condAndValue)
         {

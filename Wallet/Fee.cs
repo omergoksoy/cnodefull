@@ -156,10 +156,10 @@ namespace Notus.Wallet
         }
         public static void ClearFeeData(Notus.Variable.Enum.NetworkType networkType , Notus.Variable.Enum.NetworkLayer networkLayer)
         {
-            using (Notus.Mempool ObjMp_BlockOrder = new Notus.Mempool(FeeDataStorageDbName(networkType, networkLayer)))
+            using (Notus.Mempool ObjMp_FeeData = new Notus.Mempool(FeeDataStorageDbName(networkType, networkLayer)))
             {
-                ObjMp_BlockOrder.AsyncActive = false;
-                ObjMp_BlockOrder.Clear();
+                ObjMp_FeeData.AsyncActive = false;
+                ObjMp_FeeData.Clear();
             }
         }
         public static void StoreFeeData(string KeyName, string RawData, Notus.Variable.Enum.NetworkType networkType , Notus.Variable.Enum.NetworkLayer networkLayer , bool ClearTable = false)

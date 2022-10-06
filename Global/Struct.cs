@@ -25,6 +25,7 @@ namespace Notus.Globals.Variable
         public Notus.Variable.Enum.NetworkType Network { get; set; }
         public Notus.Variable.Enum.NetworkLayer Layer { get; set; }
         public Notus.Variable.Struct.CommunicationPorts? Port { get; set; }
+        public Dictionary<ulong,string> BlockOrder { get; set; }
 
         public bool DebugMode { get; set; }
         public bool InfoMode { get; set; }

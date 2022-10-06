@@ -390,6 +390,22 @@ tmpRequestSend_ListCount : 261
                                     tmpBlockCipherData.Validator.Reward = tmpFee.ToString();
                                 }
 
+                                //airdrop-exception
+                                //olmadan önceki hali
+                                /*
+
+                                foreach (KeyValuePair<string, Variable.Class.BlockStruct_120_In_Struct> iEntry in tmpInnerData.In)
+                                {
+                                    tmpBlockCipherData.In.Add(iEntry.Key, iEntry.Value);
+                                }
+                                 
+                                foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> iEntry in tmpInnerData.Out)
+                                {
+                                    tmpBlockCipherData.Out.Add(iEntry.Key, iEntry.Value);
+                                }                                 
+
+
+                                 */
 
                                 foreach (KeyValuePair<string, Variable.Class.BlockStruct_120_In_Struct> iEntry in tmpInnerData.In)
                                 {
@@ -418,7 +434,15 @@ tmpRequestSend_ListCount : 261
                                     }
                                     else
                                     {
-                                        tmpBlockCipherData.Out.Add(iEntry.Key, iEntry.Value);
+                                        //airdrop-exception
+                                        if (tmpBlockCipherData.Out.ContainsKey(iEntry.Key) == false)
+                                        {
+                                            tmpBlockCipherData.Out.Add(iEntry.Key, iEntry.Value);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Out wallet Exist");
+                                        }
                                     }
                                 }
                             }

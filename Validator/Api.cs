@@ -20,13 +20,6 @@ namespace Notus.Validator
         private List<string> AllMasterList = new List<string>();
         private List<string> AllReplicantList = new List<string>();
 
-        private string ValidatorKeyStr = "validator-key";
-        public string ValidatorKey
-        {
-            get { return ValidatorKeyStr; }
-            set { ValidatorKeyStr = value; }
-        }
-
         private Notus.Mempool ObjMp_MultiSignPool;
         public Notus.Mempool Obj_MultiSignPool
         {
@@ -62,7 +55,6 @@ namespace Notus.Validator
             if (NVG.Settings.GenesisCreated == false)
             {
                 Obj_TransferStatusList = new Dictionary<string, Notus.Variable.Enum.BlockStatusCode>();
-                //NGF.Balance.Start();
 
                 ObjMp_CryptoTransfer = new Notus.Mempool(Notus.IO.GetFolderName(NVG.Settings, Notus.Variable.Constant.StorageFolderName.Common) + "crypto_transfer");
                 ObjMp_CryptoTransfer.AsyncActive = false;
