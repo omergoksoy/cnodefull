@@ -5,6 +5,8 @@ using System.Numerics;
 using System.Text.Json;
 using NVG = Notus.Variable.Globals;
 using NGF = Notus.Variable.Globals.Functions;
+using Notus.Compression.TGZ;
+
 namespace Notus.Block
 {
     public class Queue : IDisposable
@@ -129,16 +131,29 @@ namespace Notus.Block
                                 }
                                 else
                                 {
+                                    /*
+
+                                    transactionCount : 0
+tmpRequestSend_ListCount : 261
+                                    */
                                     // out işlemindeki cüzdanları kontrol ediyor...
                                     foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> tmpEntry in tmpBlockCipherData.Out)
                                     {
-                                        if (TempWalletList.IndexOf(tmpEntry.Key) == -1)
+                                        //airdrop-exception
+                                        if (string.Equals(NVG.AirdropExceptionWalletKey, tmpEntry.Key) == true)
                                         {
-                                            TempWalletList.Add(tmpEntry.Key);
+                                            addToList = true;
                                         }
                                         else
                                         {
-                                            addToList = false;
+                                            if (TempWalletList.IndexOf(tmpEntry.Key) == -1)
+                                            {
+                                                TempWalletList.Add(tmpEntry.Key);
+                                            }
+                                            else
+                                            {
+                                                addToList = false;
+                                            }
                                         }
                                     }
 
@@ -374,13 +389,37 @@ namespace Notus.Block
                                         BigInteger.Parse(tmpInnerData.Validator.Reward);
                                     tmpBlockCipherData.Validator.Reward = tmpFee.ToString();
                                 }
+
+
                                 foreach (KeyValuePair<string, Variable.Class.BlockStruct_120_In_Struct> iEntry in tmpInnerData.In)
                                 {
-                                    tmpBlockCipherData.In.Add(iEntry.Key, iEntry.Value);
+                                    //airdrop-exception
+                                    if (string.Equals(NVG.AirdropExceptionWalletKey, iEntry.Key) == false)
+                                    {
+                                        if (tmpBlockCipherData.In.ContainsKey(iEntry.Key) == false)
+                                        {
+                                            tmpBlockCipherData.In.Add(iEntry.Key, iEntry.Value);
+                                        }
+                                    }
+                                    else
+                                    {
+                                       tmpBlockCipherData.In.Add(iEntry.Key, iEntry.Value);
+                                    }
                                 }
                                 foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> iEntry in tmpInnerData.Out)
                                 {
-                                    tmpBlockCipherData.Out.Add(iEntry.Key, iEntry.Value);
+                                    //airdrop-exception
+                                    if (string.Equals(NVG.AirdropExceptionWalletKey, iEntry.Key) == false)
+                                    {
+                                        if (tmpBlockCipherData.Out.ContainsKey(iEntry.Key) == false)
+                                        {
+                                            tmpBlockCipherData.Out.Add(iEntry.Key, iEntry.Value);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        tmpBlockCipherData.Out.Add(iEntry.Key, iEntry.Value);
+                                    }
                                 }
                             }
                         }
@@ -480,7 +519,7 @@ namespace Notus.Block
 
         public Notus.Variable.Class.BlockData? ReadFromChain(string BlockId)
         {
-            //control-tgz
+            //tgz-exception
             return BS_Storage.ReadBlock(BlockId);
         }
         //yeni blok hesaplanması tamamlandığı zaman buraya gelecek ve geçerli blok ise eklenecek.

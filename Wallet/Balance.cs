@@ -527,6 +527,7 @@ namespace Notus.Wallet
                 //Console.ReadLine();
             }
 
+            /*
             if (
                 tmpBlockForBalance.info.type != Notus.Variable.Enum.BlockTypeList.EmptyBlock
                 &&
@@ -536,7 +537,7 @@ namespace Notus.Wallet
                 //Notus.Print.Basic(NVG.Settings, tmpBlockForBalance.info.uID);
                 Notus.Print.Basic(NVG.Settings, "Balance.Cs -> Control function -> Line 178 -> Block type -> " + tmpBlockForBalance.info.type.ToString() + " -> " + tmpBlockForBalance.info.rowNo.ToString());
             }
-
+            */
             // MultiWalletCryptoTransfer
             
             if (tmpBlockForBalance.info.type == Notus.Variable.Enum.BlockTypeList.MultiWalletCryptoTransfer)

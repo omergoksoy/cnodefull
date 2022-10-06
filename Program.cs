@@ -22,11 +22,13 @@ static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEv
 // Console.WriteLine("{0}", System.Reflection.AssemblyName.GetAssemblyName("Microsoft.Data.Sqlite.dll").Version);
 
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-//control-tgz
-//control-tgz
-//control-tgz
-//control-tgz
-//control-tgz
-//control-tgz
-//control-tgz
+
+//tgz-exception
+// TGZ ile ilgili eklenen kontrol noktaları
+
+//airdrop-exception
+// airdrop için eklenen kotrol noktaları
+
+
+//tgz-exception
 Notus.Validator.Node.Start(args);

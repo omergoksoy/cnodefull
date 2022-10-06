@@ -15,9 +15,6 @@ namespace Notus.Validator
         private TimeSpan NtpTimeDifference;
         private bool NodeTimeAfterNtpTime = false;      // time difference before or after NTP Server
 
-        //airdrop-exception
-        public string AirdropExceptionWalletKey = string.Empty;
-
         private List<string> AllMainList = new List<string>();
         private List<string> AllNodeList = new List<string>();
         private List<string> AllMasterList = new List<string>();
@@ -46,10 +43,10 @@ namespace Notus.Validator
         private Notus.Mempool ObjMp_CryptoTransfer;
         private Dictionary<string, Notus.Variable.Enum.BlockStatusCode> Obj_TransferStatusList;
 
-        public System.Func<int, List<Notus.Variable.Struct.List_PoolBlockRecordStruct>?>? Func_GetPoolList = null;
-        public System.Func<Dictionary<int, int>?>? Func_GetPoolCount = null;
-        public System.Func<string, Notus.Variable.Class.BlockData?>? Func_OnReadFromChain = null;
-        public System.Func<Notus.Variable.Struct.PoolBlockRecordStruct, bool>? Func_AddToChainPool = null;
+        //public System.Func<int, List<Notus.Variable.Struct.List_PoolBlockRecordStruct>?>? Func_GetPoolList = null;
+        //public System.Func<Dictionary<int, int>?>? Func_GetPoolCount = null;
+        //public System.Func<string, Notus.Variable.Class.BlockData?>? Func_OnReadFromChain = null;
+        //public System.Func<Notus.Variable.Struct.PoolBlockRecordStruct, bool>? Func_AddToChainPool = null;
 
         private bool PrepareExecuted = false;
 
@@ -510,38 +507,32 @@ namespace Notus.Validator
                     {
                         if (int.TryParse(IncomeData.UrlList[1], out int blockTypeNo))
                         {
-                            if (Func_GetPoolList != null)
+                            
+                            List<Variable.Struct.List_PoolBlockRecordStruct>? tmpPoolList =
+                                NGF.BlockQueue.GetPoolList(blockTypeNo);
+                            if (tmpPoolList != null)
                             {
-                                List<Variable.Struct.List_PoolBlockRecordStruct>? tmpPoolList = Func_GetPoolList(blockTypeNo);
-                                if (tmpPoolList != null)
+                                if (tmpPoolList.Count > 0)
                                 {
-                                    if (tmpPoolList.Count > 0)
+                                    Dictionary<string, string> tmpResultList = new Dictionary<string, string>();
+                                    for (int innerCount = 0; innerCount < tmpPoolList.Count; innerCount++)
                                     {
-                                        Dictionary<string, string> tmpResultList = new Dictionary<string, string>();
-                                        for (int innerCount = 0; innerCount < tmpPoolList.Count; innerCount++)
+                                        Variable.Struct.List_PoolBlockRecordStruct? tmpItem = tmpPoolList[innerCount];
+                                        if (tmpItem != null)
                                         {
-                                            Variable.Struct.List_PoolBlockRecordStruct? tmpItem = tmpPoolList[innerCount];
-                                            if (tmpItem != null)
-                                            {
-                                                tmpResultList.Add(tmpItem.key, tmpItem.data);
-                                            }
+                                            tmpResultList.Add(tmpItem.key, tmpItem.data);
                                         }
+                                    }
 
-                                        if (tmpResultList.Count > 0)
-                                        {
-                                            return JsonSerializer.Serialize(tmpResultList);
-                                        }
+                                    if (tmpResultList.Count > 0)
+                                    {
+                                        return JsonSerializer.Serialize(tmpResultList);
                                     }
                                 }
                             }
                         }
                     }
-
-                    if (Func_GetPoolCount != null)
-                    {
-                        return JsonSerializer.Serialize(Func_GetPoolCount());
-                    }
-                    return JsonSerializer.Serialize(false);
+                    return JsonSerializer.Serialize(NGF.BlockQueue.GetPoolCount());
                 }
 
                 if (IncomeData.UrlList.Length > 1)
@@ -742,7 +733,7 @@ namespace Notus.Validator
                 });
             }
             //airdrop-exception
-            AirdropExceptionWalletKey = KeyPair_PreSeed.WalletKey;
+            NVG.AirdropExceptionWalletKey= KeyPair_PreSeed.WalletKey;
             string airdropStr = "2000000";
             if (Notus.Variable.Constant.AirDropVolume.ContainsKey(NVG.Settings.Layer))
             {
@@ -777,10 +768,12 @@ namespace Notus.Validator
         }
         private Notus.Variable.Class.BlockData? GetBlockWithRowNo(Int64 BlockRowNo)
         {
+            /*
             if (Func_OnReadFromChain == null)
             {
                 return null;
             }
+            */
             if (NVG.Settings == null)
             {
                 return null;
@@ -799,7 +792,7 @@ namespace Notus.Validator
                 string tmpBlockKey = ObjMp_BlockOrderList.Get(BlockRowNo.ToString(), string.Empty);
                 if (tmpBlockKey.Length > 0)
                 {
-                    Notus.Variable.Class.BlockData? tmpStoredBlock = Func_OnReadFromChain(tmpBlockKey);
+                    Notus.Variable.Class.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(tmpBlockKey);
                     if (tmpStoredBlock != null)
                     {
                         return tmpStoredBlock;
@@ -832,7 +825,7 @@ namespace Notus.Validator
                 string PrevBlockIdStr = NVG.Settings.LastBlock.prev;
                 while (exitPrevWhile == false)
                 {
-                    Notus.Variable.Class.BlockData? tmpStoredBlock = Func_OnReadFromChain(PrevBlockIdStr.Substring(0, 90));
+                    Notus.Variable.Class.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(PrevBlockIdStr.Substring(0, 90));
                     if (tmpStoredBlock != null)
                     {
                         if (tmpStoredBlock.info.rowNo == BlockRowNo)
@@ -1644,7 +1637,7 @@ namespace Notus.Validator
             }
 
             //airdrop-exception
-            if (string.Equals(tmpTransfer.Sender, AirdropExceptionWalletKey) == false)
+            if (string.Equals(tmpTransfer.Sender, NVG.AirdropExceptionWalletKey) == false)
             {
                 //airdrop devre dışı kalınca if içindeki dışarı çıkartılacak
                 bool accountLocked = NGF.Balance.AccountIsLock(tmpTransfer.Sender);
@@ -1931,7 +1924,7 @@ namespace Notus.Validator
             {
                 try
                 {
-                    Notus.Variable.Class.BlockData tmpStoredBlock = Func_OnReadFromChain(IncomeData.UrlList[1]);
+                    Notus.Variable.Class.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(IncomeData.UrlList[1]);
                     if (tmpStoredBlock != null)
                     {
                         if (prettyJson == true)
@@ -1978,7 +1971,7 @@ namespace Notus.Validator
             {
                 try
                 {
-                    Notus.Variable.Class.BlockData tmpStoredBlock = Func_OnReadFromChain(IncomeData.UrlList[2]);
+                    Notus.Variable.Class.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(IncomeData.UrlList[2]);
                     if (tmpStoredBlock != null)
                     {
                         return tmpStoredBlock.info.uID + tmpStoredBlock.sign;
@@ -2153,7 +2146,7 @@ namespace Notus.Validator
                             Status = "NeedCoin"
                         });
                     }
-
+                    /*
                     if (Func_AddToChainPool == null)
                     {
                         NGF.Balance.StopWalletUsage(WalletKeyStr);
@@ -2164,7 +2157,7 @@ namespace Notus.Validator
                             Status = "UnknownError"
                         });
                     }
-
+                    */
                     // buraya token sahibinin önceki bakiyesi yazılacak,
                     // burada out ile nihai bakiyede belirtilecek
                     // tmpTokenObj.Validator = NVG.Settings.NodeWallet.WalletKey;
@@ -2191,7 +2184,7 @@ namespace Notus.Validator
                     tmpTokenObj.Out = tmpNewGeneratorBalance.Balance;
 
                     //private string Request_GenerateToken(Notus.Variable.Struct.HttpRequestDetails IncomeData)
-                    bool tmpAddResult = Func_AddToChainPool(new Notus.Variable.Struct.PoolBlockRecordStruct()
+                    bool tmpAddResult = NGF.BlockQueue.Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
                     {
                         type = Notus.Variable.Enum.BlockTypeList.TokenGeneration,
                         data = JsonSerializer.Serialize(tmpTokenObj)
@@ -2252,6 +2245,7 @@ namespace Notus.Validator
                     Result = Notus.Variable.Enum.BlockStatusCode.WrongParameter
                 });
             }
+            /*
             if (Func_AddToChainPool == null)
             {
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
@@ -2262,6 +2256,7 @@ namespace Notus.Validator
                     Result = Notus.Variable.Enum.BlockStatusCode.Unknown
                 });
             }
+            */
             if (NVG.Settings == null)
             {
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
@@ -2779,7 +2774,7 @@ namespace Notus.Validator
                 );
             }
 
-            bool tmpAddResult = Func_AddToChainPool(new Notus.Variable.Struct.PoolBlockRecordStruct()
+            bool tmpAddResult = NGF.BlockQueue.Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
             {
                 uid = multiKeyId,
                 type = Notus.Variable.Enum.BlockTypeList.MultiWalletCryptoTransfer,
@@ -2900,6 +2895,7 @@ namespace Notus.Validator
                     Result = Notus.Variable.Enum.BlockStatusCode.InsufficientBalance
                 });
             }
+            /*
             if (Func_AddToChainPool == null)
             {
                 NGF.Balance.StopWalletUsage(WalletObj.Founder.WalletKey);
@@ -2910,6 +2906,7 @@ namespace Notus.Validator
                     Result = Notus.Variable.Enum.BlockStatusCode.Unknown
                 });
             }
+            */
             if (Notus.Wallet.ID.CheckAddress(WalletObj.Founder.WalletKey, NVG.Settings.Network) == false)
             {
                 NGF.Balance.StopWalletUsage(WalletObj.Founder.WalletKey);
@@ -2978,7 +2975,7 @@ namespace Notus.Validator
                 Out = newBalance.Balance
             };
 
-            bool tmpAddResult = Func_AddToChainPool(new Notus.Variable.Struct.PoolBlockRecordStruct()
+            bool tmpAddResult = NGF.BlockQueue.Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
             {
                 type = Notus.Variable.Enum.BlockTypeList.MultiWalletContract,
                 data = JsonSerializer.Serialize(tmpLockObj)
@@ -3066,7 +3063,7 @@ namespace Notus.Validator
                 });
             }
 
-
+            /*
             if (Func_AddToChainPool == null)
             {
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
@@ -3076,7 +3073,7 @@ namespace Notus.Validator
                     Result = Notus.Variable.Enum.BlockStatusCode.Unknown
                 });
             }
-
+            */
             if (Notus.Wallet.ID.CheckAddress(LockObj.WalletKey, NVG.Settings.Network) == false)
             {
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponse()
@@ -3134,7 +3131,7 @@ namespace Notus.Validator
                 Sign = LockObj.Sign
             };
 
-            bool tmpAddResult = Func_AddToChainPool(new Notus.Variable.Struct.PoolBlockRecordStruct()
+            bool tmpAddResult = NGF.BlockQueue.Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
             {
                 type = Notus.Variable.Enum.BlockTypeList.LockAccount,
                 data = JsonSerializer.Serialize(tmpLockObj)

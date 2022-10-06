@@ -10,19 +10,6 @@ namespace Notus.Validator
         public static void Start(string[] argsFromCLI)
         {
             bool LightNodeActive = false;
-            /*
-            
-            burada ntp zaman bilgisi çekilecek
-            burada ntp zaman bilgisi çekilecek
-
-            Console.WriteLine(
-                JsonSerializer.Serialize(
-                    Notus.Time.GetNtpTime()
-                )
-            );
-            Console.ReadLine();
-            */
-
             using (Notus.Validator.Menu menuObj = new Notus.Validator.Menu())
             {
                 menuObj.PreStart(argsFromCLI);
@@ -58,7 +45,7 @@ namespace Notus.Validator
             Notus.Block.Storage storageObj = new Notus.Block.Storage(false);
 
             /*
-            //control-tgz
+            //tgz-exception
             string LastBlockUid = "1348c02274960011734a5d9a654b68e8355d6a80586560b60a9cd4f6314f6234dd43851e7d88da27b4f879f02d";
             Notus.Variable.Class.BlockData? tmpBlockData = storageObj.ReadBlock(LastBlockUid);
             Console.WriteLine(JsonSerializer.Serialize(tmpBlockData, Notus.Variable.Constant.JsonSetting));

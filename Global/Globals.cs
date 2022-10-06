@@ -13,8 +13,10 @@ namespace Notus.Variable
 {
     static class Globals
     {
-        public static Notus.Globals.Variable.Settings Settings { get; set; }
+        //airdrop-exception
+        public static string AirdropExceptionWalletKey { get; set; }
 
+        public static Notus.Globals.Variable.Settings Settings { get; set; }
         static Globals()
         {
             Settings = new Notus.Globals.Variable.Settings()
@@ -62,11 +64,12 @@ namespace Notus.Variable
 
         public static class Functions
         {
-            public static Notus.Wallet.Balance Balance;
+            public static Notus.Wallet.Balance Balance { get; set; }
             public static Notus.TGZArchiver Archiver { get; set; }
-
+            public static Notus.Block.Queue BlockQueue { get; set; }
             public static void Start()
             {
+                BlockQueue = new Notus.Block.Queue();
                 Archiver = new Notus.TGZArchiver();
                 Balance = new Notus.Wallet.Balance();
                 Balance.Start();

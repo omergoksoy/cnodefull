@@ -69,7 +69,7 @@ namespace Notus.Block
 
         public Notus.Variable.Class.BlockData? ReadBlock(string BlockUid)
         {
-            //control-tgz
+            //tgz-exception
             /*
             try
             {
@@ -192,10 +192,10 @@ namespace Notus.Block
 
             /*
             
-            //control-tgz
-            //control-tgz
-            //control-tgz
-            //control-tgz
+            //tgz-exception
+            //tgz-exception
+            //tgz-exception
+            //tgz-exception
             Console.WriteLine();
             Console.WriteLine("Storage.Cs -> Line 171");
             Console.WriteLine(NewBlock.info.uID);

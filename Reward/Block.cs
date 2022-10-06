@@ -56,7 +56,7 @@ namespace Notus.Reward
                                 bool tmpExitLoop = false;
                                 while (tmpExitLoop == false)
                                 {
-                                    //control-tgz
+                                    //tgz-exception
                                     Notus.Variable.Class.BlockData? tmpBlockData = storageObj.ReadBlock(LastBlockUid);
                                     if (tmpBlockData != null)
                                     {

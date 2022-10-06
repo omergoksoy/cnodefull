@@ -666,7 +666,7 @@ namespace Notus.Block
                 //Notus.Print.Basic(NVG.Settings, "We Have Block - Lets Check Genesis Time And Hash");
                 using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
                 {
-                    //control-tgz
+                    //tgz-exception
                     Notus.Variable.Class.BlockData? blockData = BS_Storage.ReadBlock(Notus.Variable.Constant.GenesisBlockUid);
                     if (blockData != null)
                     {
