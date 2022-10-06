@@ -391,6 +391,10 @@ namespace Notus.Block
                 return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
             }
             Notus.Print.Success(NVG.Settings, "Block Integrity Valid");
+
+
+            burayı düzenle 
+            burası 4000 blokta yaklaşık 90 saniye sürüyor...
             foreach (KeyValuePair<long, string> item in BlockOrderList)
             {
                 NGF.BlockOrder.Add(
