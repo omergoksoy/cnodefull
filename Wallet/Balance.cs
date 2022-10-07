@@ -4,6 +4,7 @@ using System.IO;
 using System.Numerics;
 using System.Text.Json;
 using NVG = Notus.Variable.Globals;
+using NGF = Notus.Variable.Globals.Functions;
 namespace Notus.Wallet
 {
     public class Balance : IDisposable
@@ -13,8 +14,8 @@ namespace Notus.Wallet
             new Dictionary<string, Notus.Variable.Struct.WalletBalanceStruct>();
         //private Notus.Mempool ObjMp_Balance;
 
-        private Notus.Mempool ObjMp_WalletUsage;
-        private Notus.Mempool ObjMp_LockWallet;
+        //private Notus.Mempool ObjMp_WalletUsage;
+        //private Notus.Mempool ObjMp_LockWallet;
         private Notus.Mempool ObjMp_MultiWalletParticipant;
         private Notus.Mempool ObjMp_WalletsICanApprove;
         private Dictionary<string, Notus.Variable.Enum.MultiWalletType> MultiWalletTypeList=new Dictionary<string, Variable.Enum.MultiWalletType>();
@@ -72,7 +73,8 @@ namespace Notus.Wallet
         // bu fonksiyonlar ile cüzdanın kilitlenmesi durumuna bakalım
         public bool WalletUsageAvailable(string walletKey)
         {
-            return (ObjMp_WalletUsage.Get(walletKey, "").Length == 0 ? true : false);
+            return (NGF.WalletUsageList.ContainsKey(walletKey) == false ? true : false);
+            //return (ObjMp_WalletUsage.Get(walletKey, "").Length == 0 ? true : false);
         }
         public bool StartWalletUsage(string walletKey)
         {
@@ -80,15 +82,25 @@ namespace Notus.Wallet
             {
                 return false;
             }
+            if(NGF.WalletUsageList.ContainsKey(walletKey) == false)
+            {
+                NGF.WalletUsageList.Add(walletKey, 1);
+            }
+            return true;
+            /*
             return ObjMp_WalletUsage.Add(
                 walletKey,
                 DateTime.Now.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
             );
+            */
         }
         public void StopWalletUsage(string walletKey)
         {
-            ObjMp_WalletUsage.Remove(walletKey);
+            NGF.WalletUsageList.Remove(walletKey);
+            //ObjMp_WalletUsage.Remove(walletKey);
         }
+
+        // omergoksoy
         private void StoreToDb(Notus.Variable.Struct.WalletBalanceStruct BalanceObj)
         {
             string dictionaryKeyStr = Notus.Toolbox.Text.ToHex(BalanceObj.Wallet, 100);
@@ -361,10 +373,19 @@ namespace Notus.Wallet
         }
         public bool AccountIsLock(string WalletKey)
         {
+            string unlockTimeStr = "";
+            if (NGF.LockWalletList.ContainsKey(WalletKey) == true)
+            {
+                unlockTimeStr=NGF.LockWalletList[WalletKey];
+            }
+
+            /*
             string unlockTimeStr = ObjMp_LockWallet.Get(
                 Notus.Toolbox.Text.ToHex(WalletKey),
                 ""
             );
+            */
+
             if (unlockTimeStr.Length > 0)
             {
                 if (ulong.TryParse(unlockTimeStr, out ulong unlockTimeLong))
@@ -441,8 +462,10 @@ namespace Notus.Wallet
                 //Notus.Wallet.Currency.Add2List(NVG.Settings.Network, NVG.Settings.Genesis.CoinInfo.Tag, tmpBlockForBalance.info.uID);
 
                 //ObjMp_Balance.Clear();
-                ObjMp_LockWallet.Clear();
-                ObjMp_WalletUsage.Clear();
+                //ObjMp_LockWallet.Clear();
+                NGF.LockWalletList.Clear();
+                NGF.WalletUsageList.Clear();
+                //ObjMp_WalletUsage.Clear();
                 ObjMp_MultiWalletParticipant.Clear();
                 ObjMp_WalletsICanApprove.Clear();
                 MultiWalletTypeList.Clear();
@@ -601,11 +624,21 @@ namespace Notus.Wallet
                             tmpBlockForBalance.cipher.data
                         )
                     );
+
+                    if (NGF.LockWalletList.ContainsKey(tmpLockBalance.WalletKey) == false)
+                    {
+                        NGF.LockWalletList.Add(
+                            tmpLockBalance.WalletKey,
+                            tmpLockBalance.UnlockTime.ToString()
+                        );
+                    }
+                    /*
                     ObjMp_LockWallet.Set(
                         Notus.Toolbox.Text.ToHex(tmpLockBalance.WalletKey),
                         tmpLockBalance.UnlockTime.ToString(),
                         true
                     );
+                    */
                 }
             }
 
@@ -822,20 +855,22 @@ namespace Notus.Wallet
             ObjMp_Balance.AsyncActive = true;
             ObjMp_Balance.Clear();
             */
+            /*
             ObjMp_LockWallet = new Notus.Mempool(
                 Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Balance) +
                 "account_lock"
             );
             ObjMp_LockWallet.AsyncActive = false;
             ObjMp_LockWallet.Clear();
-
+            */
+            /*
             ObjMp_WalletUsage = new Notus.Mempool(
                 Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Balance) +
                 "wallet_usage"
             );
             ObjMp_WalletUsage.AsyncActive = false;
             ObjMp_WalletUsage.Clear();
-
+            */
 
             ObjMp_MultiWalletParticipant = new Notus.Mempool(
                 Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Balance) +
@@ -882,7 +917,6 @@ namespace Notus.Wallet
                     err
                 );
             }
-            */
             try
             {
                 if (ObjMp_LockWallet != null)
@@ -901,6 +935,8 @@ namespace Notus.Wallet
                     err
                 );
             }
+            */
+            /*
             try
             {
                 if (ObjMp_WalletUsage != null)
@@ -919,6 +955,7 @@ namespace Notus.Wallet
                     err
                 );
             }
+            */
 
             try
             {

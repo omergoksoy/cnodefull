@@ -531,6 +531,8 @@ namespace Notus.Validator
         }
         private void WaitUntilEnoughNode()
         {
+            //Console.WriteLine(IncomeBlockList.Count);
+            //Console.WriteLine(JsonSerializer.Serialize( IncomeBlockList));
             if (NVG.Settings.GenesisCreated == false)
             {
                 SetTimeStatusForBeginSync(true);        // stop timer
@@ -540,6 +542,7 @@ namespace Notus.Validator
                 }
                 SetTimeStatusForBeginSync(false);       // release timer
             }
+            //Console.WriteLine("cikti");
         }
         public void Start()
         {
@@ -567,6 +570,29 @@ namespace Notus.Validator
             if (NVG.Settings.GenesisCreated == false && NVG.Settings.Genesis != null)
             {
                 Notus.Print.Basic(NVG.Settings, "Last Block Row No : " + NVG.Settings.LastBlock.info.rowNo.ToString());
+                using (Notus.Block.Storage Obj_Storage = new Notus.Block.Storage(false))
+                {
+                    //Console.WriteLine(JsonSerializer.Serialize( NGF.BlockOrder));
+                    foreach (KeyValuePair<long, string> entry in NGF.BlockOrder)
+                    {
+                        //Console.WriteLine(entry.Key.ToString() + " -  "  + entry.Value);
+                        //tgz-exception
+                        Notus.Variable.Class.BlockData? tmpBlockData = Obj_Storage.ReadBlock(entry.Value);
+                        if (tmpBlockData != null)
+                        {
+                            ProcessBlock(tmpBlockData, 1);
+                        }
+                        else
+                        {
+                            Notus.Print.Danger(NVG.Settings, "Notus.Block.Integrity -> Block Does Not Exist");
+                            Notus.Print.Danger(NVG.Settings, "Reset Block");
+                            Notus.Print.ReadLine(NVG.Settings);
+                        }
+                    }
+                }
+                Notus.Print.Info(NVG.Settings, "All Blocks Loaded");
+
+                /*
                 using (Notus.Mempool ObjMp_BlockOrder =
                     new Notus.Mempool(
                         Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) +
@@ -595,6 +621,7 @@ namespace Notus.Validator
                     );
                     Notus.Print.Info(NVG.Settings, "All Blocks Loaded");
                 }
+                */
                 SelectedPortVal = Notus.Toolbox.Network.GetNetworkPort(NVG.Settings);
             }
             else
@@ -612,67 +639,78 @@ namespace Notus.Validator
             //BlockStatObj = Obj_BlockQueue.CurrentBlockStatus();
             Start_HttpListener();
 
-            // her gelen blok bir listeye eklenmeli ve o liste ile sıra ile eklenmeli
-            ValidatorQueueObj.Func_NewBlockIncome = tmpNewBlockIncome =>
+            if (NVG.Settings.LocalNode == false)
             {
-                ProcessBlock(tmpNewBlockIncome, 2);
-                //Notus.Print.Info(NVG.Settings, "Arrived New Block : " + tmpNewBlockIncome.info.uID);
-                return true;
-            };
-
-            ValidatorQueueObj.GetUtcTimeFromServer();
-            if (NVG.Settings.GenesisCreated == false)
-            {
-                ValidatorQueueObj.PreStart(
-                    NVG.Settings.LastBlock.info.rowNo,
-                    NVG.Settings.LastBlock.info.uID,
-                    NVG.Settings.LastBlock.sign,
-                    NVG.Settings.LastBlock.prev
-                );
-
-                //burada ping ve pong yaparak bekleyecek
-                ValidatorQueueObj.PingOtherNodes();
+                // her gelen blok bir listeye eklenmeli ve o liste ile sıra ile eklenmeli
+                ValidatorQueueObj.Func_NewBlockIncome = tmpNewBlockIncome =>
+                {
+                    ProcessBlock(tmpNewBlockIncome, 2);
+                    //Notus.Print.Info(NVG.Settings, "Arrived New Block : " + tmpNewBlockIncome.info.uID);
+                    return true;
+                };
             }
 
-            ValidatorQueueObj.Start();
-
-
-            // kontrol noktası
-            // burada dışardan gelen blok datalarının tamamlandığı durumda node hazırım sinyalini diğer
-            // nodelara gönderecek
-            // node hazır olmadan HAZIR sinyalini gönderdiği için
-            // senkronizasyon hatası oluyor ve gelen bloklar hatalı birşekilde kaydediliyor.
-            // sonrasında gelen bloklar explorer'da aranırken hata oluşturuyor.
-            if (NVG.Settings.GenesisCreated == false)
+            ValidatorQueueObj.GetUtcTimeFromServer();
+            if (NVG.Settings.LocalNode == false)
             {
-                Notus.Print.Info(NVG.Settings, "Node Blocks Are Checking For Sync");
-                bool waitForOtherNodes = Notus.Sync.Block(
-                    NVG.Settings, ValidatorQueueObj.GiveMeNodeList(),
-                    tmpNewBlockIncome =>
-                    {
-                        ProcessBlock(tmpNewBlockIncome, 3);
-                    }
-                );
+                if (NVG.Settings.GenesisCreated == false)
+                {
+                    ValidatorQueueObj.PreStart(
+                        NVG.Settings.LastBlock.info.rowNo,
+                        NVG.Settings.LastBlock.info.uID,
+                        NVG.Settings.LastBlock.sign,
+                        NVG.Settings.LastBlock.prev
+                    );
 
-                if (MyReadyMessageSended == false && waitForOtherNodes == false)
-                {
-                    FirstSyncIsDone = true;
-                    MyReadyMessageSended = true;
-                    ValidatorQueueObj.MyNodeIsReady();
+                    //burada ping ve pong yaparak bekleyecek
+                    ValidatorQueueObj.PingOtherNodes();
                 }
-                else
+                ValidatorQueueObj.Start();
+            }
+
+
+            if (NVG.Settings.LocalNode == false)
+            {
+                // kontrol noktası
+                // burada dışardan gelen blok datalarının tamamlandığı durumda node hazırım sinyalini diğer
+                // nodelara gönderecek
+                // node hazır olmadan HAZIR sinyalini gönderdiği için
+                // senkronizasyon hatası oluyor ve gelen bloklar hatalı birşekilde kaydediliyor.
+                // sonrasında gelen bloklar explorer'da aranırken hata oluşturuyor.
+                if (NVG.Settings.GenesisCreated == false)
                 {
-                    if (FirstSyncIsDone == false && MyReadyMessageSended == false)
-                    {
-                        if (IncomeBlockList.Count == 0)
+                    Notus.Print.Info(NVG.Settings, "Node Blocks Are Checking For Sync");
+                    bool waitForOtherNodes = Notus.Sync.Block(
+                        NVG.Settings, ValidatorQueueObj.GiveMeNodeList(),
+                        tmpNewBlockIncome =>
                         {
-                            FirstSyncIsDone = true;
-                            MyReadyMessageSended = true;
-                            ValidatorQueueObj.MyNodeIsReady();
+                            ProcessBlock(tmpNewBlockIncome, 3);
+                        }
+                    );
+
+                    if (MyReadyMessageSended == false && waitForOtherNodes == false)
+                    {
+                        FirstSyncIsDone = true;
+                        MyReadyMessageSended = true;
+                        //Console.WriteLine("Control-Point-a465as4");
+                        ValidatorQueueObj.MyNodeIsReady();
+                    }
+                    else
+                    {
+                        if (FirstSyncIsDone == false && MyReadyMessageSended == false)
+                        {
+                            if (IncomeBlockList.Count == 0)
+                            {
+                                FirstSyncIsDone = true;
+                                MyReadyMessageSended = true;
+                                Console.WriteLine("Control-Point-a465as4");
+                                ValidatorQueueObj.MyNodeIsReady();
+                            }
                         }
                     }
                 }
             }
+
 
 
             if (NVG.Settings.GenesisCreated == false)
@@ -713,10 +751,17 @@ namespace Notus.Validator
                 }
                 Notus.Print.Success(NVG.Settings, "First Synchronization Is Done");
             }
-
+            //omergoksoy
+            //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings, Notus.Variable.Constant.JsonSetting));
             DateTime LastPrintTime = DateTime.Now;
             bool tmpStartWorkingPrinted = false;
             bool tmpExitMainLoop = false;
+            if (NVG.Settings.LocalNode == true)
+            {
+                ValidatorQueueObj.WaitForEnoughNode = false;
+                ValidatorQueueObj.MyTurn = true;
+            }
+
             while (tmpExitMainLoop == false)
             {
                 //Console.WriteLine(EmptyBlockTimerIsRunning);
@@ -822,10 +867,13 @@ namespace Notus.Validator
                     blockData.info.type != Notus.Variable.Enum.BlockTypeList.GenesisBlock
                 )
                 {
-                    Notus.Print.Status(NVG.Settings,
-                        "Block Came From The Loading DB [ " + fixedRowNoLength(blockData) + " ] ->" +
-                        blockData.info.type.ToString().PadLeft(4,' ')
-                    );
+                    if(blockData.info.rowNo % 500 == 0)
+                    {
+                        Notus.Print.Status(NVG.Settings,
+                            "Block Came From The Loading DB [ " + fixedRowNoLength(blockData) + " ] ->" +
+                            blockData.info.type.ToString().PadLeft(4, ' ')
+                        );
+                    }
                 }
             }
             if (blockSource == 2)
@@ -883,6 +931,15 @@ namespace Notus.Validator
         }
         private bool ProcessBlock(Notus.Variable.Class.BlockData blockData, int blockSource)
         {
+            /*
+            Console.WriteLine(
+                CurrentBlockRowNo.ToString()+
+                " - " +
+                blockData.info.rowNo.ToString() +
+                    " - " +
+                NVG.Settings.LastBlock.info.rowNo.ToString()
+            );
+            */
             if (blockData.info.rowNo > CurrentBlockRowNo)
             {
                 string tmpBlockDataStr = JsonSerializer.Serialize(blockData);
@@ -894,7 +951,11 @@ namespace Notus.Validator
                     {
                         Console.WriteLine("Block Exist -> Line 937");
                     }
-                    else { 
+                    else {
+                        Console.WriteLine();
+                        Console.WriteLine("Add -> CurrentBlockRowNo    -> " + CurrentBlockRowNo.ToString());
+                        Console.WriteLine("Add -> blockData.info.rowNo -> " + blockData.info.rowNo.ToString());
+                        Console.WriteLine();
                         IncomeBlockList.Add(blockData.info.rowNo, tmpBlockData);
                         ProcessBlock_PrintSection(blockData, blockSource);
                         Notus.Print.Status(NVG.Settings, "Insert Block To Temporary Block List");
@@ -996,6 +1057,7 @@ namespace Notus.Validator
 
             if (IncomeBlockList.ContainsKey(CurrentBlockRowNo))
             {
+                Console.WriteLine("Remove -> " + CurrentBlockRowNo.ToString());
                 IncomeBlockList.Remove(CurrentBlockRowNo);
             }
 

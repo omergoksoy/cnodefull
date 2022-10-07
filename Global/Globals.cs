@@ -64,14 +64,40 @@ namespace Notus.Variable
 
         public static class Functions
         {
+            public static Dictionary<string, string> LockWalletList { get; set; }
+            public static Dictionary<string,byte> WalletUsageList { get; set; }
             public static Dictionary<long,string> BlockOrder { get; set; }
             //public static Notus.Mempool BlockOrder { get; set; }
             public static Notus.Block.Storage Storage { get; set; }
             public static Notus.Wallet.Balance Balance { get; set; }
             public static Notus.TGZArchiver Archiver { get; set; }
             public static Notus.Block.Queue BlockQueue { get; set; }
+            private static void GetAirdropWallet()
+            {
+                string tmpKeyPair = string.Empty;
+                using (Notus.Mempool ObjMp_Genesis =
+                    new Notus.Mempool(
+                        Notus.IO.GetFolderName(Settings, Notus.Variable.Constant.StorageFolderName.Common) +
+                        "genesis_accounts"
+                    )
+                )
+                {
+                    tmpKeyPair = ObjMp_Genesis.Get("seed_key");
+                }
+                if (tmpKeyPair.Length > 0)
+                {
+                    Notus.Variable.Struct.EccKeyPair? KeyPair_PreSeed = JsonSerializer.Deserialize<Notus.Variable.Struct.EccKeyPair>(tmpKeyPair);
+                    if (KeyPair_PreSeed != null)
+                    {
+                        AirdropExceptionWalletKey = KeyPair_PreSeed.WalletKey;
+                    }
+                }
+            }
             public static void Start()
             {
+                AirdropExceptionWalletKey = "";
+                WalletUsageList = new Dictionary<string,byte>();
+                LockWalletList = new Dictionary<string,string>();
                 BlockOrder = new Dictionary<long, string>();
                 Storage = new Notus.Block.Storage();
                 BlockQueue = new Notus.Block.Queue();
@@ -80,8 +106,10 @@ namespace Notus.Variable
                 if (Settings.GenesisCreated == false)
                 {
                     Balance.Start();
+                    GetAirdropWallet();
                 }
 
+                BlockOrder.Clear();
                 /*
                 string tmpFolderName = Notus.IO.GetFolderName(
                     Settings,

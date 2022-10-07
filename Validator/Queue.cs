@@ -18,6 +18,7 @@ namespace Notus.Validator
         public bool WaitForEnoughNode
         {
             get { return WaitForEnoughNode_Val; }
+            set { WaitForEnoughNode_Val = value; }
         }
 
         public bool NotEnoughNode_Printed = false;
@@ -41,6 +42,7 @@ namespace Notus.Validator
         public bool MyTurn
         {
             get { return MyTurn_Val; }
+            set { MyTurn_Val = value; }
         }
         private bool SyncReady = true;
 
@@ -228,6 +230,7 @@ namespace Notus.Validator
                         string incodeResponse = Notus.Communication.Request.GetSync(
                             urlPath, 2, true, false, null
                         );
+                        //Console.WriteLin
                         if (string.Equals(incodeResponse, "pong"))
                         {
                             tmpNodeCount++;
@@ -570,7 +573,6 @@ namespace Notus.Validator
                 string urlPath =
                     Notus.Network.Node.MakeHttpListenerPath(receiverIpAddress, receiverPortNo) +
                     "queue/node/" + tmpNodeHexStr;
-                //Console.WriteLine("Sending : " + urlPath);
                 (bool worksCorrent, string incodeResponse) = Notus.Communication.Request.PostSync(
                     urlPath,
                     new Dictionary<string, string>()
@@ -581,6 +583,9 @@ namespace Notus.Validator
                     true,
                     false
                 );
+                //Console.WriteLine("Sending : " + urlPath);
+                //Console.WriteLine(worksCorrent);
+                //Console.WriteLine(incodeResponse);
                 if (worksCorrent == true)
                 {
                     NodeList[tmpNodeHexStr].ErrorCount = 0;
@@ -678,6 +683,7 @@ namespace Notus.Validator
                         }
                     }
                     SortedDictionary<string, IpInfo>? tmpMainAddressList = JsonSerializer.Deserialize<SortedDictionary<string, IpInfo>>(tmpData);
+                    //Console.WriteLine(JsonSerializer.Serialize(tmpMainAddressList, Notus.Variable.Constant.JsonSetting));
                     bool tmpRefreshNodeDetails = false;
                     if (tmpMainAddressList != null)
                     {
@@ -757,14 +763,17 @@ namespace Notus.Validator
                         }
                     }
                 }
-
+                //Console.WriteLine("nodeCount : " + nodeCount.ToString());
                 if (nodeCount == 0)
                 {
                     SyncReady = false;
                 }
 
+                //Console.WriteLine(SyncReady);
                 if (SyncReady == true)
                 {
+                    //Console.WriteLine(NtpTime);
+                    //Console.WriteLine(NextQueueValidNtpTime);
                     if (LastHashForStoreList != NodeListHash)
                     {
                         CalculateTimeDifference(true);
@@ -793,6 +802,7 @@ namespace Notus.Validator
                 }
             }
             ActiveNodeCount_Val = nodeCount;
+            //Console.WriteLine("ActiveNodeCount_Val : " + ActiveNodeCount_Val.ToString());
 
             //burada ready olduğu seçilmediğinden dolayı
             //sending ready mesajı gönderilemiyor

@@ -62,6 +62,7 @@ namespace Notus.Validator
                 ObjMp_CryptoTranStatus = new Notus.Mempool(Notus.IO.GetFolderName(NVG.Settings, Notus.Variable.Constant.StorageFolderName.Common) + "crypto_transfer_status");
                 ObjMp_CryptoTranStatus.AsyncActive = false;
 
+                //NGF.BlockOrder.Clear();
                 /*
                 ObjMp_BlockOrderList = new Notus.Mempool(
                     Notus.IO.GetFolderName(
@@ -133,6 +134,7 @@ namespace Notus.Validator
             }
             else
             {
+                NGF.BlockOrder[Obj_BlockData.info.rowNo]= Obj_BlockData.info.uID;
                 //Console.WriteLine("Block Row No Exist");
                 //Console.WriteLine("Block Row No Exist");
                 //Console.WriteLine("Block Row No Exist");
@@ -745,7 +747,7 @@ namespace Notus.Validator
                 });
             }
             //airdrop-exception
-            NVG.AirdropExceptionWalletKey= KeyPair_PreSeed.WalletKey;
+            NVG.AirdropExceptionWalletKey = KeyPair_PreSeed.WalletKey;
             string airdropStr = "2000000";
             if (Notus.Variable.Constant.AirDropVolume.ContainsKey(NVG.Settings.Layer))
             {
@@ -809,7 +811,7 @@ namespace Notus.Validator
                 }
                 else
                 {
-                    Console.WriteLine("ContainsKey == false;");
+                    //Console.WriteLine("ContainsKey == false;");
                 }
 
                 if (tmpBlockKey.Length > 0)

@@ -487,6 +487,7 @@ namespace Notus.Block
         }
         private void StoreBlockWithRowNo(Int64 BlockRowNo)
         {
+            /*
             Notus.Print.Log(
                 Notus.Variable.Enum.LogLevel.Error,
                 500001001,
@@ -497,7 +498,7 @@ namespace Notus.Block
             );
 
             Console.WriteLine("BlockRowNo Does Not Exist : " + BlockRowNo.ToString());
-            
+            */
             //control-local-block
             //bool localFound=AddFromLocalTemp(BlockRowNo);
             

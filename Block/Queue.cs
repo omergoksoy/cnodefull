@@ -363,6 +363,7 @@ tmpRequestSend_ListCount : 261
                 {
                     if (TempBlockList.Count > 1)
                     {
+                        //Console.WriteLine(JsonSerializer.Serialize( TempBlockList));
                         Notus.Variable.Class.BlockStruct_120 tmpBlockCipherData = new Variable.Class.BlockStruct_120()
                         {
                             In = new Dictionary<string, Variable.Class.BlockStruct_120_In_Struct>(),
@@ -419,7 +420,15 @@ tmpRequestSend_ListCount : 261
                                     }
                                     else
                                     {
-                                        tmpBlockCipherData.In.Add(iEntry.Key, iEntry.Value);
+                                        if (tmpBlockCipherData.In.ContainsKey(iEntry.Key) == false)
+                                        {
+                                            tmpBlockCipherData.In.Add(iEntry.Key, iEntry.Value);
+                                        }
+                                        else
+                                        {
+                                            //Console.WriteLine("Out wallet Exist");
+                                        }
+
                                     }
                                 }
                                 foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> iEntry in tmpInnerData.Out)
@@ -441,13 +450,18 @@ tmpRequestSend_ListCount : 261
                                         }
                                         else
                                         {
-                                            Console.WriteLine("Out wallet Exist");
+                                            //Console.WriteLine("Out wallet Exist");
                                         }
                                     }
                                 }
                             }
+                            else
+                            {
+                                Console.WriteLine(TempBlockList[i]);
+                            }
                         }
                         TempBlockList.Clear();
+                        //Console.WriteLine(tmpBlockCipherData.Out.Count)
                         TempBlockList.Add(JsonSerializer.Serialize(tmpBlockCipherData));
                     }
                 }
