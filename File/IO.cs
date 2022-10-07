@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using NVG = Notus.Variable.Globals;
+using DirListConst = Notus.Variable.Constant.StorageFolderName;
 namespace Notus
 {
     public static class IO
@@ -26,18 +27,18 @@ namespace Notus
             string extension
         )
         {
-            if (Directory.Exists(Notus.IO.GetFolderName(objSettings.Network, objSettings.Layer,
+            if (Directory.Exists(Notus.IO.GetFolderName(objSettings,
                 directoryName)) == false)
             {
                 return new string[] { };
             }
             return Directory.GetFiles(
-                Notus.IO.GetFolderName(objSettings.Network, objSettings.Layer, directoryName),"*." + extension
+                Notus.IO.GetFolderName(objSettings, directoryName),"*." + extension
             );
         }
         public static string[] GetZipFiles(Notus.Variable.Enum.NetworkType networkType,Notus.Variable.Enum.NetworkLayer networkLayer)
         {
-            return GetFileList(networkType,networkLayer,Notus.Variable.Constant.StorageFolderName.Block,"zip");
+            return GetFileList(networkType,networkLayer, DirListConst.Block,"zip");
         }
         public static string[] GetZipFiles(Notus.Globals.Variable.Settings objSettings)
         {
@@ -65,15 +66,14 @@ namespace Notus
         }
         public static void NodeFolderControl()
         {
-            
-            CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.BlockForTgz));
-            CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.TempBlock));
-            CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.Balance));
-            CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.Block));
-            CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.Common));
-            CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.File));
-            CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.Node));
-            CreateDirectory(GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Variable.Constant.StorageFolderName.Pool));
+            CreateDirectory(GetFolderName(NVG.Settings, DirListConst.BlockForTgz));
+            CreateDirectory(GetFolderName(NVG.Settings, DirListConst.TempBlock));
+            CreateDirectory(GetFolderName(NVG.Settings, DirListConst.Balance));
+            CreateDirectory(GetFolderName(NVG.Settings, DirListConst.Block));
+            CreateDirectory(GetFolderName(NVG.Settings, DirListConst.Common));
+            CreateDirectory(GetFolderName(NVG.Settings, DirListConst.File));
+            CreateDirectory(GetFolderName(NVG.Settings, DirListConst.Node));
+            CreateDirectory(GetFolderName(NVG.Settings, DirListConst.Pool));
         }
     }
 }

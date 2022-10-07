@@ -562,6 +562,8 @@ namespace Notus.Validator
             // Obj_TokenStorage = new Notus.Token.Storage();
             // Obj_TokenStorage.Settings = NVG.Settings;
 
+
+            //dekjdhekjdhedhke
             if (NVG.Settings.GenesisCreated == false && NVG.Settings.Genesis != null)
             {
                 Notus.Print.Basic(NVG.Settings, "Last Block Row No : " + NVG.Settings.LastBlock.info.rowNo.ToString());
@@ -572,30 +574,22 @@ namespace Notus.Validator
                     )
                 )
                 {
-                    ObjMp_BlockOrder.Each((string blockUniqueId, string BlockText) =>
+                    ObjMp_BlockOrder.Each((string blockOrderNo, string blockUniqueId) =>
                     {
-                        KeyValuePair<string, string> BlockOrder = JsonSerializer.Deserialize<KeyValuePair<string, string>>(BlockText);
-                        if (string.Equals(new Notus.Hash().CommonSign("sha1", BlockOrder.Key + NVG.Settings.HashSalt), BlockOrder.Value))
+                        using (Notus.Block.Storage Obj_Storage = new Notus.Block.Storage(false))
                         {
-                            using (Notus.Block.Storage Obj_Storage = new Notus.Block.Storage(false))
+                            //tgz-exception
+                            Notus.Variable.Class.BlockData? tmpBlockData = Obj_Storage.ReadBlock(blockUniqueId);
+                            if (tmpBlockData != null)
                             {
-                                //tgz-exception
-                                Notus.Variable.Class.BlockData? tmpBlockData = Obj_Storage.ReadBlock(BlockOrder.Key);
-                                if (tmpBlockData != null)
-                                {
-                                    ProcessBlock(tmpBlockData, 1);
-                                }
-                                else
-                                {
-                                    Notus.Print.Danger(NVG.Settings, "Notus.Block.Integrity -> Block Does Not Exist");
-                                    Notus.Print.Danger(NVG.Settings, "Reset Block");
-                                    Notus.Print.ReadLine(NVG.Settings);
-                                }
+                                ProcessBlock(tmpBlockData, 1);
                             }
-                        }
-                        else
-                        {
-                            Notus.Print.Danger(NVG.Settings, "Hash calculation error");
+                            else
+                            {
+                                Notus.Print.Danger(NVG.Settings, "Notus.Block.Integrity -> Block Does Not Exist");
+                                Notus.Print.Danger(NVG.Settings, "Reset Block");
+                                Notus.Print.ReadLine(NVG.Settings);
+                            }
                         }
                     }, 0
                     );
@@ -836,15 +830,6 @@ namespace Notus.Validator
             }
             if (blockSource == 2)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    100000002,
-                    JsonSerializer.Serialize(blockData),
-                    blockData.info.rowNo.ToString(),
-                    NVG.Settings,
-                    null
-                );
-
                 Notus.Print.Status(NVG.Settings,
                     "Block Came From The Validator Queue [ " + fixedRowNoLength(blockData) + " ] ->" +
                     blockData.info.type.ToString().PadLeft(4, ' ')
@@ -859,14 +844,6 @@ namespace Notus.Validator
             }
             if (blockSource == 4)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    100000004,
-                    JsonSerializer.Serialize(blockData),
-                    blockData.info.rowNo.ToString(),
-                    NVG.Settings,
-                    null
-                );
                 Notus.Print.Status(NVG.Settings,
                     "Block Came From The Main Loop [ " + fixedRowNoLength(blockData) + " ] ->" +
                     blockData.info.type.ToString().PadLeft(4, ' ')
@@ -925,14 +902,6 @@ namespace Notus.Validator
                 }
                 else
                 {
-                    Notus.Print.Log(
-                        Notus.Variable.Enum.LogLevel.Error,
-                        300000099,
-                        tmpBlockDataStr,
-                        "BlockRowNo",
-                        NVG.Settings,
-                        null
-                    );
                     ProcessBlock_PrintSection(blockData, blockSource);
                 }
                 return true;
@@ -951,11 +920,9 @@ namespace Notus.Validator
                 if (blockData.info.type == 300)
                 {
                     EmptyBlockGeneratedTime = Notus.Date.ToDateTime(blockData.info.time);
-                    //Console.WriteLine("EmptyBlockGeneratedTime [2]: " + EmptyBlockGeneratedTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText));
                 }
 
                 NGF.BlockQueue.AddToChain(blockData);
-
                 if (blockData.info.type == 250)
                 {
                     Obj_Api.Layer3_StorageFileDone(blockData.info.uID);
@@ -1021,8 +988,11 @@ namespace Notus.Validator
                 ProcessBlock_PrintSection(blockData, blockSource);
             }
 
+            //DateTime start = DateTime.Now;
             //gelen blok burada işleniyor...
             Obj_Api.AddForCache(blockData);
+            //Console.WriteLine(DateTime.Now - start);
+            //Console.ReadLine();
 
             if (IncomeBlockList.ContainsKey(CurrentBlockRowNo))
             {
@@ -1042,7 +1012,6 @@ namespace Notus.Validator
                 {
                     if (IncomeBlockList.Count == 0)
                     {
-                        Console.WriteLine("Control-Point-1-AAA");
                         ValidatorQueueObj.MyNodeIsReady();
                     }
                 }

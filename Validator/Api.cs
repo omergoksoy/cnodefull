@@ -26,7 +26,7 @@ namespace Notus.Validator
             get { return ObjMp_MultiSignPool; }
         }
 
-        private Notus.Mempool ObjMp_BlockOrderList;
+        //private Notus.Mempool ObjMp_BlockOrderList;
         private Notus.Mempool ObjMp_CryptoTranStatus;
         public Notus.Mempool CryptoTranStatus
         {
@@ -62,13 +62,15 @@ namespace Notus.Validator
                 ObjMp_CryptoTranStatus = new Notus.Mempool(Notus.IO.GetFolderName(NVG.Settings, Notus.Variable.Constant.StorageFolderName.Common) + "crypto_transfer_status");
                 ObjMp_CryptoTranStatus.AsyncActive = false;
 
+                /*
                 ObjMp_BlockOrderList = new Notus.Mempool(
                     Notus.IO.GetFolderName(
                         NVG.Settings, Notus.Variable.Constant.StorageFolderName.Common
                     ) + "ordered_block_list");
 
-                ObjMp_BlockOrderList.AsyncActive = true;
+                ObjMp_BlockOrderList.AsyncActive = false;
                 ObjMp_BlockOrderList.Clear();
+                */
 
                 ObjMp_MultiSignPool = new Notus.Mempool(
                     Notus.IO.GetFolderName(
@@ -124,9 +126,24 @@ namespace Notus.Validator
 
         public void AddForCache(Notus.Variable.Class.BlockData Obj_BlockData)
         {
+            //DateTime start = DateTime.Now;
+            if (NGF.BlockOrder.ContainsKey(Obj_BlockData.info.rowNo) == false)
+            {
+                NGF.BlockOrder.Add(Obj_BlockData.info.rowNo, Obj_BlockData.info.uID);
+            }
+            else
+            {
+                //Console.WriteLine("Block Row No Exist");
+                //Console.WriteLine("Block Row No Exist");
+                //Console.WriteLine("Block Row No Exist");
+                //Console.WriteLine("Block Row No Exist");
+            }
+
+            /*
             string tmpBlockKey = ObjMp_BlockOrderList.Get(Obj_BlockData.info.rowNo.ToString(), string.Empty);
             if (tmpBlockKey.Length == 0)
             {
+                //block-order-exception
                 ObjMp_BlockOrderList.Add(
                     Obj_BlockData.info.rowNo.ToString(),
                     Obj_BlockData.info.uID
@@ -139,7 +156,8 @@ namespace Notus.Validator
                 Console.WriteLine("Block Row No Exist");
                 Console.WriteLine("Block Row No Exist");
             }
-            
+            */
+
             NGF.Balance.Control(Obj_BlockData);
             if (Obj_BlockData.info.type == Notus.Variable.Enum.BlockTypeList.CryptoTransfer)
             {
@@ -176,6 +194,8 @@ namespace Notus.Validator
                 }
                 */
             }
+            //Console.WriteLine(DateTime.Now-start);
+            //Console.ReadLine();
         }
 
         //layer -1 kontrolünü sağla
@@ -781,7 +801,17 @@ namespace Notus.Validator
                     return NVG.Settings.LastBlock;
                 }
 
-                string tmpBlockKey = ObjMp_BlockOrderList.Get(BlockRowNo.ToString(), string.Empty);
+                //string tmpBlockKey = ObjMp_BlockOrderList.Get(BlockRowNo.ToString(), string.Empty);
+                string tmpBlockKey = string.Empty;
+                if (NGF.BlockOrder.ContainsKey(BlockRowNo) == true)
+                {
+                    tmpBlockKey = NGF.BlockOrder[BlockRowNo];
+                }
+                else
+                {
+                    Console.WriteLine("ContainsKey == false;");
+                }
+
                 if (tmpBlockKey.Length > 0)
                 {
                     Notus.Variable.Class.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(tmpBlockKey);
@@ -791,6 +821,7 @@ namespace Notus.Validator
                     }
                     else
                     {
+                        /*
                         Notus.Print.Log(
                             Notus.Variable.Enum.LogLevel.Error,
                             500001018,
@@ -799,6 +830,7 @@ namespace Notus.Validator
                             NVG.Settings,
                             null
                         );
+                        */
                     }
                 }
                 else

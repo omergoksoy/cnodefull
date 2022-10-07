@@ -68,7 +68,15 @@ namespace Notus.Block
         }
         private (Notus.Variable.Enum.BlockIntegrityStatus, Notus.Variable.Class.BlockData?) ControlBlockIntegrity()
         {
-            Notus.Wallet.Fee.ClearFeeData(NVG.Settings.Network, NVG.Settings.Layer);
+            try
+            {
+                Notus.Wallet.Fee.ClearFeeData(NVG.Settings.Network, NVG.Settings.Layer);
+
+            }catch(Exception err)
+            {
+                Console.WriteLine(err.Message);
+                Console.WriteLine(err.Message);
+            }
 
             Notus.Variable.Class.BlockData LastBlock = Notus.Variable.Class.Block.GetEmpty();
             string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
@@ -76,6 +84,7 @@ namespace Notus.Block
             if (ZipFileList.Length == 0)
             {
                 Notus.Print.Success(NVG.Settings, "Genesis Block Needs");
+                //NGF.BlockOrder.Clear();
                 return (Notus.Variable.Enum.BlockIntegrityStatus.GenesisNeed, null);
             }
             bool tmpGetListAgain = false;
@@ -311,19 +320,6 @@ namespace Notus.Block
                 if (item.Key != controlNumber)
                 {
                     StoreBlockWithRowNo(controlNumber);
-                    /*
-                    if (
-                        NVG.Settings.NodeType != Notus.Variable.Enum.NetworkNodeType.Main &&
-                        NVG.Settings.NodeType != Notus.Variable.Enum.NetworkNodeType.Master
-                    )
-                    {
-                    }
-                    else
-                    {
-                        //Notus.Print.Danger(NVG.Settings, "Block Order Error > " + controlNumber.ToString() + " / " + item.Key + " > " + item.Value.Substring(0, 10) + ".." + item.Value.Substring(80));
-                        //Notus.Archive.DeleteFromInside(item.Value, NVG.Settings, true);
-                    }
-                    */
                     controlNumber = item.Key;
                     rowNumberError = true;
                 }
@@ -392,20 +388,13 @@ namespace Notus.Block
             }
             Notus.Print.Success(NVG.Settings, "Block Integrity Valid");
 
-
-            burayı düzenle 
-            burası 4000 blokta yaklaşık 90 saniye sürüyor...
             foreach (KeyValuePair<long, string> item in BlockOrderList)
             {
-                NGF.BlockOrder.Add(
-                    item.Key.ToString(),
-                    JsonSerializer.Serialize(
-                        new KeyValuePair<string, string>(
-                            item.Value,
-                            new Notus.Hash().CommonSign("sha1", item.Value + NVG.Settings.HashSalt)
-                        )
-                    )
-                );
+                if (NGF.BlockOrder.ContainsKey(item.Key) == false)
+                {
+                    NGF.BlockOrder.Add(item.Key, item.Value);
+                }
+                //NGF.BlockOrder.Add(item.Key.ToString(), item.Value);
             }
             return (Notus.Variable.Enum.BlockIntegrityStatus.Valid, LastBlock);
         }
@@ -811,7 +800,7 @@ namespace Notus.Block
             {
                 (
                     Notus.Variable.Enum.BlockIntegrityStatus tmpStatus,
-                    Notus.Variable.Class.BlockData tmpLastBlock
+                    Notus.Variable.Class.BlockData? tmpLastBlock
                 ) = ControlBlockIntegrity();
 
                 if (tmpStatus != Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain)

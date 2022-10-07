@@ -378,7 +378,8 @@ namespace Notus.Wallet
             }
             return false;
         }
-        
+
+        /*
         //control-local-block
         private void StoreToTemp(Notus.Variable.Class.BlockData? tmpBlockData)
         {
@@ -405,6 +406,7 @@ namespace Notus.Wallet
                 );
             }
         }
+        */
         public void Control(Notus.Variable.Class.BlockData tmpBlockForBalance)
         {
             //bloklar geçici dosyaya kaydediliyor...

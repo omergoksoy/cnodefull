@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-//using NVG = Notus.Variable.Globals;
 namespace Notus.Variable
 {
     static class Globals
@@ -65,13 +64,15 @@ namespace Notus.Variable
 
         public static class Functions
         {
-            public static Notus.Mempool BlockOrder { get; set; }
+            public static Dictionary<long,string> BlockOrder { get; set; }
+            //public static Notus.Mempool BlockOrder { get; set; }
             public static Notus.Block.Storage Storage { get; set; }
             public static Notus.Wallet.Balance Balance { get; set; }
             public static Notus.TGZArchiver Archiver { get; set; }
             public static Notus.Block.Queue BlockQueue { get; set; }
             public static void Start()
             {
+                BlockOrder = new Dictionary<long, string>();
                 Storage = new Notus.Block.Storage();
                 BlockQueue = new Notus.Block.Queue();
                 Archiver = new Notus.TGZArchiver();
@@ -80,17 +81,18 @@ namespace Notus.Variable
                 {
                     Balance.Start();
                 }
-                BlockOrder = new Notus.Mempool(
-                    Notus.IO.GetFolderName(
-                        Settings.Network,
-                        Settings.Layer,
-                        Notus.Variable.Constant.StorageFolderName.Common
-                    ) +
-                    "block_order_list"
+
+                /*
+                string tmpFolderName = Notus.IO.GetFolderName(
+                    Settings,
+                    Notus.Variable.Constant.StorageFolderName.Common
                 );
-                BlockOrder.AsyncActive = true;
+                BlockOrder = new Notus.Mempool(tmpFolderName +"block_order_list");
+                BlockOrder.AsyncActive = false;
                 BlockOrder.Clear();
+                */
             }
+
             static Functions()
             {
             }

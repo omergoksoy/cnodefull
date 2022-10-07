@@ -29,6 +29,8 @@ AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 //airdrop-exception
 // airdrop için eklenen kotrol noktaları
 
+//block-order-exception
+// blok sırasını yapan kontrol noktaları
 
 //tgz-exception
 Notus.Validator.Node.Start(args);
