@@ -196,7 +196,8 @@ tmpRequestSend_ListCount : 261
                 }
             }
 
-
+            //Console.WriteLine(JsonSerializer.Serialize( TempPoolTransactionList));
+            //Console.ReadLine();
             if (TempPoolTransactionList.Count == 0)
             {
                 return null;
@@ -236,7 +237,8 @@ tmpRequestSend_ListCount : 261
             BlockStruct.cipher.ver = "NE";
             if (transactionId.Length == 0)
             {
-                BlockStruct.info.uID = Notus.Block.Key.Generate(GetNtpTime(), NVG.Settings.NodeWallet.WalletKey);
+                BlockStruct.info.uID = NGF.GenerateTxUid();
+                //BlockStruct.info.uID = Notus.Block.Key.Generate(GetNtpTime(), NVG.Settings.NodeWallet.WalletKey);
             }
             else
             {
@@ -457,7 +459,9 @@ tmpRequestSend_ListCount : 261
                             }
                             else
                             {
+                                Console.WriteLine("TempBlockList[i] IS NULL");
                                 Console.WriteLine(TempBlockList[i]);
+                                Console.WriteLine("TempBlockList[i] IS NULL");
                             }
                         }
                         TempBlockList.Clear();
@@ -488,6 +492,15 @@ tmpRequestSend_ListCount : 261
                     LongNonceText
                 )
             );
+
+            //burası pooldaki kayıtların fazla birikmesi ve para transferi işlemlerinin key'lerinin örtüşmemesinden
+            //dolayı eklendi
+            for(int i=0;i< TempPoolTransactionList.Count; i++)
+            {
+                Console.WriteLine("Remove Key : " + TempPoolTransactionList[i].key);
+                MP_BlockPoolList.Remove(TempPoolTransactionList[i].key);
+            }
+
             return
                 new Notus.Variable.Struct.PoolBlockRecordStruct()
                 {
@@ -593,6 +606,7 @@ tmpRequestSend_ListCount : 261
             {
                 RemoveKeyStr = GiveBlockKey(rawDataStr);
             }
+            Console.WriteLine("Remove Key From Pool : " + RemoveKeyStr);
             MP_BlockPoolList.Remove(RemoveKeyStr);
         }
 
@@ -618,7 +632,8 @@ tmpRequestSend_ListCount : 261
                 return false;
             }
 
-            string blockKeyStr = Notus.Block.Key.Generate(GetNtpTime(), NVG.Settings.NodeWallet.WalletKey);
+            string blockKeyStr = NGF.GenerateTxUid();
+
             Add2Queue(PreBlockData, blockKeyStr);
             string PreBlockDataStr = JsonSerializer.Serialize(PreBlockData);
             string keyStr = GiveBlockKey(PreBlockData.data);
@@ -646,6 +661,7 @@ tmpRequestSend_ListCount : 261
         {
             Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
             {
+                uid = NGF.GenerateTxUid(),
                 type = Notus.Variable.Enum.BlockTypeList.EmptyBlock,
                 data = JsonSerializer.Serialize(NVG.Settings.LastBlock.info.rowNo)
             });

@@ -1842,17 +1842,9 @@ namespace Notus.Validator
                     });
                 }
             }
-            string seedStr = "node-wallet-key";
-            if (NVG.Settings != null)
-            {
-                if (NVG.Settings.NodeWallet != null)
-                {
-                    seedStr = NVG.Settings.NodeWallet.WalletKey;
-                }
-            }
-
+            //uid = NGF.GenerateTxUid(),
             // transfer process status is saved
-            string tmpTransferIdKey = Notus.Block.Key.Generate(GetNtpTime(), seedStr);
+            string tmpTransferIdKey = NGF.GenerateTxUid();
             ObjMp_CryptoTranStatus.Add(
                 tmpTransferIdKey,
                 JsonSerializer.Serialize(
@@ -1915,6 +1907,7 @@ namespace Notus.Validator
         }
         public System.Collections.Generic.Dictionary<string, Notus.Variable.Struct.MempoolDataList> RequestSend_DataList()
         {
+            Console.WriteLine("ObjMp_CryptoTransfer.DataList.Count : " + ObjMp_CryptoTransfer.DataList.Count.ToString());
             return ObjMp_CryptoTransfer.DataList;
         }
         public void RequestSend_Remove(string tmpKeyStr)
@@ -2212,6 +2205,7 @@ namespace Notus.Validator
                     //private string Request_GenerateToken(Notus.Variable.Struct.HttpRequestDetails IncomeData)
                     bool tmpAddResult = NGF.BlockQueue.Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
                     {
+                        uid = NGF.GenerateTxUid(),
                         type = Notus.Variable.Enum.BlockTypeList.TokenGeneration,
                         data = JsonSerializer.Serialize(tmpTokenObj)
                     });
@@ -3129,10 +3123,7 @@ namespace Notus.Validator
                     Result = Notus.Variable.Enum.BlockStatusCode.AnErrorOccurred
                 });
             }
-            string tmpChunkIdKey = Notus.Block.Key.Generate(
-                GetNtpTime(),
-                NVG.Settings.NodeWallet.WalletKey
-            );
+            string tmpChunkIdKey = NGF.GenerateTxUid();
             BigInteger howMuchCoinNeed = BigInteger.Parse(NVG.Settings.Genesis.Fee.BlockAccount.ToString());
             Notus.Variable.Struct.WalletBalanceStruct tmpGeneratorBalanceObj = NGF.Balance.Get(LockObj.WalletKey, 0);
 
@@ -3159,6 +3150,7 @@ namespace Notus.Validator
 
             bool tmpAddResult = NGF.BlockQueue.Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
             {
+                uid = tmpChunkIdKey,
                 type = Notus.Variable.Enum.BlockTypeList.LockAccount,
                 data = JsonSerializer.Serialize(tmpLockObj)
             });

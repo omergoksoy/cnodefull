@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -51,6 +52,13 @@ namespace Notus
         private void ExecuteWithClass(string PoolName)
         {
             PoolNameForDb = PoolName + ".db";
+            /*
+            Console.WriteLine("Control-Point-cacacacacac");
+            Console.WriteLine(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+            Console.WriteLine(PoolNameForDb);
+            Console.WriteLine(new System.IO.FileInfo(PoolNameForDb).Length);
+            Console.ReadLine();
+            */
             Obj_DataList.Clear();
             SqlObj = new Notus.Data.Sql();
             SqlObj.Open(PoolNameForDb);

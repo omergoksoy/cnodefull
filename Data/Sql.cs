@@ -95,6 +95,7 @@ namespace Notus.Data
                 condCount++;
             }
 
+            //string selectQuery = "SELECT * FROM '" + tableName+"'";
             string selectQuery = "SELECT * FROM " + tableName;
             if (condCount > 0)
             {
@@ -116,18 +117,19 @@ namespace Notus.Data
 
             try
             {
-                SqliteDataReader reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    Dictionary<string, string> returnList = new Dictionary<string, string>();
-                    foreach (string fieldName in nameList)
+                using (SqliteDataReader reader = command.ExecuteReader()) {
+                    while (reader.Read())
                     {
-                        string dataValue = reader[fieldName].ToString();
-                        returnList.Add(fieldName, dataValue);
+                        Dictionary<string, string> returnList = new Dictionary<string, string>();
+                        foreach (string fieldName in nameList)
+                        {
+                            string dataValue = reader[fieldName].ToString();
+                            returnList.Add(fieldName, dataValue);
+                        }
+                        incomeAction(returnList);
                     }
-                    incomeAction(returnList);
+                    reader.Close();
                 }
-                reader.Close();
             }
             catch (Exception msg)
             {

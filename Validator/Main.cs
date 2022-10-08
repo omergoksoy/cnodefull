@@ -175,9 +175,10 @@ namespace Notus.Validator
 
                                     NGF.BlockQueue.Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
                                     {
+                                        uid = NGF.GenerateTxUid(),
                                         type = 250,
                                         data = outputFileName
-                                    });
+                                    }); ;
 
                                     ObjMp_FileStatus.Set(tmpStorageId, JsonSerializer.Serialize(Notus.Variable.Enum.BlockStatusCode.InProgress));
                                     try
@@ -252,7 +253,7 @@ namespace Notus.Validator
                         };
 
                         Dictionary<string, Notus.Variable.Struct.MempoolDataList> tmpTransactionList = Obj_Api.RequestSend_DataList();
-                        //Console.WriteLine("tmpTransactionList : " + tmpTransactionList.Count.ToString());
+                        Console.WriteLine("tmpTransactionList : " + tmpTransactionList.Count.ToString());
                         // wallet balances are assigned
                         Int64 transferFee = Notus.Wallet.Fee.Calculate(
                             Notus.Variable.Enum.Fee.CryptoTransfer,
@@ -388,7 +389,7 @@ namespace Notus.Validator
                                             {
                                                 tmpBlockCipherData.Out.Add(tmpObjPoolCrypto.Receiver, GetWalletBalanceDictionary(tmpObjPoolCrypto.Receiver, unlockTimeForNodeWallet));
                                             }
-                                            //Console.WriteLine("entry.Key : " + entry.Key);
+                                            Console.WriteLine("entry.Key : " + entry.Key);
                                             tmpBlockCipherData.In.Add(entry.Key, new Notus.Variable.Class.BlockStruct_120_In_Struct()
                                             {
                                                 Fee = tmpObjPoolCrypto.Fee,
@@ -496,6 +497,7 @@ namespace Notus.Validator
                             {
                                 // type = 120,
                                 // uid =
+                                uid = NGF.GenerateTxUid(),
                                 type = Notus.Variable.Enum.BlockTypeList.CryptoTransfer,
                                 data = JsonSerializer.Serialize(tmpBlockCipherData)
                             });
@@ -775,6 +777,7 @@ namespace Notus.Validator
                 {
                     // geçerli utc zaman bilgisini alıp block oluşturma işlemi için parametre olarak gönder böylece
                     // her blok utc zamanı ile oluşturulmuş olsun
+                    //OMERGOKSOY
                     DateTime currentUtcTime = ValidatorQueueObj.GetUtcTime();
                     Notus.Variable.Struct.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
                         currentUtcTime

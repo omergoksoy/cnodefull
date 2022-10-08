@@ -1,4 +1,5 @@
 ﻿using Notus.Compression.TGZ;
+using Notus.Globals.Variable;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -72,6 +73,28 @@ namespace Notus.Variable
             public static Notus.Wallet.Balance Balance { get; set; }
             public static Notus.TGZArchiver Archiver { get; set; }
             public static Notus.Block.Queue BlockQueue { get; set; }
+            public static string GenerateTxUid()
+            {
+                string seedStr = "node-wallet-key";
+                DateTime uidTime = DateTime.Now;
+                if (Settings != null)
+                {
+                    if (Settings.NodeWallet != null)
+                    {
+                        seedStr = Settings.NodeWallet.WalletKey;
+                    }
+                    if (Settings.UTCTime == null)
+                    {
+                        Settings.UTCTime = Notus.Time.GetNtpTime();
+                    }
+                    else
+                    {
+                        Settings.UTCTime = Notus.Time.RefreshNtpTime(Settings.UTCTime);
+                    }
+                    uidTime = Settings.UTCTime.Now;
+                }
+                return Notus.Block.Key.Generate(uidTime, seedStr);
+            }
             private static void GetAirdropWallet()
             {
                 string tmpKeyPair = string.Empty;
