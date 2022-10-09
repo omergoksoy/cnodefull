@@ -9,6 +9,7 @@ namespace Notus.Variable
     {
         public static readonly JsonSerializerOptions JsonSetting = new JsonSerializerOptions() { WriteIndented = true };
 
+        public static readonly string NetworkProgramWallet = "111111111111111111111111111111111111111";
         //node'ların sıralama frekansları - saniye cinsinden
         public static readonly ulong NodeStartingSync = 20;
         public static readonly ulong NodeSortFrequency = 2;
@@ -32,6 +33,7 @@ namespace Notus.Variable
         //date time
         public static readonly DateTime DefaultTime = new DateTime(2000, 01, 1, 0, 00, 00);
         public static readonly string DefaultDateTimeFormatText = "yyyyMMddHHmmssfff";
+        public static readonly string DefaultDateTimeFormatTextWithourMiliSecond = "yyyyMMddHHmmss";
 
         //alphabet constant
         public static readonly string DefaultHexAlphabetString = "0123456789abcdef";

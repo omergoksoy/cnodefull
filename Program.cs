@@ -47,9 +47,6 @@ Console.ReadLine();
 //tgz-exception
 // TGZ ile ilgili eklenen kontrol noktaları
 
-//airdrop-exception
-// airdrop için eklenen kotrol noktaları
-
 //block-order-exception
 // blok sırasını yapan kontrol noktaları
 

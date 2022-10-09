@@ -82,6 +82,18 @@ namespace Notus
                 )
             );
         }
+        public static ulong DateTimeToUlong(DateTime ConvertTime,bool milisecondIncluded)
+        {
+            if (milisecondIncluded == true)
+            {
+                return DateTimeToUlong(ConvertTime);
+            }
+            return ulong.Parse(
+                ConvertTime.ToString(
+                    Notus.Variable.Constant.DefaultDateTimeFormatTextWithourMiliSecond
+                )
+            );
+        }
 
         private static ulong GetExactTime_UTC_SubFunc(string server)
         {

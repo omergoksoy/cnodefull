@@ -74,7 +74,6 @@ namespace Notus.Wallet
         public bool WalletUsageAvailable(string walletKey)
         {
             return (NGF.WalletUsageList.ContainsKey(walletKey) == false ? true : false);
-            //return (ObjMp_WalletUsage.Get(walletKey, "").Length == 0 ? true : false);
         }
         public bool StartWalletUsage(string walletKey)
         {
@@ -87,30 +86,22 @@ namespace Notus.Wallet
                 NGF.WalletUsageList.Add(walletKey, 1);
             }
             return true;
-            /*
-            return ObjMp_WalletUsage.Add(
-                walletKey,
-                DateTime.Now.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
-            );
-            */
         }
         public void StopWalletUsage(string walletKey)
         {
             NGF.WalletUsageList.Remove(walletKey);
-            //ObjMp_WalletUsage.Remove(walletKey);
         }
 
         // omergoksoy
         private void StoreToDb(Notus.Variable.Struct.WalletBalanceStruct BalanceObj)
         {
-            string dictionaryKeyStr = Notus.Toolbox.Text.ToHex(BalanceObj.Wallet, 100);
-            if (SummaryList.ContainsKey(dictionaryKeyStr) == false)
+            if (SummaryList.ContainsKey(BalanceObj.Wallet) == false)
             {
-                SummaryList.Add(dictionaryKeyStr, BalanceObj);
+                SummaryList.Add(BalanceObj.Wallet, BalanceObj);
             }
             else
             {
-                SummaryList[dictionaryKeyStr]= BalanceObj;
+                SummaryList[BalanceObj.Wallet] = BalanceObj;
             }
             //ObjMp_Balance.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj), true);
             //burada cüzdan kilidi açılacak...
@@ -155,23 +146,11 @@ namespace Notus.Wallet
         }
         public Notus.Variable.Struct.WalletBalanceStruct Get(string WalletKey, ulong timeYouCanUse)
         {
-            string dictionaryKeyStr = Notus.Toolbox.Text.ToHex(WalletKey, 100);
-            if (SummaryList.ContainsKey(dictionaryKeyStr) == true)
+            if (SummaryList.ContainsKey(WalletKey) == true)
             {
-                return SummaryList[dictionaryKeyStr];
+                return SummaryList[WalletKey];
             }
 
-            /*
-            string BalanceValStr = ObjMp_Balance.Get(WalletKey, string.Empty);
-            if (BalanceValStr != string.Empty)
-            {
-                Notus.Variable.Struct.WalletBalanceStruct? tmpBalanceVal = JsonSerializer.Deserialize<Notus.Variable.Struct.WalletBalanceStruct>(BalanceValStr);
-                if (tmpBalanceVal != null)
-                {
-                    return tmpBalanceVal;
-                }
-            }
-            */
             string defaultCoinTag = Notus.Variable.Constant.MainCoinTagName;
             if (NVG.Settings != null)
             {
@@ -642,6 +621,33 @@ namespace Notus.Wallet
                 }
             }
 
+            //Airdrop
+            if (tmpBlockForBalance.info.type == Notus.Variable.Enum.BlockTypeList.AirDrop)
+            {
+                string tmpRawDataStr = System.Text.Encoding.UTF8.GetString(
+                    System.Convert.FromBase64String(
+                        tmpBlockForBalance.cipher.data
+                    )
+                );
+                Notus.Variable.Class.BlockStruct_125? tmpLockBalance =
+                    JsonSerializer.Deserialize<Notus.Variable.Class.BlockStruct_125>(
+                        tmpRawDataStr
+                    );
+                if (tmpLockBalance != null)
+                {
+                    foreach(var entry in tmpLockBalance.Out)
+                    {
+                        StoreToDb(new Notus.Variable.Struct.WalletBalanceStruct()
+                        {
+                            UID = tmpBlockForBalance.info.uID,
+                            RowNo = tmpBlockForBalance.info.rowNo,
+                            Wallet = entry.Key,
+                            Balance = entry.Value
+                        });
+                        NGF.Balance.StopWalletUsage(entry.Key);
+                    }
+                }
+            }
             //CryptoTransfer
             if (tmpBlockForBalance.info.type == Notus.Variable.Enum.BlockTypeList.CryptoTransfer)
             {

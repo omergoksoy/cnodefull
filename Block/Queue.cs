@@ -66,7 +66,7 @@ namespace Notus.Block
 
 
         //bu fonksiyon ile işlem yapılacak aynı türden bloklar sırası ile listeden çekilip geri gönderilecek
-        public Notus.Variable.Struct.PoolBlockRecordStruct? Get(DateTime currentUtcTime)
+        public Notus.Variable.Struct.PoolBlockRecordStruct? Get()
         {
             DateTime startingTime = DateTime.Now;
             if (Queue_PoolTransaction.Count == 0)
@@ -122,6 +122,37 @@ namespace Notus.Block
                                 }
                             }
 
+                            if (CurrentBlockType == Notus.Variable.Enum.BlockTypeList.AirDrop)
+                            {
+                                Notus.Variable.Class.BlockStruct_125? tmpBlockCipherData = JsonSerializer.Deserialize<Notus.Variable.Class.BlockStruct_125>(TmpPoolRecord.data);
+                                if (tmpBlockCipherData == null)
+                                {
+                                    addToList = false;
+                                }
+                                else
+                                {
+                                    // out işlemindeki cüzdanları kontrol ediyor...
+                                    foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> tmpEntry in tmpBlockCipherData.Out)
+                                    {
+                                        if (TempWalletList.IndexOf(tmpEntry.Key) == -1)
+                                        {
+                                            TempWalletList.Add(tmpEntry.Key);
+                                        }
+                                        else
+                                        {
+                                            addToList = false;
+                                        }
+                                    }
+
+                                    if (addToList == false)
+                                    {
+                                        Queue_PoolTransaction.Enqueue(TmpPoolRecord);
+                                        Obj_PoolTransactionList[CurrentBlockType].Add(TmpPoolRecord);
+                                        exitLoop = true;
+                                    }
+                                }
+                            }
+
                             if (CurrentBlockType == Notus.Variable.Enum.BlockTypeList.CryptoTransfer)
                             {
                                 Notus.Variable.Class.BlockStruct_120? tmpBlockCipherData = JsonSerializer.Deserialize<Notus.Variable.Class.BlockStruct_120>(TmpPoolRecord.data);
@@ -131,29 +162,16 @@ namespace Notus.Block
                                 }
                                 else
                                 {
-                                    /*
-
-                                    transactionCount : 0
-tmpRequestSend_ListCount : 261
-                                    */
                                     // out işlemindeki cüzdanları kontrol ediyor...
                                     foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> tmpEntry in tmpBlockCipherData.Out)
                                     {
-                                        //airdrop-exception
-                                        if (string.Equals(NVG.AirdropExceptionWalletKey, tmpEntry.Key) == true)
+                                        if (TempWalletList.IndexOf(tmpEntry.Key) == -1)
                                         {
-                                            addToList = true;
+                                            TempWalletList.Add(tmpEntry.Key);
                                         }
                                         else
                                         {
-                                            if (TempWalletList.IndexOf(tmpEntry.Key) == -1)
-                                            {
-                                                TempWalletList.Add(tmpEntry.Key);
-                                            }
-                                            else
-                                            {
-                                                addToList = false;
-                                            }
+                                            addToList = false;
                                         }
                                     }
 
@@ -361,6 +379,52 @@ tmpRequestSend_ListCount : 261
                     }
                 }
 
+                if (CurrentBlockType == Notus.Variable.Enum.BlockTypeList.AirDrop)
+                {
+                    //Console.WriteLine(JsonSerializer.Serialize( TempBlockList));
+                    //Console.ReadLine();
+                    if (TempBlockList.Count > 1)
+                    {
+                        Notus.Variable.Class.BlockStruct_125 tmpBlockCipherData = new Variable.Class.BlockStruct_125()
+                        {
+                            In = new Dictionary<string, Notus.Variable.Struct.WalletBalanceStruct>(),
+                            Out = new Dictionary<string, Dictionary<string, Dictionary<ulong, string>>>(),
+                            Validator = new Dictionary<string, string>()
+                        };
+
+                        for (int i = 0; i < TempBlockList.Count; i++)
+                        {
+                            Notus.Variable.Class.BlockStruct_125? tmpInnerData = JsonSerializer.Deserialize<Notus.Variable.Class.BlockStruct_125>(TempBlockList[i]);
+                            if (tmpInnerData != null)
+                            {
+                                foreach (var iEntry in tmpInnerData.In)
+                                {
+                                    tmpBlockCipherData.In.Add(iEntry.Key, iEntry.Value);
+                                }
+                                foreach (var iEntry in tmpInnerData.Out)
+                                {
+                                    tmpBlockCipherData.Out.Add(iEntry.Key, iEntry.Value);
+                                }
+                                foreach (var iEntry in tmpInnerData.Validator)
+                                {
+                                    tmpBlockCipherData.Validator.Add(iEntry.Key, iEntry.Value);
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("TempBlockList[i] IS NULL");
+                                Console.WriteLine(TempBlockList[i]);
+                                Console.WriteLine("TempBlockList[i] IS NULL");
+                            }
+                        }
+                        TempBlockList.Clear();
+                        //Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData, Notus.Variable.Constant.JsonSetting));
+                        //Console.ReadLine();
+                        TempBlockList.Add(JsonSerializer.Serialize(tmpBlockCipherData));
+                    }
+                    //Console.WriteLine(TempBlockList);
+                    //Console.ReadLine();
+                }
                 if (CurrentBlockType == Notus.Variable.Enum.BlockTypeList.CryptoTransfer)
                 {
                     if (TempBlockList.Count > 1)
@@ -393,68 +457,13 @@ tmpRequestSend_ListCount : 261
                                     tmpBlockCipherData.Validator.Reward = tmpFee.ToString();
                                 }
 
-                                //airdrop-exception
-                                //olmadan önceki hali
-                                /*
-
                                 foreach (KeyValuePair<string, Variable.Class.BlockStruct_120_In_Struct> iEntry in tmpInnerData.In)
                                 {
                                     tmpBlockCipherData.In.Add(iEntry.Key, iEntry.Value);
                                 }
-                                 
                                 foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> iEntry in tmpInnerData.Out)
                                 {
                                     tmpBlockCipherData.Out.Add(iEntry.Key, iEntry.Value);
-                                }                                 
-
-
-                                 */
-
-                                foreach (KeyValuePair<string, Variable.Class.BlockStruct_120_In_Struct> iEntry in tmpInnerData.In)
-                                {
-                                    //airdrop-exception
-                                    if (string.Equals(NVG.AirdropExceptionWalletKey, iEntry.Key) == false)
-                                    {
-                                        if (tmpBlockCipherData.In.ContainsKey(iEntry.Key) == false)
-                                        {
-                                            tmpBlockCipherData.In.Add(iEntry.Key, iEntry.Value);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (tmpBlockCipherData.In.ContainsKey(iEntry.Key) == false)
-                                        {
-                                            tmpBlockCipherData.In.Add(iEntry.Key, iEntry.Value);
-                                        }
-                                        else
-                                        {
-                                            //Console.WriteLine("Out wallet Exist");
-                                        }
-
-                                    }
-                                }
-                                foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> iEntry in tmpInnerData.Out)
-                                {
-                                    //airdrop-exception
-                                    if (string.Equals(NVG.AirdropExceptionWalletKey, iEntry.Key) == false)
-                                    {
-                                        if (tmpBlockCipherData.Out.ContainsKey(iEntry.Key) == false)
-                                        {
-                                            tmpBlockCipherData.Out.Add(iEntry.Key, iEntry.Value);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        //airdrop-exception
-                                        if (tmpBlockCipherData.Out.ContainsKey(iEntry.Key) == false)
-                                        {
-                                            tmpBlockCipherData.Out.Add(iEntry.Key, iEntry.Value);
-                                        }
-                                        else
-                                        {
-                                            //Console.WriteLine("Out wallet Exist");
-                                        }
-                                    }
                                 }
                             }
                             else
@@ -636,7 +645,15 @@ tmpRequestSend_ListCount : 261
 
             Add2Queue(PreBlockData, blockKeyStr);
             string PreBlockDataStr = JsonSerializer.Serialize(PreBlockData);
-            string keyStr = GiveBlockKey(PreBlockData.data);
+            string keyStr = string.Empty;
+            if (PreBlockData.uid == null)
+            {
+                keyStr = GiveBlockKey(PreBlockData.data);
+            }
+            else
+            {
+                keyStr = PreBlockData.uid;
+            }
             if (PreBlockData.type == 40)
             {
                 Notus.Variable.Struct.LockWalletBeforeStruct? tmpLockWalletData = JsonSerializer.Deserialize<Notus.Variable.Struct.LockWalletBeforeStruct>(PreBlockData.data);

@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
 using System.Text.Json;
-using NVG = Notus.Variable.Globals;
 using NGF = Notus.Variable.Globals.Functions;
+using NVG = Notus.Variable.Globals;
 namespace Notus.Validator
 {
     public class Api : IDisposable
@@ -134,7 +134,7 @@ namespace Notus.Validator
             }
             else
             {
-                NGF.BlockOrder[Obj_BlockData.info.rowNo]= Obj_BlockData.info.uID;
+                NGF.BlockOrder[Obj_BlockData.info.rowNo] = Obj_BlockData.info.uID;
                 //Console.WriteLine("Block Row No Exist");
                 //Console.WriteLine("Block Row No Exist");
                 //Console.WriteLine("Block Row No Exist");
@@ -521,7 +521,7 @@ namespace Notus.Validator
                     {
                         if (int.TryParse(IncomeData.UrlList[1], out int blockTypeNo))
                         {
-                            
+
                             List<Variable.Struct.List_PoolBlockRecordStruct>? tmpPoolList =
                                 NGF.BlockQueue.GetPoolList(blockTypeNo);
                             if (tmpPoolList != null)
@@ -691,63 +691,18 @@ namespace Notus.Validator
 
         private string AirDropRequest(Notus.Variable.Struct.HttpRequestDetails IncomeData)
         {
-            string tmpKeyPair = string.Empty;
-            using (Notus.Mempool ObjMp_Genesis =
-                new Notus.Mempool(
-                    Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) +
-                    "genesis_accounts"
-                )
-            )
+            if (NVG.Settings.Network == Variable.Enum.NetworkType.MainNet)
             {
-                tmpKeyPair = ObjMp_Genesis.Get("seed_key");
-            }
-
-            bool prettyJson = PrettyCheckForRaw(IncomeData, 2);
-
-            if (tmpKeyPair.Length == 0)
-            {
-                if (prettyJson == true)
-                {
-                    return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
-                    {
-                        ErrorNo = 6728,
-                        ErrorText = "AnErrorOccurred",
-                        ID = string.Empty,
-                        Result = Notus.Variable.Enum.BlockStatusCode.AnErrorOccurred
-                    }, Notus.Variable.Constant.JsonSetting);
-                }
                 return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
                 {
-                    ErrorNo = 6728,
-                    ErrorText = "AnErrorOccurred",
+                    ErrorNo = 35496,
+                    ErrorText = "NotSupported",
                     ID = string.Empty,
-                    Result = Notus.Variable.Enum.BlockStatusCode.AnErrorOccurred
+                    Result = Notus.Variable.Enum.BlockStatusCode.NotSupported
                 });
             }
-            Notus.Variable.Struct.EccKeyPair? KeyPair_PreSeed = JsonSerializer.Deserialize<Notus.Variable.Struct.EccKeyPair>(tmpKeyPair);
-            if (KeyPair_PreSeed == null)
-            {
-                if (prettyJson == true)
-                {
-                    return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
-                    {
-                        ErrorNo = 8259,
-                        ErrorText = "AnErrorOccurred",
-                        ID = string.Empty,
-                        Result = Notus.Variable.Enum.BlockStatusCode.AnErrorOccurred
-                    }, Notus.Variable.Constant.JsonSetting);
-                }
 
-                return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
-                {
-                    ErrorNo = 8259,
-                    ErrorText = "AnErrorOccurred",
-                    ID = string.Empty,
-                    Result = Notus.Variable.Enum.BlockStatusCode.AnErrorOccurred
-                });
-            }
-            //airdrop-exception
-            NVG.AirdropExceptionWalletKey = KeyPair_PreSeed.WalletKey;
+            //Notus.Variable.Constant.NetworkProgramWallet
             string airdropStr = "2000000";
             if (Notus.Variable.Constant.AirDropVolume.ContainsKey(NVG.Settings.Layer))
             {
@@ -756,29 +711,96 @@ namespace Notus.Validator
                     airdropStr = Notus.Variable.Constant.AirDropVolume[NVG.Settings.Layer][NVG.Settings.Network];
                 }
             }
-            DateTime exactTime = DateTime.Now;
+
             string ReceiverWalletKey = IncomeData.UrlList[1];
-            Notus.Variable.Struct.CryptoTransactionStruct tmpSignedTrans = Notus.Wallet.Transaction.Sign(
-                new Notus.Variable.Struct.CryptoTransactionBeforeStruct()
-                {
-                    Currency = NVG.Settings.Genesis.CoinInfo.Tag,
-                    PrivateKey = KeyPair_PreSeed.PrivateKey,
-                    Receiver = ReceiverWalletKey,
-                    Sender = KeyPair_PreSeed.WalletKey,
-                    CurrentTime = Date.ToLong(exactTime),
-                    UnlockTime = Date.ToLong(exactTime),
-                    Volume = airdropStr,
-                    Network = NVG.Settings.Network,
-                    CurveName = Notus.Variable.Constant.Default_EccCurveName
-                }
-            );
-            if (IncomeData.PostParams.ContainsKey("data") == false)
+            string tmpCoinCurrency = NVG.Settings.Genesis.CoinInfo.Tag;
+            if (NGF.Balance.AccountIsLock(ReceiverWalletKey) == true)
             {
-                IncomeData.PostParams.Add("data", "");
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
+                {
+                    ErrorNo = 3827,
+                    ErrorText = "WalletNotAllowed",
+                    ID = string.Empty,
+                    Result = Notus.Variable.Enum.BlockStatusCode.WalletNotAllowed
+                });
             }
 
-            IncomeData.PostParams["data"] = JsonSerializer.Serialize(tmpSignedTrans);
-            return Request_Send(IncomeData);
+            if (NGF.Balance.WalletUsageAvailable(ReceiverWalletKey) == false)
+            {
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
+                {
+                    ErrorNo = 36789,
+                    ErrorText = "WalletUsing",
+                    ID = string.Empty,
+                    Result = Notus.Variable.Enum.BlockStatusCode.WalletUsing
+                });
+            }
+
+            if (NGF.Balance.StartWalletUsage(ReceiverWalletKey) == false)
+            {
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
+                {
+                    ErrorNo = 27468,
+                    ErrorText = "AnErrorOccurred",
+                    ID = string.Empty,
+                    Result = Notus.Variable.Enum.BlockStatusCode.AnErrorOccurred
+                });
+            }
+
+            Notus.Variable.Struct.WalletBalanceStruct tmpBalanceBefore = NGF.Balance.Get(ReceiverWalletKey, 0);
+            Notus.Variable.Struct.WalletBalanceStruct tmpBalanceAfter = NGF.Balance.Get(ReceiverWalletKey, 0);
+            //Console.WriteLine(JsonSerializer.Serialize(tmpBalanceAfter, Notus.Variable.Constant.JsonSetting));
+            DateTime exactTime = DateTime.Now;
+
+            ulong tmpCoinKeyVal = Notus.Time.DateTimeToUlong(exactTime, false);
+            if (tmpBalanceAfter.Balance[tmpCoinCurrency].ContainsKey(tmpCoinKeyVal) == false)
+            {
+                tmpBalanceAfter.Balance[tmpCoinCurrency].Add(tmpCoinKeyVal, airdropStr);
+            }
+            else
+            {
+                BigInteger tmpResult =
+                    BigInteger.Parse(tmpBalanceAfter.Balance[tmpCoinCurrency][tmpCoinKeyVal]) +
+                    BigInteger.Parse(airdropStr);
+                tmpBalanceAfter.Balance[tmpCoinCurrency][tmpCoinKeyVal] = tmpResult.ToString();
+            }
+            //Console.WriteLine(JsonSerializer.Serialize(tmpBalanceAfter, Notus.Variable.Constant.JsonSetting));
+
+            string tmpChunkIdKey = NGF.GenerateTxUid();
+
+            Notus.Variable.Class.BlockStruct_125 airDrop = new Variable.Class.BlockStruct_125()
+            {
+                In = new Dictionary<string, Notus.Variable.Struct.WalletBalanceStruct>(),
+                Out = new Dictionary<string, Dictionary<string, Dictionary<ulong, string>>>(),
+                Validator = new Dictionary<string, string>()
+            };
+            airDrop.In.Add(tmpChunkIdKey, tmpBalanceBefore);
+            airDrop.Out.Add(ReceiverWalletKey, tmpBalanceAfter.Balance);
+            airDrop.Validator.Add(tmpChunkIdKey, NVG.Settings.NodeWallet.WalletKey);
+
+            bool tmpAddResult = NGF.BlockQueue.Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
+            {
+                uid = tmpChunkIdKey,
+                type = Notus.Variable.Enum.BlockTypeList.AirDrop,
+                data = JsonSerializer.Serialize(airDrop)
+            });
+            if (tmpAddResult == true)
+            {
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
+                {
+                    ErrorNo = 0,
+                    ErrorText = "AddedToQueue",
+                    ID = tmpChunkIdKey,
+                    Result = Notus.Variable.Enum.BlockStatusCode.AddedToQueue
+                });
+            }
+            return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
+            {
+                ErrorNo = 55632,
+                ErrorText = "Unknown",
+                ID = string.Empty,
+                Result = Notus.Variable.Enum.BlockStatusCode.Unknown
+            });
         }
         private Notus.Variable.Class.BlockData? GetBlockWithRowNo(Int64 BlockRowNo)
         {
@@ -1609,7 +1631,9 @@ namespace Notus.Validator
             Notus.Variable.Struct.CryptoTransactionStruct? tmpTransfer;
             try
             {
-                tmpTransfer = JsonSerializer.Deserialize<Notus.Variable.Struct.CryptoTransactionStruct>(IncomeData.PostParams["data"]);
+                tmpTransfer = JsonSerializer.Deserialize<Notus.Variable.Struct.CryptoTransactionStruct>(
+                    IncomeData.PostParams["data"]
+                );
             }
             catch (Exception err)
             {
@@ -1662,21 +1686,16 @@ namespace Notus.Validator
                 });
             }
 
-            //airdrop-exception
-            if (string.Equals(tmpTransfer.Sender, NVG.AirdropExceptionWalletKey) == false)
+            bool accountLocked = NGF.Balance.AccountIsLock(tmpTransfer.Sender);
+            if (accountLocked == true)
             {
-                //airdrop devre dışı kalınca if içindeki dışarı çıkartılacak
-                bool accountLocked = NGF.Balance.AccountIsLock(tmpTransfer.Sender);
-                if (accountLocked == true)
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
                 {
-                    return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
-                    {
-                        ErrorNo = 3827,
-                        ErrorText = "WalletNotAllowed",
-                        ID = string.Empty,
-                        Result = Notus.Variable.Enum.BlockStatusCode.WalletNotAllowed
-                    });
-                }
+                    ErrorNo = 3827,
+                    ErrorText = "WalletNotAllowed",
+                    ID = string.Empty,
+                    Result = Notus.Variable.Enum.BlockStatusCode.WalletNotAllowed
+                });
             }
             if (Notus.Wallet.MultiID.IsMultiId(tmpTransfer.Sender, NVG.Settings.Network) == true)
             {
@@ -1770,7 +1789,7 @@ namespace Notus.Validator
 
 
             // burada gelen bakiyeyi zaman kiliti ile kontrol edecek.
-            
+
             Notus.Variable.Struct.WalletBalanceStruct tmpSenderBalanceObj = NGF.Balance.Get(tmpTransfer.Sender, 0);
 
             if (tmpSenderBalanceObj.Balance.ContainsKey(tmpTransfer.Currency) == false)
@@ -1842,7 +1861,7 @@ namespace Notus.Validator
                     });
                 }
             }
-            //uid = NGF.GenerateTxUid(),
+
             // transfer process status is saved
             string tmpTransferIdKey = NGF.GenerateTxUid();
             ObjMp_CryptoTranStatus.Add(
@@ -1907,7 +1926,7 @@ namespace Notus.Validator
         }
         public System.Collections.Generic.Dictionary<string, Notus.Variable.Struct.MempoolDataList> RequestSend_DataList()
         {
-            Console.WriteLine("ObjMp_CryptoTransfer.DataList.Count : " + ObjMp_CryptoTransfer.DataList.Count.ToString());
+            //Console.WriteLine("ObjMp_CryptoTransfer.DataList.Count : " + ObjMp_CryptoTransfer.DataList.Count.ToString());
             return ObjMp_CryptoTransfer.DataList;
         }
         public void RequestSend_Remove(string tmpKeyStr)
@@ -2713,7 +2732,7 @@ namespace Notus.Validator
             Dictionary<string, Notus.Variable.Struct.MultiWalletTransactionStruct> multiTx = new
                 Dictionary<string, Notus.Variable.Struct.MultiWalletTransactionStruct>(){
                 {
-                    transactionId, 
+                    transactionId,
                     new Notus.Variable.Struct.MultiWalletTransactionStruct()
                     {
                         Sender = new Variable.Struct.CryptoTransaction()
@@ -3369,7 +3388,7 @@ namespace Notus.Validator
         }
         private string Request_Metrics(Notus.Variable.Struct.HttpRequestDetails IncomeData)
         {
-           
+
             if (IncomeData.UrlList.Length > 1)
             {
                 if (IncomeData.UrlList[1].ToLower() == "node")
