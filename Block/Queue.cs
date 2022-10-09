@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Notus.Compression.TGZ;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
 using System.Text.Json;
-using NVG = Notus.Variable.Globals;
 using NGF = Notus.Variable.Globals.Functions;
-using Notus.Compression.TGZ;
+using NVG = Notus.Variable.Globals;
 
 namespace Notus.Block
 {
@@ -189,10 +189,11 @@ namespace Notus.Block
                                 TempPoolTransactionList.Add(TmpPoolRecord);
                                 TempBlockList.Add(TmpPoolRecord.data);
                             }
+
                             Queue_PoolTransaction.Dequeue();
                             Obj_PoolTransactionList[CurrentBlockType].RemoveAt(0);
                             if (
-                                TempPoolTransactionList.Count == 1000 ||
+                                TempPoolTransactionList.Count == Notus.Variable.Constant.BlockTransactionLimit ||
                                 CurrentBlockType == 240 || // layer1 - > dosya ekleme isteği
                                 CurrentBlockType == 250 || // layer3 - > dosya içeriği
                                 CurrentBlockType == Notus.Variable.Enum.BlockTypeList.EmptyBlock ||
@@ -387,6 +388,7 @@ namespace Notus.Block
                     {
                         Notus.Variable.Class.BlockStruct_125 tmpBlockCipherData = new Variable.Class.BlockStruct_125()
                         {
+                            //Sender=Notus.Variable.Constant.NetworkProgramWallet
                             In = new Dictionary<string, Notus.Variable.Struct.WalletBalanceStruct>(),
                             Out = new Dictionary<string, Dictionary<string, Dictionary<ulong, string>>>(),
                             Validator = new Dictionary<string, string>()
@@ -504,7 +506,7 @@ namespace Notus.Block
 
             //burası pooldaki kayıtların fazla birikmesi ve para transferi işlemlerinin key'lerinin örtüşmemesinden
             //dolayı eklendi
-            for(int i=0;i< TempPoolTransactionList.Count; i++)
+            for (int i = 0; i < TempPoolTransactionList.Count; i++)
             {
                 Console.WriteLine("Remove Key : " + TempPoolTransactionList[i].key);
                 MP_BlockPoolList.Remove(TempPoolTransactionList[i].key);
