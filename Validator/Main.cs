@@ -799,6 +799,7 @@ namespace Notus.Validator
                             PreBlockData = NGF.BlockQueue.OrganizeBlockOrder(PreBlockData);
                             Notus.Variable.Class.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
                             ProcessBlock(PreparedBlockData, 4);
+                            NGF.WalletUsageList.Clear();
                             ValidatorQueueObj.Distrubute(PreBlockData.info.rowNo, PreBlockData.info.type);
                             Thread.Sleep(1);
                         }
@@ -819,6 +820,7 @@ namespace Notus.Validator
                             else
                             {
                                 Console.ForegroundColor = ConsoleColor.DarkGreen;
+                                Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                                 Console.Write("+");
                                 Thread.Sleep(1);
                             }
