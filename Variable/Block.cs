@@ -301,7 +301,7 @@ namespace Notus.Variable.Class
         //public string Sender { get; set; }
         public Dictionary<string, Notus.Variable.Struct.WalletBalanceStruct> In { get; set; }
         public Dictionary<string, Dictionary<string, Dictionary<ulong, string>>> Out { get; set; }
-        public Dictionary<string, string> Validator { get; set; }
+        public string Validator { get; set; }
     }
 
     public class BlockStruct_120

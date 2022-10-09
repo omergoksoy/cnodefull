@@ -772,11 +772,10 @@ namespace Notus.Validator
             {
                 In = new Dictionary<string, Notus.Variable.Struct.WalletBalanceStruct>(),
                 Out = new Dictionary<string, Dictionary<string, Dictionary<ulong, string>>>(),
-                Validator = new Dictionary<string, string>()
+                Validator = NVG.Settings.NodeWallet.WalletKey
             };
             airDrop.In.Add(tmpChunkIdKey, tmpBalanceBefore);
             airDrop.Out.Add(ReceiverWalletKey, tmpBalanceAfter.Balance);
-            airDrop.Validator.Add(tmpChunkIdKey, NVG.Settings.NodeWallet.WalletKey);
 
             bool tmpAddResult = NGF.BlockQueue.Add(new Notus.Variable.Struct.PoolBlockRecordStruct()
             {

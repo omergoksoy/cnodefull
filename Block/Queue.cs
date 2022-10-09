@@ -391,7 +391,7 @@ namespace Notus.Block
                             //Sender=Notus.Variable.Constant.NetworkProgramWallet
                             In = new Dictionary<string, Notus.Variable.Struct.WalletBalanceStruct>(),
                             Out = new Dictionary<string, Dictionary<string, Dictionary<ulong, string>>>(),
-                            Validator = new Dictionary<string, string>()
+                            Validator = string.Empty
                         };
 
                         for (int i = 0; i < TempBlockList.Count; i++)
@@ -407,10 +407,7 @@ namespace Notus.Block
                                 {
                                     tmpBlockCipherData.Out.Add(iEntry.Key, iEntry.Value);
                                 }
-                                foreach (var iEntry in tmpInnerData.Validator)
-                                {
-                                    tmpBlockCipherData.Validator.Add(iEntry.Key, iEntry.Value);
-                                }
+                                tmpBlockCipherData.Validator = tmpInnerData.Validator;
                             }
                             else
                             {

@@ -283,22 +283,22 @@ namespace Notus.Validator
                                             }
                                             else
                                             {
-                                                Console.WriteLine("Receiver Locked");
+                                                //Console.WriteLine("Receiver Locked");
                                             }
                                         }
                                         else
                                         {
-                                            Console.WriteLine("Sender Locked");
+                                            //Console.WriteLine("Sender Locked");
                                         }
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Receiver Not Available");
+                                        //Console.WriteLine("Receiver Not Available");
                                     }
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Sender Not Available");
+                                    //Console.WriteLine("Sender Not Available");
                                 }
                                 if (thisRecordCanBeAdded == true)
                                 {
