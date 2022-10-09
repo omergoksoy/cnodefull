@@ -5,20 +5,22 @@ using System.Numerics;
 using System.Text.Json;
 using NVG = Notus.Variable.Globals;
 using NGF = Notus.Variable.Globals.Functions;
+using System.Collections.Concurrent;
+
 namespace Notus.Wallet
 {
     public class Balance : IDisposable
     {
         //this store balance to Dictionary list
-        private Dictionary<string, Notus.Variable.Struct.WalletBalanceStruct> SummaryList =
-            new Dictionary<string, Notus.Variable.Struct.WalletBalanceStruct>();
+        private ConcurrentDictionary<string, Notus.Variable.Struct.WalletBalanceStruct> SummaryList =
+            new ConcurrentDictionary<string, Notus.Variable.Struct.WalletBalanceStruct>();
         //private Notus.Mempool ObjMp_Balance;
 
         //private Notus.Mempool ObjMp_WalletUsage;
         //private Notus.Mempool ObjMp_LockWallet;
         private Notus.Mempool ObjMp_MultiWalletParticipant;
         private Notus.Mempool ObjMp_WalletsICanApprove;
-        private Dictionary<string, Notus.Variable.Enum.MultiWalletType> MultiWalletTypeList=new Dictionary<string, Variable.Enum.MultiWalletType>();
+        private ConcurrentDictionary<string, Notus.Variable.Enum.MultiWalletType> MultiWalletTypeList=new ConcurrentDictionary<string, Variable.Enum.MultiWalletType>();
         
         public List<string> WalletsICanApprove(string WalletId)
         {
@@ -83,13 +85,13 @@ namespace Notus.Wallet
             }
             if(NGF.WalletUsageList.ContainsKey(walletKey) == false)
             {
-                NGF.WalletUsageList.Add(walletKey, 1);
+                NGF.WalletUsageList.TryAdd(walletKey, 1);
             }
             return true;
         }
         public void StopWalletUsage(string walletKey)
         {
-            NGF.WalletUsageList.Remove(walletKey);
+            NGF.WalletUsageList.TryRemove(walletKey, out _);
         }
 
         // omergoksoy
@@ -97,7 +99,7 @@ namespace Notus.Wallet
         {
             if (SummaryList.ContainsKey(BalanceObj.Wallet) == false)
             {
-                SummaryList.Add(BalanceObj.Wallet, BalanceObj);
+                SummaryList.TryAdd(BalanceObj.Wallet, BalanceObj);
             }
             else
             {
@@ -606,7 +608,7 @@ namespace Notus.Wallet
 
                     if (NGF.LockWalletList.ContainsKey(tmpLockBalance.WalletKey) == false)
                     {
-                        NGF.LockWalletList.Add(
+                        NGF.LockWalletList.TryAdd(
                             tmpLockBalance.WalletKey,
                             tmpLockBalance.UnlockTime.ToString()
                         );
@@ -717,7 +719,7 @@ namespace Notus.Wallet
 
                     if (MultiWalletTypeList.ContainsKey(tmpBalanceVal.MultiWalletKey) == false)
                     {
-                        MultiWalletTypeList.Add(tmpBalanceVal.MultiWalletKey, tmpBalanceVal.VoteType);
+                        MultiWalletTypeList.TryAdd(tmpBalanceVal.MultiWalletKey, tmpBalanceVal.VoteType);
                     }
                     else
                     {

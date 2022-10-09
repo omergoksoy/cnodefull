@@ -392,7 +392,7 @@ namespace Notus.Block
             {
                 if (NGF.BlockOrder.ContainsKey(item.Key) == false)
                 {
-                    NGF.BlockOrder.Add(item.Key, item.Value);
+                    NGF.BlockOrder.TryAdd(item.Key, item.Value);
                 }
                 //NGF.BlockOrder.Add(item.Key.ToString(), item.Value);
             }

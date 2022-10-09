@@ -838,6 +838,10 @@ namespace Notus.Validator
                             Console.Write("-");
                             Thread.Sleep(1);
                         }
+                        if (NGF.BlockQueue.CheckPoolDb == true)
+                        {
+
+                        }
                     }
                 }
             }

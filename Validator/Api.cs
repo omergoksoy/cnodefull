@@ -1,6 +1,7 @@
 ﻿using Notus.Variable.Struct;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
@@ -20,6 +21,7 @@ namespace Notus.Validator
         private List<string> AllMasterList = new List<string>();
         private List<string> AllReplicantList = new List<string>();
 
+        private Notus.Mempool ObjMp_AirdropLimit;
         private Notus.Mempool ObjMp_MultiSignPool;
         public Notus.Mempool Obj_MultiSignPool
         {
@@ -34,7 +36,7 @@ namespace Notus.Validator
             set { ObjMp_CryptoTranStatus = value; }
         }
         private Notus.Mempool ObjMp_CryptoTransfer;
-        private Dictionary<string, Notus.Variable.Enum.BlockStatusCode> Obj_TransferStatusList;
+        private ConcurrentDictionary<string, Notus.Variable.Enum.BlockStatusCode> Obj_TransferStatusList;
 
         //public System.Func<int, List<Notus.Variable.Struct.List_PoolBlockRecordStruct>?>? Func_GetPoolList = null;
         //public System.Func<Dictionary<int, int>?>? Func_GetPoolCount = null;
@@ -54,7 +56,7 @@ namespace Notus.Validator
         {
             if (NVG.Settings.GenesisCreated == false)
             {
-                Obj_TransferStatusList = new Dictionary<string, Notus.Variable.Enum.BlockStatusCode>();
+                Obj_TransferStatusList = new ConcurrentDictionary<string, Notus.Variable.Enum.BlockStatusCode>();
 
                 ObjMp_CryptoTransfer = new Notus.Mempool(Notus.IO.GetFolderName(NVG.Settings, Notus.Variable.Constant.StorageFolderName.Common) + "crypto_transfer");
                 ObjMp_CryptoTransfer.AsyncActive = false;
@@ -79,13 +81,20 @@ namespace Notus.Validator
                     ) + "multi_sign_tx");
 
                 ObjMp_MultiSignPool.AsyncActive = false;
+
+                ObjMp_AirdropLimit = new Notus.Mempool(
+                    Notus.IO.GetFolderName(
+                        NVG.Settings, Notus.Variable.Constant.StorageFolderName.Pool
+                    ) + "airdrop_request");
+
+                ObjMp_AirdropLimit.AsyncActive = false;
             }
         }
         private void Prepare_Layer2()
         {
             if (NVG.Settings.GenesisCreated == false)
             {
-                Obj_TransferStatusList = new Dictionary<string, Notus.Variable.Enum.BlockStatusCode>();
+                Obj_TransferStatusList = new ConcurrentDictionary<string, Notus.Variable.Enum.BlockStatusCode>();
                 //NGF.Balance.Start();
                 ObjMp_CryptoTransfer = new Notus.Mempool(Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) + "crypto_transfer");
                 ObjMp_CryptoTranStatus = new Notus.Mempool(Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) + "crypto_transfer_status");
@@ -98,7 +107,7 @@ namespace Notus.Validator
         {
             if (NVG.Settings.GenesisCreated == false)
             {
-                Obj_TransferStatusList = new Dictionary<string, Notus.Variable.Enum.BlockStatusCode>();
+                Obj_TransferStatusList = new ConcurrentDictionary<string, Notus.Variable.Enum.BlockStatusCode>();
                 //NGF.Balance.Start();
                 ObjMp_CryptoTransfer = new Notus.Mempool(Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) + "crypto_transfer");
                 ObjMp_CryptoTranStatus = new Notus.Mempool(Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) + "crypto_transfer_status");
@@ -130,7 +139,7 @@ namespace Notus.Validator
             //DateTime start = DateTime.Now;
             if (NGF.BlockOrder.ContainsKey(Obj_BlockData.info.rowNo) == false)
             {
-                NGF.BlockOrder.Add(Obj_BlockData.info.rowNo, Obj_BlockData.info.uID);
+                NGF.BlockOrder.TryAdd(Obj_BlockData.info.rowNo, Obj_BlockData.info.uID);
             }
             else
             {
@@ -702,8 +711,7 @@ namespace Notus.Validator
                 });
             }
 
-            //Notus.Variable.Constant.NetworkProgramWallet
-            string airdropStr = "2000000";
+            string airdropStr = "2000000000";
             if (Notus.Variable.Constant.AirDropVolume.ContainsKey(NVG.Settings.Layer))
             {
                 if (Notus.Variable.Constant.AirDropVolume[NVG.Settings.Layer].ContainsKey(NVG.Settings.Network))
@@ -713,6 +721,22 @@ namespace Notus.Validator
             }
 
             string ReceiverWalletKey = IncomeData.UrlList[1];
+            string controlStr = ObjMp_AirdropLimit.Get(ReceiverWalletKey, "");
+            int.TryParse(controlStr, out int requestCount);
+            if (requestCount > 1)
+            {
+                return JsonSerializer.Serialize(new Notus.Variable.Struct.CryptoTransactionResult()
+                {
+                    ErrorNo = 371854,
+                    ErrorText = "TooManyRequest",
+                    ID = string.Empty,
+                    Result = Notus.Variable.Enum.BlockStatusCode.TooManyRequest
+                });
+            }
+
+            requestCount++;
+            ObjMp_AirdropLimit.Set(ReceiverWalletKey, requestCount.ToString(), 4320, true);
+
             string tmpCoinCurrency = NVG.Settings.Genesis.CoinInfo.Tag;
             if (NGF.Balance.AccountIsLock(ReceiverWalletKey) == true)
             {
@@ -1895,7 +1919,7 @@ namespace Notus.Validator
             // transfer data saved for next step
             ObjMp_CryptoTransfer.Add(tmpTransferIdKey, JsonSerializer.Serialize(recordStruct), transferTimeOut);
 
-            Obj_TransferStatusList.Add(tmpTransferIdKey, Notus.Variable.Enum.BlockStatusCode.AddedToQueue);
+            Obj_TransferStatusList.TryAdd(tmpTransferIdKey, Notus.Variable.Enum.BlockStatusCode.AddedToQueue);
 
             if (NVG.Settings.PrettyJson == true)
             {
@@ -3195,16 +3219,16 @@ namespace Notus.Validator
             Notus.Variable.Struct.WalletBalanceStruct balanceResult = new Notus.Variable.Struct.WalletBalanceStruct()
             {
                 Balance = new Dictionary<string, Dictionary<ulong, string>>(){
-                        {
-                            NVG.Settings.Genesis.CoinInfo.Tag,
-                            new Dictionary<ulong, string>(){
-                                {
-                                    Notus.Time.NowToUlong() ,
-                                    "0"
-                                }
+                    {
+                        NVG.Settings.Genesis.CoinInfo.Tag,
+                        new Dictionary<ulong, string>(){
+                            {
+                                Notus.Time.NowToUlong() ,
+                                "0"
                             }
                         }
-                    },
+                    }
+                },
                 UID = "",
                 Wallet = IncomeData.UrlList[1],
                 RowNo = 0

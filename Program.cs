@@ -23,9 +23,11 @@ static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEv
 
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-
-
+//int.TryParse("", out int a);
+//int a = int.Parse("");
+//Console.WriteLine(a);
 /*
+Console.ReadLine();
 
  
 

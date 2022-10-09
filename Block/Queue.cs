@@ -1,5 +1,6 @@
 ﻿using Notus.Compression.TGZ;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
@@ -13,12 +14,14 @@ namespace Notus.Block
     {
         private DateTime LastNtpTime = Notus.Variable.Constant.DefaultTime;
         private TimeSpan NtpTimeDifference;
+        public bool CheckPoolDb = false;                // time difference before or after NTP Server
         private bool NodeTimeAfterNtpTime = false;      // time difference before or after NTP Server
 
         private Notus.Mempool MP_BlockPoolList;
         private Notus.Block.Storage BS_Storage;
-        private Dictionary<int, List<Notus.Variable.Struct.List_PoolBlockRecordStruct>> Obj_PoolTransactionList =
-            new Dictionary<int, List<Notus.Variable.Struct.List_PoolBlockRecordStruct>>();
+        private ConcurrentDictionary<string, byte> PoolIdList = new ConcurrentDictionary<string, byte>();
+        private ConcurrentDictionary<int, List<Notus.Variable.Struct.List_PoolBlockRecordStruct>> Obj_PoolTransactionList =
+            new ConcurrentDictionary<int, List<Notus.Variable.Struct.List_PoolBlockRecordStruct>>();
         private Queue<Notus.Variable.Struct.List_PoolBlockRecordStruct> Queue_PoolTransaction = new Queue<Notus.Variable.Struct.List_PoolBlockRecordStruct>();
 
         //bu foknsiyonun görevi blok sırası ve önceki değerlerini blok içeriğine eklemek
@@ -68,11 +71,23 @@ namespace Notus.Block
         //bu fonksiyon ile işlem yapılacak aynı türden bloklar sırası ile listeden çekilip geri gönderilecek
         public Notus.Variable.Struct.PoolBlockRecordStruct? Get()
         {
+            //if(Queue_PoolTransaction.Count)
             DateTime startingTime = DateTime.Now;
             if (Queue_PoolTransaction.Count == 0)
             {
                 return null;
             }
+            int diffBetween = System.Convert.ToInt32(MP_BlockPoolList.Count() / Queue_PoolTransaction.Count);
+            if (diffBetween > 10)
+            {
+                CheckPoolDb = true;
+                Console.WriteLine("CheckPoolDb = true;");
+            }
+            else
+            {
+                Console.WriteLine("CheckPoolDb = false;");
+            }
+            Console.WriteLine("MP_BlockPoolList.Count() : " + MP_BlockPoolList.Count().ToString());
             Console.WriteLine("Queue_PoolTransaction.Count : " + Queue_PoolTransaction.Count.ToString());
             int CurrentBlockType = -1;
             List<string> TempWalletList = new List<string>() { NVG.Settings.NodeWallet.WalletKey };
@@ -83,6 +98,7 @@ namespace Notus.Block
             string transactionId = string.Empty;
             while (exitLoop == false)
             {
+
                 if (Queue_PoolTransaction.Count > 0)
                 {
                     Notus.Variable.Struct.List_PoolBlockRecordStruct? TmpPoolRecord = Queue_PoolTransaction.Peek();
@@ -215,6 +231,13 @@ namespace Notus.Block
                 else
                 {
                     Console.WriteLine("exitLoop = true;  [nvhgjngjgjgh]");
+                    exitLoop = true;
+                }
+
+                TimeSpan ts=DateTime.Now - startingTime;
+                if(ts.TotalMilliseconds > 200)
+                {
+                    Console.WriteLine("exitLoop = true;  [98765478976]");
                     exitLoop = true;
                 }
             }
@@ -696,37 +719,39 @@ namespace Notus.Block
         }
         private void Add2Queue(Notus.Variable.Struct.PoolBlockRecordStruct PreBlockData, string BlockKeyStr)
         {
-            if (Obj_PoolTransactionList.ContainsKey(PreBlockData.type) == false)
+            if (PoolIdList.ContainsKey(BlockKeyStr) == false)
             {
-                Obj_PoolTransactionList.Add(
-                    PreBlockData.type,
-                    new List<Variable.Struct.List_PoolBlockRecordStruct>() { }
+                PoolIdList.TryAdd(BlockKeyStr, 1);
+
+                if (Obj_PoolTransactionList.ContainsKey(PreBlockData.type) == false)
+                {
+                    Obj_PoolTransactionList.TryAdd(
+                        PreBlockData.type,
+                        new List<Variable.Struct.List_PoolBlockRecordStruct>() { }
+                    );
+                }
+                Obj_PoolTransactionList[PreBlockData.type].Add(
+                    new Notus.Variable.Struct.List_PoolBlockRecordStruct()
+                    {
+                        key = BlockKeyStr,
+                        type = PreBlockData.type,
+                        data = PreBlockData.data
+                    }
                 );
-            }
-            Obj_PoolTransactionList[PreBlockData.type].Add(
-                new Notus.Variable.Struct.List_PoolBlockRecordStruct()
+                Queue_PoolTransaction.Enqueue(new Notus.Variable.Struct.List_PoolBlockRecordStruct()
                 {
                     key = BlockKeyStr,
                     type = PreBlockData.type,
                     data = PreBlockData.data
-                }
-            );
-            Queue_PoolTransaction.Enqueue(new Notus.Variable.Struct.List_PoolBlockRecordStruct()
+                });
+            }
+            else
             {
-                key = BlockKeyStr,
-                type = PreBlockData.type,
-                data = PreBlockData.data
-            });
+                Console.WriteLine("Contains BlockKeyStr : " + BlockKeyStr);
+            }
         }
-        public void Start()
+        public void LoadFromPoolDb()
         {
-            BS_Storage = new Notus.Block.Storage(false);
-            BS_Storage.Start();
-
-            MP_BlockPoolList = new Notus.Mempool(
-                Notus.IO.GetFolderName(NVG.Settings, Notus.Variable.Constant.StorageFolderName.Common) +
-                Notus.Variable.Constant.MemoryPoolName["BlockPoolList"]
-            );
             MP_BlockPoolList.Each((string blockTransactionKey, string TextBlockDataString) =>
             {
                 Notus.Variable.Struct.PoolBlockRecordStruct? PreBlockData =
@@ -743,6 +768,18 @@ namespace Notus.Block
                     Console.WriteLine(TextBlockDataString);
                 }
             });
+        }
+        public void Start()
+        {
+            BS_Storage = new Notus.Block.Storage(false);
+            BS_Storage.Start();
+
+            MP_BlockPoolList = new Notus.Mempool(
+                Notus.IO.GetFolderName(NVG.Settings, Notus.Variable.Constant.StorageFolderName.Common) +
+                Notus.Variable.Constant.MemoryPoolName["BlockPoolList"]
+            );
+            LoadFromPoolDb();
+            CheckPoolDb = false;
         }
         public Queue()
         {

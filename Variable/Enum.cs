@@ -149,6 +149,7 @@ namespace Notus.Variable.Enum
         RejectedMultiWalletAccess = 38,
         UnknownTransaction = 79,
         NotSupported=65,
+        TooManyRequest=44,
         Unknown = 78
     }
 
