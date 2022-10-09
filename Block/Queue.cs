@@ -73,7 +73,7 @@ namespace Notus.Block
             {
                 return null;
             }
-
+            Console.WriteLine("Queue_PoolTransaction.Count : " + Queue_PoolTransaction.Count.ToString());
             int CurrentBlockType = -1;
             List<string> TempWalletList = new List<string>() { NVG.Settings.NodeWallet.WalletKey };
 
@@ -88,6 +88,7 @@ namespace Notus.Block
                     Notus.Variable.Struct.List_PoolBlockRecordStruct? TmpPoolRecord = Queue_PoolTransaction.Peek();
                     if (TmpPoolRecord == null)
                     {
+                        Console.WriteLine("exitLoop = true;  [qqqqq]");
                         exitLoop = true;
                     }
                     else
@@ -148,7 +149,6 @@ namespace Notus.Block
                                     {
                                         Queue_PoolTransaction.Enqueue(TmpPoolRecord);
                                         Obj_PoolTransactionList[CurrentBlockType].Add(TmpPoolRecord);
-                                        exitLoop = true;
                                     }
                                 }
                             }
@@ -179,7 +179,7 @@ namespace Notus.Block
                                     {
                                         Queue_PoolTransaction.Enqueue(TmpPoolRecord);
                                         Obj_PoolTransactionList[CurrentBlockType].Add(TmpPoolRecord);
-                                        exitLoop = true;
+                                        //exitLoop = true;
                                     }
                                 }
                             }
@@ -200,20 +200,26 @@ namespace Notus.Block
                                 CurrentBlockType == Notus.Variable.Enum.BlockTypeList.MultiWalletCryptoTransfer
                             )
                             {
+                                Console.WriteLine("exitLoop = true;  [sdsdsdsd]");
+
                                 exitLoop = true;
                             }
                         }
                         else
                         {
+                            Console.WriteLine("exitLoop = true;  [papapapap]");
                             exitLoop = true;
                         }
                     }
                 }
                 else
                 {
+                    Console.WriteLine("exitLoop = true;  [nvhgjngjgjgh]");
                     exitLoop = true;
                 }
             }
+
+            Console.WriteLine("TempPoolTransactionList.Count : " + TempPoolTransactionList.Count.ToString());
 
             //Console.WriteLine(JsonSerializer.Serialize( TempPoolTransactionList));
             //Console.ReadLine();
