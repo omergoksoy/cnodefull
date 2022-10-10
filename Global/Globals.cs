@@ -13,7 +13,49 @@ namespace Notus.Variable
 {
     static class Globals
     {
+        /*
+
+
+        * minimum gereken node sayısı -> 6 adet node
+        * 
+            * EMPTY BLOK
+            * empty blok belirlenen süre içerisinde oluşturulacak
+                * eğer belirlenen süre içerisinde oluşturulması gereken empty blok oluşturulmazsa
+                  o zaman önce eksik kalan empty bloklar oluşturulana kadar başka blok üretilmeyecek
+
+                * 
+                *
+                *
+        * 
+        * bu nodelar sıraya girecek
+            * 
+            * 1. node 
+            * 
+            * 0 ile 0,2 saniye arasını blok oluşturmak için ayıracak
+            * 0,2 ile 0,3 saniye arasını bloğu oluşturmak için ayıracak
+            * 0,3 ile 0,5 saniye arasını ilk 20 arasındaki node'lara blokları dağıtmak için harcayacak.
+            * eğer kendinden sonraki 5 node 1. node'dan haber alamazsa
+                * birinci node'un oluşturduğu blok gözardı edilecek
+                * 
+
+
+        |-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|
+        0      0,2     0,5     0,7     1,0     1,2     1,5     1,7     2,0     2,2     2,5     2,7     3,0
+
+
+
+
+
+        */
+
+        // node kaç milisaniye çalışacak
+        public static readonly int NodeWorkingTime = 200;
+
+        // node çalışma süresi sonunda kaç mili saniye dağıtmaya geçecek
+        public static readonly int NodeDistributingTime = 300;
+
         public static List<string> AirdropAddressList { get; set; }
+        public static DateTime StartingTime { get; set; }
         public static int AirdropAddressNo { get; set; }
         public static Notus.Globals.Variable.Settings Settings { get; set; }
         static Globals()

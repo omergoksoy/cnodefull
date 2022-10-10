@@ -463,9 +463,10 @@ namespace Notus.Validator
 
             if (CheckXmlTag(incomeData, "when"))
             {
-                Console.WriteLine("When = Is Come");
+                //Console.WriteLine("When = Is Come");
                 StartingTimeAfterEnoughNode = Notus.Date.ToDateTime(GetPureText(incomeData, "when"));
-                Console.WriteLine(StartingTimeAfterEnoughNode);
+                NVG.StartingTime = StartingTimeAfterEnoughNode;
+                //Console.WriteLine(StartingTimeAfterEnoughNode);
                 return "done";
             }
             if (CheckXmlTag(incomeData, "hash"))
@@ -844,6 +845,7 @@ namespace Notus.Validator
                             StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
                             " / " + GetUtcTime().ToString("HH:mm:ss.fff")
                         );
+                        NVG.StartingTime = StartingTimeAfterEnoughNode;
                         foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
                         {
                             if (entry.Value.Status == NodeStatus.Online && entry.Value.ErrorCount == 0)

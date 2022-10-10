@@ -23,6 +23,15 @@ static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEv
 
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+/*
+DateTime suan = DateTime.Now;
+
+Console.WriteLine(suan.ToString("yyyy MM dd HH:mm:ss - fff"));
+suan = suan.AddMilliseconds(100);
+Console.WriteLine(suan.ToString("yyyy MM dd HH:mm:ss - fff"));
+Console.ReadLine();
+Console.ReadLine();
+*/
 //int.TryParse("", out int a);
 //int a = int.Parse("");
 //Console.WriteLine(a);

@@ -71,7 +71,6 @@ namespace Notus.Block
         //bu fonksiyon ile işlem yapılacak aynı türden bloklar sırası ile listeden çekilip geri gönderilecek
         public Notus.Variable.Struct.PoolBlockRecordStruct? Get()
         {
-            //if(Queue_PoolTransaction.Count)
             DateTime startingTime = DateTime.Now;
             if (Queue_PoolTransaction.Count == 0)
             {
@@ -251,7 +250,7 @@ namespace Notus.Block
                 }
             }
 
-            Console.WriteLine("TempPoolTransactionList.Count : " + TempPoolTransactionList.Count.ToString());
+            //Console.WriteLine("TempPoolTransactionList.Count : " + TempPoolTransactionList.Count.ToString());
 
             //Console.WriteLine(JsonSerializer.Serialize( TempPoolTransactionList));
             //Console.ReadLine();
