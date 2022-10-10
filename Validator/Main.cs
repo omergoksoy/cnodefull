@@ -8,6 +8,8 @@ using System.Text.Json;
 using System.Threading;
 using NVG = Notus.Variable.Globals;
 using NGF = Notus.Variable.Globals.Functions;
+using System.Collections.Concurrent;
+
 namespace Notus.Validator
 {
     public class Main : IDisposable
@@ -23,11 +25,13 @@ namespace Notus.Validator
         private Notus.Block.Integrity Obj_Integrity;
         private Notus.Validator.Api Obj_Api;
 
-        private Dictionary<string, Notus.Variable.Struct.BlockStatus> Obj_BlockStatusList = new Dictionary<string, Notus.Variable.Struct.BlockStatus>();
-        public Dictionary<string, Notus.Variable.Struct.BlockStatus> BlockStatusList
+        /*
+        private ConcurrentDictionary<string, Notus.Variable.Struct.BlockStatus> Obj_BlockStatusList = new ConcurrentDictionary<string, Notus.Variable.Struct.BlockStatus>();
+        public ConcurrentDictionary<string, Notus.Variable.Struct.BlockStatus> BlockStatusList
         {
             get { return BlockStatusList; }
         }
+        */
 
         private bool CryptoTransferTimerIsRunning = false;
         private DateTime CryptoTransferTime = DateTime.Now;
@@ -252,7 +256,7 @@ namespace Notus.Validator
                             }
                         };
 
-                        Dictionary<string, Notus.Variable.Struct.MempoolDataList> tmpTransactionList = Obj_Api.RequestSend_DataList();
+                        ConcurrentDictionary<string, Notus.Variable.Struct.MempoolDataList> tmpTransactionList = Obj_Api.RequestSend_DataList();
                         //Console.WriteLine("tmpTransactionList [1] : " + tmpTransactionList.Count.ToString());
                         // wallet balances are assigned
                         Int64 transferFee = Notus.Wallet.Fee.Calculate(
@@ -819,8 +823,8 @@ namespace Notus.Validator
                             }
                             else
                             {
+                                //Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                                Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                                 Console.Write("+");
                                 Thread.Sleep(1);
                             }
@@ -840,7 +844,8 @@ namespace Notus.Validator
                         }
                         if (NGF.BlockQueue.CheckPoolDb == true)
                         {
-
+                            Console.WriteLine("NGF.BlockQueue.LoadFromPoolDb();");
+                            NGF.BlockQueue.LoadFromPoolDb();
                         }
                     }
                 }

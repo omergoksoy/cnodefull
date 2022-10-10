@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -32,8 +33,8 @@ namespace Notus
         private string PoolNameForDb = string.Empty;
         private Notus.Data.Sql SqlObj;
         private Notus.Threads.Timer TimerObj;
-        private Dictionary<string, Notus.Variable.Struct.MempoolDataList> Obj_DataList = new Dictionary<string, Notus.Variable.Struct.MempoolDataList>();
-        public Dictionary<string, Notus.Variable.Struct.MempoolDataList> DataList
+        private ConcurrentDictionary<string, Notus.Variable.Struct.MempoolDataList> Obj_DataList = new ConcurrentDictionary<string, Notus.Variable.Struct.MempoolDataList>();
+        public ConcurrentDictionary<string, Notus.Variable.Struct.MempoolDataList> DataList
         {
             get { return Obj_DataList; }
         }
@@ -118,7 +119,7 @@ namespace Notus
                         }
                     }
 
-                    Obj_DataList.Add(yKeyName, new Notus.Variable.Struct.MempoolDataList()
+                    Obj_DataList.TryAdd(yKeyName, new Notus.Variable.Struct.MempoolDataList()
                     {
                         Data = yData,
                         expire = int.Parse(yExpire),
@@ -256,7 +257,7 @@ namespace Notus
             }
             else
             {
-                Obj_DataList.Add(KeyName, new Notus.Variable.Struct.MempoolDataList()
+                Obj_DataList.TryAdd(KeyName, new Notus.Variable.Struct.MempoolDataList()
                 {
                     Data = Data,
                     expire = Expire,
@@ -351,7 +352,7 @@ namespace Notus
                     null
                 );
             }
-            Obj_DataList.Remove(KeyName);
+            Obj_DataList.TryRemove(KeyName,out _);
             DeleteFromTable(KeyName);
         }   
         public string Get(string KeyName, string? ReturnIfKeyDoesntExist = null)
@@ -465,7 +466,7 @@ namespace Notus
                             {
                                 if (0 > (entry.Value.remove - DateTime.Now).TotalSeconds)
                                 {
-                                    Obj_DataList.Remove(entry.Key);
+                                    Obj_DataList.TryRemove(entry.Key,out _);
                                     DeleteFromTable(entry.Key);
                                 }
                             }

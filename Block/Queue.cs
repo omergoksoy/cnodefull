@@ -75,6 +75,7 @@ namespace Notus.Block
             DateTime startingTime = DateTime.Now;
             if (Queue_PoolTransaction.Count == 0)
             {
+                PoolIdList.Clear();
                 return null;
             }
             int diffBetween = System.Convert.ToInt32(MP_BlockPoolList.Count() / Queue_PoolTransaction.Count);
@@ -86,9 +87,17 @@ namespace Notus.Block
             else
             {
                 Console.WriteLine("CheckPoolDb = false;");
+                if (MP_BlockPoolList.Count() < 10)
+                {
+                    CheckPoolDb = true;
+                }
+                if (Queue_PoolTransaction.Count < 10)
+                {
+                    CheckPoolDb = true;
+                }
             }
-            Console.WriteLine("MP_BlockPoolList.Count() : " + MP_BlockPoolList.Count().ToString());
-            Console.WriteLine("Queue_PoolTransaction.Count : " + Queue_PoolTransaction.Count.ToString());
+            //Console.WriteLine("MP_BlockPoolList.Count() : " + MP_BlockPoolList.Count().ToString());
+            //Console.WriteLine("Queue_PoolTransaction.Count : " + Queue_PoolTransaction.Count.ToString());
             int CurrentBlockType = -1;
             List<string> TempWalletList = new List<string>() { NVG.Settings.NodeWallet.WalletKey };
 
@@ -767,7 +776,7 @@ namespace Notus.Block
                     Console.WriteLine(blockTransactionKey);
                     Console.WriteLine(TextBlockDataString);
                 }
-            });
+            },3000);
         }
         public void Start()
         {

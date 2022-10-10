@@ -1947,9 +1947,8 @@ namespace Notus.Validator
         {
             return ObjMp_CryptoTransfer.Count();
         }
-        public System.Collections.Generic.Dictionary<string, Notus.Variable.Struct.MempoolDataList> RequestSend_DataList()
+        public ConcurrentDictionary<string, Notus.Variable.Struct.MempoolDataList> RequestSend_DataList()
         {
-            //Console.WriteLine("ObjMp_CryptoTransfer.DataList.Count : " + ObjMp_CryptoTransfer.DataList.Count.ToString());
             return ObjMp_CryptoTransfer.DataList;
         }
         public void RequestSend_Remove(string tmpKeyStr)
@@ -1979,7 +1978,6 @@ namespace Notus.Validator
 
         private string Request_Block(Notus.Variable.Struct.HttpRequestDetails IncomeData)
         {
-
             bool prettyJson = PrettyCheckForRaw(IncomeData, 2);
             if (IncomeData.UrlList[1].Length == 90)
             {

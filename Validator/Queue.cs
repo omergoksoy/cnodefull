@@ -8,6 +8,8 @@ using System.Text.Json;
 using System.Linq;
 using System.Threading.Tasks;
 using NVG = Notus.Variable.Globals;
+using System.Collections.Concurrent;
+
 namespace Notus.Validator
 {
     public class Queue : IDisposable
@@ -49,16 +51,16 @@ namespace Notus.Validator
         private SortedDictionary<string, IpInfo> MainAddressList = new SortedDictionary<string, IpInfo>();
         private string MainAddressListHash = string.Empty;
 
-        private Dictionary<string, NodeQueueInfo>? PreviousNodeList = new Dictionary<string, NodeQueueInfo>();
-        public Dictionary<string, NodeQueueInfo>? SyncNodeList
+        private ConcurrentDictionary<string, NodeQueueInfo>? PreviousNodeList = new ConcurrentDictionary<string, NodeQueueInfo>();
+        public ConcurrentDictionary<string, NodeQueueInfo>? SyncNodeList
         {
             get { return PreviousNodeList; }
             set { PreviousNodeList = value; }
         }
-        private Dictionary<string, int> NodeTurnCount = new Dictionary<string, int>();
-        private Dictionary<string, NodeQueueInfo> NodeList = new Dictionary<string, NodeQueueInfo>();
-        private Dictionary<string, DateTime> MessageTimeList = new Dictionary<string, DateTime>();
-        private Dictionary<int, string> NodeOrderList = new Dictionary<int, string>();
+        private ConcurrentDictionary<string, int> NodeTurnCount = new ConcurrentDictionary<string, int>();
+        private ConcurrentDictionary<string, NodeQueueInfo> NodeList = new ConcurrentDictionary<string, NodeQueueInfo>();
+        private ConcurrentDictionary<string, DateTime> MessageTimeList = new ConcurrentDictionary<string, DateTime>();
+        private ConcurrentDictionary<int, string> NodeOrderList = new ConcurrentDictionary<int, string>();
 
         private Notus.Mempool ObjMp_NodeList;
         private bool ExitFromLoop = false;
@@ -200,7 +202,7 @@ namespace Notus.Validator
         {
             if (MessageTimeList.ContainsKey(_keyName) == false)
             {
-                MessageTimeList.Add(_keyName, DateTime.Now);
+                MessageTimeList.TryAdd(_keyName, DateTime.Now);
             }
             else
             {
@@ -300,7 +302,7 @@ namespace Notus.Validator
             }
             else
             {
-                NodeList.Add(tmpNodeHexStr, NodeQueueInfo);
+                NodeList.TryAdd(tmpNodeHexStr, NodeQueueInfo);
             }
 
             if (NVG.Settings.LocalNode == true)
@@ -901,7 +903,7 @@ namespace Notus.Validator
             */
 
             //önce geçerli node listesinin bir yedeği alınıyor ve önceki node listesi değişkeninde tutuluyor.
-            PreviousNodeList = JsonSerializer.Deserialize<Dictionary<string, NodeQueueInfo>>(
+            PreviousNodeList = JsonSerializer.Deserialize<ConcurrentDictionary<string, NodeQueueInfo>>(
                 JsonSerializer.Serialize(NodeList)
             );
             LastHashForStoreList = NodeListHash;
@@ -941,7 +943,7 @@ namespace Notus.Validator
             foreach (KeyValuePair<string, string> entry in tmpWalletHashList)
             {
                 counter++;
-                NodeOrderList.Add(counter, entry.Value);
+                NodeOrderList.TryAdd(counter, entry.Value);
             }
 
             NodeTurnCount.Clear();
@@ -949,7 +951,7 @@ namespace Notus.Validator
             {
                 if (NodeTurnCount.ContainsKey(entry.Value) == false)
                 {
-                    NodeTurnCount.Add(entry.Value, 0);
+                    NodeTurnCount.TryAdd(entry.Value, 0);
                 }
             }
             /*
