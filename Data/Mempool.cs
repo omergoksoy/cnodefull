@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -280,9 +281,10 @@ namespace Notus
         {
             if (Obj_DataList.Count > 0)
             {
+                KeyValuePair<string, Variable.Struct.MempoolDataList>[] tmpObj_DataList = Obj_DataList.ToArray();
                 DateTime startTime = DateTime.Now;
                 int recordCount = 0;
-                foreach (KeyValuePair<string, Notus.Variable.Struct.MempoolDataList> entry in Obj_DataList)
+                for (int i = 0; i < tmpObj_DataList.Count(); i++)
                 {
                     if (UseThisNumberAsCountOrMiliSeconds > 0)
                     {
@@ -302,7 +304,7 @@ namespace Notus
                             }
                         }
                     }
-                    incomeAction(entry.Key, entry.Value.Data);
+                    incomeAction(tmpObj_DataList[i].Key, tmpObj_DataList[i].Value.Data);
                 }
             }
         }
@@ -310,11 +312,8 @@ namespace Notus
         {
             if (Obj_DataList.Count > 0)
             {
-                foreach (KeyValuePair<string, Notus.Variable.Struct.MempoolDataList> entry in Obj_DataList)
-                {
-                    incomeAction(entry.Key, entry.Value.Data);
-                    break;
-                }
+                KeyValuePair<string, Variable.Struct.MempoolDataList>[] tmpObj_DataList = Obj_DataList.ToArray();
+                incomeAction(tmpObj_DataList[0].Key, tmpObj_DataList[0].Value.Data);
             }
         }
         public bool Expire(string KeyName, int Expire)

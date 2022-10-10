@@ -774,8 +774,8 @@ namespace Notus.Validator
                 //Console.WriteLine(SyncReady);
                 if (SyncReady == true)
                 {
-                    //Console.WriteLine(NtpTime);
-                    //Console.WriteLine(NextQueueValidNtpTime);
+                    // Console.WriteLine(NtpTime);
+                    // Console.WriteLine(NextQueueValidNtpTime);
                     if (LastHashForStoreList != NodeListHash)
                     {
                         CalculateTimeDifference(true);
@@ -923,9 +923,6 @@ namespace Notus.Validator
                     tmpWalletOrder.Add(walletNo);
                 }
             }
-            //omergoksoy
-            /*
-            */
 
             tmpWalletOrder.Sort();
             string tmpSalt = new Notus.Hash().CommonHash("md5", string.Join("#", tmpWalletOrder.ToArray()));
@@ -1013,6 +1010,10 @@ namespace Notus.Validator
             }
             else
             {
+                
+                //Console.WriteLine(JsonSerializer.Serialize(NodeList, Notus.Variable.Constant.JsonSetting));
+
+                //Console.WriteLine(JsonSerializer.Serialize(NodeOrderList, Notus.Variable.Constant.JsonSetting));
                 //Notus.Print.Info(NVG.Settings, "Waiting For Turn");
             }
             NodeList[MyNodeHexKey].Time.Node = DateTime.Now;

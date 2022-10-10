@@ -536,8 +536,6 @@ namespace Notus.Validator
         }
         private void WaitUntilEnoughNode()
         {
-            //Console.WriteLine(IncomeBlockList.Count);
-            //Console.WriteLine(JsonSerializer.Serialize( IncomeBlockList));
             if (NVG.Settings.GenesisCreated == false)
             {
                 SetTimeStatusForBeginSync(true);        // stop timer
@@ -547,7 +545,6 @@ namespace Notus.Validator
                 }
                 SetTimeStatusForBeginSync(false);       // release timer
             }
-            //Console.WriteLine("cikti");
         }
         public void Start()
         {
@@ -756,8 +753,7 @@ namespace Notus.Validator
                 }
                 Notus.Print.Success(NVG.Settings, "First Synchronization Is Done");
             }
-            //omergoksoy
-            //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings, Notus.Variable.Constant.JsonSetting));
+
             DateTime LastPrintTime = DateTime.Now;
             bool tmpStartWorkingPrinted = false;
             bool tmpExitMainLoop = false;
@@ -769,7 +765,6 @@ namespace Notus.Validator
 
             while (tmpExitMainLoop == false)
             {
-                //Console.WriteLine(EmptyBlockTimerIsRunning);
                 WaitUntilEnoughNode();
                 if (tmpStartWorkingPrinted == false)
                 {
@@ -844,7 +839,7 @@ namespace Notus.Validator
                         }
                         if (NGF.BlockQueue.CheckPoolDb == true)
                         {
-                            Console.WriteLine("NGF.BlockQueue.LoadFromPoolDb();");
+                            //Console.WriteLine("NGF.BlockQueue.LoadFromPoolDb();");
                             NGF.BlockQueue.LoadFromPoolDb();
                         }
                     }

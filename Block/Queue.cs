@@ -754,10 +754,6 @@ namespace Notus.Block
                     data = PreBlockData.data
                 });
             }
-            else
-            {
-                Console.WriteLine("Contains BlockKeyStr : " + BlockKeyStr);
-            }
         }
         public void LoadFromPoolDb()
         {
