@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,9 +7,8 @@ using System.Net;
 using System.Numerics;
 using System.Text.Json;
 using System.Threading;
-using NVG = Notus.Variable.Globals;
 using NGF = Notus.Variable.Globals.Functions;
-using System.Collections.Concurrent;
+using NVG = Notus.Variable.Globals;
 
 namespace Notus.Validator
 {
@@ -92,7 +92,7 @@ namespace Notus.Validator
                                 //Console.WriteLine("EmptyBlockGeneratedTime [1]: " + EmptyBlockGeneratedTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText));
                                 Notus.Print.Success(NVG.Settings, "Empty Block Executed");
                                 NGF.BlockQueue.AddEmptyBlock();
-                                
+
                             }
                         }
                     }
@@ -773,7 +773,16 @@ namespace Notus.Validator
                 }
                 if (ValidatorQueueObj.MyTurn == true || NVG.Settings.GenesisCreated == true)
                 {
-                    Notus.Variable.Struct.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get();
+                    int islemSuresi = 200;
+                    int olusturmaSuresi = 100;
+                    int dagitmaSuresi = 200;
+                    DateTime islemBitis = NVG.StartingTime.AddMilliseconds(islemSuresi);
+                    DateTime olusturmaBitis = islemBitis.AddMilliseconds(islemSuresi);
+                    Notus.Print.Info(NVG.Settings, "Islem Bitis          : " + islemBitis.ToString("HH:mm:ss.fff"));
+                    Notus.Print.Info(NVG.Settings, "Blok Olusturma Bitis : " + olusturmaBitis.ToString("HH:mm:ss.fff"));
+
+                    NVG.StartingTime = olusturmaBitis;
+                    Notus.Variable.Struct.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(islemBitis, olusturmaBitis);
                     if (TmpBlockStruct != null)
                     {
                         //Console.WriteLine(JsonSerializer.Serialize(TmpBlockStruct));
@@ -869,7 +878,7 @@ namespace Notus.Validator
                     blockData.info.type != Notus.Variable.Enum.BlockTypeList.GenesisBlock
                 )
                 {
-                    if(blockData.info.rowNo % 500 == 0)
+                    if (blockData.info.rowNo % 500 == 0)
                     {
                         Notus.Print.Status(NVG.Settings,
                             "Block Came From The Loading DB [ " + fixedRowNoLength(blockData) + " ] ->" +
@@ -953,7 +962,8 @@ namespace Notus.Validator
                     {
                         Console.WriteLine("Block Exist -> Line 937");
                     }
-                    else {
+                    else
+                    {
                         Console.WriteLine();
                         Console.WriteLine("Add -> CurrentBlockRowNo    -> " + CurrentBlockRowNo.ToString());
                         Console.WriteLine("Add -> blockData.info.rowNo -> " + blockData.info.rowNo.ToString());

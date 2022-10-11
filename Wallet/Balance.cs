@@ -447,6 +447,7 @@ namespace Notus.Wallet
                 NGF.LockWalletList.Clear();
                 NGF.WalletUsageList.Clear();
                 //ObjMp_WalletUsage.Clear();
+                //Console.WriteLine("kontrol-2");
                 ObjMp_MultiWalletParticipant.Clear();
                 ObjMp_WalletsICanApprove.Clear();
                 MultiWalletTypeList.Clear();
@@ -879,14 +880,16 @@ namespace Notus.Wallet
             ObjMp_WalletUsage.AsyncActive = false;
             ObjMp_WalletUsage.Clear();
             */
-
+            //Console.WriteLine("kontrol-1");
             ObjMp_MultiWalletParticipant = new Notus.Mempool(
                 Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Balance) +
                 "multi_wallet_participant"
             );
             
             ObjMp_MultiWalletParticipant.AsyncActive = false;
+            //Console.WriteLine("kontrol-4");
             ObjMp_MultiWalletParticipant.Clear();
+            //Console.WriteLine("kontrol-3");
 
             ObjMp_WalletsICanApprove = new Notus.Mempool(
                 Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Balance) +

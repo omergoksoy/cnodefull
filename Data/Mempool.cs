@@ -226,25 +226,32 @@ namespace Notus
             }
             return false;
         }
-        private void DeleteFromTable_SubMethod(string KeyName)
-        {
-            SqlObj.Delete("key_value", new Dictionary<string, string>(){
-                    { "key",KeyName}
-                });
+        private void DeleteFromTable_SubMethod(string KeyName,bool showError = false) {
+            bool resultVal=SqlObj.Delete("key_value", new Dictionary<string, string>(){
+                { "key", KeyName }
+            });
+            if (showError == true)
+            {
+                Console.WriteLine("Control-Point-a41234");
+                Console.WriteLine("--------------------------");
+                Console.WriteLine(resultVal);
+                Console.WriteLine("KeyName");
+                Console.WriteLine(KeyName);
+            }
         }
-        private void DeleteFromTable(string KeyName)
+        private void DeleteFromTable(string KeyName,bool showError=false)
         {
             if (AsyncMethodActivated == true)
             {
                 Task.Run(() =>
                 {
-                    DeleteFromTable_SubMethod(KeyName);
+                    DeleteFromTable_SubMethod(KeyName, showError);
                 }
                 );
             }
             else
             {
-                DeleteFromTable_SubMethod(KeyName);
+                DeleteFromTable_SubMethod(KeyName, showError);
             }
         }
         private bool SubAdd(string KeyName, string Data, int Expire)
@@ -338,10 +345,15 @@ namespace Notus
             }
             return false;
         }
-        public void Remove(string KeyName)
+        public void Remove(string KeyName,bool showError=false)
         {
             if (Obj_DataList.ContainsKey(KeyName) == false)
             {
+                if (showError == true)
+                {
+                    Console.WriteLine("Control-Point-a3547");
+                    Console.WriteLine("ContainsKey == false");
+                }
                 Notus.Print.Log(
                     Notus.Variable.Enum.LogLevel.Info,
                     300000001,
@@ -351,8 +363,15 @@ namespace Notus
                     null
                 );
             }
-            Obj_DataList.TryRemove(KeyName,out _);
-            DeleteFromTable(KeyName);
+            bool tst=Obj_DataList.TryRemove(KeyName,out _);
+            if(showError== true)
+            {
+                Console.WriteLine("Control-Point-a85147");
+                Console.WriteLine(tst);
+                Console.WriteLine("bool tst=Obj_DataList.TryRemove(KeyName,out _);");
+                Console.WriteLine(JsonSerializer.Serialize(Obj_DataList));
+            }
+            DeleteFromTable(KeyName,showError);
         }   
         public string Get(string KeyName, string? ReturnIfKeyDoesntExist = null)
         {
