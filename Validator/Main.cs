@@ -773,6 +773,18 @@ namespace Notus.Validator
                 }
                 if (ValidatorQueueObj.MyTurn == true || NVG.Settings.GenesisCreated == true)
                 {
+                    /*
+                    3 saniye ile 3.000 milisaniye
+
+
+                    2 node için -> 1.500 milisaniye / node
+                    3 node için -> 1.000 milisaniye / node
+                    4 node için ->   750 milisaniye / node
+                    5 node için ->   600 milisaniye / node
+                    6 node için ->   500 milisaniye / node
+
+
+                    */
                     int islemSuresi = 200;
                     int olusturmaSuresi = 100;
                     int dagitmaSuresi = 200;
