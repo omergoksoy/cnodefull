@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-
+using NVG = Notus.Variable.Globals;
 namespace Notus
 {
     public class Time
@@ -17,6 +17,15 @@ namespace Notus
             tmpReturn.After = (tmpReturn.Now > tmpReturn.UtcTime);
             tmpReturn.Difference = (tmpReturn.After == true ? (tmpReturn.Now - tmpReturn.UtcTime) : (tmpReturn.UtcTime - tmpReturn.Now));
             return tmpReturn;
+        }
+        public static DateTime NowNtpTime()
+        {
+            if (NVG.Settings.UTCTime == null)
+            {
+                NVG.Settings.UTCTime = Notus.Time.GetNtpTime();
+            }
+            NVG.Settings.UTCTime = RefreshNtpTime(NVG.Settings.UTCTime);
+            return NVG.Settings.UTCTime.Now;
         }
         public static Notus.Variable.Struct.UTCTimeStruct RefreshNtpTime(Notus.Variable.Struct.UTCTimeStruct currentUtcTime)
         {

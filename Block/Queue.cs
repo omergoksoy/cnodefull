@@ -228,7 +228,6 @@ namespace Notus.Block
                             )
                             {
                                 Console.WriteLine("exitLoop = true;  [sdsdsdsd]");
-
                                 exitLoop = true;
                             }
                         }

@@ -777,21 +777,24 @@ namespace Notus.Validator
                     3 saniye ile 3.000 milisaniye
 
 
-                    2 node için -> 1.500 milisaniye / node
-                    3 node için -> 1.000 milisaniye / node
-                    4 node için ->   750 milisaniye / node
-                    5 node için ->   600 milisaniye / node
-                    6 node için ->   500 milisaniye / node
+                    2 node için -> 1.500 milisaniye / node  -> ilk 2 sıra
+                    3 node için -> 1.000 milisaniye / node  -> ilk 3 sıra
+                    4 node için ->   750 milisaniye / node  -> ilk 3 sıra
+                    5 node için ->   600 milisaniye / node  -> ilk 3 sıra
+                    6 node için ->   500 milisaniye / node  -> ilk 6 sıra
+                    7 ve sonası ->   500 milisaniye / node  -> ilk 6 sıra
 
 
                     */
+
+                    
                     int islemSuresi = 200;
                     int olusturmaSuresi = 100;
                     int dagitmaSuresi = 200;
                     DateTime islemBitis = NVG.StartingTime.AddMilliseconds(islemSuresi);
                     DateTime olusturmaBitis = islemBitis.AddMilliseconds(islemSuresi);
-                    Notus.Print.Info(NVG.Settings, "Islem Bitis          : " + islemBitis.ToString("HH:mm:ss.fff"));
-                    Notus.Print.Info(NVG.Settings, "Blok Olusturma Bitis : " + olusturmaBitis.ToString("HH:mm:ss.fff"));
+                    //Notus.Print.Info(NVG.Settings, "Islem Bitis          : " + islemBitis.ToString("HH:mm:ss.fff"));
+                    //Notus.Print.Info(NVG.Settings, "Blok Olusturma Bitis : " + olusturmaBitis.ToString("HH:mm:ss.fff"));
 
                     NVG.StartingTime = olusturmaBitis;
                     Notus.Variable.Struct.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(islemBitis, olusturmaBitis);

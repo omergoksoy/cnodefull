@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NVG = Notus.Variable.Globals;
 using System.Collections.Concurrent;
+using Notus.Encryption;
 
 namespace Notus.Validator
 {
@@ -983,10 +984,12 @@ namespace Notus.Validator
                 }
             }
 
-
             // Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
             // Console.WriteLine(JsonSerializer.Serialize(NodeOrderList));
             MyTurn_Val = (string.Equals(MyWallet, NodeOrderList[1]));
+
+            Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
+            Console.WriteLine(Notus.Time.NowNtpTime().ToString("HH:mm:ss fff"));
 
             if (MyTurn_Val == true)
             {
