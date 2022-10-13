@@ -1,15 +1,15 @@
-﻿using System;
-using System.Threading;
-using System.Collections.Generic;
+﻿using Notus.Encryption;
 using Notus.Variable.Struct;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Numerics;
 using System.Text.Json;
-using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using NVG = Notus.Variable.Globals;
-using System.Collections.Concurrent;
-using Notus.Encryption;
 
 namespace Notus.Validator
 {
@@ -93,22 +93,22 @@ namespace Notus.Validator
         }
 
         //oluşturulacak blokları kimin oluşturacağını seçen fonksiyon
-        public void Distrubute(long blockRowNo,int blockType=0)
+        public void Distrubute(long blockRowNo, int blockType = 0)
         {
             foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
             {
                 if (string.Equals(MyNodeHexKey, entry.Key) == false && entry.Value.Status == NodeStatus.Online)
                 {
-                    Notus.Print.Info(NVG.Settings, 
-                        "Distrubuting " + 
-                        blockRowNo.ToString() +"[ " +
-                        blockType.ToString()+ 
-                        " ] . Block To " + 
-                        entry.Value.IP.IpAddress+":"+ 
+                    Notus.Print.Info(NVG.Settings,
+                        "Distrubuting " +
+                        blockRowNo.ToString() + "[ " +
+                        blockType.ToString() +
+                        " ] . Block To " +
+                        entry.Value.IP.IpAddress + ":" +
                         entry.Value.IP.Port.ToString()
                     );
                     SendMessage(entry.Value.IP,
-                        "<block>" + blockRowNo.ToString() + ":" + 
+                        "<block>" + blockRowNo.ToString() + ":" +
                         NVG.Settings.NodeWallet.WalletKey + "</block>",
                         true
                     );
@@ -228,7 +228,7 @@ namespace Notus.Validator
                     {
                         string urlPath =
                             Notus.Network.Node.MakeHttpListenerPath(
-                                entry.Value.IpAddress, 
+                                entry.Value.IpAddress,
                                 entry.Value.Port
                             ) + "ping/";
                         string incodeResponse = Notus.Communication.Request.GetSync(
@@ -369,7 +369,7 @@ namespace Notus.Validator
         {
             bool storeList = true;
             string tmpNodeListStr = ObjMp_NodeList.Get("ip_list", "");
-            if (tmpNodeListStr.Length>0)
+            if (tmpNodeListStr.Length > 0)
             {
                 SortedDictionary<string, IpInfo>? tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, IpInfo>>(tmpNodeListStr);
                 if (
@@ -517,7 +517,7 @@ namespace Notus.Validator
                         AddToNodeList(tmpNodeQueueInfo);
                     }
                 }
-                catch(Exception err)
+                catch (Exception err)
                 {
                     Notus.Print.Log(
                         Notus.Variable.Enum.LogLevel.Info,
@@ -676,7 +676,8 @@ namespace Notus.Validator
                             tmpData = JsonSerializer.Serialize(MainAddressList);
                             innerControlLoop = true;
                         }
-                        catch (Exception err){
+                        catch (Exception err)
+                        {
                             Notus.Print.Log(
                                 Notus.Variable.Enum.LogLevel.Info,
                                 986547,
@@ -798,9 +799,9 @@ namespace Notus.Validator
             foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
             {
                 if (
-                    entry.Value.Status == NodeStatus.Online && 
+                    entry.Value.Status == NodeStatus.Online &&
                     entry.Value.ErrorCount == 0 &&
-                    entry.Value.Ready==true
+                    entry.Value.Ready == true
                 )
                 {
                     nodeCount++;
@@ -842,8 +843,8 @@ namespace Notus.Validator
                     if (string.Equals(tmpFirstWallet, MyWallet))
                     {
                         StartingTimeAfterEnoughNode = RefreshNtpTime(Notus.Variable.Constant.NodeStartingSync);
-                        Notus.Print.Info(NVG.Settings, 
-                            "I'm Sending Starting (When) Time / Current : " + 
+                        Notus.Print.Info(NVG.Settings,
+                            "I'm Sending Starting (When) Time / Current : " +
                             StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
                             " / " + GetUtcTime().ToString("HH:mm:ss.fff")
                         );
@@ -871,10 +872,10 @@ namespace Notus.Validator
                         {
                             Thread.Sleep(20);
                         }
-                        Notus.Print.Info(NVG.Settings, 
-                            "I'm Waiting Starting (When) Time / Current : " + 
+                        Notus.Print.Info(NVG.Settings,
+                            "I'm Waiting Starting (When) Time / Current : " +
                             StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
-                            " /  " + 
+                            " /  " +
                             GetUtcTime().ToString("HH:mm:ss.fff")
                         );
                     }
@@ -979,48 +980,270 @@ namespace Notus.Validator
                 {
                     maxRewardCount = entry.Value;
                 }
-                if (minRewardCount> entry.Value)
+                if (minRewardCount > entry.Value)
                 {
                     minRewardCount = entry.Value;
                 }
             }
 
+            /*
             burada işlem yapılacak
             süreler dağıtılacak
+            */
 
+            NVG.NodeTimeBasedOrderList.Clear();
+            int islemSuresi = 200;
+            int olusturmaSuresi = 100;
+            int dagitmaSuresi = 200;
+            int toplamZamanAraligi = islemSuresi + olusturmaSuresi + dagitmaSuresi;
+
+            sıralar burada oluşturuldu ama 
+            her sıranın süresi belirtilmedi
+            süre sonrası belirtilen aralıkta node'lar işlemlerini yapacak
+            
 
             if (NodeOrderList.Count == 2)
             {
-                int islemSuresi = 200;
-                int olusturmaSuresi = 100;
-                int dagitmaSuresi = 200;
-                DateTime islemBitis = NVG.StartingTime.AddMilliseconds(islemSuresi);
-                DateTime olusturmaBitis = islemBitis.AddMilliseconds(islemSuresi);
-
-                NodeTimeBasedOrderList.TryAdd(NodeOrderList[1], NVG.StartingTime);
-                NodeTimeBasedOrderList.TryAdd(NodeOrderList[2], NVG.StartingTime.AddMilliseconds(islemSuresi + olusturmaSuresi+dagitmaSuresi));
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[1],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[2],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[1],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[2],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[1],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[2],
+                        Begin = NVG.StartingTime
+                    }
+                );
             }
+            
             if (NodeOrderList.Count == 3)
             {
-
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[1],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[2],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[3],
+                        Begin = NVG.StartingTime
+                    }
+                );
+            
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[1],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[2],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[3],
+                        Begin = NVG.StartingTime
+                    }
+                );
+            
             }
+            
             if (NodeOrderList.Count == 4)
             {
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[1],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[2],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[3],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[4],
+                        Begin = NVG.StartingTime
+                    }
+                );
 
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[1],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[2],
+                        Begin = NVG.StartingTime
+                    }
+                );
             }
+            
             if (NodeOrderList.Count == 5)
             {
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[1],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[2],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[3],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[4],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[5],
+                        Begin = NVG.StartingTime
+                    }
+                );
 
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[1],
+                        Begin = NVG.StartingTime
+                    }
+                );
             }
+
             if (NodeOrderList.Count > 5)
             {
-
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[1],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[2],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[3],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[4],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[5],
+                        Begin = NVG.StartingTime
+                    }
+                );
+                NVG.NodeTimeBasedOrderList.Add(
+                    new Globals.Variable.NodeOrderStruct()
+                    {
+                        Wallet = NodeOrderList[6],
+                        Begin = NVG.StartingTime
+                    }
+                );
             }
-            Console.WriteLine()
+            
+            
+            Console.WriteLine();
             // Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
             // Console.WriteLine(JsonSerializer.Serialize(NodeOrderList));
             MyTurn_Val = (string.Equals(MyWallet, NodeOrderList[1]));
-            NodeTimeBasedOrderList
+            //NodeTimeBasedOrderList
             Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
             Console.WriteLine(Notus.Time.NowNtpTime().ToString("HH:mm:ss fff"));
 
@@ -1048,7 +1271,7 @@ namespace Notus.Validator
             }
             else
             {
-                
+
                 //Console.WriteLine(JsonSerializer.Serialize(NodeList, Notus.Variable.Constant.JsonSetting));
 
                 //Console.WriteLine(JsonSerializer.Serialize(NodeOrderList, Notus.Variable.Constant.JsonSetting));

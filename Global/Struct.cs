@@ -39,4 +39,12 @@ namespace Notus.Globals.Variable
 
         public Notus.Variable.Class.BlockData? LastBlock { get; set; }
     }
+
+    public class NodeOrderStruct
+    {
+        public string Wallet { get; set; }
+        public DateTime Begin { get; set; }
+
+    }
+
 }

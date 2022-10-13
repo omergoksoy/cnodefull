@@ -47,7 +47,7 @@ namespace Notus.Variable
 
 
         */
-
+        public static List<NodeOrderStruct> NodeTimeBasedOrderList = new List<NodeOrderStruct>();
         // kaç saniye boyunca pool'u dinleyecek
         public static readonly int BlockListeningForPoolTime = 200;
 
@@ -152,6 +152,7 @@ namespace Notus.Variable
                 }
 
                 BlockOrder.Clear();
+                NodeTimeBasedOrderList.Clear();
                 /*
                 string tmpFolderName = Notus.IO.GetFolderName(
                     Settings,
