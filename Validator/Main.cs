@@ -741,7 +741,7 @@ namespace Notus.Validator
 
                 if (NVG.Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer1)
                 {
-                    EmptyBlockTimerFunc();
+                    //EmptyBlockTimerFunc();
                     CryptoTransferTimerFunc();
                 }
                 if (NVG.Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer2)
@@ -774,6 +774,12 @@ namespace Notus.Validator
                 if (ValidatorQueueObj.MyTurn == true || NVG.Settings.GenesisCreated == true)
                 {
                     /*
+                    
+                    Notus.Print.Success(NVG.Settings, "Empty Block Executed");
+                    NGF.BlockQueue.AddEmptyBlock();
+                    */
+
+                    /*
                     3 saniye ile 3.000 milisaniye
 
 
@@ -787,7 +793,7 @@ namespace Notus.Validator
 
                     */
 
-                    
+
                     int islemSuresi = 200;
                     int olusturmaSuresi = 100;
                     int dagitmaSuresi = 200;

@@ -62,6 +62,7 @@ namespace Notus.Validator
         private ConcurrentDictionary<string, NodeQueueInfo> NodeList = new ConcurrentDictionary<string, NodeQueueInfo>();
         private ConcurrentDictionary<string, DateTime> MessageTimeList = new ConcurrentDictionary<string, DateTime>();
         private ConcurrentDictionary<int, string> NodeOrderList = new ConcurrentDictionary<int, string>();
+        private ConcurrentDictionary<string, DateTime> NodeTimeBasedOrderList = new ConcurrentDictionary<string, DateTime>();
 
         private Notus.Mempool ObjMp_NodeList;
         private bool ExitFromLoop = false;
@@ -984,10 +985,42 @@ namespace Notus.Validator
                 }
             }
 
+            burada işlem yapılacak
+            süreler dağıtılacak
+
+
+            if (NodeOrderList.Count == 2)
+            {
+                int islemSuresi = 200;
+                int olusturmaSuresi = 100;
+                int dagitmaSuresi = 200;
+                DateTime islemBitis = NVG.StartingTime.AddMilliseconds(islemSuresi);
+                DateTime olusturmaBitis = islemBitis.AddMilliseconds(islemSuresi);
+
+                NodeTimeBasedOrderList.TryAdd(NodeOrderList[1], NVG.StartingTime);
+                NodeTimeBasedOrderList.TryAdd(NodeOrderList[2], NVG.StartingTime.AddMilliseconds(islemSuresi + olusturmaSuresi+dagitmaSuresi));
+            }
+            if (NodeOrderList.Count == 3)
+            {
+
+            }
+            if (NodeOrderList.Count == 4)
+            {
+
+            }
+            if (NodeOrderList.Count == 5)
+            {
+
+            }
+            if (NodeOrderList.Count > 5)
+            {
+
+            }
+            Console.WriteLine()
             // Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
             // Console.WriteLine(JsonSerializer.Serialize(NodeOrderList));
             MyTurn_Val = (string.Equals(MyWallet, NodeOrderList[1]));
-
+            NodeTimeBasedOrderList
             Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
             Console.WriteLine(Notus.Time.NowNtpTime().ToString("HH:mm:ss fff"));
 

@@ -159,7 +159,6 @@ namespace Notus.Variable.Enum
         Receiver = 2,
         Validator = 3
     }
-
     public enum Fee
     {
         CryptoTransfer = 2,             /* para transfer işlemi için genel işlem için */
