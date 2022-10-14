@@ -9,6 +9,16 @@ namespace Notus.Variable
     {
         public static readonly JsonSerializerOptions JsonSetting = new JsonSerializerOptions() { WriteIndented = true };
 
+
+        // kaç saniye boyunca pool'u dinleyecek
+        public static readonly int BlockListeningForPoolTime = 200;
+
+        // node kaç milisaniye çalışacak
+        public static readonly int BlockGeneratingTime = 100;
+
+        // node çalışma süresi sonunda kaç mili saniye dağıtmaya geçecek
+        public static readonly int BlockDistributingTime = 200;
+
         public static readonly string NetworkProgramWallet = "111111111111111111111111111111111111111";
         public static readonly int BlockTransactionLimit = 1000;
         

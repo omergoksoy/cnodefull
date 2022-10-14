@@ -766,6 +766,8 @@ namespace Notus.Validator
             while (tmpExitMainLoop == false)
             {
                 WaitUntilEnoughNode();
+                NGF.RefreshNodeQueueStruct();
+
                 if (tmpStartWorkingPrinted == false)
                 {
                     tmpStartWorkingPrinted = true;
@@ -793,24 +795,25 @@ namespace Notus.Validator
 
                     */
 
+                    // int islemSuresi = 200;
+                    // int olusturmaSuresi = 100;
+                    // int dagitmaSuresi = 200;
+                    // DateTime islemBitis = NVG.StartingTime.AddMilliseconds(islemSuresi);
+                    // DateTime olusturmaBitis = islemBitis.AddMilliseconds(islemSuresi);
+                    // Notus.Print.Info(NVG.Settings, "Islem Bitis          : " + islemBitis.ToString("HH:mm:ss.fff"));
+                    // Notus.Print.Info(NVG.Settings, "Blok Olusturma Bitis : " + olusturmaBitis.ToString("HH:mm:ss.fff"));
 
-                    int islemSuresi = 200;
-                    int olusturmaSuresi = 100;
-                    int dagitmaSuresi = 200;
-                    DateTime islemBitis = NVG.StartingTime.AddMilliseconds(islemSuresi);
-                    DateTime olusturmaBitis = islemBitis.AddMilliseconds(islemSuresi);
-                    //Notus.Print.Info(NVG.Settings, "Islem Bitis          : " + islemBitis.ToString("HH:mm:ss.fff"));
-                    //Notus.Print.Info(NVG.Settings, "Blok Olusturma Bitis : " + olusturmaBitis.ToString("HH:mm:ss.fff"));
-
-                    NVG.StartingTime = olusturmaBitis;
-                    Notus.Variable.Struct.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(islemBitis, olusturmaBitis);
+                    // NVG.StartingTime = olusturmaBitis;
+                    Notus.Variable.Struct.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
+                        // islemBitis, olusturmaBitis
+                    );
                     if (TmpBlockStruct != null)
                     {
-                        //Console.WriteLine(JsonSerializer.Serialize(TmpBlockStruct));
+                        // Console.WriteLine(JsonSerializer.Serialize(TmpBlockStruct));
                         Notus.Variable.Class.BlockData? PreBlockData = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(TmpBlockStruct.data);
 
                         // omergoksoy
-                        //Notus.Variable.Enum.ValfwidatorOrder NodeOrder = ValidatorQueueObj.Distrubute(PreBlockData);
+                        // Notus.Variable.Enum.ValfwidatorOrder NodeOrder = ValidatorQueueObj.Distrubute(PreBlockData);
 
                         /*
                         if (NodeOrder == Notus.Variable.Enum.ValidatorOrder.Primary)

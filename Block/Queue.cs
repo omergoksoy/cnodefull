@@ -69,12 +69,14 @@ namespace Notus.Block
 
 
         //bu fonksiyon ile işlem yapılacak aynı türden bloklar sırası ile listeden çekilip geri gönderilecek
-        public Notus.Variable.Struct.PoolBlockRecordStruct? Get(DateTime WaitingForPool, DateTime BlockGenerationTime)
+        public Notus.Variable.Struct.PoolBlockRecordStruct? Get(
+            //DateTime WaitingForPool, DateTime BlockGenerationTime
+        )
         {
             //DateTime islemBitis = NVG.StartingTime.AddMilliseconds(islemSuresi);
             //DateTime olusturmaBitis = islemBitis.AddMilliseconds(islemSuresi);
 
-            DateTime startingTime = DateTime.Now;
+            //DateTime startingTime = DateTime.Now;
             if (Queue_PoolTransaction.Count == 0)
             {
                 //PoolIdList.Clear();

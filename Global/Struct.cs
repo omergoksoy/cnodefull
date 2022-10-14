@@ -40,11 +40,27 @@ namespace Notus.Globals.Variable
         public Notus.Variable.Class.BlockData? LastBlock { get; set; }
     }
 
+    public class NodeQueueList
+    {
+        // işlem sırası
+        public int OrderCount { get; set; }
+        //true ise senkron bşalmıştır
+        public bool Begin { get; set; }
+        //nodeların senkron sonrası başlangıç zamanı - değiştirilmeyecek
+        public DateTime Starting { get; set; }
+        //ntp hesaplaması ile oluşturulan şu an
+        public DateTime Now { get; set; }
+        // node zaman sıralaması
+        public Dictionary<ulong, string>? TimeBaseWalletList { get; set; }
+        // node işlem sıralaması
+        public Dictionary<int, string>? NodeOrder { get; set; }
+    }
+
+    /*
     public class NodeOrderStruct
     {
         public string Wallet { get; set; }
         public DateTime Begin { get; set; }
-
     }
-
+    */
 }

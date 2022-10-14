@@ -46,18 +46,14 @@ namespace Notus.Variable
 
 
 
+        ilk başlangıçta 2 node senkron olarak başlayacak ve aralarında starting time için karar verecekler.
+        sonrasında ağa eklenecek olan node önce ağdaki 2 node'un startingtime zamanını alacak.
+        yeni node blok senkronizasyonunu tamamladıktan sonra
+        şu an ki zamanın üzerine 1 dakika ekleyecek ve o zaman geldiğinde kuyruğa dahil edilmiş olacak
+
         */
-        public static List<NodeOrderStruct> NodeTimeBasedOrderList = new List<NodeOrderStruct>();
-        // kaç saniye boyunca pool'u dinleyecek
-        public static readonly int BlockListeningForPoolTime = 200;
+        public static Notus.Globals.Variable.NodeQueueList NodeQueue { get; set; }
 
-        // node kaç milisaniye çalışacak
-        public static readonly int BlockGeneratingTime = 100;
-
-        // node çalışma süresi sonunda kaç mili saniye dağıtmaya geçecek
-        public static readonly int BlockDistributingTime = 200;
-
-        public static DateTime StartingTime { get; set; }
         public static Notus.Globals.Variable.Settings Settings { get; set; }
         static Globals()
         {
@@ -115,6 +111,29 @@ namespace Notus.Variable
             public static Notus.Wallet.Balance Balance { get; set; }
             public static Notus.TGZArchiver Archiver { get; set; }
             public static Notus.Block.Queue BlockQueue { get; set; }
+            public static void RefreshNodeQueueStruct()
+            {
+                if (NodeQueue != null)
+                {
+                    if(NodeQueue.Begin == true)
+                    {
+                        RefreshNtpTime();
+                        NodeQueue.Now = Settings.UTCTime.Now;
+                    }
+                }
+                //NVG.NodeQueue.Starting = Notus.Variable.Constant.DefaultTime;
+            }
+            public static void RefreshNtpTime()
+            {
+                if (Settings.UTCTime == null)
+                {
+                    Settings.UTCTime = Notus.Time.GetNtpTime();
+                }
+                else
+                {
+                    Settings.UTCTime = Notus.Time.RefreshNtpTime(Settings.UTCTime);
+                }
+            }
             public static string GenerateTxUid()
             {
                 string seedStr = "node-wallet-key";
@@ -125,14 +144,7 @@ namespace Notus.Variable
                     {
                         seedStr = Settings.NodeWallet.WalletKey;
                     }
-                    if (Settings.UTCTime == null)
-                    {
-                        Settings.UTCTime = Notus.Time.GetNtpTime();
-                    }
-                    else
-                    {
-                        Settings.UTCTime = Notus.Time.RefreshNtpTime(Settings.UTCTime);
-                    }
+                    RefreshNtpTime();
                     uidTime = Settings.UTCTime.Now;
                 }
                 return Notus.Block.Key.Generate(uidTime, seedStr);
@@ -150,9 +162,17 @@ namespace Notus.Variable
                 {
                     Balance.Start();
                 }
+                RefreshNtpTime();
+                Globals.NodeQueue = new Notus.Globals.Variable.NodeQueueList();
+
+                Globals.NodeQueue.Begin = false;
+                Globals.NodeQueue.OrderCount = 1;
+
+                Globals.NodeQueue.NodeOrder = new Dictionary<int, string>();
+                Globals.NodeQueue.TimeBaseWalletList = new Dictionary<ulong, string>();
+
 
                 BlockOrder.Clear();
-                NodeTimeBasedOrderList.Clear();
                 /*
                 string tmpFolderName = Notus.IO.GetFolderName(
                     Settings,

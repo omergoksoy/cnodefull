@@ -467,7 +467,8 @@ namespace Notus.Validator
             {
                 //Console.WriteLine("When = Is Come");
                 StartingTimeAfterEnoughNode = Notus.Date.ToDateTime(GetPureText(incomeData, "when"));
-                NVG.StartingTime = StartingTimeAfterEnoughNode;
+                NVG.NodeQueue.Starting = StartingTimeAfterEnoughNode;
+                NVG.NodeQueue.Begin = true;
                 //Console.WriteLine(StartingTimeAfterEnoughNode);
                 return "done";
             }
@@ -848,7 +849,8 @@ namespace Notus.Validator
                             StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
                             " / " + GetUtcTime().ToString("HH:mm:ss.fff")
                         );
-                        NVG.StartingTime = StartingTimeAfterEnoughNode;
+                        NVG.NodeQueue.Starting = StartingTimeAfterEnoughNode;
+                        NVG.NodeQueue.Begin = true;
                         foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
                         {
                             if (entry.Value.Status == NodeStatus.Online && entry.Value.ErrorCount == 0)
@@ -889,6 +891,9 @@ namespace Notus.Validator
             }
             else
             {
+                NVG.NodeQueue.Starting = Notus.Variable.Constant.DefaultTime;
+                NVG.NodeQueue.Begin = false;
+
                 NotEnoughNode_Val = true;
                 WaitForEnoughNode_Val = true;
                 if (NotEnoughNode_Printed == false)
@@ -991,16 +996,17 @@ namespace Notus.Validator
             süreler dağıtılacak
             */
 
-            NVG.NodeTimeBasedOrderList.Clear();
+            NVG.NodeOrderList.Clear();
             int islemSuresi = 200;
             int olusturmaSuresi = 100;
             int dagitmaSuresi = 200;
             int toplamZamanAraligi = islemSuresi + olusturmaSuresi + dagitmaSuresi;
 
+            /*
             sıralar burada oluşturuldu ama 
             her sıranın süresi belirtilmedi
             süre sonrası belirtilen aralıkta node'lar işlemlerini yapacak
-            
+            */
 
             if (NodeOrderList.Count == 2)
             {
