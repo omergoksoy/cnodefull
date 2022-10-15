@@ -76,7 +76,7 @@ namespace Notus.Block
             //DateTime islemBitis = NVG.StartingTime.AddMilliseconds(islemSuresi);
             //DateTime olusturmaBitis = islemBitis.AddMilliseconds(islemSuresi);
 
-            //DateTime startingTime = DateTime.Now;
+            DateTime startingTime = DateTime.Now;
             if (Queue_PoolTransaction.Count == 0)
             {
                 //PoolIdList.Clear();
@@ -246,27 +246,29 @@ namespace Notus.Block
                     exitLoop = true;
                 }
                 NVG.Settings.UTCTime=Notus.Time.RefreshNtpTime(NVG.Settings.UTCTime);
-                
+
+                /*
                 buraya pool için beklenme süresi girilecek
                 buraya pool için beklenme süresi girilecek
                 buraya pool için beklenme süresi girilecek
                 buraya pool için beklenme süresi girilecek
                 buraya pool için beklenme süresi girilecek
                 buraya pool için beklenme süresi girilecek
+                */
+                /*
                 if (NVG.Settings.UTCTime.Now >= WaitingForPool)
                 {
                     Console.WriteLine("exitLoop = true;  [Havuz için beklendi]");
                     exitLoop = true;
                 }
-                /*
                 */
-                /*
                 TimeSpan ts = DateTime.Now - startingTime;
                 if (ts.TotalMilliseconds > 200)
                 {
                     Console.WriteLine("exitLoop = true;  [98765478976]");
                     exitLoop = true;
                 }
+                /*
                 */
             }
 

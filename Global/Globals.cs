@@ -52,6 +52,7 @@ namespace Notus.Variable
         şu an ki zamanın üzerine 1 dakika ekleyecek ve o zaman geldiğinde kuyruğa dahil edilmiş olacak
 
         */
+        public static bool NodeListPrinted { get; set; }
         public static Notus.Globals.Variable.NodeQueueList NodeQueue { get; set; }
 
         public static Notus.Globals.Variable.Settings Settings { get; set; }
@@ -111,6 +112,11 @@ namespace Notus.Variable
             public static Notus.Wallet.Balance Balance { get; set; }
             public static Notus.TGZArchiver Archiver { get; set; }
             public static Notus.Block.Queue BlockQueue { get; set; }
+            public static DateTime GetUtcNowFromNtp()
+            {
+                RefreshNtpTime();
+                return Settings.UTCTime.Now;
+            }
             public static void RefreshNodeQueueTime()
             {
                 if (NodeQueue != null)
@@ -118,7 +124,7 @@ namespace Notus.Variable
                     if(NodeQueue.Begin == true)
                     {
                         RefreshNtpTime();
-                        NodeQueue.Now = Settings.UTCTime.Now;
+                        NodeQueue.Now = Notus.Time.DateTimeToUlong(Settings.UTCTime.Now);
                     }
                 }
                 //NVG.NodeQueue.Starting = Notus.Variable.Constant.DefaultTime;
@@ -163,6 +169,7 @@ namespace Notus.Variable
                     Balance.Start();
                 }
                 RefreshNtpTime();
+                Globals.NodeListPrinted = false;
                 Globals.NodeQueue = new Notus.Globals.Variable.NodeQueueList();
 
                 Globals.NodeQueue.Begin = false;

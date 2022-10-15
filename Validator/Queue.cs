@@ -78,12 +78,12 @@ namespace Notus.Validator
         private DateTime LastPingTime;
         private DateTime NextCheckTime = DateTime.Now;
 
-        private DateTime NtpTime;                       // ntp server time
-        private bool NtpTimeWorked = false;               // we get time from ntp server
-        private DateTime NtpCheckTime;                  // last check ntp time
-        private TimeSpan NtpTimeDifference;             // time difference between NTP server and current node
-        private bool NodeTimeAfterNtpTime = false;      // time difference before or after NTP Server
-        private DateTime NextQueueValidNtpTime;         // New Queue will be usable after this NTP time
+        //private DateTime NtpTime;                       // ntp server time
+        //private bool NtpTimeWorked = false;             // we get time from ntp server
+        //private DateTime NtpCheckTime;                  // last check ntp time
+        //private TimeSpan NtpTimeDifference;             // time difference between NTP server and current node
+        //private bool NodeTimeAfterNtpTime = false;      // time difference before or after NTP Server
+        //private DateTime NextQueueValidNtpTime;         // New Queue will be usable after this NTP time
 
         public System.Func<Notus.Variable.Class.BlockData, bool>? Func_NewBlockIncome = null;
 
@@ -117,17 +117,22 @@ namespace Notus.Validator
             }
         }
 
-        private DateTime RefreshNtpTime(ulong MaxSecondCount)
+        private DateTime RefreshNtpTime()
         {
-            DateTime tmpNtpTime = NtpTime;
+            
+            DateTime tmpNtpTime = NGF.GetUtcNowFromNtp();
             const ulong secondPointConst = 1000;
 
             DateTime afterMiliSecondTime = tmpNtpTime.AddMilliseconds(
-                secondPointConst + (secondPointConst - (Notus.Date.ToLong(NtpTime) % secondPointConst))
+                secondPointConst + (secondPointConst - (Notus.Date.ToLong(tmpNtpTime) % secondPointConst))
             );
-            double secondVal = MaxSecondCount + (MaxSecondCount - (ulong.Parse(afterMiliSecondTime.ToString("ss")) % MaxSecondCount));
+            double secondVal = Notus.Variable.Constant.NodeStartingSync +
+                (Notus.Variable.Constant.NodeStartingSync -
+                    (ulong.Parse(afterMiliSecondTime.ToString("ss")) % MaxSecondCount)
+                );
             return afterMiliSecondTime.AddSeconds(secondVal);
         }
+        /*
         public void GetUtcTimeFromServer()
         {
             NtpTime = Notus.Time.GetFromNtpServer(true);
@@ -189,6 +194,7 @@ namespace Notus.Validator
                 }
             }
         }
+        */
         private bool MessageTimeListAvailable(string _keyName, int timeOutSecond)
         {
             if (MessageTimeList.ContainsKey(_keyName) == false)
@@ -468,7 +474,8 @@ namespace Notus.Validator
             {
                 //Console.WriteLine("When = Is Come");
                 StartingTimeAfterEnoughNode = Notus.Date.ToDateTime(GetPureText(incomeData, "when"));
-                NVG.NodeQueue.Starting = StartingTimeAfterEnoughNode;
+                
+                NVG.NodeQueue.Starting = Notus.Time.DateTimeToUlong(StartingTimeAfterEnoughNode);
                 NVG.NodeQueue.OrderCount = 1;
                 NVG.NodeQueue.Begin = true;
                 //Console.WriteLine(StartingTimeAfterEnoughNode);
@@ -785,7 +792,7 @@ namespace Notus.Validator
                     // Console.WriteLine(NextQueueValidNtpTime);
                     if (LastHashForStoreList != NodeListHash)
                     {
-                        CalculateTimeDifference(true);
+                        //CalculateTimeDifference(true);
                         if (NtpTime > NextQueueValidNtpTime)
                         {
                             CheckNodeCount();
@@ -845,13 +852,13 @@ namespace Notus.Validator
                     string tmpFirstWallet = tmpWalletList.First().Value;
                     if (string.Equals(tmpFirstWallet, MyWallet))
                     {
-                        StartingTimeAfterEnoughNode = RefreshNtpTime(Notus.Variable.Constant.NodeStartingSync);
+                        StartingTimeAfterEnoughNode = RefreshNtpTime();
                         Notus.Print.Info(NVG.Settings,
                             "I'm Sending Starting (When) Time / Current : " +
                             StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
                             " / " + GetUtcTime().ToString("HH:mm:ss.fff")
                         );
-                        NVG.NodeQueue.Starting = StartingTimeAfterEnoughNode;
+                        NVG.NodeQueue.Starting = Notus.Time.DateTimeToUlong(StartingTimeAfterEnoughNode);
                         NVG.NodeQueue.OrderCount = 1;
                         NVG.NodeQueue.Begin = true;
                         foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
@@ -894,7 +901,7 @@ namespace Notus.Validator
             }
             else
             {
-                NVG.NodeQueue.Starting = Notus.Variable.Constant.DefaultTime;
+                NVG.NodeQueue.Starting = 0;
                 NVG.NodeQueue.Begin = false;
 
                 NotEnoughNode_Val = true;
@@ -1013,57 +1020,58 @@ namespace Notus.Validator
             NGF.RefreshNodeQueueTime();
             if (NodeOrderList.Count == 2)
             {
+                //NVG.NodeQueue.OrderCount
                 NVG.NodeQueue.NodeOrder.Add(1, NodeOrderList[1]);
                 NVG.NodeQueue.NodeOrder.Add(2, NodeOrderList[2]);
+
                 NVG.NodeQueue.NodeOrder.Add(3, NodeOrderList[1]);
                 NVG.NodeQueue.NodeOrder.Add(4, NodeOrderList[2]);
+
                 NVG.NodeQueue.NodeOrder.Add(5, NodeOrderList[1]);
                 NVG.NodeQueue.NodeOrder.Add(6, NodeOrderList[2]);
 
+                //NVG.NodeQueue.Starting = Notus.Time.DateTimeToUlong(StartingTimeAfterEnoughNode);
+
                 NVG.NodeQueue.TimeBaseWalletList.Add(
-                    Notus.Time.DateTimeToUlong(
-                        NVG.NodeQueue.Starting,
-                        true
-                    ),
+                    NVG.NodeQueue.Starting,
                     NodeOrderList[1]
                 );
                 NVG.NodeQueue.TimeBaseWalletList.Add(
-                    Notus.Time.DateTimeToUlong(
-                        NVG.NodeQueue.Starting.AddMilliseconds(toplamZamanAraligi),
-                        true
-                    ),
+                    Notus.Time.DateTimeToUlong(NVG.NodeQueue.Starting.AddMilliseconds(toplamZamanAraligi),true),
                     NodeOrderList[2]
                 );
                 NVG.NodeQueue.TimeBaseWalletList.Add(
-                    Notus.Time.DateTimeToUlong(
-                        NVG.NodeQueue.Starting.AddMilliseconds(toplamZamanAraligi * 2),
-                        true
-                    ),
+                    Notus.Time.DateTimeToUlong(NVG.NodeQueue.Starting.AddMilliseconds(toplamZamanAraligi * 2),true),
                     NodeOrderList[1]
                 );
                 NVG.NodeQueue.TimeBaseWalletList.Add(
-                    Notus.Time.DateTimeToUlong(
-                        NVG.NodeQueue.Starting.AddMilliseconds(toplamZamanAraligi * 3),
-                        true
-                    ),
+                    Notus.Time.DateTimeToUlong(NVG.NodeQueue.Starting.AddMilliseconds(toplamZamanAraligi * 3),true),
                     NodeOrderList[2]
                 );
                 NVG.NodeQueue.TimeBaseWalletList.Add(
-                    Notus.Time.DateTimeToUlong(
-                        NVG.NodeQueue.Starting.AddMilliseconds(toplamZamanAraligi * 4),
-                        true
-                    ),
+                    Notus.Time.DateTimeToUlong(NVG.NodeQueue.Starting.AddMilliseconds(toplamZamanAraligi * 4),true),
                     NodeOrderList[1]
                 );
                 NVG.NodeQueue.TimeBaseWalletList.Add(
-                    Notus.Time.DateTimeToUlong(
-                        NVG.NodeQueue.Starting.AddMilliseconds(toplamZamanAraligi * 5),
-                        true
-                    ),
+                    Notus.Time.DateTimeToUlong(NVG.NodeQueue.Starting.AddMilliseconds(toplamZamanAraligi * 5),true),
                     NodeOrderList[2]
                 );
             }
+            if (NVG.NodeListPrinted == false)
+            {
+                NVG.NodeListPrinted = true;
+                Console.WriteLine(JsonSerializer.Serialize(NVG.NodeQueue));
+                //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeQueue.TimeBaseWalletList));
+                //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeQueue.NodeOrder));
+                //NVG.NodeQueue.OrderCount
+                //NVG.NodeQueue.NodeOrder.Add(1, NodeOrderList[1]);
 
+                //Console.WriteLine(JsonSerializer.Serialize());
+
+            }
+            //Console.WriteLine();
+
+            /*
             if (NodeOrderList.Count == 3)
             {
                 NVG.NodeTimeBasedOrderList.Add(
@@ -1112,7 +1120,6 @@ namespace Notus.Validator
 
             }
 
-            /*
             if (NodeOrderList.Count == 4)
             {
                 NVG.NodeTimeBasedOrderList.Add(
@@ -1253,17 +1260,16 @@ namespace Notus.Validator
                 );
             }
             */
-
-            Console.WriteLine();
             // Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
             // Console.WriteLine(JsonSerializer.Serialize(NodeOrderList));
             MyTurn_Val = (string.Equals(MyWallet, NodeOrderList[1]));
             //NodeTimeBasedOrderList
-            Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
-            Console.WriteLine(Notus.Time.NowNtpTime().ToString("HH:mm:ss fff"));
+            //Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
+            //Console.WriteLine(Notus.Time.NowNtpTime().ToString("HH:mm:ss fff"));
 
             if (MyTurn_Val == true)
             {
+                /*
                 //Notus.Print.Info(NVG.Settings, "My Turn");
                 CalculateTimeDifference(false);
                 NextQueueValidNtpTime = RefreshNtpTime(Notus.Variable.Constant.NodeSortFrequency);
@@ -1283,6 +1289,7 @@ namespace Notus.Validator
                         );
                     }
                 }
+                */
             }
             else
             {
@@ -1299,7 +1306,7 @@ namespace Notus.Validator
         public void Start()
         {
             Notus.Print.Info(NVG.Settings, "Getting UTC Time From NTP Server");
-            CalculateTimeDifference(false);
+            //CalculateTimeDifference(false);
             Task.Run(() =>
             {
                 MainLoop();
@@ -1332,7 +1339,7 @@ namespace Notus.Validator
             }
 
             MyWallet = NVG.Settings.NodeWallet.WalletKey;
-            CalculateTimeDifference(false);
+            //CalculateTimeDifference(false);
 
             string tmpNodeListStr = ObjMp_NodeList.Get("ip_list", "");
             if (tmpNodeListStr.Length == 0)

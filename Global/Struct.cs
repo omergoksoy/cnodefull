@@ -47,9 +47,9 @@ namespace Notus.Globals.Variable
         //true ise senkron bşalmıştır
         public bool Begin { get; set; }
         //nodeların senkron sonrası başlangıç zamanı - değiştirilmeyecek
-        public DateTime Starting { get; set; }
+        public ulong Starting { get; set; }
         //ntp hesaplaması ile oluşturulan şu an
-        public DateTime Now { get; set; }
+        public ulong Now { get; set; }
         // node zaman sıralaması
         public Dictionary<ulong, string>? TimeBaseWalletList { get; set; }
         // node işlem sıralaması

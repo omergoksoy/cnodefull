@@ -23,6 +23,7 @@ static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEv
 
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+/*
 ulong baslangicSayi = Notus.Time.DateTimeToUlong(new DateTime(2022, 10, 12, 00, 55, 20));
 ulong simdiSayi     = Notus.Time.DateTimeToUlong(new DateTime(2022, 10, 15, 01, 35, 36));
 ulong fark1 = simdiSayi - baslangicSayi;
@@ -34,7 +35,6 @@ Console.WriteLine(fark1);
 Console.WriteLine(count);
 
 Console.ReadLine();
-/*
 10800227,0112
 10800,2270112
 03:00:00.2270112
