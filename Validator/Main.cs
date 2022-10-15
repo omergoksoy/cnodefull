@@ -766,7 +766,7 @@ namespace Notus.Validator
             while (tmpExitMainLoop == false)
             {
                 WaitUntilEnoughNode();
-                NGF.RefreshNodeQueueStruct();
+                NGF.RefreshNodeQueueTime();
 
                 if (tmpStartWorkingPrinted == false)
                 {

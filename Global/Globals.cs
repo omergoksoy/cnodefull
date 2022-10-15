@@ -111,7 +111,7 @@ namespace Notus.Variable
             public static Notus.Wallet.Balance Balance { get; set; }
             public static Notus.TGZArchiver Archiver { get; set; }
             public static Notus.Block.Queue BlockQueue { get; set; }
-            public static void RefreshNodeQueueStruct()
+            public static void RefreshNodeQueueTime()
             {
                 if (NodeQueue != null)
                 {

@@ -247,11 +247,19 @@ namespace Notus.Block
                 }
                 NVG.Settings.UTCTime=Notus.Time.RefreshNtpTime(NVG.Settings.UTCTime);
                 
+                /*
+                buraya pool için beklenme süresi girilecek
+                buraya pool için beklenme süresi girilecek
+                buraya pool için beklenme süresi girilecek
+                buraya pool için beklenme süresi girilecek
+                buraya pool için beklenme süresi girilecek
+                buraya pool için beklenme süresi girilecek
                 if (NVG.Settings.UTCTime.Now >= WaitingForPool)
                 {
                     Console.WriteLine("exitLoop = true;  [Havuz için beklendi]");
                     exitLoop = true;
                 }
+                */
                 /*
                 TimeSpan ts = DateTime.Now - startingTime;
                 if (ts.TotalMilliseconds > 200)

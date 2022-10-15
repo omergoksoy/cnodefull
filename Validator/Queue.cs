@@ -9,6 +9,7 @@ using System.Numerics;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using NGF = Notus.Variable.Globals.Functions;
 using NVG = Notus.Variable.Globals;
 
 namespace Notus.Validator
@@ -468,6 +469,7 @@ namespace Notus.Validator
                 //Console.WriteLine("When = Is Come");
                 StartingTimeAfterEnoughNode = Notus.Date.ToDateTime(GetPureText(incomeData, "when"));
                 NVG.NodeQueue.Starting = StartingTimeAfterEnoughNode;
+                NVG.NodeQueue.OrderCount = 1;
                 NVG.NodeQueue.Begin = true;
                 //Console.WriteLine(StartingTimeAfterEnoughNode);
                 return "done";
@@ -850,6 +852,7 @@ namespace Notus.Validator
                             " / " + GetUtcTime().ToString("HH:mm:ss.fff")
                         );
                         NVG.NodeQueue.Starting = StartingTimeAfterEnoughNode;
+                        NVG.NodeQueue.OrderCount = 1;
                         NVG.NodeQueue.Begin = true;
                         foreach (KeyValuePair<string, NodeQueueInfo> entry in NodeList)
                         {
@@ -996,7 +999,7 @@ namespace Notus.Validator
             süreler dağıtılacak
             */
 
-            NVG.NodeOrderList.Clear();
+            //NVG.NodeOrderList.Clear();
             int islemSuresi = 200;
             int olusturmaSuresi = 100;
             int dagitmaSuresi = 200;
@@ -1007,55 +1010,61 @@ namespace Notus.Validator
             her sıranın süresi belirtilmedi
             süre sonrası belirtilen aralıkta node'lar işlemlerini yapacak
             */
-
+            NGF.RefreshNodeQueueTime();
             if (NodeOrderList.Count == 2)
             {
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[1],
-                        Begin = NVG.StartingTime
-                    }
+                NVG.NodeQueue.NodeOrder.Add(1, NodeOrderList[1]);
+                NVG.NodeQueue.NodeOrder.Add(2, NodeOrderList[2]);
+                NVG.NodeQueue.NodeOrder.Add(3, NodeOrderList[1]);
+                NVG.NodeQueue.NodeOrder.Add(4, NodeOrderList[2]);
+                NVG.NodeQueue.NodeOrder.Add(5, NodeOrderList[1]);
+                NVG.NodeQueue.NodeOrder.Add(6, NodeOrderList[2]);
+
+                NVG.NodeQueue.TimeBaseWalletList.Add(
+                    Notus.Time.DateTimeToUlong(
+                        NVG.NodeQueue.Starting,
+                        true
+                    ),
+                    NodeOrderList[1]
                 );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[2],
-                        Begin = NVG.StartingTime
-                    }
+                NVG.NodeQueue.TimeBaseWalletList.Add(
+                    Notus.Time.DateTimeToUlong(
+                        NVG.NodeQueue.Starting.AddMilliseconds(toplamZamanAraligi),
+                        true
+                    ),
+                    NodeOrderList[2]
                 );
-                
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[1],
-                        Begin = NVG.StartingTime
-                    }
+                NVG.NodeQueue.TimeBaseWalletList.Add(
+                    Notus.Time.DateTimeToUlong(
+                        NVG.NodeQueue.Starting.AddMilliseconds(toplamZamanAraligi * 2),
+                        true
+                    ),
+                    NodeOrderList[1]
                 );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[2],
-                        Begin = NVG.StartingTime
-                    }
+                NVG.NodeQueue.TimeBaseWalletList.Add(
+                    Notus.Time.DateTimeToUlong(
+                        NVG.NodeQueue.Starting.AddMilliseconds(toplamZamanAraligi * 3),
+                        true
+                    ),
+                    NodeOrderList[2]
                 );
-                
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[1],
-                        Begin = NVG.StartingTime
-                    }
+                NVG.NodeQueue.TimeBaseWalletList.Add(
+                    Notus.Time.DateTimeToUlong(
+                        NVG.NodeQueue.Starting.AddMilliseconds(toplamZamanAraligi * 4),
+                        true
+                    ),
+                    NodeOrderList[1]
                 );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[2],
-                        Begin = NVG.StartingTime
-                    }
+                NVG.NodeQueue.TimeBaseWalletList.Add(
+                    Notus.Time.DateTimeToUlong(
+                        NVG.NodeQueue.Starting.AddMilliseconds(toplamZamanAraligi * 5),
+                        true
+                    ),
+                    NodeOrderList[2]
                 );
             }
-            
+
+            /*
             if (NodeOrderList.Count == 3)
             {
                 NVG.NodeTimeBasedOrderList.Add(
@@ -1079,7 +1088,7 @@ namespace Notus.Validator
                         Begin = NVG.StartingTime
                     }
                 );
-            
+
                 NVG.NodeTimeBasedOrderList.Add(
                     new Globals.Variable.NodeOrderStruct()
                     {
@@ -1101,9 +1110,9 @@ namespace Notus.Validator
                         Begin = NVG.StartingTime
                     }
                 );
-            
+
             }
-            
+
             if (NodeOrderList.Count == 4)
             {
                 NVG.NodeTimeBasedOrderList.Add(
@@ -1150,7 +1159,7 @@ namespace Notus.Validator
                     }
                 );
             }
-            
+
             if (NodeOrderList.Count == 5)
             {
                 NVG.NodeTimeBasedOrderList.Add(
@@ -1243,8 +1252,8 @@ namespace Notus.Validator
                     }
                 );
             }
-            
-            
+            */
+
             Console.WriteLine();
             // Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
             // Console.WriteLine(JsonSerializer.Serialize(NodeOrderList));
