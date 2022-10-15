@@ -247,7 +247,6 @@ namespace Notus.Block
                 }
                 NVG.Settings.UTCTime=Notus.Time.RefreshNtpTime(NVG.Settings.UTCTime);
                 
-                /*
                 buraya pool için beklenme süresi girilecek
                 buraya pool için beklenme süresi girilecek
                 buraya pool için beklenme süresi girilecek
@@ -259,6 +258,7 @@ namespace Notus.Block
                     Console.WriteLine("exitLoop = true;  [Havuz için beklendi]");
                     exitLoop = true;
                 }
+                /*
                 */
                 /*
                 TimeSpan ts = DateTime.Now - startingTime;

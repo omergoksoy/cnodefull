@@ -1064,7 +1064,6 @@ namespace Notus.Validator
                 );
             }
 
-            /*
             if (NodeOrderList.Count == 3)
             {
                 NVG.NodeTimeBasedOrderList.Add(
@@ -1113,6 +1112,7 @@ namespace Notus.Validator
 
             }
 
+            /*
             if (NodeOrderList.Count == 4)
             {
                 NVG.NodeTimeBasedOrderList.Add(
