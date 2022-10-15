@@ -128,7 +128,12 @@ namespace Notus.Validator
             );
             double secondVal = Notus.Variable.Constant.NodeStartingSync +
                 (Notus.Variable.Constant.NodeStartingSync -
-                    (ulong.Parse(afterMiliSecondTime.ToString("ss")) % MaxSecondCount)
+                    (
+                        ulong.Parse(
+                            afterMiliSecondTime.ToString("ss")
+                        ) %
+                        Notus.Variable.Constant.NodeStartingSync
+                    )
                 );
             return afterMiliSecondTime.AddSeconds(secondVal);
         }
