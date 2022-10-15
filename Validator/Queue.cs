@@ -501,12 +501,16 @@ namespace Notus.Validator
                 }
                 return "0";
             }
+
+            /*
             if (CheckXmlTag(incomeData, "time"))
             {
                 incomeData = GetPureText(incomeData, "time");
                 NextQueueValidNtpTime = Notus.Date.ToDateTime(incomeData);
                 return "ok";
             }
+            */
+
             if (CheckXmlTag(incomeData, "ready"))
             {
                 incomeData = GetPureText(incomeData, "ready");
