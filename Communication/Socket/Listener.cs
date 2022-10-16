@@ -2,6 +2,8 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
+
 namespace Notus.Communication
 {
     public class Listener : IDisposable
@@ -297,8 +299,10 @@ namespace Notus.Communication
                 //ipAddress = System.Net.IPAddress.IPv6Any;
                 ipAddress = System.Net.IPAddress.Any;
             }
-            System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(ipAddress, CommPortNo);
 
+            System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(ipAddress, CommPortNo);
+            Console.WriteLine(JsonSerializer.Serialize(localEndPoint));
+            Console.ReadLine();
             ListenTcpObj = new System.Net.Sockets.Socket(
                 ipAddress.AddressFamily,
                 System.Net.Sockets.SocketType.Stream,

@@ -160,6 +160,9 @@ namespace Notus.Communication
         }
         public void Start(IPAddress NodeIPAddress, int PortNo)
         {
+            AWS üzerinde dinleme yaparken hata oluşturuyor
+            Console.WriteLine("control-point-andbfh4");
+            Console.ReadLine();
             if (Val_StoreUrl == true)
             {
                 Mp_UrlList = new Notus.Mempool(Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) +

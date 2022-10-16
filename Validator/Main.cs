@@ -37,8 +37,8 @@ namespace Notus.Validator
         private DateTime CryptoTransferTime = DateTime.Now;
 
         //private bool EmptyBlockNotMyTurnPrinted = false;
-        private bool EmptyBlockTimerIsRunning = false;
-        private DateTime EmptyBlockGeneratedTime = new DateTime(2000, 01, 1, 0, 00, 00);
+        //private bool EmptyBlockTimerIsRunning = false;
+        //private DateTime EmptyBlockGeneratedTime = new DateTime(2000, 01, 1, 0, 00, 00);
 
         private bool FileStorageTimerIsRunning = false;
         private DateTime FileStorageTime = DateTime.Now;
@@ -47,6 +47,8 @@ namespace Notus.Validator
         public SortedDictionary<long, Notus.Variable.Class.BlockData> IncomeBlockList = new SortedDictionary<long, Notus.Variable.Class.BlockData>();
         //private Notus.Block.Queue Obj_BlockQueue = new Notus.Block.Queue();
         private Notus.Validator.Queue ValidatorQueueObj = new Notus.Validator.Queue();
+
+        /*
         public void EmptyBlockTimerFunc()
         {
             Notus.Print.Basic(NVG.Settings, "Empty Block Timer Has Started");
@@ -74,13 +76,7 @@ namespace Notus.Validator
 
                     // get utc time from validatır Queue
                     DateTime utcTime = ValidatorQueueObj.GetUtcTime();
-                    /*
-                    Console.WriteLine(
-                        utcTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
-                        + " < - > " +
-                        tmpLastTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
-                    );
-                    */
+
                     if (utcTime > tmpLastTime)
                     {
                         if (ValidatorQueueObj.MyTurn)
@@ -100,6 +96,7 @@ namespace Notus.Validator
                 }
             }, true);
         }
+        */
         public void FileStorageTimer()
         {
             Notus.Print.Basic(NVG.Settings, "File Storage Timer Has Started");
@@ -523,7 +520,7 @@ namespace Notus.Validator
             {
                 if (NVG.Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer1)
                 {
-                    EmptyBlockTimerIsRunning = status;
+                    //EmptyBlockTimerIsRunning = status;
                     CryptoTransferTimerIsRunning = status;
                 }
                 if (NVG.Settings.Layer == Notus.Variable.Enum.NetworkLayer.Layer2)
@@ -548,6 +545,8 @@ namespace Notus.Validator
         }
         public void Start()
         {
+            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings));
+            Console.ReadLine();
             Obj_Integrity = new Notus.Block.Integrity();
             Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with onther node
             Obj_Integrity.GetLastBlock();        // get last block from current node
@@ -624,7 +623,7 @@ namespace Notus.Validator
                     Notus.Print.Info(NVG.Settings, "All Blocks Loaded");
                 }
                 */
-                SelectedPortVal = Notus.Toolbox.Network.GetNetworkPort(NVG.Settings);
+                SelectedPortVal = Notus.Toolbox.Network.GetNetworkPort();
             }
             else
             {
@@ -652,25 +651,13 @@ namespace Notus.Validator
                 };
             }
 
-            ValidatorQueueObj.GetUtcTimeFromServer();
-            if (NVG.Settings.LocalNode == false)
+            ValidatorQueueObj.Start();
+
+            Console.WriteLine("Kontrol-Noktasina-geldi-ve-beklemeye-basladi");
+            while (true)
             {
-                if (NVG.Settings.GenesisCreated == false)
-                {
-                    ValidatorQueueObj.PreStart(
-                        NVG.Settings.LastBlock.info.rowNo,
-                        NVG.Settings.LastBlock.info.uID,
-                        NVG.Settings.LastBlock.sign,
-                        NVG.Settings.LastBlock.prev
-                    );
 
-                    //burada ping ve pong yaparak bekleyecek
-                    ValidatorQueueObj.PingOtherNodes();
-                }
-                ValidatorQueueObj.Start();
             }
-
-
             if (NVG.Settings.LocalNode == false)
             {
                 // kontrol noktası
@@ -1013,11 +1000,6 @@ namespace Notus.Validator
             if (blockData.info.rowNo > NVG.Settings.LastBlock.info.rowNo)
             {
                 NVG.Settings.LastBlock = blockData.Clone();
-
-                if (blockData.info.type == 300)
-                {
-                    EmptyBlockGeneratedTime = Notus.Date.ToDateTime(blockData.info.time);
-                }
 
                 NGF.BlockQueue.AddToChain(blockData);
                 if (blockData.info.type == 250)

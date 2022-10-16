@@ -54,7 +54,11 @@ namespace Notus.Validator
             */
 
             Notus.Print.Info(NVG.Settings, "Activated DevNET for " + Notus.Variable.Constant.LayerText[NVG.Settings.Layer]);
-            NVG.Settings = Notus.Toolbox.Network.IdentifyNodeType(NVG.Settings, 5);
+            Notus.Toolbox.Network.IdentifyNodeType(5);
+            Console.WriteLine("Node-Control-Point");
+            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings));
+            Console.ReadLine();
+
             switch (NVG.Settings.NodeType)
             {
                 // if IP and port node written in the code
@@ -64,9 +68,7 @@ namespace Notus.Validator
 
                 // if node join the network
                 case Notus.Variable.Enum.NetworkNodeType.Master:
-                    //StartAsMaster(NodeSettings);
                     StartAsMain();
-                    //StartAsMaster(NodeSettings);
                     break;
 
                 // if node only store the data
@@ -101,7 +103,6 @@ namespace Notus.Validator
             {
                 using (Notus.Validator.Main MainObj = new Notus.Validator.Main())
                 {
-                    //MainObj.Settings = NodeSettings;
                     MainObj.Start();
                 }
 

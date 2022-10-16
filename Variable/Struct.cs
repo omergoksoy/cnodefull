@@ -484,12 +484,17 @@ namespace Notus.Variable.Struct
         public NodeStatus Status { get; set; }
         public string Wallet { get; set; }                  // node'un cüzdan adresi
         public string NodeHash { get; set; }                // nodu'un elindeki listenin özeti
-        public NodeQueueInfo_Time Time { get; set; }             // node'un son hata verme zamanı
+        public DateTime Begin { get; set; }             // node'un son hata verme zamanı
+        public ulong ErrorTime { get; set; }             // node'un son hata verme zamanı
+        //public NodeQueueInfo_Time Time { get; set; }             // node'un son hata verme zamanı
         public int ErrorCount { get; set; }                 // node'un verdiği error sayısı peşpeşe 10 olursa, kontrol sıklığı azalacak
-        public long LastRowNo { get; set; }                 // node'un sahip olduğu son blok numarası
-        public string LastPrev { get; set; }                 // node'un sahip olduğu son blok numarası
-        public string LastUid { get; set; }                 // node'un sahip olduğu son blok numarası
-        public string LastSign { get; set; }                 // node'un sahip olduğu son blok numarası
+
+        //sync-disable-exception
+        //geçici olarak devre dışı bırakıldı
+        //public long LastRowNo { get; set; }                 // node'un sahip olduğu son blok numarası
+        //public string LastPrev { get; set; }                 // node'un sahip olduğu son blok numarası
+        //public string LastUid { get; set; }                 // node'un sahip olduğu son blok numarası
+        //public string LastSign { get; set; }                 // node'un sahip olduğu son blok numarası
     }
 
     public class UTCTimeStruct

@@ -93,5 +93,8 @@ Console.ReadLine();
 //block-order-exception
 // blok sırasını yapan kontrol noktaları
 
+//sync-disable-exception
+// senkronizasyon düzeltmesi için yapılan devre dışı bırakma işlemleri
+
 //tgz-exception
 Notus.Validator.Node.Start(args);

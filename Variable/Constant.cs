@@ -169,9 +169,15 @@ namespace Notus.Variable
             { NetworkType.TestNet,"testnet.notus.network" },
             { NetworkType.DevNet,"devnet.notus.network" }
         };
+        /*
         public static readonly List<string> ListMainNodeIp = new List<string> {
             "89.252.134.91",
             "89.252.184.151"
+        };
+        */
+        public static readonly List<string> ListMainNodeIp = new List<string> {
+            "3.91.139.172",
+            "18.179.148.118"
         };
         public const string Default_EccCurveName = "prime256v1";
         public const int Default_WordListArrayCount = 16;

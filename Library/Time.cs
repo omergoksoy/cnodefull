@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using NGF = Notus.Variable.Globals.Functions;
 using NVG = Notus.Variable.Globals;
 namespace Notus
 {
@@ -17,6 +18,10 @@ namespace Notus
             tmpReturn.After = (tmpReturn.Now > tmpReturn.UtcTime);
             tmpReturn.Difference = (tmpReturn.After == true ? (tmpReturn.Now - tmpReturn.UtcTime) : (tmpReturn.UtcTime - tmpReturn.Now));
             return tmpReturn;
+        }
+        public static ulong NowNtpTimeToUlong()
+        {
+            return DateTimeToUlong(NGF.GetUtcNowFromNtp());
         }
         public static DateTime NowNtpTime()
         {
