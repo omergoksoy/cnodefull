@@ -9,6 +9,10 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using NVC = Notus.Variable.Constant;
+using NVE = Notus.Variable.Enum;
+using NVS = Notus.Variable.Struct;
+
 namespace Notus.Variable
 {
     static class Globals
@@ -78,12 +82,28 @@ namespace Notus.Variable
                 HashSalt = Notus.Encryption.Toolbox.GenerateSalt(),
 
 
-                Layer = Notus.Variable.Enum.NetworkLayer.Layer1,
-                Network = Notus.Variable.Enum.NetworkType.MainNet,
-                NodeType = Notus.Variable.Enum.NetworkNodeType.Suitable,
+                Layer = NVE.NetworkLayer.Layer1,
+                Network = NVE.NetworkType.MainNet,
+                NodeType = NVE.NetworkNodeType.Suitable,
 
-
-                NodeWallet = new Notus.Variable.Struct.EccKeyPair()
+                Nodes = new NVS.NodeQueueList()
+                {
+                    My = new Struct.NodeQueueInfo()
+                    {
+                        Begin = 0,
+                        HexKey = "",
+                        IP = new NVS.NodeInfo()
+                        {
+                            IpAddress = "",
+                            Port = 0,
+                            Wallet = ""
+                        },
+                        Ready = false,
+                        Status = NVS.NodeStatus.Unknown,
+                    },
+                    Lists = new List<NVS.IpInfo>() { }
+                },
+                NodeWallet = new NVS.EccKeyPair()
                 {
                     CurveName = "",
                     PrivateKey = "",
@@ -92,7 +112,7 @@ namespace Notus.Variable
                     Words = new string[] { },
                 },
 
-                Port = new Notus.Variable.Struct.CommunicationPorts()
+                Port = new NVS.CommunicationPorts()
                 {
                     MainNet = 0,
                     TestNet = 0,
@@ -105,8 +125,8 @@ namespace Notus.Variable
         public static class Functions
         {
             public static ConcurrentDictionary<string, string> LockWalletList { get; set; }
-            public static ConcurrentDictionary<string,byte> WalletUsageList { get; set; }
-            public static ConcurrentDictionary<long,string> BlockOrder { get; set; }
+            public static ConcurrentDictionary<string, byte> WalletUsageList { get; set; }
+            public static ConcurrentDictionary<long, string> BlockOrder { get; set; }
             //public static Notus.Mempool BlockOrder { get; set; }
             public static Notus.Block.Storage Storage { get; set; }
             public static Notus.Wallet.Balance Balance { get; set; }
@@ -121,7 +141,7 @@ namespace Notus.Variable
             {
                 if (NodeQueue != null)
                 {
-                    if(NodeQueue.Begin == true)
+                    if (NodeQueue.Begin == true)
                     {
                         RefreshNtpTime();
                         NodeQueue.Now = Notus.Time.DateTimeToUlong(Settings.UTCTime.Now);
@@ -155,10 +175,17 @@ namespace Notus.Variable
                 }
                 return Notus.Block.Key.Generate(uidTime, seedStr);
             }
+            public static void Dispose()
+            {
+                Storage.Dispose();
+                BlockQueue.Dispose();
+                //Archiver.
+                Balance.Dispose();
+            }
             public static void Start()
             {
-                WalletUsageList = new ConcurrentDictionary<string,byte>();
-                LockWalletList = new ConcurrentDictionary<string,string>();
+                WalletUsageList = new ConcurrentDictionary<string, byte>();
+                LockWalletList = new ConcurrentDictionary<string, string>();
                 BlockOrder = new ConcurrentDictionary<long, string>();
                 Storage = new Notus.Block.Storage();
                 BlockQueue = new Notus.Block.Queue();

@@ -3,6 +3,9 @@ using System.Text.Json;
 using System.Threading;
 using NVG = Notus.Variable.Globals;
 using NGF = Notus.Variable.Globals.Functions;
+using NVC = Notus.Variable.Constant;
+using NVE = Notus.Variable.Enum;
+using NVS = Notus.Variable.Struct;
 namespace Notus.Validator
 {
     public static class Node
@@ -16,19 +19,23 @@ namespace Notus.Validator
                 menuObj.Start();
                 menuObj.DefineMySetting();
             }
-            if (NVG.Settings.NodeType != Notus.Variable.Enum.NetworkNodeType.Replicant)
+            
+            //NVG.Settings.NodeStartingTime = Notus.Date.ToLong(NGF.GetUtcNowFromNtp());
+            //Console.WriteLine(NVG.Settings.NodeStartingTime);
+
+            if (NVG.Settings.NodeType != NVE.NetworkNodeType.Replicant)
             {
                 LightNodeActive = false;
             }
 
             if (NVG.Settings.DevelopmentNode == true)
             {
-                NVG.Settings.Network = Notus.Variable.Enum.NetworkType.DevNet;
+                NVG.Settings.Network = NVE.NetworkType.DevNet;
                 Notus.Validator.Node.Start(LightNodeActive);
             }
             else
             {
-                NVG.Settings.Network = Notus.Variable.Enum.NetworkType.MainNet;
+                NVG.Settings.Network = NVE.NetworkType.MainNet;
                 Notus.Validator.Node.Start(LightNodeActive);
             }
         }
@@ -48,31 +55,27 @@ namespace Notus.Validator
             //tgz-exception
             string LastBlockUid = "1348c02274960011734a5d9a654b68e8355d6a80586560b60a9cd4f6314f6234dd43851e7d88da27b4f879f02d";
             Notus.Variable.Class.BlockData? tmpBlockData = storageObj.ReadBlock(LastBlockUid);
-            Console.WriteLine(JsonSerializer.Serialize(tmpBlockData, Notus.Variable.Constant.JsonSetting));
+            Console.WriteLine(JsonSerializer.Serialize(tmpBlockData, NVC.JsonSetting));
             Console.ReadLine();
             Console.ReadLine();
             */
 
-            Notus.Print.Info(NVG.Settings, "Activated DevNET for " + Notus.Variable.Constant.LayerText[NVG.Settings.Layer]);
+            Notus.Print.Info(NVG.Settings, "Activated DevNET for " + NVC.LayerText[NVG.Settings.Layer]);
             Notus.Toolbox.Network.IdentifyNodeType(5);
-            Console.WriteLine("Node-Control-Point");
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings));
-            Console.ReadLine();
-
             switch (NVG.Settings.NodeType)
             {
                 // if IP and port node written in the code
-                case Notus.Variable.Enum.NetworkNodeType.Main:
+                case NVE.NetworkNodeType.Main:
                     StartAsMain();
                     break;
 
                 // if node join the network
-                case Notus.Variable.Enum.NetworkNodeType.Master:
+                case NVE.NetworkNodeType.Master:
                     StartAsMain();
                     break;
 
                 // if node only store the data
-                case Notus.Variable.Enum.NetworkNodeType.Replicant:
+                case NVE.NetworkNodeType.Replicant:
                     StartAsReplicant( LightNodeActive);
                     break;
 
@@ -126,7 +129,7 @@ namespace Notus.Validator
                 catch (Exception err)
                 {
                     Notus.Print.Log(
-                        Notus.Variable.Enum.LogLevel.Info,
+                        NVE.LogLevel.Info,
                         660050,
                         err.Message,
                         "BlockRowNo",

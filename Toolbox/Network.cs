@@ -29,13 +29,17 @@ namespace Notus.Toolbox
         }
         public static bool PingToNode(string ipAddress,int portNo)
         {
-            string incodeResponse = Notus.Communication.Request.GetSync(
-                Notus.Network.Node.MakeHttpListenerPath(
-                    ipAddress,
-                    portNo
-                ) + "ping/", 2, true, false, null
+            return string.Equals(
+                Notus.Communication.Request.GetSync(
+                    Notus.Network.Node.MakeHttpListenerPath(ipAddress, portNo) + "ping/", 
+                    2, true, false
+                ), 
+                "pong"
             );
-            return string.Equals(incodeResponse, "pong");
+        }
+        public static string IpAndPortToHex(Notus.Variable.Struct.NodeInfo NodeIp)
+        {
+            return IpAndPortToHex(NodeIp.IpAddress, NodeIp.Port);
         }
         public static string IpAndPortToHex(Notus.Variable.Struct.IpInfo NodeIp)
         {
@@ -153,11 +157,17 @@ namespace Notus.Toolbox
             {
                 Notus.Print.Basic(NVG.Settings, "Starting As Main Node");
                 NVG.Settings.NodeType = Notus.Variable.Enum.NetworkNodeType.Main;
+                NVG.Settings.Nodes.My.IP.IpAddress = NVG.Settings.IpInfo.Local;
             }
+            else
+            {
+                NVG.Settings.Nodes.My.IP.IpAddress = NVG.Settings.IpInfo.Public;
+            }
+            NVG.Settings.Nodes.My.HexKey=Notus.Toolbox.Network.IpAndPortToHex(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
             NVG.Settings.UTCTime = Notus.Time.GetNtpTime();
-
             if (Notus.Variable.Constant.ListMainNodeIp.IndexOf(NVG.Settings.IpInfo.Public) >= 0)
             {
+                //NVG.Settings.Nodes.My.InTheCode = true;
                 Notus.Print.Basic(NVG.Settings, "Starting As Main Node");
                 if (PublicIpIsConnectable(Timeout))
                 {
@@ -168,16 +178,23 @@ namespace Notus.Toolbox
                     Notus.Print.Basic(NVG.Settings, "Main Node Port Error");
                 }
             }
-            Notus.Print.Basic(NVG.Settings, "Not Main Node");
-
-            if (PublicIpIsConnectable(Timeout))
+            else
             {
-                Notus.Print.Basic(NVG.Settings, "Starting As Master Node");
-                NVG.Settings.NodeType = Notus.Variable.Enum.NetworkNodeType.Master;
+                //NVG.Settings.Nodes.My.InTheCode = false;
+                Notus.Print.Basic(NVG.Settings, "Not Main Node");
+
+                if (PublicIpIsConnectable(Timeout))
+                {
+                    Notus.Print.Basic(NVG.Settings, "Starting As Master Node");
+                    NVG.Settings.NodeType = Notus.Variable.Enum.NetworkNodeType.Master;
+                }
+                else
+                {
+                    Notus.Print.Basic(NVG.Settings, "Not Master Node");
+                    Notus.Print.Basic(NVG.Settings, "Starting As Replicant Node");
+                    NVG.Settings.NodeType = Notus.Variable.Enum.NetworkNodeType.Replicant;
+                }
             }
-            Notus.Print.Basic(NVG.Settings, "Not Master Node");
-            Notus.Print.Basic(NVG.Settings, "Starting As Replicant Node");
-            NVG.Settings.NodeType = Notus.Variable.Enum.NetworkNodeType.Replicant;
         }
 
         public static int FindFreeTcpPort()
@@ -329,11 +346,6 @@ namespace Notus.Toolbox
                     tmp_HttpObj.DefaultResult_ERR = DefaultControlTestData;
                     tmp_HttpObj.OnReceive(Fnc_TestLinkData);
                     IPAddress testAddress = IPAddress.Parse(NVG.Settings.IpInfo.Public);
-                    //IPAddress testAddress = IPAddress.Parse(NVG.Settings.IpInfo.Local);
-                    Console.WriteLine(testAddress);
-                    Console.WriteLine(ControlPortNo);
-                    Console.ReadLine();
-
                     tmp_HttpObj.Start(testAddress, ControlPortNo);
                     DateTime twoSecondsLater = DateTime.Now.AddSeconds(Timeout);
                     while (twoSecondsLater > DateTime.Now && tmp_HttpObj.Started == false)

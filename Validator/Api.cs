@@ -217,6 +217,7 @@ namespace Notus.Validator
 
         public string Interpret(Notus.Variable.Struct.HttpRequestDetails IncomeData)
         {
+            //Console.WriteLine("IncomeData.RawUrl : " + IncomeData.RawUrl);
             if (PrepareExecuted == false)
             {
                 Prepare();
@@ -227,6 +228,8 @@ namespace Notus.Validator
                 return JsonSerializer.Serialize(false);
             }
             string incomeFullUrlPath = string.Join("/", IncomeData.UrlList).ToLower();
+
+            //Console.WriteLine("incomeFullUrlPath : " + incomeFullUrlPath);
             if (incomeFullUrlPath.Length < 2)
             {
                 return JsonSerializer.Serialize(false);

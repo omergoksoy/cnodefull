@@ -24,14 +24,14 @@ namespace Notus.Validator
                                 {
                                     new Variable.Struct.IpInfo()
                                     {
-                                        IpAddress = "3.91.139.172",
+                                        IpAddress = "89.252.134.111",
                                         Port = 5000
                                     }
                                 },
                                 {
                                     new Variable.Struct.IpInfo()
                                     {
-                                        IpAddress = "18.179.148.118",
+                                        IpAddress = "89.252.159.87",
                                         Port = 5000
                                     }
                                 }
@@ -44,14 +44,14 @@ namespace Notus.Validator
                                 {
                                     new Variable.Struct.IpInfo()
                                     {
-                                        IpAddress = "3.91.139.172",
+                                        IpAddress = "89.252.134.111",
                                         Port = 5001
                                     }
                                 },
                                 {
                                     new Variable.Struct.IpInfo()
                                     {
-                                        IpAddress = "18.179.148.118",
+                                        IpAddress = "89.252.159.87",
                                         Port = 5001
                                     }
                                 }
@@ -64,14 +64,14 @@ namespace Notus.Validator
                                 {
                                     new Variable.Struct.IpInfo()
                                     {
-                                        IpAddress = "3.91.139.172",
+                                        IpAddress = "89.252.134.111",
                                         Port = 5002
                                     }
                                 },
                                 {
                                     new Variable.Struct.IpInfo()
                                     {
-                                        IpAddress = "18.179.148.118",
+                                        IpAddress = "89.252.159.87",
                                         Port = 5002
                                     }
                                 }

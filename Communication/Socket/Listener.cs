@@ -301,8 +301,6 @@ namespace Notus.Communication
             }
 
             System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(ipAddress, CommPortNo);
-            Console.WriteLine(JsonSerializer.Serialize(localEndPoint));
-            Console.ReadLine();
             ListenTcpObj = new System.Net.Sockets.Socket(
                 ipAddress.AddressFamily,
                 System.Net.Sockets.SocketType.Stream,

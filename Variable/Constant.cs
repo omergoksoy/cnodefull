@@ -176,8 +176,8 @@ namespace Notus.Variable
         };
         */
         public static readonly List<string> ListMainNodeIp = new List<string> {
-            "3.91.139.172",
-            "18.179.148.118"
+            "89.252.134.111",
+            "89.252.159.87"
         };
         public const string Default_EccCurveName = "prime256v1";
         public const int Default_WordListArrayCount = 16;
