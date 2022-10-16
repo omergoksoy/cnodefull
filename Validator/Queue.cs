@@ -278,8 +278,6 @@ namespace Notus.Validator
         {
             string reponseText = ProcessIncomeData(incomeData.PostParams["data"]);
             NodeIsOnline(incomeData.UrlList[2].ToLower());
-            Console.WriteLine("Queue.Cs - Line 281");
-            Console.WriteLine(JsonSerializer.Serialize(NodeList, NVC.JsonSetting));
             return reponseText;
         }
         private string ProcessIncomeData(string incomeData)
@@ -379,7 +377,8 @@ namespace Notus.Validator
                 incomeData = GetPureText(incomeData, "node");
                 try
                 {
-                    NVS.NodeQueueInfo? tmpNodeQueueInfo = JsonSerializer.Deserialize<NVS.NodeQueueInfo>(incomeData);
+                    NVS.NodeQueueInfo? tmpNodeQueueInfo = 
+                        JsonSerializer.Deserialize<NVS.NodeQueueInfo>(incomeData);
                     if (tmpNodeQueueInfo != null)
                     {
                         AddToNodeList(tmpNodeQueueInfo);
@@ -1254,6 +1253,14 @@ namespace Notus.Validator
             }
 
             PingOtherNodes();
+
+            Notus.Print.Info(NVG.Settings, "Node Sync Starting", false);
+
+            önce diğer node'ların elindeki listeleri iste
+            sonra listeleri kendine ekle ve her biri ile tek tek görüş
+            ardından aktif olanlarla bir hash oluştur.
+
+
             KeyValuePair<string, NVS.NodeQueueInfo>[]? tmpNodeList = NodeList.ToArray();
             if (tmpNodeList != null)
             {
@@ -1268,13 +1275,8 @@ namespace Notus.Validator
                                 JsonSerializer.Serialize(NodeList[NVG.Settings.Nodes.My.HexKey]) + 
                             "</node>"
                         );
-                        Console.WriteLine("Queue.Cs -> Line 1271");
-                        Console.WriteLine(responseStr);
+                        ProcessIncomeData(responseStr);
                     }
-                    Console.WriteLine(tmpNodeList[i].Key);
-                    Console.WriteLine(JsonSerializer.Serialize(NodeList[tmpNodeList[i].Key], NVC.JsonSetting));
-                    Console.WriteLine("Node Bilgini gönder");
-                    Console.WriteLine("Gönderdiğin node'dan, elindeki node listesini iste");
                 }
             }
             

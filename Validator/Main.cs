@@ -1140,7 +1140,6 @@ namespace Notus.Validator
 
         private string Fnc_OnReceiveData(NVS.HttpRequestDetails IncomeData)
         {
-            //Console.WriteLine("IncomeData.RawUrl : " + IncomeData.RawUrl);
             string resultData = Obj_Api.Interpret(IncomeData);
             if (string.Equals(resultData, "queue-data"))
             {
