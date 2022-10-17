@@ -1311,19 +1311,19 @@ namespace Notus.Validator
                                     long tickDiff = Math.Abs((long)(exactTimeLong - NodeList[tmpMainList[i].Key].Tick));
                                     if (tickDiff > 30000)
                                     {
-                                        Console.WriteLine("point-7");
+                                        //Console.WriteLine("point-7");
                                         refreshNodeInfo = true;
                                     }
                                     else
                                     {
-                                        Console.WriteLine("point-222");
+                                        //Console.WriteLine("point-222");
                                     }
 
                                 }
                             }
                             else
                             {
-                                Console.WriteLine("Node Does Not Exist - 90865");
+                                //Console.WriteLine("Node Does Not Exist - 90865");
                             }
                         }
 
@@ -1366,7 +1366,7 @@ namespace Notus.Validator
                                         tmpMainList[i].Value.Port,
                                         "<rNode>1</rNode>"
                                     );
-                                    Console.WriteLine(responseStr);
+                                    //Console.WriteLine(responseStr);
                                     ProcessIncomeData(responseStr);
                                     tmpAllCheck = false;
                                 }
@@ -1380,6 +1380,12 @@ namespace Notus.Validator
                 }
             }
             Console.WriteLine(JsonSerializer.Serialize(NodeList,NVC.JsonSetting));
+
+            Node bilgileri karşılıklı iletildi
+            şimdi iletilen node bilgilerine göre ilk başlangıç sıralaması yapılacak
+
+            sıralama ve ilk başlayacak kişiden sonra 6 adet için karşılıklı liste oluşturulacak.
+
             Notus.Print.ReadLine();
         }
         private void SyncListWithNode()
