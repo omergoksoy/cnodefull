@@ -361,11 +361,7 @@ namespace Notus.Validator
             if (CheckXmlTag(incomeData, "lhash"))
             {
                 incomeData = GetPureText(incomeData, "lhash");
-                if (string.Equals(incomeData, MainAddressListHash) == false)
-                {
-                    return "1";
-                }
-                return "0";
+                return (string.Equals(incomeData, MainAddressListHash) == true ? "1" : "0");
             }
             if (CheckXmlTag(incomeData, "nList"))
             {
@@ -401,15 +397,17 @@ namespace Notus.Validator
                 incomeData = GetPureText(incomeData, "node");
                 try
                 {
-                    NVS.NodeQueueInfo? tmpNodeQueueInfo = 
+                    NVS.NodeQueueInfo? tmpNodeQueueInfo =
                         JsonSerializer.Deserialize<NVS.NodeQueueInfo>(incomeData);
                     if (tmpNodeQueueInfo != null)
                     {
                         AddToNodeList(tmpNodeQueueInfo);
+                        return "1";
                     }
                 }
                 catch { }
-                return "<node>" + JsonSerializer.Serialize(NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
+                return "0";
+                //return "<node>" + JsonSerializer.Serialize(NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
             }
             if (CheckXmlTag(incomeData, "list"))
             {
@@ -481,7 +479,7 @@ namespace Notus.Validator
             }
             return string.Empty;
         }
-        private string SendMessageED(string nodeHex,string receiverIpAddress, int receiverPortNo, string messageText)
+        private string SendMessageED(string nodeHex, string receiverIpAddress, int receiverPortNo, string messageText)
         {
             (bool worksCorrent, string incodeResponse) = Notus.Communication.Request.PostSync(
                 Notus.Network.Node.MakeHttpListenerPath(receiverIpAddress, receiverPortNo) +
@@ -1236,6 +1234,7 @@ namespace Notus.Validator
                 Status = NVS.NodeStatus.Online,
                 HexKey = NVG.Settings.Nodes.My.HexKey,
                 Begin = NVG.Settings.Nodes.My.Begin,
+                Tick= Notus.Date.ToLong(NGF.GetUtcNowFromNtp()),
                 IP = new NVS.NodeInfo()
                 {
                     IpAddress = NVG.Settings.Nodes.My.IP.IpAddress,
@@ -1253,6 +1252,7 @@ namespace Notus.Validator
                         Ready = false,
                         Status = NVS.NodeStatus.Unknown,
                         Begin = 0,
+                        Tick = 0,
                         HexKey = Notus.Toolbox.Network.IpAndPortToHex(entry.Value.IpAddress, entry.Value.Port),
                         IP = new NVS.NodeInfo()
                         {
@@ -1274,32 +1274,61 @@ namespace Notus.Validator
             ardından aktif olanlarla bir hash oluştur.
             */
             SyncListWithNode();
-            Notus.Print.ReadLine();
+            TellThemWhoTheNodeIs();
 
-            KeyValuePair<string, NVS.NodeQueueInfo>[]? tmpNodeList = NodeList.ToArray();
-            if (tmpNodeList != null)
+            Notus.Print.ReadLine();
+        }
+
+        private void TellThemWhoTheNodeIs()
+        {
+            KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = MainAddressList.ToArray();
+            if (tmpMainList != null)
             {
-                for (int i = 0; i < tmpNodeList.Length; i++)
+                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
                 {
-                    if (string.Equals(tmpNodeList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
+
+                }
+                ulong exactTimeLong = Notus.Date.ToLong(NGF.GetUtcNowFromNtp());
+                string MyNodeDataText = "<node>" + JsonSerializer.Serialize(NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
+                for (int i = 0; i < tmpMainList.Length; i++)
+                {
+                    bool refreshNodeInfo = false;
+                    if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
-                        string responseStr = SendMessageED(tmpNodeList[i].Key,
-                            tmpNodeList[i].Value.IP.IpAddress,
-                            tmpNodeList[i].Value.IP.Port,
-                            "<node>" +
-                                JsonSerializer.Serialize(NodeList[NVG.Settings.Nodes.My.HexKey]) +
-                            "</node>"
+                        if (NodeList.ContainsKey(tmpMainList[i].Key))
+                        {
+                            if (NodeList[tmpMainList[i].Key].Tick == 0)
+                            {
+                                refreshNodeInfo = true;
+                            }
+                            else
+                            {
+                                long tickDiff=Math.Abs((long)(exactTimeLong - NodeList[tmpMainList[i].Key].Tick));
+                                if(tickDiff > 30000)
+                                {
+                                    refreshNodeInfo = true;
+                                }
+                            }
+                        }
+                    }
+
+                    burası kontrol edilecek
+                    burası kontrol edilecek
+                    burası kontrol edilecek
+                    burası kontrol edilecek
+
+                    if (refreshNodeInfo == true)
+                    {
+                        string responseStr = SendMessageED(tmpMainList[i].Key,
+                            tmpMainList[i].Value.IpAddress, tmpMainList[i].Value.Port, MyNodeDataText
                         );
-                        ProcessIncomeData(responseStr);
+                        if (responseStr == "1")
+                        {
+                            //ProcessIncomeData(responseStr);
+                        }
                     }
                 }
             }
-            
-            //Console.WriteLine("Validator.Queue -> Line 1270");
-            //Console.WriteLine(JsonSerializer.Serialize(MainAddressList));
-            //Console.WriteLine("----------------------------");
-            //Console.WriteLine(JsonSerializer.Serialize(NodeList));
-            Notus.Print.ReadLine();
         }
         private void SyncListWithNode()
         {
@@ -1307,7 +1336,7 @@ namespace Notus.Validator
             if (tmpMainList != null)
             {
                 bool exitSyncLoop = false;
-                while(exitSyncLoop == false)
+                while (exitSyncLoop == false)
                 {
                     SortedDictionary<string, NVS.IpInfo> NodeHashList = new SortedDictionary<string, NVS.IpInfo>();
                     for (int i = 0; i < tmpMainList.Length; i++)
@@ -1319,14 +1348,6 @@ namespace Notus.Validator
                                 tmpMainList[i].Value.Port,
                                 "<nList>" + JsonSerializer.Serialize(MainAddressList) + "</nList>"
                             );
-                            if (innerResponseStr == "1")
-                            {
-                                Console.WriteLine("Node Listesi Hatali Iletildi");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Node Listesi Dogru Sekilde Iletildi");
-                            }
                         }
                     }
 
@@ -1341,14 +1362,9 @@ namespace Notus.Validator
                                 tmpMainList[i].Value.Port,
                                 "<lhash>" + MainAddressListHash + "</lhash>"
                             );
-                            if (string.Equals(innerResponseStr, MainAddressListHash) == false)
+                            if (innerResponseStr == "0")
                             {
                                 allListSyncWithNode = false;
-                                Console.WriteLine("Node Hash Farkli");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Node Hash Ayni");
                             }
                         }
                     }
@@ -1357,12 +1373,6 @@ namespace Notus.Validator
                         exitSyncLoop = true;
                     }
                 }
-
-                Console.WriteLine("All Node List Sync");
-                Console.WriteLine("All Node List Sync");
-                Console.WriteLine("All Node List Sync");
-                Console.WriteLine("All Node List Sync");
-                Notus.Print.ReadLine();
             }
         }
         private void Message_Ready_ViaSocket(string _ipAddress, int _portNo, string _nodeHex = "")

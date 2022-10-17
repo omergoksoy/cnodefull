@@ -495,6 +495,7 @@ namespace Notus.Variable.Struct
         public NodeStatus Status { get; set; }
         //public string NodeHash { get; set; }                // nodu'un elindeki listenin özeti
         //public DateTime Nodes { get; set; }             // node'un son hata verme zamanı
+        public ulong Tick { get; set; }             // node'un son hata verme zamanı
         public ulong Begin { get; set; }             // node'un son hata verme zamanı
         //public ulong ErrorTime { get; set; }             // node'un son hata verme zamanı
         //public NodeQueueInfo_Time Time { get; set; }             // node'un son hata verme zamanı

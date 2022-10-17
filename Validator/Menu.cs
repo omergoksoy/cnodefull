@@ -1079,6 +1079,7 @@ namespace Notus.Validator
         public void DefineMySetting()
         {
             NVG.Settings.Nodes.My.Begin = Notus.Date.ToLong(NGF.GetUtcNowFromNtp());
+            NVG.Settings.Nodes.My.Tick = NVG.Settings.Nodes.My.Begin;
 
             NVG.Settings.Layer = nodeObj.Layer.Selected;
             NVG.Settings.DebugMode = nodeObj.DebugMode;

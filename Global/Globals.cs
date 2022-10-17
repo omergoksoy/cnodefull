@@ -91,6 +91,7 @@ namespace Notus.Variable
                     My = new Struct.NodeQueueInfo()
                     {
                         Begin = 0,
+                        Tick=0,
                         HexKey = "",
                         IP = new NVS.NodeInfo()
                         {
