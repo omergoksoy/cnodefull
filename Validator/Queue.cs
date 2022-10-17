@@ -228,7 +228,6 @@ namespace Notus.Validator
                     {
                         tmpAllWalletList.Add(entry.Value.IP.Wallet);
                     }
-                    //tmpAllWordlTimeList.Add(entry.Value.Time.World.Ticks);
                 }
             }
             tmpAllAddressList.Sort();
@@ -391,6 +390,10 @@ namespace Notus.Validator
                     }
                 }
                 return "done";
+            }
+            if (CheckXmlTag(incomeData, "rNode"))
+            {
+                return "<node>" + JsonSerializer.Serialize(NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
             }
             if (CheckXmlTag(incomeData, "node"))
             {
@@ -1274,61 +1277,110 @@ namespace Notus.Validator
             ardından aktif olanlarla bir hash oluştur.
             */
             SyncListWithNode();
-            TellThemWhoTheNodeIs();
+            TellThemWhoTheNodeIs(true);
 
             Notus.Print.ReadLine();
         }
 
-        private void TellThemWhoTheNodeIs()
+        private void TellThemWhoTheNodeIs(bool forceToRefresh)
         {
             KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = MainAddressList.ToArray();
             if (tmpMainList != null)
             {
-                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
-                {
 
-                }
                 ulong exactTimeLong = Notus.Date.ToLong(NGF.GetUtcNowFromNtp());
-                string MyNodeDataText = "<node>" + JsonSerializer.Serialize(NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
-                for (int i = 0; i < tmpMainList.Length; i++)
+                string myNodeDataText = "<node>" + JsonSerializer.Serialize(NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
+
+                bool allDone = false;
+                while(allDone== false)
                 {
-                    bool refreshNodeInfo = false;
-                    if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
+                    for (int i = 0; i < tmpMainList.Length; i++)
                     {
-                        if (NodeList.ContainsKey(tmpMainList[i].Key))
+                        bool refreshNodeInfo = false;
+                        if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
                         {
-                            if (NodeList[tmpMainList[i].Key].Tick == 0)
+                            if (NodeList.ContainsKey(tmpMainList[i].Key))
                             {
-                                refreshNodeInfo = true;
+                                if (NodeList[tmpMainList[i].Key].Tick == 0)
+                                {
+                                    Console.WriteLine("point-1");
+                                    refreshNodeInfo = true;
+                                }
+                                else
+                                {
+                                    long tickDiff = Math.Abs((long)(exactTimeLong - NodeList[tmpMainList[i].Key].Tick));
+                                    if (tickDiff > 30000)
+                                    {
+                                        Console.WriteLine("point-7");
+                                        refreshNodeInfo = true;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("point-222");
+                                    }
+
+                                }
                             }
                             else
                             {
-                                long tickDiff=Math.Abs((long)(exactTimeLong - NodeList[tmpMainList[i].Key].Tick));
-                                if(tickDiff > 30000)
+                                Console.WriteLine("Node Does Not Exist - 90865");
+                            }
+                        }
+
+                        /*
+                        burası kontrol edilecek
+                        burası kontrol edilecek
+                        burası kontrol edilecek
+                        burası kontrol edilecek
+                        */
+
+
+                        if (refreshNodeInfo == true)
+                        {
+                            string responseStr = SendMessageED(tmpMainList[i].Key,
+                                tmpMainList[i].Value.IpAddress, tmpMainList[i].Value.Port,
+                                myNodeDataText
+                            );
+                            Console.WriteLine(responseStr);
+                            if (responseStr == "1")
+                            {
+                                NodeList[tmpMainList[i].Key].Status = NVS.NodeStatus.Online;
+                                //ProcessIncomeData(responseStr);
+                                //nol
+                            }
+                        }
+                    }
+
+
+                    bool tmpAllCheck = true;
+                    for (int i = 0; i < tmpMainList.Length; i++)
+                    {
+                        if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
+                        {
+                            if (NodeList.ContainsKey(tmpMainList[i].Key))
+                            {
+                                if (NodeList[tmpMainList[i].Key].Tick == 0)
                                 {
-                                    refreshNodeInfo = true;
+                                    string responseStr = SendMessageED(tmpMainList[i].Key,
+                                        tmpMainList[i].Value.IpAddress,
+                                        tmpMainList[i].Value.Port,
+                                        "<rNode>1</rNode>"
+                                    );
+                                    Console.WriteLine(responseStr);
+                                    ProcessIncomeData(responseStr);
+                                    tmpAllCheck = false;
                                 }
                             }
                         }
                     }
-
-                    burası kontrol edilecek
-                    burası kontrol edilecek
-                    burası kontrol edilecek
-                    burası kontrol edilecek
-
-                    if (refreshNodeInfo == true)
+                    if(tmpAllCheck == true)
                     {
-                        string responseStr = SendMessageED(tmpMainList[i].Key,
-                            tmpMainList[i].Value.IpAddress, tmpMainList[i].Value.Port, MyNodeDataText
-                        );
-                        if (responseStr == "1")
-                        {
-                            //ProcessIncomeData(responseStr);
-                        }
+                        allDone = true;
                     }
                 }
             }
+            Console.WriteLine(JsonSerializer.Serialize(NodeList,NVC.JsonSetting));
+            Notus.Print.ReadLine();
         }
         private void SyncListWithNode()
         {
