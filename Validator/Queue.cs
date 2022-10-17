@@ -358,6 +358,30 @@ namespace Notus.Validator
                 }
                 return "0";
             }
+            if (CheckXmlTag(incomeData, "lhash"))
+            {
+                incomeData = GetPureText(incomeData, "lhash");
+                if (string.Equals(incomeData, MainAddressListHash) == false)
+                {
+                    return "1";
+                }
+                return "0";
+            }
+            if (CheckXmlTag(incomeData, "nList"))
+            {
+                incomeData = GetPureText(incomeData, "nList");
+                SortedDictionary<string, NVS.IpInfo>? tmpNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(incomeData);
+                if (tmpNodeList == null)
+                {
+                    return "1";
+                }
+                foreach (KeyValuePair<string, NVS.IpInfo> entry in tmpNodeList)
+                {
+                    AddToMainAddressList(entry.Value.IpAddress, entry.Value.Port, true);
+                }
+                return "0";
+            }
+
 
             if (CheckXmlTag(incomeData, "ready"))
             {
@@ -476,13 +500,8 @@ namespace Notus.Validator
             }
             return string.Empty;
         }
-        private string Message_Hash_ViaSocket(string _ipAddress, int _portNo, string _nodeHex = "")
+        private string Message_Hash_ViaSocket(string _ipAddress, int _portNo)
         {
-            if (_nodeHex == "")
-            {
-                _nodeHex = Notus.Toolbox.Network.IpAndPortToHex(_ipAddress, _portNo);
-            }
-            string _nodeKeyText = _nodeHex + "hash";
             return SendMessage(
                 _ipAddress,
                 _portNo,
@@ -491,13 +510,6 @@ namespace Notus.Validator
                 "</hash>",
                 true
             );
-            /*
-            if (MessageTimeListAvailable(_nodeKeyText, 1))
-            {
-                AddToMessageTimeList(_nodeKeyText);
-            }
-            */
-            return "b";
         }
         private void Message_Node_ViaSocket(string _ipAddress, int _portNo, string _nodeHex = "")
         {
@@ -557,7 +569,7 @@ namespace Notus.Validator
                             string tmpNodeHexStr = Notus.Toolbox.Network.IpAndPortToHex(entry.Value);
                             if (string.Equals(NVG.Settings.Nodes.My.HexKey, tmpNodeHexStr) == false)
                             {
-                                string tmpReturnStr = Message_Hash_ViaSocket(entry.Value.IpAddress, entry.Value.Port, "hash");
+                                string tmpReturnStr = Message_Hash_ViaSocket(entry.Value.IpAddress, entry.Value.Port);
                                 if (tmpReturnStr == "1") // list not equal
                                 {
                                     Message_List_ViaSocket(entry.Value.IpAddress, entry.Value.Port, tmpNodeHexStr);
@@ -1256,23 +1268,26 @@ namespace Notus.Validator
 
             Notus.Print.Info(NVG.Settings, "Node Sync Starting", false);
 
+            /*
             önce diğer node'ların elindeki listeleri iste
             sonra listeleri kendine ekle ve her biri ile tek tek görüş
             ardından aktif olanlarla bir hash oluştur.
-
+            */
+            SyncListWithNode();
+            Notus.Print.ReadLine();
 
             KeyValuePair<string, NVS.NodeQueueInfo>[]? tmpNodeList = NodeList.ToArray();
             if (tmpNodeList != null)
             {
-                for(int i=0;i<tmpNodeList.Length;i++)
+                for (int i = 0; i < tmpNodeList.Length; i++)
                 {
                     if (string.Equals(tmpNodeList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
                         string responseStr = SendMessageED(tmpNodeList[i].Key,
                             tmpNodeList[i].Value.IP.IpAddress,
                             tmpNodeList[i].Value.IP.Port,
-                            "<node>" + 
-                                JsonSerializer.Serialize(NodeList[NVG.Settings.Nodes.My.HexKey]) + 
+                            "<node>" +
+                                JsonSerializer.Serialize(NodeList[NVG.Settings.Nodes.My.HexKey]) +
                             "</node>"
                         );
                         ProcessIncomeData(responseStr);
@@ -1285,6 +1300,70 @@ namespace Notus.Validator
             //Console.WriteLine("----------------------------");
             //Console.WriteLine(JsonSerializer.Serialize(NodeList));
             Notus.Print.ReadLine();
+        }
+        private void SyncListWithNode()
+        {
+            KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = MainAddressList.ToArray();
+            if (tmpMainList != null)
+            {
+                bool exitSyncLoop = false;
+                while(exitSyncLoop == false)
+                {
+                    SortedDictionary<string, NVS.IpInfo> NodeHashList = new SortedDictionary<string, NVS.IpInfo>();
+                    for (int i = 0; i < tmpMainList.Length; i++)
+                    {
+                        if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
+                        {
+                            string innerResponseStr = SendMessageED(tmpMainList[i].Key,
+                                tmpMainList[i].Value.IpAddress,
+                                tmpMainList[i].Value.Port,
+                                "<nList>" + JsonSerializer.Serialize(MainAddressList) + "</nList>"
+                            );
+                            if (innerResponseStr == "1")
+                            {
+                                Console.WriteLine("Node Listesi Hatali Iletildi");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Node Listesi Dogru Sekilde Iletildi");
+                            }
+                        }
+                    }
+
+                    bool allListSyncWithNode = true;
+
+                    for (int i = 0; i < tmpMainList.Length; i++)
+                    {
+                        if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
+                        {
+                            string innerResponseStr = SendMessageED(tmpMainList[i].Key,
+                                tmpMainList[i].Value.IpAddress,
+                                tmpMainList[i].Value.Port,
+                                "<lhash>" + MainAddressListHash + "</lhash>"
+                            );
+                            if (string.Equals(innerResponseStr, MainAddressListHash) == false)
+                            {
+                                allListSyncWithNode = false;
+                                Console.WriteLine("Node Hash Farkli");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Node Hash Ayni");
+                            }
+                        }
+                    }
+                    if (allListSyncWithNode == true)
+                    {
+                        exitSyncLoop = true;
+                    }
+                }
+
+                Console.WriteLine("All Node List Sync");
+                Console.WriteLine("All Node List Sync");
+                Console.WriteLine("All Node List Sync");
+                Console.WriteLine("All Node List Sync");
+                Notus.Print.ReadLine();
+            }
         }
         private void Message_Ready_ViaSocket(string _ipAddress, int _portNo, string _nodeHex = "")
         {
