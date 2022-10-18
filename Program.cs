@@ -22,6 +22,10 @@ static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEv
 // Console.WriteLine("{0}", System.Reflection.AssemblyName.GetAssemblyName("Microsoft.Data.Sqlite.dll").Version);
 
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+Console.CancelKeyPress += delegate {
+    Console.WriteLine("control-c press");
+    // call methods to clean up
+};
 
 /*
 ulong baslangicSayi = Notus.Time.DateTimeToUlong(new DateTime(2022, 10, 12, 00, 55, 20));

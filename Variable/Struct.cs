@@ -495,6 +495,7 @@ namespace Notus.Variable.Struct
         public ulong Tick { get; set; }             // node'un son hata verme zamanı
         public ulong Begin { get; set; }             // node'un son hata verme zamanı
         public ulong SyncNo { get; set; }             // node'ların senkronizasyon için kullandıkları numara
+        public ulong JoinTime { get; set; }             // node'ların senkronizasyon için kullandıkları numara
 
         //public bool InTheCode { get; set; }                 // eğer IP adresi kodun içine gömülü ise, tru değeri olacak, gömülü olanlar önemli
         //public string NodeHash { get; set; }                // nodu'un elindeki listenin özeti
