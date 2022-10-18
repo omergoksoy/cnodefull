@@ -489,14 +489,16 @@ namespace Notus.Variable.Struct
     public class NodeQueueInfo
     {
         public string HexKey { get; set; }
-        //public bool InTheCode { get; set; }                 // eğer IP adresi kodun içine gömülü ise, tru değeri olacak, gömülü olanlar önemli
         public bool Ready { get; set; }                 // eğer IP adresi kodun içine gömülü ise, tru değeri olacak, gömülü olanlar önemli
         public NodeInfo IP { get; set; }
         public NodeStatus Status { get; set; }
-        //public string NodeHash { get; set; }                // nodu'un elindeki listenin özeti
-        //public DateTime Nodes { get; set; }             // node'un son hata verme zamanı
         public ulong Tick { get; set; }             // node'un son hata verme zamanı
         public ulong Begin { get; set; }             // node'un son hata verme zamanı
+        public ulong SyncNo { get; set; }             // node'ların senkronizasyon için kullandıkları numara
+
+        //public bool InTheCode { get; set; }                 // eğer IP adresi kodun içine gömülü ise, tru değeri olacak, gömülü olanlar önemli
+        //public string NodeHash { get; set; }                // nodu'un elindeki listenin özeti
+        //public DateTime Nodes { get; set; }             // node'un son hata verme zamanı
         //public ulong ErrorTime { get; set; }             // node'un son hata verme zamanı
         //public NodeQueueInfo_Time Time { get; set; }             // node'un son hata verme zamanı
         //public int ErrorCount { get; set; }                 // node'un verdiği error sayısı peşpeşe 10 olursa, kontrol sıklığı azalacak

@@ -236,7 +236,8 @@ namespace Notus.Communication
                     ListenTcpObj.Dispose();
                 }
             }
-            catch (Exception err){
+            catch (Exception err)
+            {
                 Notus.Print.Log(
                     Notus.Variable.Enum.LogLevel.Info,
                     17775564,

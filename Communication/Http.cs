@@ -10,8 +10,6 @@ namespace Notus.Communication
     public class Http : IDisposable
     {
         private int Val_Timeout = 30;
-        private IPAddress Val_NodeIPAddress;
-        private int Val_PortNo;
         public int Timeout
         {
             set
@@ -168,9 +166,6 @@ namespace Notus.Communication
                 Mp_UrlList.DebugMode = NVG.Settings.DebugMode;
                 Mp_UrlList.InfoMode = NVG.Settings.InfoMode;
             }
-
-            Val_NodeIPAddress = NodeIPAddress;
-            Val_PortNo = PortNo;
 
             Value_ServerStarted = false;
             try

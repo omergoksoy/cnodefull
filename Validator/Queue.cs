@@ -1,4 +1,5 @@
 ﻿using Notus.Encryption;
+using Notus.Network;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -1237,7 +1238,8 @@ namespace Notus.Validator
                 Status = NVS.NodeStatus.Online,
                 HexKey = NVG.Settings.Nodes.My.HexKey,
                 Begin = NVG.Settings.Nodes.My.Begin,
-                Tick= Notus.Date.ToLong(NGF.GetUtcNowFromNtp()),
+                SyncNo = 0,
+                Tick = Notus.Date.ToLong(NGF.GetUtcNowFromNtp()),
                 IP = new NVS.NodeInfo()
                 {
                     IpAddress = NVG.Settings.Nodes.My.IP.IpAddress,
@@ -1256,6 +1258,7 @@ namespace Notus.Validator
                         Status = NVS.NodeStatus.Unknown,
                         Begin = 0,
                         Tick = 0,
+                        SyncNo = 0,
                         HexKey = Notus.Toolbox.Network.IpAndPortToHex(entry.Value.IpAddress, entry.Value.Port),
                         IP = new NVS.NodeInfo()
                         {
@@ -1277,12 +1280,48 @@ namespace Notus.Validator
             ardından aktif olanlarla bir hash oluştur.
             */
             SyncListWithNode();
-            TellThemWhoTheNodeIs(true);
+            TellThemWhoTheNodeIs();
+            CheckSyncNo();
+            Console.WriteLine(JsonSerializer.Serialize(NodeList, NVC.JsonSetting));
+
+
+            /*
+            Node bilgileri karşılıklı iletildi
+            şimdi iletilen node bilgilerine göre ilk başlangıç sıralaması yapılacak
+
+            sıralama ve ilk başlayacak kişiden sonra 6 adet için karşılıklı liste oluşturulacak.
+            */
+
 
             Notus.Print.ReadLine();
         }
+        private void CheckSyncNo()
+        {
+            Dictionary<ulong, int> syncNoCount = new Dictionary<ulong, int>();
+            KeyValuePair<string, NVS.NodeQueueInfo>[] tmpMainList = NodeList.ToArray();
+            for (int i = 0; i < tmpMainList.Length; i++)
+            {
+                if (syncNoCount.ContainsKey(tmpMainList[i].Value.SyncNo) == false)
+                {
+                    syncNoCount.Add(tmpMainList[i].Value.SyncNo, 0);
+                }
+                syncNoCount[tmpMainList[i].Value.SyncNo]++;
+            }
+            Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
+            int biggestSyncCount = 0;
+            ulong biggestSyncNo = 0;
+            foreach (KeyValuePair<ulong, int> iEntry in syncNoCount)
+            {
+                if (iEntry.Value > biggestSyncCount)
+                {
+                    biggestSyncNo = 0;
+                }
+            }
 
-        private void TellThemWhoTheNodeIs(bool forceToRefresh)
+            Console.WriteLine(biggestSyncCount);
+            Console.WriteLine(biggestSyncNo);
+        }
+        private void TellThemWhoTheNodeIs()
         {
             KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = MainAddressList.ToArray();
             if (tmpMainList != null)
@@ -1292,8 +1331,10 @@ namespace Notus.Validator
                 string myNodeDataText = "<node>" + JsonSerializer.Serialize(NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
 
                 bool allDone = false;
-                while(allDone== false)
+                while (allDone == false)
                 {
+
+                    // her 30 saniyede bir diğer node'ları kim olduğumu söylüyor.
                     for (int i = 0; i < tmpMainList.Length; i++)
                     {
                         bool refreshNodeInfo = false;
@@ -1303,7 +1344,6 @@ namespace Notus.Validator
                             {
                                 if (NodeList[tmpMainList[i].Key].Tick == 0)
                                 {
-                                    Console.WriteLine("point-1");
                                     refreshNodeInfo = true;
                                 }
                                 else
@@ -1311,47 +1351,25 @@ namespace Notus.Validator
                                     long tickDiff = Math.Abs((long)(exactTimeLong - NodeList[tmpMainList[i].Key].Tick));
                                     if (tickDiff > 30000)
                                     {
-                                        //Console.WriteLine("point-7");
                                         refreshNodeInfo = true;
-                                    }
-                                    else
-                                    {
-                                        //Console.WriteLine("point-222");
                                     }
 
                                 }
                             }
-                            else
-                            {
-                                //Console.WriteLine("Node Does Not Exist - 90865");
-                            }
                         }
-
-                        /*
-                        burası kontrol edilecek
-                        burası kontrol edilecek
-                        burası kontrol edilecek
-                        burası kontrol edilecek
-                        */
-
-
                         if (refreshNodeInfo == true)
                         {
                             string responseStr = SendMessageED(tmpMainList[i].Key,
-                                tmpMainList[i].Value.IpAddress, tmpMainList[i].Value.Port,
-                                myNodeDataText
+                                tmpMainList[i].Value.IpAddress, tmpMainList[i].Value.Port, myNodeDataText
                             );
-                            Console.WriteLine(responseStr);
                             if (responseStr == "1")
                             {
                                 NodeList[tmpMainList[i].Key].Status = NVS.NodeStatus.Online;
-                                //ProcessIncomeData(responseStr);
-                                //nol
                             }
                         }
                     }
 
-
+                    //eğer bende bilgisi olmayan node varsa bilgisini istiyor
                     bool tmpAllCheck = true;
                     for (int i = 0; i < tmpMainList.Length; i++)
                     {
@@ -1366,27 +1384,18 @@ namespace Notus.Validator
                                         tmpMainList[i].Value.Port,
                                         "<rNode>1</rNode>"
                                     );
-                                    //Console.WriteLine(responseStr);
                                     ProcessIncomeData(responseStr);
                                     tmpAllCheck = false;
                                 }
                             }
                         }
                     }
-                    if(tmpAllCheck == true)
+                    if (tmpAllCheck == true)
                     {
                         allDone = true;
                     }
                 }
             }
-            Console.WriteLine(JsonSerializer.Serialize(NodeList,NVC.JsonSetting));
-
-            Node bilgileri karşılıklı iletildi
-            şimdi iletilen node bilgilerine göre ilk başlangıç sıralaması yapılacak
-
-            sıralama ve ilk başlayacak kişiden sonra 6 adet için karşılıklı liste oluşturulacak.
-
-            Notus.Print.ReadLine();
         }
         private void SyncListWithNode()
         {

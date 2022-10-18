@@ -75,6 +75,9 @@ namespace Notus.Variable
 
                 WaitTickCount = 4,
 
+                //PacketReceive = 0,
+                //PacketSend = 0,
+
                 EncryptKey = "key-password-string",
 
 
@@ -91,7 +94,7 @@ namespace Notus.Variable
                     My = new Struct.NodeQueueInfo()
                     {
                         Begin = 0,
-                        Tick=0,
+                        Tick = 0,
                         HexKey = "",
                         IP = new NVS.NodeInfo()
                         {
