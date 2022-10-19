@@ -479,6 +479,7 @@ namespace Notus.Variable.Struct
     {
         public NodeQueueInfo My { get; set; }             // node ile alınan zaman bilgisi
         public List<IpInfo> Lists { get; set; }             // node ile alınan zaman bilgisi
+        public Dictionary<ulong, NodeInfo> Queue { get; set; }             // node ile alınan zaman bilgisi
     }
     public class NodeQueueInfo_Time
     {

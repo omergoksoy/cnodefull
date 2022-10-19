@@ -448,6 +448,10 @@ namespace Notus.Validator
                 NodeList[nodeHexText].Status = NVS.NodeStatus.Online;
             }
         }
+        private string SendMessage(NVS.NodeInfo receiverIp, string messageText, bool executeErrorControl)
+        {
+            return SendMessage(receiverIp.IpAddress, receiverIp.Port, messageText, executeErrorControl);
+        }
         private string SendMessage(string receiverIpAddress, int receiverPortNo, string messageText, bool executeErrorControl)
         {
 
@@ -715,7 +719,6 @@ namespace Notus.Validator
                     string tmpFirstWallet = tmpWalletList.First().Value;
                     if (string.Equals(tmpFirstWallet, NVG.Settings.NodeWallet.WalletKey))
                     {
-
                         StartingTimeAfterEnoughNode = RefreshNtpTime();
                         Notus.Print.Info(NVG.Settings,
                             "I'm Sending Starting (When) Time / Current : " +
@@ -1238,7 +1241,7 @@ namespace Notus.Validator
                 Status = NVS.NodeStatus.Online,
                 HexKey = NVG.Settings.Nodes.My.HexKey,
                 Begin = NVG.Settings.Nodes.My.Begin,
-                SyncNo = NVG.Settings.Nodes.My.Begin,
+                SyncNo = 0,
                 Tick = Notus.Date.ToLong(NGF.GetUtcNowFromNtp()),
                 IP = new NVS.NodeInfo()
                 {
@@ -1283,27 +1286,22 @@ namespace Notus.Validator
             // diğer node'lara bizim kim olduğumuz söyleniyor...
             TellThemWhoTheNodeIs();
 
-            * şimdi sırada SyncNo kontrolü olacak
-            * eğer node sayısı 2 ise ilk defa açılmış demektir.
-            Eğer SyncNo'larında eşit aynı miktarda olan varsa
-            sync noları aynı olanlar arasında sıralama ve ağa katılım işlemi yapılacak
-            eğer ağa katılan olursa, SyncNo değeri sıfır ile değiştirilecek ve 
-            Liderin node'un begin time değerini baz alarak bir join time belirleyecek
-            bu join time sonrası node'lar çekilişe katılabilecek.
-
-            CheckNodeSyncNo();
-
-            //CheckNodeBeginTime();
-            Notus.Print.ReadLine();
-            Notus.Print.ReadLine();
-            //eğer 2 tane varsa buda sadece IP adresindekiler olacağından dolayı hemen sırayı belirle ve başla
-            if (NodeList.Count == 2)
+            //bu fonksyion ile amaç en çok sayıda olan sync no bulunacak
+            ulong biggestSyncNo = FindBiggestSyncNo();
+            if (biggestSyncNo == 0)
             {
                 Notus.Print.Info(NVG.Settings, "Active Node Count : " + NodeList.Count.ToString());
+
+                //cüzdanların hashleri alınıp sıraya koyuluyor.
                 SortedDictionary<BigInteger, string> tmpWalletList = new SortedDictionary<BigInteger, string>();
                 foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
                 {
-                    if (entry.Value.Status == NVS.NodeStatus.Online)
+                    if
+                    (
+                        entry.Value.Status == NVS.NodeStatus.Online
+                        &&
+                        entry.Value.SyncNo == biggestSyncNo
+                    )
                     {
                         bool exitInnerWhileLoop = false;
                         int innerCount = 1;
@@ -1313,8 +1311,6 @@ namespace Notus.Validator
                                 "0" +
                                 new Notus.Hash().CommonHash("sha1",
                                     entry.Value.IP.Wallet +
-                                    NVC.CommonDelimeterChar +
-                                    entry.Value.SyncNo +
                                     NVC.CommonDelimeterChar +
                                     innerCount.ToString()
                                 ),
@@ -1333,46 +1329,113 @@ namespace Notus.Validator
                     }
                 }
 
-                //BigInteger tmpFirstWalletKey = tmpWalletList.First().Key;
+                //birinci sırada ki cüzdan seçiliyor...
                 string tmpFirstWalletId = tmpWalletList.First().Value;
+
+                if (string.Equals(tmpFirstWalletId, NVG.Settings.Nodes.My.IP.Wallet))
+                {
+                    StartingTimeAfterEnoughNode = RefreshNtpTime();
+                    ulong syncStaringTime = Notus.Date.ToLong(StartingTimeAfterEnoughNode);
+                    ulong tmpSyncNo = syncStaringTime;
+
+                    bool exitFromInnerWhile = false;
+                    int firstListcount = 0;
+                    while (exitFromInnerWhile == false)
+                    {
+                        foreach (KeyValuePair<BigInteger, string> outerEntry in tmpWalletList)
+                        {
+                            foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+                            {
+                                if (string.Equals(entry.Value.IP.Wallet, outerEntry.Value))
+                                {
+                                    if (exitFromInnerWhile ==false)
+                                    {
+                                        NVG.Settings.Nodes.Queue.Add(tmpSyncNo, new NVS.NodeInfo()
+                                        {
+                                            IpAddress = entry.Value.IP.IpAddress,
+                                            Port = entry.Value.IP.Port,
+                                            Wallet = entry.Value.IP.Wallet
+                                        });
+                                        tmpSyncNo = Notus.Date.ToLong(Notus.Date.ToDateTime(tmpSyncNo).AddMilliseconds(500));
+                                        firstListcount++;
+                                        if (firstListcount == 6)
+                                        {
+                                            exitFromInnerWhile = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+                    {
+                        if
+                        (
+                            entry.Value.Status == NVS.NodeStatus.Online
+                            &&
+                            entry.Value.SyncNo == biggestSyncNo
+                        )
+                        {
+                            NodeList[entry.Key].SyncNo = syncStaringTime;
+                        }
+                    }
+                    Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue, NVC.JsonSetting));
+                    
+                    Notus.Print.Info(NVG.Settings,
+                        "I'm Sending Starting (When) Time / Current : " +
+                        StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
+                        " / " + NGF.GetUtcNowFromNtp().ToString("HH:mm:ss.fff")
+                    );
+
+                    NVG.NodeQueue.Starting = syncStaringTime;
+                    NVG.NodeQueue.OrderCount = 1;
+                    NVG.NodeQueue.Begin = true;
+                    foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+                    {
+                        if
+                        (
+                            entry.Value.Status == NVS.NodeStatus.Online
+                            &&
+                            entry.Value.SyncNo == biggestSyncNo
+                        )
+                        {
+                            SendMessage(entry.Value.IP, "<when>" + syncStaringTime + "</when>", true);
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("nuraya geldi");
+                }
+            }
+
+
+            Notus.Print.ReadLine();
+            Notus.Print.ReadLine();
+
+            /*
+            * şimdi sırada SyncNo kontrolü olacak
+            * eğer node sayısı 2 ise ilk defa açılmış demektir.
+            Eğer SyncNo'larında eşit aynı miktarda olan varsa
+            sync noları aynı olanlar arasında sıralama ve ağa katılım işlemi yapılacak
+            eğer ağa katılan olursa, SyncNo değeri sıfır ile değiştirilecek ve 
+            Liderin node'un begin time değerini baz alarak bir join time belirleyecek
+            bu join time sonrası node'lar çekilişe katılabilecek.
+            */
+            CheckNodeSyncNo();
+
+            //CheckNodeBeginTime();
+            Notus.Print.ReadLine();
+            Notus.Print.ReadLine();
+            //eğer 2 tane varsa buda sadece IP adresindekiler olacağından dolayı hemen sırayı belirle ve başla
+            if (NodeList.Count == 2)
+            {
 
                 /*
                 Console.WriteLine(tmpFirstWalletId);
                 Console.WriteLine(tmpFirstWalletKey);
                 Notus.Print.ReadLine();
                 */
-                if (string.Equals(tmpFirstWalletId, NVG.Settings.NodeWallet.WalletKey))
-                {
-                    //tmpFirstWalletId
-                }
-                else
-                {
-                    StartingTimeAfterEnoughNode = RefreshNtpTime();
-                    Notus.Print.Info(NVG.Settings,
-                        "I'm Sending Starting (When) Time / Current : " +
-                        StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
-                        " / " + NGF.GetUtcNowFromNtp().ToString("HH:mm:ss.fff")
-                    );
-                    NVG.NodeQueue.Starting = Notus.Time.DateTimeToUlong(StartingTimeAfterEnoughNode);
-                    NVG.NodeQueue.OrderCount = 1;
-                    NVG.NodeQueue.Begin = true;
-                    foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
-                    {
-                        if (entry.Value.Status == NVS.NodeStatus.Online)
-                        {
-                            SendMessage(
-                                entry.Value.IP.IpAddress,
-                                entry.Value.IP.Port,
-                                "<when>" +
-                                    StartingTimeAfterEnoughNode.ToString(
-                                        NVC.DefaultDateTimeFormatText
-                                    ) +
-                                "</when>",
-                                true
-                            );
-                        }
-                    }
-                }
                 /*
                     if (string.Equals(tmpFirstWallet, NVG.Settings.NodeWallet.WalletKey))
                     {
@@ -1486,6 +1549,7 @@ namespace Notus.Validator
 
                                 if (prevNo != currNo)
                                 {
+                                    /*
                                     if (prevNo > currNo)
                                     {
                                         NodeList[tmpPrevKeyStr].Begin--;
@@ -1494,6 +1558,7 @@ namespace Notus.Validator
                                     {
                                         NodeList[keyList[i]].Begin--;
                                     }
+                                    */
                                     allDiff = false;
                                 }
                             }
@@ -1506,7 +1571,66 @@ namespace Notus.Validator
                     exitLoop = (keyList.Count == 0 ? true : false);
                 }
             }
-            
+
+        }
+        private ulong FindBiggestSyncNo()
+        {
+            ulong resultVal = 0;
+            Dictionary<ulong, int> syncNoCount = new Dictionary<ulong, int>();
+            foreach (var iEntry in NodeList)
+            {
+
+                if (syncNoCount.ContainsKey(iEntry.Value.SyncNo) == false)
+                {
+                    syncNoCount.Add(iEntry.Value.SyncNo, 0);
+                }
+                syncNoCount[iEntry.Value.SyncNo]++;
+            }
+            int zeroCount = 0;
+            int biggestCount = 0;
+            ulong biggestSyncNo = 0;
+            foreach (var iEntry in syncNoCount)
+            {
+                if (iEntry.Key == 0)
+                {
+                    zeroCount = zeroCount + iEntry.Value;
+                }
+                else
+                {
+                    if (iEntry.Key > biggestSyncNo)
+                    {
+                        biggestSyncNo = iEntry.Key;
+                        biggestCount = iEntry.Value;
+                    }
+                    else
+                    {
+                        if (iEntry.Key == biggestSyncNo)
+                        {
+                            Console.WriteLine("Ayni SyncNo sayısına sahip node'lar var.");
+                        }
+                    }
+                }
+            }
+
+
+            //eğer büyük sayılardan hiç yok ise, olan node'lar kendi aralarında birinci belirleyecek
+            if (biggestCount == 0)
+            {
+                return 0;
+            }
+
+
+            if (zeroCount > biggestCount)
+            {
+
+            }
+            Console.WriteLine(zeroCount);
+            Console.WriteLine(biggestCount);
+            Console.WriteLine(biggestSyncNo);
+            Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
+            Notus.Print.ReadLine();
+
+            return resultVal;
         }
         private void CheckNodeSyncNo()
         {
@@ -1514,7 +1638,7 @@ namespace Notus.Validator
             KeyValuePair<string, NVS.NodeQueueInfo>[] tmpMainList = NodeList.ToArray();
             List<string> keyList = new List<string>();
 
-            
+
             for (int i = 0; i < tmpMainList.Length; i++)
             {
                 keyList.Add(tmpMainList[i].Key);
@@ -1523,45 +1647,42 @@ namespace Notus.Validator
             bool exitLoop = false;
             while (exitLoop == false)
             {
-                ulong tmpPrevSyncNo= ulong.MaxValue;
+                ulong tmpPrevBeginNo = ulong.MaxValue;
                 string tmpPrevKeyStr = string.Empty;
                 bool allDiff = true;
                 for (int i = 0; i < keyList.Count && allDiff == true; i++)
                 {
                     if (i == 0)
                     {
-                        tmpPrevSyncNo = NodeList[keyList[i]].SyncNo;
+                        tmpPrevBeginNo = NodeList[keyList[i]].Begin;
                         tmpPrevKeyStr = keyList[i];
                     }
                     else
                     {
-                        if (tmpPrevSyncNo == NodeList[keyList[i]].SyncNo)
+                        for (int x = 0; x < 1000 && allDiff == true; x++)
                         {
-                            for (int x = 0; x < 1000 && allDiff == true; x++)
-                            {
-                                BigInteger prevNo =
-                                    BigInteger.Parse("0" + new Notus.Hash().CommonHash("sha1",
-                                    NodeList[tmpPrevKeyStr].IP.Wallet + x.ToString()),
-                                    NumberStyles.AllowHexSpecifier
-                                );
-                                BigInteger currNo =
-                                    BigInteger.Parse("0" + new Notus.Hash().CommonHash("sha1",
-                                    NodeList[keyList[i]].IP.Wallet + x.ToString()),
-                                    NumberStyles.AllowHexSpecifier
-                                );
+                            BigInteger prevNo =
+                                BigInteger.Parse("0" + new Notus.Hash().CommonHash("sha1",
+                                NodeList[tmpPrevKeyStr].IP.Wallet + x.ToString()),
+                                NumberStyles.AllowHexSpecifier
+                            );
+                            BigInteger currNo =
+                                BigInteger.Parse("0" + new Notus.Hash().CommonHash("sha1",
+                                NodeList[keyList[i]].IP.Wallet + x.ToString()),
+                                NumberStyles.AllowHexSpecifier
+                            );
 
-                                if (prevNo != currNo)
+                            if (prevNo != currNo)
+                            {
+                                if (prevNo > currNo)
                                 {
-                                    if (prevNo > currNo)
-                                    {
-                                        NodeList[tmpPrevKeyStr].SyncNo--;
-                                    }
-                                    if (currNo > prevNo)
-                                    {
-                                        NodeList[keyList[i]].SyncNo--;
-                                    }
-                                    allDiff = false;
+                                    //NodeList[tmpPrevKeyStr].SyncNo--;
                                 }
+                                if (currNo > prevNo)
+                                {
+                                    //NodeList[keyList[i]].SyncNo--;
+                                }
+                                allDiff = false;
                             }
                         }
                     }
@@ -1582,6 +1703,56 @@ namespace Notus.Validator
                 syncNoCount[tmpMainList[i].Value.SyncNo]++;
             }
 
+
+            if (tmpMainList.Length == 2)
+            {
+                string starterNodeWallet = string.Empty;
+                List<string> innerKeyList = new List<string>();
+                for (int i = 0; i < tmpMainList.Length; i++)
+                {
+                    innerKeyList.Add(tmpMainList[i].Key);
+                }
+                for (int i = 0; i < innerKeyList.Count; i++)
+                {
+                    bool allDiff = true;
+                    for (int x = 0; x < 1000 && allDiff == true; x++)
+                    {
+                        BigInteger firstNo =
+                            BigInteger.Parse("0" + new Notus.Hash().CommonHash("sha1",
+                            NodeList[innerKeyList[0]].IP.Wallet + x.ToString()),
+                            NumberStyles.AllowHexSpecifier
+                        );
+                        BigInteger secondNo =
+                            BigInteger.Parse("0" + new Notus.Hash().CommonHash("sha1",
+                            NodeList[innerKeyList[1]].IP.Wallet + x.ToString()),
+                            NumberStyles.AllowHexSpecifier
+                        );
+
+                        if (firstNo != secondNo)
+                        {
+                            if (firstNo > secondNo)
+                            {
+                                NodeList[innerKeyList[1]].SyncNo = NodeList[innerKeyList[0]].SyncNo;
+                                starterNodeWallet = NodeList[innerKeyList[0]].IP.Wallet;
+                            }
+                            if (secondNo > firstNo)
+                            {
+                                NodeList[innerKeyList[0]].SyncNo = NodeList[innerKeyList[1]].SyncNo;
+                                starterNodeWallet = NodeList[innerKeyList[1]].IP.Wallet;
+                            }
+                            allDiff = false;
+                        }
+                    }
+                }
+
+                Console.WriteLine("starterNodeWallet : " + starterNodeWallet);
+                Notus.Print.ReadLine();
+            }
+            else
+            {
+                Console.WriteLine("kontrol-noktasi");
+                Notus.Print.ReadLine();
+            }
             List<ulong> allList = new List<ulong>();
             //en çok adette olan sync no sayısı bulunuyor.
             int biggestSyncCount = 0;
@@ -1596,6 +1767,7 @@ namespace Notus.Validator
                     selectedSyncNo = iEntry.Key;
                 }
             }
+
             bool elementFounded = false;
             for (int i = 0; i < tmpMainList.Length && elementFounded == false; i++)
             {
@@ -1604,12 +1776,6 @@ namespace Notus.Validator
                     selectedSyncKeyStr = tmpMainList[i].Key;
                 }
             }
-            Console.WriteLine("kontrol noktasi");
-            Console.WriteLine("kontrol noktasi");
-            Console.WriteLine("kontrol noktasi");
-            Console.WriteLine(biggestSyncCount);
-            Console.WriteLine(selectedSyncKeyStr);
-            Console.WriteLine(selectedSyncNo);
             Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
             Console.WriteLine(JsonSerializer.Serialize(NodeList[selectedSyncKeyStr], NVC.JsonSetting));
             Notus.Print.ReadLine();

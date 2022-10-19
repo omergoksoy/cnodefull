@@ -95,6 +95,8 @@ namespace Notus.Variable
                     {
                         Begin = 0,
                         Tick = 0,
+                        SyncNo = 0,
+                        JoinTime = 0,
                         HexKey = "",
                         IP = new NVS.NodeInfo()
                         {
@@ -105,7 +107,8 @@ namespace Notus.Variable
                         Ready = false,
                         Status = NVS.NodeStatus.Unknown,
                     },
-                    Lists = new List<NVS.IpInfo>() { }
+                    Lists = new List<NVS.IpInfo>() { },
+                    Queue = new Dictionary<ulong, NVS.NodeInfo> { }
                 },
                 NodeWallet = new NVS.EccKeyPair()
                 {
