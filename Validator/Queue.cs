@@ -1286,6 +1286,11 @@ namespace Notus.Validator
             // diğer node'lara bizim kim olduğumuz söyleniyor...
             TellThemWhoTheNodeIs();
 
+
+            burada sıraya sokuldu
+            diğeri mesajı alıp oda sıraya sokacak
+            sonra zamanı gelince işlemlere başlayacak
+
             //bu fonksyion ile amaç en çok sayıda olan sync no bulunacak
             ulong biggestSyncNo = FindBiggestSyncNo();
             if (biggestSyncNo == 0)
