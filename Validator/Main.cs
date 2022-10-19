@@ -658,19 +658,12 @@ namespace Notus.Validator
             ValidatorQueueObj.PreStart();
             if (NVG.Settings.GenesisCreated == false)
             {   
-                Console.WriteLine("StartAsMain -> Main.Cs -> Line 633");
-                Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes, NVC.JsonSetting));
-                ValidatorQueueObj.FirstHandShake();
-                Console.ReadLine();
 
-                Console.WriteLine("Kontrol-Noktasina-geldi-ve-beklemeye-basladi");
-                while (true)
-                {
-                    Thread.Sleep(10);
-                }
-                Console.WriteLine("Kontrol-Noktasi-Gecildi");
             }
+
+            //şimdilik kapatıldı
             //ValidatorQueueObj.Start();
+
             if (NVG.Settings.LocalNode == false)
             {
                 // kontrol noktası
@@ -705,7 +698,7 @@ namespace Notus.Validator
                             {
                                 FirstSyncIsDone = true;
                                 MyReadyMessageSended = true;
-                                Console.WriteLine("Control-Point-a465as4");
+                                //Console.WriteLine("Control-Point-a465as4");
                                 ValidatorQueueObj.MyNodeIsReady();
                             }
                         }
@@ -754,6 +747,10 @@ namespace Notus.Validator
                 Notus.Print.Success(NVG.Settings, "First Synchronization Is Done");
             }
 
+            Console.WriteLine("Final-Point");
+            Console.WriteLine("Final-Point");
+            Console.WriteLine("Final-Point");
+            Notus.Print.ReadLine();
             DateTime LastPrintTime = DateTime.Now;
             bool tmpStartWorkingPrinted = false;
             bool tmpExitMainLoop = false;
@@ -765,14 +762,21 @@ namespace Notus.Validator
 
             while (tmpExitMainLoop == false)
             {
-                WaitUntilEnoughNode();
-                NGF.RefreshNodeQueueTime();
+                //WaitUntilEnoughNode();
+                NGF.UpdateUtcNowValue();
+                //NGF.RefreshNodeQueueTime();
+                bool MyTurn = false;
+                //NVG.NowUTC
+                //NVG.Settings.Nodes.Queue
+
 
                 if (tmpStartWorkingPrinted == false)
                 {
                     tmpStartWorkingPrinted = true;
                     Notus.Print.Success(NVG.Settings, "Node Starts");
                 }
+                
+                
                 if (ValidatorQueueObj.MyTurn == true || NVG.Settings.GenesisCreated == true)
                 {
                     /*

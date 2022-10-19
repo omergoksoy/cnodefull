@@ -519,6 +519,7 @@ namespace Notus.Variable.Struct
         public bool After { get; set; }
         public TimeSpan Difference { get; set; }
         public DateTime Now { get; set; }
+        public ulong ulongNow { get; set; }
     }
 
     public class EmptyBlockRewardStruct

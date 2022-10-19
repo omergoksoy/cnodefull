@@ -15,6 +15,7 @@ namespace Notus
             Notus.Variable.Struct.UTCTimeStruct tmpReturn = new Notus.Variable.Struct.UTCTimeStruct();
             tmpReturn.UtcTime = Notus.Time.GetFromNtpServer(true);
             tmpReturn.Now = DateTime.Now;
+            tmpReturn.ulongNow = Notus.Time.DateTimeToUlong(tmpReturn.Now);
             tmpReturn.After = (tmpReturn.Now > tmpReturn.UtcTime);
             tmpReturn.Difference = (tmpReturn.After == true ? (tmpReturn.Now - tmpReturn.UtcTime) : (tmpReturn.UtcTime - tmpReturn.Now));
             return tmpReturn;

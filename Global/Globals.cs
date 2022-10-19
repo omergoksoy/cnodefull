@@ -57,6 +57,7 @@ namespace Notus.Variable
 
         */
         public static bool NodeListPrinted { get; set; }
+        public static ulong NowUTC { get; set; }
         public static Notus.Globals.Variable.NodeQueueList NodeQueue { get; set; }
 
         public static Notus.Globals.Variable.Settings Settings { get; set; }
@@ -143,6 +144,11 @@ namespace Notus.Variable
             {
                 RefreshNtpTime();
                 return Settings.UTCTime.Now;
+            }
+            public static void UpdateUtcNowValue()
+            {
+                RefreshNtpTime();
+                NowUTC = Notus.Time.DateTimeToUlong(Settings.UTCTime.Now);
             }
             public static void RefreshNodeQueueTime()
             {

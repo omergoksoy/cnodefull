@@ -1,5 +1,7 @@
 ﻿using System.Runtime.ExceptionServices;
 using System.Text.Json;
+using NGF = Notus.Variable.Globals.Functions;
+using NVG = Notus.Variable.Globals;
 
 static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 {
@@ -26,6 +28,11 @@ Console.CancelKeyPress += delegate {
     Console.WriteLine("control-c press");
     // call methods to clean up
 };
+
+NGF.UpdateUtcNowValue();
+ulong suAn = NVG.NowUTC;
+
+
 
 /*
 ulong baslangicSayi = Notus.Time.DateTimeToUlong(new DateTime(2022, 10, 12, 00, 55, 20));

@@ -19,6 +19,7 @@ namespace Notus.Validator
 {
     public class Queue : IDisposable
     {
+        private bool StartingTimeAfterEnoughNode_Arrived=false;
         private DateTime StartingTimeAfterEnoughNode;
 
         private bool WaitForEnoughNode_Val = true;
@@ -334,13 +335,11 @@ namespace Notus.Validator
 
             if (CheckXmlTag(incomeData, "when"))
             {
-                //Console.WriteLine("When = Is Come");
                 StartingTimeAfterEnoughNode = Notus.Date.ToDateTime(GetPureText(incomeData, "when"));
-
                 NVG.NodeQueue.Starting = Notus.Time.DateTimeToUlong(StartingTimeAfterEnoughNode);
                 NVG.NodeQueue.OrderCount = 1;
                 NVG.NodeQueue.Begin = true;
-                //Console.WriteLine(StartingTimeAfterEnoughNode);
+                StartingTimeAfterEnoughNode_Arrived = true;
                 return "done";
             }
             if (CheckXmlTag(incomeData, "hash"))
@@ -540,12 +539,6 @@ namespace Notus.Validator
             {
                 ProcessIncomeData(tmpReturnStr);
             }
-            /*
-            if (MessageTimeListAvailable(_nodeKeyText, 2))
-            {
-                AddToMessageTimeList(_nodeKeyText);
-            }
-            */
         }
         private void MainLoop()
         {
@@ -674,529 +667,6 @@ namespace Notus.Validator
                 }
             }
         }
-
-        private void CheckNodeCount()
-        {
-            int nodeCount = 0;
-            foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
-            {
-                if (
-                    entry.Value.Status == NVS.NodeStatus.Online &&
-                    //entry.Value.ErrorCount == 0 &&
-                    entry.Value.Ready == true
-                )
-                {
-                    nodeCount++;
-                }
-            }
-            ActiveNodeCount_Val = nodeCount;
-            if (ActiveNodeCount_Val > 1 && Val_Ready == true)
-            {
-                if (NodeList[NVG.Settings.Nodes.My.HexKey].Ready == false)
-                {
-                    Console.WriteLine("Control-Point-2");
-                    MyNodeIsReady();
-                }
-                if (NotEnoughNode_Val == true) // ilk aşamada buraya girecek
-                {
-                    //Notus.Print.Basic(NVG.Settings, "Notus.Validator.Queue -> Line 820");
-                    Notus.Print.Info(NVG.Settings, "Active Node Count : " + ActiveNodeCount_Val.ToString());
-                    SortedDictionary<BigInteger, string> tmpWalletList = new SortedDictionary<BigInteger, string>();
-                    foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
-                    {
-                        if (entry.Value.Status == NVS.NodeStatus.Online /* && entry.Value.ErrorCount == 0 */)
-                        {
-                            BigInteger walletNo = BigInteger.Parse(
-                                new Notus.Hash().CommonHash("sha1", entry.Value.IP.Wallet),
-                                NumberStyles.AllowHexSpecifier
-                            );
-                            if (tmpWalletList.ContainsKey(walletNo) == false)
-                            {
-                                tmpWalletList.Add(walletNo, entry.Value.IP.Wallet);
-                            }
-                        }
-                    }
-                    string tmpFirstWallet = tmpWalletList.First().Value;
-                    if (string.Equals(tmpFirstWallet, NVG.Settings.NodeWallet.WalletKey))
-                    {
-                        StartingTimeAfterEnoughNode = RefreshNtpTime();
-                        Notus.Print.Info(NVG.Settings,
-                            "I'm Sending Starting (When) Time / Current : " +
-                            StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
-                            " / " + NGF.GetUtcNowFromNtp().ToString("HH:mm:ss.fff")
-                        );
-                        NVG.NodeQueue.Starting = Notus.Time.DateTimeToUlong(StartingTimeAfterEnoughNode);
-                        NVG.NodeQueue.OrderCount = 1;
-                        NVG.NodeQueue.Begin = true;
-                        foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
-                        {
-                            if (entry.Value.Status == NVS.NodeStatus.Online /* && entry.Value.ErrorCount == 0 */)
-                            {
-                                SendMessage(
-                                    entry.Value.IP.IpAddress,
-                                    entry.Value.IP.Port,
-                                    "<when>" +
-                                        StartingTimeAfterEnoughNode.ToString(
-                                            NVC.DefaultDateTimeFormatText
-                                        ) +
-                                    "</when>",
-                                    true
-                                );
-                            }
-                        }
-                    }
-                    else
-                    {
-                        //listen and wait
-                        for (int x = 0; x < 100; x++)
-                        {
-                            Thread.Sleep(20);
-                        }
-                        Notus.Print.Info(NVG.Settings,
-                            "I'm Waiting Starting (When) Time / Current : " +
-                            StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
-                            " /  " +
-                            NGF.GetUtcNowFromNtp().ToString("HH:mm:ss.fff")
-                        );
-                    }
-                }
-                if (NGF.GetUtcNowFromNtp() > StartingTimeAfterEnoughNode)
-                {
-                    OrganizeQueue();
-                }
-                NotEnoughNode_Val = false;
-                NotEnoughNode_Printed = false;
-            }
-            else
-            {
-                NVG.NodeQueue.Starting = 0;
-                NVG.NodeQueue.Begin = false;
-
-                NotEnoughNode_Val = true;
-                WaitForEnoughNode_Val = true;
-                if (NotEnoughNode_Printed == false)
-                {
-                    NotEnoughNode_Printed = true;
-                    Notus.Print.Basic(NVG.Settings, "Waiting For Enough Node");
-                }
-            }
-        }
-
-        private void OrganizeQueue()
-        {
-            /*
-            Console.WriteLine(
-                JsonSerializer.Serialize(NodeList, NVC.JsonSetting)
-            );
-            */
-
-            //önce geçerli node listesinin bir yedeği alınıyor ve önceki node listesi değişkeninde tutuluyor.
-            PreviousNodeList = JsonSerializer.Deserialize<ConcurrentDictionary<string, NVS.NodeQueueInfo>>(
-                JsonSerializer.Serialize(NodeList)
-            );
-            LastHashForStoreList = NodeListHash;
-
-            Dictionary<BigInteger, string> tmpNodeTimeList = new Dictionary<BigInteger, string>();
-            Dictionary<BigInteger, string> tmpWalletList = new Dictionary<BigInteger, string>();
-            List<BigInteger> tmpWalletOrder = new List<BigInteger>();
-            SortedDictionary<string, string> tmpWalletHashList = new SortedDictionary<string, string>();
-            foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in PreviousNodeList)
-            {
-                if (/* entry.Value.ErrorCount == 0 && */ entry.Value.Ready == true)
-                {
-                    BigInteger walletNo = Notus.Convert.FromBase58(entry.Value.IP.Wallet);
-                    tmpWalletList.Add(walletNo, entry.Value.IP.Wallet);
-                    //tmpNodeTimeList.Add(walletNo, entry.Value.Time.World.ToString(NVC.DefaultDateTimeFormatText));
-
-                    tmpWalletOrder.Add(walletNo);
-                }
-            }
-
-            tmpWalletOrder.Sort();
-            string tmpSalt = new Notus.Hash().CommonHash("md5", string.Join("#", tmpWalletOrder.ToArray()));
-            for (int i = 0; i < tmpWalletOrder.Count; i++)
-            {
-                string tmpWalletHash = new Notus.Hash().CommonHash("md5",
-                    tmpSalt + tmpWalletList[tmpWalletOrder[i]] + tmpNodeTimeList[tmpWalletOrder[i]]
-                );
-
-                tmpWalletHashList.Add(tmpWalletHash, tmpWalletList[tmpWalletOrder[i]]);
-            }
-            int counter = 0;
-            NodeOrderList.Clear();
-
-            foreach (KeyValuePair<string, string> entry in tmpWalletHashList)
-            {
-                counter++;
-                NodeOrderList.TryAdd(counter, entry.Value);
-            }
-
-            NodeTurnCount.Clear();
-            foreach (KeyValuePair<int, string> entry in NodeOrderList)
-            {
-                if (NodeTurnCount.ContainsKey(entry.Value) == false)
-                {
-                    NodeTurnCount.TryAdd(entry.Value, 0);
-                }
-            }
-            /*
-
-            empty blok sayısı toplanacak
-
-
-            empty blok + transaction sayısı + blok sayısı
-            ---------------------------------------------= İşlem başına ödül miktarı
-                             ödül miktarı
-
-
-            toplam ödül miktarından vakıf payı çıkarılacak ( % 2 )
-            ayrıca 10 blok ödülü seçilecek bir kişiye verilecek
-
-
-            */
-            int myRewardCount = NodeTurnCount[NodeOrderList[1]];
-            int minRewardCount = int.MaxValue;
-            int maxRewardCount = 0;
-            foreach (KeyValuePair<string, int> entry in NodeTurnCount)
-            {
-                if (entry.Value > maxRewardCount)
-                {
-                    maxRewardCount = entry.Value;
-                }
-                if (minRewardCount > entry.Value)
-                {
-                    minRewardCount = entry.Value;
-                }
-            }
-
-            /*
-            burada işlem yapılacak
-            süreler dağıtılacak
-            */
-
-            //NVG.NodeOrderList.Clear();
-            int islemSuresi = 200;
-            int olusturmaSuresi = 100;
-            int dagitmaSuresi = 200;
-            int toplamZamanAraligi = islemSuresi + olusturmaSuresi + dagitmaSuresi;
-
-            /*
-            sıralar burada oluşturuldu ama 
-            her sıranın süresi belirtilmedi
-            süre sonrası belirtilen aralıkta node'lar işlemlerini yapacak
-            */
-            NGF.RefreshNodeQueueTime();
-            if (NodeOrderList.Count == 2)
-            {
-                //NVG.NodeQueue.OrderCount
-                NVG.NodeQueue.NodeOrder.Add(1, NodeOrderList[1]);
-                NVG.NodeQueue.NodeOrder.Add(2, NodeOrderList[2]);
-
-                NVG.NodeQueue.NodeOrder.Add(3, NodeOrderList[1]);
-                NVG.NodeQueue.NodeOrder.Add(4, NodeOrderList[2]);
-
-                NVG.NodeQueue.NodeOrder.Add(5, NodeOrderList[1]);
-                NVG.NodeQueue.NodeOrder.Add(6, NodeOrderList[2]);
-
-                //NVG.NodeQueue.Starting = Notus.Time.DateTimeToUlong(StartingTimeAfterEnoughNode);
-
-                NVG.NodeQueue.TimeBaseWalletList.Add(
-                    NVG.NodeQueue.Starting,
-                    NodeOrderList[1]
-                );
-                NVG.NodeQueue.TimeBaseWalletList.Add(
-                    Notus.Time.DateTimeToUlong(
-                        Notus.Date.ToDateTime(NVG.NodeQueue.Starting).AddMilliseconds(toplamZamanAraligi)
-                    , true),
-                    NodeOrderList[2]
-                );
-                NVG.NodeQueue.TimeBaseWalletList.Add(
-                    Notus.Time.DateTimeToUlong(
-                        Notus.Date.ToDateTime(NVG.NodeQueue.Starting).AddMilliseconds(toplamZamanAraligi * 2)
-                    , true),
-                    NodeOrderList[1]
-                );
-                NVG.NodeQueue.TimeBaseWalletList.Add(
-                    Notus.Time.DateTimeToUlong(
-                        Notus.Date.ToDateTime(NVG.NodeQueue.Starting).AddMilliseconds(toplamZamanAraligi * 3)
-                    , true),
-                    NodeOrderList[2]
-                );
-                NVG.NodeQueue.TimeBaseWalletList.Add(
-                    Notus.Time.DateTimeToUlong(
-                        Notus.Date.ToDateTime(NVG.NodeQueue.Starting).AddMilliseconds(toplamZamanAraligi * 4)
-                    , true),
-                    NodeOrderList[1]
-                );
-                NVG.NodeQueue.TimeBaseWalletList.Add(
-                    Notus.Time.DateTimeToUlong(
-                        Notus.Date.ToDateTime(NVG.NodeQueue.Starting).AddMilliseconds(toplamZamanAraligi * 55)
-                    , true),
-                    NodeOrderList[2]
-                );
-            }
-
-            if (NVG.NodeListPrinted == false)
-            {
-                NVG.NodeListPrinted = true;
-                Console.WriteLine(JsonSerializer.Serialize(NVG.NodeQueue));
-                //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeQueue.TimeBaseWalletList));
-                //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeQueue.NodeOrder));
-                //NVG.NodeQueue.OrderCount
-                //NVG.NodeQueue.NodeOrder.Add(1, NodeOrderList[1]);
-
-                //Console.WriteLine(JsonSerializer.Serialize());
-
-            }
-            //Console.WriteLine();
-
-            /*
-            if (NodeOrderList.Count == 3)
-            {
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[1],
-                        Begin = NVG.StartingTime
-                    }
-                );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[2],
-                        Begin = NVG.StartingTime
-                    }
-                );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[3],
-                        Begin = NVG.StartingTime
-                    }
-                );
-
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[1],
-                        Begin = NVG.StartingTime
-                    }
-                );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[2],
-                        Begin = NVG.StartingTime
-                    }
-                );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[3],
-                        Begin = NVG.StartingTime
-                    }
-                );
-
-            }
-
-            if (NodeOrderList.Count == 4)
-            {
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[1],
-                        Begin = NVG.StartingTime
-                    }
-                );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[2],
-                        Begin = NVG.StartingTime
-                    }
-                );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[3],
-                        Begin = NVG.StartingTime
-                    }
-                );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[4],
-                        Begin = NVG.StartingTime
-                    }
-                );
-
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[1],
-                        Begin = NVG.StartingTime
-                    }
-                );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[2],
-                        Begin = NVG.StartingTime
-                    }
-                );
-            }
-
-            if (NodeOrderList.Count == 5)
-            {
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[1],
-                        Begin = NVG.StartingTime
-                    }
-                );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[2],
-                        Begin = NVG.StartingTime
-                    }
-                );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[3],
-                        Begin = NVG.StartingTime
-                    }
-                );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[4],
-                        Begin = NVG.StartingTime
-                    }
-                );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[5],
-                        Begin = NVG.StartingTime
-                    }
-                );
-
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[1],
-                        Begin = NVG.StartingTime
-                    }
-                );
-            }
-
-            if (NodeOrderList.Count > 5)
-            {
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[1],
-                        Begin = NVG.StartingTime
-                    }
-                );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[2],
-                        Begin = NVG.StartingTime
-                    }
-                );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[3],
-                        Begin = NVG.StartingTime
-                    }
-                );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[4],
-                        Begin = NVG.StartingTime
-                    }
-                );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[5],
-                        Begin = NVG.StartingTime
-                    }
-                );
-                NVG.NodeTimeBasedOrderList.Add(
-                    new Globals.Variable.NodeOrderStruct()
-                    {
-                        Wallet = NodeOrderList[6],
-                        Begin = NVG.StartingTime
-                    }
-                );
-            }
-            */
-            // Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
-            // Console.WriteLine(JsonSerializer.Serialize(NodeOrderList));
-            MyTurn_Val = (string.Equals(NVG.Settings.NodeWallet.WalletKey, NodeOrderList[1]));
-            //NodeTimeBasedOrderList
-            //Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
-            //Console.WriteLine(Notus.Time.NowNtpTime().ToString("HH:mm:ss fff"));
-
-            if (MyTurn_Val == true)
-            {
-                /*
-                //Notus.Print.Info(NVG.Settings, "My Turn");
-                NextQueueValidNtpTime = RefreshNtpTime(NVC.NodeSortFrequency);
-                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in PreviousNodeList)
-                {
-                    if (
-                        entry.Value.ErrorCount == 0 &&
-                        entry.Value.Status == NodeStatus.Online &&
-                        entry.Value.Ready == true &&
-                        string.Equals(entry.Value.Wallet, NVG.Settings.NodeWallet.WalletKey) == false
-                    )
-                    {
-                        SendMessage(
-                            entry.Value.IP,
-                            "<time>" + Notus.Date.ToString(NextQueueValidNtpTime) + "</time>",
-                            true
-                        );
-                    }
-                }
-                */
-            }
-            else
-            {
-
-                //Console.WriteLine(JsonSerializer.Serialize(NodeList, NVC.JsonSetting));
-
-                //Console.WriteLine(JsonSerializer.Serialize(NodeOrderList, NVC.JsonSetting));
-                //Notus.Print.Info(NVG.Settings, "Waiting For Turn");
-            }
-            //NodeList[NVG.Settings.Nodes.My.HexKey].Time.Node = DateTime.Now;
-            //NodeList[NVG.Settings.Nodes.My.HexKey].Time.World = NGF.GetUtcNowFromNtp();
-            WaitForEnoughNode_Val = false;
-        }
-        public void FirstHandShake()
-        {
-            foreach (KeyValuePair<string, NVS.IpInfo> entry in MainAddressList)
-            {
-                if (string.Equals(entry.Key, NVG.Settings.Nodes.My.HexKey) == false)
-                {
-                    /*
-                    tmpNodeList.Add(new NVS.IpInfo()
-                    {
-                        IpAddress = entry.Value.IpAddress,
-                        Port = entry.Value.Port
-                    });
-                    */
-                }
-            }
-        }
         public void Start()
         {
             if (NVG.Settings.LocalNode == false)
@@ -1208,6 +678,83 @@ namespace Notus.Validator
             }
         }
 
+        public void GenerateNodeQueue(ulong biggestSyncNo, ulong syncStaringTime, SortedDictionary<BigInteger, string> nodeWalletList)
+        {
+            ulong tmpSyncNo = syncStaringTime;
+
+            bool exitFromInnerWhile = false;
+            int firstListcount = 0;
+            while (exitFromInnerWhile == false)
+            {
+                foreach (KeyValuePair<BigInteger, string> outerEntry in nodeWalletList)
+                {
+                    foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+                    {
+                        if (string.Equals(entry.Value.IP.Wallet, outerEntry.Value))
+                        {
+                            if (exitFromInnerWhile == false)
+                            {
+                                NVG.Settings.Nodes.Queue.Add(tmpSyncNo, new NVS.NodeInfo()
+                                {
+                                    IpAddress = entry.Value.IP.IpAddress,
+                                    Port = entry.Value.IP.Port,
+                                    Wallet = entry.Value.IP.Wallet
+                                });
+                                tmpSyncNo = Notus.Date.ToLong(Notus.Date.ToDateTime(tmpSyncNo).AddMilliseconds(500));
+                                firstListcount++;
+                                if (firstListcount == 6)
+                                {
+                                    exitFromInnerWhile = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+            {
+                if (entry.Value.Status == NVS.NodeStatus.Online && entry.Value.SyncNo == biggestSyncNo)
+                {
+                    NodeList[entry.Key].SyncNo = syncStaringTime;
+                }
+            }
+        }
+        public SortedDictionary<BigInteger, string> MakeOrderToNode(ulong biggestSyncNo)
+        {
+            SortedDictionary<BigInteger, string> resultList = new SortedDictionary<BigInteger, string>();
+            foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+            {
+                if (entry.Value.Status == NVS.NodeStatus.Online && entry.Value.SyncNo == biggestSyncNo)
+                {
+                    bool exitInnerWhileLoop = false;
+                    int innerCount = 1;
+                    while (exitInnerWhileLoop == false)
+                    {
+                        BigInteger intWalletNo = BigInteger.Parse(
+                            "0" +
+                            new Notus.Hash().CommonHash("sha1",
+                                entry.Value.IP.Wallet +
+                                NVC.CommonDelimeterChar +
+                                entry.Value.Begin.ToString() +
+                                NVC.CommonDelimeterChar +
+                                innerCount.ToString()
+                            ),
+                            NumberStyles.AllowHexSpecifier
+                        );
+                        if (resultList.ContainsKey(intWalletNo) == false)
+                        {
+                            resultList.Add(intWalletNo, entry.Value.IP.Wallet);
+                            exitInnerWhileLoop = true;
+                        }
+                        else
+                        {
+                            innerCount++;
+                        }
+                    }
+                }
+            }
+            return resultList;
+        }
         public void PreStart()
         {
             if (NVG.Settings.LocalNode == true)
@@ -1286,106 +833,23 @@ namespace Notus.Validator
             // diğer node'lara bizim kim olduğumuz söyleniyor...
             TellThemWhoTheNodeIs();
 
-
-            burada sıraya sokuldu
-            diğeri mesajı alıp oda sıraya sokacak
-            sonra zamanı gelince işlemlere başlayacak
-
             //bu fonksyion ile amaç en çok sayıda olan sync no bulunacak
             ulong biggestSyncNo = FindBiggestSyncNo();
+            StartingTimeAfterEnoughNode_Arrived = false;
             if (biggestSyncNo == 0)
             {
                 Notus.Print.Info(NVG.Settings, "Active Node Count : " + NodeList.Count.ToString());
-
                 //cüzdanların hashleri alınıp sıraya koyuluyor.
-                SortedDictionary<BigInteger, string> tmpWalletList = new SortedDictionary<BigInteger, string>();
-                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
-                {
-                    if
-                    (
-                        entry.Value.Status == NVS.NodeStatus.Online
-                        &&
-                        entry.Value.SyncNo == biggestSyncNo
-                    )
-                    {
-                        bool exitInnerWhileLoop = false;
-                        int innerCount = 1;
-                        while (exitInnerWhileLoop == false)
-                        {
-                            BigInteger intWalletNo = BigInteger.Parse(
-                                "0" +
-                                new Notus.Hash().CommonHash("sha1",
-                                    entry.Value.IP.Wallet +
-                                    NVC.CommonDelimeterChar +
-                                    innerCount.ToString()
-                                ),
-                                NumberStyles.AllowHexSpecifier
-                            );
-                            if (tmpWalletList.ContainsKey(intWalletNo) == false)
-                            {
-                                tmpWalletList.Add(intWalletNo, entry.Value.IP.Wallet);
-                                exitInnerWhileLoop = true;
-                            }
-                            else
-                            {
-                                innerCount++;
-                            }
-                        }
-                    }
-                }
+                SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo);
 
                 //birinci sırada ki cüzdan seçiliyor...
                 string tmpFirstWalletId = tmpWalletList.First().Value;
-
                 if (string.Equals(tmpFirstWalletId, NVG.Settings.Nodes.My.IP.Wallet))
                 {
                     StartingTimeAfterEnoughNode = RefreshNtpTime();
                     ulong syncStaringTime = Notus.Date.ToLong(StartingTimeAfterEnoughNode);
-                    ulong tmpSyncNo = syncStaringTime;
+                    GenerateNodeQueue(biggestSyncNo,syncStaringTime, tmpWalletList);
 
-                    bool exitFromInnerWhile = false;
-                    int firstListcount = 0;
-                    while (exitFromInnerWhile == false)
-                    {
-                        foreach (KeyValuePair<BigInteger, string> outerEntry in tmpWalletList)
-                        {
-                            foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
-                            {
-                                if (string.Equals(entry.Value.IP.Wallet, outerEntry.Value))
-                                {
-                                    if (exitFromInnerWhile ==false)
-                                    {
-                                        NVG.Settings.Nodes.Queue.Add(tmpSyncNo, new NVS.NodeInfo()
-                                        {
-                                            IpAddress = entry.Value.IP.IpAddress,
-                                            Port = entry.Value.IP.Port,
-                                            Wallet = entry.Value.IP.Wallet
-                                        });
-                                        tmpSyncNo = Notus.Date.ToLong(Notus.Date.ToDateTime(tmpSyncNo).AddMilliseconds(500));
-                                        firstListcount++;
-                                        if (firstListcount == 6)
-                                        {
-                                            exitFromInnerWhile = true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
-                    {
-                        if
-                        (
-                            entry.Value.Status == NVS.NodeStatus.Online
-                            &&
-                            entry.Value.SyncNo == biggestSyncNo
-                        )
-                        {
-                            NodeList[entry.Key].SyncNo = syncStaringTime;
-                        }
-                    }
-                    Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue, NVC.JsonSetting));
-                    
                     Notus.Print.Info(NVG.Settings,
                         "I'm Sending Starting (When) Time / Current : " +
                         StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
@@ -1395,188 +859,40 @@ namespace Notus.Validator
                     NVG.NodeQueue.Starting = syncStaringTime;
                     NVG.NodeQueue.OrderCount = 1;
                     NVG.NodeQueue.Begin = true;
+
+                    // diğer nodelara belirlediğimiz zaman bilgisini gönderiyoruz
                     foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
                     {
-                        if
-                        (
-                            entry.Value.Status == NVS.NodeStatus.Online
-                            &&
-                            entry.Value.SyncNo == biggestSyncNo
-                        )
-                        {
-                            SendMessage(entry.Value.IP, "<when>" + syncStaringTime + "</when>", true);
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("nuraya geldi");
-                }
-            }
-
-
-            Notus.Print.ReadLine();
-            Notus.Print.ReadLine();
-
-            /*
-            * şimdi sırada SyncNo kontrolü olacak
-            * eğer node sayısı 2 ise ilk defa açılmış demektir.
-            Eğer SyncNo'larında eşit aynı miktarda olan varsa
-            sync noları aynı olanlar arasında sıralama ve ağa katılım işlemi yapılacak
-            eğer ağa katılan olursa, SyncNo değeri sıfır ile değiştirilecek ve 
-            Liderin node'un begin time değerini baz alarak bir join time belirleyecek
-            bu join time sonrası node'lar çekilişe katılabilecek.
-            */
-            CheckNodeSyncNo();
-
-            //CheckNodeBeginTime();
-            Notus.Print.ReadLine();
-            Notus.Print.ReadLine();
-            //eğer 2 tane varsa buda sadece IP adresindekiler olacağından dolayı hemen sırayı belirle ve başla
-            if (NodeList.Count == 2)
-            {
-
-                /*
-                Console.WriteLine(tmpFirstWalletId);
-                Console.WriteLine(tmpFirstWalletKey);
-                Notus.Print.ReadLine();
-                */
-                /*
-                    if (string.Equals(tmpFirstWallet, NVG.Settings.NodeWallet.WalletKey))
-                    {
-
-                        StartingTimeAfterEnoughNode = RefreshNtpTime();
-                        Notus.Print.Info(NVG.Settings,
-                            "I'm Sending Starting (When) Time / Current : " +
-                            StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
-                            " / " + NGF.GetUtcNowFromNtp().ToString("HH:mm:ss.fff")
-                        );
-                        NVG.NodeQueue.Starting = Notus.Time.DateTimeToUlong(StartingTimeAfterEnoughNode);
-                        NVG.NodeQueue.OrderCount = 1;
-                        NVG.NodeQueue.Begin = true;
-                        foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+                        if (string.Equals(entry.Key, NVG.Settings.Nodes.My.HexKey) == false)
                         {
                             if (entry.Value.Status == NVS.NodeStatus.Online)
                             {
-                    SendMessage(
-                        entry.Value.IP.IpAddress,
-                        entry.Value.IP.Port,
-                        "<when>" +
-                            StartingTimeAfterEnoughNode.ToString(
-                                NVC.DefaultDateTimeFormatText
-                            ) +
-                        "</when>",
-                        true
-                    );
-                }
-            }
-        }
-                    else
-                    {
-                        //listen and wait
-                        for (int x = 0; x< 100; x++)
-                        {
-                            Thread.Sleep(20);
-                        }
-    Notus.Print.Info(NVG.Settings,
-                            "I'm Waiting Starting (When) Time / Current : " +
-                            StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
-                            " /  " +
-                            NGF.GetUtcNowFromNtp().ToString("HH:mm:ss.fff")
-                        );
-                    }
-                }
-
-
-
-
-
-                */
-            }
-            /*
-            
-            */
-            Console.WriteLine(JsonSerializer.Serialize(NodeList, NVC.JsonSetting));
-
-
-            /*
-            Node bilgileri karşılıklı iletildi
-            şimdi iletilen node bilgilerine göre ilk başlangıç sıralaması yapılacak
-
-            sıralama ve ilk başlayacak kişiden sonra 6 adet için karşılıklı liste oluşturulacak.
-            */
-
-
-            Notus.Print.ReadLine();
-            Notus.Print.ReadLine();
-            Notus.Print.ReadLine();
-        }
-        private void CheckNodeBeginTime()
-        {
-            Dictionary<ulong, int> syncNoCount = new Dictionary<ulong, int>();
-            KeyValuePair<string, NVS.NodeQueueInfo>[] tmpMainList = NodeList.ToArray();
-            List<string> keyList = new List<string>();
-
-            for (int i = 0; i < tmpMainList.Length; i++)
-            {
-                keyList.Add(tmpMainList[i].Key);
-            }
-
-            bool exitLoop = false;
-            while (exitLoop == false)
-            {
-                ulong tmpPrevBeginTime = ulong.MaxValue;
-                string tmpPrevKeyStr = string.Empty;
-                bool allDiff = true;
-                for (int i = 0; i < keyList.Count && allDiff == true; i++)
-                {
-                    if (i == 0)
-                    {
-                        tmpPrevBeginTime = NodeList[keyList[i]].Begin;
-                        tmpPrevKeyStr = keyList[i];
-                    }
-                    else
-                    {
-                        if (tmpPrevBeginTime == NodeList[keyList[i]].Begin)
-                        {
-                            for (int x = 0; x < 1000 && allDiff == true; x++)
-                            {
-                                BigInteger prevNo =
-                                    BigInteger.Parse("0" + new Notus.Hash().CommonHash("sha1",
-                                    NodeList[tmpPrevKeyStr].IP.Wallet + x.ToString()),
-                                    NumberStyles.AllowHexSpecifier
-                                );
-                                BigInteger currNo =
-                                    BigInteger.Parse("0" + new Notus.Hash().CommonHash("sha1",
-                                    NodeList[keyList[i]].IP.Wallet + x.ToString()),
-                                    NumberStyles.AllowHexSpecifier
-                                );
-
-                                if (prevNo != currNo)
+                                if (entry.Value.SyncNo == syncStaringTime)
                                 {
-                                    /*
-                                    if (prevNo > currNo)
-                                    {
-                                        NodeList[tmpPrevKeyStr].Begin--;
-                                    }
-                                    if (currNo > prevNo)
-                                    {
-                                        NodeList[keyList[i]].Begin--;
-                                    }
-                                    */
-                                    allDiff = false;
+                                    SendMessage(entry.Value.IP, "<when>" + syncStaringTime + "</when>", true);
                                 }
                             }
                         }
                     }
                 }
-                if (allDiff == true)
+                else
                 {
-                    keyList.RemoveAt(0);
-                    exitLoop = (keyList.Count == 0 ? true : false);
+                    while (StartingTimeAfterEnoughNode_Arrived == false)
+                    {
+                        Thread.Sleep(10);
+                    }
+                    
+                    GenerateNodeQueue(biggestSyncNo, NVG.NodeQueue.Starting, tmpWalletList);
+                    Notus.Print.Info(NVG.Settings,
+                        "I'm Waiting Starting (When) Time / Current : " +
+                        StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
+                        " /  " +
+                        NGF.GetUtcNowFromNtp().ToString("HH:mm:ss.fff")
+                    );
                 }
             }
 
+            Console.WriteLine(JsonSerializer.Serialize(NodeList, NVC.JsonSetting));
         }
         private ulong FindBiggestSyncNo()
         {
@@ -1636,157 +952,6 @@ namespace Notus.Validator
             Notus.Print.ReadLine();
 
             return resultVal;
-        }
-        private void CheckNodeSyncNo()
-        {
-            Dictionary<ulong, int> syncNoCount = new Dictionary<ulong, int>();
-            KeyValuePair<string, NVS.NodeQueueInfo>[] tmpMainList = NodeList.ToArray();
-            List<string> keyList = new List<string>();
-
-
-            for (int i = 0; i < tmpMainList.Length; i++)
-            {
-                keyList.Add(tmpMainList[i].Key);
-            }
-
-            bool exitLoop = false;
-            while (exitLoop == false)
-            {
-                ulong tmpPrevBeginNo = ulong.MaxValue;
-                string tmpPrevKeyStr = string.Empty;
-                bool allDiff = true;
-                for (int i = 0; i < keyList.Count && allDiff == true; i++)
-                {
-                    if (i == 0)
-                    {
-                        tmpPrevBeginNo = NodeList[keyList[i]].Begin;
-                        tmpPrevKeyStr = keyList[i];
-                    }
-                    else
-                    {
-                        for (int x = 0; x < 1000 && allDiff == true; x++)
-                        {
-                            BigInteger prevNo =
-                                BigInteger.Parse("0" + new Notus.Hash().CommonHash("sha1",
-                                NodeList[tmpPrevKeyStr].IP.Wallet + x.ToString()),
-                                NumberStyles.AllowHexSpecifier
-                            );
-                            BigInteger currNo =
-                                BigInteger.Parse("0" + new Notus.Hash().CommonHash("sha1",
-                                NodeList[keyList[i]].IP.Wallet + x.ToString()),
-                                NumberStyles.AllowHexSpecifier
-                            );
-
-                            if (prevNo != currNo)
-                            {
-                                if (prevNo > currNo)
-                                {
-                                    //NodeList[tmpPrevKeyStr].SyncNo--;
-                                }
-                                if (currNo > prevNo)
-                                {
-                                    //NodeList[keyList[i]].SyncNo--;
-                                }
-                                allDiff = false;
-                            }
-                        }
-                    }
-                }
-                if (allDiff == true)
-                {
-                    keyList.RemoveAt(0);
-                    exitLoop = (keyList.Count == 0 ? true : false);
-                }
-            }
-
-            for (int i = 0; i < tmpMainList.Length; i++)
-            {
-                if (syncNoCount.ContainsKey(tmpMainList[i].Value.SyncNo) == false)
-                {
-                    syncNoCount.Add(tmpMainList[i].Value.SyncNo, 0);
-                }
-                syncNoCount[tmpMainList[i].Value.SyncNo]++;
-            }
-
-
-            if (tmpMainList.Length == 2)
-            {
-                string starterNodeWallet = string.Empty;
-                List<string> innerKeyList = new List<string>();
-                for (int i = 0; i < tmpMainList.Length; i++)
-                {
-                    innerKeyList.Add(tmpMainList[i].Key);
-                }
-                for (int i = 0; i < innerKeyList.Count; i++)
-                {
-                    bool allDiff = true;
-                    for (int x = 0; x < 1000 && allDiff == true; x++)
-                    {
-                        BigInteger firstNo =
-                            BigInteger.Parse("0" + new Notus.Hash().CommonHash("sha1",
-                            NodeList[innerKeyList[0]].IP.Wallet + x.ToString()),
-                            NumberStyles.AllowHexSpecifier
-                        );
-                        BigInteger secondNo =
-                            BigInteger.Parse("0" + new Notus.Hash().CommonHash("sha1",
-                            NodeList[innerKeyList[1]].IP.Wallet + x.ToString()),
-                            NumberStyles.AllowHexSpecifier
-                        );
-
-                        if (firstNo != secondNo)
-                        {
-                            if (firstNo > secondNo)
-                            {
-                                NodeList[innerKeyList[1]].SyncNo = NodeList[innerKeyList[0]].SyncNo;
-                                starterNodeWallet = NodeList[innerKeyList[0]].IP.Wallet;
-                            }
-                            if (secondNo > firstNo)
-                            {
-                                NodeList[innerKeyList[0]].SyncNo = NodeList[innerKeyList[1]].SyncNo;
-                                starterNodeWallet = NodeList[innerKeyList[1]].IP.Wallet;
-                            }
-                            allDiff = false;
-                        }
-                    }
-                }
-
-                Console.WriteLine("starterNodeWallet : " + starterNodeWallet);
-                Notus.Print.ReadLine();
-            }
-            else
-            {
-                Console.WriteLine("kontrol-noktasi");
-                Notus.Print.ReadLine();
-            }
-            List<ulong> allList = new List<ulong>();
-            //en çok adette olan sync no sayısı bulunuyor.
-            int biggestSyncCount = 0;
-            ulong selectedSyncNo = 0;
-            string selectedSyncKeyStr = string.Empty;
-            foreach (KeyValuePair<ulong, int> iEntry in syncNoCount)
-            {
-                allList.Add(iEntry.Key);
-                if (iEntry.Value > biggestSyncCount)
-                {
-                    biggestSyncCount = iEntry.Value;
-                    selectedSyncNo = iEntry.Key;
-                }
-            }
-
-            bool elementFounded = false;
-            for (int i = 0; i < tmpMainList.Length && elementFounded == false; i++)
-            {
-                if (selectedSyncNo == tmpMainList[i].Value.SyncNo)
-                {
-                    selectedSyncKeyStr = tmpMainList[i].Key;
-                }
-            }
-            Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
-            Console.WriteLine(JsonSerializer.Serialize(NodeList[selectedSyncKeyStr], NVC.JsonSetting));
-            Notus.Print.ReadLine();
-            Notus.Print.ReadLine();
-            //Console.WriteLine(biggestSyncCount);
-            //Console.WriteLine(selectedSyncNo);
         }
         private void TellThemWhoTheNodeIs()
         {
