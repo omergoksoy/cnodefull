@@ -8,9 +8,9 @@ using System.Numerics;
 using System.Text.Json;
 using System.Threading;
 using NGF = Notus.Variable.Globals.Functions;
-using NVG = Notus.Variable.Globals;
 using NVC = Notus.Variable.Constant;
 using NVE = Notus.Variable.Enum;
+using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
 
 namespace Notus.Validator
@@ -648,7 +648,7 @@ namespace Notus.Validator
                 // her gelen blok bir listeye eklenmeli ve o liste ile sıra ile eklenmeli
                 ValidatorQueueObj.Func_NewBlockIncome = tmpNewBlockIncome =>
                 {
-                    Console.WriteLine("Arrived New Block : " + tmpNewBlockIncome.info.uID.Substring(0,15));
+                    Console.WriteLine("Arrived New Block : " + tmpNewBlockIncome.info.uID.Substring(0, 15));
                     ProcessBlock(tmpNewBlockIncome, 2);
                     //Notus.Print.Info(NVG.Settings, "Arrived New Block : " + tmpNewBlockIncome.info.uID);
                     return true;
@@ -657,7 +657,7 @@ namespace Notus.Validator
 
             ValidatorQueueObj.PreStart();
             if (NVG.Settings.GenesisCreated == false)
-            {   
+            {
 
             }
 
@@ -750,7 +750,7 @@ namespace Notus.Validator
             Console.WriteLine("Final-Point");
             Console.WriteLine("Final-Point");
             Console.WriteLine("Final-Point");
-            Notus.Print.ReadLine();
+            //Notus.Print.ReadLine();
             DateTime LastPrintTime = DateTime.Now;
             bool tmpStartWorkingPrinted = false;
             bool tmpExitMainLoop = false;
@@ -758,6 +758,43 @@ namespace Notus.Validator
             {
                 ValidatorQueueObj.WaitForEnoughNode = false;
                 ValidatorQueueObj.MyTurn = true;
+            }
+
+            // her node için ayrılan süre
+            ulong queueTimePeriod = (ulong)(NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime);
+            ulong currentQueueTime = NVG.NodeQueue.Starting;
+
+            bool siradakiYazildi = false;
+            bool sonrakiHazirlan = false;
+            string secilenCuzdan = string.Empty;
+            while (tmpExitMainLoop == false)
+            {
+                NGF.UpdateUtcNowValue();
+                if (sonrakiHazirlan == false)
+                {
+                    sonrakiHazirlan = true;
+                    secilenCuzdan = NVG.Settings.Nodes.Queue[currentQueueTime].Wallet;
+                }
+
+                
+                if (NVG.NowUTC >= currentQueueTime)
+                {
+                    if(string.Equals(NVG.Settings.Nodes.My.IP.Wallet, secilenCuzdan))
+                    {
+                        while ((queueTimePeriod + currentQueueTime - 10) >= NVG.NowUTC)
+                        {
+                            NGF.UpdateUtcNowValue();
+                            if (siradakiYazildi == false)
+                            {
+                                siradakiYazildi = true;
+                                Console.WriteLine("Sira Bende ->" + currentQueueTime.ToString());
+                            }
+                        }
+                        siradakiYazildi = false;
+                    }
+                    sonrakiHazirlan = false;
+                    currentQueueTime = currentQueueTime + queueTimePeriod;
+                }
             }
 
             while (tmpExitMainLoop == false)
@@ -775,8 +812,8 @@ namespace Notus.Validator
                     tmpStartWorkingPrinted = true;
                     Notus.Print.Success(NVG.Settings, "Node Starts");
                 }
-                
-                
+
+
                 if (ValidatorQueueObj.MyTurn == true || NVG.Settings.GenesisCreated == true)
                 {
                     /*
@@ -809,7 +846,7 @@ namespace Notus.Validator
 
                     // NVG.StartingTime = olusturmaBitis;
                     NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
-                        // islemBitis, olusturmaBitis
+                    // islemBitis, olusturmaBitis
                     );
                     if (TmpBlockStruct != null)
                     {

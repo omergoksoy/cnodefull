@@ -19,7 +19,7 @@ namespace Notus.Validator
 {
     public class Queue : IDisposable
     {
-        private bool StartingTimeAfterEnoughNode_Arrived=false;
+        private bool StartingTimeAfterEnoughNode_Arrived = false;
         private DateTime StartingTimeAfterEnoughNode;
 
         private bool WaitForEnoughNode_Val = true;
@@ -109,7 +109,6 @@ namespace Notus.Validator
 
         private DateTime RefreshNtpTime()
         {
-
             DateTime tmpNtpTime = NGF.GetUtcNowFromNtp();
             const ulong secondPointConst = 1000;
 
@@ -684,6 +683,10 @@ namespace Notus.Validator
 
             bool exitFromInnerWhile = false;
             int firstListcount = 0;
+
+            // her node için ayrılan süre
+            int queueTimePeriod = NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime;
+
             while (exitFromInnerWhile == false)
             {
                 foreach (KeyValuePair<BigInteger, string> outerEntry in nodeWalletList)
@@ -700,7 +703,7 @@ namespace Notus.Validator
                                     Port = entry.Value.IP.Port,
                                     Wallet = entry.Value.IP.Wallet
                                 });
-                                tmpSyncNo = Notus.Date.ToLong(Notus.Date.ToDateTime(tmpSyncNo).AddMilliseconds(500));
+                                tmpSyncNo = Notus.Date.ToLong(Notus.Date.ToDateTime(tmpSyncNo).AddMilliseconds(queueTimePeriod));
                                 firstListcount++;
                                 if (firstListcount == 6)
                                 {
@@ -846,9 +849,10 @@ namespace Notus.Validator
                 string tmpFirstWalletId = tmpWalletList.First().Value;
                 if (string.Equals(tmpFirstWalletId, NVG.Settings.Nodes.My.IP.Wallet))
                 {
+                    Thread.Sleep(5000);
                     StartingTimeAfterEnoughNode = RefreshNtpTime();
                     ulong syncStaringTime = Notus.Date.ToLong(StartingTimeAfterEnoughNode);
-                    GenerateNodeQueue(biggestSyncNo,syncStaringTime, tmpWalletList);
+                    GenerateNodeQueue(biggestSyncNo, syncStaringTime, tmpWalletList);
 
                     Notus.Print.Info(NVG.Settings,
                         "I'm Sending Starting (When) Time / Current : " +
@@ -869,7 +873,8 @@ namespace Notus.Validator
                             {
                                 if (entry.Value.SyncNo == syncStaringTime)
                                 {
-                                    SendMessage(entry.Value.IP, "<when>" + syncStaringTime + "</when>", true);
+                                    string tmpResult = SendMessage(entry.Value.IP, "<when>" + syncStaringTime + "</when>", true);
+                                    Console.WriteLine(tmpResult);
                                 }
                             }
                         }
@@ -881,7 +886,7 @@ namespace Notus.Validator
                     {
                         Thread.Sleep(10);
                     }
-                    
+
                     GenerateNodeQueue(biggestSyncNo, NVG.NodeQueue.Starting, tmpWalletList);
                     Notus.Print.Info(NVG.Settings,
                         "I'm Waiting Starting (When) Time / Current : " +
