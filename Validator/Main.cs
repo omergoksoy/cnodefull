@@ -767,6 +767,7 @@ namespace Notus.Validator
             bool siradakiYazildi = false;
             bool sonrakiHazirlan = false;
             string secilenCuzdan = string.Empty;
+            byte nodeOrderCount = 0;
             while (tmpExitMainLoop == false)
             {
                 NGF.UpdateUtcNowValue();
@@ -776,10 +777,11 @@ namespace Notus.Validator
                     secilenCuzdan = NVG.Settings.Nodes.Queue[currentQueueTime].Wallet;
                 }
 
-                
+
                 if (NVG.NowUTC >= currentQueueTime)
                 {
-                    if(string.Equals(NVG.Settings.Nodes.My.IP.Wallet, secilenCuzdan))
+                    nodeOrderCount++;
+                    if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, secilenCuzdan))
                     {
                         while ((queueTimePeriod + currentQueueTime - 10) >= NVG.NowUTC)
                         {
@@ -793,7 +795,15 @@ namespace Notus.Validator
                         siradakiYazildi = false;
                     }
                     sonrakiHazirlan = false;
+                    if (NVC.RegenerateNodeQueueCount== nodeOrderCount)
+                    {
+
+                    }
                     currentQueueTime = currentQueueTime + queueTimePeriod;
+                    if (nodeOrderCount == 6)
+                    {
+                        nodeOrderCount = 0;
+                    }
                 }
             }
 
