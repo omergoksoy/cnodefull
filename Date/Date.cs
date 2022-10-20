@@ -10,6 +10,14 @@ namespace Notus
 {
     public static class Date
     {
+        public static ulong AddMiliseconds(ulong convertTime, int miliseconds)
+        {
+            return AddMiliseconds(convertTime, (ulong)miliseconds);
+        }
+        public static ulong AddMiliseconds(ulong convertTime,ulong miliseconds)
+        {
+            return Notus.Date.ToLong(Notus.Date.ToDateTime(convertTime).AddMilliseconds(miliseconds));
+        }
         public static ulong ToLong(string convertTime)
         {
             return ulong.Parse(convertTime.PadRight(17, '0').Substring(0, 17));

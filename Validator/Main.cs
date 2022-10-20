@@ -12,7 +12,7 @@ using NVC = Notus.Variable.Constant;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
-
+using ND = Notus.Date;
 namespace Notus.Validator
 {
     public class Main : IDisposable
@@ -747,10 +747,6 @@ namespace Notus.Validator
                 Notus.Print.Success(NVG.Settings, "First Synchronization Is Done");
             }
 
-            Console.WriteLine("Final-Point");
-            Console.WriteLine("Final-Point");
-            Console.WriteLine("Final-Point");
-            //Notus.Print.ReadLine();
             DateTime LastPrintTime = DateTime.Now;
             bool tmpStartWorkingPrinted = false;
             bool tmpExitMainLoop = false;
@@ -764,46 +760,48 @@ namespace Notus.Validator
             ulong queueTimePeriod = (ulong)(NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime);
             ulong currentQueueTime = NVG.NodeQueue.Starting;
 
-            bool siradakiYazildi = false;
-            bool sonrakiHazirlan = false;
-            string secilenCuzdan = string.Empty;
+            bool nextWalletPrinted = false;
+            bool prepareNextQueue = false;
+            string selectedWalletId = string.Empty;
             byte nodeOrderCount = 0;
             while (tmpExitMainLoop == false)
             {
                 NGF.UpdateUtcNowValue();
-                if (sonrakiHazirlan == false)
+                if (prepareNextQueue == false)
                 {
-                    sonrakiHazirlan = true;
-                    secilenCuzdan = NVG.Settings.Nodes.Queue[currentQueueTime].Wallet;
+                    prepareNextQueue = true;
+                    Console.WriteLine("currentQueueTime : " + currentQueueTime.ToString());
+                    selectedWalletId = NVG.Settings.Nodes.Queue[currentQueueTime].Wallet;
                 }
-
-
                 if (NVG.NowUTC >= currentQueueTime)
                 {
                     nodeOrderCount++;
-                    if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, secilenCuzdan))
+                    if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
                     {
-                        while ((queueTimePeriod + currentQueueTime - 10) >= NVG.NowUTC)
+                        while (ND.AddMiliseconds(currentQueueTime, queueTimePeriod - 10) >= NVG.NowUTC)
                         {
                             NGF.UpdateUtcNowValue();
-                            if (siradakiYazildi == false)
+                            if (nextWalletPrinted == false)
                             {
-                                siradakiYazildi = true;
-                                Console.WriteLine("Sira Bende ->" + currentQueueTime.ToString());
+                                nextWalletPrinted = true;
+                                Console.WriteLine("Sira Bende -> " + currentQueueTime.ToString());
                             }
                         }
-                        siradakiYazildi = false;
+                        nextWalletPrinted = false;
                     }
-                    sonrakiHazirlan = false;
-                    if (NVC.RegenerateNodeQueueCount== nodeOrderCount)
+                    prepareNextQueue = false;
+                    if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
                     {
-
+                        Console.WriteLine("ReShake Order Queue");
+                        ValidatorQueueObj.ReOrderNodeQueue(NVG.NodeQueue.Starting, currentQueueTime);
+                        //NVG.Settings.LastBlock.info.rowNo
                     }
-                    currentQueueTime = currentQueueTime + queueTimePeriod;
+                    currentQueueTime = ND.AddMiliseconds(currentQueueTime, queueTimePeriod);
                     if (nodeOrderCount == 6)
                     {
                         nodeOrderCount = 0;
                     }
+                    Console.WriteLine("nodeOrderCount : " + nodeOrderCount.ToString());
                 }
             }
 

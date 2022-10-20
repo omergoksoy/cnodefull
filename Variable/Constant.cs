@@ -19,6 +19,8 @@ namespace Notus.Variable
         // node çalışma süresi sonunda kaç mili saniye dağıtmaya geçecek
         public static readonly int BlockDistributingTime = 200;
 
+        public static readonly byte RegenerateNodeQueueCount = 4;
+
 
         public static readonly string NetworkProgramWallet = "111111111111111111111111111111111111111";
         public static readonly int BlockTransactionLimit = 1000;
