@@ -15,6 +15,7 @@ using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
 using ND = Notus.Date;
+using NP = Notus.Print;
 namespace Notus.Validator
 {
     public class Queue : IDisposable
@@ -90,7 +91,7 @@ namespace Notus.Validator
             {
                 if (string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false && entry.Value.Status == NVS.NodeStatus.Online)
                 {
-                    Notus.Print.Info(NVG.Settings,
+                    NP.Info(NVG.Settings,
                         "Distrubuting " +
                         blockRowNo.ToString() + "[ " +
                         blockType.ToString() +
@@ -128,7 +129,7 @@ namespace Notus.Validator
         }
         private void PingOtherNodes()
         {
-            Notus.Print.Info(NVG.Settings, "Waiting For Node Sync", false);
+            NP.Info(NVG.Settings, "Waiting For Node Sync", false);
             bool tmpExitWhileLoop = false;
             while (tmpExitWhileLoop == false)
             {
@@ -677,10 +678,12 @@ namespace Notus.Validator
             }
         }
 
-        public void GenerateNodeQueue(ulong biggestSyncNo, ulong syncStaringTime, SortedDictionary<BigInteger, string> nodeWalletList)
+        public void GenerateNodeQueue(
+            ulong biggestSyncNo, 
+            ulong syncStaringTime, 
+            SortedDictionary<BigInteger, string> nodeWalletList
+        )
         {
-            Console.WriteLine("biggestSyncNo   : " + biggestSyncNo.ToString());
-            Console.WriteLine("syncStaringTime : " + syncStaringTime.ToString());
             ulong tmpSyncNo = syncStaringTime;
 
             bool exitFromInnerWhile = false;
@@ -699,6 +702,7 @@ namespace Notus.Validator
                         {
                             if (exitFromInnerWhile == false)
                             {
+                                //Console.WriteLine(firstListcount);
                                 NVG.Settings.Nodes.Queue.Add(tmpSyncNo, new NVS.NodeInfo()
                                 {
                                     IpAddress = entry.Value.IP.IpAddress,
@@ -723,11 +727,13 @@ namespace Notus.Validator
                     NodeList[entry.Key].SyncNo = syncStaringTime;
                 }
             }
+            /*
             if (biggestSyncNo > 0)
             {
                 Console.WriteLine(JsonSerializer.Serialize(NodeList, NVC.JsonSetting));
                 Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue, NVC.JsonSetting));
             }
+            */
         }
         public SortedDictionary<BigInteger, string> MakeOrderToNode(ulong biggestSyncNo, ulong seedForQueue)
         {
@@ -834,7 +840,7 @@ namespace Notus.Validator
                 }
             }
 
-            Notus.Print.Info(NVG.Settings, "Node Sync Starting", false);
+            NP.Info(NVG.Settings, "Node Sync Starting", false);
 
             //listedekilere ping atıyor, eğer 1 adet node aktif ise çıkış yapıyor...
             PingOtherNodes();
@@ -850,7 +856,7 @@ namespace Notus.Validator
             StartingTimeAfterEnoughNode_Arrived = false;
             if (biggestSyncNo == 0)
             {
-                Notus.Print.Info(NVG.Settings, "Active Node Count : " + NodeList.Count.ToString());
+                NP.Info(NVG.Settings, "Active Node Count : " + NodeList.Count.ToString());
                 //cüzdanların hashleri alınıp sıraya koyuluyor.
                 SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, 0);
 
@@ -863,7 +869,7 @@ namespace Notus.Validator
                     ulong syncStaringTime = ND.ToLong(StartingTimeAfterEnoughNode);
                     GenerateNodeQueue(biggestSyncNo, syncStaringTime, tmpWalletList);
 
-                    Notus.Print.Info(NVG.Settings,
+                    NP.Info(NVG.Settings,
                         "I'm Sending Starting (When) Time / Current : " +
                         StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
                         " / " + NGF.GetUtcNowFromNtp().ToString("HH:mm:ss.fff")
@@ -882,8 +888,19 @@ namespace Notus.Validator
                             {
                                 if (entry.Value.SyncNo == syncStaringTime)
                                 {
-                                    string tmpResult = SendMessage(entry.Value.IP, "<when>" + syncStaringTime + "</when>", true);
-                                    Console.WriteLine(tmpResult);
+                                    bool sendedToNode = false;
+                                    while (sendedToNode == false)
+                                    {
+                                        string tmpResult = SendMessage(entry.Value.IP, "<when>" + syncStaringTime + "</when>", true);
+                                        if (string.Equals(tmpResult, "done"))
+                                        {
+                                            sendedToNode = true;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("when-error-a-01");
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -897,7 +914,7 @@ namespace Notus.Validator
                     }
 
                     GenerateNodeQueue(biggestSyncNo, NVG.NodeQueue.Starting, tmpWalletList);
-                    Notus.Print.Info(NVG.Settings,
+                    NP.Info(NVG.Settings,
                         "I'm Waiting Starting (When) Time / Current : " +
                         StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
                         " /  " +
@@ -908,33 +925,22 @@ namespace Notus.Validator
             else
             {
                 Console.WriteLine("There Is Biggest Sync No");
-                Notus.Print.ReadLine();
+                NP.ReadLine();
             }
 
             Console.WriteLine(JsonSerializer.Serialize(NodeList, NVC.JsonSetting));
         }
-        public void ReOrderNodeQueue(ulong currentsyncNo,ulong seedForNewQueue)
+        public void ReOrderNodeQueue(ulong currentQueueTime)
+        //public void ReOrderNodeQueue(ulong currentsyncNo,ulong seedForNewQueue)
         {
-            //bu fonksyion ile amaç en çok sayıda olan sync no bulunacak
-            //ulong biggestSyncNo = FindBiggestSyncNo();
-            Notus.Print.Info(NVG.Settings, "Active Node Count : " + NodeList.Count.ToString());
-            //cüzdanların hashleri alınıp sıraya koyuluyor.
-            SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(currentsyncNo, seedForNewQueue);
-            foreach(var entry in tmpWalletList)
-            {
-                Console.WriteLine(entry.Key.ToString());
-                Console.WriteLine(entry.Value);
-                Console.WriteLine("********************");
-            }
-            Notus.Print.ReadLine();
-
-            //NVG.NodeQueue.Starting = ND.AddMiliseconds(seedForNewQueue, 1000);
-            //GenerateNodeQueue(biggestSyncNo, NVG.NodeQueue.Starting, tmpWalletList);
-            //Console.WriteLine(JsonSerializer.Serialize(tmpWalletList, NVC.JsonSetting));
-            
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Lists, NVC.JsonSetting));
-            GenerateNodeQueue(currentsyncNo, ND.AddMiliseconds(seedForNewQueue, 1000), tmpWalletList);
-
+            ulong biggestSyncNo = FindBiggestSyncNo();
+            //Console.WriteLine("currentQueueTime : " + currentQueueTime.ToString());
+            //Console.WriteLine("biggestSyncNo    : " + biggestSyncNo.ToString());
+            //Console.WriteLine("sira guncellemeye geldi");
+            //Console.WriteLine(JsonSerializer.Serialize(NodeList, NVC.JsonSetting));
+            //NP.ReadLine();
+            SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, currentQueueTime);
+            GenerateNodeQueue(currentQueueTime, ND.AddMiliseconds(currentQueueTime, 1500), tmpWalletList);
             NVG.NodeQueue.OrderCount++;
         }
         private ulong FindBiggestSyncNo()
@@ -984,18 +990,19 @@ namespace Notus.Validator
             }
 
 
+            /*
             if (zeroCount > biggestCount)
             {
 
             }
-            /*
+
             Console.WriteLine(zeroCount);
             Console.WriteLine(biggestCount);
-            Console.WriteLine(biggestSyncNo);
+            NP.ReadLine();
+            Console.WriteLine("biggestSyncNo [xx]: " + biggestSyncNo.ToString());
             Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
-            Notus.Print.ReadLine();
             */
-            return resultVal;
+            return biggestSyncNo;
         }
         private void TellThemWhoTheNodeIs()
         {
@@ -1147,7 +1154,7 @@ namespace Notus.Validator
             }
             else
             {
-                Notus.Print.Danger(NVG.Settings, "Ready Signal Doesnt Received From Node -> Queue -> Line 998");
+                NP.Danger(NVG.Settings, "Ready Signal Doesnt Received From Node -> Queue -> Line 998");
             }
         }
         public void MyNodeIsReady()
@@ -1156,7 +1163,7 @@ namespace Notus.Validator
             Val_Ready = true;
             if (ActiveNodeCount_Val > 1)
             {
-                Notus.Print.Info(NVG.Settings, "Sending Ready Signal To Other Nodes");
+                NP.Info(NVG.Settings, "Sending Ready Signal To Other Nodes");
                 NodeList[NVG.Settings.Nodes.My.HexKey].Ready = true;
                 foreach (KeyValuePair<string, NVS.IpInfo> entry in MainAddressList)
                 {

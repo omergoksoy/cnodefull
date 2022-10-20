@@ -13,6 +13,7 @@ using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
 using ND = Notus.Date;
+using NP = Notus.Print;
 namespace Notus.Validator
 {
     public class Main : IDisposable
@@ -54,7 +55,7 @@ namespace Notus.Validator
         /*
         public void EmptyBlockTimerFunc()
         {
-            Notus.Print.Basic(NVG.Settings, "Empty Block Timer Has Started");
+            NP.Basic(NVG.Settings, "Empty Block Timer Has Started");
             Notus.Threads.Timer TimerObj = new Notus.Threads.Timer(1000);
             TimerObj.Start(() =>
             {
@@ -89,7 +90,7 @@ namespace Notus.Validator
                                 EmptyBlockGeneratedTime = DateTime.Now;
                                 //EmptyBlockGeneratedTime = utcTime;
                                 //Console.WriteLine("EmptyBlockGeneratedTime [1]: " + EmptyBlockGeneratedTime.ToString(NVC.DefaultDateTimeFormatText));
-                                Notus.Print.Success(NVG.Settings, "Empty Block Executed");
+                                NP.Success(NVG.Settings, "Empty Block Executed");
                                 NGF.BlockQueue.AddEmptyBlock();
 
                             }
@@ -102,7 +103,7 @@ namespace Notus.Validator
         */
         public void FileStorageTimer()
         {
-            Notus.Print.Basic(NVG.Settings, "File Storage Timer Has Started");
+            NP.Basic(NVG.Settings, "File Storage Timer Has Started");
 
             Notus.Threads.Timer TimerObj = new Notus.Threads.Timer(2000);
             TimerObj.Start(() =>
@@ -191,7 +192,7 @@ namespace Notus.Validator
                                     }
                                     catch (Exception err3)
                                     {
-                                        Notus.Print.Log(
+                                        NP.Log(
                                             NVE.LogLevel.Info,
                                             88008800,
                                             err3.Message,
@@ -199,7 +200,7 @@ namespace Notus.Validator
                                             null,
                                             err3
                                         );
-                                        Notus.Print.Danger(NVG.Settings, "Error Text : [9abc546ac] : " + err3.Message);
+                                        NP.Danger(NVG.Settings, "Error Text : [9abc546ac] : " + err3.Message);
                                     }
                                     //}
                                     //catch (Exception err)
@@ -224,7 +225,7 @@ namespace Notus.Validator
 
         public void CryptoTransferTimerFunc()
         {
-            Notus.Print.Success(NVG.Settings, "Crypto Transfer Timer Has Started");
+            NP.Success(NVG.Settings, "Crypto Transfer Timer Has Started");
             Notus.Threads.Timer TimerObj = new Notus.Threads.Timer(1000);
             TimerObj.Start(() =>
             {
@@ -555,7 +556,7 @@ namespace Notus.Validator
 
             if (NVG.Settings.Genesis == null)
             {
-                Notus.Print.Basic(NVG.Settings, "Notus.Validator.Main -> Genesis Is NULL");
+                NP.Basic(NVG.Settings, "Notus.Validator.Main -> Genesis Is NULL");
             }
 
             Obj_Api = new Notus.Validator.Api();
@@ -571,7 +572,7 @@ namespace Notus.Validator
 
             if (NVG.Settings.GenesisCreated == false && NVG.Settings.Genesis != null)
             {
-                Notus.Print.Basic(NVG.Settings, "Last Block Row No : " + NVG.Settings.LastBlock.info.rowNo.ToString());
+                NP.Basic(NVG.Settings, "Last Block Row No : " + NVG.Settings.LastBlock.info.rowNo.ToString());
                 using (Notus.Block.Storage Obj_Storage = new Notus.Block.Storage(false))
                 {
                     //Console.WriteLine(JsonSerializer.Serialize( NGF.BlockOrder));
@@ -586,13 +587,13 @@ namespace Notus.Validator
                         }
                         else
                         {
-                            Notus.Print.Danger(NVG.Settings, "Notus.Block.Integrity -> Block Does Not Exist");
-                            Notus.Print.Danger(NVG.Settings, "Reset Block");
-                            Notus.Print.ReadLine(NVG.Settings);
+                            NP.Danger(NVG.Settings, "Notus.Block.Integrity -> Block Does Not Exist");
+                            NP.Danger(NVG.Settings, "Reset Block");
+                            NP.ReadLine(NVG.Settings);
                         }
                     }
                 }
-                Notus.Print.Info(NVG.Settings, "All Blocks Loaded");
+                NP.Info(NVG.Settings, "All Blocks Loaded");
 
                 /*
                 using (Notus.Mempool ObjMp_BlockOrder =
@@ -614,14 +615,14 @@ namespace Notus.Validator
                             }
                             else
                             {
-                                Notus.Print.Danger(NVG.Settings, "Notus.Block.Integrity -> Block Does Not Exist");
-                                Notus.Print.Danger(NVG.Settings, "Reset Block");
-                                Notus.Print.ReadLine(NVG.Settings);
+                                NP.Danger(NVG.Settings, "Notus.Block.Integrity -> Block Does Not Exist");
+                                NP.Danger(NVG.Settings, "Reset Block");
+                                NP.ReadLine(NVG.Settings);
                             }
                         }
                     }, 0
                     );
-                    Notus.Print.Info(NVG.Settings, "All Blocks Loaded");
+                    NP.Info(NVG.Settings, "All Blocks Loaded");
                 }
                 */
                 SelectedPortVal = NVG.Settings.Nodes.My.IP.Port;
@@ -631,14 +632,14 @@ namespace Notus.Validator
                 SelectedPortVal = Notus.Toolbox.Network.FindFreeTcpPort();
             }
             //Console.WriteLine(SelectedPortVal);
-            //Notus.Print.ReadLine();
+            //NP.ReadLine();
 
             HttpObj.DefaultResult_OK = "null";
             HttpObj.DefaultResult_ERR = "null";
-            //Notus.Print.Basic(Settings.InfoMode,"empty count : " + Obj_Integrity.EmptyBlockCount);
+            //NP.Basic(Settings.InfoMode,"empty count : " + Obj_Integrity.EmptyBlockCount);
             if (NVG.Settings.GenesisCreated == false)
             {
-                Notus.Print.Basic(NVG.Settings, "Main Validator Started");
+                NP.Basic(NVG.Settings, "Main Validator Started");
             }
             //BlockStatObj = Obj_BlockQueue.CurrentBlockStatus();
             Start_HttpListener();
@@ -650,7 +651,7 @@ namespace Notus.Validator
                 {
                     Console.WriteLine("Arrived New Block : " + tmpNewBlockIncome.info.uID.Substring(0, 15));
                     ProcessBlock(tmpNewBlockIncome, 2);
-                    //Notus.Print.Info(NVG.Settings, "Arrived New Block : " + tmpNewBlockIncome.info.uID);
+                    //NP.Info(NVG.Settings, "Arrived New Block : " + tmpNewBlockIncome.info.uID);
                     return true;
                 };
             }
@@ -674,7 +675,7 @@ namespace Notus.Validator
                 // sonrasında gelen bloklar explorer'da aranırken hata oluşturuyor.
                 if (NVG.Settings.GenesisCreated == false)
                 {
-                    Notus.Print.Info(NVG.Settings, "Node Blocks Are Checking For Sync");
+                    NP.Info(NVG.Settings, "Node Blocks Are Checking For Sync");
                     bool waitForOtherNodes = Notus.Sync.Block(
                         NVG.Settings, ValidatorQueueObj.GiveMeNodeList(),
                         tmpNewBlockIncome =>
@@ -730,7 +731,6 @@ namespace Notus.Validator
                     //});
                 });
                 */
-                //Console.WriteLine("Control-Point-4-99665588");
 
                 if (NVG.Settings.Layer == NVE.NetworkLayer.Layer1)
                 {
@@ -744,7 +744,7 @@ namespace Notus.Validator
                 {
                     FileStorageTimer();
                 }
-                Notus.Print.Success(NVG.Settings, "First Synchronization Is Done");
+                NP.Success(NVG.Settings, "First Synchronization Is Done");
             }
 
             DateTime LastPrintTime = DateTime.Now;
@@ -764,13 +764,13 @@ namespace Notus.Validator
             bool prepareNextQueue = false;
             string selectedWalletId = string.Empty;
             byte nodeOrderCount = 0;
+            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue, NVC.JsonSetting));
             while (tmpExitMainLoop == false)
             {
                 NGF.UpdateUtcNowValue();
                 if (prepareNextQueue == false)
                 {
                     prepareNextQueue = true;
-                    Console.WriteLine("currentQueueTime : " + currentQueueTime.ToString());
                     selectedWalletId = NVG.Settings.Nodes.Queue[currentQueueTime].Wallet;
                 }
                 if (NVG.NowUTC >= currentQueueTime)
@@ -792,18 +792,25 @@ namespace Notus.Validator
                     prepareNextQueue = false;
                     if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
                     {
-                        Console.WriteLine("ReShake Order Queue");
-                        ValidatorQueueObj.ReOrderNodeQueue(NVG.NodeQueue.Starting, currentQueueTime);
-                        //NVG.Settings.LastBlock.info.rowNo
+                        //Console.WriteLine("nodeOrderCount   : " + nodeOrderCount.ToString());
+                        ValidatorQueueObj.ReOrderNodeQueue(currentQueueTime);
+                        //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue));
+                        //ValidatorQueueObj.ReOrderNodeQueue(NVG.NodeQueue.Starting, currentQueueTime);
                     }
                     currentQueueTime = ND.AddMiliseconds(currentQueueTime, queueTimePeriod);
                     if (nodeOrderCount == 6)
                     {
                         nodeOrderCount = 0;
                     }
-                    Console.WriteLine("nodeOrderCount : " + nodeOrderCount.ToString());
+                }
+                else
+                {
+                    //Console.Write("x");
                 }
             }
+
+            Console.WriteLine("tmpExitMainLoop == true");
+            NP.ReadLine();
 
             while (tmpExitMainLoop == false)
             {
@@ -818,7 +825,7 @@ namespace Notus.Validator
                 if (tmpStartWorkingPrinted == false)
                 {
                     tmpStartWorkingPrinted = true;
-                    Notus.Print.Success(NVG.Settings, "Node Starts");
+                    NP.Success(NVG.Settings, "Node Starts");
                 }
 
 
@@ -826,7 +833,7 @@ namespace Notus.Validator
                 {
                     /*
                     
-                    Notus.Print.Success(NVG.Settings, "Empty Block Executed");
+                    NP.Success(NVG.Settings, "Empty Block Executed");
                     NGF.BlockQueue.AddEmptyBlock();
                     */
 
@@ -849,8 +856,8 @@ namespace Notus.Validator
                     // int dagitmaSuresi = 200;
                     // DateTime islemBitis = NVG.StartingTime.AddMilliseconds(islemSuresi);
                     // DateTime olusturmaBitis = islemBitis.AddMilliseconds(islemSuresi);
-                    // Notus.Print.Info(NVG.Settings, "Islem Bitis          : " + islemBitis.ToString("HH:mm:ss.fff"));
-                    // Notus.Print.Info(NVG.Settings, "Blok Olusturma Bitis : " + olusturmaBitis.ToString("HH:mm:ss.fff"));
+                    // NP.Info(NVG.Settings, "Islem Bitis          : " + islemBitis.ToString("HH:mm:ss.fff"));
+                    // NP.Info(NVG.Settings, "Blok Olusturma Bitis : " + olusturmaBitis.ToString("HH:mm:ss.fff"));
 
                     // NVG.StartingTime = olusturmaBitis;
                     NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
@@ -886,7 +893,7 @@ namespace Notus.Validator
                         }
                         else
                         {
-                            Notus.Print.Danger(NVG.Settings, "Pre Block Is NULL");
+                            NP.Danger(NVG.Settings, "Pre Block Is NULL");
                         }
                     }
                     else
@@ -929,11 +936,11 @@ namespace Notus.Validator
             }
             if (NVG.Settings.GenesisCreated == true)
             {
-                Notus.Print.Warning(NVG.Settings, "Main Class Temporary Ended");
+                NP.Warning(NVG.Settings, "Main Class Temporary Ended");
             }
             else
             {
-                Notus.Print.Warning(NVG.Settings, "Main Class Ended");
+                NP.Warning(NVG.Settings, "Main Class Ended");
             }
         }
 
@@ -953,7 +960,7 @@ namespace Notus.Validator
                 {
                     if (blockData.info.rowNo % 500 == 0)
                     {
-                        Notus.Print.Status(NVG.Settings,
+                        NP.Status(NVG.Settings,
                             "Block Came From The Loading DB [ " + fixedRowNoLength(blockData) + " ] ->" +
                             blockData.info.type.ToString().PadLeft(4, ' ')
                         );
@@ -962,28 +969,28 @@ namespace Notus.Validator
             }
             if (blockSource == 2)
             {
-                Notus.Print.Status(NVG.Settings,
+                NP.Status(NVG.Settings,
                     "Block Came From The Validator Queue [ " + fixedRowNoLength(blockData) + " ] ->" +
                     blockData.info.type.ToString().PadLeft(4, ' ')
                 );
             }
             if (blockSource == 3)
             {
-                Notus.Print.Status(NVG.Settings,
+                NP.Status(NVG.Settings,
                     "Block Came From The Block Sync [ " + fixedRowNoLength(blockData) + " ] ->" +
                     blockData.info.type.ToString().PadLeft(4, ' ')
                     );
             }
             if (blockSource == 4)
             {
-                Notus.Print.Status(NVG.Settings,
+                NP.Status(NVG.Settings,
                     "Block Came From The Main Loop [ " + fixedRowNoLength(blockData) + " ] ->" +
                     blockData.info.type.ToString().PadLeft(4, ' ')
                 );
             }
             if (blockSource == 5)
             {
-                Notus.Print.Status(NVG.Settings,
+                NP.Status(NVG.Settings,
                     "Block Came From The Dictionary List [ " + fixedRowNoLength(blockData) + " ] ->" +
                     blockData.info.type.ToString().PadLeft(4, ' ')
                 );
@@ -1043,7 +1050,7 @@ namespace Notus.Validator
                         Console.WriteLine();
                         IncomeBlockList.Add(blockData.info.rowNo, tmpBlockData);
                         ProcessBlock_PrintSection(blockData, blockSource);
-                        Notus.Print.Status(NVG.Settings, "Insert Block To Temporary Block List");
+                        NP.Status(NVG.Settings, "Insert Block To Temporary Block List");
                     }
                 }
                 else
@@ -1055,7 +1062,7 @@ namespace Notus.Validator
             if (CurrentBlockRowNo > blockData.info.rowNo)
             {
                 ProcessBlock_PrintSection(blockData, blockSource);
-                Notus.Print.Warning(NVG.Settings, "We Already Processed The Block");
+                NP.Warning(NVG.Settings, "We Already Processed The Block");
                 return true;
             }
 
@@ -1165,12 +1172,12 @@ namespace Notus.Validator
         {
             if (NVG.Settings.LocalNode == true)
             {
-                Notus.Print.Basic(NVG.Settings, "Listining : " +
+                NP.Basic(NVG.Settings, "Listining : " +
                 Notus.Network.Node.MakeHttpListenerPath(NVG.Settings.IpInfo.Local, SelectedPortVal), false);
             }
             else
             {
-                Notus.Print.Basic(NVG.Settings, "Listining : " +
+                NP.Basic(NVG.Settings, "Listining : " +
                 Notus.Network.Node.MakeHttpListenerPath(NVG.Settings.IpInfo.Public, SelectedPortVal), false);
             }
             HttpObj.OnReceive(Fnc_OnReceiveData);
@@ -1184,7 +1191,7 @@ namespace Notus.Validator
             );
             HttpObj.StoreUrl = false;
             HttpObj.Start(NodeIpAddress, SelectedPortVal);
-            Notus.Print.Success(NVG.Settings, "Http Has Started", false);
+            NP.Success(NVG.Settings, "Http Has Started", false);
         }
 
         private string Fnc_OnReceiveData(NVS.HttpRequestDetails IncomeData)
@@ -1215,7 +1222,7 @@ namespace Notus.Validator
                 }
                 catch (Exception err)
                 {
-                    Notus.Print.Log(
+                    NP.Log(
                         NVE.LogLevel.Info,
                         66000505,
                         err.Message,
@@ -1235,7 +1242,7 @@ namespace Notus.Validator
                 }
                 catch (Exception err)
                 {
-                    Notus.Print.Log(
+                    NP.Log(
                         NVE.LogLevel.Info,
                         900000845,
                         err.Message,
@@ -1254,7 +1261,7 @@ namespace Notus.Validator
                 }
                 catch (Exception err)
                 {
-                    Notus.Print.Log(
+                    NP.Log(
                         NVE.LogLevel.Info,
                         7000777,
                         err.Message,
@@ -1273,7 +1280,7 @@ namespace Notus.Validator
                 }
                 catch (Exception err)
                 {
-                    Notus.Print.Log(
+                    NP.Log(
                         NVE.LogLevel.Info,
                         9000805,
                         err.Message,
@@ -1292,7 +1299,7 @@ namespace Notus.Validator
                 }
                 catch (Exception err)
                 {
-                    Notus.Print.Log(
+                    NP.Log(
                         NVE.LogLevel.Info,
                         10012540,
                         err.Message,
