@@ -764,7 +764,7 @@ namespace Notus.Validator
             bool prepareNextQueue = false;
             string selectedWalletId = string.Empty;
             byte nodeOrderCount = 0;
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue, NVC.JsonSetting));
+            //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue, NVC.JsonSetting));
             while (tmpExitMainLoop == false)
             {
                 NGF.UpdateUtcNowValue();

@@ -928,7 +928,7 @@ namespace Notus.Validator
                 NP.ReadLine();
             }
 
-            Console.WriteLine(JsonSerializer.Serialize(NodeList, NVC.JsonSetting));
+            //Console.WriteLine(JsonSerializer.Serialize(NodeList, NVC.JsonSetting));
         }
         public void ReOrderNodeQueue(ulong currentQueueTime)
         //public void ReOrderNodeQueue(ulong currentsyncNo,ulong seedForNewQueue)
