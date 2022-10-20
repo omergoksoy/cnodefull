@@ -679,6 +679,8 @@ namespace Notus.Validator
 
         public void GenerateNodeQueue(ulong biggestSyncNo, ulong syncStaringTime, SortedDictionary<BigInteger, string> nodeWalletList)
         {
+            Console.WriteLine("biggestSyncNo   : " + biggestSyncNo.ToString());
+            Console.WriteLine("syncStaringTime : " + syncStaringTime.ToString());
             ulong tmpSyncNo = syncStaringTime;
 
             bool exitFromInnerWhile = false;
@@ -929,6 +931,8 @@ namespace Notus.Validator
             //NVG.NodeQueue.Starting = ND.AddMiliseconds(seedForNewQueue, 1000);
             //GenerateNodeQueue(biggestSyncNo, NVG.NodeQueue.Starting, tmpWalletList);
             //Console.WriteLine(JsonSerializer.Serialize(tmpWalletList, NVC.JsonSetting));
+            
+            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Lists, NVC.JsonSetting));
             GenerateNodeQueue(currentsyncNo, ND.AddMiliseconds(seedForNewQueue, 1000), tmpWalletList);
 
             NVG.NodeQueue.OrderCount++;
