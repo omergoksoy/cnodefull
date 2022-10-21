@@ -764,7 +764,7 @@ namespace Notus.Validator
             bool prepareNextQueue = false;
             string selectedWalletId = string.Empty;
             byte nodeOrderCount = 0;
-            //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue, NVC.JsonSetting));
+
             while (tmpExitMainLoop == false)
             {
                 NGF.UpdateUtcNowValue();
@@ -792,20 +792,13 @@ namespace Notus.Validator
                     prepareNextQueue = false;
                     if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
                     {
-                        //Console.WriteLine("nodeOrderCount   : " + nodeOrderCount.ToString());
                         ValidatorQueueObj.ReOrderNodeQueue(currentQueueTime);
-                        //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue));
-                        //ValidatorQueueObj.ReOrderNodeQueue(NVG.NodeQueue.Starting, currentQueueTime);
                     }
                     currentQueueTime = ND.AddMiliseconds(currentQueueTime, queueTimePeriod);
                     if (nodeOrderCount == 6)
                     {
                         nodeOrderCount = 0;
                     }
-                }
-                else
-                {
-                    //Console.Write("x");
                 }
             }
 
@@ -818,9 +811,6 @@ namespace Notus.Validator
                 NGF.UpdateUtcNowValue();
                 //NGF.RefreshNodeQueueTime();
                 bool MyTurn = false;
-                //NVG.NowUTC
-                //NVG.Settings.Nodes.Queue
-
 
                 if (tmpStartWorkingPrinted == false)
                 {
@@ -832,8 +822,6 @@ namespace Notus.Validator
                 if (ValidatorQueueObj.MyTurn == true || NVG.Settings.GenesisCreated == true)
                 {
                     /*
-                    
-                    NP.Success(NVG.Settings, "Empty Block Executed");
                     NGF.BlockQueue.AddEmptyBlock();
                     */
 

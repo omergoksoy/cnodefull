@@ -931,21 +931,14 @@ namespace Notus.Validator
             //Console.WriteLine(JsonSerializer.Serialize(NodeList, NVC.JsonSetting));
         }
         public void ReOrderNodeQueue(ulong currentQueueTime)
-        //public void ReOrderNodeQueue(ulong currentsyncNo,ulong seedForNewQueue)
         {
             ulong biggestSyncNo = FindBiggestSyncNo();
-            //Console.WriteLine("currentQueueTime : " + currentQueueTime.ToString());
-            //Console.WriteLine("biggestSyncNo    : " + biggestSyncNo.ToString());
-            //Console.WriteLine("sira guncellemeye geldi");
-            //Console.WriteLine(JsonSerializer.Serialize(NodeList, NVC.JsonSetting));
-            //NP.ReadLine();
             SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, currentQueueTime);
             GenerateNodeQueue(currentQueueTime, ND.AddMiliseconds(currentQueueTime, 1500), tmpWalletList);
             NVG.NodeQueue.OrderCount++;
         }
         private ulong FindBiggestSyncNo()
         {
-            ulong resultVal = 0;
             Dictionary<ulong, int> syncNoCount = new Dictionary<ulong, int>();
             foreach (var iEntry in NodeList)
             {
@@ -988,20 +981,6 @@ namespace Notus.Validator
             {
                 return 0;
             }
-
-
-            /*
-            if (zeroCount > biggestCount)
-            {
-
-            }
-
-            Console.WriteLine(zeroCount);
-            Console.WriteLine(biggestCount);
-            NP.ReadLine();
-            Console.WriteLine("biggestSyncNo [xx]: " + biggestSyncNo.ToString());
-            Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
-            */
             return biggestSyncNo;
         }
         private void TellThemWhoTheNodeIs()
@@ -1016,7 +995,6 @@ namespace Notus.Validator
                 bool allDone = false;
                 while (allDone == false)
                 {
-
                     // her 30 saniyede bir diğer node'ları kim olduğumu söylüyor.
                     for (int i = 0; i < tmpMainList.Length; i++)
                     {
