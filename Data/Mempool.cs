@@ -232,11 +232,11 @@ namespace Notus
             });
             if (showError == true)
             {
-                Console.WriteLine("Control-Point-a41234");
-                Console.WriteLine("--------------------------");
-                Console.WriteLine(resultVal);
-                Console.WriteLine("KeyName");
-                Console.WriteLine(KeyName);
+                //Console.WriteLine("Control-Point-a41234");
+                //Console.WriteLine("--------------------------");
+                //Console.WriteLine(resultVal);
+                //Console.WriteLine("KeyName");
+                //Console.WriteLine(KeyName);
             }
         }
         private void DeleteFromTable(string KeyName,bool showError=false)
@@ -351,8 +351,8 @@ namespace Notus
             {
                 if (showError == true)
                 {
-                    Console.WriteLine("Control-Point-a3547");
-                    Console.WriteLine("ContainsKey == false");
+                    //Console.WriteLine("Control-Point-a3547");
+                    //Console.WriteLine("ContainsKey == false");
                 }
                 Notus.Print.Log(
                     Notus.Variable.Enum.LogLevel.Info,
@@ -366,10 +366,10 @@ namespace Notus
             bool tst=Obj_DataList.TryRemove(KeyName,out _);
             if(showError== true)
             {
-                Console.WriteLine("Control-Point-a85147");
-                Console.WriteLine(tst);
-                Console.WriteLine("bool tst=Obj_DataList.TryRemove(KeyName,out _);");
-                Console.WriteLine(JsonSerializer.Serialize(Obj_DataList));
+                //Console.WriteLine("Control-Point-a85147");
+                //Console.WriteLine(tst);
+                //Console.WriteLine("bool tst=Obj_DataList.TryRemove(KeyName,out _);");
+                //Console.WriteLine(JsonSerializer.Serialize(Obj_DataList));
             }
             DeleteFromTable(KeyName,showError);
         }   

@@ -70,18 +70,18 @@ namespace Notus.Block
 
         //bu fonksiyon ile işlem yapılacak aynı türden bloklar sırası ile listeden çekilip geri gönderilecek
         public Notus.Variable.Struct.PoolBlockRecordStruct? Get(
-            //DateTime WaitingForPool, DateTime BlockGenerationTime
+            ulong WaitingForPool
+            //, 
+            //DateTime BlockGenerationTime
         )
         {
-            //DateTime islemBitis = NVG.StartingTime.AddMilliseconds(islemSuresi);
-            //DateTime olusturmaBitis = islemBitis.AddMilliseconds(islemSuresi);
-
-            DateTime startingTime = DateTime.Now;
             if (Queue_PoolTransaction.Count == 0)
             {
+                //Console.WriteLine("sifir");
                 //PoolIdList.Clear();
                 return null;
             }
+
             int diffBetween = System.Convert.ToInt32(MP_BlockPoolList.Count() / Queue_PoolTransaction.Count);
             if (diffBetween > 10)
             {
@@ -100,8 +100,7 @@ namespace Notus.Block
                     CheckPoolDb = true;
                 }
             }
-            //Console.WriteLine("MP_BlockPoolList.Count() : " + MP_BlockPoolList.Count().ToString());
-            //Console.WriteLine("Queue_PoolTransaction.Count : " + Queue_PoolTransaction.Count.ToString());
+
             int CurrentBlockType = -1;
             List<string> TempWalletList = new List<string>() { NVG.Settings.NodeWallet.WalletKey };
 
@@ -111,7 +110,7 @@ namespace Notus.Block
             string transactionId = string.Empty;
             while (exitLoop == false)
             {
-
+                NGF.UpdateUtcNowValue();
                 if (Queue_PoolTransaction.Count > 0)
                 {
                     Notus.Variable.Struct.List_PoolBlockRecordStruct? TmpPoolRecord = Queue_PoolTransaction.Peek();
@@ -245,37 +244,12 @@ namespace Notus.Block
                     Console.WriteLine("exitLoop = true;  [nvhgjngjgjgh]");
                     exitLoop = true;
                 }
-                NVG.Settings.UTCTime=Notus.Time.RefreshNtpTime(NVG.Settings.UTCTime);
-
-                /*
-                buraya pool için beklenme süresi girilecek
-                buraya pool için beklenme süresi girilecek
-                buraya pool için beklenme süresi girilecek
-                buraya pool için beklenme süresi girilecek
-                buraya pool için beklenme süresi girilecek
-                buraya pool için beklenme süresi girilecek
-                */
-                /*
-                if (NVG.Settings.UTCTime.Now >= WaitingForPool)
-                {
-                    Console.WriteLine("exitLoop = true;  [Havuz için beklendi]");
-                    exitLoop = true;
-                }
-                */
-                TimeSpan ts = DateTime.Now - startingTime;
-                if (ts.TotalMilliseconds > 200)
+                if (NVG.NowUTC >= WaitingForPool)
                 {
                     Console.WriteLine("exitLoop = true;  [98765478976]");
                     exitLoop = true;
                 }
-                /*
-                */
             }
-
-            //Console.WriteLine("TempPoolTransactionList.Count : " + TempPoolTransactionList.Count.ToString());
-
-            //Console.WriteLine(JsonSerializer.Serialize( TempPoolTransactionList));
-            //Console.ReadLine();
             if (TempPoolTransactionList.Count == 0)
             {
                 return null;
@@ -564,8 +538,8 @@ namespace Notus.Block
             //dolayı eklendi
             for (int i = 0; i < TempPoolTransactionList.Count; i++)
             {
-                Console.WriteLine("Control-Point-a001");
-                Console.WriteLine("Remove Key : " + TempPoolTransactionList[i].key);
+                //Console.WriteLine("Control-Point-a001");
+                //Console.WriteLine("Remove Key : " + TempPoolTransactionList[i].key);
                 MP_BlockPoolList.Remove(TempPoolTransactionList[i].key,true);
                 PoolIdList.TryRemove(TempPoolTransactionList[i].key, out _);
             }
@@ -673,11 +647,11 @@ namespace Notus.Block
             }
             else
             {
-                Console.WriteLine("Silinecek Block Anahtari Bilinmiyor");
+                //Console.WriteLine("Silinecek Block Anahtari Bilinmiyor");
                 //RemoveKeyStr = GiveBlockKey(rawDataStr);
             }
-            Console.WriteLine("Control-Point-a055");
-            Console.WriteLine("Remove Key From Pool : " + RemoveKeyStr);
+            //Console.WriteLine("Control-Point-a055");
+            //Console.WriteLine("Remove Key From Pool : " + RemoveKeyStr);
             MP_BlockPoolList.Remove(RemoveKeyStr,true);
         }
 
@@ -692,19 +666,22 @@ namespace Notus.Block
         {
             if (PreBlockData == null)
             {
+                Console.WriteLine("Block.Queue.Cs -> Line 668 -> PreBlockData = NULL");
                 return false;
             }
             if (NVG.Settings == null)
             {
+                Console.WriteLine("Block.Queue.Cs -> Line 673 -> NVG.Settings = NULL");
                 return false;
             }
             if (NVG.Settings.NodeWallet == null)
             {
+                Console.WriteLine("Block.Queue.Cs -> Line 678 -> NVG.Settings.NodeWallet = NULL");
                 return false;
             }
 
-            Console.WriteLine("Control-Point-a995487");
-            Console.WriteLine(JsonSerializer.Serialize( PreBlockData));
+            //Console.WriteLine("Control-Point-a995487");
+            //Console.WriteLine(JsonSerializer.Serialize( PreBlockData));
             string PreBlockDataStr = JsonSerializer.Serialize(PreBlockData);
             if (PreBlockData.uid == null)
             {
@@ -724,7 +701,7 @@ namespace Notus.Block
                     keyStr = "";
                 }
             }
-
+            Console.WriteLine("keyStr : " + keyStr);
             if (keyStr.Length > 0)
             {
                 MP_BlockPoolList.Set(keyStr, PreBlockDataStr, true);
@@ -755,11 +732,11 @@ namespace Notus.Block
             if (PoolIdList.ContainsKey(BlockKeyStr) == false)
             {
                 bool added = PoolIdList.TryAdd(BlockKeyStr, 1);
-                Console.WriteLine("Control-Point-a0754");
-                Console.WriteLine(added);
-                Console.WriteLine(PoolIdList.ContainsKey(BlockKeyStr));
-                Console.WriteLine(JsonSerializer.Serialize(PreBlockData));
-                Console.WriteLine(BlockKeyStr);
+                //Console.WriteLine("Control-Point-a0754");
+                //Console.WriteLine(added);
+                //Console.WriteLine(PoolIdList.ContainsKey(BlockKeyStr));
+                //Console.WriteLine(JsonSerializer.Serialize(PreBlockData));
+                //Console.WriteLine(BlockKeyStr);
 
                 if (Obj_PoolTransactionList.ContainsKey(PreBlockData.type) == false)
                 {
@@ -776,6 +753,7 @@ namespace Notus.Block
                         data = PreBlockData.data
                     }
                 );
+                Console.WriteLine("BlockKeyStr : " + BlockKeyStr);
                 Queue_PoolTransaction.Enqueue(new Notus.Variable.Struct.List_PoolBlockRecordStruct()
                 {
                     key = BlockKeyStr,
@@ -788,10 +766,10 @@ namespace Notus.Block
         {
             MP_BlockPoolList.Each((string blockTransactionKey, string TextBlockDataString) =>
             {
-                Console.WriteLine("Control-Point-a789445");
-                Console.WriteLine(blockTransactionKey);
-                Console.WriteLine(TextBlockDataString);
-                Console.WriteLine("-----------------------");
+                //Console.WriteLine("Control-Point-a789445");
+                //Console.WriteLine(blockTransactionKey);
+                //Console.WriteLine(TextBlockDataString);
+                //Console.WriteLine("-----------------------");
                 Notus.Variable.Struct.PoolBlockRecordStruct? PreBlockData =
                 JsonSerializer.Deserialize<Notus.Variable.Struct.PoolBlockRecordStruct>(TextBlockDataString);
                 if (PreBlockData != null)

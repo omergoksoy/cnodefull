@@ -9,13 +9,13 @@ using System.Numerics;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
+using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
-using ND = Notus.Date;
-using NP = Notus.Print;
 namespace Notus.Validator
 {
     public class Queue : IDisposable
@@ -277,11 +277,11 @@ namespace Notus.Validator
         }
         public string Process(NVS.HttpRequestDetails incomeData)
         {
-            string reponseText = ProcessIncomeData(incomeData.PostParams["data"]);
+            string reponseText = ProcessIncomeData(incomeData.PostParams["data"], incomeData.RemoteIP, incomeData.RemotePort);
             NodeIsOnline(incomeData.UrlList[2].ToLower());
             return reponseText;
         }
-        private string ProcessIncomeData(string incomeData)
+        private string ProcessIncomeData(string incomeData, string remoteIp, int remotePort)
         {
             if (CheckXmlTag(incomeData, "block"))
             {
@@ -331,6 +331,41 @@ namespace Notus.Validator
                     }
                 }
                 return "fncResult-false";
+            }
+
+            if (CheckXmlTag(incomeData, "out"))
+            {
+                if (NVG.Settings.NodeClosing == true)
+                {
+                    return "1";
+                }
+                return "0";
+            }
+            if (CheckXmlTag(incomeData, "kill"))
+            {
+                incomeData = GetPureText(incomeData, "kill");
+                string selectedKeyStr = string.Empty;
+                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+                {
+                    if (string.Equals(incomeData, entry.Value.IP.Wallet) == false)
+                    {
+                        string tmpResult = SendMessage(entry.Value.IP,
+                            "<out>1</out>",
+                            true
+                        );
+                        if (tmpResult == "1")
+                        {
+                            selectedKeyStr = entry.Key;
+                        }
+                    }
+                }
+                if (selectedKeyStr.Length > 0)
+                {
+                    if (NodeList.ContainsKey(selectedKeyStr))
+                    {
+                        NodeList.TryRemove(selectedKeyStr, out _);
+                    }
+                }
             }
 
             if (CheckXmlTag(incomeData, "when"))
@@ -453,37 +488,26 @@ namespace Notus.Validator
         }
         private string SendMessage(string receiverIpAddress, int receiverPortNo, string messageText, bool executeErrorControl)
         {
-
             string tmpNodeHexStr = Notus.Toolbox.Network.IpAndPortToHex(receiverIpAddress, receiverPortNo);
-            //TimeSpan tmpErrorDiff = DateTime.Now - NodeList[tmpNodeHexStr].Time.Error;
-            //if (tmpErrorDiff.TotalSeconds > 60)
-            if (100 > 60)
-            {
-                string urlPath =
-                    Notus.Network.Node.MakeHttpListenerPath(receiverIpAddress, receiverPortNo) +
-                    "queue/node/" + tmpNodeHexStr;
-                (bool worksCorrent, string incodeResponse) = Notus.Communication.Request.PostSync(
-                    urlPath,
-                    new Dictionary<string, string>()
-                    {
-                        { "data",messageText }
-                    },
-                    2,
-                    true,
-                    false
-                );
-                //Console.WriteLine("Sending : " + urlPath);
-                //Console.WriteLine(worksCorrent);
-                //Console.WriteLine(incodeResponse);
-                if (worksCorrent == true)
+            string urlPath =
+                Notus.Network.Node.MakeHttpListenerPath(receiverIpAddress, receiverPortNo) +
+                "queue/node/" + tmpNodeHexStr;
+            (bool worksCorrent, string incodeResponse) = Notus.Communication.Request.PostSync(
+                urlPath,
+                new Dictionary<string, string>()
                 {
-                    //NodeList[tmpNodeHexStr].ErrorCount = 0;
-                    NodeList[tmpNodeHexStr].Status = NVS.NodeStatus.Online;
-                    //NodeList[tmpNodeHexStr].Time.Error = NVC.DefaultTime;
-                    return incodeResponse;
-                }
-                NodeError(tmpNodeHexStr);
+                    { "data",messageText }
+                },
+                2,
+                true,
+                false
+            );
+            if (worksCorrent == true)
+            {
+                NodeList[tmpNodeHexStr].Status = NVS.NodeStatus.Online;
+                return incodeResponse;
             }
+            NodeError(tmpNodeHexStr);
             return string.Empty;
         }
         private string SendMessageED(string nodeHex, string receiverIpAddress, int receiverPortNo, string messageText)
@@ -524,7 +548,7 @@ namespace Notus.Validator
             );
             if (string.Equals("err", responseStr) == false)
             {
-                ProcessIncomeData(responseStr);
+                ProcessIncomeData(responseStr, "", 0);
             }
         }
         private void Message_List_ViaSocket(string _ipAddress, int _portNo, string _nodeHex = "")
@@ -537,7 +561,7 @@ namespace Notus.Validator
             string tmpReturnStr = SendMessage(_ipAddress, _portNo, "<list>" + JsonSerializer.Serialize(MainAddressList) + "</list>", true);
             if (string.Equals("err", tmpReturnStr) == false)
             {
-                ProcessIncomeData(tmpReturnStr);
+                ProcessIncomeData(tmpReturnStr, "", 0);
             }
         }
         private void MainLoop()
@@ -679,8 +703,8 @@ namespace Notus.Validator
         }
 
         public void GenerateNodeQueue(
-            ulong biggestSyncNo, 
-            ulong syncStaringTime, 
+            ulong biggestSyncNo,
+            ulong syncStaringTime,
             SortedDictionary<BigInteger, string> nodeWalletList
         )
         {
@@ -772,6 +796,27 @@ namespace Notus.Validator
                 }
             }
             return resultList;
+        }
+        public void KillMe()
+        {
+            // nodeların kapanma işlemi şu sıra ile olacak
+            /*
+            node öncelikle diğer tüm ağlara kapanmak istediğini "kill" mesajı ile bildirecek.
+            mesajı alan nodelar, mesajı gönderen node'a kapanmak isteyip istemediğini soracak
+            eğer geri gelen cevap kapanmak istediğine dair bir mesaj ise
+            diğer nodelar kendi listelerinden node'u çıkartacak
+            */
+            // diğer nodelara kapandığımızı bildiriyoruz...
+            foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+            {
+                if (string.Equals(entry.Key, NVG.Settings.Nodes.My.HexKey) == false)
+                {
+                    string tmpResult = SendMessage(entry.Value.IP,
+                        "<kill>" + NVG.Settings.Nodes.My.IP.Wallet + "</kill>",
+                        true
+                    );
+                }
+            }
         }
         public void PreStart()
         {
@@ -1045,7 +1090,7 @@ namespace Notus.Validator
                                         tmpMainList[i].Value.Port,
                                         "<rNode>1</rNode>"
                                     );
-                                    ProcessIncomeData(responseStr);
+                                    ProcessIncomeData(responseStr, "", 0);
                                     tmpAllCheck = false;
                                 }
                             }
@@ -1128,7 +1173,7 @@ namespace Notus.Validator
             );
             if (string.Equals("done", responseStr.Trim()) == true)
             {
-                ProcessIncomeData(responseStr);
+                ProcessIncomeData(responseStr, "", 0);
             }
             else
             {

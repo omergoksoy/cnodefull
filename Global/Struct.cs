@@ -12,6 +12,7 @@ namespace Notus.Globals.Variable
 
     public class Settings
     {
+        public bool NodeClosing { get; set; }
         public bool LocalNode { get; set; }
         public bool DevelopmentNode { get; set; }
         //public ulong NodeStartingTime { get; set; }

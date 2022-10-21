@@ -95,8 +95,11 @@ namespace Notus.Validator
                     MainObj.Start();
                 }
 
-                Notus.Print.Basic(NVG.Settings, "Sleep For 2.5 Seconds");
-                Thread.Sleep(2500);
+                if (NVG.Settings.NodeClosing == false)
+                {
+                    Notus.Print.Basic(NVG.Settings, "Sleep For 2.5 Seconds");
+                    Thread.Sleep(2500);
+                }
             }
         }
         private static void StartAsMain()
@@ -108,9 +111,11 @@ namespace Notus.Validator
                 {
                     MainObj.Start();
                 }
-
-                Notus.Print.Basic(NVG.Settings, "Sleep For 2.5 Seconds");
-                Thread.Sleep(2500);
+                if (NVG.Settings.NodeClosing == false)
+                {
+                    Notus.Print.Basic(NVG.Settings, "Sleep For 2.5 Seconds");
+                    Thread.Sleep(2500);
+                }
             }
         }
         private static void StartAsReplicant(bool LightNodeActive)

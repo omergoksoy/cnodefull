@@ -40,10 +40,6 @@ namespace Notus.Validator
         private bool CryptoTransferTimerIsRunning = false;
         private DateTime CryptoTransferTime = DateTime.Now;
 
-        //private bool EmptyBlockNotMyTurnPrinted = false;
-        //private bool EmptyBlockTimerIsRunning = false;
-        //private DateTime EmptyBlockGeneratedTime = new DateTime(2000, 01, 1, 0, 00, 00);
-
         private bool FileStorageTimerIsRunning = false;
         private DateTime FileStorageTime = DateTime.Now;
 
@@ -52,55 +48,6 @@ namespace Notus.Validator
         //private Notus.Block.Queue Obj_BlockQueue = new Notus.Block.Queue();
         private Notus.Validator.Queue ValidatorQueueObj = new Notus.Validator.Queue();
 
-        /*
-        public void EmptyBlockTimerFunc()
-        {
-            NP.Basic(NVG.Settings, "Empty Block Timer Has Started");
-            Notus.Threads.Timer TimerObj = new Notus.Threads.Timer(1000);
-            TimerObj.Start(() =>
-            {
-                if (ValidatorQueueObj.MyTurn == true && EmptyBlockTimerIsRunning == false)
-                {
-                    EmptyBlockTimerIsRunning = true;
-                    int howManySeconds = NVG.Settings.Genesis.Empty.Interval.Time;
-
-                    if (NVG.Settings.Genesis.Empty.SlowBlock.Count >= Obj_Integrity.EmptyBlockCount)
-                    {
-                        howManySeconds = (
-                            NVG.Settings.Genesis.Empty.Interval.Time
-                                *
-                            NVG.Settings.Genesis.Empty.SlowBlock.Multiply
-                        );
-                    }
-
-                    //blok zamanı ve utc zamanı çakışıyor
-                    DateTime tmpLastTime = Notus.Date.ToDateTime(
-                        NVG.Settings.LastBlock.info.time
-                    ).AddSeconds(howManySeconds);
-
-                    // get utc time from validatır Queue
-                    DateTime utcTime = ValidatorQueueObj.GetUtcTime();
-
-                    if (utcTime > tmpLastTime)
-                    {
-                        if (ValidatorQueueObj.MyTurn)
-                        {
-                            if ((DateTime.Now - EmptyBlockGeneratedTime).TotalSeconds > 30)
-                            {
-                                EmptyBlockGeneratedTime = DateTime.Now;
-                                //EmptyBlockGeneratedTime = utcTime;
-                                //Console.WriteLine("EmptyBlockGeneratedTime [1]: " + EmptyBlockGeneratedTime.ToString(NVC.DefaultDateTimeFormatText));
-                                NP.Success(NVG.Settings, "Empty Block Executed");
-                                NGF.BlockQueue.AddEmptyBlock();
-
-                            }
-                        }
-                    }
-                    EmptyBlockTimerIsRunning = false;
-                }
-            }, true);
-        }
-        */
         public void FileStorageTimer()
         {
             NP.Basic(NVG.Settings, "File Storage Timer Has Started");
@@ -524,7 +471,6 @@ namespace Notus.Validator
             {
                 if (NVG.Settings.Layer == NVE.NetworkLayer.Layer1)
                 {
-                    //EmptyBlockTimerIsRunning = status;
                     CryptoTransferTimerIsRunning = status;
                 }
                 if (NVG.Settings.Layer == NVE.NetworkLayer.Layer2)
@@ -545,6 +491,24 @@ namespace Notus.Validator
                     Thread.Sleep(1);
                 }
                 SetTimeStatusForBeginSync(false);       // release timer
+            }
+        }
+        public void EmptyBlockGeneration()
+        {
+            NGF.UpdateUtcNowValue();
+            int howManySeconds = NVG.Settings.Genesis.Empty.Interval.Time;
+            if (NVG.Settings.Genesis.Empty.SlowBlock.Count >= Obj_Integrity.EmptyBlockCount)
+            {
+                howManySeconds = (
+                    NVG.Settings.Genesis.Empty.Interval.Time
+                        *
+                    NVG.Settings.Genesis.Empty.SlowBlock.Multiply
+                );
+            }
+            if (NVG.NowUTC > ND.ToLong(ND.ToDateTime(NVG.Settings.LastBlock.info.time).AddSeconds(howManySeconds)))
+            {
+                NP.Success(NVG.Settings, "Empty Block Executed");
+                NGF.BlockQueue.AddEmptyBlock();
             }
         }
         public void Start()
@@ -651,7 +615,6 @@ namespace Notus.Validator
                 {
                     Console.WriteLine("Arrived New Block : " + tmpNewBlockIncome.info.uID.Substring(0, 15));
                     ProcessBlock(tmpNewBlockIncome, 2);
-                    //NP.Info(NVG.Settings, "Arrived New Block : " + tmpNewBlockIncome.info.uID);
                     return true;
                 };
             }
@@ -778,16 +741,67 @@ namespace Notus.Validator
                     nodeOrderCount++;
                     if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
                     {
+                        EmptyBlockGeneration();
+                        bool txExecuted = false;
                         while (ND.AddMiliseconds(currentQueueTime, queueTimePeriod - 10) >= NVG.NowUTC)
                         {
                             NGF.UpdateUtcNowValue();
                             if (nextWalletPrinted == false)
                             {
                                 nextWalletPrinted = true;
-                                Console.WriteLine("Sira Bende -> " + currentQueueTime.ToString());
+                                Console.WriteLine("Sira Bende -> " + currentQueueTime.ToString() + " - " + NVG.NowUTC.ToString());
+                            }
+                            if (txExecuted == false)
+                            {
+                                NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
+                                    ND.AddMiliseconds(currentQueueTime, NVC.BlockListeningForPoolTime)
+                                // islemBitis, olusturmaBitis
+                                );
+                                if (TmpBlockStruct != null)
+                                {
+                                    txExecuted = true;
+                                    Notus.Variable.Class.BlockData? PreBlockData = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(TmpBlockStruct.data);
+                                    if (PreBlockData != null)
+                                    {
+                                        PreBlockData = NGF.BlockQueue.OrganizeBlockOrder(PreBlockData);
+                                        Notus.Variable.Class.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
+                                        ProcessBlock(PreparedBlockData, 4);
+                                        NGF.WalletUsageList.Clear();
+                                        ValidatorQueueObj.Distrubute(PreBlockData.info.rowNo, PreBlockData.info.type);
+                                        Thread.Sleep(1);
+                                    }
+                                    else
+                                    {
+                                        NP.Danger(NVG.Settings, "Pre Block Is NULL");
+                                    }
+                                }
+                                else
+                                {
+                                    if ((DateTime.Now - LastPrintTime).TotalSeconds > 20)
+                                    {
+                                        LastPrintTime = DateTime.Now;
+                                        if (NVG.Settings.GenesisCreated == true)
+                                        {
+                                            tmpExitMainLoop = true;
+                                        }
+                                        else
+                                        {
+                                            Console.ForegroundColor = ConsoleColor.DarkGreen;
+                                            Console.Write("+");
+                                        }
+                                    }
+                                }
                             }
                         }
                         nextWalletPrinted = false;
+                    }
+                    else
+                    {
+                        if (NGF.BlockQueue.CheckPoolDb == true)
+                        {
+                            //Console.WriteLine("NGF.BlockQueue.LoadFromPoolDb();");
+                            NGF.BlockQueue.LoadFromPoolDb();
+                        }
                     }
                     prepareNextQueue = false;
                     if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
@@ -805,7 +819,7 @@ namespace Notus.Validator
             Console.WriteLine("tmpExitMainLoop == true");
             NP.ReadLine();
 
-            while (tmpExitMainLoop == false)
+            while (tmpExitMainLoop == false && NVG.Settings.NodeClosing==false)
             {
                 //WaitUntilEnoughNode();
                 NGF.UpdateUtcNowValue();
@@ -847,8 +861,8 @@ namespace Notus.Validator
                     // NP.Info(NVG.Settings, "Islem Bitis          : " + islemBitis.ToString("HH:mm:ss.fff"));
                     // NP.Info(NVG.Settings, "Blok Olusturma Bitis : " + olusturmaBitis.ToString("HH:mm:ss.fff"));
 
-                    // NVG.StartingTime = olusturmaBitis;
                     NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
+                        0
                     // islemBitis, olusturmaBitis
                     );
                     if (TmpBlockStruct != null)
@@ -922,6 +936,20 @@ namespace Notus.Validator
                     }
                 }
             }
+
+            if (NVG.Settings.NodeClosing == true)
+            {
+                kill mesajı gönderilmesi esnasında sorunsuz çalışmalı
+                burayı kontrol et
+
+                empty blok havuza değil
+                doğrudan oluşturulmaya gönderilsin
+
+
+                NP.Info(NVG.Settings, "Sending Kill Signals To All Nodes");
+                ValidatorQueueObj.KillMe();
+            }
+            
             if (NVG.Settings.GenesisCreated == true)
             {
                 NP.Warning(NVG.Settings, "Main Class Temporary Ended");

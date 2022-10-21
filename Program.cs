@@ -23,11 +23,23 @@ static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEv
 // DLL 'in version bilgisini çekiyor.
 // Console.WriteLine("{0}", System.Reflection.AssemblyName.GetAssemblyName("Microsoft.Data.Sqlite.dll").Version);
 
+static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
+{
+    NVG.Settings.NodeClosing = true;
+    e.Cancel = true;
+    Console.WriteLine("Please Wait, Terminating Node");
+
+    //NVG.Settings.NodeWallet.WalletKey
+    //Thread.Sleep(4000);
+    Environment.Exit(0);
+}
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
+/*
 Console.CancelKeyPress += delegate {
-    Console.WriteLine("control-c press");
     // call methods to clean up
 };
+*/
 
 NGF.UpdateUtcNowValue();
 ulong suAn = NVG.NowUTC;
