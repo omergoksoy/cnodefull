@@ -504,7 +504,6 @@ namespace Notus.Validator
                     NVG.Settings.Genesis.Empty.SlowBlock.Multiply
                 );
             }
-            Console.WriteLine(NVG.Settings.LastBlock.info.time.ToString() + " - " + howManySeconds.ToString());
             if (NVG.NowUTC > ND.ToLong(ND.ToDateTime(NVG.Settings.LastBlock.info.time).AddSeconds(howManySeconds)))
             {
                 NP.Success(NVG.Settings, "Empty Block Executed");
@@ -522,7 +521,7 @@ namespace Notus.Validator
             {
                 NP.Basic(NVG.Settings, "Notus.Validator.Main -> Genesis Is NULL");
             }
-
+            Console.WriteLine("Obj_Integrity.EmptyBlockCount : " + Obj_Integrity.EmptyBlockCount.ToString());
             Obj_Api = new Notus.Validator.Api();
 
             NGF.BlockQueue.Start();
