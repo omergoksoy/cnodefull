@@ -52,8 +52,8 @@ Console.CancelKeyPress += delegate {
 };
 */
 
-NGF.UpdateUtcNowValue();
-ulong suAn = NVG.NowUTC;
+//NGF.UpdateUtcNowValue();
+//ulong suAn = NVG.NowUTC;
 
 
 

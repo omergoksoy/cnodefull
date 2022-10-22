@@ -91,6 +91,11 @@ namespace Notus.Validator
             {
                 if (string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false && entry.Value.Status == NVS.NodeStatus.Online)
                 {
+                    SendMessage(entry.Value.IP.IpAddress, entry.Value.IP.Port,
+                        "<block>" + blockRowNo.ToString() + ":" +
+                        NVG.Settings.NodeWallet.WalletKey + "</block>",
+                        true
+                    );
                     NP.Info(NVG.Settings,
                         "Distrubuting " +
                         blockRowNo.ToString() + "[ " +
@@ -98,11 +103,6 @@ namespace Notus.Validator
                         " ] . Block To " +
                         entry.Value.IP.IpAddress + ":" +
                         entry.Value.IP.Port.ToString()
-                    );
-                    SendMessage(entry.Value.IP.IpAddress, entry.Value.IP.Port,
-                        "<block>" + blockRowNo.ToString() + ":" +
-                        NVG.Settings.NodeWallet.WalletKey + "</block>",
-                        true
                     );
                 }
             }

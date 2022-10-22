@@ -86,11 +86,11 @@ namespace Notus.Block
             if (diffBetween > 10)
             {
                 CheckPoolDb = true;
-                Console.WriteLine("CheckPoolDb = true;");
+                //Console.WriteLine("CheckPoolDb = true;");
             }
             else
             {
-                Console.WriteLine("CheckPoolDb = false;");
+                //Console.WriteLine("CheckPoolDb = false;");
                 if (MP_BlockPoolList.Count() < 10)
                 {
                     CheckPoolDb = true;
@@ -110,13 +110,12 @@ namespace Notus.Block
             string transactionId = string.Empty;
             while (exitLoop == false)
             {
-                NGF.UpdateUtcNowValue();
+                //NGF.UpdateUtcNowValue();
                 if (Queue_PoolTransaction.Count > 0)
                 {
                     Notus.Variable.Struct.List_PoolBlockRecordStruct? TmpPoolRecord = Queue_PoolTransaction.Peek();
                     if (TmpPoolRecord == null)
                     {
-                        Console.WriteLine("exitLoop = true;  [qqqqq]");
                         exitLoop = true;
                     }
                     else
@@ -228,25 +227,21 @@ namespace Notus.Block
                                 CurrentBlockType == Notus.Variable.Enum.BlockTypeList.MultiWalletCryptoTransfer
                             )
                             {
-                                Console.WriteLine("exitLoop = true;  [sdsdsdsd]");
                                 exitLoop = true;
                             }
                         }
                         else
                         {
-                            Console.WriteLine("exitLoop = true;  [papapapap]");
                             exitLoop = true;
                         }
                     }
                 }
                 else
                 {
-                    Console.WriteLine("exitLoop = true;  [nvhgjngjgjgh]");
                     exitLoop = true;
                 }
                 if (NVG.NowUTC >= WaitingForPool)
                 {
-                    Console.WriteLine("exitLoop = true;  [98765478976]");
                     exitLoop = true;
                 }
             }
@@ -700,7 +695,7 @@ namespace Notus.Block
                     keyStr = "";
                 }
             }
-            Console.WriteLine("keyStr : " + keyStr);
+            //Console.WriteLine("keyStr : " + keyStr);
             if (keyStr.Length > 0)
             {
                 if (addedToPoolDb == true)
@@ -720,27 +715,13 @@ namespace Notus.Block
                 data = JsonSerializer.Serialize(NVG.Settings.LastBlock.info.rowNo)
             },false);
         }
-        /*
-        public string GiveBlockKey(string BlockDataStr)
-        {
-            return
-                new Notus.Hash().CommonHash("md5", BlockDataStr) +
-                new Notus.Hash().CommonHash("sha1", BlockDataStr);
-        }
-        */
 
         private void Add2Queue(Notus.Variable.Struct.PoolBlockRecordStruct PreBlockData, string BlockKeyStr)
         {
-            Console.WriteLine(PreBlockData.type.ToString() + " - " +BlockKeyStr.Substring(0, 20));
+            //Console.WriteLine(PreBlockData.type.ToString() + " - " +BlockKeyStr.Substring(0, 20));
             if (PoolIdList.ContainsKey(BlockKeyStr) == false)
             {
                 bool added = PoolIdList.TryAdd(BlockKeyStr, 1);
-                //Console.WriteLine("Control-Point-a0754");
-                //Console.WriteLine(added);
-                //Console.WriteLine(PoolIdList.ContainsKey(BlockKeyStr));
-                //Console.WriteLine(JsonSerializer.Serialize(PreBlockData));
-                //Console.WriteLine(BlockKeyStr);
-
                 if (Obj_PoolTransactionList.ContainsKey(PreBlockData.type) == false)
                 {
                     Obj_PoolTransactionList.TryAdd(
@@ -756,7 +737,7 @@ namespace Notus.Block
                         data = PreBlockData.data
                     }
                 );
-                Console.WriteLine("BlockKeyStr : " + BlockKeyStr);
+                //Console.WriteLine("BlockKeyStr : " + BlockKeyStr);
                 Queue_PoolTransaction.Enqueue(new Notus.Variable.Struct.List_PoolBlockRecordStruct()
                 {
                     key = BlockKeyStr,
@@ -769,10 +750,6 @@ namespace Notus.Block
         {
             MP_BlockPoolList.Each((string blockTransactionKey, string TextBlockDataString) =>
             {
-                //Console.WriteLine("Control-Point-a789445");
-                //Console.WriteLine(blockTransactionKey);
-                //Console.WriteLine(TextBlockDataString);
-                //Console.WriteLine("-----------------------");
                 Notus.Variable.Struct.PoolBlockRecordStruct? PreBlockData =
                 JsonSerializer.Deserialize<Notus.Variable.Struct.PoolBlockRecordStruct>(TextBlockDataString);
                 if (PreBlockData != null)

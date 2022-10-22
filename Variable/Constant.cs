@@ -172,16 +172,21 @@ namespace Notus.Variable
             { NetworkType.TestNet,"testnet.notus.network" },
             { NetworkType.DevNet,"devnet.notus.network" }
         };
-        /*
+        
         public static readonly List<string> ListMainNodeIp = new List<string> {
             "89.252.134.91",
             "89.252.184.151"
         };
+        /*
         */
+
+        /*
+        güzel hosting test sunucuları
         public static readonly List<string> ListMainNodeIp = new List<string> {
             "89.252.134.111",
             "89.252.159.87"
         };
+        */
         public const string Default_EccCurveName = "prime256v1";
         public const int Default_WordListArrayCount = 16;
 

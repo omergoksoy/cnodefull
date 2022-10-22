@@ -45,6 +45,7 @@ namespace Notus.Globals.Variable
         public string EncryptKey { get; set; }
         public string HashSalt { get; set; }
 
+        public ulong EmptyBlockCount { get; set; }
         public Notus.Variable.Class.BlockData? LastBlock { get; set; }
     }
 

@@ -68,6 +68,7 @@ namespace Notus.Variable
                 NodeClosing = false,
                 ClosingCompleted = false,
                 CommEstablished = false,
+                EmptyBlockCount = 0,
                 LocalNode = true,
                 InfoMode = true,
                 DebugMode = true,

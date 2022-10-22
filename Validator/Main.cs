@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Threading;
 using NGF = Notus.Variable.Globals.Functions;
 using NVC = Notus.Variable.Constant;
+using NVClass = Notus.Variable.Class;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
@@ -44,7 +45,7 @@ namespace Notus.Validator
         private DateTime FileStorageTime = DateTime.Now;
 
         //bu liste diğer nodelardan gelen yeni blokları tutan liste
-        public SortedDictionary<long, Notus.Variable.Class.BlockData> IncomeBlockList = new SortedDictionary<long, Notus.Variable.Class.BlockData>();
+        public SortedDictionary<long, NVClass.BlockData> IncomeBlockList = new SortedDictionary<long, NVClass.BlockData>();
         //private Notus.Block.Queue Obj_BlockQueue = new Notus.Block.Queue();
         private Notus.Validator.Queue ValidatorQueueObj = new Notus.Validator.Queue();
 
@@ -170,6 +171,15 @@ namespace Notus.Validator
             return tmpWalletBalanceObj.Balance;
         }
 
+        public void UpdateUtcTimeTimerFunc()
+        {
+            NP.Success(NVG.Settings, "UTC Updater Timer Has Started");
+            Notus.Threads.Timer UtcTimerObj = new Notus.Threads.Timer(5);
+            UtcTimerObj.Start(() =>
+            {
+                NGF.UpdateUtcNowValue();
+            }, true);  //TimerObj.Start(() =>
+        }
         public void CryptoTransferTimerFunc()
         {
             NP.Success(NVG.Settings, "Crypto Transfer Timer Has Started");
@@ -192,9 +202,9 @@ namespace Notus.Validator
                         tmpKeyList.Clear();
                         BigInteger totalBlockReward = 0;
 
-                        Notus.Variable.Class.BlockStruct_120 tmpBlockCipherData = new Notus.Variable.Class.BlockStruct_120()
+                        NVClass.BlockStruct_120 tmpBlockCipherData = new NVClass.BlockStruct_120()
                         {
-                            In = new Dictionary<string, Notus.Variable.Class.BlockStruct_120_In_Struct>(),
+                            In = new Dictionary<string, NVClass.BlockStruct_120_In_Struct>(),
                             //                  who                 coin               time   volume
                             Out = new Dictionary<string, Dictionary<string, Dictionary<ulong, string>>>(),
                             Validator = new NVS.ValidatorStruct()
@@ -338,7 +348,7 @@ namespace Notus.Validator
                                                 tmpBlockCipherData.Out.Add(tmpObjPoolCrypto.Receiver, GetWalletBalanceDictionary(tmpObjPoolCrypto.Receiver, unlockTimeForNodeWallet));
                                             }
                                             Console.WriteLine("entry.Key : " + entry.Key);
-                                            tmpBlockCipherData.In.Add(entry.Key, new Notus.Variable.Class.BlockStruct_120_In_Struct()
+                                            tmpBlockCipherData.In.Add(entry.Key, new NVClass.BlockStruct_120_In_Struct()
                                             {
                                                 Fee = tmpObjPoolCrypto.Fee,
                                                 PublicKey = tmpObjPoolCrypto.PublicKey,
@@ -346,14 +356,14 @@ namespace Notus.Validator
                                                 CurrentTime = tmpObjPoolCrypto.CurrentTime,
                                                 Volume = tmpObjPoolCrypto.Volume,
                                                 Currency = tmpObjPoolCrypto.Currency,
-                                                Receiver = new Notus.Variable.Class.WalletBalanceStructForTransaction()
+                                                Receiver = new NVClass.WalletBalanceStructForTransaction()
                                                 {
                                                     Balance = NGF.Balance.ReAssign(tmpReceiverBalance.Balance),
                                                     Wallet = tmpObjPoolCrypto.Receiver,
                                                     WitnessBlockUid = tmpReceiverBalance.UID,
                                                     WitnessRowNo = tmpReceiverBalance.RowNo
                                                 },
-                                                Sender = new Notus.Variable.Class.WalletBalanceStructForTransaction()
+                                                Sender = new NVClass.WalletBalanceStructForTransaction()
                                                 {
                                                     Balance = NGF.Balance.ReAssign(tmpSenderBalance.Balance),
                                                     Wallet = tmpObjPoolCrypto.Sender,
@@ -453,7 +463,7 @@ namespace Notus.Validator
                                 data = JsonSerializer.Serialize(tmpBlockCipherData)
                             });
                         }
-                        foreach (KeyValuePair<string, Notus.Variable.Class.BlockStruct_120_In_Struct> entry in tmpBlockCipherData.In)
+                        foreach (KeyValuePair<string, NVClass.BlockStruct_120_In_Struct> entry in tmpBlockCipherData.In)
                         {
                             Obj_Api.RequestSend_Remove(entry.Key);
                         }
@@ -496,7 +506,7 @@ namespace Notus.Validator
         public void EmptyBlockGeneration()
         {
             int howManySeconds = NVG.Settings.Genesis.Empty.Interval.Time;
-            if (NVG.Settings.Genesis.Empty.SlowBlock.Count >= Obj_Integrity.EmptyBlockCount)
+            if ((ulong)NVG.Settings.Genesis.Empty.SlowBlock.Count >= NVG.Settings.EmptyBlockCount)
             {
                 howManySeconds = (
                     NVG.Settings.Genesis.Empty.Interval.Time
@@ -512,7 +522,6 @@ namespace Notus.Validator
         }
         public void Start()
         {
-            //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings));
             Obj_Integrity = new Notus.Block.Integrity();
             Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with onther node
             Obj_Integrity.GetLastBlock();        // get last block from current node
@@ -521,8 +530,8 @@ namespace Notus.Validator
             {
                 NP.Basic(NVG.Settings, "Notus.Validator.Main -> Genesis Is NULL");
             }
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Genesis.Empty.Interval.Time));
-            Console.WriteLine("Obj_Integrity.EmptyBlockCount : " + Obj_Integrity.EmptyBlockCount.ToString());
+            //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Genesis.Empty.Interval.Time));
+            //Console.WriteLine("Obj_Integrity.EmptyBlockCount : " + NVG.Settings.EmptyBlockCount.ToString());
             Obj_Api = new Notus.Validator.Api();
 
             NGF.BlockQueue.Start();
@@ -544,7 +553,7 @@ namespace Notus.Validator
                     {
                         //Console.WriteLine(entry.Key.ToString() + " -  "  + entry.Value);
                         //tgz-exception
-                        Notus.Variable.Class.BlockData? tmpBlockData = Obj_Storage.ReadBlock(entry.Value);
+                        NVClass.BlockData? tmpBlockData = Obj_Storage.ReadBlock(entry.Value);
                         if (tmpBlockData != null)
                         {
                             ProcessBlock(tmpBlockData, 1);
@@ -572,7 +581,7 @@ namespace Notus.Validator
                         using (Notus.Block.Storage Obj_Storage = new Notus.Block.Storage(false))
                         {
                             //tgz-exception
-                            Notus.Variable.Class.BlockData? tmpBlockData = Obj_Storage.ReadBlock(blockUniqueId);
+                            NVClass.BlockData? tmpBlockData = Obj_Storage.ReadBlock(blockUniqueId);
                             if (tmpBlockData != null)
                             {
                                 ProcessBlock(tmpBlockData, 1);
@@ -613,7 +622,7 @@ namespace Notus.Validator
                 // her gelen blok bir listeye eklenmeli ve o liste ile sıra ile eklenmeli
                 ValidatorQueueObj.Func_NewBlockIncome = tmpNewBlockIncome =>
                 {
-                    Console.WriteLine("Arrived New Block : " + tmpNewBlockIncome.info.uID.Substring(0, 15));
+                    NP.Info(NVG.Settings,"Arrived New Block : " + tmpNewBlockIncome.info.uID.Substring(0, 15));
                     ProcessBlock(tmpNewBlockIncome, 2);
                     return true;
                 };
@@ -696,6 +705,7 @@ namespace Notus.Validator
                     //});
                 });
                 */
+                UpdateUtcTimeTimerFunc();
 
                 if (NVG.Settings.Layer == NVE.NetworkLayer.Layer1)
                 {
@@ -731,7 +741,6 @@ namespace Notus.Validator
 
             while (tmpExitMainLoop == false)
             {
-                NGF.UpdateUtcNowValue();
                 if (prepareNextQueue == false)
                 {
                     prepareNextQueue = true;
@@ -745,30 +754,41 @@ namespace Notus.Validator
                         bool txExecuted = false;
                         while (ND.AddMiliseconds(currentQueueTime, queueTimePeriod - 10) >= NVG.NowUTC)
                         {
+                            /*
                             NGF.UpdateUtcNowValue();
                             if (nextWalletPrinted == false)
                             {
                                 nextWalletPrinted = true;
-                                Console.WriteLine("Sira Bende -> " + currentQueueTime.ToString() + " - " + NVG.NowUTC.ToString());
+                                //NP.Info(NVG.Settings, "My Turn -> " + currentQueueTime.ToString());
+                                //Console.WriteLine("Sira Bende -> " + currentQueueTime.ToString() + " - " + NVG.NowUTC.ToString());
                             }
+                            */
                             if (txExecuted == false)
                             {
+                                //Console.WriteLine("currentQueueTime : " + currentQueueTime.ToString() + " - " + NVC.BlockListeningForPoolTime.ToString() + " - " + ND.AddMiliseconds(currentQueueTime, NVC.BlockListeningForPoolTime).ToString());
+                                //NGF.UpdateUtcNowValue();
+                                //Console.WriteLine("NVG.NowUTC : " + NVG.NowUTC.ToString());
                                 EmptyBlockGeneration();
                                 NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
                                     ND.AddMiliseconds(currentQueueTime, NVC.BlockListeningForPoolTime)
                                 );
+                                //NGF.UpdateUtcNowValue();
+                                //Console.WriteLine("NVG.NowUTC : " + NVG.NowUTC.ToString());
                                 if (TmpBlockStruct != null)
                                 {
                                     txExecuted = true;
-                                    Notus.Variable.Class.BlockData? PreBlockData = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(TmpBlockStruct.data);
+                                    NVClass.BlockData? PreBlockData = JsonSerializer.Deserialize<NVClass.BlockData>(TmpBlockStruct.data);
                                     if (PreBlockData != null)
                                     {
                                         PreBlockData = NGF.BlockQueue.OrganizeBlockOrder(PreBlockData);
-                                        Notus.Variable.Class.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
+                                        NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
                                         ProcessBlock(PreparedBlockData, 4);
                                         NGF.WalletUsageList.Clear();
+                                        //NGF.UpdateUtcNowValue();
+                                        //Console.WriteLine("NVG.NowUTC : " + NVG.NowUTC.ToString());
                                         ValidatorQueueObj.Distrubute(PreBlockData.info.rowNo, PreBlockData.info.type);
-                                        Thread.Sleep(1);
+                                        //NGF.UpdateUtcNowValue();
+                                        //Console.WriteLine("NVG.NowUTC : " + NVG.NowUTC.ToString());
                                     }
                                     else
                                     {
@@ -892,7 +912,7 @@ namespace Notus.Validator
                     if (TmpBlockStruct != null)
                     {
                         // Console.WriteLine(JsonSerializer.Serialize(TmpBlockStruct));
-                        Notus.Variable.Class.BlockData? PreBlockData = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(TmpBlockStruct.data);
+                        NVClass.BlockData? PreBlockData = JsonSerializer.Deserialize<NVClass.BlockData>(TmpBlockStruct.data);
 
                         // omergoksoy
                         // NVE.ValfwidatorOrder NodeOrder = ValidatorQueueObj.Distrubute(PreBlockData);
@@ -907,7 +927,7 @@ namespace Notus.Validator
                         if (PreBlockData != null)
                         {
                             PreBlockData = NGF.BlockQueue.OrganizeBlockOrder(PreBlockData);
-                            Notus.Variable.Class.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
+                            NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
                             ProcessBlock(PreparedBlockData, 4);
                             NGF.WalletUsageList.Clear();
                             ValidatorQueueObj.Distrubute(PreBlockData.info.rowNo, PreBlockData.info.type);
@@ -960,11 +980,11 @@ namespace Notus.Validator
             */
         }
 
-        private string fixedRowNoLength(Notus.Variable.Class.BlockData blockData)
+        private string fixedRowNoLength(NVClass.BlockData blockData)
         {
             return blockData.info.rowNo.ToString().PadLeft(15, '_');
         }
-        private void ProcessBlock_PrintSection(Notus.Variable.Class.BlockData blockData, int blockSource)
+        private void ProcessBlock_PrintSection(NVClass.BlockData blockData, int blockSource)
         {
             if (blockSource == 1)
             {
@@ -1036,22 +1056,28 @@ namespace Notus.Validator
                 RewardBlockObj.LastBlockUid = blockData.info.uID;
             }
         }
-        private bool ProcessBlock(Notus.Variable.Class.BlockData blockData, int blockSource)
+        private bool ProcessBlock(NVClass.BlockData blockData, int blockSource)
         {
-            /*
-            Console.WriteLine(
-                CurrentBlockRowNo.ToString()+
-                " - " +
-                blockData.info.rowNo.ToString() +
-                    " - " +
-                NVG.Settings.LastBlock.info.rowNo.ToString()
-            );
-            */
+            if (blockData.info.rowNo > NVG.Settings.LastBlock.info.rowNo)
+            {
+                NVG.Settings.LastBlock = JsonSerializer.Deserialize<
+                    NVClass.BlockData>(JsonSerializer.Serialize(blockData)
+                );
+                if (blockData.info.type == 300)
+                {
+                    NVG.Settings.EmptyBlockCount++;
+                }
+                else
+                {
+                    NVG.Settings.EmptyBlockCount = 0;
+                }
+            }
+
             if (blockData.info.rowNo > CurrentBlockRowNo)
             {
                 string tmpBlockDataStr = JsonSerializer.Serialize(blockData);
-                Notus.Variable.Class.BlockData? tmpBlockData =
-                    JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(tmpBlockDataStr);
+                NVClass.BlockData? tmpBlockData =
+                    JsonSerializer.Deserialize<NVClass.BlockData>(tmpBlockDataStr);
                 if (tmpBlockData != null)
                 {
                     if (IncomeBlockList.ContainsKey(blockData.info.rowNo) == true)
@@ -1084,8 +1110,6 @@ namespace Notus.Validator
 
             if (blockData.info.rowNo > NVG.Settings.LastBlock.info.rowNo)
             {
-                NVG.Settings.LastBlock = blockData.Clone();
-
                 NGF.BlockQueue.AddToChain(blockData);
                 if (blockData.info.type == 250)
                 {

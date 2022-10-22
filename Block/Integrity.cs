@@ -14,11 +14,13 @@ namespace Notus.Block
         private TimeSpan NtpTimeDifference;
         private bool NodeTimeAfterNtpTime = false;      // time difference before or after NTP Server
 
+        /*
         private int Val_EmptyBlockCount = 0;
         public int EmptyBlockCount
         {
             get { return Val_EmptyBlockCount; }
         }
+        */
         private const string Const_DefaultPreText = "notus-block-queue";
 
         public Notus.Variable.Class.BlockData? GetSatus(bool ResetBlocksIfNonValid = false)
@@ -335,18 +337,6 @@ namespace Notus.Block
             while (whileExit == false)
             {
                 string BlockIdStr = BlockOrderList[BiggestBlockHeight];
-                if (BlockTypeList[BlockIdStr] == 300)
-                {
-                    Val_EmptyBlockCount++;
-                }
-                else
-                {
-                    if (BlockTypeList[BlockIdStr] != 360)
-                    {
-                        Val_EmptyBlockCount = 0;
-                    }
-                }
-
                 if (BlockPreviousList[BlockIdStr].Length > 0)
                 {
                     if (
