@@ -521,6 +521,7 @@ namespace Notus.Validator
             {
                 NP.Basic(NVG.Settings, "Notus.Validator.Main -> Genesis Is NULL");
             }
+            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Genesis.Empty.Interval.Time));
             Console.WriteLine("Obj_Integrity.EmptyBlockCount : " + Obj_Integrity.EmptyBlockCount.ToString());
             Obj_Api = new Notus.Validator.Api();
 
