@@ -27,10 +27,21 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 {
     NVG.Settings.NodeClosing = true;
     e.Cancel = true;
-    Console.WriteLine("Please Wait, Terminating Node");
 
-    //NVG.Settings.NodeWallet.WalletKey
-    //Thread.Sleep(4000);
+    Console.WriteLine("Please Wait, Terminating Node");
+    if (NVG.Settings.CommEstablished == true)
+    {
+        Console.WriteLine("NVG.Settings.CommEstablished == true");
+        NVG.Settings.ClosingCompleted = true;
+        while (NVG.Settings.ClosingCompleted == false)
+        {
+            Thread.Sleep(10);
+        }
+    }
+    else
+    {
+        Console.WriteLine("NVG.Settings.CommEstablished == FALSE");
+    }
     Environment.Exit(0);
 }
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;

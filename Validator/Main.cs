@@ -620,6 +620,8 @@ namespace Notus.Validator
             }
 
             ValidatorQueueObj.PreStart();
+            NVG.Settings.CommEstablished = true;
+
             if (NVG.Settings.GenesisCreated == false)
             {
 
@@ -814,11 +816,40 @@ namespace Notus.Validator
                         nodeOrderCount = 0;
                     }
                 }
+                else
+                {
+                    if (NVG.Settings.NodeClosing == true)
+                    {
+                        /*
+                        kill mesajı gönderilmesi esnasında sorunsuz çalışmalı
+                        burayı kontrol et
+
+                        empty blok havuza değil
+                        doğrudan oluşturulmaya gönderilsin
+                        */
+
+                        NP.Info(NVG.Settings, "Sending Kill Signals To All Nodes");
+                        tmpExitMainLoop = true;
+                        ValidatorQueueObj.KillMe();
+                        NVG.Settings.ClosingCompleted = true;
+                    }
+                }
             }
 
             Console.WriteLine("tmpExitMainLoop == true");
-            NP.ReadLine();
+            //NP.ReadLine();
 
+            if (NVG.Settings.GenesisCreated == true)
+            {
+                NP.Warning(NVG.Settings, "Main Class Temporary Ended");
+            }
+            else
+            {
+                NP.Warning(NVG.Settings, "Main Class Ended");
+            }
+
+
+            /*
             while (tmpExitMainLoop == false && NVG.Settings.NodeClosing==false)
             {
                 //WaitUntilEnoughNode();
@@ -835,23 +866,18 @@ namespace Notus.Validator
 
                 if (ValidatorQueueObj.MyTurn == true || NVG.Settings.GenesisCreated == true)
                 {
-                    /*
-                    NGF.BlockQueue.AddEmptyBlock();
-                    */
 
-                    /*
-                    3 saniye ile 3.000 milisaniye
+                    //3 saniye ile 3.000 milisaniye
 
 
-                    2 node için -> 1.500 milisaniye / node  -> ilk 2 sıra
-                    3 node için -> 1.000 milisaniye / node  -> ilk 3 sıra
-                    4 node için ->   750 milisaniye / node  -> ilk 3 sıra
-                    5 node için ->   600 milisaniye / node  -> ilk 3 sıra
-                    6 node için ->   500 milisaniye / node  -> ilk 6 sıra
-                    7 ve sonası ->   500 milisaniye / node  -> ilk 6 sıra
+                    //2 node için -> 1.500 milisaniye / node  -> ilk 2 sıra
+                    //3 node için -> 1.000 milisaniye / node  -> ilk 3 sıra
+                    //4 node için ->   750 milisaniye / node  -> ilk 3 sıra
+                    //5 node için ->   600 milisaniye / node  -> ilk 3 sıra
+                    //6 node için ->   500 milisaniye / node  -> ilk 6 sıra
+                    //7 ve sonası ->   500 milisaniye / node  -> ilk 6 sıra
 
 
-                    */
 
                     // int islemSuresi = 200;
                     // int olusturmaSuresi = 100;
@@ -873,17 +899,13 @@ namespace Notus.Validator
                         // omergoksoy
                         // NVE.ValfwidatorOrder NodeOrder = ValidatorQueueObj.Distrubute(PreBlockData);
 
-                        /*
-                        if (NodeOrder == NVE.ValidatorOrder.Primary)
-                        {
+                        //if (NodeOrder == NVE.ValidatorOrder.Primary)
+                        //{
 
-                        }
-                        */
+                        //}
 
                         //blok sıra ve önceki değerleri düzenleniyor...
 
-                        /*
-                        */
                         if (PreBlockData != null)
                         {
                             PreBlockData = NGF.BlockQueue.OrganizeBlockOrder(PreBlockData);
@@ -937,27 +959,7 @@ namespace Notus.Validator
                 }
             }
 
-            if (NVG.Settings.NodeClosing == true)
-            {
-                kill mesajı gönderilmesi esnasında sorunsuz çalışmalı
-                burayı kontrol et
-
-                empty blok havuza değil
-                doğrudan oluşturulmaya gönderilsin
-
-
-                NP.Info(NVG.Settings, "Sending Kill Signals To All Nodes");
-                ValidatorQueueObj.KillMe();
-            }
-            
-            if (NVG.Settings.GenesisCreated == true)
-            {
-                NP.Warning(NVG.Settings, "Main Class Temporary Ended");
-            }
-            else
-            {
-                NP.Warning(NVG.Settings, "Main Class Ended");
-            }
+            */
         }
 
         private string fixedRowNoLength(Notus.Variable.Class.BlockData blockData)

@@ -66,6 +66,8 @@ namespace Notus.Variable
             Settings = new Notus.Globals.Variable.Settings()
             {
                 NodeClosing = false,
+                ClosingCompleted = false,
+                CommEstablished = false,
                 LocalNode = true,
                 InfoMode = true,
                 DebugMode = true,
