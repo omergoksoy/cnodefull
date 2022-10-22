@@ -662,7 +662,7 @@ namespace Notus.Block
             Queue_PoolTransaction.Clear();
             Obj_PoolTransactionList.Clear();
         }
-        public bool Add(Notus.Variable.Struct.PoolBlockRecordStruct? PreBlockData)
+        public bool Add(Notus.Variable.Struct.PoolBlockRecordStruct? PreBlockData,bool addedToPoolDb=true)
         {
             if (PreBlockData == null)
             {
@@ -680,13 +680,12 @@ namespace Notus.Block
                 return false;
             }
 
-            //Console.WriteLine("Control-Point-a995487");
-            //Console.WriteLine(JsonSerializer.Serialize( PreBlockData));
             string PreBlockDataStr = JsonSerializer.Serialize(PreBlockData);
             if (PreBlockData.uid == null)
             {
                 PreBlockData.uid = NGF.GenerateTxUid();
             }
+
             Add2Queue(PreBlockData, PreBlockData.uid);
             string keyStr = PreBlockData.uid;
             if (PreBlockData.type == 40)
@@ -704,7 +703,10 @@ namespace Notus.Block
             Console.WriteLine("keyStr : " + keyStr);
             if (keyStr.Length > 0)
             {
-                MP_BlockPoolList.Set(keyStr, PreBlockDataStr, true);
+                if (addedToPoolDb == true)
+                {
+                    MP_BlockPoolList.Set(keyStr, PreBlockDataStr, true);
+                }
             }
             return true;
         }
@@ -716,7 +718,7 @@ namespace Notus.Block
                 uid = NGF.GenerateTxUid(),
                 type = Notus.Variable.Enum.BlockTypeList.EmptyBlock,
                 data = JsonSerializer.Serialize(NVG.Settings.LastBlock.info.rowNo)
-            });
+            },false);
         }
         /*
         public string GiveBlockKey(string BlockDataStr)
@@ -729,6 +731,7 @@ namespace Notus.Block
 
         private void Add2Queue(Notus.Variable.Struct.PoolBlockRecordStruct PreBlockData, string BlockKeyStr)
         {
+            Console.WriteLine(PreBlockData.type.ToString() + " - " +BlockKeyStr.Substring(0, 20));
             if (PoolIdList.ContainsKey(BlockKeyStr) == false)
             {
                 bool added = PoolIdList.TryAdd(BlockKeyStr, 1);

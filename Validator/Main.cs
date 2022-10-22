@@ -495,7 +495,6 @@ namespace Notus.Validator
         }
         public void EmptyBlockGeneration()
         {
-            NGF.UpdateUtcNowValue();
             int howManySeconds = NVG.Settings.Genesis.Empty.Interval.Time;
             if (NVG.Settings.Genesis.Empty.SlowBlock.Count >= Obj_Integrity.EmptyBlockCount)
             {
@@ -505,6 +504,7 @@ namespace Notus.Validator
                     NVG.Settings.Genesis.Empty.SlowBlock.Multiply
                 );
             }
+            Console.WriteLine(NVG.Settings.LastBlock.info.time.ToString() + " - " + howManySeconds.ToString());
             if (NVG.NowUTC > ND.ToLong(ND.ToDateTime(NVG.Settings.LastBlock.info.time).AddSeconds(howManySeconds)))
             {
                 NP.Success(NVG.Settings, "Empty Block Executed");
@@ -699,7 +699,6 @@ namespace Notus.Validator
 
                 if (NVG.Settings.Layer == NVE.NetworkLayer.Layer1)
                 {
-                    //EmptyBlockTimerFunc();
                     CryptoTransferTimerFunc();
                 }
                 if (NVG.Settings.Layer == NVE.NetworkLayer.Layer2)
@@ -743,7 +742,6 @@ namespace Notus.Validator
                     nodeOrderCount++;
                     if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
                     {
-                        EmptyBlockGeneration();
                         bool txExecuted = false;
                         while (ND.AddMiliseconds(currentQueueTime, queueTimePeriod - 10) >= NVG.NowUTC)
                         {
@@ -755,9 +753,9 @@ namespace Notus.Validator
                             }
                             if (txExecuted == false)
                             {
+                                EmptyBlockGeneration();
                                 NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
                                     ND.AddMiliseconds(currentQueueTime, NVC.BlockListeningForPoolTime)
-                                // islemBitis, olusturmaBitis
                                 );
                                 if (TmpBlockStruct != null)
                                 {
