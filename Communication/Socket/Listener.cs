@@ -291,16 +291,30 @@ namespace Notus.Communication
         public void Begin(bool WithNewThread = true)
         {
             System.Net.IPAddress ipAddress;
-            if (System.Net.IPAddress.TryParse(CommIpAddress, out _) == true)
+            if(
+                string.Equals(CommIpAddress, "3.75.110.186") || 
+                string.Equals(CommIpAddress, "13.229.56.127")
+            )
             {
-                ipAddress = System.Net.IPAddress.Parse(CommIpAddress);
+                //aws bu yöntem ile çalışıyor
+                ipAddress = System.Net.IPAddress.Any;
             }
             else
             {
-                //ipAddress = System.Net.IPAddress.IPv6Any;
-                ipAddress = System.Net.IPAddress.Any;
+                if (System.Net.IPAddress.TryParse(CommIpAddress, out _) == true)
+                {
+                    ipAddress = System.Net.IPAddress.Parse(CommIpAddress);
+                }
+                else
+                {
+                    //ipAddress = System.Net.IPAddress.IPv6Any;
+                    ipAddress = System.Net.IPAddress.Any;
+                }
             }
 
+            //Console.WriteLine("Listener.cs -> Line 304");
+            //Console.WriteLine(ipAddress + " - " + CommPortNo.ToString());
+            //Notus.Print.ReadLine();
             System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(ipAddress, CommPortNo);
             ListenTcpObj = new System.Net.Sockets.Socket(
                 ipAddress.AddressFamily,

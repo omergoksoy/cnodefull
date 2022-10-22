@@ -2,6 +2,7 @@
 
 namespace Notus.Validator
 {
+        /*
     public static class List
     {
         // omergoksoy
@@ -81,7 +82,8 @@ namespace Notus.Validator
             };
     }
 
-    /*
+    */
+
     //standart güzel hosting sunucuları ile yapılan ayarlar
     public static class List
     {
@@ -104,14 +106,14 @@ namespace Notus.Validator
                                 {
                                     new Variable.Struct.IpInfo()
                                     {
-                                        IpAddress = "89.252.134.111",
+                                        IpAddress = "3.75.110.186",
                                         Port = 5000
                                     }
                                 },
                                 {
                                     new Variable.Struct.IpInfo()
                                     {
-                                        IpAddress = "89.252.159.87",
+                                        IpAddress = "13.229.56.127",
                                         Port = 5000
                                     }
                                 }
@@ -124,14 +126,14 @@ namespace Notus.Validator
                                 {
                                     new Variable.Struct.IpInfo()
                                     {
-                                        IpAddress = "89.252.134.111",
+                                        IpAddress = "3.75.110.186",
                                         Port = 5001
                                     }
                                 },
                                 {
                                     new Variable.Struct.IpInfo()
                                     {
-                                        IpAddress = "89.252.159.87",
+                                        IpAddress = "13.229.56.127",
                                         Port = 5001
                                     }
                                 }
@@ -144,14 +146,14 @@ namespace Notus.Validator
                                 {
                                     new Variable.Struct.IpInfo()
                                     {
-                                        IpAddress = "89.252.134.111",
+                                        IpAddress = "3.75.110.186",
                                         Port = 5002
                                     }
                                 },
                                 {
                                     new Variable.Struct.IpInfo()
                                     {
-                                        IpAddress = "89.252.159.87",
+                                        IpAddress = "13.229.56.127",
                                         Port = 5002
                                     }
                                 }
@@ -161,5 +163,6 @@ namespace Notus.Validator
                 }
             };
     }
+    /*
     */
 }
