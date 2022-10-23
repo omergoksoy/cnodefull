@@ -47,12 +47,6 @@ namespace Notus.Validator
         {
             get { return Val_Ready; }
         }
-        private bool MyTurn_Val = false;
-        public bool MyTurn
-        {
-            get { return MyTurn_Val; }
-            set { MyTurn_Val = value; }
-        }
         private bool SyncReady = true;
 
         private SortedDictionary<string, NVS.IpInfo> MainAddressList = new SortedDictionary<string, NVS.IpInfo>();
@@ -65,7 +59,7 @@ namespace Notus.Validator
             set { PreviousNodeList = value; }
         }
         private ConcurrentDictionary<string, int> NodeTurnCount = new ConcurrentDictionary<string, int>();
-        private ConcurrentDictionary<string, NVS.NodeQueueInfo> NodeList = new ConcurrentDictionary<string, NVS.NodeQueueInfo>();
+        //private ConcurrentDictionary<string, NVS.NodeQueueInfo> NodeList = new ConcurrentDictionary<string, NVS.NodeQueueInfo>();
         private ConcurrentDictionary<int, string> NodeOrderList = new ConcurrentDictionary<int, string>();
         private ConcurrentDictionary<string, DateTime> NodeTimeBasedOrderList = new ConcurrentDictionary<string, DateTime>();
 
@@ -87,14 +81,14 @@ namespace Notus.Validator
         //oluşturulacak blokları kimin oluşturacağını seçen fonksiyon
         public void Distrubute(long blockRowNo, int blockType = 0)
         {
-            foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+            foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
                 if (string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false && entry.Value.Status == NVS.NodeStatus.Online)
                 {
-                    SendMessage(entry.Value.IP.IpAddress, entry.Value.IP.Port,
+                    NGF.SendMessage(entry.Value.IP.IpAddress, entry.Value.IP.Port,
                         "<block>" + blockRowNo.ToString() + ":" +
                         NVG.Settings.NodeWallet.WalletKey + "</block>",
-                        true
+                        entry.Key
                     );
                     NP.Info(NVG.Settings,
                         "Distrubuting " +
@@ -195,19 +189,19 @@ namespace Notus.Validator
         }
         private void AddToNodeList(NVS.NodeQueueInfo NodeQueueInfo)
         {
-            if (NodeList.ContainsKey(NodeQueueInfo.HexKey))
+            if (NVG.NodeList.ContainsKey(NodeQueueInfo.HexKey))
             {
-                NodeList[NodeQueueInfo.HexKey] = NodeQueueInfo;
+                NVG.NodeList[NodeQueueInfo.HexKey] = NodeQueueInfo;
             }
             else
             {
-                NodeList.TryAdd(NodeQueueInfo.HexKey, NodeQueueInfo);
+                NVG.NodeList.TryAdd(NodeQueueInfo.HexKey, NodeQueueInfo);
             }
             AddToMainAddressList(NodeQueueInfo.IP.IpAddress, NodeQueueInfo.IP.Port);
         }
         private string CalculateMyNodeListHash()
         {
-            Dictionary<string, NVS.NodeQueueInfo>? tmpNodeList = JsonSerializer.Deserialize<Dictionary<string, NVS.NodeQueueInfo>>(JsonSerializer.Serialize(NodeList));
+            Dictionary<string, NVS.NodeQueueInfo>? tmpNodeList = JsonSerializer.Deserialize<Dictionary<string, NVS.NodeQueueInfo>>(JsonSerializer.Serialize(NVG.NodeList));
             if (tmpNodeList == null)
             {
                 return string.Empty;
@@ -296,7 +290,7 @@ namespace Notus.Validator
                 string tmpNodeWalletKey = tmpArr[1];
                 string tmpIpAddress = string.Empty;
                 int tmpPortNo = 0;
-                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
                 {
                     if (string.Equals(entry.Value.IP.Wallet, tmpNodeWalletKey))
                     {
@@ -332,40 +326,42 @@ namespace Notus.Validator
                 }
                 return "fncResult-false";
             }
-
-            if (CheckXmlTag(incomeData, "out"))
-            {
-                if (NVG.Settings.NodeClosing == true)
-                {
-                    return "1";
-                }
-                return "0";
-            }
             if (CheckXmlTag(incomeData, "kill"))
             {
                 incomeData = GetPureText(incomeData, "kill");
-                string selectedKeyStr = string.Empty;
-                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+                string[] tmpHashPart = incomeData.Split(NVC.CommonDelimeterChar);
+                ulong incomeUtc = ulong.Parse(tmpHashPart[1]);
+                ulong incomeDiff = (ulong)Math.Abs((decimal)NVG.NowUTC - incomeUtc);
+
+                //100 saniyeden eski ise göz ardı edilecek
+                if (incomeDiff > 100000)
                 {
-                    if (string.Equals(incomeData, entry.Value.IP.Wallet) == false)
+                    return "0";
+                }
+                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
+                {
+                    if (string.Equals(tmpHashPart[0], entry.Value.IP.Wallet) == true)
                     {
-                        string tmpResult = SendMessage(entry.Value.IP,
-                            "<out>1</out>",
-                            true
-                        );
-                        if (tmpResult == "1")
+                        if (
+                            Notus.Wallet.ID.Verify(
+                                tmpHashPart[1] +
+                                    Notus.Variable.Constant.CommonDelimeterChar +
+                                tmpHashPart[0],
+                                tmpHashPart[2],
+                                entry.Value.PublicKey
+                            ) == true
+                        )
                         {
-                            selectedKeyStr = entry.Key;
+                            NP.Info(NVG.Settings, entry.Value.IP.Wallet + " Just Left");
+                            if (NVG.NodeList.ContainsKey(entry.Key))
+                            {
+                                NVG.NodeList[entry.Key].Status = NVS.NodeStatus.Offline;
+                                return "1";
+                            }
                         }
                     }
                 }
-                if (selectedKeyStr.Length > 0)
-                {
-                    if (NodeList.ContainsKey(selectedKeyStr))
-                    {
-                        NodeList.TryRemove(selectedKeyStr, out _);
-                    }
-                }
+                return "0";
             }
 
             if (CheckXmlTag(incomeData, "when"))
@@ -417,18 +413,18 @@ namespace Notus.Validator
             {
                 incomeData = GetPureText(incomeData, "ready");
                 Console.WriteLine("Ready Income : " + incomeData);
-                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
                 {
                     if (string.Equals(entry.Value.IP.Wallet, incomeData) == true)
                     {
-                        NodeList[entry.Key].Ready = true;
+                        NVG.NodeList[entry.Key].Ready = true;
                     }
                 }
                 return "done";
             }
             if (CheckXmlTag(incomeData, "rNode"))
             {
-                return "<node>" + JsonSerializer.Serialize(NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
+                return "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
             }
             if (CheckXmlTag(incomeData, "node"))
             {
@@ -463,35 +459,41 @@ namespace Notus.Validator
             }
             return "<err>1</err>";
         }
+        /*
         private void NodeError(string nodeHexText)
         {
-            if (NodeList.ContainsKey(nodeHexText) == true)
+            if (NVG.NodeList.ContainsKey(nodeHexText) == true)
             {
                 //NodeList[nodeHexText].ErrorCount++;
-                NodeList[nodeHexText].Status = NVS.NodeStatus.Offline;
-                NodeList[nodeHexText].Ready = false;
+                NVG.NodeList[nodeHexText].Status = NVS.NodeStatus.Offline;
+                NVG.NodeList[nodeHexText].Ready = false;
                 //NodeList[nodeHexText].ErrorTime = Notus.Time.NowNtpTimeToUlong();
 
                 //NodeList[nodeHexText].Time.Error = DateTime.Now;
             }
         }
+        */
         private void NodeIsOnline(string nodeHexText)
         {
-            if (NodeList.ContainsKey(nodeHexText) == true)
+            if (NVG.NodeList.ContainsKey(nodeHexText) == true)
             {
-                NodeList[nodeHexText].Status = NVS.NodeStatus.Online;
+                NVG.NodeList[nodeHexText].Status = NVS.NodeStatus.Online;
             }
         }
-        private string SendMessage(NVS.NodeInfo receiverIp, string messageText, bool executeErrorControl)
+        private string SendMessage(NVS.NodeInfo receiverIp, string messageText, string nodeHexStr = "")
         {
-            return SendMessage(receiverIp.IpAddress, receiverIp.Port, messageText, executeErrorControl);
+            return NGF.SendMessage(receiverIp.IpAddress, receiverIp.Port, messageText, nodeHexStr);
         }
-        private string SendMessage(string receiverIpAddress, int receiverPortNo, string messageText, bool executeErrorControl)
+        /*
+        private string SendMessage(string receiverIpAddress, int receiverPortNo, string messageText, string nodeHexStr="")
         {
-            string tmpNodeHexStr = Notus.Toolbox.Network.IpAndPortToHex(receiverIpAddress, receiverPortNo);
+            if (nodeHexStr == "")
+            {
+                nodeHexStr = Notus.Toolbox.Network.IpAndPortToHex(receiverIpAddress, receiverPortNo);
+            }
             string urlPath =
                 Notus.Network.Node.MakeHttpListenerPath(receiverIpAddress, receiverPortNo) +
-                "queue/node/" + tmpNodeHexStr;
+                "queue/node/" + nodeHexStr;
             (bool worksCorrent, string incodeResponse) = Notus.Communication.Request.PostSync(
                 urlPath,
                 new Dictionary<string, string>()
@@ -504,12 +506,13 @@ namespace Notus.Validator
             );
             if (worksCorrent == true)
             {
-                NodeList[tmpNodeHexStr].Status = NVS.NodeStatus.Online;
+                NVG.NodeList[nodeHexStr].Status = NVS.NodeStatus.Online;
                 return incodeResponse;
             }
-            NodeError(tmpNodeHexStr);
+            NodeError(nodeHexStr);
             return string.Empty;
         }
+        */
         private string SendMessageED(string nodeHex, string receiverIpAddress, int receiverPortNo, string messageText)
         {
             (bool worksCorrent, string incodeResponse) = Notus.Communication.Request.PostSync(
@@ -531,20 +534,18 @@ namespace Notus.Validator
         }
         private string Message_Hash_ViaSocket(string _ipAddress, int _portNo)
         {
-            return SendMessage(
+            return NGF.SendMessage(
                 _ipAddress,
                 _portNo,
                 "<hash>" +
                     MainAddressListHash.Substring(0, 20) + ":" + NodeListHash.Substring(0, 20) +
-                "</hash>",
-                true
+                "</hash>"
             );
         }
         private void Message_Node_ViaSocket(string _ipAddress, int _portNo, string _nodeHex = "")
         {
-            string responseStr = SendMessage(_ipAddress, _portNo,
-                "<node>" + JsonSerializer.Serialize(NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>",
-                true
+            string responseStr = NGF.SendMessage(_ipAddress, _portNo,
+                "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>"
             );
             if (string.Equals("err", responseStr) == false)
             {
@@ -558,7 +559,7 @@ namespace Notus.Validator
                 _nodeHex = Notus.Toolbox.Network.IpAndPortToHex(_ipAddress, _portNo);
             }
             string _nodeKeyText = _nodeHex + "list";
-            string tmpReturnStr = SendMessage(_ipAddress, _portNo, "<list>" + JsonSerializer.Serialize(MainAddressList) + "</list>", true);
+            string tmpReturnStr = NGF.SendMessage(_ipAddress, _portNo, "<list>" + JsonSerializer.Serialize(MainAddressList) + "</list>", _nodeHex);
             if (string.Equals("err", tmpReturnStr) == false)
             {
                 ProcessIncomeData(tmpReturnStr, "", 0);
@@ -629,7 +630,7 @@ namespace Notus.Validator
                 }
 
                 // burada durumu bilinmeyen nodeların bilgilerinin sorgulandığı kısım
-                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
                 {
                     bool tmpRefreshNodeDetails = false;
                     string tmpCheckHex = Notus.Toolbox.Network.IpAndPortToHex(entry.Value.IP);
@@ -647,7 +648,7 @@ namespace Notus.Validator
                 int nodeCount = 0;
                 SyncReady = true;
                 //burada eğer nodeların hashleri farklı ise senkron olacağı kısım
-                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
                 {
                     if (entry.Value.Status == NVS.NodeStatus.Online /* && entry.Value.ErrorCount == 0 */)
                     {
@@ -720,7 +721,7 @@ namespace Notus.Validator
             {
                 foreach (KeyValuePair<BigInteger, string> outerEntry in nodeWalletList)
                 {
-                    foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+                    foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
                     {
                         if (string.Equals(entry.Value.IP.Wallet, outerEntry.Value))
                         {
@@ -744,11 +745,11 @@ namespace Notus.Validator
                     }
                 }
             }
-            foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+            foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
                 if (entry.Value.Status == NVS.NodeStatus.Online && entry.Value.SyncNo == biggestSyncNo)
                 {
-                    NodeList[entry.Key].SyncNo = syncStaringTime;
+                    NVG.NodeList[entry.Key].SyncNo = syncStaringTime;
                 }
             }
             /*
@@ -762,7 +763,7 @@ namespace Notus.Validator
         public SortedDictionary<BigInteger, string> MakeOrderToNode(ulong biggestSyncNo, ulong seedForQueue)
         {
             SortedDictionary<BigInteger, string> resultList = new SortedDictionary<BigInteger, string>();
-            foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+            foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
                 if (entry.Value.Status == NVS.NodeStatus.Online && entry.Value.SyncNo == biggestSyncNo)
                 {
@@ -807,14 +808,17 @@ namespace Notus.Validator
             diğer nodelar kendi listelerinden node'u çıkartacak
             */
             // diğer nodelara kapandığımızı bildiriyoruz...
-            foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+            Console.WriteLine("Sending Kill Signall");
+            foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
+                Console.WriteLine("Kill Message To -> " + entry.Key);
                 if (string.Equals(entry.Key, NVG.Settings.Nodes.My.HexKey) == false)
                 {
                     string tmpResult = SendMessage(entry.Value.IP,
                         "<kill>" + NVG.Settings.Nodes.My.IP.Wallet + "</kill>",
-                        true
+                        entry.Key
                     );
+                    Console.WriteLine("tmpResult : " + tmpResult);
                 }
             }
         }
@@ -859,7 +863,8 @@ namespace Notus.Validator
                     Port = NVG.Settings.Nodes.My.IP.Port,
                     Wallet = NVG.Settings.NodeWallet.WalletKey
                 },
-                JoinTime = 0
+                JoinTime = 0,
+                PublicKey = NVG.Settings.Nodes.My.PublicKey,
             });
 
             foreach (KeyValuePair<string, NVS.IpInfo> entry in MainAddressList)
@@ -880,7 +885,8 @@ namespace Notus.Validator
                             Port = entry.Value.Port,
                             Wallet = "#"
                         },
-                        JoinTime = 0
+                        JoinTime = 0,
+                        PublicKey = ""
                     });
                 }
             }
@@ -901,7 +907,7 @@ namespace Notus.Validator
             StartingTimeAfterEnoughNode_Arrived = false;
             if (biggestSyncNo == 0)
             {
-                NP.Info(NVG.Settings, "Active Node Count : " + NodeList.Count.ToString());
+                NP.Info(NVG.Settings, "Node Count : " + NVG.OnlineNodeCount.ToString() + " / " + NVG.NodeList.Count.ToString());
                 //cüzdanların hashleri alınıp sıraya koyuluyor.
                 SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, 0);
 
@@ -925,7 +931,7 @@ namespace Notus.Validator
                     NVG.NodeQueue.Begin = true;
 
                     // diğer nodelara belirlediğimiz zaman bilgisini gönderiyoruz
-                    foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+                    foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
                     {
                         if (string.Equals(entry.Key, NVG.Settings.Nodes.My.HexKey) == false)
                         {
@@ -936,7 +942,7 @@ namespace Notus.Validator
                                     bool sendedToNode = false;
                                     while (sendedToNode == false)
                                     {
-                                        string tmpResult = SendMessage(entry.Value.IP, "<when>" + syncStaringTime + "</when>", true);
+                                        string tmpResult = SendMessage(entry.Value.IP, "<when>" + syncStaringTime + "</when>", entry.Key);
                                         if (string.Equals(tmpResult, "done"))
                                         {
                                             sendedToNode = true;
@@ -985,7 +991,7 @@ namespace Notus.Validator
         private ulong FindBiggestSyncNo()
         {
             Dictionary<ulong, int> syncNoCount = new Dictionary<ulong, int>();
-            foreach (var iEntry in NodeList)
+            foreach (var iEntry in NVG.NodeList)
             {
 
                 if (syncNoCount.ContainsKey(iEntry.Value.SyncNo) == false)
@@ -1035,7 +1041,7 @@ namespace Notus.Validator
             {
 
                 ulong exactTimeLong = ND.ToLong(NGF.GetUtcNowFromNtp());
-                string myNodeDataText = "<node>" + JsonSerializer.Serialize(NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
+                string myNodeDataText = "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
 
                 bool allDone = false;
                 while (allDone == false)
@@ -1046,15 +1052,15 @@ namespace Notus.Validator
                         bool refreshNodeInfo = false;
                         if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
                         {
-                            if (NodeList.ContainsKey(tmpMainList[i].Key))
+                            if (NVG.NodeList.ContainsKey(tmpMainList[i].Key))
                             {
-                                if (NodeList[tmpMainList[i].Key].Tick == 0)
+                                if (NVG.NodeList[tmpMainList[i].Key].Tick == 0)
                                 {
                                     refreshNodeInfo = true;
                                 }
                                 else
                                 {
-                                    long tickDiff = Math.Abs((long)(exactTimeLong - NodeList[tmpMainList[i].Key].Tick));
+                                    long tickDiff = Math.Abs((long)(exactTimeLong - NVG.NodeList[tmpMainList[i].Key].Tick));
                                     if (tickDiff > 30000)
                                     {
                                         refreshNodeInfo = true;
@@ -1070,7 +1076,7 @@ namespace Notus.Validator
                             );
                             if (responseStr == "1")
                             {
-                                NodeList[tmpMainList[i].Key].Status = NVS.NodeStatus.Online;
+                                NVG.NodeList[tmpMainList[i].Key].Status = NVS.NodeStatus.Online;
                             }
                         }
                     }
@@ -1081,9 +1087,9 @@ namespace Notus.Validator
                     {
                         if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
                         {
-                            if (NodeList.ContainsKey(tmpMainList[i].Key))
+                            if (NVG.NodeList.ContainsKey(tmpMainList[i].Key))
                             {
-                                if (NodeList[tmpMainList[i].Key].Tick == 0)
+                                if (NVG.NodeList[tmpMainList[i].Key].Tick == 0)
                                 {
                                     string responseStr = SendMessageED(tmpMainList[i].Key,
                                         tmpMainList[i].Value.IpAddress,
@@ -1167,9 +1173,9 @@ namespace Notus.Validator
             }
             string _nodeKeyText = _nodeHex + "ready";
 
-            string responseStr = SendMessage(_ipAddress, _portNo,
-                "<ready>" + NodeList[NVG.Settings.Nodes.My.HexKey].IP.Wallet + "</ready>",
-                true
+            string responseStr = NGF.SendMessage(_ipAddress, _portNo,
+                "<ready>" + NVG.NodeList[NVG.Settings.Nodes.My.HexKey].IP.Wallet + "</ready>",
+                _nodeHex
             );
             if (string.Equals("done", responseStr.Trim()) == true)
             {
@@ -1182,12 +1188,12 @@ namespace Notus.Validator
         }
         public void MyNodeIsReady()
         {
-            NodeList[NVG.Settings.Nodes.My.HexKey].Ready = true;
+            NVG.NodeList[NVG.Settings.Nodes.My.HexKey].Ready = true;
             Val_Ready = true;
             if (ActiveNodeCount_Val > 1)
             {
                 NP.Info(NVG.Settings, "Sending Ready Signal To Other Nodes");
-                NodeList[NVG.Settings.Nodes.My.HexKey].Ready = true;
+                NVG.NodeList[NVG.Settings.Nodes.My.HexKey].Ready = true;
                 foreach (KeyValuePair<string, NVS.IpInfo> entry in MainAddressList)
                 {
                     string tmpNodeHexStr = Notus.Toolbox.Network.IpAndPortToHex(entry.Value);
@@ -1200,7 +1206,7 @@ namespace Notus.Validator
         }
         public Queue()
         {
-            NodeList.Clear();
+            NVG.NodeList.Clear();
             LastPingTime = NVC.DefaultTime;
             ObjMp_NodeList = new Notus.Mempool("node_pool_list");
             ObjMp_NodeList.AsyncActive = false;

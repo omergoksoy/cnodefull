@@ -188,6 +188,7 @@ namespace Notus.Variable
             "3.75.110.186",
             "13.229.56.127"
         };
+
         public const string Default_EccCurveName = "prime256v1";
         public const int Default_WordListArrayCount = 16;
 

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using NVC = Notus.Variable.Constant;
 using NVE = Notus.Variable.Enum;
 using NVS = Notus.Variable.Struct;
+using NVG = Notus.Variable.Globals;
 
 namespace Notus.Variable
 {
@@ -56,13 +57,17 @@ namespace Notus.Variable
         şu an ki zamanın üzerine 1 dakika ekleyecek ve o zaman geldiğinde kuyruğa dahil edilmiş olacak
 
         */
+        public static string SessionPrivateKey { get; set; }
         public static bool NodeListPrinted { get; set; }
         public static ulong NowUTC { get; set; }
         public static Notus.Globals.Variable.NodeQueueList NodeQueue { get; set; }
-
+        public static int OnlineNodeCount { get; set; }
+        public static ConcurrentDictionary<string, NVS.NodeQueueInfo> NodeList { get; set; }
         public static Notus.Globals.Variable.Settings Settings { get; set; }
         static Globals()
         {
+            SessionPrivateKey = Notus.Wallet.ID.New();
+
             Settings = new Notus.Globals.Variable.Settings()
             {
                 NodeClosing = false,
@@ -98,6 +103,7 @@ namespace Notus.Variable
                 {
                     My = new Struct.NodeQueueInfo()
                     {
+                        PublicKey=Notus.Wallet.ID.Generate(SessionPrivateKey),
                         Begin = 0,
                         Tick = 0,
                         SyncNo = 0,
@@ -148,6 +154,84 @@ namespace Notus.Variable
             {
                 RefreshNtpTime();
                 return Settings.UTCTime.Now;
+            }
+            public static string SendMessage(string receiverIpAddress, int receiverPortNo, string messageText, string nodeHexStr = "")
+            {
+                if (nodeHexStr == "")
+                {
+                    nodeHexStr = Notus.Toolbox.Network.IpAndPortToHex(receiverIpAddress, receiverPortNo);
+                }
+                string urlPath =
+                    Notus.Network.Node.MakeHttpListenerPath(receiverIpAddress, receiverPortNo) +
+                    "queue/node/" + nodeHexStr;
+                (bool worksCorrent, string incodeResponse) = Notus.Communication.Request.PostSync(
+                    urlPath,
+                    new Dictionary<string, string>()
+                    {
+                    { "data",messageText }
+                    },
+                    2,
+                    true,
+                    false
+                );
+                if (worksCorrent == true)
+                {
+                    NodeList[nodeHexStr].Status = NVS.NodeStatus.Online;
+                    return incodeResponse;
+                }
+                /*
+                if (NodeList.ContainsKey(nodeHexStr) == true)
+                {
+                    //NodeList[nodeHexStr].ErrorCount++;
+                    NodeList[nodeHexStr].Status = NVS.NodeStatus.Offline;
+                    NodeList[nodeHexStr].Ready = false;
+                }
+                */
+                return string.Empty;
+            }
+            public static void SendKillMessage()
+            {
+                Notus.Print.Info(Settings, "Sending Kill Signals To All Nodes");
+                // nodeların kapanma işlemi şu sıra ile olacak
+                /*
+                node öncelikle diğer tüm ağlara kapanmak istediğini "kill" mesajı ile bildirecek.
+                mesajı alan nodelar, mesajı gönderen node'a kapanmak isteyip istemediğini soracak
+                eğer geri gelen cevap kapanmak istediğine dair bir mesaj ise
+                diğer nodelar kendi listelerinden node'u çıkartacak
+
+                burada her node açılışta rastgele bir private key oluşturacak ve onu gönderecek
+                node'lar o adresi kaydedecek ve kapanma sinyali gönderildiğinde 
+                kontrol ederek node'u listeden offline moduna alacak
+                */
+                // diğer nodelara kapandığımızı bildiriyoruz...
+                ulong nowUtcValue = NVG.NowUTC;
+                Console.WriteLine("Sending Kill Signall");
+                string controlSignForKillMsg = Notus.Wallet.ID.Sign(
+                    nowUtcValue.ToString() + 
+                        Notus.Variable.Constant.CommonDelimeterChar + 
+                    NVG.Settings.Nodes.My.IP.Wallet,
+                    SessionPrivateKey
+                );
+
+                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
+                {
+                    if (string.Equals(entry.Key, Settings.Nodes.My.HexKey) == false)
+                    {
+                        string tmpResult = SendMessage(entry.Value.IP.IpAddress,
+                            entry.Value.IP.Port,
+                            "<kill>" +
+                                Settings.Nodes.My.IP.Wallet +
+                                NVC.CommonDelimeterChar +
+                                nowUtcValue.ToString() +
+                                NVC.CommonDelimeterChar +
+                                controlSignForKillMsg +
+                            "</kill>",
+                            entry.Key
+                        );
+                        //Console.WriteLine("tmpResult [ kill ] : " + tmpResult);
+                    }
+                }
+                Settings.ClosingCompleted = true;
             }
             public static void UpdateUtcNowValue()
             {
@@ -214,6 +298,7 @@ namespace Notus.Variable
                 }
                 RefreshNtpTime();
                 Globals.NodeListPrinted = false;
+                Globals.NodeList = new ConcurrentDictionary<string, NVS.NodeQueueInfo>();
                 Globals.NodeQueue = new Notus.Globals.Variable.NodeQueueList();
 
                 Globals.NodeQueue.Begin = false;

@@ -82,7 +82,10 @@ namespace Notus.Validator
                 default:
                     break;
             }
-            Notus.Print.Warning(NVG.Settings, "Task Ended");
+            if(NVG.Settings.NodeClosing == false)
+            {
+                Notus.Print.Warning(NVG.Settings, "Task Ended");
+            }
         }
         private static void StartAsMaster()
         {
@@ -105,7 +108,7 @@ namespace Notus.Validator
         private static void StartAsMain()
         {
             bool exitOuterLoop = false;
-            while (exitOuterLoop == false)
+            while (exitOuterLoop == false && NVG.Settings.NodeClosing==false)
             {
                 using (Notus.Validator.Main MainObj = new Notus.Validator.Main())
                 {

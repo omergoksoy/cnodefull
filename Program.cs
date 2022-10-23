@@ -28,19 +28,15 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     NVG.Settings.NodeClosing = true;
     e.Cancel = true;
 
-    Console.WriteLine("Please Wait, Terminating Node");
+    Console.WriteLine("Please Wait While Node Terminating");
     if (NVG.Settings.CommEstablished == true)
     {
-        Console.WriteLine("NVG.Settings.CommEstablished == true");
+        NGF.SendKillMessage();
         NVG.Settings.ClosingCompleted = true;
         while (NVG.Settings.ClosingCompleted == false)
         {
             Thread.Sleep(10);
         }
-    }
-    else
-    {
-        Console.WriteLine("NVG.Settings.CommEstablished == FALSE");
     }
     Environment.Exit(0);
 }
@@ -55,9 +51,18 @@ Console.CancelKeyPress += delegate {
 //NGF.UpdateUtcNowValue();
 //ulong suAn = NVG.NowUTC;
 
-
-
 /*
+string SessionPrivateKey = Notus.Wallet.ID.New();
+var sign1=Notus.Wallet.ID.Sign("omer", SessionPrivateKey);
+var sign2=Notus.Wallet.ID.Sign("omer", SessionPrivateKey);
+var sign3=Notus.Wallet.ID.Sign("omer", SessionPrivateKey);
+Console.WriteLine(SessionPrivateKey);
+Console.WriteLine(sign1);
+Console.WriteLine(sign2);
+Console.WriteLine(sign3);
+Console.ReadLine();
+Console.ReadLine();
+Console.ReadLine();
 ulong baslangicSayi = Notus.Time.DateTimeToUlong(new DateTime(2022, 10, 12, 00, 55, 20));
 ulong simdiSayi     = Notus.Time.DateTimeToUlong(new DateTime(2022, 10, 15, 01, 35, 36));
 ulong fark1 = simdiSayi - baslangicSayi;

@@ -133,17 +133,9 @@ namespace Notus.Block
         }
         public void AddSync(Notus.Variable.Class.BlockData NewBlock, bool UpdateBlock = false)
         {
-            Notus.Print.Log(
-                Notus.Variable.Enum.LogLevel.Info,
-                90,
-                JsonSerializer.Serialize(NewBlock),
-                "AddSync",
-                null,
-                null
-            );
-
             string BlockFileName = Notus.Block.Key.GetBlockStorageFileName(NewBlock.info.uID, true);
             string ZipFileName = Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Block) + BlockFileName + ".zip";
+            //Console.WriteLine("ZipFileName : " + ZipFileName);
             bool exitInnerLoop = false;
             while (exitInnerLoop == false)
             {
@@ -174,6 +166,12 @@ namespace Notus.Block
             {
                 fileModeObj = FileMode.Create;
                 zipModeObj = ZipArchiveMode.Create;
+                //Console.WriteLine("Before File Size : 0");
+            }
+            else
+            {
+                //FileInfo fi1 = new FileInfo(ZipFileName);
+                //Console.WriteLine("Before File Size : " + fi1.Length.ToString());
             }
 
             using (FileStream fileStream = new FileStream(ZipFileName, fileModeObj))
@@ -188,6 +186,9 @@ namespace Notus.Block
                     }
                 }
             }
+            FileInfo fi2 = new FileInfo(ZipFileName);
+            //Console.WriteLine("After File Size : " + fi2.Length.ToString());
+
             OpenFileName = string.Empty;
 
             /*

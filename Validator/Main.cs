@@ -178,6 +178,19 @@ namespace Notus.Validator
             UtcTimerObj.Start(() =>
             {
                 NGF.UpdateUtcNowValue();
+                try
+                {
+                    int onlineNodeCount = 0;
+                    foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
+                    {
+                        if (entry.Value.Status == NVS.NodeStatus.Online)
+                        {
+                            onlineNodeCount++;
+                        }
+                    }
+                    NVG.OnlineNodeCount = onlineNodeCount;
+                }
+                catch { }
             }, true);  //TimerObj.Start(() =>
         }
         public void CryptoTransferTimerFunc()
@@ -616,6 +629,11 @@ namespace Notus.Validator
             }
             //BlockStatObj = Obj_BlockQueue.CurrentBlockStatus();
             Start_HttpListener();
+            if (NVG.Settings.GenesisCreated == false)
+            {
+                NVG.Settings.CommEstablished = true;
+                UpdateUtcTimeTimerFunc();
+            }
 
             if (NVG.Settings.LocalNode == false)
             {
@@ -629,12 +647,6 @@ namespace Notus.Validator
             }
 
             ValidatorQueueObj.PreStart();
-            NVG.Settings.CommEstablished = true;
-
-            if (NVG.Settings.GenesisCreated == false)
-            {
-
-            }
 
             //şimdilik kapatıldı
             //ValidatorQueueObj.Start();
@@ -705,7 +717,6 @@ namespace Notus.Validator
                     //});
                 });
                 */
-                UpdateUtcTimeTimerFunc();
 
                 if (NVG.Settings.Layer == NVE.NetworkLayer.Layer1)
                 {
@@ -727,7 +738,6 @@ namespace Notus.Validator
             if (NVG.Settings.LocalNode == true)
             {
                 ValidatorQueueObj.WaitForEnoughNode = false;
-                ValidatorQueueObj.MyTurn = true;
             }
 
             // her node için ayrılan süre
@@ -739,7 +749,7 @@ namespace Notus.Validator
             string selectedWalletId = string.Empty;
             byte nodeOrderCount = 0;
 
-            while (tmpExitMainLoop == false)
+            while (tmpExitMainLoop == false && NVG.Settings.NodeClosing==false)
             {
                 if (prepareNextQueue == false)
                 {
@@ -755,7 +765,6 @@ namespace Notus.Validator
                         while (ND.AddMiliseconds(currentQueueTime, queueTimePeriod - 10) >= NVG.NowUTC)
                         {
                             /*
-                            NGF.UpdateUtcNowValue();
                             if (nextWalletPrinted == false)
                             {
                                 nextWalletPrinted = true;
@@ -765,15 +774,10 @@ namespace Notus.Validator
                             */
                             if (txExecuted == false)
                             {
-                                //Console.WriteLine("currentQueueTime : " + currentQueueTime.ToString() + " - " + NVC.BlockListeningForPoolTime.ToString() + " - " + ND.AddMiliseconds(currentQueueTime, NVC.BlockListeningForPoolTime).ToString());
-                                //NGF.UpdateUtcNowValue();
-                                //Console.WriteLine("NVG.NowUTC : " + NVG.NowUTC.ToString());
                                 EmptyBlockGeneration();
                                 NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
                                     ND.AddMiliseconds(currentQueueTime, NVC.BlockListeningForPoolTime)
                                 );
-                                //NGF.UpdateUtcNowValue();
-                                //Console.WriteLine("NVG.NowUTC : " + NVG.NowUTC.ToString());
                                 if (TmpBlockStruct != null)
                                 {
                                     txExecuted = true;
@@ -784,11 +788,7 @@ namespace Notus.Validator
                                         NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
                                         ProcessBlock(PreparedBlockData, 4);
                                         NGF.WalletUsageList.Clear();
-                                        //NGF.UpdateUtcNowValue();
-                                        //Console.WriteLine("NVG.NowUTC : " + NVG.NowUTC.ToString());
                                         ValidatorQueueObj.Distrubute(PreBlockData.info.rowNo, PreBlockData.info.type);
-                                        //NGF.UpdateUtcNowValue();
-                                        //Console.WriteLine("NVG.NowUTC : " + NVG.NowUTC.ToString());
                                     }
                                     else
                                     {
@@ -836,21 +836,7 @@ namespace Notus.Validator
                 }
                 else
                 {
-                    if (NVG.Settings.NodeClosing == true)
-                    {
-                        /*
-                        kill mesajı gönderilmesi esnasında sorunsuz çalışmalı
-                        burayı kontrol et
 
-                        empty blok havuza değil
-                        doğrudan oluşturulmaya gönderilsin
-                        */
-
-                        NP.Info(NVG.Settings, "Sending Kill Signals To All Nodes");
-                        tmpExitMainLoop = true;
-                        ValidatorQueueObj.KillMe();
-                        NVG.Settings.ClosingCompleted = true;
-                    }
                 }
             }
 
@@ -1058,8 +1044,10 @@ namespace Notus.Validator
         }
         private bool ProcessBlock(NVClass.BlockData blockData, int blockSource)
         {
+            bool addBlockToChain = false;
             if (blockData.info.rowNo > NVG.Settings.LastBlock.info.rowNo)
             {
+                addBlockToChain = true;
                 NVG.Settings.LastBlock = JsonSerializer.Deserialize<
                     NVClass.BlockData>(JsonSerializer.Serialize(blockData)
                 );
@@ -1110,7 +1098,6 @@ namespace Notus.Validator
 
             if (blockData.info.rowNo > NVG.Settings.LastBlock.info.rowNo)
             {
-                NGF.BlockQueue.AddToChain(blockData);
                 if (blockData.info.type == 250)
                 {
                     Obj_Api.Layer3_StorageFileDone(blockData.info.uID);
@@ -1175,7 +1162,10 @@ namespace Notus.Validator
             {
                 ProcessBlock_PrintSection(blockData, blockSource);
             }
-
+            if (addBlockToChain == true)
+            {
+                NGF.BlockQueue.AddToChain(blockData);
+            }
             //DateTime start = DateTime.Now;
             //gelen blok burada işleniyor...
             Obj_Api.AddForCache(blockData);
