@@ -9,6 +9,7 @@ using System.Numerics;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using NH = Notus.Hash;
 using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
@@ -140,7 +141,7 @@ namespace Notus.Validator
                 }
                 if (tmpExitWhileLoop == false)
                 {
-                    Thread.Sleep(5500);
+                    Thread.Sleep(2000);
                 }
             }
         }
@@ -152,7 +153,7 @@ namespace Notus.Validator
                 tmpAllWordlTimeList.Add(UInt64.Parse(entry.Key, NumberStyles.AllowHexSpecifier));
             }
             tmpAllWordlTimeList.Sort();
-            return new Notus.Hash().CommonHash("sha1", JsonSerializer.Serialize(tmpAllWordlTimeList));
+            return new NH().CommonHash("sha1", JsonSerializer.Serialize(tmpAllWordlTimeList));
         }
         public List<NVS.IpInfo> GiveMeNodeList()
         {
@@ -230,7 +231,7 @@ namespace Notus.Validator
             tmpAllWalletList.Sort();
             tmpAllWordlTimeList.Sort();
 
-            NodeListHash = new Notus.Hash().CommonHash("sha1",
+            NodeListHash = new NH().CommonHash("sha1",
                 JsonSerializer.Serialize(tmpAllAddressList) + ":" +
                 JsonSerializer.Serialize(tmpAllWalletList) + ":" +
                 JsonSerializer.Serialize(tmpAllWordlTimeList)
@@ -352,10 +353,11 @@ namespace Notus.Validator
                             ) == true
                         )
                         {
-                            NP.Info(NVG.Settings, entry.Value.IP.Wallet + " Just Left");
                             if (NVG.NodeList.ContainsKey(entry.Key))
                             {
                                 NVG.NodeList[entry.Key].Status = NVS.NodeStatus.Offline;
+                                NP.Info(NVG.Settings, "Node Just Left : " + entry.Value.IP.Wallet);
+                                NP.NodeCount();
                                 return "1";
                             }
                         }
@@ -773,7 +775,7 @@ namespace Notus.Validator
                     {
                         BigInteger intWalletNo = BigInteger.Parse(
                             "0" +
-                            new Notus.Hash().CommonHash("sha1",
+                            new NH().CommonHash("sha1",
                                 entry.Value.IP.Wallet +
                                 NVC.CommonDelimeterChar +
                                 entry.Value.Begin.ToString() +
@@ -797,30 +799,6 @@ namespace Notus.Validator
                 }
             }
             return resultList;
-        }
-        public void KillMe()
-        {
-            // nodeların kapanma işlemi şu sıra ile olacak
-            /*
-            node öncelikle diğer tüm ağlara kapanmak istediğini "kill" mesajı ile bildirecek.
-            mesajı alan nodelar, mesajı gönderen node'a kapanmak isteyip istemediğini soracak
-            eğer geri gelen cevap kapanmak istediğine dair bir mesaj ise
-            diğer nodelar kendi listelerinden node'u çıkartacak
-            */
-            // diğer nodelara kapandığımızı bildiriyoruz...
-            Console.WriteLine("Sending Kill Signall");
-            foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
-            {
-                Console.WriteLine("Kill Message To -> " + entry.Key);
-                if (string.Equals(entry.Key, NVG.Settings.Nodes.My.HexKey) == false)
-                {
-                    string tmpResult = SendMessage(entry.Value.IP,
-                        "<kill>" + NVG.Settings.Nodes.My.IP.Wallet + "</kill>",
-                        entry.Key
-                    );
-                    Console.WriteLine("tmpResult : " + tmpResult);
-                }
-            }
         }
         public void PreStart()
         {
@@ -907,7 +885,7 @@ namespace Notus.Validator
             StartingTimeAfterEnoughNode_Arrived = false;
             if (biggestSyncNo == 0)
             {
-                NP.Info(NVG.Settings, "Node Count : " + NVG.OnlineNodeCount.ToString() + " / " + NVG.NodeList.Count.ToString());
+                NP.NodeCount();
                 //cüzdanların hashleri alınıp sıraya koyuluyor.
                 SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, 0);
 

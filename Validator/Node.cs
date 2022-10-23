@@ -6,6 +6,7 @@ using NGF = Notus.Variable.Globals.Functions;
 using NVC = Notus.Variable.Constant;
 using NVE = Notus.Variable.Enum;
 using NVS = Notus.Variable.Struct;
+using NP = Notus.Print;
 namespace Notus.Validator
 {
     public static class Node
@@ -19,8 +20,8 @@ namespace Notus.Validator
                 menuObj.Start();
                 menuObj.DefineMySetting();
             }
-            
-            //NVG.Settings.NodeStartingTime = Notus.Date.ToLong(NGF.GetUtcNowFromNtp());
+
+            //NVG.Settings.NodeStartingTime = ND.ToLong(NGF.GetUtcNowFromNtp());
             //Console.WriteLine(NVG.Settings.NodeStartingTime);
 
             if (NVG.Settings.NodeType != NVE.NetworkNodeType.Replicant)
@@ -43,7 +44,7 @@ namespace Notus.Validator
         {
             if (NVG.Settings.LocalNode == true)
             {
-                Notus.Print.Info(NVG.Settings, "LocalNode Activated");
+                NP.Info(NVG.Settings, "LocalNode Activated");
             }
             Notus.IO.NodeFolderControl();
             NGF.Start();
@@ -60,7 +61,7 @@ namespace Notus.Validator
             Console.ReadLine();
             */
 
-            Notus.Print.Info(NVG.Settings, "Activated DevNET for " + NVC.LayerText[NVG.Settings.Layer]);
+            NP.Info(NVG.Settings, "Activated DevNET for " + NVC.LayerText[NVG.Settings.Layer]);
             Notus.Toolbox.Network.IdentifyNodeType(5);
             switch (NVG.Settings.NodeType)
             {
@@ -84,7 +85,7 @@ namespace Notus.Validator
             }
             if(NVG.Settings.NodeClosing == false)
             {
-                Notus.Print.Warning(NVG.Settings, "Task Ended");
+                NP.Warning(NVG.Settings, "Task Ended");
             }
         }
         private static void StartAsMaster()
@@ -100,7 +101,7 @@ namespace Notus.Validator
 
                 if (NVG.Settings.NodeClosing == false)
                 {
-                    Notus.Print.Basic(NVG.Settings, "Sleep For 2.5 Seconds");
+                    NP.Basic(NVG.Settings, "Sleep For 2.5 Seconds");
                     Thread.Sleep(2500);
                 }
             }
@@ -116,7 +117,7 @@ namespace Notus.Validator
                 }
                 if (NVG.Settings.NodeClosing == false)
                 {
-                    Notus.Print.Basic(NVG.Settings, "Sleep For 2.5 Seconds");
+                    NP.Basic(NVG.Settings, "Sleep For 2.5 Seconds");
                     Thread.Sleep(2500);
                 }
             }
@@ -136,7 +137,7 @@ namespace Notus.Validator
                 }
                 catch (Exception err)
                 {
-                    Notus.Print.Log(
+                    NP.Log(
                         NVE.LogLevel.Info,
                         660050,
                         err.Message,
@@ -145,7 +146,7 @@ namespace Notus.Validator
                         err
                     );
 
-                    Notus.Print.Danger(NVG.Settings, "Replicant Outer Error Text : " + err.Message);
+                    NP.Danger(NVG.Settings, "Replicant Outer Error Text : " + err.Message);
                 }
             }
         }

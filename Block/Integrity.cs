@@ -6,23 +6,12 @@ using System.Text.Json;
 using System.Threading;
 using NVG = Notus.Variable.Globals;
 using NGF = Notus.Variable.Globals.Functions;
+using NP = Notus.Print;
+using ND = Notus.Date;
 namespace Notus.Block
 {
     public class Integrity : IDisposable
     {
-        private DateTime LastNtpTime = Notus.Variable.Constant.DefaultTime;
-        private TimeSpan NtpTimeDifference;
-        private bool NodeTimeAfterNtpTime = false;      // time difference before or after NTP Server
-
-        /*
-        private int Val_EmptyBlockCount = 0;
-        public int EmptyBlockCount
-        {
-            get { return Val_EmptyBlockCount; }
-        }
-        */
-        private const string Const_DefaultPreText = "notus-block-queue";
-
         public Notus.Variable.Class.BlockData? GetSatus(bool ResetBlocksIfNonValid = false)
         {
             Notus.Variable.Enum.BlockIntegrityStatus Val_Status = Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain;
@@ -54,7 +43,7 @@ namespace Notus.Block
                     }
                     catch (Exception err)
                     {
-                        Notus.Print.Log(
+                        NP.Log(
                             Notus.Variable.Enum.LogLevel.Info,
                             753356,
                             err.Message,
@@ -62,7 +51,7 @@ namespace Notus.Block
                             NVG.Settings,
                             err
                         );
-                        Notus.Print.Danger(NVG.Settings, "Error Text [7abc63]: " + err.Message);
+                        NP.Danger(NVG.Settings, "Error Text [7abc63]: " + err.Message);
                     }
                 }
             }
@@ -85,7 +74,7 @@ namespace Notus.Block
 
             if (ZipFileList.Length == 0)
             {
-                Notus.Print.Success(NVG.Settings, "Genesis Block Needs");
+                NP.Success(NVG.Settings, "Genesis Block Needs");
                 //NGF.BlockOrder.Clear();
                 return (Notus.Variable.Enum.BlockIntegrityStatus.GenesisNeed, null);
             }
@@ -99,7 +88,7 @@ namespace Notus.Block
                 }
                 if (fileCountInZip == 0)
                 {
-                    Notus.Print.Log(
+                    NP.Log(
                         Notus.Variable.Enum.LogLevel.Error,
                         500001004,
                         "Zip File Deleted : " + fileName,
@@ -133,7 +122,7 @@ namespace Notus.Block
                         }
                         else
                         {
-                            Notus.Print.Log(
+                            NP.Log(
                                 Notus.Variable.Enum.LogLevel.Error,
                                 500001006,
                                 "Entry Deleteing : " + entry.FullName + " -> Zip File : "+ fileName,
@@ -194,14 +183,14 @@ namespace Notus.Block
                                             bool Val_BlockVerify = BlockValidateObj.Verify(ControlBlock);
                                             if (Val_BlockVerify == false)
                                             {
-                                                Notus.Print.Danger(NVG.Settings, "Block Integrity = NonValid");
+                                                NP.Danger(NVG.Settings, "Block Integrity = NonValid");
                                                 tmpDeleteFileList.Add(entry.FullName);
                                             }
                                             else
                                             {
                                                 if (BlockOrderList.ContainsKey(ControlBlock.info.rowNo))
                                                 {
-                                                    Notus.Print.Danger(NVG.Settings, "Block Integrity = MultipleHeight -> " + ControlBlock.info.rowNo.ToString());
+                                                    NP.Danger(NVG.Settings, "Block Integrity = MultipleHeight -> " + ControlBlock.info.rowNo.ToString());
                                                     tmpDeleteFileList.Add(entry.FullName);
                                                     returnForCheckAgain = true;
                                                 }
@@ -209,7 +198,7 @@ namespace Notus.Block
                                                 {
                                                     if (BlockPreviousList.ContainsKey(ControlBlock.info.uID))
                                                     {
-                                                        Notus.Print.Danger(NVG.Settings, "Block Integrity = MultipleId -> " + ControlBlock.info.uID);
+                                                        NP.Danger(NVG.Settings, "Block Integrity = MultipleId -> " + ControlBlock.info.uID);
                                                         tmpDeleteFileList.Add(entry.FullName);
                                                         returnForCheckAgain = true;
                                                     }
@@ -246,7 +235,7 @@ namespace Notus.Block
                                     }
                                     catch (Exception err)
                                     {
-                                        Notus.Print.Log(
+                                        NP.Log(
                                             Notus.Variable.Enum.LogLevel.Info,
                                             965354,
                                             err.Message,
@@ -255,7 +244,7 @@ namespace Notus.Block
                                             err
                                         );
 
-                                        Notus.Print.Danger(NVG.Settings, "Error Text [235abc]: " + err.Message);
+                                        NP.Danger(NVG.Settings, "Error Text [235abc]: " + err.Message);
                                     }
                                 }
                             }
@@ -270,7 +259,7 @@ namespace Notus.Block
                         tmpDeleteFileList,
                         true
                     );
-                    Notus.Print.Danger(NVG.Settings, "Repair Block Integrity = Contains Wrong / Extra Data");
+                    NP.Danger(NVG.Settings, "Repair Block Integrity = Contains Wrong / Extra Data");
                     if (returnForCheckAgain == true)
                     {
                         return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
@@ -280,7 +269,7 @@ namespace Notus.Block
 
             if (SmallestBlockHeight > 1)
             {
-                Notus.Print.Danger(NVG.Settings, "Repair Block Integrity = Missing Block Available");
+                NP.Danger(NVG.Settings, "Repair Block Integrity = Missing Block Available");
                 bool exitInnerLoop = false;
                 while (exitInnerLoop == false)
                 {
@@ -307,7 +296,7 @@ namespace Notus.Block
                                     NVG.Settings,
                                     true
                                 );
-                                Notus.Print.Danger(NVG.Settings, "Repair Block Integrity = Missing Block [45abcfe713]");
+                                NP.Danger(NVG.Settings, "Repair Block Integrity = Missing Block [45abcfe713]");
                             }
                         }
                     }
@@ -373,10 +362,10 @@ namespace Notus.Block
             }
             if (prevBlockRownNumberError == true)
             {
-                Notus.Print.Danger(NVG.Settings, "Repair Block Integrity = Wrong Block Order");
+                NP.Danger(NVG.Settings, "Repair Block Integrity = Wrong Block Order");
                 return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
             }
-            Notus.Print.Success(NVG.Settings, "Block Integrity Valid");
+            NP.Success(NVG.Settings, "Block Integrity Valid");
 
             foreach (KeyValuePair<long, string> item in BlockOrderList)
             {
@@ -424,7 +413,7 @@ namespace Notus.Block
                     }
                     catch (Exception err)
                     {
-                        Notus.Print.Log(
+                        NP.Log(
                             Notus.Variable.Enum.LogLevel.Info,
                             221548,
                             err.Message,
@@ -433,7 +422,7 @@ namespace Notus.Block
                             err
                         );
 
-                        Notus.Print.Basic(NVG.Settings.DebugMode, "Error Text [96a3c2]: " + err.Message);
+                        NP.Basic(NVG.Settings.DebugMode, "Error Text [96a3c2]: " + err.Message);
                         Thread.Sleep(5000);
                     }
                 }
@@ -463,7 +452,7 @@ namespace Notus.Block
                 }
                 else
                 {
-                    Notus.Print.Log(
+                    NP.Log(
                         Notus.Variable.Enum.LogLevel.Error,
                         500001000,
                         "Wrong File : " + ZipFileList[i],
@@ -478,7 +467,7 @@ namespace Notus.Block
         private void StoreBlockWithRowNo(Int64 BlockRowNo)
         {
             /*
-            Notus.Print.Log(
+            NP.Log(
                 Notus.Variable.Enum.LogLevel.Error,
                 500001001,
                 "BlockRowNo Does Not Exist : " + BlockRowNo.ToString(),
@@ -491,7 +480,7 @@ namespace Notus.Block
             */
             //control-local-block
             //bool localFound=AddFromLocalTemp(BlockRowNo);
-            
+
             bool localFound = false;
             if (localFound == false)
             {
@@ -522,7 +511,7 @@ namespace Notus.Block
                                 Notus.Variable.Class.BlockData? tmpEmptyBlock = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(MainResultStr);
                                 if (tmpEmptyBlock != null)
                                 {
-                                    Notus.Print.Info(NVG.Settings, "Getting Block Row No [ " + nodeUrl + " ]: " + BlockRowNo.ToString());
+                                    NP.Info(NVG.Settings, "Getting Block Row No [ " + nodeUrl + " ]: " + BlockRowNo.ToString());
                                     using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
                                     {
                                         BS_Storage.AddSync(tmpEmptyBlock, true);
@@ -534,7 +523,7 @@ namespace Notus.Block
                             {
                                 if (debugPrinted == false)
                                 {
-                                    Notus.Print.Log(
+                                    NP.Log(
                                         Notus.Variable.Enum.LogLevel.Info,
                                         203154,
                                         err.Message,
@@ -542,8 +531,8 @@ namespace Notus.Block
                                         NVG.Settings,
                                         err
                                     );
-                                    Notus.Print.Basic(NVG.Settings.DebugMode, "Error Text [5a6e84]: " + err.Message);
-                                    Notus.Print.Basic(NVG.Settings.DebugMode, "Income Text [5a6e84]: " + MainResultStr);
+                                    NP.Basic(NVG.Settings.DebugMode, "Error Text [5a6e84]: " + err.Message);
+                                    NP.Basic(NVG.Settings.DebugMode, "Income Text [5a6e84]: " + MainResultStr);
                                     debugPrinted = true;
                                 }
                                 else
@@ -565,11 +554,15 @@ namespace Notus.Block
             }
         }
         private Notus.Variable.Class.BlockData GiveMeEmptyBlock(Notus.Variable.Class.BlockData FreeBlockStruct, string PrevStr)
-        {
+        {   
             FreeBlockStruct.info.type = 300;
             FreeBlockStruct.info.rowNo = 2;
             FreeBlockStruct.info.multi = false;
-            FreeBlockStruct.info.uID = Notus.Block.Key.Generate(GetNtpTime(), NVG.Settings.NodeWallet.WalletKey);
+            FreeBlockStruct.info.uID = Notus.Block.Key.Generate(
+                ND.ToDateTime(NVG.NowUTC), 
+                NVG.Settings.NodeWallet.WalletKey
+            );
+
             FreeBlockStruct.info.time = Notus.Block.Key.GetTimeFromKey(FreeBlockStruct.info.uID, true);
             FreeBlockStruct.cipher.ver = "NE";
             FreeBlockStruct.cipher.data = System.Convert.ToBase64String(
@@ -656,7 +649,7 @@ namespace Notus.Block
                         if (blockData.info.type == 360)
                         {
                             myGenesisSign = blockData.sign;
-                            myGenesisTime = Notus.Date.GetGenesisCreationTimeFromString(blockData);
+                            myGenesisTime = ND.GetGenesisCreationTimeFromString(blockData);
                         }
                     }
                 }
@@ -717,8 +710,8 @@ namespace Notus.Block
                         }
                         else
                         {
-                            Notus.Print.Danger(NVG.Settings, "Error Happened While Trying To Get Genesis From Other Node");
-                            Notus.Date.SleepWithoutBlocking(100);
+                            NP.Danger(NVG.Settings, "Error Happened While Trying To Get Genesis From Other Node");
+                            ND.SleepWithoutBlocking(100);
                         }
                     }
                 }
@@ -739,7 +732,7 @@ namespace Notus.Block
                 }
                 if (string.Equals(tmpBiggestSign, myGenesisSign) == false)
                 {
-                    DateTime otherNodeGenesisTime = Notus.Date.GetGenesisCreationTimeFromString(signBlock[tmpBiggestSign]);
+                    DateTime otherNodeGenesisTime = ND.GetGenesisCreationTimeFromString(signBlock[tmpBiggestSign]);
                     Int64 otherNodeGenesisTimeVal = Int64.Parse(
                         otherNodeGenesisTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
                     );
@@ -750,12 +743,12 @@ namespace Notus.Block
                     {
                         using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
                         {
-                            Notus.Print.Warning(NVG.Settings, "Current Block Were Deleted");
+                            NP.Warning(NVG.Settings, "Current Block Were Deleted");
 
                             Notus.TGZArchiver.ClearBlocks();
                             Notus.Archive.ClearBlocks(NVG.Settings);
                             BS_Storage.AddSync(signBlock[tmpBiggestSign], true);
-                            Notus.Print.Basic(NVG.Settings, "Added Block : " + signBlock[tmpBiggestSign].info.uID);
+                            NP.Basic(NVG.Settings, "Added Block : " + signBlock[tmpBiggestSign].info.uID);
                             bool secondBlockAdded = false;
                             foreach (Variable.Struct.IpInfo? entry in signNode[tmpBiggestSign])
                             {
@@ -765,18 +758,18 @@ namespace Notus.Block
                                     Notus.Toolbox.Network.GetBlockFromNode(entry.IpAddress, entry.Port, 2, NVG.Settings);
                                     if (tmpInnerBlockData != null)
                                     {
-                                        Notus.Print.Basic(NVG.Settings, "Added Block : " + tmpInnerBlockData.info.uID);
+                                        NP.Basic(NVG.Settings, "Added Block : " + tmpInnerBlockData.info.uID);
                                         BS_Storage.AddSync(tmpInnerBlockData, true);
                                         secondBlockAdded = true;
                                     }
                                 }
                             }
                         }
-                        Notus.Date.SleepWithoutBlocking(150);
+                        ND.SleepWithoutBlocking(150);
                     }
                     else
                     {
-                        Notus.Print.Basic(NVG.Settings, "Hold Your Genesis Block - We Are Older");
+                        NP.Basic(NVG.Settings, "Hold Your Genesis Block - We Are Older");
                     }
                 }
             }
@@ -836,30 +829,6 @@ namespace Notus.Block
                 NVG.Settings.GenesisCreated = false;
                 NVG.Settings.LastBlock = LastBlock;
             }
-        }
-        private DateTime GetNtpTime()
-        {
-            if (
-                string.Equals(
-                    LastNtpTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText),
-                    Notus.Variable.Constant.DefaultTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
-                )
-            )
-            {
-                LastNtpTime = Notus.Time.GetFromNtpServer();
-                DateTime tmpNtpCheckTime = DateTime.Now;
-                NodeTimeAfterNtpTime = (tmpNtpCheckTime > LastNtpTime);
-                NtpTimeDifference = (NodeTimeAfterNtpTime == true ? (tmpNtpCheckTime - LastNtpTime) : (LastNtpTime - tmpNtpCheckTime));
-                return LastNtpTime;
-            }
-
-            if (NodeTimeAfterNtpTime == true)
-            {
-                LastNtpTime = DateTime.Now.Subtract(NtpTimeDifference);
-                return LastNtpTime;
-            }
-            LastNtpTime = DateTime.Now.Add(NtpTimeDifference);
-            return LastNtpTime;
         }
         public Integrity()
         {

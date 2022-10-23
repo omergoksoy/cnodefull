@@ -840,130 +840,17 @@ namespace Notus.Validator
                 }
             }
 
-            Console.WriteLine("tmpExitMainLoop == true");
-            //NP.ReadLine();
-
-            if (NVG.Settings.GenesisCreated == true)
+            if (NVG.Settings.NodeClosing == false)
             {
-                NP.Warning(NVG.Settings, "Main Class Temporary Ended");
-            }
-            else
-            {
-                NP.Warning(NVG.Settings, "Main Class Ended");
-            }
-
-
-            /*
-            while (tmpExitMainLoop == false && NVG.Settings.NodeClosing==false)
-            {
-                //WaitUntilEnoughNode();
-                NGF.UpdateUtcNowValue();
-                //NGF.RefreshNodeQueueTime();
-                bool MyTurn = false;
-
-                if (tmpStartWorkingPrinted == false)
+                if (NVG.Settings.GenesisCreated == true)
                 {
-                    tmpStartWorkingPrinted = true;
-                    NP.Success(NVG.Settings, "Node Starts");
-                }
-
-
-                if (ValidatorQueueObj.MyTurn == true || NVG.Settings.GenesisCreated == true)
-                {
-
-                    //3 saniye ile 3.000 milisaniye
-
-
-                    //2 node için -> 1.500 milisaniye / node  -> ilk 2 sıra
-                    //3 node için -> 1.000 milisaniye / node  -> ilk 3 sıra
-                    //4 node için ->   750 milisaniye / node  -> ilk 3 sıra
-                    //5 node için ->   600 milisaniye / node  -> ilk 3 sıra
-                    //6 node için ->   500 milisaniye / node  -> ilk 6 sıra
-                    //7 ve sonası ->   500 milisaniye / node  -> ilk 6 sıra
-
-
-
-                    // int islemSuresi = 200;
-                    // int olusturmaSuresi = 100;
-                    // int dagitmaSuresi = 200;
-                    // DateTime islemBitis = NVG.StartingTime.AddMilliseconds(islemSuresi);
-                    // DateTime olusturmaBitis = islemBitis.AddMilliseconds(islemSuresi);
-                    // NP.Info(NVG.Settings, "Islem Bitis          : " + islemBitis.ToString("HH:mm:ss.fff"));
-                    // NP.Info(NVG.Settings, "Blok Olusturma Bitis : " + olusturmaBitis.ToString("HH:mm:ss.fff"));
-
-                    NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
-                        0
-                    // islemBitis, olusturmaBitis
-                    );
-                    if (TmpBlockStruct != null)
-                    {
-                        // Console.WriteLine(JsonSerializer.Serialize(TmpBlockStruct));
-                        NVClass.BlockData? PreBlockData = JsonSerializer.Deserialize<NVClass.BlockData>(TmpBlockStruct.data);
-
-                        // omergoksoy
-                        // NVE.ValfwidatorOrder NodeOrder = ValidatorQueueObj.Distrubute(PreBlockData);
-
-                        //if (NodeOrder == NVE.ValidatorOrder.Primary)
-                        //{
-
-                        //}
-
-                        //blok sıra ve önceki değerleri düzenleniyor...
-
-                        if (PreBlockData != null)
-                        {
-                            PreBlockData = NGF.BlockQueue.OrganizeBlockOrder(PreBlockData);
-                            NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
-                            ProcessBlock(PreparedBlockData, 4);
-                            NGF.WalletUsageList.Clear();
-                            ValidatorQueueObj.Distrubute(PreBlockData.info.rowNo, PreBlockData.info.type);
-                            Thread.Sleep(1);
-                        }
-                        else
-                        {
-                            NP.Danger(NVG.Settings, "Pre Block Is NULL");
-                        }
-                    }
-                    else
-                    {
-                        if ((DateTime.Now - LastPrintTime).TotalSeconds > 20)
-                        {
-                            LastPrintTime = DateTime.Now;
-                            if (NVG.Settings.GenesisCreated == true)
-                            {
-                                tmpExitMainLoop = true;
-                            }
-                            else
-                            {
-                                //Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
-                                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                                Console.Write("+");
-                                Thread.Sleep(1);
-                            }
-                        }
-                    }
+                    NP.Warning(NVG.Settings, "Main Class Temporary Ended");
                 }
                 else
                 {
-                    if (NVG.Settings.GenesisCreated == false)
-                    {
-                        if ((DateTime.Now - LastPrintTime).TotalSeconds > 20)
-                        {
-                            LastPrintTime = DateTime.Now;
-                            Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                            Console.Write("-");
-                            Thread.Sleep(1);
-                        }
-                        if (NGF.BlockQueue.CheckPoolDb == true)
-                        {
-                            //Console.WriteLine("NGF.BlockQueue.LoadFromPoolDb();");
-                            NGF.BlockQueue.LoadFromPoolDb();
-                        }
-                    }
+                    NP.Warning(NVG.Settings, "Main Class Ended");
                 }
             }
-
-            */
         }
 
         private string fixedRowNoLength(NVClass.BlockData blockData)

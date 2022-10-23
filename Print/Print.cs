@@ -60,6 +60,10 @@ namespace Notus
                 true
             );
         }
+        public static void NodeCount()
+        {
+            Info(NVG.Settings, "Node Count : " + NVG.OnlineNodeCount.ToString() + " / " + NVG.NodeList.Count.ToString());
+        }
         public static void ReadLine()
         {
             ReadLine(NVG.Settings);

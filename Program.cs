@@ -1,8 +1,8 @@
 ﻿using System.Runtime.ExceptionServices;
 using System.Text.Json;
 using NGF = Notus.Variable.Globals.Functions;
+using NP = Notus.Print;
 using NVG = Notus.Variable.Globals;
-
 static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 {
     string fatalErrorText = (e.ExceptionObject as Exception).Message + "Unhandled UnhandledExceptionEventArgs Exception -> Sender(" + sender.ToString() + ")";
@@ -28,7 +28,8 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     NVG.Settings.NodeClosing = true;
     e.Cancel = true;
 
-    Console.WriteLine("Please Wait While Node Terminating");
+    Console.WriteLine();
+    NP.Warning(NVG.Settings, "Please Wait While Node Terminating");
     if (NVG.Settings.CommEstablished == true)
     {
         NGF.SendKillMessage();

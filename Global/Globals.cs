@@ -13,7 +13,7 @@ using NVC = Notus.Variable.Constant;
 using NVE = Notus.Variable.Enum;
 using NVS = Notus.Variable.Struct;
 using NVG = Notus.Variable.Globals;
-
+using NP = Notus.Print;
 namespace Notus.Variable
 {
     static class Globals
@@ -191,7 +191,7 @@ namespace Notus.Variable
             }
             public static void SendKillMessage()
             {
-                Notus.Print.Info(Settings, "Sending Kill Signals To All Nodes");
+                NP.Info(Settings, "Sending Kill Signals To All Nodes");
                 // nodeların kapanma işlemi şu sıra ile olacak
                 /*
                 node öncelikle diğer tüm ağlara kapanmak istediğini "kill" mesajı ile bildirecek.
@@ -205,7 +205,6 @@ namespace Notus.Variable
                 */
                 // diğer nodelara kapandığımızı bildiriyoruz...
                 ulong nowUtcValue = NVG.NowUTC;
-                Console.WriteLine("Sending Kill Signall");
                 string controlSignForKillMsg = Notus.Wallet.ID.Sign(
                     nowUtcValue.ToString() + 
                         Notus.Variable.Constant.CommonDelimeterChar + 
@@ -217,7 +216,8 @@ namespace Notus.Variable
                 {
                     if (string.Equals(entry.Key, Settings.Nodes.My.HexKey) == false)
                     {
-                        string tmpResult = SendMessage(entry.Value.IP.IpAddress,
+                        NP.Warning(NVG.Settings, "Kill Message To -> " + entry.Key);
+                        SendMessage(entry.Value.IP.IpAddress,
                             entry.Value.IP.Port,
                             "<kill>" +
                                 Settings.Nodes.My.IP.Wallet +
@@ -228,7 +228,6 @@ namespace Notus.Variable
                             "</kill>",
                             entry.Key
                         );
-                        //Console.WriteLine("tmpResult [ kill ] : " + tmpResult);
                     }
                 }
                 Settings.ClosingCompleted = true;
