@@ -280,6 +280,13 @@ namespace Notus.Validator
         {
             if (CheckXmlTag(incomeData, "block"))
             {
+                bu değişken true olunca, öncelikle diğer node'dan 
+                blok alınması işlemini tamamla,
+                blok alma işi bitince yeni blok oluşturulsun
+                /*
+                */
+                NVG.Settings.WaitForGeneratedBlock = true;
+
                 string incomeDataStr = GetPureText(incomeData, "block");
                 if (incomeDataStr.IndexOf(":") < 0)
                 {
@@ -322,6 +329,7 @@ namespace Notus.Validator
                     bool fncResult = Func_NewBlockIncome(tmpBlockData);
                     if (fncResult == true)
                     {
+                        NVG.Settings.WaitForGeneratedBlock = false;
                         return "done";
                     }
                 }

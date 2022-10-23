@@ -7,14 +7,14 @@ using System.Net;
 using System.Numerics;
 using System.Text.Json;
 using System.Threading;
+using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
+using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
-using ND = Notus.Date;
-using NP = Notus.Print;
 namespace Notus.Validator
 {
     public class Main : IDisposable
@@ -518,8 +518,9 @@ namespace Notus.Validator
         }
         public void EmptyBlockGeneration()
         {
+            bool executeEmptyBlock = false;
             int howManySeconds = NVG.Settings.Genesis.Empty.Interval.Time;
-            if ((ulong)NVG.Settings.Genesis.Empty.SlowBlock.Count >= NVG.Settings.EmptyBlockCount)
+            if (NVG.Settings.Genesis.Empty.SlowBlock.Count >= NVG.Settings.EmptyBlockCount)
             {
                 howManySeconds = (
                     NVG.Settings.Genesis.Empty.Interval.Time
@@ -529,8 +530,18 @@ namespace Notus.Validator
             }
             if (NVG.NowUTC > ND.ToLong(ND.ToDateTime(NVG.Settings.LastBlock.info.time).AddSeconds(howManySeconds)))
             {
-                NP.Success(NVG.Settings, "Empty Block Executed");
+                executeEmptyBlock = true;
+            }
+            if (NVG.Settings.OtherBlockCount > NVG.Settings.Genesis.Empty.Interval.Block)
+            {
+                executeEmptyBlock = true;
+            }
+            if (executeEmptyBlock == true)
+            {
+                NVG.Settings.OtherBlockCount = 0;
+                NVG.Settings.EmptyBlockCount++;
                 NGF.BlockQueue.AddEmptyBlock();
+                NP.Success(NVG.Settings, "Empty Block Executed");
             }
         }
         public void Start()
@@ -644,7 +655,7 @@ namespace Notus.Validator
                 // her gelen blok bir listeye eklenmeli ve o liste ile sıra ile eklenmeli
                 ValidatorQueueObj.Func_NewBlockIncome = tmpNewBlockIncome =>
                 {
-                    NP.Info(NVG.Settings,"Arrived New Block : " + tmpNewBlockIncome.info.uID.Substring(0, 15));
+                    NP.Info(NVG.Settings, "Arrived New Block : " + tmpNewBlockIncome.info.uID.Substring(0, 15));
                     ProcessBlock(tmpNewBlockIncome, 2);
                     return true;
                 };
@@ -753,7 +764,7 @@ namespace Notus.Validator
             string selectedWalletId = string.Empty;
             byte nodeOrderCount = 0;
 
-            while (tmpExitMainLoop == false && NVG.Settings.NodeClosing==false)
+            while (tmpExitMainLoop == false && NVG.Settings.NodeClosing == false)
             {
                 if (prepareNextQueue == false)
                 {
@@ -765,6 +776,11 @@ namespace Notus.Validator
                     nodeOrderCount++;
                     if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
                     {
+                        while (NVG.Settings.WaitForGeneratedBlock == true)
+                        {
+                            Thread.Sleep(1);
+                        }
+
                         bool txExecuted = false;
                         while (ND.AddMiliseconds(currentQueueTime, queueTimePeriod - 10) >= NVG.NowUTC)
                         {
@@ -778,7 +794,7 @@ namespace Notus.Validator
                             */
                             if (txExecuted == false)
                             {
-                                Console.WriteLine("NVG.Settings.EmptyBlockCount : " +NVG.Settings.EmptyBlockCount.ToString());
+                                //Console.WriteLine("NVG.Settings.EmptyBlockCount : " +NVG.Settings.EmptyBlockCount.ToString());
                                 EmptyBlockGeneration();
                                 NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
                                     ND.AddMiliseconds(currentQueueTime, NVC.BlockListeningForPoolTime)
@@ -956,9 +972,11 @@ namespace Notus.Validator
                 if (blockData.info.type == 300)
                 {
                     NVG.Settings.EmptyBlockCount++;
+                    NVG.Settings.OtherBlockCount = 0;
                 }
                 else
                 {
+                    NVG.Settings.OtherBlockCount++;
                     NVG.Settings.EmptyBlockCount = 0;
                 }
             }
@@ -1065,7 +1083,7 @@ namespace Notus.Validator
             {
                 ProcessBlock_PrintSection(blockData, blockSource);
             }
-            
+
             if (addBlockToChain == true)
             {
                 NGF.BlockQueue.AddToChain(blockData);

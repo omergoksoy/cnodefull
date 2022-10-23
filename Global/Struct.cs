@@ -12,6 +12,7 @@ namespace Notus.Globals.Variable
 
     public class Settings
     {
+        public bool WaitForGeneratedBlock { get; set; }
         public bool NodeClosing { get; set; }
         public bool ClosingCompleted { get; set; }
         public bool CommEstablished { get; set; }
@@ -45,7 +46,8 @@ namespace Notus.Globals.Variable
         public string EncryptKey { get; set; }
         public string HashSalt { get; set; }
 
-        public ulong EmptyBlockCount { get; set; }
+        public int OtherBlockCount { get; set; }
+        public int EmptyBlockCount { get; set; }
         public Notus.Variable.Class.BlockData? LastBlock { get; set; }
     }
 

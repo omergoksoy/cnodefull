@@ -70,6 +70,7 @@ namespace Notus.Variable
 
             Settings = new Notus.Globals.Variable.Settings()
             {
+                WaitForGeneratedBlock=false,
                 NodeClosing = false,
                 ClosingCompleted = false,
                 CommEstablished = false,
