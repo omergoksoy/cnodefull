@@ -205,39 +205,6 @@ namespace Notus.Reward
                             }
                         }
                     }
-
-                    /*
-                    Console.WriteLine(JsonSerializer.Serialize(RewardList));
-                    //blok zamanı ve utc zamanı çakışıyor
-                    DateTime tmpLastTime = Notus.Date.ToDateTime(
-                        Obj_Settings.LastBlock.info.time
-                    ).AddSeconds(howManySeconds);
-
-                    // get utc time from validatır Queue
-                    DateTime utcTime = ValidatorQueueObj.GetUtcTime();
-                    if (utcTime > tmpLastTime)
-                    {
-                        if (ValidatorQueueObj.MyTurn)
-                        {
-                            if ((DateTime.Now - EmptyBlockGeneratedTime).TotalSeconds > 30)
-                            {
-                                //Console.WriteLine((DateTime.Now - EmptyBlockGeneratedTime).TotalSeconds);
-                                EmptyBlockGeneratedTime = DateTime.Now;
-                                Notus.Print.Success(Obj_Settings, "Empty Block Executed");
-                                Obj_BlockQueue.AddEmptyBlock();
-                            }
-                            EmptyBlockNotMyTurnPrinted = false;
-                        }
-                        else
-                        {
-                            if (EmptyBlockNotMyTurnPrinted == false)
-                            {
-                                //Notus.Print.Warning(Obj_Settings, "Not My Turn For Empty Block");
-                                EmptyBlockNotMyTurnPrinted = true;
-                            }
-                        }
-                    }
-                    */
                     TimerIsRunning = false;
                 }
             }, true);

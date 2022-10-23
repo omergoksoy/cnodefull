@@ -216,18 +216,21 @@ namespace Notus.Variable
                 {
                     if (string.Equals(entry.Key, Settings.Nodes.My.HexKey) == false)
                     {
-                        NP.Warning(NVG.Settings, "Sending Kill Message To -> " + entry.Value.IP.Wallet);
-                        SendMessage(entry.Value.IP.IpAddress,
-                            entry.Value.IP.Port,
-                            "<kill>" +
-                                Settings.Nodes.My.IP.Wallet +
-                                NVC.CommonDelimeterChar +
-                                nowUtcValue.ToString() +
-                                NVC.CommonDelimeterChar +
-                                controlSignForKillMsg +
-                            "</kill>",
-                            entry.Key
-                        );
+                        if (entry.Value.Status == NVS.NodeStatus.Online)
+                        {
+                            NP.Warning(NVG.Settings, "Sending Kill Message To -> " + entry.Value.IP.Wallet);
+                            SendMessage(entry.Value.IP.IpAddress,
+                                entry.Value.IP.Port,
+                                "<kill>" +
+                                    Settings.Nodes.My.IP.Wallet +
+                                    NVC.CommonDelimeterChar +
+                                    nowUtcValue.ToString() +
+                                    NVC.CommonDelimeterChar +
+                                    controlSignForKillMsg +
+                                "</kill>",
+                                entry.Key
+                            );
+                        }
                     }
                 }
                 Settings.ClosingCompleted = true;

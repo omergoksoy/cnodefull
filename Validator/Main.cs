@@ -778,6 +778,7 @@ namespace Notus.Validator
                             */
                             if (txExecuted == false)
                             {
+                                Console.WriteLine("NVG.Settings.EmptyBlockCount : " +NVG.Settings.EmptyBlockCount.ToString());
                                 EmptyBlockGeneration();
                                 NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
                                     ND.AddMiliseconds(currentQueueTime, NVC.BlockListeningForPoolTime)
@@ -936,13 +937,13 @@ namespace Notus.Validator
         private bool ProcessBlock(NVClass.BlockData blockData, int blockSource)
         {
             //gelen blok datası
-            Console.WriteLine("blockData.info.rowNo              : " + blockData.info.rowNo.ToString());
+            //Console.WriteLine("blockData.info.rowNo              : " + blockData.info.rowNo.ToString());
 
             //son olarak eklenen blok datası
-            Console.WriteLine("NVG.Settings.LastBlock.info.rowNo : " + NVG.Settings.LastBlock.info.rowNo.ToString());
+            //Console.WriteLine("NVG.Settings.LastBlock.info.rowNo : " + NVG.Settings.LastBlock.info.rowNo.ToString());
 
             //işlenen blok datası
-            Console.WriteLine("CurrentBlockRowNo                 : " + CurrentBlockRowNo.ToString());
+            //Console.WriteLine("CurrentBlockRowNo                 : " + CurrentBlockRowNo.ToString());
             bool addBlockToChain = false;
 
             // yeni blok geldiğinde burası devreye girecek
@@ -983,7 +984,8 @@ namespace Notus.Validator
                 }
                 else
                 {
-                    ProcessBlock_PrintSection(blockData, blockSource);
+                    Console.WriteLine("Block Convert Error -> Main.Cs -> Line 986");
+                    //ProcessBlock_PrintSection(blockData, blockSource);
                 }
                 return true;
             }
@@ -996,7 +998,7 @@ namespace Notus.Validator
                 return true;
             }
 
-            // eğer gelen blok yeni blok ise buraya girecek
+            // eğer gelen blok yeni blok ise buraya girecek ve blok işlenir
             if (blockData.info.rowNo > NVG.Settings.LastBlock.info.rowNo)
             {
                 if (blockData.info.type == 250)
@@ -1063,6 +1065,7 @@ namespace Notus.Validator
             {
                 ProcessBlock_PrintSection(blockData, blockSource);
             }
+            
             if (addBlockToChain == true)
             {
                 NGF.BlockQueue.AddToChain(blockData);
@@ -1073,14 +1076,14 @@ namespace Notus.Validator
             //Console.WriteLine(DateTime.Now - start);
             //Console.ReadLine();
 
+            //eğer blok numarası varsa, işlem bittiği için listeden silinir
             if (IncomeBlockList.ContainsKey(CurrentBlockRowNo))
             {
-                //Console.WriteLine("Remove -> " + CurrentBlockRowNo.ToString());
                 IncomeBlockList.Remove(CurrentBlockRowNo);
             }
 
             CurrentBlockRowNo++;
-
+            // eğer sonraki bloklardan listede olan varsa o da işlenir
             if (IncomeBlockList.ContainsKey(CurrentBlockRowNo))
             {
                 ProcessBlock(IncomeBlockList[CurrentBlockRowNo], 5);
