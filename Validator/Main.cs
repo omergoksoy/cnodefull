@@ -535,6 +535,11 @@ namespace Notus.Validator
         }
         public void Start()
         {
+            if (NVG.Settings.GenesisCreated == false)
+            {
+                UpdateUtcTimeTimerFunc();
+            }
+
             Obj_Integrity = new Notus.Block.Integrity();
             Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with onther node
             Obj_Integrity.GetLastBlock();        // get last block from current node
@@ -632,7 +637,6 @@ namespace Notus.Validator
             if (NVG.Settings.GenesisCreated == false)
             {
                 NVG.Settings.CommEstablished = true;
-                UpdateUtcTimeTimerFunc();
             }
 
             if (NVG.Settings.LocalNode == false)

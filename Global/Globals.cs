@@ -216,7 +216,7 @@ namespace Notus.Variable
                 {
                     if (string.Equals(entry.Key, Settings.Nodes.My.HexKey) == false)
                     {
-                        NP.Warning(NVG.Settings, "Kill Message To -> " + entry.Key);
+                        NP.Warning(NVG.Settings, "Sending Kill Message To -> " + entry.Value.IP.Wallet);
                         SendMessage(entry.Value.IP.IpAddress,
                             entry.Value.IP.Port,
                             "<kill>" +
