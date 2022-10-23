@@ -304,14 +304,7 @@ namespace Notus.Validator
                     {
                         tmpIpAddress = entry.Value.IP.IpAddress;
                         tmpPortNo = entry.Value.IP.Port;
-                    }
-                    if (
-                        entry.Value.Status == NVS.NodeStatus.Online &&
-                        entry.Value.Ready == true
-                    //&& entry.Value.ErrorCount == 0
-                    )
-                    {
-
+                        break;
                     }
                 }
                 if (tmpPortNo == 0)
@@ -326,8 +319,7 @@ namespace Notus.Validator
                 }
                 if (Func_NewBlockIncome != null)
                 {
-                    bool fncResult = Func_NewBlockIncome(tmpBlockData);
-                    if (fncResult == true)
+                    if (Func_NewBlockIncome(tmpBlockData) == true)
                     {
                         NVG.Settings.WaitForGeneratedBlock = false;
                         return "done";
