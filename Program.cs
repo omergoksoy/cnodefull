@@ -52,7 +52,48 @@ Console.CancelKeyPress += delegate {
 //NGF.UpdateUtcNowValue();
 //ulong suAn = NVG.NowUTC;
 
+
+var utc1 = Notus.Time.GetNtpTime("pool.ntp.org");
+Console.WriteLine(JsonSerializer.Serialize(utc1, Notus.Variable.Constant.JsonSetting));
+Console.ReadLine();
+
+var utc2 = Notus.Time.GetNtpTime("africa.pool.ntp.org");
+Console.WriteLine(JsonSerializer.Serialize(utc2, Notus.Variable.Constant.JsonSetting));
+Console.ReadLine();
+
+var utc3 = Notus.Time.GetNtpTime("asia.pool.ntp.org");
+Console.WriteLine(JsonSerializer.Serialize(utc3, Notus.Variable.Constant.JsonSetting));
+Console.ReadLine();
+
+var utc4 = Notus.Time.GetNtpTime("europe.pool.ntp.org");
+Console.WriteLine(JsonSerializer.Serialize(utc4, Notus.Variable.Constant.JsonSetting));
+Console.ReadLine();
+
+var utc5 = Notus.Time.GetNtpTime("north-america.pool.ntp.org");
+Console.WriteLine(JsonSerializer.Serialize(utc5, Notus.Variable.Constant.JsonSetting));
+Console.ReadLine();
+
+var utc6 = Notus.Time.GetNtpTime("oceania.pool.ntp.org");
+Console.WriteLine(JsonSerializer.Serialize(utc6, Notus.Variable.Constant.JsonSetting));
+Console.ReadLine();
+
+var utc7 = Notus.Time.GetNtpTime("south-america.pool.ntp.org");
+Console.WriteLine(JsonSerializer.Serialize(utc7, Notus.Variable.Constant.JsonSetting));
+Console.ReadLine();
+
+
+
+
 /*
+Africa — africa.pool.ntp.org (74)
+Asia — asia.pool.ntp.org (332)
+Europe — europe.pool.ntp.org (3052)
+North America — north-america.pool.ntp.org (1003)
+Oceania — oceania.pool.ntp.org (147)
+South America — south-america.pool.ntp.org (67)
+
+
+
 string SessionPrivateKey = Notus.Wallet.ID.New();
 var sign1=Notus.Wallet.ID.Sign("omer", SessionPrivateKey);
 var sign2=Notus.Wallet.ID.Sign("omer", SessionPrivateKey);

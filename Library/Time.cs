@@ -10,10 +10,10 @@ namespace Notus
 {
     public class Time
     {
-        public static Notus.Variable.Struct.UTCTimeStruct GetNtpTime()
+        public static Notus.Variable.Struct.UTCTimeStruct GetNtpTime(string ntpPoolServer = "pool.ntp.org")
         {
             Notus.Variable.Struct.UTCTimeStruct tmpReturn = new Notus.Variable.Struct.UTCTimeStruct();
-            tmpReturn.UtcTime = Notus.Time.GetFromNtpServer(true);
+            tmpReturn.UtcTime = Notus.Time.GetFromNtpServer(true, ntpPoolServer);
             tmpReturn.Now = DateTime.Now;
             tmpReturn.ulongNow = Notus.Time.DateTimeToUlong(tmpReturn.Now);
             tmpReturn.After = (tmpReturn.Now > tmpReturn.UtcTime);
@@ -46,11 +46,11 @@ namespace Notus
             }
             return currentUtcTime;
         }
-        public static DateTime GetFromNtpServer(bool WaitUntilGetFromServer = false)
+        public static DateTime GetFromNtpServer(bool WaitUntilGetFromServer = false, string ntpPoolServer = "pool.ntp.org")
         {
-            return GetExactTime(WaitUntilGetFromServer);
+            return GetExactTime(WaitUntilGetFromServer, ntpPoolServer);
         }
-        public static DateTime GetExactTime(bool WaitUntilGetFromServer = false)
+        public static DateTime GetExactTime(bool WaitUntilGetFromServer = false, string ntpPoolServer = "pool.ntp.org")
         {
             if (WaitUntilGetFromServer == true)
             {
@@ -58,7 +58,7 @@ namespace Notus
                 int count = 0;
                 while (exactTimeLong == 0)
                 {
-                    exactTimeLong = (long)GetExactTime_Int();
+                    exactTimeLong = (long)GetExactTime_Int(ntpPoolServer);
                     if (exactTimeLong == 0)
                     {
                         Thread.Sleep((count > 10 ? 5000 : 500));
@@ -97,7 +97,7 @@ namespace Notus
                 )
             );
         }
-        public static ulong DateTimeToUlong(DateTime ConvertTime,bool milisecondIncluded)
+        public static ulong DateTimeToUlong(DateTime ConvertTime, bool milisecondIncluded)
         {
             if (milisecondIncluded == true)
             {
@@ -110,7 +110,7 @@ namespace Notus
             );
         }
 
-        private static ulong GetExactTime_UTC_SubFunc(string server)
+        public static ulong GetExactTime_UTC_SubFunc(string server)
         {
             if (string.IsNullOrEmpty(server))
             {
@@ -135,18 +135,18 @@ namespace Notus
                     ulong milliseconds = intPart * 1000 + fractPart * 1000 / 0x100000000L;
                     return milliseconds;
                 }
-                catch{ }
+                catch { }
             }
             return 0;
         }
-        public static ulong GetExactTime_Int()
+        public static ulong GetExactTime_Int(string ntpPoolServer = "pool.ntp.org")
         {
-            return GetExactTime_UTC_SubFunc("pool.ntp.org");
+            return GetExactTime_UTC_SubFunc(ntpPoolServer);
         }
 
-        public static DateTime GetExactTime_DateTime()
+        public static DateTime GetExactTime_DateTime(string ntpPoolServer = "pool.ntp.org")
         {
-            return new DateTime(1900, 1, 1).AddMilliseconds((long)GetExactTime_Int());
+            return new DateTime(1900, 1, 1).AddMilliseconds((long)GetExactTime_Int(ntpPoolServer));
         }
 
     }
