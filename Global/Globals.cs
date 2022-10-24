@@ -9,11 +9,11 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVE = Notus.Variable.Enum;
-using NVS = Notus.Variable.Struct;
 using NVG = Notus.Variable.Globals;
-using NP = Notus.Print;
+using NVS = Notus.Variable.Struct;
 namespace Notus.Variable
 {
     static class Globals
@@ -91,8 +91,14 @@ namespace Notus.Variable
 
                 EncryptKey = "key-password-string",
 
-
-                UTCTime = Notus.Time.GetNtpTime(),
+                UTCTime = new NVS.UTCTimeStruct()
+                {
+                    After = false,
+                    Difference = new TimeSpan(),
+                    Now = new DateTime(),
+                    ulongNow = 0,
+                    UtcTime = new DateTime()
+                },
                 HashSalt = Notus.Encryption.Toolbox.GenerateSalt(),
 
 
@@ -139,6 +145,15 @@ namespace Notus.Variable
                 },
                 BlockOrder = new Dictionary<ulong, string>() { }
             };
+
+            burada zaman bilgisi çekiliyor
+            zaman bilgisi çekilirken kaç salise harcandığı pingTime değişkenine atanıyor
+            böyle senkronizasyon esnasında süreler daha doğru kontrol edilebilir
+            
+            //bu fonksiyon tüm zaman nodelarını kontrol ederek en hızlı zman bilgisini veren sunucunun zaman bilgisini alıyor    
+            Settings.UTCTime = Notus.Time.GetNtpTime();
+            Console.WriteLine(JsonSerializer.Serialize(Settings.UTCTime, NVC.JsonSetting));
+            Console.ReadLine();
         }
 
         public static class Functions
@@ -255,18 +270,15 @@ namespace Notus.Variable
             }
             public static void RefreshNtpTime()
             {
-                if (Settings.UTCTime == null)
+                //Settings.UTCTime = Notus.Time.RefreshNtpTime(Settings.UTCTime);
+                Settings.UTCTime.Now = DateTime.Now;
+                if (Settings.UTCTime.After == true)
                 {
-                    Settings.UTCTime = Notus.Time.GetNtpTime();
-                    /*
-                    Console.WriteLine(DateTime.Now.ToString("HH mm ss fff"));
-                    Console.WriteLine(Settings.UTCTime.Now.ToString("HH mm ss fff"));
-                    NP.ReadLine();
-                    */
+                    Settings.UTCTime.Now = DateTime.Now.Subtract(Settings.UTCTime.Difference);
                 }
                 else
                 {
-                    Settings.UTCTime = Notus.Time.RefreshNtpTime(Settings.UTCTime);
+                    Settings.UTCTime.Now = DateTime.Now.Add(Settings.UTCTime.Difference);
                 }
             }
             public static string GenerateTxUid()
@@ -305,6 +317,7 @@ namespace Notus.Variable
                     Balance.Start();
                 }
 
+                /*
                 Console.WriteLine();
                 Console.WriteLine();
                 RefreshNtpTime();
@@ -313,7 +326,6 @@ namespace Notus.Variable
                     Console.WriteLine(JsonSerializer.Serialize(Settings.UTCTime, NVC.JsonSetting));
                     Settings.UTCTime = Notus.Time.GetNtpTime();
                 }
-                /*
                 Settings.UTCTime = Notus.Time.GetNtpTime();
                 Console.WriteLine(DateTime.Now.ToString("HH mm ss fff"));
                 Console.WriteLine(Settings.UTCTime.Now.ToString("HH mm ss fff"));

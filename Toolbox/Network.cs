@@ -164,7 +164,6 @@ namespace Notus.Toolbox
                 NVG.Settings.Nodes.My.IP.IpAddress = NVG.Settings.IpInfo.Public;
             }
             NVG.Settings.Nodes.My.HexKey=Notus.Toolbox.Network.IpAndPortToHex(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
-            NVG.Settings.UTCTime = Notus.Time.GetNtpTime();
             if (Notus.Variable.Constant.ListMainNodeIp.IndexOf(NVG.Settings.IpInfo.Public) >= 0)
             {
                 //NVG.Settings.Nodes.My.InTheCode = true;

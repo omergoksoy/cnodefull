@@ -476,7 +476,6 @@ namespace Notus.Validator
                 //NodeList[nodeHexText].ErrorCount++;
                 NVG.NodeList[nodeHexText].Status = NVS.NodeStatus.Offline;
                 NVG.NodeList[nodeHexText].Ready = false;
-                //NodeList[nodeHexText].ErrorTime = Notus.Time.NowNtpTimeToUlong();
 
                 //NodeList[nodeHexText].Time.Error = DateTime.Now;
             }
