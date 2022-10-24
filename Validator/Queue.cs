@@ -98,7 +98,12 @@ namespace Notus.Validator
                         " ] . Block To " +
                         entry.Value.IP.IpAddress + ":" +
                         entry.Value.IP.Port.ToString()
+                        //+
+                        //" -> " +
+                        //NVG.NowUTC.ToString("HH mm ss fff")
                     );
+                    
+                    Console.WriteLine("Distrubute : " + ND.ToDateTime(NVG.NowUTC).ToString("HH mm ss fff"));
                 }
             }
         }
@@ -280,13 +285,15 @@ namespace Notus.Validator
         {
             if (CheckXmlTag(incomeData, "block"))
             {
+                /*
                 bu değişken true olunca, öncelikle diğer node'dan 
                 blok alınması işlemini tamamla,
                 blok alma işi bitince yeni blok oluşturulsun
-                /*
                 */
                 NVG.Settings.WaitForGeneratedBlock = true;
-
+                
+                NP.Info(NVG.Settings, "Block Row No Income -> " + ND.ToDateTime(NVG.NowUTC).ToString("HH mm ss fff"));
+                
                 string incomeDataStr = GetPureText(incomeData, "block");
                 if (incomeDataStr.IndexOf(":") < 0)
                 {
@@ -889,6 +896,8 @@ namespace Notus.Validator
                 //cüzdanların hashleri alınıp sıraya koyuluyor.
                 SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, 0);
 
+                
+                //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                 //birinci sırada ki cüzdan seçiliyor...
                 string tmpFirstWalletId = tmpWalletList.First().Value;
                 if (string.Equals(tmpFirstWalletId, NVG.Settings.Nodes.My.IP.Wallet))

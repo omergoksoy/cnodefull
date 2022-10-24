@@ -70,7 +70,7 @@ namespace Notus.Variable
 
             Settings = new Notus.Globals.Variable.Settings()
             {
-                WaitForGeneratedBlock=false,
+                WaitForGeneratedBlock = false,
                 NodeClosing = false,
                 ClosingCompleted = false,
                 CommEstablished = false,
@@ -104,7 +104,7 @@ namespace Notus.Variable
                 {
                     My = new Struct.NodeQueueInfo()
                     {
-                        PublicKey=Notus.Wallet.ID.Generate(SessionPrivateKey),
+                        PublicKey = Notus.Wallet.ID.Generate(SessionPrivateKey),
                         Begin = 0,
                         Tick = 0,
                         SyncNo = 0,
@@ -207,8 +207,8 @@ namespace Notus.Variable
                 // diğer nodelara kapandığımızı bildiriyoruz...
                 ulong nowUtcValue = NVG.NowUTC;
                 string controlSignForKillMsg = Notus.Wallet.ID.Sign(
-                    nowUtcValue.ToString() + 
-                        Notus.Variable.Constant.CommonDelimeterChar + 
+                    nowUtcValue.ToString() +
+                        Notus.Variable.Constant.CommonDelimeterChar +
                     NVG.Settings.Nodes.My.IP.Wallet,
                     SessionPrivateKey
                 );
@@ -258,6 +258,11 @@ namespace Notus.Variable
                 if (Settings.UTCTime == null)
                 {
                     Settings.UTCTime = Notus.Time.GetNtpTime();
+                    /*
+                    Console.WriteLine(DateTime.Now.ToString("HH mm ss fff"));
+                    Console.WriteLine(Settings.UTCTime.Now.ToString("HH mm ss fff"));
+                    NP.ReadLine();
+                    */
                 }
                 else
                 {
@@ -299,7 +304,21 @@ namespace Notus.Variable
                 {
                     Balance.Start();
                 }
+
+                Console.WriteLine();
+                Console.WriteLine();
                 RefreshNtpTime();
+                for (int i = 0; i < 5; i++)
+                {
+                    Console.WriteLine(JsonSerializer.Serialize(Settings.UTCTime, NVC.JsonSetting));
+                    Settings.UTCTime = Notus.Time.GetNtpTime();
+                }
+                /*
+                Settings.UTCTime = Notus.Time.GetNtpTime();
+                Console.WriteLine(DateTime.Now.ToString("HH mm ss fff"));
+                Console.WriteLine(Settings.UTCTime.Now.ToString("HH mm ss fff"));
+                NP.ReadLine();
+                */
                 Globals.NodeListPrinted = false;
                 Globals.NodeList = new ConcurrentDictionary<string, NVS.NodeQueueInfo>();
                 Globals.NodeQueue = new Notus.Globals.Variable.NodeQueueList();

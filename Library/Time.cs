@@ -112,7 +112,11 @@ namespace Notus
 
         private static ulong GetExactTime_UTC_SubFunc(string server)
         {
-            if (string.IsNullOrEmpty(server)) throw new ArgumentException("Must be non-empty", nameof(server));
+            if (string.IsNullOrEmpty(server))
+            {
+                return 0;
+                //throw new ArgumentException("Must be non-empty", nameof(server));
+            }
 
             byte[] ntpData = new byte[48];
             ntpData[0] = 0x1B;
@@ -131,17 +135,7 @@ namespace Notus
                     ulong milliseconds = intPart * 1000 + fractPart * 1000 / 0x100000000L;
                     return milliseconds;
                 }
-                catch (Exception err)
-                {
-                    Notus.Print.Log(
-                        Notus.Variable.Enum.LogLevel.Info,
-                        77007777,
-                        err.Message,
-                        "BlockRowNo",
-                        null,
-                        err
-                    );
-                }
+                catch{ }
             }
             return 0;
         }
