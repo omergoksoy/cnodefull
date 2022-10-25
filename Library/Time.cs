@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NGF = Notus.Variable.Globals.Functions;
 using NVG = Notus.Variable.Globals;
+using ND = Notus.Date;
 namespace Notus
 {
     public class Time
@@ -14,15 +15,17 @@ namespace Notus
         public static Notus.Variable.Struct.UTCTimeStruct GetNtpTime(string ntpPoolServer = "pool.ntp.org")
         {
             Notus.Variable.Struct.UTCTimeStruct tmpReturn = new Notus.Variable.Struct.UTCTimeStruct();
+
             (long pingTime, ulong exactTimeLong) = FindFasterNtpServer();
-            tmpReturn.UtcTime = new DateTime(1900, 1, 1).AddMilliseconds(exactTimeLong);
-            //tmpReturn.UtcTime = Notus.Time.GetFromNtpServer(true, ntpPoolServer);
             tmpReturn.Now = DateTime.Now;
+            tmpReturn.pingTime = pingTime;
+            tmpReturn.UtcTime = new DateTime(1900, 1, 1).AddMilliseconds(exactTimeLong);
+            tmpReturn.ulongUtc = ND.ToLong(tmpReturn.UtcTime);
+            //tmpReturn.UtcTime = Notus.Time.GetFromNtpServer(true, ntpPoolServer);
             tmpReturn.ulongNow = Notus.Time.DateTimeToUlong(tmpReturn.Now);
 
             tmpReturn.After = (tmpReturn.Now > tmpReturn.UtcTime);
             tmpReturn.Difference = (tmpReturn.After == true ? (tmpReturn.Now - tmpReturn.UtcTime) : (tmpReturn.UtcTime - tmpReturn.Now));
-            tmpReturn.pingTime = pingTime;
             return tmpReturn;
         }
         public static ulong NowNtpTimeToUlong()
@@ -139,11 +142,17 @@ namespace Notus
                                 resultVal = milliseconds;
                             }
                             itsDone = true;
+                            /*
+                            float dddd = (float)(pingDuration * ticksPerSecond / Stopwatch.Frequency) / (float)ticksPerSecond;
+                            Console.WriteLine(serverName + " -> " + (pingDuration * ticksPerSecond / Stopwatch.Frequency).ToString());
+                            Console.WriteLine(serverName + " -> " + dddd.ToString());
+                            */
                         }
                     }
                     catch { }
                 }
             }
+            NVG.NtpServerUrl = smallestPingServerName;
             return (smallestPingTime, resultVal);
         }
         public static ulong GetExactTime_UTC_SubFunc(string server)

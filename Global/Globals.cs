@@ -57,6 +57,8 @@ namespace Notus.Variable
         şu an ki zamanın üzerine 1 dakika ekleyecek ve o zaman geldiğinde kuyruğa dahil edilmiş olacak
 
         */
+
+        public static string NtpServerUrl { get; set;}
         public static string SessionPrivateKey { get; set; }
         public static bool NodeListPrinted { get; set; }
         public static ulong NowUTC { get; set; }
@@ -145,15 +147,16 @@ namespace Notus.Variable
                 },
                 BlockOrder = new Dictionary<ulong, string>() { }
             };
-
+            /*
             burada zaman bilgisi çekiliyor
             zaman bilgisi çekilirken kaç salise harcandığı pingTime değişkenine atanıyor
             böyle senkronizasyon esnasında süreler daha doğru kontrol edilebilir
-            
-            //bu fonksiyon tüm zaman nodelarını kontrol ederek en hızlı zman bilgisini veren sunucunun zaman bilgisini alıyor    
+            */
+
+            //bu fonksiyon tüm zaman nodelarını kontrol ederek en hızlı zaman bilgisini veren sunucunun zaman bilgisini alıyor    
             Settings.UTCTime = Notus.Time.GetNtpTime();
-            Console.WriteLine(JsonSerializer.Serialize(Settings.UTCTime, NVC.JsonSetting));
-            Console.ReadLine();
+            //Console.WriteLine(JsonSerializer.Serialize(Settings.UTCTime, NVC.JsonSetting));
+            //Console.ReadLine();
         }
 
         public static class Functions
@@ -270,15 +273,14 @@ namespace Notus.Variable
             }
             public static void RefreshNtpTime()
             {
-                //Settings.UTCTime = Notus.Time.RefreshNtpTime(Settings.UTCTime);
-                Settings.UTCTime.Now = DateTime.Now;
+                DateTime tmpTime = DateTime.Now;
                 if (Settings.UTCTime.After == true)
                 {
-                    Settings.UTCTime.Now = DateTime.Now.Subtract(Settings.UTCTime.Difference);
+                    Settings.UTCTime.Now = tmpTime.Subtract(Settings.UTCTime.Difference);
                 }
                 else
                 {
-                    Settings.UTCTime.Now = DateTime.Now.Add(Settings.UTCTime.Difference);
+                    Settings.UTCTime.Now = tmpTime.Add(Settings.UTCTime.Difference);
                 }
             }
             public static string GenerateTxUid()

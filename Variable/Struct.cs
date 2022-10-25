@@ -516,11 +516,15 @@ namespace Notus.Variable.Struct
 
     public class UTCTimeStruct
     {
-        public DateTime UtcTime { get; set; }
-        public bool After { get; set; }
-        public TimeSpan Difference { get; set; }
         public DateTime Now { get; set; }
         public ulong ulongNow { get; set; }
+
+        public DateTime UtcTime { get; set; }
+        public ulong ulongUtc { get; set; }
+
+        public bool After { get; set; }
+        public TimeSpan Difference { get; set; }
+
         public long pingTime { get; set; }
     }
 

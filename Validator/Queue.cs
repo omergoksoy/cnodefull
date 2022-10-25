@@ -98,17 +98,13 @@ namespace Notus.Validator
                         " ] . Block To " +
                         entry.Value.IP.IpAddress + ":" +
                         entry.Value.IP.Port.ToString()
-                        //+
-                        //" -> " +
-                        //NVG.NowUTC.ToString("HH mm ss fff")
                     );
-                    
-                    Console.WriteLine("Distrubute : " + ND.ToDateTime(NVG.NowUTC).ToString("HH mm ss fff"));
+                    NP.Info(NVG.Settings, "Distrubute : " + ND.ToDateTime(NVG.NowUTC).ToString("HH mm ss fff"));
                 }
             }
         }
 
-        private DateTime RefreshNtpTime()
+        private DateTime CalculateStartingTime()
         {
             DateTime tmpNtpTime = NGF.GetUtcNowFromNtp();
             const ulong secondPointConst = 1000;
@@ -902,7 +898,7 @@ namespace Notus.Validator
                 if (string.Equals(tmpFirstWalletId, NVG.Settings.Nodes.My.IP.Wallet))
                 {
                     Thread.Sleep(5000);
-                    StartingTimeAfterEnoughNode = RefreshNtpTime();
+                    StartingTimeAfterEnoughNode = CalculateStartingTime();
                     ulong syncStaringTime = ND.ToLong(StartingTimeAfterEnoughNode);
                     GenerateNodeQueue(biggestSyncNo, syncStaringTime, tmpWalletList);
 
@@ -979,7 +975,6 @@ namespace Notus.Validator
             Dictionary<ulong, int> syncNoCount = new Dictionary<ulong, int>();
             foreach (var iEntry in NVG.NodeList)
             {
-
                 if (syncNoCount.ContainsKey(iEntry.Value.SyncNo) == false)
                 {
                     syncNoCount.Add(iEntry.Value.SyncNo, 0);
@@ -1012,11 +1007,14 @@ namespace Notus.Validator
                 }
             }
 
-
             //eğer büyük sayılardan hiç yok ise, olan node'lar kendi aralarında birinci belirleyecek
             if (biggestCount == 0)
             {
                 return 0;
+            }
+            if (biggestSyncNo > 0)
+            {
+                //Console.WriteLine(JsonSerializer.Serialize(syncNoCount));
             }
             return biggestSyncNo;
         }

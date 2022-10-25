@@ -1068,7 +1068,7 @@ namespace Notus.Validator
             }
 
             string tmpStorageIdKey = tmpChunkData.UID;
-            string tmpChunkIdKey = Notus.Block.Key.Generate(GetNtpTime(), NVG.Settings.NodeWallet.WalletKey);
+            string tmpChunkIdKey = Notus.Block.Key.Generate(NVG.Settings.UTCTime.Now, NVG.Settings.NodeWallet.WalletKey);
             int tmpStorageNo = Notus.Block.Key.CalculateStorageNumber(Notus.Convert.Hex2BigInteger(tmpChunkIdKey).ToString());
 
             using (Notus.Mempool ObjMp_FileChunkList =
@@ -1230,7 +1230,7 @@ namespace Notus.Validator
                 });
             }
 
-            string tmpTransferIdKey = Notus.Block.Key.Generate(GetNtpTime(), NVG.Settings.NodeWallet.WalletKey);
+            string tmpTransferIdKey = Notus.Block.Key.Generate(NVG.Settings.UTCTime.Now, NVG.Settings.NodeWallet.WalletKey);
             using (Notus.Mempool ObjMp_FileChunkList =
                 new Notus.Mempool(
                     Notus.IO.GetFolderName(
@@ -1306,7 +1306,7 @@ namespace Notus.Validator
             }
 
             string tmpStorageIdKey = tmpChunkData.UID;
-            string tmpChunkIdKey = Notus.Block.Key.Generate(GetNtpTime(), NVG.Settings.NodeWallet.WalletKey);
+            string tmpChunkIdKey = Notus.Block.Key.Generate(NVG.Settings.UTCTime.Now, NVG.Settings.NodeWallet.WalletKey);
             int tmpStorageNo = Notus.Block.Key.CalculateStorageNumber(Notus.Convert.Hex2BigInteger(tmpChunkIdKey).ToString());
 
             using (Notus.Mempool ObjMp_FileChunkList =
@@ -3018,7 +3018,7 @@ namespace Notus.Validator
                 });
             }
             string tmpChunkIdKey = Notus.Block.Key.Generate(
-                GetNtpTime(),
+                NVG.Settings.UTCTime.Now,
                 NVG.Settings.NodeWallet.WalletKey
             );
             Notus.Variable.Struct.MultiWalletStoreStruct tmpLockObj = new Notus.Variable.Struct.MultiWalletStoreStruct()
@@ -3572,30 +3572,6 @@ namespace Notus.Validator
                 return tmpFullList;
             }
             return new List<string>();
-        }
-        private DateTime GetNtpTime()
-        {
-            if (
-                string.Equals(
-                    LastNtpTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText),
-                    Notus.Variable.Constant.DefaultTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
-                )
-            )
-            {
-                LastNtpTime = Notus.Time.GetFromNtpServer();
-                DateTime tmpNtpCheckTime = DateTime.Now;
-                NodeTimeAfterNtpTime = (tmpNtpCheckTime > LastNtpTime);
-                NtpTimeDifference = (NodeTimeAfterNtpTime == true ? (tmpNtpCheckTime - LastNtpTime) : (LastNtpTime - tmpNtpCheckTime));
-                return LastNtpTime;
-            }
-
-            if (NodeTimeAfterNtpTime == true)
-            {
-                LastNtpTime = DateTime.Now.Subtract(NtpTimeDifference);
-                return LastNtpTime;
-            }
-            LastNtpTime = DateTime.Now.Add(NtpTimeDifference);
-            return LastNtpTime;
         }
         public Api()
         {

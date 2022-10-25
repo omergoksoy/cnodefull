@@ -528,6 +528,7 @@ namespace Notus.Validator
                     NVG.Settings.Genesis.Empty.SlowBlock.Multiply
                 );
             }
+            howManySeconds = 15;
             if (NVG.NowUTC > ND.ToLong(ND.ToDateTime(NVG.Settings.LastBlock.info.time).AddSeconds(howManySeconds)))
             {
                 executeEmptyBlock = true;
@@ -784,14 +785,13 @@ namespace Notus.Validator
                         bool txExecuted = false;
                         while (ND.AddMiliseconds(currentQueueTime, queueTimePeriod - 10) >= NVG.NowUTC)
                         {
-                            /*
                             if (nextWalletPrinted == false)
                             {
                                 nextWalletPrinted = true;
-                                //NP.Info(NVG.Settings, "My Turn -> " + currentQueueTime.ToString());
-                                //Console.WriteLine("Sira Bende -> " + currentQueueTime.ToString() + " - " + NVG.NowUTC.ToString());
+                                /*
+                                    NP.Info(NVG.Settings,"MY TURN -> " + currentQueueTime.ToString() + " - " + NVG.NowUTC.ToString());
+                                */
                             }
-                            */
                             if (txExecuted == false)
                             {
                                 //Console.WriteLine("NVG.Settings.EmptyBlockCount : " +NVG.Settings.EmptyBlockCount.ToString());
@@ -840,7 +840,6 @@ namespace Notus.Validator
                     {
                         if (NGF.BlockQueue.CheckPoolDb == true)
                         {
-                            //Console.WriteLine("NGF.BlockQueue.LoadFromPoolDb();");
                             NGF.BlockQueue.LoadFromPoolDb();
                         }
                     }

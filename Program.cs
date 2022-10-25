@@ -43,7 +43,9 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 }
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
+
 /*
+Console.WriteLine(DateTime.UtcNow);
 Console.CancelKeyPress += delegate {
     // call methods to clean up
 };
@@ -58,18 +60,21 @@ Console.WriteLine(fastServerName);
 Console.ReadLine();
 */
 
+öncelikle node'ların zaman bilgileri alınsın
+alınan zaman bilgileri ile NTP zaman farkı karşılaştırılsın
+iki node arasındaki zaman farkı toplansın böylece iki node
+arasındaki tüm zaman farkı eşitlenecek
 
+Örneğin;
+node-1 UTC saatinin alındığı zaman : 14:45:12.012 ise
+    ve ping timeout süresi         : 0.65429 ise
 
+node-2 UTC saatinin alındığı zaman : 14:46:28.873 ise
+    ve ping timeout süresi         : 0.23510 ise
 
+bu iki node arasındaki süre 
 
 /*
-Africa — africa.pool.ntp.org (74)
-Asia — asia.pool.ntp.org (332)
-Europe — europe.pool.ntp.org (3052)
-North America — north-america.pool.ntp.org (1003)
-Oceania — oceania.pool.ntp.org (147)
-South America — south-america.pool.ntp.org (67)
-
 
 
 string SessionPrivateKey = Notus.Wallet.ID.New();
