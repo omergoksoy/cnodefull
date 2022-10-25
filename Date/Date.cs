@@ -35,14 +35,6 @@ namespace Notus
             }
             catch(Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    988550000,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
                 return "19810125020000000";
             }
         }
@@ -58,14 +50,6 @@ namespace Notus
             }
             catch(Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    900000044,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
                 return new DateTime(1981, 01, 25, 2, 00, 00);
             }
         }

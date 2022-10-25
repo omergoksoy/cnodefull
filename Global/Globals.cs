@@ -57,8 +57,6 @@ namespace Notus.Variable
         şu an ki zamanın üzerine 1 dakika ekleyecek ve o zaman geldiğinde kuyruğa dahil edilmiş olacak
 
         */
-
-        public static string NtpServerUrl { get; set;}
         public static string SessionPrivateKey { get; set; }
         public static bool NodeListPrinted { get; set; }
         public static ulong NowUTC { get; set; }
@@ -282,6 +280,7 @@ namespace Notus.Variable
                 {
                     Settings.UTCTime.Now = tmpTime.Add(Settings.UTCTime.Difference);
                 }
+                Settings.UTCTime.Now = Settings.UTCTime.Now.Subtract(Settings.UTCTime.pingTime);
             }
             public static string GenerateTxUid()
             {

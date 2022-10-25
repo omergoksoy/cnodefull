@@ -60,6 +60,7 @@ Console.WriteLine(fastServerName);
 Console.ReadLine();
 */
 
+/*
 öncelikle node'ların zaman bilgileri alınsın
 alınan zaman bilgileri ile NTP zaman farkı karşılaştırılsın
 iki node arasındaki zaman farkı toplansın böylece iki node
@@ -73,6 +74,8 @@ node-2 UTC saatinin alındığı zaman : 14:46:28.873 ise
     ve ping timeout süresi         : 0.23510 ise
 
 bu iki node arasındaki süre 
+
+*/
 
 /*
 

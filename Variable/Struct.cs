@@ -519,13 +519,14 @@ namespace Notus.Variable.Struct
         public DateTime Now { get; set; }
         public ulong ulongNow { get; set; }
 
+        public string PingServerUrl { get; set; }
         public DateTime UtcTime { get; set; }
         public ulong ulongUtc { get; set; }
 
         public bool After { get; set; }
         public TimeSpan Difference { get; set; }
 
-        public long pingTime { get; set; }
+        public TimeSpan pingTime { get; set; }
     }
 
     public class EmptyBlockRewardStruct

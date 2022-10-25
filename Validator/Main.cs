@@ -140,14 +140,6 @@ namespace Notus.Validator
                                     }
                                     catch (Exception err3)
                                     {
-                                        NP.Log(
-                                            NVE.LogLevel.Info,
-                                            88008800,
-                                            err3.Message,
-                                            "BlockRowNo",
-                                            null,
-                                            err3
-                                        );
                                         NP.Danger(NVG.Settings, "Error Text : [9abc546ac] : " + err3.Message);
                                     }
                                     //}
@@ -788,8 +780,8 @@ namespace Notus.Validator
                             if (nextWalletPrinted == false)
                             {
                                 nextWalletPrinted = true;
+                                NP.Info(NVG.Settings,"MY TURN -> " + currentQueueTime.ToString() + " - " + NVG.NowUTC.ToString());
                                 /*
-                                    NP.Info(NVG.Settings,"MY TURN -> " + currentQueueTime.ToString() + " - " + NVG.NowUTC.ToString());
                                 */
                             }
                             if (txExecuted == false)
@@ -1073,6 +1065,7 @@ namespace Notus.Validator
                         NVE.NetworkLayer.Layer3,
                         NVG.Settings
                     );
+                    Console.WriteLine("Main.Cs -> Line 1076");
                     Console.WriteLine(responseData);
                 }
 
@@ -1174,14 +1167,6 @@ namespace Notus.Validator
                 }
                 catch (Exception err)
                 {
-                    NP.Log(
-                        NVE.LogLevel.Info,
-                        66000505,
-                        err.Message,
-                        "BlockRowNo",
-                        null,
-                        err
-                    );
                 }
             }
             */
@@ -1194,14 +1179,6 @@ namespace Notus.Validator
                 }
                 catch (Exception err)
                 {
-                    NP.Log(
-                        NVE.LogLevel.Info,
-                        900000845,
-                        err.Message,
-                        "BlockRowNo",
-                        null,
-                        err
-                    );
                 }
             }
 
@@ -1213,14 +1190,6 @@ namespace Notus.Validator
                 }
                 catch (Exception err)
                 {
-                    NP.Log(
-                        NVE.LogLevel.Info,
-                        7000777,
-                        err.Message,
-                        "BlockRowNo",
-                        null,
-                        err
-                    );
                 }
             }
 
@@ -1232,14 +1201,6 @@ namespace Notus.Validator
                 }
                 catch (Exception err)
                 {
-                    NP.Log(
-                        NVE.LogLevel.Info,
-                        9000805,
-                        err.Message,
-                        "BlockRowNo",
-                        null,
-                        err
-                    );
                 }
             }
 
@@ -1251,14 +1212,6 @@ namespace Notus.Validator
                 }
                 catch (Exception err)
                 {
-                    NP.Log(
-                        NVE.LogLevel.Info,
-                        10012540,
-                        err.Message,
-                        "BlockRowNo",
-                        null,
-                        err
-                    );
                 }
             }
 

@@ -21,14 +21,6 @@ namespace Notus
             Notus.Variable.Enum.NetworkLayer networkLayer
         )
         {
-            Notus.Print.Log(
-                Notus.Variable.Enum.LogLevel.Info,
-                10,
-                "ClearBlocks",
-                "ClearBlocks",
-                null,
-                null
-            );
             DirectoryInfo d = new DirectoryInfo(
                 Notus.IO.GetFolderName(
                     networkType,

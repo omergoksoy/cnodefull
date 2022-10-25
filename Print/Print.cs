@@ -114,7 +114,7 @@ namespace Notus
         )
         {
             Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.Write(DateTime.Now.ToString("HH:mm:ss"));
+            Console.Write(NVG.Settings.UTCTime.Now.ToString("HH:mm:ss"));
             if (tmpLayer != NVE.NetworkLayer.Unknown && tmpType != NVE.NetworkType.Unknown)
             {
                 Console.ForegroundColor = ConsoleColor.DarkGreen;

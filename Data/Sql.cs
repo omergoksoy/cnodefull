@@ -2,7 +2,6 @@
 using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
-
 namespace Notus.Data
 {
     public class Sql : IDisposable
@@ -50,14 +49,6 @@ namespace Notus.Data
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    90008800,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
                 ErrorStrInsideObj = err.Message;
             }
 
@@ -69,15 +60,6 @@ namespace Notus.Data
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    66550055,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
-
                 ErrorStrInsideObj = err.Message;
             }
             return false;
@@ -133,14 +115,6 @@ namespace Notus.Data
             }
             catch (Exception msg)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    40006544,
-                    msg.Message,
-                    "BlockRowNo",
-                    null,
-                    msg
-                );
                 ErrorStrInsideObj = msg.Message;
             }
         }
@@ -272,15 +246,6 @@ namespace Notus.Data
             }
             catch (Exception msg)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    62005410,
-                    msg.Message,
-                    "BlockRowNo",
-                    null,
-                    msg
-                );
-
                 ErrorStrInsideObj = msg.Message;
             }
             DbOpened = false;
@@ -298,14 +263,6 @@ namespace Notus.Data
                 }
                 catch (Exception err)
                 {
-                    Notus.Print.Log(
-                        Notus.Variable.Enum.LogLevel.Info,
-                        70044556,
-                        err.Message,
-                        "BlockRowNo",
-                        null,
-                        err
-                    );
                     ErrorStrInsideObj = err.Message;
                 }
                 DbOpened = false;

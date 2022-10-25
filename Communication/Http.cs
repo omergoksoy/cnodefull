@@ -188,14 +188,6 @@ namespace Notus.Communication
             }
             catch (Exception e)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    356298,
-                    e.Message,
-                    "BlockRowNo",
-                    NVG.Settings,
-                    e
-                );
                 Notus.Print.Danger(NVG.Settings, "An Exception Occurred while Listening :" + e.ToString());
             }
         }

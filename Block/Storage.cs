@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using NGF = Notus.Variable.Globals.Functions;
 using NVG = Notus.Variable.Globals;
+using NP = Notus.Print;
 
 namespace Notus.Block
 {
@@ -118,16 +119,7 @@ namespace Notus.Block
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    7531201,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
-
-                Notus.Print.Basic(NVG.Settings.DebugMode, "Storage Error Text : " + err.Message);
+                NP.Basic(NVG.Settings.DebugMode, "Storage Error Text : " + err.Message);
             }
             return null;
         }

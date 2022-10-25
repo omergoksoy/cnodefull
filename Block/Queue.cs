@@ -7,15 +7,13 @@ using System.Numerics;
 using System.Text.Json;
 using NGF = Notus.Variable.Globals.Functions;
 using NVG = Notus.Variable.Globals;
+using NP = Notus.Print;
 
 namespace Notus.Block
 {
     public class Queue : IDisposable
     {
-        private DateTime LastNtpTime = Notus.Variable.Constant.DefaultTime;
-        private TimeSpan NtpTimeDifference;
         public bool CheckPoolDb = false;                // time difference before or after NTP Server
-        private bool NodeTimeAfterNtpTime = false;      // time difference before or after NTP Server
 
         private Notus.Mempool MP_BlockPoolList;
         private Notus.Block.Storage BS_Storage;
@@ -351,6 +349,7 @@ namespace Notus.Block
                     }
                     else
                     {
+                        Console.WriteLine("Queue.Cs -> Line 354");
                         Console.WriteLine(tmpLockWalletStruct.WalletKey);
                         string lockAccountFee = NVG.Settings.Genesis.Fee.BlockAccount.ToString();
                         Notus.Variable.Struct.WalletBalanceStruct currentBalance =
@@ -581,31 +580,6 @@ namespace Notus.Block
         }
         */
 
-        private DateTime GetNtpTime()
-        {
-            if (
-                string.Equals(
-                    LastNtpTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText),
-                    Notus.Variable.Constant.DefaultTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText)
-                )
-            )
-            {
-                LastNtpTime = Notus.Time.GetFromNtpServer();
-                DateTime tmpNtpCheckTime = DateTime.Now;
-                NodeTimeAfterNtpTime = (tmpNtpCheckTime > LastNtpTime);
-                NtpTimeDifference = (NodeTimeAfterNtpTime == true ? (tmpNtpCheckTime - LastNtpTime) : (LastNtpTime - tmpNtpCheckTime));
-                return LastNtpTime;
-            }
-
-            if (NodeTimeAfterNtpTime == true)
-            {
-                LastNtpTime = DateTime.Now.Subtract(NtpTimeDifference);
-                return LastNtpTime;
-            }
-            LastNtpTime = DateTime.Now.Add(NtpTimeDifference);
-            return LastNtpTime;
-        }
-
         public Notus.Variable.Class.BlockData? ReadFromChain(string BlockId)
         {
             //tgz-exception
@@ -786,18 +760,9 @@ namespace Notus.Block
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    864578,
-                    err.Message,
-                    "BlockRowNo",
-                    NVG.Settings,
-                    err
-                );
-
-                Notus.Print.Danger(NVG.Settings, "Error -> Notus.Block.Queue");
-                Notus.Print.Danger(NVG.Settings, err.Message);
-                Notus.Print.Danger(NVG.Settings, "Error -> Notus.Block.Queue");
+                NP.Danger(NVG.Settings, "Error -> Notus.Block.Queue");
+                NP.Danger(NVG.Settings, err.Message);
+                NP.Danger(NVG.Settings, "Error -> Notus.Block.Queue");
             }
         }
     }

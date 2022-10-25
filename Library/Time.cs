@@ -5,9 +5,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NVG = Notus.Variable.Globals;
-using ND = Notus.Date;
 namespace Notus
 {
     public class Time
@@ -15,22 +15,8 @@ namespace Notus
         public static Notus.Variable.Struct.UTCTimeStruct GetNtpTime(string ntpPoolServer = "pool.ntp.org")
         {
             Notus.Variable.Struct.UTCTimeStruct tmpReturn = new Notus.Variable.Struct.UTCTimeStruct();
-
-            (long pingTime, ulong exactTimeLong) = FindFasterNtpServer();
-            tmpReturn.Now = DateTime.Now;
-            tmpReturn.pingTime = pingTime;
-            tmpReturn.UtcTime = new DateTime(1900, 1, 1).AddMilliseconds(exactTimeLong);
-            tmpReturn.ulongUtc = ND.ToLong(tmpReturn.UtcTime);
-            //tmpReturn.UtcTime = Notus.Time.GetFromNtpServer(true, ntpPoolServer);
-            tmpReturn.ulongNow = Notus.Time.DateTimeToUlong(tmpReturn.Now);
-
-            tmpReturn.After = (tmpReturn.Now > tmpReturn.UtcTime);
-            tmpReturn.Difference = (tmpReturn.After == true ? (tmpReturn.Now - tmpReturn.UtcTime) : (tmpReturn.UtcTime - tmpReturn.Now));
+            tmpReturn = FindFasterNtpServer(tmpReturn);
             return tmpReturn;
-        }
-        public static ulong NowNtpTimeToUlong()
-        {
-            return DateTimeToUlong(NGF.GetUtcNowFromNtp());
         }
         public static DateTime GetFromNtpServer(bool WaitUntilGetFromServer = false, string ntpPoolServer = "pool.ntp.org")
         {
@@ -92,7 +78,7 @@ namespace Notus
             );
         }
 
-        public static (long, ulong) FindFasterNtpServer()
+        public static Notus.Variable.Struct.UTCTimeStruct FindFasterNtpServer(Notus.Variable.Struct.UTCTimeStruct utcVar)
         {
             string[] serverNameList = {
                 "pool.ntp.org",
@@ -103,18 +89,16 @@ namespace Notus
                 "oceania.pool.ntp.org",
                 "south-america.pool.ntp.org"
             };
-            const long ticksPerSecond = 10000000L;
-            ulong resultVal = 0;
-            long smallestPingTime = long.MaxValue;
-            string smallestPingServerName = string.Empty;
+            TimeSpan timeDiff = new TimeSpan(1, 0, 0, 0);
+            DateTime startTime;
+            DateTime finishTime;
             foreach (string serverName in serverNameList)
             {
-                long pingDuration = 0;
                 byte[] ntpData = new byte[48];
                 ntpData[0] = 0x1B;
                 IPAddress[] addresses = Dns.GetHostEntry(serverName).AddressList;
                 bool itsDone = false;
-                for (int i = 0; i < addresses.Length; i++)
+                for (int i = 0; i < addresses.Length && itsDone == false; i++)
                 {
                     try
                     {
@@ -126,38 +110,35 @@ namespace Notus
 
                             socket.Connect(ipEndpoint);
                             socket.Send(ntpData);
-                            pingDuration = Stopwatch.GetTimestamp();
+                            startTime = DateTime.Now;
                             socket.Receive(ntpData);
-                            pingDuration = Stopwatch.GetTimestamp() - pingDuration;
+                            finishTime = DateTime.Now;
                             socket.Close();
                             ulong intPart = ((ulong)ntpData[40] << 24) | ((ulong)ntpData[41] << 16) | ((ulong)ntpData[42] << 8) | ntpData[43];
                             ulong fractPart = ((ulong)ntpData[44] << 24) | ((ulong)ntpData[45] << 16) | ((ulong)ntpData[46] << 8) | ntpData[47];
                             ulong milliseconds = intPart * 1000 + fractPart * 1000 / 0x100000000L;
-                            if (smallestPingTime > pingDuration)
+                            TimeSpan ts = finishTime - startTime;
+                            if (timeDiff > ts)
                             {
-                                long pingTicks = pingDuration * ticksPerSecond / Stopwatch.Frequency;
-                                //smallestPingTime = pingDuration;
-                                smallestPingTime = pingTicks;
-                                smallestPingServerName = serverName;
-                                resultVal = milliseconds;
+                                utcVar.Now = startTime;
+                                utcVar.pingTime = ts;
+                                utcVar.UtcTime = new DateTime(1900, 1, 1).AddMilliseconds(milliseconds).Subtract(ts);
+                                utcVar.ulongUtc = ND.ToLong(utcVar.UtcTime);
+                                utcVar.ulongNow = Notus.Time.DateTimeToUlong(utcVar.Now);
+                                utcVar.After = (utcVar.Now > utcVar.UtcTime);
+                                utcVar.Difference = (utcVar.After == true ? (utcVar.Now - utcVar.UtcTime) : (utcVar.UtcTime - utcVar.Now));
+                                utcVar.PingServerUrl = serverName;
                             }
                             itsDone = true;
-                            /*
-                            float dddd = (float)(pingDuration * ticksPerSecond / Stopwatch.Frequency) / (float)ticksPerSecond;
-                            Console.WriteLine(serverName + " -> " + (pingDuration * ticksPerSecond / Stopwatch.Frequency).ToString());
-                            Console.WriteLine(serverName + " -> " + dddd.ToString());
-                            */
                         }
                     }
                     catch { }
                 }
             }
-            NVG.NtpServerUrl = smallestPingServerName;
-            return (smallestPingTime, resultVal);
+            return utcVar;
         }
         public static ulong GetExactTime_UTC_SubFunc(string server)
         {
-            long pingDuration = 0;
             byte[] ntpData = new byte[48];
             ntpData[0] = 0x1B;
             IPAddress[] addresses = Dns.GetHostEntry(server).AddressList;
@@ -168,17 +149,13 @@ namespace Notus
                     IPEndPoint ipEndpoint = new IPEndPoint(addresses[i], 123);
                     Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                     socket.ReceiveTimeout = 3000;
-
                     socket.Connect(ipEndpoint);
                     socket.Send(ntpData);
-                    pingDuration = Stopwatch.GetTimestamp();
                     socket.Receive(ntpData);
-                    pingDuration = Stopwatch.GetTimestamp() - pingDuration;
                     socket.Close();
                     ulong intPart = ((ulong)ntpData[40] << 24) | ((ulong)ntpData[41] << 16) | ((ulong)ntpData[42] << 8) | ntpData[43];
                     ulong fractPart = ((ulong)ntpData[44] << 24) | ((ulong)ntpData[45] << 16) | ((ulong)ntpData[46] << 8) | ntpData[47];
                     ulong milliseconds = intPart * 1000 + fractPart * 1000 / 0x100000000L;
-                    Console.WriteLine(pingDuration);
                     return milliseconds;
                 }
                 catch { }

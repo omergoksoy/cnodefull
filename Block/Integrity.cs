@@ -43,14 +43,6 @@ namespace Notus.Block
                     }
                     catch (Exception err)
                     {
-                        NP.Log(
-                            Notus.Variable.Enum.LogLevel.Info,
-                            753356,
-                            err.Message,
-                            "blockRowNo",
-                            NVG.Settings,
-                            err
-                        );
                         NP.Danger(NVG.Settings, "Error Text [7abc63]: " + err.Message);
                     }
                 }
@@ -65,6 +57,7 @@ namespace Notus.Block
 
             }catch(Exception err)
             {
+                Console.WriteLine("Integrity.Cs -> Line 68");
                 Console.WriteLine(err.Message);
                 Console.WriteLine(err.Message);
             }
@@ -88,15 +81,6 @@ namespace Notus.Block
                 }
                 if (fileCountInZip == 0)
                 {
-                    NP.Log(
-                        Notus.Variable.Enum.LogLevel.Error,
-                        500001004,
-                        "Zip File Deleted : " + fileName,
-                        "",
-                        NVG.Settings,
-                        null
-                    );
-
                     tmpGetListAgain = true;
                     Thread.Sleep(1);
                     File.Delete(fileName);
@@ -122,14 +106,6 @@ namespace Notus.Block
                         }
                         else
                         {
-                            NP.Log(
-                                Notus.Variable.Enum.LogLevel.Error,
-                                500001006,
-                                "Entry Deleteing : " + entry.FullName + " -> Zip File : "+ fileName,
-                                "",
-                                NVG.Settings,
-                                null
-                            );
                             deleteInnerFileList.Add(entry.FullName);
                         }
                     }
@@ -235,15 +211,6 @@ namespace Notus.Block
                                     }
                                     catch (Exception err)
                                     {
-                                        NP.Log(
-                                            Notus.Variable.Enum.LogLevel.Info,
-                                            965354,
-                                            err.Message,
-                                            "blockRowNo",
-                                            NVG.Settings,
-                                            err
-                                        );
-
                                         NP.Danger(NVG.Settings, "Error Text [235abc]: " + err.Message);
                                     }
                                 }
@@ -413,15 +380,6 @@ namespace Notus.Block
                     }
                     catch (Exception err)
                     {
-                        NP.Log(
-                            Notus.Variable.Enum.LogLevel.Info,
-                            221548,
-                            err.Message,
-                            BlockRowNo.ToString(),
-                            NVG.Settings,
-                            err
-                        );
-
                         NP.Basic(NVG.Settings.DebugMode, "Error Text [96a3c2]: " + err.Message);
                         Thread.Sleep(5000);
                     }
@@ -452,14 +410,6 @@ namespace Notus.Block
                 }
                 else
                 {
-                    NP.Log(
-                        Notus.Variable.Enum.LogLevel.Error,
-                        500001000,
-                        "Wrong File : " + ZipFileList[i],
-                        BlockRowNo.ToString(),
-                        NVG.Settings,
-                        null
-                    );
                 }
             }
             return false;
@@ -467,15 +417,6 @@ namespace Notus.Block
         private void StoreBlockWithRowNo(Int64 BlockRowNo)
         {
             /*
-            NP.Log(
-                Notus.Variable.Enum.LogLevel.Error,
-                500001001,
-                "BlockRowNo Does Not Exist : " + BlockRowNo.ToString(),
-                BlockRowNo.ToString(),
-                NVG.Settings,
-                null
-            );
-
             Console.WriteLine("BlockRowNo Does Not Exist : " + BlockRowNo.ToString());
             */
             //control-local-block
@@ -523,14 +464,6 @@ namespace Notus.Block
                             {
                                 if (debugPrinted == false)
                                 {
-                                    NP.Log(
-                                        Notus.Variable.Enum.LogLevel.Info,
-                                        203154,
-                                        err.Message,
-                                        BlockRowNo.ToString(),
-                                        NVG.Settings,
-                                        err
-                                    );
                                     NP.Basic(NVG.Settings.DebugMode, "Error Text [5a6e84]: " + err.Message);
                                     NP.Basic(NVG.Settings.DebugMode, "Income Text [5a6e84]: " + MainResultStr);
                                     debugPrinted = true;

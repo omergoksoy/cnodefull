@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json;
-
+using NP = Notus.Print;
 namespace Notus.Wallet
 {
     /*
@@ -59,16 +59,7 @@ namespace Notus.Wallet
                     }
                     catch (Exception err)
                     {
-                        Notus.Print.Log(
-                            Notus.Variable.Enum.LogLevel.Info,
-                            798798799,
-                            err.Message,
-                            "BlockRowNo",
-                            null,
-                            err
-                        );
-
-                        Notus.Print.Basic(true, "Error Text [8ae5cf]: " + err.Message);
+                        NP.Basic(true, "Error Text [8ae5cf]: " + err.Message);
                         return new Notus.Variable.Struct.FeeCalculationStruct()
                         {
                             Fee = 0,
@@ -169,6 +160,7 @@ namespace Notus.Wallet
             }
             catch(Exception err)
             {
+                Console.WriteLine("Fee.Cs -> Line 172");
                 Console.WriteLine(err.Message);
                 Console.WriteLine(err.Message);
             }

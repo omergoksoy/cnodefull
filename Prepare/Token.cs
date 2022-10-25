@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
-
+using NVG = Notus.Variable.Globals;
 namespace Notus.Prepare
 {
     public class Token
@@ -76,15 +76,6 @@ namespace Notus.Prepare
                     }
                     catch (Exception err)
                     {
-                        Notus.Print.Log(
-                            Notus.Variable.Enum.LogLevel.Info,
-                            3000325,
-                            err.Message,
-                            "BlockRowNo",
-                            null,
-                            err
-                        );
-
                         Notus.Print.Basic(true, "Error Text [8ae5cf]: " + err.Message);
                         return new Notus.Variable.Struct.BlockResponseStruct()
                         {

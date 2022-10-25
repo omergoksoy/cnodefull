@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
-
+using NP = Notus.Print;
 namespace Notus.Communication
 {
     public class Listener : IDisposable
@@ -200,19 +200,11 @@ namespace Notus.Communication
             }
             catch (System.Net.Sockets.SocketException err)
             {
-                Notus.Print.Basic(DebugModeActive, "Error text [ 9870 ] : " + err.Message);
+                NP.Basic(DebugModeActive, "Error text [ 9870 ] : " + err.Message);
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    17789563,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
-                Notus.Print.Basic(DebugModeActive, "Error text [ 9870 ] : " + err.Message);
+                NP.Basic(DebugModeActive, "Error text [ 9870 ] : " + err.Message);
             }
         }
 
@@ -238,14 +230,6 @@ namespace Notus.Communication
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    17775564,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
             }
 
             try
@@ -257,14 +241,6 @@ namespace Notus.Communication
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    19998765,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
             }
 
             try
@@ -276,14 +252,6 @@ namespace Notus.Communication
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    19995632,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
             }
 
             DebugModeActive = tmpDebugMode;
@@ -314,7 +282,7 @@ namespace Notus.Communication
 
             //Console.WriteLine("Listener.cs -> Line 304");
             //Console.WriteLine(ipAddress + " - " + CommPortNo.ToString());
-            //Notus.Print.ReadLine();
+            //NP.ReadLine();
             System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(ipAddress, CommPortNo);
             ListenTcpObj = new System.Net.Sockets.Socket(
                 ipAddress.AddressFamily,
@@ -329,7 +297,7 @@ namespace Notus.Communication
             }
             catch (System.Net.Sockets.SocketException err)
             {
-                Notus.Print.Basic(DebugModeActive, err.Message);
+                NP.Basic(DebugModeActive, err.Message);
                 if (OnErrorFunctionDefined == true)
                 {
                     OnErrorFunctionObj(3568, err.ToString());
@@ -337,16 +305,7 @@ namespace Notus.Communication
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    136598980,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
-
-                Notus.Print.Basic(DebugModeActive, err.Message);
+                NP.Basic(DebugModeActive, err.Message);
                 if (OnErrorFunctionDefined == true)
                 {
                     OnErrorFunctionObj(3568, err.ToString());
@@ -372,7 +331,7 @@ namespace Notus.Communication
                             }
                             catch (System.Net.Sockets.SocketException err)
                             {
-                                Notus.Print.Basic(DebugModeActive, err.Message);
+                                NP.Basic(DebugModeActive, err.Message);
                                 if (OnErrorFunctionDefined == true)
                                 {
                                     OnErrorFunctionObj(97864, err.ToString());
@@ -380,16 +339,7 @@ namespace Notus.Communication
                             }
                             catch (Exception err)
                             {
-                                Notus.Print.Log(
-                                    Notus.Variable.Enum.LogLevel.Info,
-                                    379850000,
-                                    err.Message,
-                                    "BlockRowNo",
-                                    null,
-                                    err
-                                );
-
-                                Notus.Print.Basic(DebugModeActive, err.Message);
+                                NP.Basic(DebugModeActive, err.Message);
                                 if (OnErrorFunctionDefined == true)
                                 {
                                     OnErrorFunctionObj(129064, err.ToString());
@@ -410,7 +360,7 @@ namespace Notus.Communication
                         }
                         catch (System.Net.Sockets.SocketException err)
                         {
-                            Notus.Print.Basic(DebugModeActive, err.Message);
+                            NP.Basic(DebugModeActive, err.Message);
 
                             if (OnErrorFunctionDefined == true)
                             {
@@ -419,16 +369,7 @@ namespace Notus.Communication
                         }
                         catch (Exception err)
                         {
-                            Notus.Print.Log(
-                                Notus.Variable.Enum.LogLevel.Info,
-                                145910234,
-                                err.Message,
-                                "BlockRowNo",
-                                null,
-                                err
-                            );
-
-                            Notus.Print.Basic(DebugModeActive, err.Message);
+                            NP.Basic(DebugModeActive, err.Message);
 
                             if (OnErrorFunctionDefined == true)
                             {
@@ -497,7 +438,7 @@ namespace Notus.Communication
                                 }
                                 catch (System.Net.Sockets.SocketException err4)
                                 {
-                                    Notus.Print.Basic(DebugModeActive, err4.Message);
+                                    NP.Basic(DebugModeActive, err4.Message);
                                     if (OnErrorFunctionDefined == true)
                                     {
                                         OnErrorFunctionObj(88556325, err4.ToString());
@@ -509,15 +450,7 @@ namespace Notus.Communication
                                 }
                                 catch (Exception err6)
                                 {
-                                    Notus.Print.Log(
-                                        Notus.Variable.Enum.LogLevel.Info,
-                                        1122330044,
-                                        err6.Message,
-                                        "BlockRowNo",
-                                        null,
-                                        err6
-                                    );
-                                    Notus.Print.Basic(DebugModeActive, err6.Message);
+                                    NP.Basic(DebugModeActive, err6.Message);
                                     if (OnErrorFunctionDefined == true)
                                     {
                                         OnErrorFunctionObj(532197753, err6.ToString());
@@ -555,16 +488,7 @@ namespace Notus.Communication
                                     }
                                     catch (Exception err2)
                                     {
-                                        Notus.Print.Log(
-                                            Notus.Variable.Enum.LogLevel.Info,
-                                            11123300,
-                                            err2.Message,
-                                            "BlockRowNo",
-                                            null,
-                                            err2
-                                        );
-
-                                        Notus.Print.Basic(DebugModeActive, err2.Message);
+                                        NP.Basic(DebugModeActive, err2.Message);
                                         if (OnErrorFunctionDefined == true)
                                         {
                                             OnErrorFunctionObj(22165, err2.ToString());
@@ -585,16 +509,7 @@ namespace Notus.Communication
                         }
                         catch (Exception err)
                         {
-                            Notus.Print.Log(
-                                Notus.Variable.Enum.LogLevel.Info,
-                                11111000,
-                                err.Message,
-                                "BlockRowNo",
-                                null,
-                                err
-                            );
-
-                            Notus.Print.Basic(DebugModeActive, err.Message);
+                            NP.Basic(DebugModeActive, err.Message);
                             if (OnErrorFunctionDefined == true)
                             {
                                 OnErrorFunctionObj(09817, err.ToString());
@@ -615,14 +530,6 @@ namespace Notus.Communication
                                 }
                                 catch (Exception err2)
                                 {
-                                    Notus.Print.Log(
-                                        Notus.Variable.Enum.LogLevel.Info,
-                                        100011101,
-                                        err2.Message,
-                                        "BlockRowNo",
-                                        null,
-                                        err2
-                                    );
                                     Console.WriteLine("Listener.cs - 510 ->" + err2.Message);
                                 }
                             }
@@ -634,14 +541,6 @@ namespace Notus.Communication
                             }
                             catch (Exception err)
                             {
-                                Notus.Print.Log(
-                                    Notus.Variable.Enum.LogLevel.Info,
-                                    200002200,
-                                    err.Message,
-                                    "BlockRowNo",
-                                    null,
-                                    err
-                                );
                             }
                         }
                     }
@@ -659,7 +558,7 @@ namespace Notus.Communication
                         }
                         catch (System.Net.Sockets.SocketException err)
                         {
-                            Notus.Print.Basic(DebugModeActive, err.Message);
+                            NP.Basic(DebugModeActive, err.Message);
                             if (OnErrorFunctionDefined == true)
                             {
                                 OnErrorFunctionObj(220983, err.ToString());
@@ -667,7 +566,7 @@ namespace Notus.Communication
                         }
                         catch (Exception err)
                         {
-                            Notus.Print.Basic(DebugModeActive, err.Message);
+                            NP.Basic(DebugModeActive, err.Message);
                             if (OnErrorFunctionDefined == true)
                             {
                                 OnErrorFunctionObj(0987536, err.ToString());
@@ -731,7 +630,7 @@ namespace Notus.Communication
                     }
                     catch (System.Net.Sockets.SocketException err)
                     {
-                        Notus.Print.Basic(DebugModeActive, err.Message);
+                        NP.Basic(DebugModeActive, err.Message);
 
                         if (OnErrorFunctionDefined == true)
                         {
@@ -740,16 +639,7 @@ namespace Notus.Communication
                     }
                     catch (Exception err)
                     {
-                        Notus.Print.Log(
-                            Notus.Variable.Enum.LogLevel.Info,
-                            777777000,
-                            err.Message,
-                            "BlockRowNo",
-                            null,
-                            err
-                        );
-
-                        Notus.Print.Basic(DebugModeActive, err.Message);
+                        NP.Basic(DebugModeActive, err.Message);
 
                         if (OnErrorFunctionDefined == true)
                         {
@@ -793,16 +683,7 @@ namespace Notus.Communication
                         }
                         catch (Exception err)
                         {
-                            Notus.Print.Log(
-                                Notus.Variable.Enum.LogLevel.Info,
-                                70007700,
-                                err.Message,
-                                "BlockRowNo",
-                                null,
-                                err
-                            );
-
-                            Notus.Print.Basic(DebugModeActive, err.Message);
+                            NP.Basic(DebugModeActive, err.Message);
                             if (OnErrorFunctionDefined == true)
                             {
                                 OnErrorFunctionObj(22165, err.ToString());
@@ -841,15 +722,7 @@ namespace Notus.Communication
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    999900880,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
-                Notus.Print.Basic(DebugModeActive, err.Message);
+                NP.Basic(DebugModeActive, err.Message);
                 if (OnErrorFunctionDefined == true)
                 {
                     OnErrorFunctionObj(5326, err.ToString());

@@ -5,7 +5,7 @@ using System.IO;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-
+using NP = Notus.Print;
 namespace Notus
 {
     public class Mempool : IDisposable
@@ -54,13 +54,6 @@ namespace Notus
         private void ExecuteWithClass(string PoolName)
         {
             PoolNameForDb = PoolName + ".db";
-            /*
-            Console.WriteLine("Control-Point-cacacacacac");
-            Console.WriteLine(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
-            Console.WriteLine(PoolNameForDb);
-            Console.WriteLine(new System.IO.FileInfo(PoolNameForDb).Length);
-            Console.ReadLine();
-            */
             Obj_DataList.Clear();
             SqlObj = new Notus.Data.Sql();
             SqlObj.Open(PoolNameForDb);
@@ -77,15 +70,7 @@ namespace Notus
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    70008854,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
-                Notus.Print.Basic(DebugModeActive, "Error Text [90ecab593] : " + err.Message);
+                NP.Basic(DebugModeActive, "Error Text [90ecab593] : " + err.Message);
             }
 
             SqlObj.Select("key_value",
@@ -212,16 +197,8 @@ namespace Notus
                 }
                 catch (Exception err)
                 {
-                    Notus.Print.Log(
-                        Notus.Variable.Enum.LogLevel.Info,
-                        90008877,
-                        err.Message,
-                        "BlockRowNo",
-                        null,
-                        err
-                    );
-                    Notus.Print.Basic(DebugModeActive, "Error Text [90ecab567]   : " + err.Message);
-                    Notus.Print.Basic(DebugModeActive, "Mempool Name [90ecab567] : " + PoolNameForDb);
+                    NP.Basic(DebugModeActive, "Error Text [90ecab567]   : " + err.Message);
+                    NP.Basic(DebugModeActive, "Mempool Name [90ecab567] : " + PoolNameForDb);
                 }
             }
             return false;
@@ -334,14 +311,6 @@ namespace Notus
             }
             else
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    300000002,
-                    "KeyName Does Not Exist -> " + KeyName,
-                    "BlockRowNo",
-                    null,
-                    null
-                );
             }
             return false;
         }
@@ -354,14 +323,6 @@ namespace Notus
                     //Console.WriteLine("Control-Point-a3547");
                     //Console.WriteLine("ContainsKey == false");
                 }
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    300000001,
-                    "KeyName Does Not Exist -> " + KeyName,
-                    "BlockRowNo",
-                    null,
-                    null
-                );
             }
             bool tst=Obj_DataList.TryRemove(KeyName,out _);
             if(showError== true)
@@ -437,15 +398,7 @@ namespace Notus
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    900770077,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
-                Notus.Print.Basic(DebugModeActive, "Error Text [90ecab524] : " + err.Message);
+                NP.Basic(DebugModeActive, "Error Text [90ecab524] : " + err.Message);
                 return "19810125020000000";
             }
         }
@@ -457,15 +410,7 @@ namespace Notus
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    800077700,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
-                Notus.Print.Basic(DebugModeActive, "Error Text [90ecab547] : " + err.Message);
+                NP.Basic(DebugModeActive, "Error Text [90ecab547] : " + err.Message);
                 return new DateTime(1981, 01, 25, 2, 00, 00);
             }
         }
@@ -507,14 +452,6 @@ namespace Notus
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Error,
-                    300000005,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
             }
 
             Obj_DataList.Clear();
@@ -526,14 +463,6 @@ namespace Notus
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Error,
-                    300000004,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
             }
         }
     }

@@ -137,15 +137,6 @@ namespace Notus.Validator
                 }
                 catch (Exception err)
                 {
-                    NP.Log(
-                        NVE.LogLevel.Info,
-                        660050,
-                        err.Message,
-                        "BlockRowNo",
-                        null,
-                        err
-                    );
-
                     NP.Danger(NVG.Settings, "Replicant Outer Error Text : " + err.Message);
                 }
             }
