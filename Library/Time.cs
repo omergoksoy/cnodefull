@@ -120,13 +120,16 @@ namespace Notus
                             TimeSpan ts = finishTime - startTime;
                             if (timeDiff > ts)
                             {
-                                utcVar.Now = startTime;
-                                utcVar.pingTime = ts;
                                 utcVar.UtcTime = new DateTime(1900, 1, 1).AddMilliseconds(milliseconds).Subtract(ts);
+                                utcVar.Now = finishTime;
+                                utcVar.pingTime = ts;
                                 utcVar.ulongUtc = ND.ToLong(utcVar.UtcTime);
                                 utcVar.ulongNow = Notus.Time.DateTimeToUlong(utcVar.Now);
                                 utcVar.After = (utcVar.Now > utcVar.UtcTime);
                                 utcVar.Difference = (utcVar.After == true ? (utcVar.Now - utcVar.UtcTime) : (utcVar.UtcTime - utcVar.Now));
+                                
+                                buradaki difference olayını kontrol et ve node senkronizasyonlarını kontrol et
+                                utcVar.Difference = new TimeSpan(0);
                                 utcVar.PingServerUrl = serverName;
                             }
                             itsDone = true;

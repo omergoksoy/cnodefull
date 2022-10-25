@@ -861,7 +861,15 @@ namespace Notus.Validator
                     if (waitPrinted == false)
                     {
                         waitPrinted = true;
-                        Console.WriteLine("Wait For Turn");
+                        
+                        Console.WriteLine(
+                            "Wait For Turn ->"+
+                            NVG.NowUTC.ToString() + " - " + 
+                            currentQueueTime.ToString() + " -> " +
+                            NVG.Settings.Nodes.My.IP.Wallet.Substring(0, 6) + 
+                            " - " + 
+                            selectedWalletId.Substring(0, 6)
+                        );
                     }
                 }
             }

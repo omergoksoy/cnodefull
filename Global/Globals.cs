@@ -153,8 +153,8 @@ namespace Notus.Variable
 
             //bu fonksiyon tüm zaman nodelarını kontrol ederek en hızlı zaman bilgisini veren sunucunun zaman bilgisini alıyor    
             Settings.UTCTime = Notus.Time.GetNtpTime();
-            //Console.WriteLine(JsonSerializer.Serialize(Settings.UTCTime, NVC.JsonSetting));
-            //Console.ReadLine();
+            Console.WriteLine(JsonSerializer.Serialize(Settings.UTCTime, NVC.JsonSetting));
+            NP.ReadLine();
         }
 
         public static class Functions
