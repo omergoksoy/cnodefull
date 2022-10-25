@@ -508,7 +508,7 @@ namespace Notus.Validator
                 SetTimeStatusForBeginSync(false);       // release timer
             }
         }
-        public void EmptyBlockGeneration()
+        public bool EmptyBlockGeneration()
         {
             bool executeEmptyBlock = false;
             int howManySeconds = NVG.Settings.Genesis.Empty.Interval.Time;
@@ -534,8 +534,8 @@ namespace Notus.Validator
                 NVG.Settings.OtherBlockCount = 0;
                 NVG.Settings.EmptyBlockCount++;
                 NGF.BlockQueue.AddEmptyBlock();
-                NP.Success(NVG.Settings, "Empty Block Executed");
             }
+            return executeEmptyBlock;
         }
         public void Start()
         {
@@ -756,7 +756,7 @@ namespace Notus.Validator
             bool prepareNextQueue = false;
             string selectedWalletId = string.Empty;
             byte nodeOrderCount = 0;
-
+            bool waitPrinted = false;
             while (tmpExitMainLoop == false && NVG.Settings.NodeClosing == false)
             {
                 if (prepareNextQueue == false)
@@ -766,6 +766,7 @@ namespace Notus.Validator
                 }
                 if (NVG.NowUTC >= currentQueueTime)
                 {
+                    waitPrinted = false;
                     nodeOrderCount++;
                     if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
                     {
@@ -786,13 +787,22 @@ namespace Notus.Validator
                             }
                             if (txExecuted == false)
                             {
-                                //Console.WriteLine("NVG.Settings.EmptyBlockCount : " +NVG.Settings.EmptyBlockCount.ToString());
-                                EmptyBlockGeneration();
+                                bool executeEmptyBlock = EmptyBlockGeneration();
+                                if (executeEmptyBlock==true)
+                                {
+                                    //Console.WriteLine("NVG.Settings.EmptyBlockCount : " +NVG.Settings.EmptyBlockCount.ToString());
+                                    NP.Success(NVG.Settings, "Empty Block Executed");
+                                    NP.Info(NVG.Settings, "MY TURN -> " + currentQueueTime.ToString() + " - " + NVG.NowUTC.ToString());
+                                }
                                 NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
                                     ND.AddMiliseconds(currentQueueTime, NVC.BlockListeningForPoolTime)
                                 );
                                 if (TmpBlockStruct != null)
                                 {
+                                    if (executeEmptyBlock)
+                                    {
+                                        NP.Info(NVG.Settings, "Empty Block-Point-1 -> " + currentQueueTime.ToString() + " - " + NVG.NowUTC.ToString());
+                                    }
                                     txExecuted = true;
                                     NVClass.BlockData? PreBlockData = JsonSerializer.Deserialize<NVClass.BlockData>(TmpBlockStruct.data);
                                     if (PreBlockData != null)
@@ -800,8 +810,8 @@ namespace Notus.Validator
                                         PreBlockData = NGF.BlockQueue.OrganizeBlockOrder(PreBlockData);
                                         NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
                                         ProcessBlock(PreparedBlockData, 4);
-                                        NGF.WalletUsageList.Clear();
                                         ValidatorQueueObj.Distrubute(PreBlockData.info.rowNo, PreBlockData.info.type);
+                                        NGF.WalletUsageList.Clear();
                                     }
                                     else
                                     {
@@ -848,7 +858,11 @@ namespace Notus.Validator
                 }
                 else
                 {
-
+                    if (waitPrinted == false)
+                    {
+                        waitPrinted = true;
+                        Console.WriteLine("Wait For Turn");
+                    }
                 }
             }
 
