@@ -42,6 +42,10 @@ namespace Notus
         {
             return ToDateTime(ConverTime.ToString().PadRight(17, '0'));
         }
+        public static DateTime ToDateTime(long ConverTime)
+        {
+            return ToDateTime(ConverTime.ToString().PadRight(17, '0'));
+        }
         public static DateTime ToDateTime(string DateTimeStr)
         {
             try

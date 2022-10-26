@@ -251,14 +251,6 @@ namespace Notus.Toolbox
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    90000854,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
             }
             return string.Empty;
         }
