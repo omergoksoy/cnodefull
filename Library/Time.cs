@@ -110,6 +110,7 @@ namespace Notus
 
                             socket.Connect(ipEndpoint);
                             socket.Send(ntpData);
+
                             startTime = DateTime.Now;
                             socket.Receive(ntpData);
                             finishTime = DateTime.Now;
