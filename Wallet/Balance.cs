@@ -168,7 +168,7 @@ namespace Notus.Wallet
 
                 }
             }
-            timeYouCanUse=(timeYouCanUse == 0 ? Notus.Time.NowToUlong(false) : timeYouCanUse) ;
+            timeYouCanUse=(timeYouCanUse == 0 ? NVG.NOW.Int : timeYouCanUse) ;
             return new Notus.Variable.Struct.WalletBalanceStruct()
             {
                 Balance = new Dictionary<string, Dictionary<ulong, string>>()
@@ -247,7 +247,7 @@ namespace Notus.Wallet
         {
             if (unlockTime == 0)
             {
-                unlockTime = Notus.Time.NowToUlong();
+                unlockTime = NVG.NOW.Int;
             }
             bool volumeError = true;
             // first parametre hata oluşması durumunda
@@ -342,7 +342,7 @@ namespace Notus.Wallet
             }
 
             BigInteger resultVal = 0;
-            ulong exactTimeLong = Notus.Time.DateTimeToUlong(DateTime.Now);
+            ulong exactTimeLong = NVG.NOW.Int;
             foreach (KeyValuePair<ulong, string> entry in tmpBalanceObj.Balance[CoinTagName])
             {
                 if (exactTimeLong > entry.Key)
@@ -372,7 +372,7 @@ namespace Notus.Wallet
                 if (ulong.TryParse(unlockTimeStr, out ulong unlockTimeLong))
                 {
                     DateTime unlockTime = Notus.Date.ToDateTime(unlockTimeStr);
-                    if (DateTime.Now > unlockTime)
+                    if (NVG.NOW.Obj > unlockTime)
                     {
                         return true;
                     }
@@ -418,7 +418,7 @@ namespace Notus.Wallet
             // genesis block
             if (tmpBlockForBalance.info.type == Notus.Variable.Enum.BlockTypeList.GenesisBlock)
             {
-                ulong coinStartingTime = Notus.Time.BlockIdToUlong(tmpBlockForBalance.info.uID);
+                ulong coinStartingTime = Notus.Block.Key.BlockIdToUlong(tmpBlockForBalance.info.uID);
 
 
                 Notus.Wallet.Block.ClearList(NVG.Settings.Network, NVG.Settings.Layer);
@@ -755,7 +755,7 @@ namespace Notus.Wallet
                             NVG.Settings.Genesis.CoinInfo.Tag,
                             new Dictionary<ulong, string>(){
                                 {
-                                    Notus.Time.BlockIdToUlong(tmpBalanceVal.Balance.UID) , "0"
+                                    Notus.Block.Key.BlockIdToUlong(tmpBalanceVal.Balance.UID) , "0"
                                 }
                             }
                         }

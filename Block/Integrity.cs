@@ -492,7 +492,7 @@ namespace Notus.Block
             FreeBlockStruct.info.rowNo = 2;
             FreeBlockStruct.info.multi = false;
             FreeBlockStruct.info.uID = Notus.Block.Key.Generate(
-                ND.ToDateTime(NVG.NowUTC), 
+                ND.ToDateTime(NVG.NOW.Int), 
                 NVG.Settings.NodeWallet.WalletKey
             );
 
@@ -568,7 +568,8 @@ namespace Notus.Block
             ) + ".zip";
 
             string myGenesisSign = string.Empty;
-            DateTime myGenesisTime = DateTime.Now.AddDays(1);
+            
+            DateTime myGenesisTime = NVG.NOW.Obj.AddDays(1);
             
             //if (ZipFileList.Length > 0)
             if (File.Exists(ZipFileName) ==true)

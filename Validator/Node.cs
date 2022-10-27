@@ -21,7 +21,7 @@ namespace Notus.Validator
                 menuObj.DefineMySetting();
             }
 
-            //NVG.Settings.NodeStartingTime = ND.ToLong(NGF.GetUtcNowFromNtp());
+            //NVG.Settings.NodeStartingTime = NGF.NOW.Int;
             //Console.WriteLine(NVG.Settings.NodeStartingTime);
 
             if (NVG.Settings.NodeType != NVE.NetworkNodeType.Replicant)

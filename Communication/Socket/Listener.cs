@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
 using NP = Notus.Print;
+using NVG = Notus.Variable.Globals;
 namespace Notus.Communication
 {
     public class Listener : IDisposable
@@ -216,8 +217,8 @@ namespace Notus.Communication
             OnErrorFunctionDefined = false;
             OnReceiveFunctionDefined = false;
             SendDummyData();
-            DateTime JustRightNow = DateTime.Now.AddSeconds(1);
-            while (DateTime.Now > JustRightNow)
+            DateTime JustRightNow = NVG.NOW.Obj.AddSeconds(1);
+            while (NVG.NOW.Obj > JustRightNow)
             {
 
             }

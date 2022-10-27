@@ -117,16 +117,16 @@ namespace Notus.Validator
                 }
             }
             Int64 MN_LastBlockRowNo = smallestBlockRownNo;
-            DateTime LastPrintTime = DateTime.Now;
+            DateTime LastPrintTime = NVG.NOW.Obj;
             if (NVG.Settings.LastBlock.info.rowNo != MN_LastBlockRowNo)
             {
                 LastPrintTime.Subtract(new TimeSpan(0, 0, 11));
             }
             while (true)
             {
-                if ((DateTime.Now - LastPrintTime).TotalSeconds > 10)
+                if ((NVG.NOW.Obj - LastPrintTime).TotalSeconds > 10)
                 {
-                    LastPrintTime = DateTime.Now;
+                    LastPrintTime = NVG.NOW.Obj;
                     if (NVG.Settings.LastBlock.info.rowNo == MN_LastBlockRowNo)
                     {
                         Notus.Print.Basic(NVG.Settings, "Checking Block Height");

@@ -20,7 +20,7 @@ namespace Notus.Globals.Variable
         public bool LocalNode { get; set; }
         public bool DevelopmentNode { get; set; }
         //public ulong NodeStartingTime { get; set; }
-        public Notus.Variable.Struct.UTCTimeStruct? UTCTime { get; set; }
+        //public Notus.Variable.Struct.UTCTimeStruct? UTCTime { get; set; }
         public bool GenesisCreated { get; set; }
         public bool GenesisAssigned { get; set; }
         public Notus.Variable.Genesis.GenesisBlockData? Genesis { get; set; }
@@ -51,6 +51,11 @@ namespace Notus.Globals.Variable
         public Notus.Variable.Class.BlockData? LastBlock { get; set; }
     }
 
+    public class TimeStruct
+    {
+        public DateTime Obj { get; set; }
+        public ulong Int { get; set; }
+    }
     public class NodeQueueList
     {
         // işlem sırası

@@ -1,4 +1,5 @@
-﻿using System;
+﻿/*
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
@@ -15,6 +16,7 @@ namespace Notus
         public static Notus.Variable.Struct.UTCTimeStruct GetNtpTime(string ntpPoolServer = "pool.ntp.org")
         {
             Notus.Variable.Struct.UTCTimeStruct tmpReturn = new Notus.Variable.Struct.UTCTimeStruct();
+            burası düzenlensin
             tmpReturn = FindFasterNtpServer(tmpReturn);
             return tmpReturn;
         }
@@ -37,22 +39,20 @@ namespace Notus
             }
             return new DateTime(1900, 1, 1).AddMilliseconds((long)GetExactTime_UTC_SubFunc(ntpPoolServer));
         }
-        public static ulong BlockIdToUlong(string blockUid)
-        {
-            return ulong.Parse(Notus.Block.Key.GetTimeFromKey(blockUid).Substring(0, 17));
-        }
+        */
+        /*
         public static ulong NowToUlong(bool milisecondIncluded = true)
         {
             if (milisecondIncluded == true)
             {
                 return ulong.Parse(
-                    DateTime.Now.ToString(
+                    NVG.NOW.Obj.ToString(
                         Notus.Variable.Constant.DefaultDateTimeFormatText
                     )
                 );
             }
             return ulong.Parse(
-                DateTime.Now.ToString(
+                NVG.NOW.Obj.ToString(
                     Notus.Variable.Constant.DefaultDateTimeFormatText.Substring(0, 14)
                 )
             );
@@ -65,6 +65,7 @@ namespace Notus
                 )
             );
         }
+
         public static ulong DateTimeToUlong(DateTime ConvertTime, bool milisecondIncluded)
         {
             if (milisecondIncluded == true)
@@ -111,9 +112,9 @@ namespace Notus
                             socket.Connect(ipEndpoint);
                             socket.Send(ntpData);
 
-                            startTime = DateTime.Now;
+                            startTime = NVG.NOW.Obj;
                             socket.Receive(ntpData);
-                            finishTime = DateTime.Now;
+                            finishTime = NVG.NOW.Obj;
                             socket.Close();
                             ulong intPart = ((ulong)ntpData[40] << 24) | ((ulong)ntpData[41] << 16) | ((ulong)ntpData[42] << 8) | ntpData[43];
                             ulong fractPart = ((ulong)ntpData[44] << 24) | ((ulong)ntpData[45] << 16) | ((ulong)ntpData[46] << 8) | ntpData[47];
@@ -128,8 +129,7 @@ namespace Notus
                                 utcVar.ulongNow = Notus.Time.DateTimeToUlong(utcVar.Now);
                                 utcVar.After = (utcVar.Now > utcVar.UtcTime);
                                 utcVar.Difference = (utcVar.After == true ? (utcVar.Now - utcVar.UtcTime) : (utcVar.UtcTime - utcVar.Now));
-                                
-                                buradaki difference olayını kontrol et ve node senkronizasyonlarını kontrol et
+                                //buradaki difference olayını kontrol et ve node senkronizasyonlarını kontrol et
                                 utcVar.Difference = new TimeSpan(0);
                                 utcVar.PingServerUrl = serverName;
                             }
@@ -168,3 +168,4 @@ namespace Notus
         }
     }
 }
+*/

@@ -99,14 +99,14 @@ namespace Notus.Validator
                         entry.Value.IP.IpAddress + ":" +
                         entry.Value.IP.Port.ToString()
                     );
-                    NP.Info(NVG.Settings, "Distrubute : " + ND.ToDateTime(NVG.NowUTC).ToString("HH mm ss fff"));
+                    NP.Info(NVG.Settings, "Distrubute : " + ND.ToDateTime(NVG.NOW.Int).ToString("HH mm ss fff"));
                 }
             }
         }
 
         private DateTime CalculateStartingTime()
         {
-            DateTime tmpNtpTime = NGF.GetUtcNowFromNtp();
+            DateTime tmpNtpTime = NVG.NOW.Obj;
             const ulong secondPointConst = 1000;
 
             DateTime afterMiliSecondTime = tmpNtpTime.AddMilliseconds(
@@ -288,7 +288,7 @@ namespace Notus.Validator
                 */
                 NVG.Settings.WaitForGeneratedBlock = true;
                 
-                NP.Info(NVG.Settings, "Block Row No Income -> " + ND.ToDateTime(NVG.NowUTC).ToString("HH mm ss fff"));
+                NP.Info(NVG.Settings, "Block Row No Income -> " + ND.ToDateTime(NVG.NOW.Int).ToString("HH mm ss fff"));
                 
                 string incomeDataStr = GetPureText(incomeData, "block");
                 if (incomeDataStr.IndexOf(":") < 0)
@@ -335,7 +335,7 @@ namespace Notus.Validator
                 incomeData = GetPureText(incomeData, "kill");
                 string[] tmpHashPart = incomeData.Split(NVC.CommonDelimeterChar);
                 ulong incomeUtc = ulong.Parse(tmpHashPart[1]);
-                ulong incomeDiff = (ulong)Math.Abs((decimal)NVG.NowUTC - incomeUtc);
+                ulong incomeDiff = (ulong)Math.Abs((decimal)NVG.NOW.Int - incomeUtc);
 
                 //100 saniyeden eski ise göz ardı edilecek
                 if (incomeDiff > 100000)
@@ -372,7 +372,7 @@ namespace Notus.Validator
             if (CheckXmlTag(incomeData, "when"))
             {
                 StartingTimeAfterEnoughNode = ND.ToDateTime(GetPureText(incomeData, "when"));
-                NVG.NodeQueue.Starting = Notus.Time.DateTimeToUlong(StartingTimeAfterEnoughNode);
+                NVG.NodeQueue.Starting = Notus.Date.ToLong(StartingTimeAfterEnoughNode);
                 NVG.NodeQueue.OrderCount = 1;
                 NVG.NodeQueue.Begin = true;
                 StartingTimeAfterEnoughNode_Arrived = true;
@@ -473,7 +473,7 @@ namespace Notus.Validator
                 NVG.NodeList[nodeHexText].Status = NVS.NodeStatus.Offline;
                 NVG.NodeList[nodeHexText].Ready = false;
 
-                //NodeList[nodeHexText].Time.Error = DateTime.Now;
+                //NodeList[nodeHexText].Time.Error = NVG.NOW.Obj;
             }
         }
         */
@@ -574,7 +574,7 @@ namespace Notus.Validator
             while (ExitFromLoop == false)
             {
                 //burası belirli periyotlarda hash gönderiminin yapıldığı kod grubu
-                if ((DateTime.Now - LastPingTime).TotalSeconds > 20 || SyncReady == false)
+                if ((NVG.NOW.Obj - LastPingTime).TotalSeconds > 20 || SyncReady == false)
                 {
                     bool innerControlLoop = false;
                     string tmpData = string.Empty;
@@ -630,7 +630,7 @@ namespace Notus.Validator
                             }
                         }
                     }
-                    LastPingTime = DateTime.Now;
+                    LastPingTime = NVG.NOW.Obj;
                 }
 
                 // burada durumu bilinmeyen nodeların bilgilerinin sorgulandığı kısım
@@ -836,7 +836,7 @@ namespace Notus.Validator
                 HexKey = NVG.Settings.Nodes.My.HexKey,
                 Begin = NVG.Settings.Nodes.My.Begin,
                 SyncNo = 0,
-                Tick = ND.ToLong(NGF.GetUtcNowFromNtp()),
+                Tick = NVG.NOW.Int,
                 IP = new NVS.NodeInfo()
                 {
                     IpAddress = NVG.Settings.Nodes.My.IP.IpAddress,
@@ -905,7 +905,7 @@ namespace Notus.Validator
                     NP.Info(NVG.Settings,
                         "I'm Sending Starting (When) Time / Current : " +
                         StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
-                        " / " + NGF.GetUtcNowFromNtp().ToString("HH:mm:ss.fff")
+                        " / " + NVG.NOW.Obj.ToString("HH:mm:ss.fff")
                     );
 
                     NVG.NodeQueue.Starting = syncStaringTime;
@@ -951,7 +951,7 @@ namespace Notus.Validator
                         "I'm Waiting Starting (When) Time / Current : " +
                         StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
                         " /  " +
-                        NGF.GetUtcNowFromNtp().ToString("HH:mm:ss.fff")
+                        NVG.NOW.Obj.ToString("HH:mm:ss.fff")
                     );
                 }
             }
@@ -1024,7 +1024,7 @@ namespace Notus.Validator
             if (tmpMainList != null)
             {
 
-                ulong exactTimeLong = ND.ToLong(NGF.GetUtcNowFromNtp());
+                ulong exactTimeLong = NVG.NOW.Int;
                 string myNodeDataText = "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
 
                 bool allDone = false;

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using ND = Notus.Date;
 using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVE = Notus.Variable.Enum;
@@ -59,7 +60,8 @@ namespace Notus.Variable
         */
         public static string SessionPrivateKey { get; set; }
         public static bool NodeListPrinted { get; set; }
-        public static ulong NowUTC { get; set; }
+        public static TimeStruct NOW { get; set; }
+        //public static ulong NowUTC { get; set; }
         public static Notus.Globals.Variable.NodeQueueList NodeQueue { get; set; }
         public static int OnlineNodeCount { get; set; }
         public static ConcurrentDictionary<string, NVS.NodeQueueInfo> NodeList { get; set; }
@@ -91,6 +93,7 @@ namespace Notus.Variable
 
                 EncryptKey = "key-password-string",
 
+                /*
                 UTCTime = new NVS.UTCTimeStruct()
                 {
                     After = false,
@@ -99,6 +102,7 @@ namespace Notus.Variable
                     ulongNow = 0,
                     UtcTime = new DateTime()
                 },
+                */
                 HashSalt = Notus.Encryption.Toolbox.GenerateSalt(),
 
 
@@ -152,9 +156,9 @@ namespace Notus.Variable
             */
 
             //bu fonksiyon tüm zaman nodelarını kontrol ederek en hızlı zaman bilgisini veren sunucunun zaman bilgisini alıyor    
-            Settings.UTCTime = Notus.Time.GetNtpTime();
-            Console.WriteLine(JsonSerializer.Serialize(Settings.UTCTime, NVC.JsonSetting));
-            NP.ReadLine();
+            //Settings.UTCTime = Notus.Time.GetNtpTime();
+            //Console.WriteLine(JsonSerializer.Serialize(Settings.UTCTime, NVC.JsonSetting));
+            //NP.ReadLine();
         }
 
         public static class Functions
@@ -167,11 +171,13 @@ namespace Notus.Variable
             public static Notus.Wallet.Balance Balance { get; set; }
             public static Notus.TGZArchiver Archiver { get; set; }
             public static Notus.Block.Queue BlockQueue { get; set; }
+            /*
             public static DateTime GetUtcNowFromNtp()
             {
-                RefreshNtpTime();
+                //RefreshNtpTime();
                 return Settings.UTCTime.Now;
             }
+            */
             public static string SendMessage(string receiverIpAddress, int receiverPortNo, string messageText, string nodeHexStr = "")
             {
                 if (nodeHexStr == "")
@@ -221,7 +227,7 @@ namespace Notus.Variable
                 kontrol ederek node'u listeden offline moduna alacak
                 */
                 // diğer nodelara kapandığımızı bildiriyoruz...
-                ulong nowUtcValue = NVG.NowUTC;
+                ulong nowUtcValue = NVG.NOW.Int;
                 string controlSignForKillMsg = Notus.Wallet.ID.Sign(
                     nowUtcValue.ToString() +
                         Notus.Variable.Constant.CommonDelimeterChar +
@@ -252,6 +258,7 @@ namespace Notus.Variable
                 }
                 Settings.ClosingCompleted = true;
             }
+            /*
             public static void UpdateUtcNowValue()
             {
                 RefreshNtpTime();
@@ -271,7 +278,7 @@ namespace Notus.Variable
             }
             public static void RefreshNtpTime()
             {
-                DateTime tmpTime = DateTime.Now;
+                DateTime tmpTime = NVG.NOW.Obj;
                 if (Settings.UTCTime.After == true)
                 {
                     Settings.UTCTime.Now = tmpTime.Subtract(Settings.UTCTime.Difference);
@@ -282,18 +289,17 @@ namespace Notus.Variable
                 }
                 Settings.UTCTime.Now = Settings.UTCTime.Now.Subtract(Settings.UTCTime.pingTime);
             }
+            */
             public static string GenerateTxUid()
             {
                 string seedStr = "node-wallet-key";
-                DateTime uidTime = DateTime.Now;
+                DateTime uidTime = NVG.NOW.Obj;
                 if (Settings != null)
                 {
                     if (Settings.NodeWallet != null)
                     {
                         seedStr = Settings.NodeWallet.WalletKey;
                     }
-                    RefreshNtpTime();
-                    uidTime = Settings.UTCTime.Now;
                 }
                 return Notus.Block.Key.Generate(uidTime, seedStr);
             }
@@ -306,6 +312,10 @@ namespace Notus.Variable
             }
             public static void Start()
             {
+                NOW= new TimeStruct();
+                NOW.Obj = DateTime.UtcNow;
+                NOW.Int = ND.ToLong(NOW.Obj);
+
                 WalletUsageList = new ConcurrentDictionary<string, byte>();
                 LockWalletList = new ConcurrentDictionary<string, string>();
                 BlockOrder = new ConcurrentDictionary<long, string>();
@@ -328,7 +338,7 @@ namespace Notus.Variable
                     Settings.UTCTime = Notus.Time.GetNtpTime();
                 }
                 Settings.UTCTime = Notus.Time.GetNtpTime();
-                Console.WriteLine(DateTime.Now.ToString("HH mm ss fff"));
+                Console.WriteLine(NVG.NOW.Obj.ToString("HH mm ss fff"));
                 Console.WriteLine(Settings.UTCTime.Now.ToString("HH mm ss fff"));
                 NP.ReadLine();
                 */

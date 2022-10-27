@@ -48,10 +48,10 @@ namespace Notus.HashLib
             Notus.HashLib.SHA1 sha1_obj = new Notus.HashLib.SHA1();
             Notus.HashLib.RIPEMD160 ripemd160_obj = new Notus.HashLib.RIPEMD160();
                 
-            string[] blakeArray = Notus.Toolbox.Text.SplitByLength(Notus.Convert.Byte2Hex(blake2b_obj.ComputeHash(inputArr)), 16).ToArray();
-            string[] md5Array = Notus.Toolbox.Text.SplitByLength(md5_obj.Calculate(inputArr), 4).ToArray();
-            string[] sha1Array = Notus.Toolbox.Text.SplitByLength(sha1_obj.Calculate(inputArr), 5).ToArray();
-            string[] ripemdArray = Notus.Toolbox.Text.SplitByLength(ripemd160_obj.ComputeHashWithArray(inputArr), 5).ToArray();
+            string[] blakeArray = Notus.Toolbox.Time.SplitByLength(Notus.Convert.Byte2Hex(blake2b_obj.ComputeHash(inputArr)), 16).ToArray();
+            string[] md5Array = Notus.Toolbox.Time.SplitByLength(md5_obj.Calculate(inputArr), 4).ToArray();
+            string[] sha1Array = Notus.Toolbox.Time.SplitByLength(sha1_obj.Calculate(inputArr), 5).ToArray();
+            string[] ripemdArray = Notus.Toolbox.Time.SplitByLength(ripemd160_obj.ComputeHashWithArray(inputArr), 5).ToArray();
             string hashResult = "";
             for (int i = 0; i < 8; i++)
             {
@@ -74,7 +74,7 @@ namespace Notus.HashLib
         /// <returns>Returns Sasha Hash <see cref="string"/>.</returns>
         public string Calculate(string rawInput)
         {
-            return Notus.Toolbox.Text.ReplaceChar(
+            return Notus.Toolbox.Time.ReplaceChar(
                 PureCalculate(
                     Encoding.UTF8.GetBytes(rawInput),
                     true
@@ -91,7 +91,7 @@ namespace Notus.HashLib
         /// <returns>Returns Sasha Hash <see cref="string"/>.</returns>
         public string Calculate(byte[] inputArr)
         {
-            return Notus.Toolbox.Text.ReplaceChar(
+            return Notus.Toolbox.Time.ReplaceChar(
                 PureCalculate(inputArr,true),
                 Notus.Variable.Constant.DefaultHexAlphabetString,
                 SimpleHashAlphabetForHexResult
@@ -137,10 +137,10 @@ namespace Notus.HashLib
             Notus.HashLib.BLAKE2B hashObj2b = new Notus.HashLib.BLAKE2B();
             Notus.HashLib.MD5 hashObjMd5 = new Notus.HashLib.MD5();
 
-            string[] sha1Array = Notus.Toolbox.Text.SplitByLength(hashObjSha1.SignWithHashMethod(signKeyText, rawInput), 5).ToArray();
-            string[] ripemdArray = Notus.Toolbox.Text.SplitByLength(hashObj160.SignWithHashMethod(signKeyText, rawInput), 5).ToArray();
-            string[] blakeArray = Notus.Toolbox.Text.SplitByLength(hashObj2b.SignWithHashMethod(signKeyText, rawInput), 16).ToArray();
-            string[] md5Array = Notus.Toolbox.Text.SplitByLength(hashObjMd5.SignWithHashMethod(signKeyText, rawInput), 4).ToArray();
+            string[] sha1Array = Notus.Toolbox.Time.SplitByLength(hashObjSha1.SignWithHashMethod(signKeyText, rawInput), 5).ToArray();
+            string[] ripemdArray = Notus.Toolbox.Time.SplitByLength(hashObj160.SignWithHashMethod(signKeyText, rawInput), 5).ToArray();
+            string[] blakeArray = Notus.Toolbox.Time.SplitByLength(hashObj2b.SignWithHashMethod(signKeyText, rawInput), 16).ToArray();
+            string[] md5Array = Notus.Toolbox.Time.SplitByLength(hashObjMd5.SignWithHashMethod(signKeyText, rawInput), 4).ToArray();
 
             string hashResult = "";
             for (int i = 0; i < 8; i++)
@@ -163,7 +163,7 @@ namespace Notus.HashLib
             if (newHashAlphabet.Length == 35)
             {
 
-                return Notus.Toolbox.Text.ReplaceChar(
+                return Notus.Toolbox.Time.ReplaceChar(
                     Notus.Convert.ToBase35(hashResult),
                     Notus.Variable.Constant.DefaultBase35AlphabetString,
                     newHashAlphabet
@@ -194,7 +194,7 @@ namespace Notus.HashLib
             string hashResult = PureCalculate(Encoding.UTF8.GetBytes(rawInput));
             if (newHashAlphabet.Length == 35)
             {
-                return Notus.Toolbox.Text.ReplaceChar(
+                return Notus.Toolbox.Time.ReplaceChar(
                     Notus.Convert.ToBase35(hashResult),
                     Notus.Variable.Constant.DefaultBase35AlphabetString,
                     newHashAlphabet

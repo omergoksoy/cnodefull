@@ -1,11 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Text.Json;
-namespace Notus
+using System.Threading.Tasks;
+using Notus.Communication;
+
+namespace Notus.Sync
 {
-    public class Sync
+    public class Block
     {
         public static bool Block(
-            Notus.Globals.Variable.Settings objSettings, 
+            Notus.Globals.Variable.Settings objSettings,
             List<Notus.Variable.Struct.IpInfo> nodeList,
             System.Action<Notus.Variable.Class.BlockData>? Func_NewBlockIncome = null
         )
@@ -28,7 +35,7 @@ namespace Notus
                     }
                 }
             }
-            if (objSettings.LastBlock.info.rowNo> smallestBlockRow)
+            if (objSettings.LastBlock.info.rowNo > smallestBlockRow)
             {
                 //Console.WriteLine("My Node Higher Than Other");
             }
@@ -39,22 +46,20 @@ namespace Notus
             bool exitForLoop = false;
             int nCount = 0;
             List<bool> nodeControlList = new List<bool>();
-            for(int i = 0; i < nodeList.Count; i++)
+            for (int i = 0; i < nodeList.Count; i++)
             {
                 nodeControlList.Add(false);
             }
-            for (long blockNo = objSettings.LastBlock.info.rowNo; blockNo < (smallestBlockRow +1) && exitForLoop == false; blockNo++)
+            for (long blockNo = objSettings.LastBlock.info.rowNo; blockNo < (smallestBlockRow + 1) && exitForLoop == false; blockNo++)
             {
-                /*
-                kontrol edilmemiş olanlar false olarak işaretlenecek
-                */
+                //kontrol edilmemiş olanlar false olarak işaretlenecek
                 for (int i = 0; i < nodeList.Count; i++)
                 {
-                    nodeControlList[i]=false;
+                    nodeControlList[i] = false;
                 }
                 // burada belirtilen sayıda node'u kontrol ederek blok bulacak
                 // aşağıdaki verilen 8 sayısı en fazla kontrol edilecek node sayısı
-                for (int iCount=0; iCount<8; iCount++)
+                for (int iCount = 0; iCount < 8; iCount++)
                 {
                     if (nodeControlList[nCount] == false)
                     {

@@ -113,7 +113,7 @@ namespace Notus.Communication
             if (Val_StoreUrl == true)
             {
                 Mp_UrlList.Add(
-                    Date.ToString(DateTime.Now) + new Random().Next(10000000, 42949295).ToString(),
+                    Date.ToString(NVG.NOW.Obj) + new Random().Next(10000000, 42949295).ToString(),
                     JsonSerializer.Serialize(incomeData)
                 );
             }

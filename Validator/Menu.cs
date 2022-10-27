@@ -764,8 +764,8 @@ namespace Notus.Validator
                 Console.WriteLine("Please wait for auto-start");
                 bool keyExist = false;
                 byte iCounter = 0;
-                DateTime bitis = DateTime.Now.AddSeconds(10);
-                while (bitis > DateTime.Now && keyExist == false)
+                DateTime bitis = NVG.NOW.Obj.AddSeconds(10);
+                while (bitis > NVG.NOW.Obj && keyExist == false)
                 {
                     if (Console.KeyAvailable == true)
                     {
@@ -800,8 +800,8 @@ namespace Notus.Validator
                     Console.ResetColor();
                     keyExist = false;
                     iCounter = 0;
-                    bitis = DateTime.Now.AddSeconds(5);
-                    while (bitis > DateTime.Now && keyExist == false)
+                    bitis = NVG.NOW.Obj.AddSeconds(5);
+                    while (bitis > NVG.NOW.Obj && keyExist == false)
                     {
                         if (Console.KeyAvailable == true)
                         {
@@ -1078,7 +1078,7 @@ namespace Notus.Validator
         }
         public void DefineMySetting()
         {
-            NVG.Settings.Nodes.My.Begin = Notus.Date.ToLong(NGF.GetUtcNowFromNtp());
+            NVG.Settings.Nodes.My.Begin = NVG.NOW.Int;
             NVG.Settings.Nodes.My.Tick = NVG.Settings.Nodes.My.Begin;
 
             NVG.Settings.Layer = nodeObj.Layer.Selected;

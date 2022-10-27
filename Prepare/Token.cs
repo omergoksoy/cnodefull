@@ -34,7 +34,7 @@ namespace Notus.Prepare
                 },
                 Creation = new Notus.Variable.Struct.CreationStruct()
                 {
-                    UID = Notus.Block.Key.Generate(Notus.Time.GetFromNtpServer(),""),
+                    UID = Notus.Block.Key.Generate(NVG.NOW.Obj, ""),
                     PublicKey = PublicKeyHex,
                     Sign = Sign
                 },

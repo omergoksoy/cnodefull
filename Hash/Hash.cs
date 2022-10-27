@@ -41,13 +41,13 @@ namespace Notus
             if (resultType== Notus.Variable.Enum.ShortAlgorithmResultType.Mix)
             {
                 string resultStr = "";
-                string[] md5Result = Notus.Toolbox.Text.SplitByLength(Notus.Toolbox.Text.ShrinkHex(CommonHash("md5", rawInput), howManyByte), 1).ToArray();
-                string[] whirlpoolResult = Notus.Toolbox.Text.SplitByLength(Notus.Toolbox.Text.ShrinkHex(CommonHash("whirlpool", rawInput), howManyByte), 1).ToArray();
-                string[] sha1Result = Notus.Toolbox.Text.SplitByLength(Notus.Toolbox.Text.ShrinkHex(CommonHash("sha1", rawInput), howManyByte), 1).ToArray();
-                string[] sha256Result = Notus.Toolbox.Text.SplitByLength(Notus.Toolbox.Text.ShrinkHex(CommonHash("sha256", rawInput), howManyByte), 1).ToArray();
-                string[] sha512Result = Notus.Toolbox.Text.SplitByLength(Notus.Toolbox.Text.ShrinkHex(CommonHash("sha512", rawInput), howManyByte), 1).ToArray();
-                string[] blake2bResult = Notus.Toolbox.Text.SplitByLength(Notus.Toolbox.Text.ShrinkHex(CommonHash("blake2b", rawInput), howManyByte), 1).ToArray();
-                string[] ripemd160bResult = Notus.Toolbox.Text.SplitByLength(Notus.Toolbox.Text.ShrinkHex(CommonHash("ripemd160", rawInput), howManyByte), 1).ToArray();
+                string[] md5Result = Notus.Toolbox.Time.SplitByLength(Notus.Toolbox.Time.ShrinkHex(CommonHash("md5", rawInput), howManyByte), 1).ToArray();
+                string[] whirlpoolResult = Notus.Toolbox.Time.SplitByLength(Notus.Toolbox.Time.ShrinkHex(CommonHash("whirlpool", rawInput), howManyByte), 1).ToArray();
+                string[] sha1Result = Notus.Toolbox.Time.SplitByLength(Notus.Toolbox.Time.ShrinkHex(CommonHash("sha1", rawInput), howManyByte), 1).ToArray();
+                string[] sha256Result = Notus.Toolbox.Time.SplitByLength(Notus.Toolbox.Time.ShrinkHex(CommonHash("sha256", rawInput), howManyByte), 1).ToArray();
+                string[] sha512Result = Notus.Toolbox.Time.SplitByLength(Notus.Toolbox.Time.ShrinkHex(CommonHash("sha512", rawInput), howManyByte), 1).ToArray();
+                string[] blake2bResult = Notus.Toolbox.Time.SplitByLength(Notus.Toolbox.Time.ShrinkHex(CommonHash("blake2b", rawInput), howManyByte), 1).ToArray();
+                string[] ripemd160bResult = Notus.Toolbox.Time.SplitByLength(Notus.Toolbox.Time.ShrinkHex(CommonHash("ripemd160", rawInput), howManyByte), 1).ToArray();
 
                 for (int a = 0; a < howManyByte * 2; a++)
                 {
@@ -65,13 +65,13 @@ namespace Notus
             }
             else
             {
-                return Notus.Toolbox.Text.ShrinkHex(CommonHash("md5", rawInput), howManyByte) +
-                    Notus.Toolbox.Text.ShrinkHex(CommonHash("whirlpool", rawInput), howManyByte) +
-                    Notus.Toolbox.Text.ShrinkHex(CommonHash("sha1", rawInput), howManyByte) +
-                    Notus.Toolbox.Text.ShrinkHex(CommonHash("sha256", rawInput), howManyByte) +
-                    Notus.Toolbox.Text.ShrinkHex(CommonHash("sha512", rawInput), howManyByte) +
-                    Notus.Toolbox.Text.ShrinkHex(CommonHash("blake2b", rawInput), howManyByte) +
-                    Notus.Toolbox.Text.ShrinkHex(CommonHash("ripemd160", rawInput), howManyByte);
+                return Notus.Toolbox.Time.ShrinkHex(CommonHash("md5", rawInput), howManyByte) +
+                    Notus.Toolbox.Time.ShrinkHex(CommonHash("whirlpool", rawInput), howManyByte) +
+                    Notus.Toolbox.Time.ShrinkHex(CommonHash("sha1", rawInput), howManyByte) +
+                    Notus.Toolbox.Time.ShrinkHex(CommonHash("sha256", rawInput), howManyByte) +
+                    Notus.Toolbox.Time.ShrinkHex(CommonHash("sha512", rawInput), howManyByte) +
+                    Notus.Toolbox.Time.ShrinkHex(CommonHash("blake2b", rawInput), howManyByte) +
+                    Notus.Toolbox.Time.ShrinkHex(CommonHash("ripemd160", rawInput), howManyByte);
             }
         }
 

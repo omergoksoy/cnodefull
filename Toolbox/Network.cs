@@ -338,8 +338,8 @@ namespace Notus.Toolbox
                     tmp_HttpObj.OnReceive(Fnc_TestLinkData);
                     IPAddress testAddress = IPAddress.Parse(NVG.Settings.IpInfo.Public);
                     tmp_HttpObj.Start(testAddress, ControlPortNo);
-                    DateTime twoSecondsLater = DateTime.Now.AddSeconds(Timeout);
-                    while (twoSecondsLater > DateTime.Now && tmp_HttpObj.Started == false)
+                    DateTime twoSecondsLater = NVG.NOW.Obj.AddSeconds(Timeout);
+                    while (twoSecondsLater > NVG.NOW.Obj && tmp_HttpObj.Started == false)
                     {
                         try
                         {

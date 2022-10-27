@@ -4,12 +4,11 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using NVC = Notus.Variable.Constant;
-using NT = Notus.Time;
+//using NT = Notus.Time;
 using ND = Notus.Date;
+using NVG = Notus.Variable.Globals;
 namespace Notus.Communication
 {
-    burada UDP soket bağlantısı zaman bilgisi için kullanılacak
-
     public class UDP
     {
         private Dictionary<string, double> timeOut = new Dictionary<string, double>();
@@ -18,6 +17,11 @@ namespace Notus.Communication
         private State state = new State();
         private EndPoint epFrom = new IPEndPoint(IPAddress.Any, 0);
         private AsyncCallback recv = null;
+        private System.Action<string>? Func_OnReceive = null;
+        public void OnReceive(System.Action<string> Func_OnReceive)
+        {
+
+        }
         private void Receive()
         {
             _socket.BeginReceiveFrom(state.buffer, 0, bufSize, SocketFlags.None, ref epFrom, recv = (ar) =>
@@ -26,12 +30,15 @@ namespace Notus.Communication
                 int bytes = _socket.EndReceiveFrom(ar, ref epFrom);
                 _socket.BeginReceiveFrom(so.buffer, 0, bufSize, SocketFlags.None, ref epFrom, recv, so);
 
-                DateTime suAn = DateTime.Now;
+                DateTime suAn = NVG.NOW.Obj;
                 long TamSuAn = long.Parse(suAn.ToString(NVC.DefaultDateTimeFormatText));
                 string gelenZaman = Encoding.ASCII.GetString(so.buffer, 0, bytes);
+                if (Func_OnReceive != null)
+                {
+                    Func_OnReceive(gelenZaman);
+                }
+                /*
                 string[] income = gelenZaman.Split(':');
-
-
                 if (string.Equals(income[0], "s"))
                 {
                     if (timeOut.ContainsKey(income[1]) == true)
@@ -91,9 +98,16 @@ namespace Notus.Communication
                         Console.WriteLine("Hatali Zaman Bilgisi");
                     }
                 }
+                */
             }, state);
         }
-
+        public UDP(int port=0)
+        {
+            if (port > 0)
+            {
+                Server("", port, true);
+            }
+        }
         public class State
         {
             public byte[] buffer = new byte[bufSize];

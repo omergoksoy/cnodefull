@@ -52,7 +52,7 @@ Console.CancelKeyPress += delegate {
 */
 
 //NGF.UpdateUtcNowValue();
-//ulong suAn = NVG.NowUTC;
+//ulong suAn = NVG.NOW.Int;
 
 /*
 var fastServerName = Notus.Time.FindFasterNtpServer();
@@ -123,7 +123,7 @@ Console.ReadLine();
 */
 
 /*
-DateTime suan = DateTime.Now;
+DateTime suan = NVG.NOW.Obj;
 
 Console.WriteLine(suan.ToString("yyyy MM dd HH:mm:ss - fff"));
 suan = suan.AddMilliseconds(100);

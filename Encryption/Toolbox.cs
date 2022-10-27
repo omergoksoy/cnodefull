@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-
+using NVG = Notus.Variable.Globals;
 namespace Notus.Encryption
 {
     public class Toolbox
@@ -276,8 +276,8 @@ namespace Notus.Encryption
                 return Notus.Convert.Byte2Hex(
                     md5.ComputeHash(
                         System.Text.Encoding.ASCII.GetBytes(
-                            DateTime.Now.AddMilliseconds(startingPoint - 123456).Ticks.ToString("x") + "-" +
-                            DateTime.Now.AddSeconds(startingPoint - 123456).ToUniversalTime().ToLongTimeString() + "-" +
+                            NVG.NOW.Obj.AddMilliseconds(startingPoint - 123456).Ticks.ToString("x") + "-" +
+                            NVG.NOW.Obj.AddSeconds(startingPoint - 123456).ToUniversalTime().ToLongTimeString() + "-" +
                             new Random().Next(startingPoint, startingPoint + 20000000).ToString("x")
                         )
                     )

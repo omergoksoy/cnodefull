@@ -51,14 +51,14 @@ namespace Notus.Reward
             while (exitWhileLoop == false)
             {
 
-                string tmpCurrencyData = ObjMp_Balance.Get(Notus.Toolbox.Text.CurrencyName2Hex(CurrencyName), "");
+                string tmpCurrencyData = ObjMp_Balance.Get(Notus.Toolbox.Time.CurrencyName2Hex(CurrencyName), "");
                 if (tmpCurrencyData.Length == 0)
                 {
                     CurrencyData.Detail.Tag = CurrencyName;
                     exitWhileLoop = true;
                     if (
                         ObjMp_Balance.Add(
-                            Notus.Toolbox.Text.CurrencyName2Hex(CurrencyName),
+                            Notus.Toolbox.Time.CurrencyName2Hex(CurrencyName),
                             JsonSerializer.Serialize(CurrencyData)
                         ) == false
                     )
@@ -78,7 +78,7 @@ namespace Notus.Reward
         public static bool Exist(Notus.Variable.Enum.NetworkType networkType, Notus.Variable.Enum.NetworkLayer networkLayer, string CurrencyName)
         {
             Notus.Mempool ObjMp_Balance = GiveCurrencyListDb(networkType, networkLayer);
-            string tmpCurrencyData = ObjMp_Balance.Get(Notus.Toolbox.Text.CurrencyName2Hex(CurrencyName), "");
+            string tmpCurrencyData = ObjMp_Balance.Get(Notus.Toolbox.Time.CurrencyName2Hex(CurrencyName), "");
             return (tmpCurrencyData.Length == 0 ? false : true);
         }
     }

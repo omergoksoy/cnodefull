@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-
+using NVG = Notus.Variable.Globals;
 namespace Notus.Wallet
 {
     public static class Toolbox
@@ -19,10 +19,10 @@ namespace Notus.Wallet
                     int.Parse(
                         new Notus.Hash().CommonHash(
                             "sha1",
-                            DateTime.Now.ToLongTimeString() +
+                            NVG.NOW.Obj.ToLongTimeString() +
                             new Notus.Hash().CommonHash(
                                 "md5",
-                                DateTime.Now.ToUniversalTime() +
+                                NVG.NOW.Obj.ToUniversalTime() +
                                 new Random().Next(10000000, int.MaxValue - 1).ToString()
                             )
                         ).Substring(0, 4),

@@ -238,7 +238,7 @@ namespace Notus.Block
                 {
                     exitLoop = true;
                 }
-                if (NVG.NowUTC >= WaitingForPool)
+                if (NVG.NOW.Int >= WaitingForPool)
                 {
                     exitLoop = true;
                 }

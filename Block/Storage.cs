@@ -15,7 +15,7 @@ namespace Notus.Block
         private int DefaultBlockGenerateInterval = 3000;
 
         private string OpenFileName = string.Empty;
-        private DateTime FileOpeningTime = DateTime.Now;
+        private DateTime FileOpeningTime = NVG.NOW.Obj;
 
         private bool AutoStartObj = false;
         private bool BlockStorageIsRunning = false;
@@ -137,7 +137,7 @@ namespace Notus.Block
                 }
                 else
                 {
-                    if ((DateTime.Now - FileOpeningTime).TotalSeconds > 3)
+                    if ((NVG.NOW.Obj - FileOpeningTime).TotalSeconds > 3)
                     {
                         exitInnerLoop = true;
                     }
@@ -145,7 +145,7 @@ namespace Notus.Block
             }
 
             OpenFileName = ZipFileName;
-            FileOpeningTime = DateTime.Now;
+            FileOpeningTime = NVG.NOW.Obj;
 
             string blockFileName = NewBlock.info.uID + ".json";
             if (UpdateBlock == true)
