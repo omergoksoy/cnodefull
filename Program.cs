@@ -48,6 +48,14 @@ AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
 
 
+/*
+
+
+udp client burası ile çalışacak
+
+https://learn.microsoft.com/en-us/dotnet/api/system.net.sockets.udpclient?view=net-6.0
+*/
+
 string myIpAddress = Notus.Toolbox.Network.GetPublicIPAddress();
 Notus.Communication.UDP joinObj = new Notus.Communication.UDP();
 joinObj.Client("13.229.56.127", 25000);
@@ -56,6 +64,7 @@ for (int i = 0; i < 10; i++)
     joinObj.Send("a:deneme:" + myIpAddress);
     Thread.Sleep(550);
 }
+joinObj = null;
 //Console.ReadLine();
 
 
