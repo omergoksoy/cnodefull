@@ -62,8 +62,8 @@ namespace Notus.Encryption
             TypeStr = (DataSecurityPattern.ContainsKey(TypeStr) == false ? "default" : TypeStr);
 
             byte[] decArray = System.Convert.FromBase64String(
-                Notus.Toolbox.Time.ReplaceChar(rawDataStr,
-                        Notus.Toolbox.Time.Iteration(
+                Notus.Toolbox.Text.ReplaceChar(rawDataStr,
+                        Notus.Toolbox.Text.Iteration(
                             64,
                             new Notus.Hash().CommonSign("sha1", generatedKey) +
                             new Notus.Hash().CommonSign("sha1", generatedIV)
@@ -166,10 +166,10 @@ namespace Notus.Encryption
             }
             Array.Reverse(rawData);
             
-            return Notus.Toolbox.Time.ReplaceChar(
+            return Notus.Toolbox.Text.ReplaceChar(
                 System.Convert.ToBase64String(rawData),
                 Notus.Variable.Constant.DefaultBase64AlphabetString,
-                Notus.Toolbox.Time.Iteration(
+                Notus.Toolbox.Text.Iteration(
                     64,
                     new Notus.Hash().CommonSign("sha1", generatedKey) +
                     new Notus.Hash().CommonSign("sha1", generatedIV)

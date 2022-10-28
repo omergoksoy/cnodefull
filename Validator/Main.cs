@@ -519,7 +519,8 @@ namespace Notus.Validator
         {
             if (NVG.Settings.GenesisCreated == false)
             {
-                TimeSyncObj.Start(27000);
+                //omergoksoy
+                TimeSyncObj.Start(NVC.TimeSyncCommPort,0);
             }
 
             Obj_Integrity = new Notus.Block.Integrity();
@@ -648,7 +649,7 @@ namespace Notus.Validator
                 if (NVG.Settings.GenesisCreated == false)
                 {
                     NP.Info(NVG.Settings, "Node Blocks Are Checking For Sync");
-                    bool waitForOtherNodes = Notus.Sync.Block.Block(
+                    bool waitForOtherNodes = Notus.Sync.Block.Block2(
                         NVG.Settings, ValidatorQueueObj.GiveMeNodeList(),
                         tmpNewBlockIncome =>
                         {

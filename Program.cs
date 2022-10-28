@@ -1,5 +1,8 @@
-﻿using System.Runtime.ExceptionServices;
+﻿using System.Net;
+using System.Net.Sockets;
+using System.Runtime.ExceptionServices;
 using System.Text.Json;
+using Notus.Communication;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
 using NVG = Notus.Variable.Globals;
@@ -44,6 +47,76 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
 
+
+string myIpAddress = Notus.Toolbox.Network.GetPublicIPAddress();
+Notus.Communication.UDP joinObj = new Notus.Communication.UDP();
+joinObj.Client("13.229.56.127", 25000);
+for (int i = 0; i < 10; i++)
+{
+    joinObj.Send("a:deneme:" + myIpAddress);
+    Thread.Sleep(550);
+}
+//Console.ReadLine();
+
+
+Notus.Communication.UDP serverObj = new Notus.Communication.UDP();
+//serverObj.Server("89.252.134.111", 27000, true);
+serverObj.Server("", 27000, true);
+serverObj.OnReceive((incomeTime, incomeText) =>
+{
+    Console.WriteLine(incomeTime);
+    Console.WriteLine(incomeText);
+/*
+    string[] sDizi = incomeText.Split(":");
+    if (string.Equals(sDizi[0], "k"))
+    {
+        // k : cuzdan_adresi
+        conIp.TryRemove(sDizi[1], out _);
+        conList.TryRemove(sDizi[1], out _);
+    }
+
+    if (string.Equals(sDizi[0], "a"))
+    {
+        // a : cuzdan_addresi : ip_adresi
+        if (conList.ContainsKey(sDizi[1]) == false)
+        {
+            conIp.TryAdd(sDizi[1], sDizi[2]);
+            conList.TryAdd(sDizi[1], new Communication.UDP()
+            {
+
+            });
+
+            conList[sDizi[1]].Client(
+                conIp[sDizi[1]],
+                27000
+            );
+        }
+    }
+*/
+});
+
+Console.ReadLine();
+
+/*
+var socket = new Socket(SocketType.Dgram, ProtocolType.Udp);
+var ep = new IPEndPoint(IPAddress.Parse("13.229.56.127"),25000);
+//socket.BeginReceive
+//joinObj.Client("89.252.134.111", 25000);
+//joinObj.Client("3.75.110.186", 41324);
+//joinObj.OnReceive((incomeTime, incomeText) =>
+//{
+//    Console.WriteLine("Income Text : " + incomeText);
+//    Console.WriteLine("income time : " + incomeTime);
+//});
+for (int i = 0; i < 5; i++)
+{
+    Console.WriteLine("Sending");
+    socket.SendTo(System.Text.Encoding.ASCII.GetBytes("hello:" + ep.Address + ":" + "41235"), ep);
+    Thread.Sleep(1500);
+}
+*/
+Console.ReadLine();
+//TimeSyncAddingCommPort
 /*
 Console.WriteLine(DateTime.UtcNow);
 Console.CancelKeyPress += delegate {

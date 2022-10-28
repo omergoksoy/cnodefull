@@ -13,17 +13,25 @@ using NVS = Notus.Variable.Struct;
 using NGF = Notus.Variable.Globals.Functions;
 namespace Notus.Sync
 {
-    public class Time: IDisposable
+    public class Time : IDisposable
     {
         private double TimeShift;
         private DateTime LocalUtcTime;
         private UDP serverObj;
+        private UDP joinObj;
         private Notus.Threads.Timer? UtcTimerObj;
-        public void Start(int portNo)
+        public void Start(int portNo, int joinPortNo)
         {
             UpdateUtcTimeTimerFunc();
+
+            joinObj = new UDP(joinPortNo);
+            joinObj.OnReceive((incomeTime, incomeText) =>
+            {
+                Console.WriteLine("Income Text : " + incomeText);
+            });
+
             serverObj = new UDP(portNo);
-            serverObj.OnReceive(incomeText =>
+            serverObj.OnReceive((incomeTime, incomeText) =>
             {
                 Console.WriteLine("Income Text : " + incomeText);
             });
@@ -61,7 +69,7 @@ namespace Notus.Sync
         }
         public Time()
         {
-            TimeShift =0;
+            TimeShift = 0;
             NP.Success(NVG.Settings, "Time Synchronizer Has Started");
         }
         ~Time()
@@ -70,11 +78,11 @@ namespace Notus.Sync
         }
         public void Dispose()
         {
-            if(serverObj != null)
+            if (serverObj != null)
             {
                 serverObj = null;
             }
-            if(UtcTimerObj != null)
+            if (UtcTimerObj != null)
             {
                 UtcTimerObj.Dispose();
             }

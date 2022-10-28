@@ -11,7 +11,7 @@ namespace Notus.Sync
 {
     public class Block
     {
-        public static bool Block(
+        public static bool Block2(
             Notus.Globals.Variable.Settings objSettings,
             List<Notus.Variable.Struct.IpInfo> nodeList,
             System.Action<Notus.Variable.Class.BlockData>? Func_NewBlockIncome = null

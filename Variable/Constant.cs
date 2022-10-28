@@ -87,6 +87,9 @@ namespace Notus.Variable
             }
         };
 
+        public static readonly int TimeSyncCommPort = 27000;
+        public static readonly int TimeSyncAddingCommPort = 25000;
+
         // layer 1 - main layer for crypto & token generate and transfer
         public static readonly Dictionary<NetworkLayer, Dictionary<NetworkType, int>> PortNo = new Dictionary<NetworkLayer, Dictionary<NetworkType, int>>()
         {

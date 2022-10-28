@@ -17,8 +17,8 @@ namespace Notus.Communication
         private State state = new State();
         private EndPoint epFrom = new IPEndPoint(IPAddress.Any, 0);
         private AsyncCallback recv = null;
-        private System.Action<string>? Func_OnReceive = null;
-        public void OnReceive(System.Action<string> Func_OnReceive)
+        private System.Action<DateTime, string>? Func_OnReceive = null;
+        public void OnReceive(System.Action<DateTime, string> Func_OnReceive)
         {
 
         }
@@ -29,13 +29,12 @@ namespace Notus.Communication
                 State so = (State)ar.AsyncState;
                 int bytes = _socket.EndReceiveFrom(ar, ref epFrom);
                 _socket.BeginReceiveFrom(so.buffer, 0, bufSize, SocketFlags.None, ref epFrom, recv, so);
-
                 DateTime suAn = NVG.NOW.Obj;
-                long TamSuAn = long.Parse(suAn.ToString(NVC.DefaultDateTimeFormatText));
-                string gelenZaman = Encoding.ASCII.GetString(so.buffer, 0, bytes);
+                //long TamSuAn = long.Parse(suAn.ToString(NVC.DefaultDateTimeFormatText));
                 if (Func_OnReceive != null)
                 {
-                    Func_OnReceive(gelenZaman);
+                    string gelenZaman = Encoding.ASCII.GetString(so.buffer, 0, bytes);
+                    Func_OnReceive(suAn, gelenZaman);
                 }
                 /*
                 string[] income = gelenZaman.Split(':');
@@ -101,7 +100,7 @@ namespace Notus.Communication
                 */
             }, state);
         }
-        public UDP(int port=0)
+        public UDP(int port = 0)
         {
             if (port > 0)
             {
@@ -137,6 +136,7 @@ namespace Notus.Communication
             {
                 State so = (State)ar.AsyncState;
                 int bytes = _socket.EndSend(ar);
+                //Console.WriteLine(bytes);
             }, state);
         }
     }

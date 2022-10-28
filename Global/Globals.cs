@@ -312,7 +312,7 @@ namespace Notus.Variable
             }
             public static void Start()
             {
-                NOW= new TimeStruct();
+                NOW = new TimeStruct();
                 NOW.Obj = DateTime.UtcNow;
                 NOW.Int = ND.ToLong(NOW.Obj);
 
