@@ -23,7 +23,7 @@ namespace Notus.Sync
         public void Start(int portNo, int joinPortNo)
         {
             UpdateUtcTimeTimerFunc();
-
+            /*
             joinObj = new UDP(joinPortNo);
             joinObj.OnReceive((incomeTime, incomeText) =>
             {
@@ -36,6 +36,7 @@ namespace Notus.Sync
                 Console.WriteLine("Income Text : " + incomeText);
             });
             //s.Server("127.0.0.1", 27000, true);
+            */
         }
         private void UpdateUtcTimeTimerFunc()
         {
@@ -43,13 +44,12 @@ namespace Notus.Sync
             UtcTimerObj.Start(() =>
             {
                 LocalUtcTime = DateTime.UtcNow;
-                //NVG.NOW.Obj
-                //RefreshNtpTime();
-                /*
-                NVG.NOW.Int = NT.DateTimeToUlong(NVG.NOW.Obj);
-                NVG.NOW.Int = NT.DateTimeToUlong(Settings.UTCTime.Now);
-                */
-                if (int.Parse(LocalUtcTime.ToString("fff")) % 100 == 0)
+                if (NVG.NOW.DiffUpdated == true)
+                {
+                    NVG.NOW.Obj = LocalUtcTime.Add(NVG.NOW.Diff);
+                    NVG.NOW.Int = Notus.Date.ToLong(NVG.NOW.Obj);
+                }
+                if (int.Parse(LocalUtcTime.ToString("fff")) % 200 == 0)
                 {
                     try
                     {

@@ -21,6 +21,8 @@ namespace Notus.Validator
                 menuObj.DefineMySetting();
             }
 
+            NGF.StartTimeSync();
+
             //NVG.Settings.NodeStartingTime = NGF.NOW.Int;
             //Console.WriteLine(NVG.Settings.NodeStartingTime);
 

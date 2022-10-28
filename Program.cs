@@ -47,85 +47,13 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     Environment.Exit(0);
 }
 
-static void ThreadNodeDinleme()
-{
-    bool assigned = false;
-    TimeSpan timeDiff = new TimeSpan(0);
-    Console.WriteLine("Statring Listening from 27000");
-    Notus.Communication.UDP joinObj = new Notus.Communication.UDP();
-    joinObj.OnlyListen(27000, (dataArriveTimeObj, incomeString, remoteEp) =>
-    {
-        string[] incomeArr = incomeString.Split(':');
-        if (ulong.TryParse(incomeArr[0], out ulong ntpServerTimeLong))
-        {
-            int transferSpeed = int.Parse(incomeArr[1]);
-            if (transferSpeed == 0)
-            {
-                Console.SetCursorPosition(0, 2);
-                DateTime calculatedTime = DateTime.UtcNow;
-                if (assigned == false)
-                {
-                    assigned = true;
-                }
-                else
-                {
-                    calculatedTime = DateTime.UtcNow.Add(timeDiff);
-                }
-                DateTime ntpNodeTimeObj = DateTime.ParseExact(incomeArr[0], "yyyyMMddHHmmssfffff", CultureInfo.InvariantCulture);
-                if (dataArriveTimeObj > ntpNodeTimeObj)
-                {
-                    Console.WriteLine("NTP Server Geride");
-                }
-                else
-                {
-                    Console.WriteLine("Biz Gerideyiz");
-                }
-                timeDiff = ntpNodeTimeObj - dataArriveTimeObj;
-                Console.WriteLine("ntpServerTimeStr   : " + ntpNodeTimeObj.ToString("HH mm ss fff"));
-                Console.WriteLine("dataArriveTimeLong : " + dataArriveTimeObj.ToString("HH mm ss fff"));
-                Console.WriteLine("calculatedTime     : " + calculatedTime.ToString("HH mm ss fff"));
-                //Console.WriteLine("timeDiff           : " + timeDiff.ToString());
-                //Console.WriteLine("transferSpeed      : " + transferSpeed.ToString());
-                //Console.WriteLine("------------------------------------");
-                //Console.ReadLine();
-            }
-        }
-    });
-}
+
 
 
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
 
-
 /*
-
-
-udp client burası ile çalışacak
-
-https://learn.microsoft.com/en-us/dotnet/api/system.net.sockets.udpclient?view=net-6.0
-*/
-
-Thread thread1 = new Thread(new ThreadStart(ThreadNodeDinleme));
-thread1.Start();
-
-string myIpAddress = Notus.Toolbox.Network.GetPublicIPAddress();
-UdpClient udpClient = new UdpClient();
-for (int i = 0; i < 10; i++)
-{
-    try
-    {
-        udpClient.Connect("89.252.134.111", 25000);
-        Byte[] sendBytes = Encoding.ASCII.GetBytes("a:deneme:" + myIpAddress);
-        udpClient.Send(sendBytes, sendBytes.Length);
-    }
-    catch (Exception e)
-    {
-        Console.WriteLine(e.ToString());
-    }
-    Thread.Sleep(200);
-}
-
 Console.ReadLine();
 
 Notus.Communication.UDP joinObj = new Notus.Communication.UDP();
@@ -147,7 +75,6 @@ serverObj.OnReceive((incomeTime, incomeText) =>
 {
     Console.WriteLine(incomeTime);
     Console.WriteLine(incomeText);
-    /*
         string[] sDizi = incomeText.Split(":");
         if (string.Equals(sDizi[0], "k"))
         {
@@ -173,10 +100,10 @@ serverObj.OnReceive((incomeTime, incomeText) =>
                 );
             }
         }
-    */
 });
 
 Console.ReadLine();
+    */
 
 /*
 var socket = new Socket(SocketType.Dgram, ProtocolType.Udp);
@@ -195,8 +122,8 @@ for (int i = 0; i < 5; i++)
     socket.SendTo(System.Text.Encoding.ASCII.GetBytes("hello:" + ep.Address + ":" + "41235"), ep);
     Thread.Sleep(1500);
 }
-*/
 Console.ReadLine();
+*/
 //TimeSyncAddingCommPort
 /*
 Console.WriteLine(DateTime.UtcNow);

@@ -53,6 +53,8 @@ namespace Notus.Globals.Variable
 
     public class TimeStruct
     {
+        public bool DiffUpdated { get; set; }
+        public TimeSpan Diff { get; set; }
         public DateTime Obj { get; set; }
         public ulong Int { get; set; }
     }

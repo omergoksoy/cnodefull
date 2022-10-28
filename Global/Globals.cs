@@ -3,9 +3,12 @@ using Notus.Globals.Variable;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net.Sockets;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -93,16 +96,6 @@ namespace Notus.Variable
 
                 EncryptKey = "key-password-string",
 
-                /*
-                UTCTime = new NVS.UTCTimeStruct()
-                {
-                    After = false,
-                    Difference = new TimeSpan(),
-                    Now = new DateTime(),
-                    ulongNow = 0,
-                    UtcTime = new DateTime()
-                },
-                */
                 HashSalt = Notus.Encryption.Toolbox.GenerateSalt(),
 
 
@@ -154,11 +147,6 @@ namespace Notus.Variable
             zaman bilgisi çekilirken kaç salise harcandığı pingTime değişkenine atanıyor
             böyle senkronizasyon esnasında süreler daha doğru kontrol edilebilir
             */
-
-            //bu fonksiyon tüm zaman nodelarını kontrol ederek en hızlı zaman bilgisini veren sunucunun zaman bilgisini alıyor    
-            //Settings.UTCTime = Notus.Time.GetNtpTime();
-            //Console.WriteLine(JsonSerializer.Serialize(Settings.UTCTime, NVC.JsonSetting));
-            //NP.ReadLine();
         }
 
         public static class Functions
@@ -171,13 +159,6 @@ namespace Notus.Variable
             public static Notus.Wallet.Balance Balance { get; set; }
             public static Notus.TGZArchiver Archiver { get; set; }
             public static Notus.Block.Queue BlockQueue { get; set; }
-            /*
-            public static DateTime GetUtcNowFromNtp()
-            {
-                //RefreshNtpTime();
-                return Settings.UTCTime.Now;
-            }
-            */
             public static string SendMessage(string receiverIpAddress, int receiverPortNo, string messageText, string nodeHexStr = "")
             {
                 if (nodeHexStr == "")
@@ -258,38 +239,6 @@ namespace Notus.Variable
                 }
                 Settings.ClosingCompleted = true;
             }
-            /*
-            public static void UpdateUtcNowValue()
-            {
-                RefreshNtpTime();
-                NowUTC = Notus.Time.DateTimeToUlong(Settings.UTCTime.Now);
-            }
-            public static void RefreshNodeQueueTime()
-            {
-                if (NodeQueue != null)
-                {
-                    if (NodeQueue.Begin == true)
-                    {
-                        RefreshNtpTime();
-                        NodeQueue.Now = Notus.Time.DateTimeToUlong(Settings.UTCTime.Now);
-                    }
-                }
-                //NVG.NodeQueue.Starting = Notus.Variable.Constant.DefaultTime;
-            }
-            public static void RefreshNtpTime()
-            {
-                DateTime tmpTime = NVG.NOW.Obj;
-                if (Settings.UTCTime.After == true)
-                {
-                    Settings.UTCTime.Now = tmpTime.Subtract(Settings.UTCTime.Difference);
-                }
-                else
-                {
-                    Settings.UTCTime.Now = tmpTime.Add(Settings.UTCTime.Difference);
-                }
-                Settings.UTCTime.Now = Settings.UTCTime.Now.Subtract(Settings.UTCTime.pingTime);
-            }
-            */
             public static string GenerateTxUid()
             {
                 string seedStr = "node-wallet-key";
@@ -315,6 +264,8 @@ namespace Notus.Variable
                 NOW = new TimeStruct();
                 NOW.Obj = DateTime.UtcNow;
                 NOW.Int = ND.ToLong(NOW.Obj);
+                NOW.Diff = new TimeSpan(0);
+                NOW.DiffUpdated = false;
 
                 WalletUsageList = new ConcurrentDictionary<string, byte>();
                 LockWalletList = new ConcurrentDictionary<string, string>();
@@ -328,20 +279,6 @@ namespace Notus.Variable
                     Balance.Start();
                 }
 
-                /*
-                Console.WriteLine();
-                Console.WriteLine();
-                RefreshNtpTime();
-                for (int i = 0; i < 5; i++)
-                {
-                    Console.WriteLine(JsonSerializer.Serialize(Settings.UTCTime, NVC.JsonSetting));
-                    Settings.UTCTime = Notus.Time.GetNtpTime();
-                }
-                Settings.UTCTime = Notus.Time.GetNtpTime();
-                Console.WriteLine(NVG.NOW.Obj.ToString("HH mm ss fff"));
-                Console.WriteLine(Settings.UTCTime.Now.ToString("HH mm ss fff"));
-                NP.ReadLine();
-                */
                 Globals.NodeListPrinted = false;
                 Globals.NodeList = new ConcurrentDictionary<string, NVS.NodeQueueInfo>();
                 Globals.NodeQueue = new Notus.Globals.Variable.NodeQueueList();
@@ -365,6 +302,80 @@ namespace Notus.Variable
                 */
             }
 
+            public static void StartTimeSync()
+            {
+
+                Thread thread1 = new Thread(new ThreadStart(ThreadNodeDinleme));
+                thread1.Start();
+                UdpClient udpClient = new UdpClient();
+                for (int i = 0; i < 10; i++)
+                {
+                    try
+                    {
+                        udpClient.Connect("89.252.134.111", 25000);
+                        byte[] sendBytes = Encoding.ASCII.GetBytes("a:" + Settings.Nodes.My.IP.Wallet + ":" + Settings.Nodes.My.IP.IpAddress);
+                        udpClient.Send(sendBytes, sendBytes.Length);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.ToString());
+                    }
+                    Thread.Sleep(200);
+                }
+            }
+
+
+            burada merkezi node'dan zaman bilgisini alıyor
+            public static void ThreadNodeDinleme()
+            {
+                //bool assigned = false;
+                //TimeSpan timeDiff = new TimeSpan(0);
+                //Console.WriteLine("Statring Listening from 27000");
+                Notus.Communication.UDP joinObj = new Notus.Communication.UDP();
+                joinObj.OnlyListen(27000, (dataArriveTimeObj, incomeString, remoteEp) =>
+                {
+                    string[] incomeArr = incomeString.Split(':');
+                    if (ulong.TryParse(incomeArr[0], out ulong ntpServerTimeLong))
+                    {
+                        int transferSpeed = int.Parse(incomeArr[1]);
+                        if (transferSpeed == 0)
+                        {
+                            //Console.SetCursorPosition(0, 2);
+                            //DateTime calculatedTime = DateTime.UtcNow;
+                            /*
+                            if (assigned == false)
+                            {
+                                assigned = true;
+                            }
+                            else
+                            {
+                                //calculatedTime = DateTime.UtcNow.Add(NOW.Diff);
+                            }
+                            */
+                            DateTime ntpNodeTimeObj = DateTime.ParseExact(incomeArr[0], "yyyyMMddHHmmssfffff", CultureInfo.InvariantCulture);
+                            /*
+                            if (dataArriveTimeObj > ntpNodeTimeObj)
+                            {
+                                Console.WriteLine("NTP Server Geride");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Biz Gerideyiz");
+                            }
+                            */
+                            NOW.Diff = ntpNodeTimeObj - dataArriveTimeObj;
+                            NOW.DiffUpdated = true;
+                            //Console.WriteLine("ntpServerTimeStr   : " + ntpNodeTimeObj.ToString("HH mm ss fff"));
+                            //Console.WriteLine("dataArriveTimeLong : " + dataArriveTimeObj.ToString("HH mm ss fff"));
+                            //Console.WriteLine("calculatedTime     : " + calculatedTime.ToString("HH mm ss fff"));
+                            //Console.WriteLine("timeDiff           : " + timeDiff.ToString());
+                            //Console.WriteLine("transferSpeed      : " + transferSpeed.ToString());
+                            //Console.WriteLine("------------------------------------");
+                            //Console.ReadLine();
+                        }
+                    }
+                });
+            }
             static Functions()
             {
             }
