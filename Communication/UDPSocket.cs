@@ -18,9 +18,33 @@ namespace Notus.Communication
         private EndPoint epFrom = new IPEndPoint(IPAddress.Any, 0);
         private AsyncCallback recv = null;
         private System.Action<DateTime, string>? Func_OnReceive = null;
-        public void OnReceive(System.Action<DateTime, string> Func_OnReceive)
+        public void OnReceive(System.Action<DateTime, string> onReceive)
         {
-
+            Func_OnReceive = onReceive;
+        }
+        public void OnlyListen(int listenPort, System.Action<DateTime, string, string> onReceive)
+        {
+            bool done = false;
+            UdpClient listener = new UdpClient(listenPort);
+            IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, listenPort);
+            string received_data;
+            byte[] receive_byte_array;
+            DateTime suAn = DateTime.UtcNow;
+            try
+            {
+                while (!done)
+                {
+                    receive_byte_array = listener.Receive(ref groupEP);
+                    suAn = DateTime.UtcNow;
+                    received_data = Encoding.ASCII.GetString(receive_byte_array, 0, receive_byte_array.Length);
+                    onReceive(suAn, received_data, groupEP.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            listener.Close();
         }
         private void Receive()
         {
@@ -29,75 +53,12 @@ namespace Notus.Communication
                 State so = (State)ar.AsyncState;
                 int bytes = _socket.EndReceiveFrom(ar, ref epFrom);
                 _socket.BeginReceiveFrom(so.buffer, 0, bufSize, SocketFlags.None, ref epFrom, recv, so);
-                DateTime suAn = NVG.NOW.Obj;
-                //long TamSuAn = long.Parse(suAn.ToString(NVC.DefaultDateTimeFormatText));
+                DateTime UtcNow = DateTime.UtcNow;
                 if (Func_OnReceive != null)
                 {
                     string gelenZaman = Encoding.ASCII.GetString(so.buffer, 0, bytes);
-                    Func_OnReceive(suAn, gelenZaman);
+                    Func_OnReceive(UtcNow, gelenZaman);
                 }
-                /*
-                string[] income = gelenZaman.Split(':');
-                if (string.Equals(income[0], "s"))
-                {
-                    if (timeOut.ContainsKey(income[1]) == true)
-                    {
-                        Console.WriteLine("Istenen Sure : {0}", timeOut[income[1]]);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Istenen Sure Listede Yok");
-                    }
-                }
-
-                //zaman gönderildi bana
-                if (string.Equals(income[0], "x"))
-                {
-                    if (long.TryParse(income[2], out long cikis))
-                    {
-                        double current = 0;
-                        if (timeOut.ContainsKey(income[1]) == false)
-                        {
-                            timeOut.Add(income[1], 0);
-                        }
-                        current = timeOut[income[1]];
-                        double aradakiFark = 0;
-                        if (TamSuAn == cikis)
-                        {
-                            Console.WriteLine("Esit");
-                        }
-                        else
-                        {
-                            if (TamSuAn > cikis)
-                            {
-                                Console.WriteLine("Istemci Geride");
-                                aradakiFark = (ND.ToDateTime(TamSuAn) - ND.ToDateTime(cikis)).TotalMilliseconds;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Sunucu Geride");
-                                aradakiFark = (ND.ToDateTime(cikis) - ND.ToDateTime(TamSuAn)).TotalMilliseconds;
-                            }
-                            if (current == 0)
-                            {
-                                current = aradakiFark;
-                            }
-                            else
-                            {
-                                current = (current + aradakiFark) / 2;
-                            }
-                            timeOut[income[1]] = current;
-                            Console.WriteLine("Aradaki Fark  : " + aradakiFark.ToString());
-                            Console.WriteLine("Ortalama Fark : " + timeOut[income[1]].ToString());
-                        }
-                        Console.WriteLine("my / client : {0}: {1}", TamSuAn, Encoding.ASCII.GetString(so.buffer, 0, bytes));
-                    }
-                    else
-                    {
-                        Console.WriteLine("Hatali Zaman Bilgisi");
-                    }
-                }
-                */
             }, state);
         }
         public UDP(int port = 0)
@@ -136,7 +97,6 @@ namespace Notus.Communication
             {
                 State so = (State)ar.AsyncState;
                 int bytes = _socket.EndSend(ar);
-                //Console.WriteLine(bytes);
             }, state);
         }
     }
