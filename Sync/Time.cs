@@ -44,6 +44,10 @@ namespace Notus.Sync
             UtcTimerObj.Start(() =>
             {
                 LocalUtcTime = DateTime.UtcNow;
+                if( (LocalUtcTime - NVG.NOW.LastDiffUpdate).TotalMinutes > 5)
+                {
+
+                }
                 if (NVG.NOW.DiffUpdated == true)
                 {
                     NVG.NOW.Obj = LocalUtcTime.Add(NVG.NOW.Diff);

@@ -64,7 +64,6 @@ namespace Notus.Variable
         public static string SessionPrivateKey { get; set; }
         public static bool NodeListPrinted { get; set; }
         public static TimeStruct NOW { get; set; }
-        //public static ulong NowUTC { get; set; }
         public static Notus.Globals.Variable.NodeQueueList NodeQueue { get; set; }
         public static int OnlineNodeCount { get; set; }
         public static ConcurrentDictionary<string, NVS.NodeQueueInfo> NodeList { get; set; }
@@ -151,6 +150,8 @@ namespace Notus.Variable
 
         public static class Functions
         {
+            public static Thread UdpListenThread { get; set; }
+            public static Notus.Communication.UDP JoinObj { get; set; }
             public static ConcurrentDictionary<string, string> LockWalletList { get; set; }
             public static ConcurrentDictionary<string, byte> WalletUsageList { get; set; }
             public static ConcurrentDictionary<long, string> BlockOrder { get; set; }
@@ -266,6 +267,8 @@ namespace Notus.Variable
                 NOW.Int = ND.ToLong(NOW.Obj);
                 NOW.Diff = new TimeSpan(0);
                 NOW.DiffUpdated = false;
+                NOW.LastDiffUpdate = DateTime.UtcNow;
+                JoinObj = new Notus.Communication.UDP();
 
                 WalletUsageList = new ConcurrentDictionary<string, byte>();
                 LockWalletList = new ConcurrentDictionary<string, string>();
@@ -305,8 +308,8 @@ namespace Notus.Variable
             public static void StartTimeSync()
             {
 
-                Thread thread1 = new Thread(new ThreadStart(ThreadNodeDinleme));
-                thread1.Start();
+                UdpListenThread = new Thread(new ThreadStart(ThreadNodeDinleme));
+                UdpListenThread.Start();
                 UdpClient udpClient = new UdpClient();
                 for (int i = 0; i < 10; i++)
                 {
@@ -325,14 +328,11 @@ namespace Notus.Variable
             }
 
 
-            burada merkezi node'dan zaman bilgisini alıyor
+            //burada merkezi node'dan zaman bilgisini alıyor
             public static void ThreadNodeDinleme()
             {
-                //bool assigned = false;
-                //TimeSpan timeDiff = new TimeSpan(0);
-                //Console.WriteLine("Statring Listening from 27000");
-                Notus.Communication.UDP joinObj = new Notus.Communication.UDP();
-                joinObj.OnlyListen(27000, (dataArriveTimeObj, incomeString, remoteEp) =>
+                //JoinObj = new Notus.Communication.UDP();
+                JoinObj.OnlyListen(27000, (dataArriveTimeObj, incomeString, remoteEp) =>
                 {
                     string[] incomeArr = incomeString.Split(':');
                     if (ulong.TryParse(incomeArr[0], out ulong ntpServerTimeLong))
@@ -340,38 +340,9 @@ namespace Notus.Variable
                         int transferSpeed = int.Parse(incomeArr[1]);
                         if (transferSpeed == 0)
                         {
-                            //Console.SetCursorPosition(0, 2);
-                            //DateTime calculatedTime = DateTime.UtcNow;
-                            /*
-                            if (assigned == false)
-                            {
-                                assigned = true;
-                            }
-                            else
-                            {
-                                //calculatedTime = DateTime.UtcNow.Add(NOW.Diff);
-                            }
-                            */
-                            DateTime ntpNodeTimeObj = DateTime.ParseExact(incomeArr[0], "yyyyMMddHHmmssfffff", CultureInfo.InvariantCulture);
-                            /*
-                            if (dataArriveTimeObj > ntpNodeTimeObj)
-                            {
-                                Console.WriteLine("NTP Server Geride");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Biz Gerideyiz");
-                            }
-                            */
-                            NOW.Diff = ntpNodeTimeObj - dataArriveTimeObj;
+                            NOW.Diff = DateTime.ParseExact(incomeArr[0], "yyyyMMddHHmmssfffff", CultureInfo.InvariantCulture) - dataArriveTimeObj;
                             NOW.DiffUpdated = true;
-                            //Console.WriteLine("ntpServerTimeStr   : " + ntpNodeTimeObj.ToString("HH mm ss fff"));
-                            //Console.WriteLine("dataArriveTimeLong : " + dataArriveTimeObj.ToString("HH mm ss fff"));
-                            //Console.WriteLine("calculatedTime     : " + calculatedTime.ToString("HH mm ss fff"));
-                            //Console.WriteLine("timeDiff           : " + timeDiff.ToString());
-                            //Console.WriteLine("transferSpeed      : " + transferSpeed.ToString());
-                            //Console.WriteLine("------------------------------------");
-                            //Console.ReadLine();
+                            NOW.LastDiffUpdate = DateTime.UtcNow;
                         }
                     }
                 });
