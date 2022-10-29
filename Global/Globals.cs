@@ -305,6 +305,9 @@ namespace Notus.Variable
                 */
             }
 
+            burada udp sunucusu ve zaman başlangıcı kontrol edilmeli
+                burada udp sunucusu ve zaman başlangıcı kontrol edilmeli
+                burada udp sunucusu ve zaman başlangıcı kontrol edilmeli
             public static void StartTimeSync()
             {
 
