@@ -18,33 +18,46 @@ namespace Notus.Communication
         private EndPoint epFrom = new IPEndPoint(IPAddress.Any, 0);
         private AsyncCallback recv = null;
         private System.Action<DateTime, string>? Func_OnReceive = null;
+        private bool closeOnlyListenVal = false;
         public void OnReceive(System.Action<DateTime, string> onReceive)
         {
             Func_OnReceive = onReceive;
         }
+        public void CloseOnlyListen()
+        {
+            closeOnlyListenVal = true;
+        }
         public void OnlyListen(int listenPort, System.Action<DateTime, string, string> onReceive)
         {
-            bool done = false;
-            UdpClient listener = new UdpClient(listenPort);
-            IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, listenPort);
-            string received_data;
-            byte[] receive_byte_array;
-            DateTime suAn = DateTime.UtcNow;
+            UdpClient? listener = null;
             try
             {
-                while (!done)
-                {
-                    receive_byte_array = listener.Receive(ref groupEP);
-                    suAn = DateTime.UtcNow;
-                    received_data = Encoding.ASCII.GetString(receive_byte_array, 0, receive_byte_array.Length);
-                    onReceive(suAn, received_data, groupEP.ToString());
-                }
+                listener = new UdpClient(listenPort);
             }
-            catch (Exception e)
+            catch { }
+            if (listener != null)
             {
-                Console.WriteLine(e.ToString());
+                IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, listenPort);
+                closeOnlyListenVal = false;
+                string received_data;
+                byte[] receive_byte_array;
+                DateTime suAn = DateTime.UtcNow;
+                try
+                {
+                    while (!closeOnlyListenVal)
+                    {
+                        receive_byte_array = listener.Receive(ref groupEP);
+                        suAn = DateTime.UtcNow;
+                        received_data = Encoding.ASCII.GetString(receive_byte_array, 0, receive_byte_array.Length);
+                        onReceive(suAn, received_data, groupEP.ToString());
+                    }
+                }
+                catch (Exception err)
+                {
+                    //Console.WriteLine(e.ToString());
+                }
+                listener.Close();
             }
-            listener.Close();
         }
         private void Receive()
         {

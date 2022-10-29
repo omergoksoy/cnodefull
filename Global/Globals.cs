@@ -150,7 +150,7 @@ namespace Notus.Variable
 
         public static class Functions
         {
-            public static Thread UdpListenThread { get; set; }
+            public static Thread? UdpListenThread { get; set; }
             public static Notus.Communication.UDP JoinObj { get; set; }
             public static ConcurrentDictionary<string, string> LockWalletList { get; set; }
             public static ConcurrentDictionary<string, byte> WalletUsageList { get; set; }
@@ -209,6 +209,8 @@ namespace Notus.Variable
                 kontrol ederek node'u listeden offline moduna alacak
                 */
                 // diğer nodelara kapandığımızı bildiriyoruz...
+                SendMessageToTimeServer("k");
+
                 ulong nowUtcValue = NVG.NOW.Int;
                 string controlSignForKillMsg = Notus.Wallet.ID.Sign(
                     nowUtcValue.ToString() +
@@ -260,7 +262,7 @@ namespace Notus.Variable
                 //Archiver.
                 Balance.Dispose();
             }
-            public static void Start()
+            public static void PreStart()
             {
                 NOW = new TimeStruct();
                 NOW.Obj = DateTime.UtcNow;
@@ -268,6 +270,9 @@ namespace Notus.Variable
                 NOW.Diff = new TimeSpan(0);
                 NOW.DiffUpdated = false;
                 NOW.LastDiffUpdate = DateTime.UtcNow;
+            }
+            public static void Start()
+            {
                 JoinObj = new Notus.Communication.UDP();
 
                 WalletUsageList = new ConcurrentDictionary<string, byte>();
@@ -305,29 +310,38 @@ namespace Notus.Variable
                 */
             }
 
-            burada udp sunucusu ve zaman başlangıcı kontrol edilmeli
-                burada udp sunucusu ve zaman başlangıcı kontrol edilmeli
-                burada udp sunucusu ve zaman başlangıcı kontrol edilmeli
+            public static void KillTimeSync()
+            {
+                JoinObj.CloseOnlyListen();
+                UdpListenThread = null;
+            }
+            public static void SendMessageToTimeServer(string cmdName)
+            {
+                using (UdpClient udpClient = new UdpClient())
+                {
+                    for (int i = 0; i < 10; i++)
+                    {
+                        try
+                        {
+                            udpClient.Connect("89.252.134.111", 25000);
+                            byte[] sendBytes = Encoding.ASCII.GetBytes(cmdName + ":" + Settings.Nodes.My.IP.Wallet + ":" + Settings.Nodes.My.IP.IpAddress);
+                            udpClient.Send(sendBytes, sendBytes.Length);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.ToString());
+                        }
+                        Thread.Sleep(200);
+                    }
+                    udpClient.Close();
+                }
+            }
             public static void StartTimeSync()
             {
-
                 UdpListenThread = new Thread(new ThreadStart(ThreadNodeDinleme));
                 UdpListenThread.Start();
-                UdpClient udpClient = new UdpClient();
-                for (int i = 0; i < 10; i++)
-                {
-                    try
-                    {
-                        udpClient.Connect("89.252.134.111", 25000);
-                        byte[] sendBytes = Encoding.ASCII.GetBytes("a:" + Settings.Nodes.My.IP.Wallet + ":" + Settings.Nodes.My.IP.IpAddress);
-                        udpClient.Send(sendBytes, sendBytes.Length);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.ToString());
-                    }
-                    Thread.Sleep(200);
-                }
+                Thread.Sleep(500);
+                SendMessageToTimeServer("a");
             }
 
 
@@ -337,10 +351,12 @@ namespace Notus.Variable
                 //JoinObj = new Notus.Communication.UDP();
                 JoinObj.OnlyListen(27000, (dataArriveTimeObj, incomeString, remoteEp) =>
                 {
+                    Console.WriteLine("incomeString : " + incomeString);
                     string[] incomeArr = incomeString.Split(':');
                     if (ulong.TryParse(incomeArr[0], out ulong ntpServerTimeLong))
                     {
                         int transferSpeed = int.Parse(incomeArr[1]);
+                        Console.WriteLine("transferSpeed : " + transferSpeed.ToString());
                         if (transferSpeed == 0)
                         {
                             NOW.Diff = DateTime.ParseExact(incomeArr[0], "yyyyMMddHHmmssfffff", CultureInfo.InvariantCulture) - dataArriveTimeObj;

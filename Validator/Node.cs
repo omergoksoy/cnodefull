@@ -14,17 +14,14 @@ namespace Notus.Validator
         public static void Start(string[] argsFromCLI)
         {
             bool LightNodeActive = false;
+            NGF.PreStart();
+
             using (Notus.Validator.Menu menuObj = new Notus.Validator.Menu())
             {
                 menuObj.PreStart(argsFromCLI);
                 menuObj.Start();
                 menuObj.DefineMySetting();
             }
-
-            NGF.StartTimeSync();
-
-            //NVG.Settings.NodeStartingTime = NGF.NOW.Int;
-            //Console.WriteLine(NVG.Settings.NodeStartingTime);
 
             if (NVG.Settings.NodeType != NVE.NetworkNodeType.Replicant)
             {
@@ -50,6 +47,14 @@ namespace Notus.Validator
             }
             Notus.IO.NodeFolderControl();
             NGF.Start();
+
+            NP.Info("Waiting For Time Sync");
+            NGF.StartTimeSync();
+            while (NVG.NOW.DiffUpdated == false)
+            {
+            }
+            NP.Success("Time Sync Is Done");
+            Console.ReadLine();
 
 
             /*

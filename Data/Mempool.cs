@@ -6,7 +6,6 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using NP = Notus.Print;
-using NVG = Notus.Variable.Globals;
 namespace Notus
 {
     public class Mempool : IDisposable
@@ -236,7 +235,7 @@ namespace Notus
         {
             if (Obj_DataList.ContainsKey(KeyName))
             {
-                Obj_DataList[KeyName].remove = NVG.NOW.Obj.AddSeconds(Expire);
+                Obj_DataList[KeyName].remove = DateTime.Now.AddSeconds(Expire);
                 Obj_DataList[KeyName].expire = Expire;
                 Obj_DataList[KeyName].Data = Data;
                 return UpdateFromTable(KeyName);
@@ -247,8 +246,8 @@ namespace Notus
                 {
                     Data = Data,
                     expire = Expire,
-                    added = NVG.NOW.Obj,
-                    remove = NVG.NOW.Obj.AddSeconds(Expire)
+                    added = DateTime.Now,
+                    remove = DateTime.Now.AddSeconds(Expire)
                 });
                 return AddToTable(KeyName);
             }
@@ -267,7 +266,7 @@ namespace Notus
             if (Obj_DataList.Count > 0)
             {
                 KeyValuePair<string, Variable.Struct.MempoolDataList>[] tmpObj_DataList = Obj_DataList.ToArray();
-                DateTime startTime = NVG.NOW.Obj;
+                DateTime startTime = DateTime.Now;
                 int recordCount = 0;
                 for (int i = 0; i < tmpObj_DataList.Count(); i++)
                 {
@@ -283,7 +282,7 @@ namespace Notus
                         }
                         else
                         {
-                            if ((NVG.NOW.Obj - startTime).TotalMilliseconds > UseThisNumberAsCountOrMiliSeconds)
+                            if ((DateTime.Now- startTime).TotalMilliseconds > UseThisNumberAsCountOrMiliSeconds)
                             {
                                 break;
                             }
@@ -305,7 +304,7 @@ namespace Notus
         {
             if (Obj_DataList.ContainsKey(KeyName))
             {
-                Obj_DataList[KeyName].remove = NVG.NOW.Obj.AddSeconds(Expire);
+                Obj_DataList[KeyName].remove = DateTime.Now.AddSeconds(Expire);
                 Obj_DataList[KeyName].expire = Expire;
                 UpdateFromTable(KeyName);
                 return true;
@@ -371,7 +370,7 @@ namespace Notus
             if (Obj_DataList.ContainsKey(KeyName))
             {
                 Obj_DataList[KeyName].Data = Data;
-                Obj_DataList[KeyName].remove = NVG.NOW.Obj.AddSeconds(Expire);
+                Obj_DataList[KeyName].remove = DateTime.Now.AddSeconds(Expire);
                 Obj_DataList[KeyName].expire = Expire;
                 UpdateFromTable(KeyName);
             }
@@ -428,7 +427,7 @@ namespace Notus
                         {
                             if (entry.Value.expire > 0)
                             {
-                                if (0 > (entry.Value.remove - NVG.NOW.Obj).TotalSeconds)
+                                if (0 > (entry.Value.remove - DateTime.Now).TotalSeconds)
                                 {
                                     Obj_DataList.TryRemove(entry.Key,out _);
                                     DeleteFromTable(entry.Key);

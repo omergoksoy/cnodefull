@@ -764,8 +764,8 @@ namespace Notus.Validator
                 Console.WriteLine("Please wait for auto-start");
                 bool keyExist = false;
                 byte iCounter = 0;
-                DateTime bitis = NVG.NOW.Obj.AddSeconds(10);
-                while (bitis > NVG.NOW.Obj && keyExist == false)
+                DateTime bitis = DateTime.Now.AddSeconds(10);
+                while (bitis > DateTime.Now && keyExist == false)
                 {
                     if (Console.KeyAvailable == true)
                     {
@@ -800,8 +800,8 @@ namespace Notus.Validator
                     Console.ResetColor();
                     keyExist = false;
                     iCounter = 0;
-                    bitis = NVG.NOW.Obj.AddSeconds(5);
-                    while (bitis > NVG.NOW.Obj && keyExist == false)
+                    bitis = DateTime.Now.AddSeconds(5);
+                    while (bitis > DateTime.Now && keyExist == false)
                     {
                         if (Console.KeyAvailable == true)
                         {
