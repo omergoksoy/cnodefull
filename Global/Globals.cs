@@ -336,7 +336,7 @@ namespace Notus.Variable
             }
             public static void KillTimeSync(bool beginingRoutine)
             {
-                if (beginingRoutine == true)
+                if (beginingRoutine == false)
                 {
                     NP.Info("Sending Killing Message");
                 }
