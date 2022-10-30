@@ -34,7 +34,9 @@ namespace Notus.Communication
             {
                 listener = new UdpClient(listenPort);
             }
-            catch { }
+            catch(Exception err) {
+                //Console.WriteLine("Socket Error [SCCCCC] : " + err.Message);
+            }
             if (listener != null)
             {
                 IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, listenPort);
@@ -54,7 +56,7 @@ namespace Notus.Communication
                 }
                 catch (Exception err)
                 {
-                    //Console.WriteLine(e.ToString());
+                    Console.WriteLine("UDP Socket Error [ASASASAS]: " + err.ToString());
                 }
                 listener.Close();
             }

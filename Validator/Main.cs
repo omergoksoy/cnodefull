@@ -517,6 +517,13 @@ namespace Notus.Validator
         }
         public void Start()
         {
+            NGF.GetUtcTimeFromNode(20,true);
+            Console.WriteLine(JsonSerializer.Serialize(NVG.NOW, Notus.Variable.Constant.JsonSetting));
+            /*
+            Thread.Sleep(2500);
+            Console.WriteLine("İkinci Asamaya Gecildi");
+            NGF.GetUtcTimeFromNode(20,true);
+            */
             if (NVG.Settings.GenesisCreated == false)
             {
                 //omergoksoy

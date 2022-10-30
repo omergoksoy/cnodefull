@@ -46,15 +46,6 @@ namespace Notus.Validator
                 NP.Info(NVG.Settings, "LocalNode Activated");
             }
             Notus.IO.NodeFolderControl();
-            NGF.Start();
-
-            NP.Info("Waiting For Time Sync");
-            NGF.StartTimeSync();
-            while (NVG.NOW.DiffUpdated == false)
-            {
-            }
-            NP.Success("Time Sync Is Done");
-            Console.ReadLine();
 
 
             /*
@@ -70,6 +61,8 @@ namespace Notus.Validator
 
             NP.Info(NVG.Settings, "Activated DevNET for " + NVC.LayerText[NVG.Settings.Layer]);
             Notus.Toolbox.Network.IdentifyNodeType(5);
+            NGF.Start();
+
             switch (NVG.Settings.NodeType)
             {
                 // if IP and port node written in the code

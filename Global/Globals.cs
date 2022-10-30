@@ -151,7 +151,7 @@ namespace Notus.Variable
         public static class Functions
         {
             public static Thread? UdpListenThread { get; set; }
-            public static Notus.Communication.UDP JoinObj { get; set; }
+            public static Notus.Communication.UDP? JoinObj { get; set; }
             public static ConcurrentDictionary<string, string> LockWalletList { get; set; }
             public static ConcurrentDictionary<string, byte> WalletUsageList { get; set; }
             public static ConcurrentDictionary<long, string> BlockOrder { get; set; }
@@ -209,12 +209,12 @@ namespace Notus.Variable
                 kontrol ederek node'u listeden offline moduna alacak
                 */
                 // diğer nodelara kapandığımızı bildiriyoruz...
-                SendMessageToTimeServer("k");
+                SendMessageToTimeServer("k", 10);
 
                 ulong nowUtcValue = NVG.NOW.Int;
                 string controlSignForKillMsg = Notus.Wallet.ID.Sign(
                     nowUtcValue.ToString() +
-                        Notus.Variable.Constant.CommonDelimeterChar +
+                        NVC.CommonDelimeterChar +
                     NVG.Settings.Nodes.My.IP.Wallet,
                     SessionPrivateKey
                 );
@@ -273,8 +273,6 @@ namespace Notus.Variable
             }
             public static void Start()
             {
-                JoinObj = new Notus.Communication.UDP();
-
                 WalletUsageList = new ConcurrentDictionary<string, byte>();
                 LockWalletList = new ConcurrentDictionary<string, string>();
                 BlockOrder = new ConcurrentDictionary<long, string>();
@@ -302,7 +300,7 @@ namespace Notus.Variable
                 /*
                 string tmpFolderName = Notus.IO.GetFolderName(
                     Settings,
-                    Notus.Variable.Constant.StorageFolderName.Common
+                    NVC.StorageFolderName.Common
                 );
                 BlockOrder = new Notus.Mempool(tmpFolderName +"block_order_list");
                 BlockOrder.AsyncActive = false;
@@ -310,28 +308,65 @@ namespace Notus.Variable
                 */
             }
 
-            public static void KillTimeSync()
+            public static void GetUtcTimeFromNode(int howManySeconds, bool beginingRoutine)
             {
-                JoinObj.CloseOnlyListen();
+                if (beginingRoutine == true)
+                {
+                    NP.Info("Waiting For Time Sync");
+                }
+                DateTime timerExecutedTime = DateTime.Now.Subtract(new TimeSpan(1, 0, 0));
+                bool tmpBeginingRoutine = beginingRoutine;
+                while (NOW.DiffUpdated == false)
+                {
+                    TimeSpan ts = DateTime.Now - timerExecutedTime;
+                    if (ts.TotalSeconds > howManySeconds)
+                    {
+                        KillTimeSync(tmpBeginingRoutine);
+                        Thread.Sleep(250);
+                        StartTimeSync();
+                        timerExecutedTime = DateTime.Now;
+                        tmpBeginingRoutine = false;
+                    }
+                }
+                if (beginingRoutine == true)
+                {
+                    NP.Success("Time Sync Is Done");
+                    //Console.ReadLine();
+                }
+            }
+            public static void KillTimeSync(bool beginingRoutine)
+            {
+                if (beginingRoutine == true)
+                {
+                    NP.Info("Sending Killing Message");
+                }
+                SendMessageToTimeServer("k", 5);
+                if (JoinObj != null)
+                {
+                    JoinObj.CloseOnlyListen();
+                    Thread.Sleep(2000);
+                    JoinObj = null;
+                }
                 UdpListenThread = null;
             }
-            public static void SendMessageToTimeServer(string cmdName)
+            public static void SendMessageToTimeServer(string cmdName, int howManyMsg)
             {
                 using (UdpClient udpClient = new UdpClient())
                 {
-                    for (int i = 0; i < 10; i++)
+                    for (int i = 0; i < howManyMsg; i++)
                     {
                         try
                         {
-                            udpClient.Connect("89.252.134.111", 25000);
-                            byte[] sendBytes = Encoding.ASCII.GetBytes(cmdName + ":" + Settings.Nodes.My.IP.Wallet + ":" + Settings.Nodes.My.IP.IpAddress);
+
+                            string cmdText = cmdName + ":" +
+                                Settings.Nodes.My.IP.Wallet + ":" +
+                                Settings.Nodes.My.IP.IpAddress;
+                            udpClient.Connect(NVC.TimeSyncNodeIpAddress, NVC.TimeSyncAddingCommPort);
+                            byte[] sendBytes = Encoding.ASCII.GetBytes(cmdText);
                             udpClient.Send(sendBytes, sendBytes.Length);
                         }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e.ToString());
-                        }
-                        Thread.Sleep(200);
+                        catch { }
+                        Thread.Sleep(20);
                     }
                     udpClient.Close();
                 }
@@ -340,23 +375,22 @@ namespace Notus.Variable
             {
                 UdpListenThread = new Thread(new ThreadStart(ThreadNodeDinleme));
                 UdpListenThread.Start();
-                Thread.Sleep(500);
-                SendMessageToTimeServer("a");
+                Thread.Sleep(100);
+                SendMessageToTimeServer("a", 3);
             }
 
 
             //burada merkezi node'dan zaman bilgisini alıyor
             public static void ThreadNodeDinleme()
             {
-                //JoinObj = new Notus.Communication.UDP();
-                JoinObj.OnlyListen(27000, (dataArriveTimeObj, incomeString, remoteEp) =>
+                JoinObj = new Notus.Communication.UDP();
+                JoinObj.OnlyListen(NVC.TimeSyncCommPort, (dataArriveTimeObj, incomeString, remoteEp) =>
                 {
-                    Console.WriteLine("incomeString : " + incomeString);
                     string[] incomeArr = incomeString.Split(':');
                     if (ulong.TryParse(incomeArr[0], out ulong ntpServerTimeLong))
                     {
                         int transferSpeed = int.Parse(incomeArr[1]);
-                        Console.WriteLine("transferSpeed : " + transferSpeed.ToString());
+                        //Console.WriteLine("transferSpeed : " + transferSpeed.ToString());
                         if (transferSpeed == 0)
                         {
                             NOW.Diff = DateTime.ParseExact(incomeArr[0], "yyyyMMddHHmmssfffff", CultureInfo.InvariantCulture) - dataArriveTimeObj;
