@@ -320,14 +320,12 @@ namespace Notus
             {
                 if (showError == true)
                 {
-                    //Console.WriteLine("Control-Point-a3547");
                     //Console.WriteLine("ContainsKey == false");
                 }
             }
             bool tst=Obj_DataList.TryRemove(KeyName,out _);
             if(showError== true)
             {
-                //Console.WriteLine("Control-Point-a85147");
                 //Console.WriteLine(tst);
                 //Console.WriteLine("bool tst=Obj_DataList.TryRemove(KeyName,out _);");
                 //Console.WriteLine(JsonSerializer.Serialize(Obj_DataList));

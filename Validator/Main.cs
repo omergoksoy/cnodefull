@@ -525,9 +525,7 @@ namespace Notus.Validator
             }
             Obj_Integrity = new Notus.Block.Integrity();
             Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with onther node
-            Console.WriteLine("control-point-00002");
             Obj_Integrity.GetLastBlock();        // get last block from current node
-            Console.WriteLine("control-point-00003");
 
             if (NVG.Settings.Genesis == null)
             {
@@ -536,13 +534,10 @@ namespace Notus.Validator
             //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Genesis.Empty.Interval.Time));
             //Console.WriteLine("Obj_Integrity.EmptyBlockCount : " + NVG.Settings.EmptyBlockCount.ToString());
             Obj_Api = new Notus.Validator.Api();
-            Console.WriteLine("control-point-0000d");
 
             NGF.BlockQueue.Start();
-            Console.WriteLine("control-point-0000q");
 
             Obj_Api.Prepare();
-            Console.WriteLine("control-point-0000v");
 
             //Obj_MainCache = new Notus.Cache.Main();
             // Obj_TokenStorage = new Notus.Token.Storage();
@@ -842,6 +837,7 @@ namespace Notus.Validator
                 }
                 else
                 {
+                    /*
                     if (waitPrinted == false)
                     {
                         waitPrinted = true;
@@ -855,6 +851,7 @@ namespace Notus.Validator
                             selectedWalletId.Substring(0, 6)
                         );
                     }
+                    */
                 }
             }
 
