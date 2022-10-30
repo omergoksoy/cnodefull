@@ -59,8 +59,8 @@ namespace Notus
         }
         public static void SleepWithoutBlocking(int SleepTime, bool UseAsSecond = false)
         {
-            DateTime NextTime = (UseAsSecond == true ? NVG.NOW.Obj.AddSeconds(SleepTime) : NVG.NOW.Obj.AddMilliseconds(SleepTime));
-            while (NextTime > NVG.NOW.Obj)
+            DateTime NextTime = (UseAsSecond == true ? DateTime.Now.AddSeconds(SleepTime) : DateTime.Now.AddMilliseconds(SleepTime));
+            while (NextTime > DateTime.Now)
             {
             }
         }

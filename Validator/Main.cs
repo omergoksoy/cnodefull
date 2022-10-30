@@ -519,20 +519,15 @@ namespace Notus.Validator
         {
             NGF.GetUtcTimeFromNode(20,true);
             Console.WriteLine(JsonSerializer.Serialize(NVG.NOW, Notus.Variable.Constant.JsonSetting));
-            /*
-            Thread.Sleep(2500);
-            Console.WriteLine("İkinci Asamaya Gecildi");
-            NGF.GetUtcTimeFromNode(20,true);
-            */
             if (NVG.Settings.GenesisCreated == false)
             {
-                //omergoksoy
                 TimeSyncObj.Start(NVC.TimeSyncCommPort,0);
             }
-
             Obj_Integrity = new Notus.Block.Integrity();
             Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with onther node
+            Console.WriteLine("control-point-00002");
             Obj_Integrity.GetLastBlock();        // get last block from current node
+            Console.WriteLine("control-point-00003");
 
             if (NVG.Settings.Genesis == null)
             {
@@ -541,10 +536,13 @@ namespace Notus.Validator
             //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Genesis.Empty.Interval.Time));
             //Console.WriteLine("Obj_Integrity.EmptyBlockCount : " + NVG.Settings.EmptyBlockCount.ToString());
             Obj_Api = new Notus.Validator.Api();
+            Console.WriteLine("control-point-0000d");
 
             NGF.BlockQueue.Start();
+            Console.WriteLine("control-point-0000q");
 
             Obj_Api.Prepare();
+            Console.WriteLine("control-point-0000v");
 
             //Obj_MainCache = new Notus.Cache.Main();
             // Obj_TokenStorage = new Notus.Token.Storage();
@@ -767,8 +765,8 @@ namespace Notus.Validator
                             if (nextWalletPrinted == false)
                             {
                                 nextWalletPrinted = true;
-                                NP.Info(NVG.Settings,"MY TURN -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
                                 /*
+                                NP.Info(NVG.Settings,"MY TURN -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
                                 */
                             }
                             if (txExecuted == false)
@@ -778,7 +776,7 @@ namespace Notus.Validator
                                 {
                                     //Console.WriteLine("NVG.Settings.EmptyBlockCount : " +NVG.Settings.EmptyBlockCount.ToString());
                                     NP.Success(NVG.Settings, "Empty Block Executed");
-                                    NP.Info(NVG.Settings, "MY TURN -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
+                                    //NP.Info(NVG.Settings, "MY TURN -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
                                 }
                                 NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
                                     ND.AddMiliseconds(currentQueueTime, NVC.BlockListeningForPoolTime)

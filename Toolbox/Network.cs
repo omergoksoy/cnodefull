@@ -78,15 +78,6 @@ namespace Notus.Toolbox
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    1001124,
-                    err.Message,
-                    "BlockRowNo",
-                    objSettings,
-                    err
-                );
-
                 if (objSettings != null)
                 {
                     Notus.Print.Danger(objSettings, err.Message);
@@ -119,15 +110,6 @@ namespace Notus.Toolbox
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    90877404,
-                    err.Message,
-                    "BlockRowNo",
-                    objSettings,
-                    err
-                );
-
                 if (objSettings == null)
                 {
                     Console.WriteLine("err : " + err.Message);

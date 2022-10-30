@@ -566,11 +566,9 @@ namespace Notus.Block
                 Notus.Variable.Constant.GenesisBlockUid, 
                 true
             ) + ".zip";
-
             string myGenesisSign = string.Empty;
             
             DateTime myGenesisTime = NVG.NOW.Obj.AddDays(1);
-            
             //if (ZipFileList.Length > 0)
             if (File.Exists(ZipFileName) ==true)
             {
@@ -588,7 +586,6 @@ namespace Notus.Block
                     }
                 }
             }
-
             if (NVG.Settings.LocalNode == false)
             {
                 if (myGenesisSign.Length == 0)
@@ -596,7 +593,6 @@ namespace Notus.Block
                     return false;
                 }
             }
-
             //there is no layer on constant
             if (Notus.Validator.List.Main.ContainsKey(NVG.Settings.Layer) == false)
             {
@@ -623,6 +619,7 @@ namespace Notus.Block
                 {
                     if (string.Equals(NVG.Settings.IpInfo.Public, item.IpAddress) == false)
                     {
+                        NP.Info("Checking From -> " + item.IpAddress);
                         Notus.Variable.Class.BlockData? tmpInnerBlockData =
                         Notus.Toolbox.Network.GetBlockFromNode(item.IpAddress, item.Port, 1, NVG.Settings);
                         if (tmpInnerBlockData != null)
@@ -649,7 +646,6 @@ namespace Notus.Block
                         }
                     }
                 }
-
                 if (signCount.Count == 0)
                 {
                     return false;
