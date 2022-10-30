@@ -315,23 +315,22 @@ namespace Notus.Variable
                     NP.Info("Waiting For Time Sync");
                 }
                 DateTime timerExecutedTime = DateTime.Now.Subtract(new TimeSpan(1, 0, 0));
-                bool tmpBeginingRoutine = beginingRoutine;
+                //bool tmpBeginingRoutine = beginingRoutine;
                 while (NOW.DiffUpdated == false)
                 {
                     TimeSpan ts = DateTime.Now - timerExecutedTime;
                     if (ts.TotalSeconds > howManySeconds)
                     {
-                        KillTimeSync(tmpBeginingRoutine);
-                        Thread.Sleep(250);
+                        KillTimeSync(beginingRoutine);
+                        Thread.Sleep(150);
                         StartTimeSync();
                         timerExecutedTime = DateTime.Now;
-                        tmpBeginingRoutine = false;
+                        //tmpBeginingRoutine = false;
                     }
                 }
                 if (beginingRoutine == true)
                 {
                     NP.Success("Time Sync Is Done");
-                    //Console.ReadLine();
                 }
             }
             public static void KillTimeSync(bool beginingRoutine)
