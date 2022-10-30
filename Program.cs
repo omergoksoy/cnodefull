@@ -38,7 +38,7 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     if (NVG.Settings.CommEstablished == true)
     {
         NGF.SendKillMessage();
-        NVG.Settings.ClosingCompleted = true;
+        //NVG.Settings.ClosingCompleted = true;
         while (NVG.Settings.ClosingCompleted == false)
         {
             Thread.Sleep(10);

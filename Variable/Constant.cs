@@ -87,6 +87,7 @@ namespace Notus.Variable
             }
         };
 
+        public static readonly int MinimumNodeCount = 2;
         public static readonly int TimeSyncCommPort = 27000;
 
         public static readonly string TimeSyncNodeIpAddress = "89.252.134.111";

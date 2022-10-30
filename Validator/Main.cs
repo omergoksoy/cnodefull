@@ -25,6 +25,7 @@ namespace Notus.Validator
         private long CurrentBlockRowNo = 1;
         private int SelectedPortVal = 0;
 
+        private Notus.Sync.Validator ValidatorCountObj = new Notus.Sync.Validator();
         private Notus.Sync.Time TimeSyncObj = new Notus.Sync.Time();
         private Notus.Reward.Block RewardBlockObj = new Notus.Reward.Block();
         private Notus.Communication.Http HttpObj = new Notus.Communication.Http(true);
@@ -517,11 +518,12 @@ namespace Notus.Validator
         }
         public void Start()
         {
-            NGF.GetUtcTimeFromNode(20,true);
+            NGF.GetUtcTimeFromNode(20, true);
             Console.WriteLine(JsonSerializer.Serialize(NVG.NOW, Notus.Variable.Constant.JsonSetting));
             if (NVG.Settings.GenesisCreated == false)
             {
-                TimeSyncObj.Start(NVC.TimeSyncCommPort,0);
+                TimeSyncObj.Start(NVC.TimeSyncCommPort, 0);
+                ValidatorCountObj.Start();
             }
             Obj_Integrity = new Notus.Block.Integrity();
             Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with onther node
@@ -736,12 +738,33 @@ namespace Notus.Validator
             string selectedWalletId = string.Empty;
             byte nodeOrderCount = 0;
             bool waitPrinted = false;
-            while (tmpExitMainLoop == false && NVG.Settings.NodeClosing == false)
+
+
+            /*
+
+            // sıralama esnasında kapatma işlemi gerçekleşince bu değişken true olarak değiştirilecek
+
+            her tur içinde 
+            // node kapatma işlemi şöyle yapılacak
+
+
+            */
+
+            //while (tmpExitMainLoop == false && NVG.Settings.NodeClosing == false)
+            while (tmpExitMainLoop == false)
             {
                 if (prepareNextQueue == false)
                 {
                     prepareNextQueue = true;
                     selectedWalletId = NVG.Settings.Nodes.Queue[currentQueueTime].Wallet;
+                    if (selectedWalletId.Length == 0)
+                    {
+                        if (NVG.Settings.NodeClosing == true)
+                        {
+                            tmpExitMainLoop = true;
+                            NVG.Settings.ClosingCompleted = true;
+                        }
+                    }
                 }
                 if (NVG.NOW.Int >= currentQueueTime)
                 {
@@ -757,17 +780,17 @@ namespace Notus.Validator
                         bool txExecuted = false;
                         while (ND.AddMiliseconds(currentQueueTime, queueTimePeriod - 10) >= NVG.NOW.Int)
                         {
+                            /*
                             if (nextWalletPrinted == false)
                             {
                                 nextWalletPrinted = true;
-                                /*
                                 NP.Info(NVG.Settings,"MY TURN -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
-                                */
                             }
+                            */
                             if (txExecuted == false)
                             {
                                 bool executeEmptyBlock = EmptyBlockGeneration();
-                                if (executeEmptyBlock==true)
+                                if (executeEmptyBlock == true)
                                 {
                                     //Console.WriteLine("NVG.Settings.EmptyBlockCount : " +NVG.Settings.EmptyBlockCount.ToString());
                                     NP.Success(NVG.Settings, "Empty Block Executed");
@@ -827,7 +850,16 @@ namespace Notus.Validator
                     prepareNextQueue = false;
                     if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
                     {
-                        ValidatorQueueObj.ReOrderNodeQueue(currentQueueTime);
+                        // eğer yeterli sayıda node yokse
+                        // zamanları hazırlasın ancak node verileri boş oluşturulsun
+                        if (NVC.MinimumNodeCount > NVG.OnlineNodeCount)
+                        {
+                            ValidatorQueueObj.GenerateNotEnoughNodeQueue(ND.AddMiliseconds(currentQueueTime, 1500));
+                        }
+                        else
+                        {
+                            ValidatorQueueObj.ReOrderNodeQueue(currentQueueTime);
+                        }
                     }
                     currentQueueTime = ND.AddMiliseconds(currentQueueTime, queueTimePeriod);
                     if (nodeOrderCount == 6)
@@ -1083,11 +1115,10 @@ namespace Notus.Validator
             {
                 NGF.BlockQueue.AddToChain(blockData);
             }
-            //DateTime start = NVG.NOW.Obj;
+
+
             //gelen blok burada işleniyor...
             Obj_Api.AddForCache(blockData);
-            //Console.WriteLine(NVG.NOW.Obj - start);
-            //Console.ReadLine();
 
             //eğer blok numarası varsa, işlem bittiği için listeden silinir
             if (IncomeBlockList.ContainsKey(CurrentBlockRowNo))

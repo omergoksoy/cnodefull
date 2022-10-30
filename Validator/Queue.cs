@@ -9,9 +9,9 @@ using System.Numerics;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using NH = Notus.Hash;
 using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
+using NH = Notus.Hash;
 using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVE = Notus.Variable.Enum;
@@ -287,9 +287,9 @@ namespace Notus.Validator
                 blok alma işi bitince yeni blok oluşturulsun
                 */
                 NVG.Settings.WaitForGeneratedBlock = true;
-                
+
                 NP.Info(NVG.Settings, "Block Row No Income -> " + ND.ToDateTime(NVG.NOW.Int).ToString("HH mm ss fff"));
-                
+
                 string incomeDataStr = GetPureText(incomeData, "block");
                 if (incomeDataStr.IndexOf(":") < 0)
                 {
@@ -764,6 +764,22 @@ namespace Notus.Validator
             }
             */
         }
+        public void GenerateNotEnoughNodeQueue(ulong syncStaringTime)
+        {
+            // her node için ayrılan süre
+            int queueTimePeriod = NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime;
+            for (int i = 0; i < 6; i++)
+            {
+                NVG.Settings.Nodes.Queue.Add(syncStaringTime, new NVS.NodeInfo()
+                {
+                    IpAddress = "",
+                    Port = 0,
+                    Wallet = ""
+                });
+                syncStaringTime = ND.AddMiliseconds(syncStaringTime, queueTimePeriod);
+            }
+            NVG.NodeQueue.OrderCount++;
+        }
         public SortedDictionary<BigInteger, string> MakeOrderToNode(ulong biggestSyncNo, ulong seedForQueue)
         {
             SortedDictionary<BigInteger, string> resultList = new SortedDictionary<BigInteger, string>();
@@ -891,7 +907,7 @@ namespace Notus.Validator
                 //cüzdanların hashleri alınıp sıraya koyuluyor.
                 SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, 0);
 
-                
+
                 //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                 //birinci sırada ki cüzdan seçiliyor...
                 string tmpFirstWalletId = tmpWalletList.First().Value;
