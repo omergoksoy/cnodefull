@@ -751,6 +751,7 @@ namespace Notus.Validator
 
             */
             //omergoksoy
+            bool start_FirstQueueGroupTime = false;
             //while (tmpExitMainLoop == false && NVG.Settings.NodeClosing == false)
             while (tmpExitMainLoop == false)
             {
@@ -855,8 +856,11 @@ namespace Notus.Validator
                     prepareNextQueue = false;
                     if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
                     {
-                        Console.WriteLine("FirstQueueGroupTime : " + FirstQueueGroupTime.ToString());
-                        Console.WriteLine("TimeBaseBlockUidList[currentQueueTime] : " + TimeBaseBlockUidList[currentQueueTime]);
+                        if (start_FirstQueueGroupTime == true)
+                        {
+                            Console.WriteLine("FirstQueueGroupTime : " + FirstQueueGroupTime.ToString());
+                            Console.WriteLine("TimeBaseBlockUidList[currentQueueTime] : " + TimeBaseBlockUidList[currentQueueTime]);
+                        }
                         
                         // eğer yeterli sayıda node yokse
                         // zamanları hazırlasın ancak node verileri boş oluşturulsun
@@ -873,6 +877,7 @@ namespace Notus.Validator
                     if (nodeOrderCount == 6)
                     {
                         nodeOrderCount = 0;
+                        start_FirstQueueGroupTime = true;
                     }
                 }
                 else

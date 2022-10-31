@@ -46,6 +46,7 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     Environment.Exit(0);
 }
 
+
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
 
