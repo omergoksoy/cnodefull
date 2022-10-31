@@ -51,14 +51,6 @@ AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
 
 /*
-ulong sayi = 20221031192325017;
-ulong kalan = sayi % 500;
-Console.WriteLine(kalan);
-Console.ReadLine();
-*/
-
-
-/*
 YAPILACAK İŞLEMLER
 
 - gelen blokların geçerli cüzdan sahibi node tarafından gönderildiğinden emin olarak zincire ekleyeceğiz.
