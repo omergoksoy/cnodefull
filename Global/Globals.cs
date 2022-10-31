@@ -66,6 +66,7 @@ namespace Notus.Variable
         public static TimeStruct NOW { get; set; }
         public static Notus.Globals.Variable.NodeQueueList NodeQueue { get; set; }
         public static int OnlineNodeCount { get; set; }
+        public static ConcurrentDictionary<string, Notus.Communication.Listener> MsgSocketList { get; set; }
         public static ConcurrentDictionary<string, NVS.NodeQueueInfo> NodeList { get; set; }
         public static Notus.Globals.Variable.Settings Settings { get; set; }
         static Globals()
@@ -271,6 +272,7 @@ namespace Notus.Variable
                 }
 
                 Globals.NodeListPrinted = false;
+                Globals.MsgSocketList = new ConcurrentDictionary<string, Notus.Communication.Listener>();
                 Globals.NodeList = new ConcurrentDictionary<string, NVS.NodeQueueInfo>();
                 Globals.NodeQueue = new Notus.Globals.Variable.NodeQueueList();
 
@@ -293,6 +295,35 @@ namespace Notus.Variable
                 */
             }
 
+            public static void CloseMessageSockets(string walletId = "")
+            {
+                yeni oluşturulan soket kitaplığı düzenlenecek ve bu fonksiyon ile kapatılacak
+                buradaki amaç sırası gelmeden soket bağlantısını açarak gerektiğinde 
+                hızlı bir biçimde veri gönderimini mümkün hale getirmek
+
+                foreach (KeyValuePair<string, Notus.Communication.Listener> entry in MsgSocketList)
+                {
+                    bool closeConnection = false;
+                    if (walletId.Length == 0)
+                    {
+                        closeConnection = true;
+                    }
+                    else
+                    {
+                        if (string.Equals(entry.Key, walletId))
+                        {
+                            closeConnection = true;
+                        }
+                    }
+                    if (closeConnection == true)
+                    {
+                        if (MsgSocketList[entry.Key] != null)
+                        {
+                            MsgSocketList[entry.Key].Dispose();
+                        }
+                    }
+                }
+            }
             public static void GetUtcTimeFromNode(int howManySeconds, bool beginingRoutine)
             {
                 if (beginingRoutine == true)
