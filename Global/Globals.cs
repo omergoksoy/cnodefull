@@ -90,9 +90,6 @@ namespace Notus.Variable
 
                 WaitTickCount = 4,
 
-                //PacketReceive = 0,
-                //PacketSend = 0,
-
                 EncryptKey = "key-password-string",
 
                 HashSalt = Notus.Encryption.Toolbox.GenerateSalt(),
@@ -141,11 +138,6 @@ namespace Notus.Variable
                 },
                 BlockOrder = new Dictionary<ulong, string>() { }
             };
-            /*
-            burada zaman bilgisi çekiliyor
-            zaman bilgisi çekilirken kaç salise harcandığı pingTime değişkenine atanıyor
-            böyle senkronizasyon esnasında süreler daha doğru kontrol edilebilir
-            */
         }
 
         public static class Functions
