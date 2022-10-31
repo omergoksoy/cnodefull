@@ -53,8 +53,6 @@ Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
 /*
 YAPILACAK İŞLEMLER
 
-- belirli periyotlarda zaman sunucusuna bağlanarak zaman değeri güncellenmeli
-
 - belirli periyotlarda diğer nodelar ile haberleşip blokların doğru bir şekilde oluşturulduğu kontrol edilmeli
 
 - SYNC class'ları için "Balance.Cs" sınıfı eklenmeli ve bu sınıf ile cüzdan bakiyeleri ve kilitli cüzdanlar
@@ -63,7 +61,6 @@ YAPILACAK İŞLEMLER
 
 - blok oluşturma işlemi için ayrılan 200 milisaniye süresi azaltılabilir çünkü node kendi sırasının 
   geleceğini önceden bildiği için kendi sırası geldiğinde doğrudan blok oluşturma işlemine geçebilir
-
 
 - çakışmaların sebebi şu : node'un sırası gelip bloğu oluşturdaktan sonra diğer nodelara oluşturduğu
   bloğun numarasını gönderiyor ( distribute ) Bu gönderim esnasında soket bağlantısının kurulması
@@ -83,6 +80,7 @@ YAPILDI
   blok yapısının içine bloğu oluşturan node'un imzasını ekleyerek bir başka node'un o node için sahte blok oluşturması
   engellenmeli
 
+- belirli periyotlarda zaman sunucusuna bağlanarak zaman değeri güncellenmeli
 
 */
 /*
