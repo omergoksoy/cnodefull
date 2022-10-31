@@ -47,6 +47,7 @@ namespace Notus.Validator
         private DateTime FileStorageTime = NVG.NOW.Obj;
 
         //bu liste diğer nodelardan gelen yeni blokları tutan liste
+        public Dictionary<ulong, string> TimeBaseBlockUidList = new Dictionary<ulong, string>();
         public SortedDictionary<long, NVClass.BlockData> IncomeBlockList = new SortedDictionary<long, NVClass.BlockData>();
         //private Notus.Block.Queue Obj_BlockQueue = new Notus.Block.Queue();
         private Notus.Validator.Queue ValidatorQueueObj = new Notus.Validator.Queue();
@@ -519,6 +520,7 @@ namespace Notus.Validator
         public void Start()
         {
             NGF.GetUtcTimeFromNode(20, true);
+            TimeBaseBlockUidList.Clear();
 
             Console.WriteLine(JsonSerializer.Serialize(NVG.NOW, Notus.Variable.Constant.JsonSetting));
             if (NVG.Settings.GenesisCreated == false)
@@ -747,7 +749,7 @@ namespace Notus.Validator
 
 
             */
-
+            //omergoksoy
             //while (tmpExitMainLoop == false && NVG.Settings.NodeClosing == false)
             while (tmpExitMainLoop == false)
             {
@@ -769,16 +771,16 @@ namespace Notus.Validator
                     waitPrinted = false;
                     nodeOrderCount++;
 
-                    /*
+
                     if (nodeOrderCount == 1)
                     {
-
+                        TimeBaseBlockUidList.Add(currentQueueTime, "");
+                        Console.WriteLine(JsonSerializer.Serialize(TimeBaseBlockUidList));
                     }
-                    */
 
                     if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
                     {
-                        Console.WriteLine("nodeOrderCount : " + nodeOrderCount.ToString());
+                        //Console.WriteLine("nodeOrderCount : " + nodeOrderCount.ToString());
                         while (NVG.Settings.WaitForGeneratedBlock == true)
                         {
                             Thread.Sleep(1);
@@ -813,11 +815,8 @@ namespace Notus.Validator
                                     {
                                         PreBlockData = NGF.BlockQueue.OrganizeBlockOrder(PreBlockData);
                                         NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
-                                        NP.Info(NVG.Settings, "control-point-1 -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
                                         ProcessBlock(PreparedBlockData, 4);
-                                        NP.Info(NVG.Settings, "control-point-2 -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
                                         ValidatorQueueObj.Distrubute(PreBlockData.info.rowNo, PreBlockData.info.type);
-                                        NP.Info(NVG.Settings, "control-point-2 -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
                                         NGF.WalletUsageList.Clear();
                                     }
                                     else
