@@ -784,8 +784,8 @@ namespace Notus.Validator
                                 bool executeEmptyBlock = EmptyBlockGeneration();
                                 if (executeEmptyBlock == true)
                                 {
+                                    //NP.Info(NVG.Settings, "MY TURN -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
                                     NP.Success(NVG.Settings, "Empty Block Executed");
-                                    NP.Info(NVG.Settings, "MY TURN -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
                                 }
 
                                 NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
@@ -832,7 +832,6 @@ namespace Notus.Validator
                                 }
                             }
                         }
-                        nextWalletPrinted = false;
                     }
                     else
                     {
@@ -1032,6 +1031,9 @@ namespace Notus.Validator
             if (CurrentBlockRowNo > blockData.info.rowNo)
             {
                 ProcessBlock_PrintSection(blockData, blockSource);
+                Console.WriteLine("blockSource : " + blockSource.ToString());
+                Console.WriteLine("CurrentBlockRowNo : " + CurrentBlockRowNo.ToString());
+                Console.WriteLine("blockData.info.rowNo : " + blockData.info.rowNo.ToString());
                 NP.Warning(NVG.Settings, "We Already Processed The Block -> [ " + blockData.info.rowNo.ToString() + " ]");
                 return true;
             }
