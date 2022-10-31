@@ -882,12 +882,6 @@ namespace Notus.Validator
                     prepareNextQueue = false;
                     if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
                     {
-                        if (start_FirstQueueGroupTime == true)
-                        {
-                            Console.WriteLine("FirstQueueGroupTime : " + FirstQueueGroupTime.ToString());
-                            Console.WriteLine("TimeBaseBlockUidList[currentQueueTime] : " + TimeBaseBlockUidList[FirstQueueGroupTime]);
-                        }
-                        
                         // eğer yeterli sayıda node yokse
                         // zamanları hazırlasın ancak node verileri boş oluşturulsun
                         if (NVC.MinimumNodeCount > NVG.OnlineNodeCount)
@@ -896,7 +890,14 @@ namespace Notus.Validator
                         }
                         else
                         {
-                            ValidatorQueueObj.ReOrderNodeQueue(currentQueueTime);
+                            string queueSeedStr = "";
+                            if (start_FirstQueueGroupTime == true)
+                            {
+                                queueSeedStr = TimeBaseBlockUidList[FirstQueueGroupTime];
+                                //Console.WriteLine("FirstQueueGroupTime : " + FirstQueueGroupTime.ToString());
+                                //Console.WriteLine("TimeBaseBlockUidList[currentQueueTime] : " + TimeBaseBlockUidList[FirstQueueGroupTime]);
+                            }
+                            ValidatorQueueObj.ReOrderNodeQueue(currentQueueTime, queueSeedStr);
                         }
                     }
                     currentQueueTime = ND.AddMiliseconds(currentQueueTime, queueTimePeriod);

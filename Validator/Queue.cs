@@ -787,7 +787,7 @@ namespace Notus.Validator
             }
             NVG.NodeQueue.OrderCount++;
         }
-        public SortedDictionary<BigInteger, string> MakeOrderToNode(ulong biggestSyncNo, ulong seedForQueue)
+        public SortedDictionary<BigInteger, string> MakeOrderToNode(ulong biggestSyncNo, string seedForQueue)
         {
             SortedDictionary<BigInteger, string> resultList = new SortedDictionary<BigInteger, string>();
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
@@ -912,7 +912,7 @@ namespace Notus.Validator
             {
                 NP.NodeCount();
                 //cüzdanların hashleri alınıp sıraya koyuluyor.
-                SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, 0);
+                SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, "beginning");
 
 
                 //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
@@ -986,10 +986,10 @@ namespace Notus.Validator
 
             //Console.WriteLine(JsonSerializer.Serialize(NodeList, NVC.JsonSetting));
         }
-        public void ReOrderNodeQueue(ulong currentQueueTime)
+        public void ReOrderNodeQueue(ulong currentQueueTime,string queueSeedStr="")
         {
             ulong biggestSyncNo = FindBiggestSyncNo();
-            SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, currentQueueTime);
+            SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, queueSeedStr);
             GenerateNodeQueue(currentQueueTime, ND.AddMiliseconds(currentQueueTime, 1500), tmpWalletList);
             NVG.NodeQueue.OrderCount++;
         }
