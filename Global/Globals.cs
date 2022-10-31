@@ -184,14 +184,6 @@ namespace Notus.Variable
                     NodeList[nodeHexStr].Status = NVS.NodeStatus.Online;
                     return incodeResponse;
                 }
-                /*
-                if (NodeList.ContainsKey(nodeHexStr) == true)
-                {
-                    //NodeList[nodeHexStr].ErrorCount++;
-                    NodeList[nodeHexStr].Status = NVS.NodeStatus.Offline;
-                    NodeList[nodeHexStr].Ready = false;
-                }
-                */
                 return string.Empty;
             }
             public static void SendKillMessage()

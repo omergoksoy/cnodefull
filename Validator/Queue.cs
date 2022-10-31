@@ -87,12 +87,18 @@ namespace Notus.Validator
                 if (string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false && entry.Value.Status == NVS.NodeStatus.Online)
                 {
                     NP.Info(NVG.Settings, "control-point--Distrubute-1 -> " + NVG.NOW.Int.ToString());
+
+                    // ************************************************************************
+                    // gönderim işlemi yaklaşık 0.640 saniye sürüyor
+                    // bu işlemi hızlandırmak gerekiyor
+                    // ************************************************************************
+
                     NGF.SendMessage(entry.Value.IP.IpAddress, entry.Value.IP.Port,
                         "<block>" + blockRowNo.ToString() + ":" +
                         NVG.Settings.NodeWallet.WalletKey + "</block>",
                         entry.Key
                     );
-                    NP.Info(NVG.Settings, "control-point--Distrubute-1 -> " + NVG.NOW.Int.ToString());
+                    NP.Info(NVG.Settings, "control-point--Distrubute-2 -> " + NVG.NOW.Int.ToString());
                     NP.Info(NVG.Settings,
                         "Distrubuting " +
                         blockRowNo.ToString() + "[ " +
