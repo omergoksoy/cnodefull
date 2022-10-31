@@ -53,13 +53,9 @@ Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
 /*
 YAPILACAK İŞLEMLER
 
-- gelen blokların geçerli cüzdan sahibi node tarafından gönderildiğinden emin olarak zincire ekleyeceğiz.
-  blok yapısının içine bloğu oluşturan node'un imzasını ekleyerek bir başka node'un o node için sahte blok oluşturması
-  engellenmeli
+- belirli periyotlarda zaman sunucusuna bağlanarak zaman değeri güncellenmeli
 
 - belirli periyotlarda diğer nodelar ile haberleşip blokların doğru bir şekilde oluşturulduğu kontrol edilmeli
-
-- her kuyruğun 4. turunda sıralamayı karıştırmak için birinci bloğun UID değeri özete eklenmeli
 
 - SYNC class'ları için "Balance.Cs" sınıfı eklenmeli ve bu sınıf ile cüzdan bakiyeleri ve kilitli cüzdanlar
   liste halinde tutulmalı
@@ -78,6 +74,14 @@ YAPILACAK İŞLEMLER
 
 
 
+
+YAPILDI
+
+- her kuyruğun 4. turunda sıralamayı karıştırmak için birinci bloğun UID değeri özete eklenmeli
+
+- gelen blokların geçerli cüzdan sahibi node tarafından gönderildiğinden emin olarak zincire ekleyeceğiz.
+  blok yapısının içine bloğu oluşturan node'un imzasını ekleyerek bir başka node'un o node için sahte blok oluşturması
+  engellenmeli
 
 
 */
