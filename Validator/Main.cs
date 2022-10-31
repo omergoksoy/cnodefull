@@ -780,12 +780,12 @@ namespace Notus.Validator
                         bool txExecuted = false;
                         while (ND.AddMiliseconds(currentQueueTime, queueTimePeriod - 10) >= NVG.NOW.Int)
                         {
-                            /*
                             if (nextWalletPrinted == false)
                             {
                                 nextWalletPrinted = true;
                                 NP.Info(NVG.Settings,"MY TURN -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
                             }
+                            /*
                             */
                             if (txExecuted == false)
                             {
@@ -801,10 +801,12 @@ namespace Notus.Validator
                                 );
                                 if (TmpBlockStruct != null)
                                 {
+                                    /*
                                     if (executeEmptyBlock)
                                     {
                                         NP.Info(NVG.Settings, "Empty Block-Point-1 -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
                                     }
+                                    */
                                     txExecuted = true;
                                     NVClass.BlockData? PreBlockData = JsonSerializer.Deserialize<NVClass.BlockData>(TmpBlockStruct.data);
                                     if (PreBlockData != null)
@@ -1038,7 +1040,7 @@ namespace Notus.Validator
             if (CurrentBlockRowNo > blockData.info.rowNo)
             {
                 ProcessBlock_PrintSection(blockData, blockSource);
-                NP.Warning(NVG.Settings, "We Already Processed The Block");
+                NP.Warning(NVG.Settings, "We Already Processed The Block -> [ " + blockData.info.rowNo.ToString() + " ]");
                 return true;
             }
 

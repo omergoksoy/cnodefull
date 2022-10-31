@@ -296,6 +296,8 @@ namespace Notus.Validator
                     return "error-msg";
                 }
 
+                NP.Info(NVG.Settings, "Income Block Row No -> " + incomeDataStr);
+
                 string[] tmpArr = incomeDataStr.Split(":");
                 long tmpBlockNo = long.Parse(tmpArr[0]);
                 string tmpNodeWalletKey = tmpArr[1];
