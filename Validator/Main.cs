@@ -659,25 +659,24 @@ namespace Notus.Validator
                         ValidatorQueueObj.GiveMeNodeList(),
                         tmpNewBlockIncome =>
                         {
-                            bool sendToChain = false;
+                            bool sendToMyChain = false;
                             try
                             {
 
                                 ulong queueTimePeriod = (ulong)(NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime);
                                 ulong blockTimeVal = ulong.Parse(tmpNewBlockIncome.info.time);
-                                ulong tmpModVal = blockTimeVal % queueTimePeriod;
-                                ulong blockGenartionTime = blockTimeVal - tmpModVal;
-                                if (NVG.Settings.Nodes.Queue.ContainsKey(blockGenartionTime) == true)
+                                ulong blockGenarationTime = blockTimeVal - (blockTimeVal % queueTimePeriod);
+                                if (NVG.Settings.Nodes.Queue.ContainsKey(blockGenarationTime) == true)
                                 {
                                     string blockValidator = tmpNewBlockIncome.validator.count.First().Key;
-                                    if(string.Equals(blockValidator, NVG.Settings.Nodes.Queue[blockGenartionTime].Wallet))
+                                    if(string.Equals(blockValidator, NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet))
                                     {
-                                        sendToChain = true;
+                                        sendToMyChain = true;
                                     }
                                 }
                             }
                             catch { }
-                            if (sendToChain == true)
+                            if (sendToMyChain == true)
                             {
                                 ProcessBlock(tmpNewBlockIncome, 3);
                             }
