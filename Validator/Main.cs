@@ -733,7 +733,6 @@ namespace Notus.Validator
             ulong queueTimePeriod = (ulong)(NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime);
             ulong currentQueueTime = NVG.NodeQueue.Starting;
 
-            bool nextWalletPrinted = false;
             bool prepareNextQueue = false;
             string selectedWalletId = string.Empty;
             byte nodeOrderCount = 0;
@@ -780,22 +779,15 @@ namespace Notus.Validator
                         bool txExecuted = false;
                         while (ND.AddMiliseconds(currentQueueTime, queueTimePeriod - 10) >= NVG.NOW.Int)
                         {
-                            if (nextWalletPrinted == false)
-                            {
-                                nextWalletPrinted = true;
-                                NP.Info(NVG.Settings,"MY TURN -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
-                            }
-                            /*
-                            */
                             if (txExecuted == false)
                             {
                                 bool executeEmptyBlock = EmptyBlockGeneration();
                                 if (executeEmptyBlock == true)
                                 {
-                                    //Console.WriteLine("NVG.Settings.EmptyBlockCount : " +NVG.Settings.EmptyBlockCount.ToString());
                                     NP.Success(NVG.Settings, "Empty Block Executed");
-                                    //NP.Info(NVG.Settings, "MY TURN -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
+                                    NP.Info(NVG.Settings, "MY TURN -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
                                 }
+
                                 NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
                                     ND.AddMiliseconds(currentQueueTime, NVC.BlockListeningForPoolTime)
                                 );
