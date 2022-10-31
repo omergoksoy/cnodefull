@@ -920,6 +920,7 @@ namespace Notus.Validator
             }
             if (blockSource == 2)
             {
+                Console.WriteLine("blockData.info.time : " + blockData.info.time.ToString());
                 NP.Status(NVG.Settings,
                     "Block Came From The Validator Queue [ " + fixedRowNoLength(blockData) + " ] ->" +
                     blockData.info.type.ToString().PadLeft(4, ' ')
@@ -934,6 +935,7 @@ namespace Notus.Validator
             }
             if (blockSource == 4)
             {
+                Console.WriteLine("blockData.info.time : " + blockData.info.time.ToString());
                 NP.Status(NVG.Settings,
                     "Block Came From The Main Loop [ " + fixedRowNoLength(blockData) + " ] ->" +
                     blockData.info.type.ToString().PadLeft(4, ' ')
