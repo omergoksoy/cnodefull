@@ -27,6 +27,7 @@ namespace Notus.Validator
 
         private Notus.Sync.Validator ValidatorCountObj = new Notus.Sync.Validator();
         private Notus.Sync.Time TimeSyncObj = new Notus.Sync.Time();
+        private Notus.Sync.Date NtpDateSyncObj = new Notus.Sync.Date();
         private Notus.Reward.Block RewardBlockObj = new Notus.Reward.Block();
         private Notus.Communication.Http HttpObj = new Notus.Communication.Http(true);
         private Notus.Block.Integrity Obj_Integrity;
@@ -527,6 +528,7 @@ namespace Notus.Validator
             if (NVG.Settings.GenesisCreated == false)
             {
                 TimeSyncObj.Start();
+                NtpDateSyncObj.Start();
                 ValidatorCountObj.Start();
             }
             Obj_Integrity = new Notus.Block.Integrity();
