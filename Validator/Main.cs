@@ -519,7 +519,7 @@ namespace Notus.Validator
         public void Start()
         {
             NGF.GetUtcTimeFromNode(20, true);
-            Console.WriteLine(JsonSerializer.Serialize(NVG.NOW, Notus.Variable.Constant.JsonSetting));
+            //Console.WriteLine(JsonSerializer.Serialize(NVG.NOW, Notus.Variable.Constant.JsonSetting));
             if (NVG.Settings.GenesisCreated == false)
             {
                 TimeSyncObj.Start(NVC.TimeSyncCommPort, 0);
