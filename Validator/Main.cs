@@ -659,7 +659,34 @@ namespace Notus.Validator
                         ValidatorQueueObj.GiveMeNodeList(),
                         tmpNewBlockIncome =>
                         {
-                            ProcessBlock(tmpNewBlockIncome, 3);
+                            bool sendToChain = false;
+                            try
+                            {
+
+                                ulong queueTimePeriod = (ulong)(NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime);
+                                ulong blockTimeVal = ulong.Parse(tmpNewBlockIncome.info.time);
+                                ulong tmpModVal = blockTimeVal % queueTimePeriod;
+                                ulong blockGenartionTime = blockTimeVal - tmpModVal;
+                                if (NVG.Settings.Nodes.Queue.ContainsKey(blockGenartionTime) == true)
+                                {
+                                    string blockValidator = tmpNewBlockIncome.validator.count.First().Key;
+                                    if(string.Equals(blockValidator, NVG.Settings.Nodes.Queue[blockGenartionTime].Wallet))
+                                    {
+                                        sendToChain = true;
+                                    }
+                                }
+                            }
+                            catch { }
+                            if (sendToChain == true)
+                            {
+                                ProcessBlock(tmpNewBlockIncome, 3);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Block Income But - Does Not Belong To Right Validator");
+                                Console.WriteLine("Block Income But - Does Not Belong To Right Validator");
+                                Console.WriteLine("Block Income But - Does Not Belong To Right Validator");
+                            }
                         }
                     );
 
@@ -859,7 +886,7 @@ namespace Notus.Validator
                         if (start_FirstQueueGroupTime == true)
                         {
                             Console.WriteLine("FirstQueueGroupTime : " + FirstQueueGroupTime.ToString());
-                            Console.WriteLine("TimeBaseBlockUidList[currentQueueTime] : " + TimeBaseBlockUidList[currentQueueTime]);
+                            Console.WriteLine("TimeBaseBlockUidList[currentQueueTime] : " + TimeBaseBlockUidList[FirstQueueGroupTime]);
                         }
                         
                         // eğer yeterli sayıda node yokse

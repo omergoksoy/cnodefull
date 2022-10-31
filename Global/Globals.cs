@@ -147,6 +147,7 @@ namespace Notus.Variable
             public static ConcurrentDictionary<string, string> LockWalletList { get; set; }
             public static ConcurrentDictionary<string, byte> WalletUsageList { get; set; }
             public static ConcurrentDictionary<long, string> BlockOrder { get; set; }
+            //public static ConcurrentDictionary<ulong, string> BlockCreatorList { get; set; }
             //public static Notus.Mempool BlockOrder { get; set; }
             public static Notus.Block.Storage Storage { get; set; }
             public static Notus.Wallet.Balance Balance { get; set; }
