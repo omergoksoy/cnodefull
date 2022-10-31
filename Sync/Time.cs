@@ -8,73 +8,28 @@ using System.Threading.Tasks;
 using Notus.Communication;
 using NVG = Notus.Variable.Globals;
 using NP = Notus.Print;
-//using NT = Notus.Time;
 using NVS = Notus.Variable.Struct;
 using NGF = Notus.Variable.Globals.Functions;
 namespace Notus.Sync
 {
     public class Time : IDisposable
     {
-        private double TimeShift;
-        private DateTime LocalUtcTime;
-        private UDP serverObj;
-        private UDP joinObj;
         private Notus.Threads.Timer? UtcTimerObj;
-        public void Start(int portNo, int joinPortNo)
+        public void Start()
         {
-            UpdateUtcTimeTimerFunc();
-            /*
-            joinObj = new UDP(joinPortNo);
-            joinObj.OnReceive((incomeTime, incomeText) =>
-            {
-                Console.WriteLine("Income Text : " + incomeText);
-            });
-
-            serverObj = new UDP(portNo);
-            serverObj.OnReceive((incomeTime, incomeText) =>
-            {
-                Console.WriteLine("Income Text : " + incomeText);
-            });
-            //s.Server("127.0.0.1", 27000, true);
-            */
-        }
-        private void UpdateUtcTimeTimerFunc()
-        {
+            NP.Success(NVG.Settings, "Time Synchronizer Has Started");
             UtcTimerObj = new Notus.Threads.Timer(1);
             UtcTimerObj.Start(() =>
             {
-                LocalUtcTime = DateTime.UtcNow;
-                if( (LocalUtcTime - NVG.NOW.LastDiffUpdate).TotalMinutes > 5)
-                {
-
-                }
                 if (NVG.NOW.DiffUpdated == true)
                 {
-                    NVG.NOW.Obj = LocalUtcTime.Add(NVG.NOW.Diff);
+                    NVG.NOW.Obj = DateTime.UtcNow.Add(NVG.NOW.Diff);
                     NVG.NOW.Int = Notus.Date.ToLong(NVG.NOW.Obj);
                 }
-                if (int.Parse(LocalUtcTime.ToString("fff")) % 200 == 0)
-                {
-                    try
-                    {
-                        int onlineNodeCount = 0;
-                        foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
-                        {
-                            if (entry.Value.Status == NVS.NodeStatus.Online)
-                            {
-                                onlineNodeCount++;
-                            }
-                        }
-                        NVG.OnlineNodeCount = onlineNodeCount;
-                    }
-                    catch { }
-                }
-            }, true);  //TimerObj.Start(() =>
+            }, true);  //TimerObj.Start(() =>            
         }
         public Time()
         {
-            TimeShift = 0;
-            NP.Success(NVG.Settings, "Time Synchronizer Has Started");
         }
         ~Time()
         {
@@ -82,10 +37,6 @@ namespace Notus.Sync
         }
         public void Dispose()
         {
-            if (serverObj != null)
-            {
-                serverObj = null;
-            }
             if (UtcTimerObj != null)
             {
                 UtcTimerObj.Dispose();

@@ -519,10 +519,11 @@ namespace Notus.Validator
         public void Start()
         {
             NGF.GetUtcTimeFromNode(20, true);
-            //Console.WriteLine(JsonSerializer.Serialize(NVG.NOW, Notus.Variable.Constant.JsonSetting));
+
+            Console.WriteLine(JsonSerializer.Serialize(NVG.NOW, Notus.Variable.Constant.JsonSetting));
             if (NVG.Settings.GenesisCreated == false)
             {
-                TimeSyncObj.Start(NVC.TimeSyncCommPort, 0);
+                TimeSyncObj.Start();
                 ValidatorCountObj.Start();
             }
             Obj_Integrity = new Notus.Block.Integrity();
@@ -663,7 +664,6 @@ namespace Notus.Validator
                     {
                         FirstSyncIsDone = true;
                         MyReadyMessageSended = true;
-                        //Console.WriteLine("Control-Point-a465as4");
                         ValidatorQueueObj.MyNodeIsReady();
                     }
                     else
@@ -674,7 +674,6 @@ namespace Notus.Validator
                             {
                                 FirstSyncIsDone = true;
                                 MyReadyMessageSended = true;
-                                //Console.WriteLine("Control-Point-a465as4");
                                 ValidatorQueueObj.MyNodeIsReady();
                             }
                         }
@@ -805,8 +804,11 @@ namespace Notus.Validator
                                     {
                                         PreBlockData = NGF.BlockQueue.OrganizeBlockOrder(PreBlockData);
                                         NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
+                                        NP.Info(NVG.Settings, "control-point-1 -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
                                         ProcessBlock(PreparedBlockData, 4);
+                                        NP.Info(NVG.Settings, "control-point-2 -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
                                         ValidatorQueueObj.Distrubute(PreBlockData.info.rowNo, PreBlockData.info.type);
+                                        NP.Info(NVG.Settings, "control-point-2 -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
                                         NGF.WalletUsageList.Clear();
                                     }
                                     else
