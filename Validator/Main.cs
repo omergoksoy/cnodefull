@@ -768,8 +768,17 @@ namespace Notus.Validator
                 {
                     waitPrinted = false;
                     nodeOrderCount++;
+
+                    /*
+                    if (nodeOrderCount == 1)
+                    {
+
+                    }
+                    */
+
                     if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
                     {
+                        Console.WriteLine("nodeOrderCount : " + nodeOrderCount.ToString());
                         while (NVG.Settings.WaitForGeneratedBlock == true)
                         {
                             Thread.Sleep(1);
@@ -920,7 +929,7 @@ namespace Notus.Validator
             }
             if (blockSource == 2)
             {
-                Console.WriteLine("blockData.info.time : " + blockData.info.time.ToString());
+                Console.WriteLine("blockData.info.time : " + blockData.info.time.ToString() + " - " + blockData.info.rowNo.ToString());
                 NP.Status(NVG.Settings,
                     "Block Came From The Validator Queue [ " + fixedRowNoLength(blockData) + " ] ->" +
                     blockData.info.type.ToString().PadLeft(4, ' ')
@@ -935,7 +944,7 @@ namespace Notus.Validator
             }
             if (blockSource == 4)
             {
-                Console.WriteLine("blockData.info.time : " + blockData.info.time.ToString());
+                Console.WriteLine("blockData.info.time : " + blockData.info.time.ToString() + " - " + blockData.info.rowNo.ToString());
                 NP.Status(NVG.Settings,
                     "Block Came From The Main Loop [ " + fixedRowNoLength(blockData) + " ] ->" +
                     blockData.info.type.ToString().PadLeft(4, ' ')

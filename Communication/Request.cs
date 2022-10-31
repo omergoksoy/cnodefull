@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using NVG = Notus.Variable.Globals;
+using NP = Notus.Print;
 
 namespace Notus.Communication
 {
@@ -41,19 +43,27 @@ namespace Notus.Communication
         )
         {
             FormUrlEncodedContent formContent = new FormUrlEncodedContent(PostData);
+            NP.Info(NVG.Settings, "control-point--Distrubute-c-111 -> " + NVG.NOW.Int.ToString());
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
+                    NP.Info(NVG.Settings, "control-point--Distrubute-c-222 -> " + NVG.NOW.Int.ToString());
                     if (TimeOut > 0)
                     {
                         client.Timeout = (UseTimeoutAsSecond == true ? TimeSpan.FromSeconds(TimeOut * 1000) : TimeSpan.FromMilliseconds(TimeOut));
                     }
                     HttpResponseMessage response = client.PostAsync(UrlAddress, formContent).GetAwaiter().GetResult();
+                    NP.Info(NVG.Settings, "control-point--Distrubute-c-333 -> " + NVG.NOW.Int.ToString());
                     HttpContent responseContent = response.Content;
                     if (response.IsSuccessStatusCode)
                     {
-                        return (true, responseContent.ReadAsStringAsync().GetAwaiter().GetResult());
+                        string? result =responseContent.ReadAsStringAsync().GetAwaiter().GetResult();
+                        NP.Info(NVG.Settings, "control-point--Distrubute-c-444 -> " + NVG.NOW.Int.ToString());
+                        if (result!= null)
+                        {
+                            return (true, result);
+                        }
                     }
                 }
             }
