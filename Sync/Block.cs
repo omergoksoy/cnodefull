@@ -6,28 +6,25 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Notus.Communication;
-
+using NVG = Notus.Variable.Globals;
 namespace Notus.Sync
 {
     public class Block
     {
         public static bool Block2(
-            Notus.Globals.Variable.Settings objSettings,
             List<Notus.Variable.Struct.IpInfo> nodeList,
             System.Action<Notus.Variable.Class.BlockData>? Func_NewBlockIncome = null
         )
         {
             bool waitForOtherNodes = false;
             long smallestBlockRow = long.MaxValue;
-            //bool weFindOtherNode = false;
             foreach (Variable.Struct.IpInfo? tmpEntry in nodeList)
             {
                 if (tmpEntry != null)
                 {
-                    Notus.Variable.Class.BlockData? nodeLastBlock = Notus.Toolbox.Network.GetLastBlock(tmpEntry, objSettings);
+                    Notus.Variable.Class.BlockData? nodeLastBlock = Notus.Toolbox.Network.GetLastBlock(tmpEntry, NVG.Settings);
                     if (nodeLastBlock != null)
                     {
-                        //weFindOtherNode = true;
                         if (smallestBlockRow > nodeLastBlock.info.rowNo)
                         {
                             smallestBlockRow = nodeLastBlock.info.rowNo;
@@ -35,7 +32,7 @@ namespace Notus.Sync
                     }
                 }
             }
-            if (objSettings.LastBlock.info.rowNo > smallestBlockRow)
+            if (NVG.Settings.LastBlock.info.rowNo > smallestBlockRow)
             {
                 //Console.WriteLine("My Node Higher Than Other");
             }
@@ -50,7 +47,7 @@ namespace Notus.Sync
             {
                 nodeControlList.Add(false);
             }
-            for (long blockNo = objSettings.LastBlock.info.rowNo; blockNo < (smallestBlockRow + 1) && exitForLoop == false; blockNo++)
+            for (long blockNo = NVG.Settings.LastBlock.info.rowNo; blockNo < (smallestBlockRow + 1) && exitForLoop == false; blockNo++)
             {
                 //kontrol edilmemiş olanlar false olarak işaretlenecek
                 for (int i = 0; i < nodeList.Count; i++)
@@ -71,7 +68,7 @@ namespace Notus.Sync
                                 Notus.Toolbox.Network.GetBlockFromNode(
                                     currentNode,
                                     blockNo,
-                                    objSettings
+                                    NVG.Settings
                                 );
                             if (nodeLastBlock != null)
                             {

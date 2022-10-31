@@ -652,7 +652,7 @@ namespace Notus.Validator
                 {
                     NP.Info(NVG.Settings, "Node Blocks Are Checking For Sync");
                     bool waitForOtherNodes = Notus.Sync.Block.Block2(
-                        NVG.Settings, ValidatorQueueObj.GiveMeNodeList(),
+                        ValidatorQueueObj.GiveMeNodeList(),
                         tmpNewBlockIncome =>
                         {
                             ProcessBlock(tmpNewBlockIncome, 3);
@@ -1031,9 +1031,9 @@ namespace Notus.Validator
             if (CurrentBlockRowNo > blockData.info.rowNo)
             {
                 ProcessBlock_PrintSection(blockData, blockSource);
-                Console.WriteLine("blockSource : " + blockSource.ToString());
-                Console.WriteLine("CurrentBlockRowNo : " + CurrentBlockRowNo.ToString());
-                Console.WriteLine("blockData.info.rowNo : " + blockData.info.rowNo.ToString());
+                //Console.WriteLine("blockSource : " + blockSource.ToString());
+                //Console.WriteLine("CurrentBlockRowNo : " + CurrentBlockRowNo.ToString());
+                //Console.WriteLine("blockData.info.rowNo : " + blockData.info.rowNo.ToString());
                 NP.Warning(NVG.Settings, "We Already Processed The Block -> [ " + blockData.info.rowNo.ToString() + " ]");
                 return true;
             }
