@@ -47,6 +47,7 @@ namespace Notus.Validator
         private DateTime FileStorageTime = NVG.NOW.Obj;
 
         //bu liste diğer nodelardan gelen yeni blokları tutan liste
+        public ulong FirstQueueGroupTime = 0;
         public Dictionary<ulong, string> TimeBaseBlockUidList = new Dictionary<ulong, string>();
         public SortedDictionary<long, NVClass.BlockData> IncomeBlockList = new SortedDictionary<long, NVClass.BlockData>();
         //private Notus.Block.Queue Obj_BlockQueue = new Notus.Block.Queue();
@@ -774,8 +775,9 @@ namespace Notus.Validator
 
                     if (nodeOrderCount == 1)
                     {
+                        FirstQueueGroupTime = currentQueueTime;
                         TimeBaseBlockUidList.Add(currentQueueTime, "");
-                        Console.WriteLine(JsonSerializer.Serialize(TimeBaseBlockUidList));
+                        TimeBaseBlockUidList[currentQueueTime] = "id:" + currentQueueTime.ToString();
                     }
 
                     if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
@@ -853,6 +855,9 @@ namespace Notus.Validator
                     prepareNextQueue = false;
                     if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
                     {
+                        Console.WriteLine("FirstQueueGroupTime : " + FirstQueueGroupTime.ToString());
+                        Console.WriteLine("TimeBaseBlockUidList[currentQueueTime] : " + TimeBaseBlockUidList[currentQueueTime]);
+                        
                         // eğer yeterli sayıda node yokse
                         // zamanları hazırlasın ancak node verileri boş oluşturulsun
                         if (NVC.MinimumNodeCount > NVG.OnlineNodeCount)
