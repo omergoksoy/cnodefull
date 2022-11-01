@@ -832,9 +832,9 @@ namespace Notus.Validator
             //şimdi burada her node diğer nodeların hepsine bağlanacak...
             foreach (KeyValuePair<int, NVS.NodeInfo> entry in tmpNodeList)
             {
-                if (string.Equals(entry.Value.Wallet, "") == false)
+                if (string.Equals(entry.Value.Wallet, NVG.Settings.Nodes.My.IP.Wallet) == false)
                 {
-                    if (NVG.Settings.Nodes.Listener.ContainsKey(walletId) == false)
+                    if (NVG.Settings.Nodes.Queue[tmpTimeList[entry.Key]].Client.ContainsKey(entry.Value.Wallet) == false)
                     {
 
                     }
