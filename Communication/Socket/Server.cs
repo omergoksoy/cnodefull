@@ -15,12 +15,13 @@ namespace Notus.Communication.Sync.Socket
         private bool readyForDispose = false;
         public System.Net.Sockets.Socket? listener;
         //public System.Net.Sockets.Socket? listener = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        public void Start(string ipAddress, int portNo)
+        public void Start(int portNo,string ipAddress="")
         {
             listener = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             byte[] bytes = new byte[1048576];
             string content = string.Empty;
-
+            IPAddress ipObj = IPAddress.Any;
+            if(ipAddress.Length)
             //IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), portNo);
             IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, portNo);
 
