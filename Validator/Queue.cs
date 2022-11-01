@@ -760,6 +760,7 @@ namespace Notus.Validator
             // her node için ayrılan süre
             int queueTimePeriod = NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime;
 
+            Dictionary<int, ulong> tmpTimeList = new Dictionary<int, ulong>();
             Dictionary<int, NVS.NodeInfo> tmpNodeList = new Dictionary<int, NVS.NodeInfo>();
             int tmpOrderNo = 1;
             while (exitFromInnerWhile == false)
@@ -778,17 +779,14 @@ namespace Notus.Validator
                                     IpAddress = entry.Value.IP.IpAddress,
                                     Port = entry.Value.IP.Port,
                                     Wallet = entry.Value.IP.Wallet,
-                                    GroupNo = NVG.GroupNo
+                                    GroupNo = NVG.GroupNo,
+                                    Client = new Dictionary<string, Communication.Sync.Socket.Client>()
                                 });
-                                tmpSyncNo = ND.AddMiliseconds(tmpSyncNo, queueTimePeriod);
-                                firstListcount++;
-                                if (firstListcount == 6)
-                                {
-                                    exitFromInnerWhile = true;
-                                }
+
 
                                 // her node için sunucu listesi oluşturulacak ve
                                 // bunun için geçici liste oluşturuluyor...
+                                tmpTimeList.Add(tmpOrderNo, tmpSyncNo);
                                 tmpNodeList.Add(tmpOrderNo, new NVS.NodeInfo()
                                 {
                                     IpAddress = entry.Value.IP.IpAddress,
@@ -797,6 +795,14 @@ namespace Notus.Validator
                                     GroupNo = NVG.GroupNo
                                 });
                                 tmpOrderNo++;
+
+
+                                tmpSyncNo = ND.AddMiliseconds(tmpSyncNo, queueTimePeriod);
+                                firstListcount++;
+                                if (firstListcount == 6)
+                                {
+                                    exitFromInnerWhile = true;
+                                }
                             }
                         }
                     }
@@ -804,15 +810,35 @@ namespace Notus.Validator
             }
 
             //önce soket server başlatılacak
-            foreach(KeyValuePair<int, NVS.NodeInfo> entry in tmpNodeList)
+            foreach (KeyValuePair<int, NVS.NodeInfo> entry in tmpNodeList)
             {
                 StartPrivateSockerServer(entry.Value.Wallet);
             }
 
             //şimdi kuyruktaki her node için istemci başlatılacak...
-            foreach(KeyValuePair<int, NVS.NodeInfo> entry in tmpNodeList)
+            foreach (KeyValuePair<int, NVS.NodeInfo> entry in tmpNodeList)
             {
-                StartPrivateSockerServer(entry.Value.Wallet);
+                if (NVG.Settings.Nodes.Queue[tmpTimeList[entry.Key]].Client.ContainsKey(entry.Value.Wallet) == false)
+                {
+                    NVG.Settings.Nodes.Queue[tmpTimeList[entry.Key]].Client.Add(
+                        entry.Value.Wallet,
+                        new Notus.Communication.Sync.Socket.Client()
+                    );
+                }
+                //StartPrivateSockerServer(entry.Value.Wallet);
+            }
+
+
+            //şimdi burada her node diğer nodeların hepsine bağlanacak...
+            foreach (KeyValuePair<int, NVS.NodeInfo> entry in tmpNodeList)
+            {
+                if (string.Equals(entry.Value.Wallet, "") == false)
+                {
+                    if (NVG.Settings.Nodes.Listener.ContainsKey(walletId) == false)
+                    {
+
+                    }
+                }
             }
 
             // sonra client nesneleri başlatılacak

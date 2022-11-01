@@ -475,7 +475,7 @@ namespace Notus.Variable.Struct
         public string IpAddress { get; set; }
         public int Port { get; set; }
         public string Wallet { get; set; }                  // node'un cüzdan adresi
-        public Dictionary<ulong, System.Net.Sockets.Socket> Client { get; set; }
+        public Dictionary<string, Notus.Communication.Sync.Socket.Client> Client { get; set; }
         public int GroupNo { get; set; }
     }
     public class NodeQueueList
