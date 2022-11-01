@@ -18,28 +18,34 @@ namespace Notus.Communication.Sync.Socket
         public void Start(int portNo,string ipAddress="")
         {
             listener = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            byte[] bytes = new byte[1048576];
-            string content = string.Empty;
-            IPAddress ipObj = IPAddress.Any;
-            if(ipAddress.Length)
-            //IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), portNo);
+            byte[] byteArr = new byte[8192];
+
             IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, portNo);
+            if (ipAddress.Length > 0)
+            {
+                localEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), portNo);
+            }
 
             try
             {
                 listener.Bind(localEndPoint);
-                listener.Listen(100);
+                listener.Listen(1000);
 
                 while (closeSocket == false)
                 {
                     System.Net.Sockets.Socket handler = listener.Accept();
+                    /*
                     string replyData = string.Empty;
                     while (closeSocket == false)
                     {
-                        int bytesRec = handler.Receive(bytes);
-                        string incomeData = Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                        Console.WriteLine(incomeData);
+                    */
+                        int byteArraySize = handler.Receive(byteArr);
+                        string contentText = Encoding.ASCII.GetString(byteArr, 0, byteArraySize);
+                        Console.WriteLine("Private Socket Server : " + contentText);
+                        Console.WriteLine("Private Socket Server : " + contentText);
+                    /*
                     }
+                    */
                     handler.Send(System.Text.Encoding.ASCII.GetBytes("ok"));
                     handler.Shutdown(SocketShutdown.Both);
                     handler.Close();
@@ -56,6 +62,14 @@ namespace Notus.Communication.Sync.Socket
         {
             closeSocket = false;
         }
+        public Server(int portNo)
+        {
+            closeSocket = false;
+            if (portNo > 0)
+            {
+                Start(portNo);
+            }
+        }
         ~Server()
         {
             Dispose();
@@ -69,6 +83,7 @@ namespace Notus.Communication.Sync.Socket
                 {
                     Thread.Sleep(5);
                 }
+                listener.Shutdown(SocketShutdown.Both);
                 listener.Close();
                 listener.Dispose();
             }

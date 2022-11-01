@@ -82,6 +82,16 @@ namespace Notus.Validator
         }
 
         //oluşturulacak blokları kimin oluşturacağını seçen fonksiyon
+        public void SendMessageViaPrivateSocket(string walletId, string receiverIpAddress, string messageText)
+        {
+            if (NVG.Settings.Nodes.Listener.ContainsKey(walletId) == false)
+            {
+                NVG.Settings.Nodes.Listener.TryAdd(
+                    walletId,
+                    new Communication.Sync.Socket.Server(NVC.DefaultMessagePortNo)
+                );
+            }
+        }
         public void Distrubute(long blockRowNo, int blockType = 0)
         {
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
@@ -94,11 +104,20 @@ namespace Notus.Validator
                     // ************************************************************************
 
                     //socket-exception
+                    SendMessageViaPrivateSocket(
+                        NVG.Settings.NodeWallet.WalletKey,
+                        entry.Value.IP.IpAddress,
+                        "<block>" +
+                            blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey +
+                        "</block>"
+                    );
                     NGF.SendMessage(entry.Value.IP.IpAddress, entry.Value.IP.Port,
                         "<block>" + blockRowNo.ToString() + ":" +
                         NVG.Settings.NodeWallet.WalletKey + "</block>",
                         entry.Key
                     );
+                    /*
+                    */
                     NP.Info(NVG.Settings,
                         "Distrubuting " +
                         blockRowNo.ToString() + "[ " +
@@ -717,6 +736,16 @@ namespace Notus.Validator
             }
         }
 
+        public void StartPrivateSockerServer(string walletId)
+        {
+            if (NVG.Settings.Nodes.Listener.ContainsKey(walletId) == false)
+            {
+                NVG.Settings.Nodes.Listener.TryAdd(
+                    walletId,
+                    new Communication.Sync.Socket.Server(NVC.DefaultMessagePortNo)
+                );
+            }
+        }
         public void GenerateNodeQueue(
             ulong biggestSyncNo,
             ulong syncStaringTime,
@@ -731,6 +760,8 @@ namespace Notus.Validator
             // her node için ayrılan süre
             int queueTimePeriod = NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime;
 
+            Dictionary<int, NVS.NodeInfo> tmpNodeList = new Dictionary<int, NVS.NodeInfo>();
+            int tmpOrderNo = 1;
             while (exitFromInnerWhile == false)
             {
                 foreach (KeyValuePair<BigInteger, string> outerEntry in nodeWalletList)
@@ -749,36 +780,42 @@ namespace Notus.Validator
                                     Wallet = entry.Value.IP.Wallet,
                                     GroupNo = NVG.GroupNo
                                 });
-
-                                if (NVG.Settings.Nodes.Listener.ContainsKey(entry.Value.IP.Wallet) == false)
-                                {
-                                    NVG.Settings.Nodes.Listener.TryAdd(
-                                        entry.Value.IP.Wallet,
-                                        new Communication.Sync.Socket.Server()
-                                    );
-                                }
-
-                                /*
-                                Task.Run(() =>
-                                {
-                                    NVG.Settings.Nodes.Queue[tmpSyncNo].Listener.Start(
-                                        NVG.Settings.Nodes.Queue[tmpSyncNo].IpAddress,
-                                        NVG.Settings.Nodes.Queue[tmpSyncNo].Port
-                                    );
-                                });
-                                */
                                 tmpSyncNo = ND.AddMiliseconds(tmpSyncNo, queueTimePeriod);
                                 firstListcount++;
                                 if (firstListcount == 6)
                                 {
                                     exitFromInnerWhile = true;
                                 }
+
+                                // her node için sunucu listesi oluşturulacak ve
+                                // bunun için geçici liste oluşturuluyor...
+                                tmpNodeList.Add(tmpOrderNo, new NVS.NodeInfo()
+                                {
+                                    IpAddress = entry.Value.IP.IpAddress,
+                                    Port = entry.Value.IP.Port,
+                                    Wallet = entry.Value.IP.Wallet,
+                                    GroupNo = NVG.GroupNo
+                                });
+                                tmpOrderNo++;
                             }
                         }
                     }
                 }
             }
 
+            //önce soket server başlatılacak
+            foreach(KeyValuePair<int, NVS.NodeInfo> entry in tmpNodeList)
+            {
+                StartPrivateSockerServer(entry.Value.Wallet);
+            }
+
+            //şimdi kuyruktaki her node için istemci başlatılacak...
+            foreach(KeyValuePair<int, NVS.NodeInfo> entry in tmpNodeList)
+            {
+                StartPrivateSockerServer(entry.Value.Wallet);
+            }
+
+            // sonra client nesneleri başlatılacak
             NVG.GroupNo = NVG.GroupNo + 1;
 
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
