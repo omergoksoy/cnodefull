@@ -834,12 +834,6 @@ namespace Notus.Validator
                                 );
                                 if (TmpBlockStruct != null)
                                 {
-                                    /*
-                                    if (executeEmptyBlock)
-                                    {
-                                        NP.Info(NVG.Settings, "Empty Block-Point-1 -> " + currentQueueTime.ToString() + " - " + NVG.NOW.Int.ToString());
-                                    }
-                                    */
                                     txExecuted = true;
                                     NVClass.BlockData? PreBlockData = JsonSerializer.Deserialize<NVClass.BlockData>(TmpBlockStruct.data);
                                     if (PreBlockData != null)
@@ -847,6 +841,8 @@ namespace Notus.Validator
                                         PreBlockData = NGF.BlockQueue.OrganizeBlockOrder(PreBlockData);
                                         NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
                                         ProcessBlock(PreparedBlockData, 4);
+
+                                        //socket-exception
                                         ValidatorQueueObj.Distrubute(PreBlockData.info.rowNo, PreBlockData.info.type);
                                         NGF.WalletUsageList.Clear();
                                     }

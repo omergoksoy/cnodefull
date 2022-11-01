@@ -66,7 +66,7 @@ namespace Notus.Variable
         public static TimeStruct NOW { get; set; }
         public static Notus.Globals.Variable.NodeQueueList NodeQueue { get; set; }
         public static int OnlineNodeCount { get; set; }
-        public static ConcurrentDictionary<string, Notus.Communication.Listener> MsgSocketList { get; set; }
+        public static ConcurrentDictionary<string, Notus.Communication.Sync.Socket.Server> MsgSocketList { get; set; }
         public static ConcurrentDictionary<string, NVS.NodeQueueInfo> NodeList { get; set; }
         public static Notus.Globals.Variable.Settings Settings { get; set; }
         static Globals()

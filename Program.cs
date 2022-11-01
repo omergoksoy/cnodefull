@@ -113,6 +113,9 @@ bu iki node arasındaki süre
 //OMERGOKSOY
 // kontrol edilecek alanlar
 
+//socket-exception
+//soket ile ilgili yapılan işlemler için oluşturulan istisna durumu
+
 //tgz-exception
 // TGZ ile ilgili eklenen kontrol noktaları
 

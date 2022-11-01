@@ -29,15 +29,6 @@ namespace Notus.Network
                         }
                         catch (Exception err)
                         {
-                            Notus.Print.Log(
-                                Notus.Variable.Enum.LogLevel.Info,
-                                600444004,
-                                err.Message,
-                                "BlockRowNo",
-                                null,
-                                err
-                            );
-
                             Console.WriteLine(err.Message);
                             Notus.Date.SleepWithoutBlocking(5, true);
                         }
