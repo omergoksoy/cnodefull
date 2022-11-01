@@ -1,4 +1,5 @@
-﻿using Notus.Encryption;
+﻿using Notus.Communication;
+using Notus.Encryption;
 using Notus.Network;
 using System;
 using System.Collections.Concurrent;
@@ -7,6 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using ND = Notus.Date;
@@ -91,6 +93,7 @@ namespace Notus.Validator
                     // bu işlemi hızlandırmak gerekiyor
                     // ************************************************************************
 
+                    //socket-exception
                     NGF.SendMessage(entry.Value.IP.IpAddress, entry.Value.IP.Port,
                         "<block>" + blockRowNo.ToString() + ":" +
                         NVG.Settings.NodeWallet.WalletKey + "</block>",
@@ -743,8 +746,27 @@ namespace Notus.Validator
                                 {
                                     IpAddress = entry.Value.IP.IpAddress,
                                     Port = entry.Value.IP.Port,
-                                    Wallet = entry.Value.IP.Wallet
+                                    Wallet = entry.Value.IP.Wallet,
+                                    GroupNo = NVG.GroupNo
                                 });
+
+                                if (NVG.Settings.Nodes.Listener.ContainsKey(entry.Value.IP.Wallet) == false)
+                                {
+                                    NVG.Settings.Nodes.Listener.TryAdd(
+                                        entry.Value.IP.Wallet,
+                                        new Communication.Sync.Socket.Server()
+                                    );
+                                }
+
+                                /*
+                                Task.Run(() =>
+                                {
+                                    NVG.Settings.Nodes.Queue[tmpSyncNo].Listener.Start(
+                                        NVG.Settings.Nodes.Queue[tmpSyncNo].IpAddress,
+                                        NVG.Settings.Nodes.Queue[tmpSyncNo].Port
+                                    );
+                                });
+                                */
                                 tmpSyncNo = ND.AddMiliseconds(tmpSyncNo, queueTimePeriod);
                                 firstListcount++;
                                 if (firstListcount == 6)
@@ -756,6 +778,9 @@ namespace Notus.Validator
                     }
                 }
             }
+
+            NVG.GroupNo = NVG.GroupNo + 1;
+
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
                 if (entry.Value.Status == NVS.NodeStatus.Online && entry.Value.SyncNo == biggestSyncNo)
@@ -781,10 +806,14 @@ namespace Notus.Validator
                 {
                     IpAddress = "",
                     Port = 0,
-                    Wallet = ""
+                    Wallet = "",
+                    GroupNo = NVG.GroupNo
+
                 });
                 syncStaringTime = ND.AddMiliseconds(syncStaringTime, queueTimePeriod);
             }
+
+            NVG.GroupNo = NVG.GroupNo + 1;
             NVG.NodeQueue.OrderCount++;
         }
         public SortedDictionary<BigInteger, string> MakeOrderToNode(ulong biggestSyncNo, string seedForQueue)
@@ -986,7 +1015,7 @@ namespace Notus.Validator
 
             //Console.WriteLine(JsonSerializer.Serialize(NodeList, NVC.JsonSetting));
         }
-        public void ReOrderNodeQueue(ulong currentQueueTime,string queueSeedStr="")
+        public void ReOrderNodeQueue(ulong currentQueueTime, string queueSeedStr = "")
         {
             ulong biggestSyncNo = FindBiggestSyncNo();
             SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, queueSeedStr);

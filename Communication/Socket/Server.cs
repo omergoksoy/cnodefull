@@ -26,7 +26,7 @@ namespace Notus.Communication.Sync.Socket
             try
             {
                 listener.Bind(localEndPoint);
-                listener.Listen(10);
+                listener.Listen(100);
 
                 while (closeSocket == false)
                 {

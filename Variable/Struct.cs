@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Numerics;
 
@@ -474,9 +475,12 @@ namespace Notus.Variable.Struct
         public string IpAddress { get; set; }
         public int Port { get; set; }
         public string Wallet { get; set; }                  // node'un cüzdan adresi
+        public Dictionary<ulong, System.Net.Sockets.Socket> Client { get; set; }
+        public int GroupNo { get; set; }
     }
     public class NodeQueueList
     {
+        public ConcurrentDictionary<string, Notus.Communication.Sync.Socket.Server> Listener { get; set; }
         public NodeQueueInfo My { get; set; }             // node ile alınan zaman bilgisi
         public List<IpInfo> Lists { get; set; }             // node ile alınan zaman bilgisi
         public Dictionary<ulong, NodeInfo> Queue { get; set; }             // node ile alınan zaman bilgisi
@@ -538,7 +542,7 @@ namespace Notus.Variable.Struct
         public ulong Left { get; set; }
         public Dictionary<string, Dictionary<ulong, string>> LuckyNode { get; set; }  // after 
         public Dictionary<string, Dictionary<ulong, string>> Addition { get; set; }  // after 
-        public Dictionary<string,List<long>> List { get; set; }
+        public Dictionary<string, List<long>> List { get; set; }
     }
 
     public class LockWalletBeforeStruct
@@ -603,7 +607,7 @@ namespace Notus.Variable.Struct
         public string StackTrace { get; set; }
     }
 
-    public class MultiWalletTransactionApproveStruct    
+    public class MultiWalletTransactionApproveStruct
     {
         public bool Approve { get; set; }
         public string TransactionId { get; set; }

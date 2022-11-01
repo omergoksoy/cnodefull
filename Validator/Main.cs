@@ -892,8 +892,6 @@ namespace Notus.Validator
                             if (start_FirstQueueGroupTime == true)
                             {
                                 queueSeedStr = TimeBaseBlockUidList[FirstQueueGroupTime];
-                                //Console.WriteLine("FirstQueueGroupTime : " + FirstQueueGroupTime.ToString());
-                                //Console.WriteLine("TimeBaseBlockUidList[currentQueueTime] : " + TimeBaseBlockUidList[FirstQueueGroupTime]);
                             }
                             ValidatorQueueObj.ReOrderNodeQueue(currentQueueTime, queueSeedStr);
                         }

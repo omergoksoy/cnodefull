@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using ND = Notus.Date;
@@ -61,16 +62,17 @@ namespace Notus.Variable
         şu an ki zamanın üzerine 1 dakika ekleyecek ve o zaman geldiğinde kuyruğa dahil edilmiş olacak
 
         */
+        public static int GroupNo { get; set; }
         public static string SessionPrivateKey { get; set; }
         public static bool NodeListPrinted { get; set; }
         public static TimeStruct NOW { get; set; }
         public static Notus.Globals.Variable.NodeQueueList NodeQueue { get; set; }
         public static int OnlineNodeCount { get; set; }
-        public static ConcurrentDictionary<string, Notus.Communication.Sync.Socket.Server> MsgSocketList { get; set; }
         public static ConcurrentDictionary<string, NVS.NodeQueueInfo> NodeList { get; set; }
         public static Notus.Globals.Variable.Settings Settings { get; set; }
         static Globals()
         {
+            GroupNo = 1;
             SessionPrivateKey = Notus.Wallet.ID.New();
 
             Settings = new Notus.Globals.Variable.Settings()
@@ -120,7 +122,8 @@ namespace Notus.Variable
                         Status = NVS.NodeStatus.Unknown,
                     },
                     Lists = new List<NVS.IpInfo>() { },
-                    Queue = new Dictionary<ulong, NVS.NodeInfo> { }
+                    Queue = new Dictionary<ulong, NVS.NodeInfo> { },
+                    Listener = new ConcurrentDictionary<string, Notus.Communication.Sync.Socket.Server> { }
                 },
                 NodeWallet = new NVS.EccKeyPair()
                 {
@@ -272,7 +275,7 @@ namespace Notus.Variable
                 }
 
                 Globals.NodeListPrinted = false;
-                Globals.MsgSocketList = new ConcurrentDictionary<string, Notus.Communication.Listener>();
+                //Globals.MsgSocketList = new ConcurrentDictionary<string, Notus.Communication.Sync.Socket.Server>();
                 Globals.NodeList = new ConcurrentDictionary<string, NVS.NodeQueueInfo>();
                 Globals.NodeQueue = new Notus.Globals.Variable.NodeQueueList();
 
@@ -297,10 +300,14 @@ namespace Notus.Variable
 
             public static void CloseMessageSockets(string walletId = "")
             {
+                //socket-exception
+                /*
                 yeni oluşturulan soket kitaplığı düzenlenecek ve bu fonksiyon ile kapatılacak
                 buradaki amaç sırası gelmeden soket bağlantısını açarak gerektiğinde 
                 hızlı bir biçimde veri gönderimini mümkün hale getirmek
+                */
 
+                /*
                 foreach (KeyValuePair<string, Notus.Communication.Listener> entry in MsgSocketList)
                 {
                     bool closeConnection = false;
@@ -323,6 +330,7 @@ namespace Notus.Variable
                         }
                     }
                 }
+                */
             }
             public static void GetUtcTimeFromNode(int howManySeconds, bool beginingRoutine)
             {
