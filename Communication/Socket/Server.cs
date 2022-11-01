@@ -21,7 +21,8 @@ namespace Notus.Communication.Sync.Socket
             byte[] bytes = new byte[1048576];
             string content = string.Empty;
 
-            IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), portNo);
+            //IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), portNo);
+            IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, portNo);
 
             try
             {
