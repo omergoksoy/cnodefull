@@ -829,6 +829,13 @@ namespace Notus.Validator
             }
 
 
+
+            burada her node, diğer nodeların client'larını başlatacak ve çalışır hale getirecek...
+
+            veya doğrudan gossip protokolü benzeri bir yapı ekleyelim
+            ve bu yapı daha ilk başlangıçta kurulsun ve gerekli durumlarda kullanılsın
+
+
             //şimdi burada her node diğer nodeların hepsine bağlanacak...
             foreach (KeyValuePair<int, NVS.NodeInfo> entry in tmpNodeList)
             {
