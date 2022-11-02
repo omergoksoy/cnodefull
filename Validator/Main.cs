@@ -779,6 +779,10 @@ namespace Notus.Validator
 
             */
 
+            işlem sürelerinin uygunluğunu kontrol et
+            işlem sürelerinin uygunluğunu kontrol et
+            işlem sürelerinin uygunluğunu kontrol et
+            işlem sürelerinin uygunluğunu kontrol et
             //kontrol-noktasi-1
 
             //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
