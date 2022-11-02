@@ -123,7 +123,7 @@ namespace Notus.Variable
                     },
                     Lists = new List<NVS.IpInfo>() { },
                     Queue = new Dictionary<ulong, NVS.NodeInfo> { },
-                    Listener = new ConcurrentDictionary<string, Notus.Communication.Sync.Socket.Server> { }
+                    //Listener = new ConcurrentDictionary<string, Notus.Communication.Sync.Socket.Server> { }
                 },
                 NodeWallet = new NVS.EccKeyPair()
                 {

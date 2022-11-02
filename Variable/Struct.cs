@@ -475,12 +475,12 @@ namespace Notus.Variable.Struct
         public string IpAddress { get; set; }
         public int Port { get; set; }
         public string Wallet { get; set; }                  // node'un cüzdan adresi
-        public Dictionary<string, Notus.Communication.Sync.Socket.Client> Client { get; set; }
+        //public Dictionary<string, Notus.Communication.Sync.Socket.Client> Client { get; set; }
         public int GroupNo { get; set; }
     }
     public class NodeQueueList
     {
-        public ConcurrentDictionary<string, Notus.Communication.Sync.Socket.Server> Listener { get; set; }
+        //public ConcurrentDictionary<string, Notus.Communication.Sync.Socket.Server> Listener { get; set; }
         public NodeQueueInfo My { get; set; }             // node ile alınan zaman bilgisi
         public List<IpInfo> Lists { get; set; }             // node ile alınan zaman bilgisi
         public Dictionary<ulong, NodeInfo> Queue { get; set; }             // node ile alınan zaman bilgisi

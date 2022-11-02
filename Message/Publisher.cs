@@ -6,10 +6,10 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Notus.Communication.Sync.Socket
+namespace Notus.Message
 {
     //socket-exception
-    public class Server : IDisposable
+    public class Publisher : IDisposable
     {
         private bool closeSocket = false;
         private bool readyForDispose = false;
@@ -58,11 +58,11 @@ namespace Notus.Communication.Sync.Socket
             }
             readyForDispose = true;
         }
-        public Server()
+        public Publisher()
         {
             closeSocket = false;
         }
-        public Server(int portNo)
+        public Publisher(int portNo)
         {
             closeSocket = false;
             if (portNo > 0)
@@ -70,7 +70,7 @@ namespace Notus.Communication.Sync.Socket
                 Start(portNo);
             }
         }
-        ~Server()
+        ~Publisher()
         {
             Dispose();
         }

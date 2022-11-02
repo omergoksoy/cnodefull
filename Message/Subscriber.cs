@@ -6,10 +6,10 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using NVC = Notus.Variable.Constant;
-namespace Notus.Communication.Sync.Socket
+namespace Notus.Message
 {
     //socket-exception
-    public class Client : IDisposable
+    public class Subscriber : IDisposable
     {
         private byte[] byteArr = new byte[8192];
         System.Net.Sockets.Socket sender = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -40,14 +40,14 @@ namespace Notus.Communication.Sync.Socket
             int bytesArrLen = sender.Receive(byteArr);
             Console.WriteLine("The Server says : {0}", Encoding.ASCII.GetString(byteArr, 0, bytesArrLen));
         }
-        public Client(string ipAddress = "")
+        public Subscriber(string ipAddress = "")
         {
             if (ipAddress.Length > 0)
             {
                 Start(ipAddress);
             }
         }
-        ~Client()
+        ~Subscriber()
         {
             Dispose();
         }

@@ -81,6 +81,7 @@ namespace Notus.Validator
             return NVE.ValidatorOrder.Primary;
         }
 
+        /*
         //oluşturulacak blokları kimin oluşturacağını seçen fonksiyon
         public void SendMessageViaPrivateSocket(string walletId, string receiverIpAddress, string messageText)
         {
@@ -92,6 +93,8 @@ namespace Notus.Validator
                 );
             }
         }
+        */
+
         public void Distrubute(long blockRowNo, int blockType = 0)
         {
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
@@ -102,7 +105,7 @@ namespace Notus.Validator
                     // gönderim işlemi yaklaşık 0.640 saniye sürüyor
                     // bu işlemi hızlandırmak gerekiyor
                     // ************************************************************************
-
+                    /*
                     //socket-exception
                     SendMessageViaPrivateSocket(
                         NVG.Settings.NodeWallet.WalletKey,
@@ -111,6 +114,8 @@ namespace Notus.Validator
                             blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey +
                         "</block>"
                     );
+                    */
+
                     NGF.SendMessage(entry.Value.IP.IpAddress, entry.Value.IP.Port,
                         "<block>" + blockRowNo.ToString() + ":" +
                         NVG.Settings.NodeWallet.WalletKey + "</block>",
@@ -735,7 +740,7 @@ namespace Notus.Validator
                 });
             }
         }
-
+        /*
         public void StartPrivateSockerServer(string walletId)
         {
             if (NVG.Settings.Nodes.Listener.ContainsKey(walletId) == false)
@@ -746,6 +751,7 @@ namespace Notus.Validator
                 );
             }
         }
+        */
         public void GenerateNodeQueue(
             ulong biggestSyncNo,
             ulong syncStaringTime,
@@ -780,7 +786,7 @@ namespace Notus.Validator
                                     Port = entry.Value.IP.Port,
                                     Wallet = entry.Value.IP.Wallet,
                                     GroupNo = NVG.GroupNo,
-                                    Client = new Dictionary<string, Communication.Sync.Socket.Client>()
+                                    //Client = new Dictionary<string, Communication.Sync.Socket.Client>()
                                 });
 
 
@@ -809,6 +815,7 @@ namespace Notus.Validator
                 }
             }
 
+            /*
             //önce soket server başlatılacak
             foreach (KeyValuePair<int, NVS.NodeInfo> entry in tmpNodeList)
             {
@@ -827,14 +834,13 @@ namespace Notus.Validator
                 }
                 //StartPrivateSockerServer(entry.Value.Wallet);
             }
+            */
 
-
-
+            /*
             burada her node, diğer nodeların client'larını başlatacak ve çalışır hale getirecek...
 
             veya doğrudan gossip protokolü benzeri bir yapı ekleyelim
             ve bu yapı daha ilk başlangıçta kurulsun ve gerekli durumlarda kullanılsın
-
 
             //şimdi burada her node diğer nodeların hepsine bağlanacak...
             foreach (KeyValuePair<int, NVS.NodeInfo> entry in tmpNodeList)
@@ -847,6 +853,7 @@ namespace Notus.Validator
                     }
                 }
             }
+            */
 
             // sonra client nesneleri başlatılacak
             NVG.GroupNo = NVG.GroupNo + 1;

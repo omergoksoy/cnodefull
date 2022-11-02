@@ -171,6 +171,7 @@ namespace Notus.Variable
                 }
             }
         };
+
         public static Dictionary<NetworkLayer, string> LayerText = new Dictionary<NetworkLayer, string>() {
             { NetworkLayer.Layer1,"Layer 1 ( Crypto Layer )" },
             { NetworkLayer.Layer2,"Layer 2 ( File Storage Layer )" },
