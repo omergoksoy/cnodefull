@@ -15,10 +15,11 @@ namespace Notus.Message
         private Dictionary<string, NM.Subscriber> subListObj = new Dictionary<string, NM.Subscriber>();
         public void Start()
         {
-
+            pubObj.Start();
         }
         public Orchestra()
         {
+
         }
         ~Orchestra()
         {
