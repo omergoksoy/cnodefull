@@ -33,11 +33,11 @@ namespace Notus.Message
         }
         public void Send(string messageText)
         {
-            byte[] msg = Encoding.ASCII.GetBytes(messageText + "<theend>");
-            int bytesSent = sender.Send(msg);
-            Console.WriteLine("Sended data size {0}", bytesSent);
-            int bytesArrLen = sender.Receive(byteArr);
-            Console.WriteLine("The Server says : {0}", Encoding.ASCII.GetString(byteArr, 0, bytesArrLen));
+            int bytesSent = sender.Send(Encoding.ASCII.GetBytes(messageText));
+            if (bytesSent > 0)
+            {
+                int bytesArrLen = sender.Receive(byteArr);
+            }
         }
         public Subscriber(string ipAddress = "")
         {

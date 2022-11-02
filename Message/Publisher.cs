@@ -51,25 +51,22 @@ namespace Notus.Message
                 listener.Bind(localEndPoint);
                 listener.Listen(1000);
                 NP.Basic(NVG.Settings, "Message Listener Has Started");
+                System.Net.Sockets.Socket handler = listener.Accept();
                 while (closeSocket == false)
                 {
-                    System.Net.Sockets.Socket handler = listener.Accept();
-                    /*
-                    string replyData = string.Empty;
-                    while (closeSocket == false)
-                    {
-                    */
                     int byteArraySize = handler.Receive(byteArr);
                     string contentText = Encoding.ASCII.GetString(byteArr, 0, byteArraySize);
-                    Console.WriteLine("Private Socket Server : " + contentText);
-                    Console.WriteLine("Private Socket Server : " + contentText);
-                    /*
+                    //Console.WriteLine("Private Socket Server : " + contentText);
+                    if (string.Equals(contentText, "ping"))
+                    {
+                        handler.Send(System.Text.Encoding.ASCII.GetBytes("pong"));
                     }
-                    */
-                    handler.Send(System.Text.Encoding.ASCII.GetBytes("ok"));
-                    handler.Shutdown(SocketShutdown.Both);
-                    handler.Close();
+                    else {
+                        handler.Send(System.Text.Encoding.ASCII.GetBytes("ok"));
+                    }
+                    //handler.Shutdown(SocketShutdown.Send);
                 }
+                handler.Close();
 
             }
             catch (Exception ex)

@@ -526,8 +526,6 @@ namespace Notus.Validator
 
             //Console.WriteLine(JsonSerializer.Serialize(NVG.NOW, Notus.Variable.Constant.JsonSetting));
 
-            NVG.Settings.MsgOrch.Start();
-            NP.ReadLine();
             if (NVG.Settings.GenesisCreated == false)
             {
                 TimeSyncObj.Start();
@@ -553,7 +551,6 @@ namespace Notus.Validator
             //Obj_MainCache = new Notus.Cache.Main();
             // Obj_TokenStorage = new Notus.Token.Storage();
             // Obj_TokenStorage.Settings = NVG.Settings;
-
 
             if (NVG.Settings.GenesisCreated == false && NVG.Settings.Genesis != null)
             {
@@ -781,6 +778,15 @@ namespace Notus.Validator
 
 
             */
+
+
+
+            //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+            //Console.ReadLine();
+            NVG.Settings.MsgOrch.Start();
+            NP.ReadLine();
+
+
             //omergoksoy
             bool start_FirstQueueGroupTime = false;
             //while (tmpExitMainLoop == false && NVG.Settings.NodeClosing == false)

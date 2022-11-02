@@ -115,7 +115,7 @@ namespace Notus.Validator
                         "</block>"
                     );
                     */
-
+                    NVG.Settings.MsgOrch.SendMsg();
                     NGF.SendMessage(entry.Value.IP.IpAddress, entry.Value.IP.Port,
                         "<block>" + blockRowNo.ToString() + ":" +
                         NVG.Settings.NodeWallet.WalletKey + "</block>",

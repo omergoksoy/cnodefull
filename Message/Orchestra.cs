@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -6,17 +7,34 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using NM = Notus.Message;
+using NP = Notus.Print;
+using NT = Notus.Threads;
 using NVG = Notus.Variable.Globals;
+using NVS = Notus.Variable.Struct;
 namespace Notus.Message
 {
     //socket-exception
     public class Orchestra : IDisposable
     {
         private bool started = false;
+
+        private bool pingTimerIsRunning = false;
+        private NT.Timer pingTimer = new NT.Timer(5000);
+
         private bool subTimerIsRunning = false;
-        private Notus.Threads.Timer subTimer = new Notus.Threads.Timer(250);
+        private NT.Timer subTimer = new NT.Timer(1000);
+
         private NM.Publisher pubObj = new NM.Publisher();
-        private Dictionary<string, NM.Subscriber> subListObj = new Dictionary<string, NM.Subscriber>();
+        private ConcurrentDictionary<string, NM.Subscriber> subListObj = new ConcurrentDictionary<string, NM.Subscriber>();
+        public void SendMsg(string receiverIpAddress, int receiverPortNo, string messageText, string nodeHexStr = "")
+        {
+            if (nodeHexStr == "")
+            {
+                nodeHexStr = Notus.Toolbox.Network.IpAndPortToHex(receiverIpAddress, receiverPortNo);
+            }
+
+            NVG.NodeList[nodeHexStr].Status = NVS.NodeStatus.Online;
+        }
         public void Start()
         {
             if (started == false)
@@ -27,6 +45,29 @@ namespace Notus.Message
                 {
                     pubObj.Start();
                 });
+
+                pingTimer.Start(() =>
+                {
+                    if (pingTimerIsRunning == false)
+                    {
+                        pingTimerIsRunning = true;
+                        foreach (KeyValuePair<string, NM.Subscriber> entry in subListObj)
+                        {
+                            Task.Run(() =>
+                            {
+                                try
+                                {
+                                    entry.Value.Send("ping");
+                                }
+                                catch (Exception err)
+                                {
+                                //Console.WriteLine("hata-olustu: " + err.Message);
+                                }
+                            });
+                        }
+                        pingTimerIsRunning = false;
+                    }
+                }, true);
 
                 subTimer.Start(() =>
                 {
@@ -43,12 +84,15 @@ namespace Notus.Message
                                 {
                                     if (subListObj.ContainsKey(tList[i].Value.IP.Wallet) == false)
                                     {
-                                        subListObj.Add(tList[i].Value.IP.Wallet, new NM.Subscriber() { });
-                                        bool socketconnected = subListObj[tList[i].Value.IP.Wallet].Start(tList[i].Value.IP.IpAddress);
-                                        if (socketconnected == false)
+                                        bool dictAdded = subListObj.TryAdd(tList[i].Value.IP.Wallet, new NM.Subscriber() { });
+                                        if (dictAdded == true)
                                         {
-                                            Console.WriteLine("Baglanti Hatasi");
-                                            subListObj.Remove(tList[i].Value.IP.Wallet);
+                                            bool socketconnected = subListObj[tList[i].Value.IP.Wallet].Start(tList[i].Value.IP.IpAddress);
+                                            if (socketconnected == false)
+                                            {
+                                                Console.WriteLine("Baglanti Hatasi");
+                                                subListObj.TryRemove(tList[i].Value.IP.Wallet, out _);
+                                            }
                                         }
                                     }
                                 }
@@ -59,10 +103,18 @@ namespace Notus.Message
                                     if (subListObj.ContainsKey(tList[i].Value.IP.Wallet) == true)
                                     {
                                         Console.WriteLine("cevrim-disi-olanlar-siliniyor");
-                                        subListObj.Remove(tList[i].Value.IP.Wallet);
+                                        subListObj.TryRemove(tList[i].Value.IP.Wallet, out _);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("key-does-not-contains");
                                     }
                                 }
                             }
+                        }
+                        else
+                        {
+                            Console.WriteLine("list-value-is-null");
                         }
                         subTimerIsRunning = false;
                     }
@@ -82,6 +134,10 @@ namespace Notus.Message
             if (subTimer != null)
             {
                 subTimer.Dispose();
+            }
+            if (pingTimer != null)
+            {
+                pingTimer.Dispose();
             }
             if (pubObj != null)
             {
