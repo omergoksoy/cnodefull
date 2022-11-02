@@ -13,8 +13,7 @@ namespace Notus.Message
     {
         private bool closeSocket = false;
         private bool readyForDispose = false;
-        public System.Net.Sockets.Socket? listener;
-        //public System.Net.Sockets.Socket? listener = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        private System.Net.Sockets.Socket? listener = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         public void Start(int portNo, string ipAddress = "")
         {
             listener = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
