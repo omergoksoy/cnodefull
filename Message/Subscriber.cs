@@ -31,13 +31,15 @@ namespace Notus.Message
             }
             return false;
         }
-        public void Send(string messageText)
+        public string Send(string messageText)
         {
             int bytesSent = sender.Send(Encoding.ASCII.GetBytes(messageText));
             if (bytesSent > 0)
             {
                 int bytesArrLen = sender.Receive(byteArr);
+                return Encoding.UTF8.GetString(byteArr, 0, bytesArrLen);
             }
+            return string.Empty;
         }
         public Subscriber(string ipAddress = "")
         {

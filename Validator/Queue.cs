@@ -115,13 +115,19 @@ namespace Notus.Validator
                         "</block>"
                     );
                     */
-                    NVG.Settings.MsgOrch.SendMsg();
-                    NGF.SendMessage(entry.Value.IP.IpAddress, entry.Value.IP.Port,
-                        "<block>" + blockRowNo.ToString() + ":" +
-                        NVG.Settings.NodeWallet.WalletKey + "</block>",
+                    string incomeResult=NVG.Settings.MsgOrch.SendMsg(
+                        entry.Value.IP.Wallet,
+                        "<block>" + blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey + "</block>"
+                    );
+                    Console.WriteLine("incomeResult : " + incomeResult);
+                    ProcessIncomeData(incomeResult);
+                    /*
+                    NGF.SendMessage(
+                        entry.Value.IP.IpAddress, 
+                        entry.Value.IP.Port,
+                        "<block>" + blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey + "</block>",
                         entry.Key
                     );
-                    /*
                     */
                     NP.Info(NVG.Settings,
                         "Distrubuting " +
@@ -305,11 +311,11 @@ namespace Notus.Validator
         }
         public string Process(NVS.HttpRequestDetails incomeData)
         {
-            string reponseText = ProcessIncomeData(incomeData.PostParams["data"], incomeData.RemoteIP, incomeData.RemotePort);
+            string reponseText = ProcessIncomeData(incomeData.PostParams["data"]);
             NodeIsOnline(incomeData.UrlList[2].ToLower());
             return reponseText;
         }
-        private string ProcessIncomeData(string incomeData, string remoteIp, int remotePort)
+        public string ProcessIncomeData(string incomeData)
         {
             if (CheckXmlTag(incomeData, "block"))
             {
@@ -587,7 +593,7 @@ namespace Notus.Validator
             );
             if (string.Equals("err", responseStr) == false)
             {
-                ProcessIncomeData(responseStr, "", 0);
+                ProcessIncomeData(responseStr);
             }
         }
         private void Message_List_ViaSocket(string _ipAddress, int _portNo, string _nodeHex = "")
@@ -600,7 +606,7 @@ namespace Notus.Validator
             string tmpReturnStr = NGF.SendMessage(_ipAddress, _portNo, "<list>" + JsonSerializer.Serialize(MainAddressList) + "</list>", _nodeHex);
             if (string.Equals("err", tmpReturnStr) == false)
             {
-                ProcessIncomeData(tmpReturnStr, "", 0);
+                ProcessIncomeData(tmpReturnStr);
             }
         }
         private void MainLoop()
@@ -1208,7 +1214,7 @@ namespace Notus.Validator
                                         tmpMainList[i].Value.Port,
                                         "<rNode>1</rNode>"
                                     );
-                                    ProcessIncomeData(responseStr, "", 0);
+                                    ProcessIncomeData(responseStr);
                                     tmpAllCheck = false;
                                 }
                             }
@@ -1291,7 +1297,7 @@ namespace Notus.Validator
             );
             if (string.Equals("done", responseStr.Trim()) == true)
             {
-                ProcessIncomeData(responseStr, "", 0);
+                ProcessIncomeData(responseStr);
             }
             else
             {

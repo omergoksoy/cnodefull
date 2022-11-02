@@ -15,6 +15,11 @@ namespace Notus.Message
         private bool closeSocket = false;
         private bool readyForDispose = false;
         private System.Net.Sockets.Socket? listener = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        private System.Action<string>? Func_IncomeText = null;
+        public void OnReceive(System.Action<string> incomeTextFunc)
+        {
+            Func_IncomeText = incomeTextFunc;
+        }
         public void Start()
         {
             subStart(0, "");
@@ -62,7 +67,15 @@ namespace Notus.Message
                         handler.Send(System.Text.Encoding.ASCII.GetBytes("pong"));
                     }
                     else {
-                        handler.Send(System.Text.Encoding.ASCII.GetBytes("ok"));
+                        if (Func_IncomeText != null)
+                        {
+                            Func_IncomeText(contentText);
+                            handler.Send(System.Text.Encoding.ASCII.GetBytes("done"));
+                        }
+                        else
+                        {
+                            handler.Send(System.Text.Encoding.ASCII.GetBytes("ok"));
+                        }
                     }
                     //handler.Shutdown(SocketShutdown.Send);
                 }

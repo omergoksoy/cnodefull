@@ -26,14 +26,21 @@ namespace Notus.Message
 
         private NM.Publisher pubObj = new NM.Publisher();
         private ConcurrentDictionary<string, NM.Subscriber> subListObj = new ConcurrentDictionary<string, NM.Subscriber>();
-        public void SendMsg(string receiverIpAddress, int receiverPortNo, string messageText, string nodeHexStr = "")
+        public void OnReceive(System.Action<string> incomeTextFunc)
         {
-            if (nodeHexStr == "")
+            pubObj.OnReceive(incomeTextFunc);
+        }
+        public string SendMsg(
+            string walletId, 
+            string messageText
+        )
+        {
+            string resultStr = string.Empty;
+            if (subListObj.ContainsKey(walletId))
             {
-                nodeHexStr = Notus.Toolbox.Network.IpAndPortToHex(receiverIpAddress, receiverPortNo);
+                resultStr=subListObj[walletId].Send(messageText);
             }
-
-            NVG.NodeList[nodeHexStr].Status = NVS.NodeStatus.Online;
+            return resultStr;
         }
         public void Start()
         {
@@ -61,7 +68,7 @@ namespace Notus.Message
                                 }
                                 catch (Exception err)
                                 {
-                                //Console.WriteLine("hata-olustu: " + err.Message);
+                                    //Console.WriteLine("hata-olustu: " + err.Message);
                                 }
                             });
                         }
@@ -80,18 +87,23 @@ namespace Notus.Message
                             //eklenmeyenler eklensin
                             for (int i = 0; i < tList.Length; i++)
                             {
-                                if (tList[i].Value.Status == Variable.Struct.NodeStatus.Online)
+                                if (string.Equals(tList[i].Value.IP.Wallet, NVG.Settings.NodeWallet.WalletKey) == false)
                                 {
-                                    if (subListObj.ContainsKey(tList[i].Value.IP.Wallet) == false)
+                                    if (tList[i].Value.Status == Variable.Struct.NodeStatus.Online)
                                     {
-                                        bool dictAdded = subListObj.TryAdd(tList[i].Value.IP.Wallet, new NM.Subscriber() { });
-                                        if (dictAdded == true)
+                                        if (subListObj.ContainsKey(tList[i].Value.IP.Wallet) == false)
                                         {
-                                            bool socketconnected = subListObj[tList[i].Value.IP.Wallet].Start(tList[i].Value.IP.IpAddress);
-                                            if (socketconnected == false)
+                                            bool dictAdded = subListObj.TryAdd(tList[i].Value.IP.Wallet, new NM.Subscriber() { });
+                                            if (dictAdded == true)
                                             {
-                                                Console.WriteLine("Baglanti Hatasi");
-                                                subListObj.TryRemove(tList[i].Value.IP.Wallet, out _);
+                                                bool socketconnected = subListObj[tList[i].Value.IP.Wallet].Start(
+                                                    tList[i].Value.IP.IpAddress
+                                                );
+                                                if (socketconnected == false)
+                                                {
+                                                    Console.WriteLine("Baglanti Hatasi");
+                                                    subListObj.TryRemove(tList[i].Value.IP.Wallet, out _);
+                                                }
                                             }
                                         }
                                     }
@@ -104,10 +116,6 @@ namespace Notus.Message
                                     {
                                         Console.WriteLine("cevrim-disi-olanlar-siliniyor");
                                         subListObj.TryRemove(tList[i].Value.IP.Wallet, out _);
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("key-does-not-contains");
                                     }
                                 }
                             }

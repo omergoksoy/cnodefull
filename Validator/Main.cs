@@ -779,12 +779,17 @@ namespace Notus.Validator
 
             */
 
-
+            //kontrol-noktasi-1
 
             //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
             //Console.ReadLine();
+            NVG.Settings.MsgOrch.OnReceive((string IncomeText) =>
+            {
+                Console.WriteLine("Delegate IncomeText : " + IncomeText);
+                ValidatorQueueObj.ProcessIncomeData(IncomeText);
+            });
             NVG.Settings.MsgOrch.Start();
-            NP.ReadLine();
+            //NP.ReadLine();
 
 
             //omergoksoy
