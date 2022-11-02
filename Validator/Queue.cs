@@ -885,7 +885,6 @@ namespace Notus.Validator
                     Port = 0,
                     Wallet = "",
                     GroupNo = NVG.GroupNo
-
                 });
                 syncStaringTime = ND.AddMiliseconds(syncStaringTime, queueTimePeriod);
             }

@@ -23,6 +23,7 @@ namespace Notus.Globals.Variable
         //public Notus.Variable.Struct.UTCTimeStruct? UTCTime { get; set; }
         public bool GenesisCreated { get; set; }
         public bool GenesisAssigned { get; set; }
+        public Notus.Message.Orchestra? MsgOrch { get; set; }
         public Notus.Variable.Genesis.GenesisBlockData? Genesis { get; set; }
         public Notus.Variable.Struct.NodeQueueList? Nodes { get; set; }
 

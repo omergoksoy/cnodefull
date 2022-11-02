@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using NVG = Notus.Variable.Globals;
 namespace Notus.Network
 {
     public static class Node
@@ -224,8 +224,12 @@ namespace Notus.Network
             return MainResultStr;
         }
 
-        public static int GetNetworkPort(Notus.Globals.Variable.Settings objSetting)
+        public static int GetNetworkPort(Notus.Globals.Variable.Settings? objSetting=null)
         {
+            if (objSetting == null)
+            {
+                return GetNetworkPort(NVG.Settings.Network, NVG.Settings.Layer);
+            }
             return GetNetworkPort(objSetting.Network, objSetting.Layer);
         }
         public static int GetNetworkPort(Notus.Variable.Enum.NetworkType currentNetwork, Notus.Variable.Enum.NetworkLayer currentLayer)

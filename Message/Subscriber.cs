@@ -13,24 +13,23 @@ namespace Notus.Message
     {
         private byte[] byteArr = new byte[8192];
         System.Net.Sockets.Socket sender = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        //public System.Net.Sockets.Socket? listener = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        public void Start(string ipAddress)
+        public bool Start(string ipAddress,int portNo=0)
         {
             try
             {
-                sender.Connect(
-                    new IPEndPoint(
-                        IPAddress.Parse(ipAddress),
-                        NVC.DefaultMessagePortNo
-                    )
-                );
-
+                if (portNo == 0)
+                {
+                    portNo = Notus.Network.Node.GetNetworkPort() + 10;
+                }
+                sender.Connect(new IPEndPoint( IPAddress.Parse(ipAddress),portNo));
                 Console.WriteLine("Socket connected to {0}", sender.RemoteEndPoint.ToString());
+                return true;
             }
             catch (Exception e)
             {
                 Console.WriteLine("Exception: {0}", e.ToString());
             }
+            return false;
         }
         public void Send(string messageText)
         {

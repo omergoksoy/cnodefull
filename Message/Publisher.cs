@@ -5,7 +5,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-
+using NVG = Notus.Variable.Globals;
+using NP = Notus.Print;
 namespace Notus.Message
 {
     //socket-exception
@@ -14,8 +15,28 @@ namespace Notus.Message
         private bool closeSocket = false;
         private bool readyForDispose = false;
         private System.Net.Sockets.Socket? listener = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        public void Start(int portNo, string ipAddress = "")
+        public void Start()
         {
+            subStart(0, "");
+        }
+        public void Start(int portNo, string ipAddress)
+        {
+            subStart(portNo, ipAddress);
+        }
+        public void Start(int portNo)
+        {
+            subStart(portNo, "");
+        }
+        public void Start(string ipAddress)
+        {
+            subStart(0, ipAddress);
+        }
+        private void subStart(int portNo, string ipAddress)
+        {
+            if (portNo == 0)
+            {
+                portNo = Notus.Network.Node.GetNetworkPort()+10;
+            }
             listener = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             byte[] byteArr = new byte[8192];
 
@@ -29,7 +50,7 @@ namespace Notus.Message
             {
                 listener.Bind(localEndPoint);
                 listener.Listen(1000);
-
+                NP.Basic(NVG.Settings, "Message Listener Has Started");
                 while (closeSocket == false)
                 {
                     System.Net.Sockets.Socket handler = listener.Accept();
@@ -64,10 +85,17 @@ namespace Notus.Message
         public Publisher(int portNo)
         {
             closeSocket = false;
-            if (portNo > 0)
-            {
-                Start(portNo);
-            }
+            Start(portNo);
+        }
+        public Publisher(string ipAddress)
+        {
+            closeSocket = false;
+            Start(ipAddress);
+        }
+        public Publisher(int portNo,string ipAddress)
+        {
+            closeSocket = false;
+            Start(ipAddress);
         }
         ~Publisher()
         {

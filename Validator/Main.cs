@@ -524,7 +524,10 @@ namespace Notus.Validator
             NGF.GetUtcTimeFromNode(20, true);
             TimeBaseBlockUidList.Clear();
 
-            Console.WriteLine(JsonSerializer.Serialize(NVG.NOW, Notus.Variable.Constant.JsonSetting));
+            //Console.WriteLine(JsonSerializer.Serialize(NVG.NOW, Notus.Variable.Constant.JsonSetting));
+
+            NVG.Settings.MsgOrch.Start();
+            NP.ReadLine();
             if (NVG.Settings.GenesisCreated == false)
             {
                 TimeSyncObj.Start();
