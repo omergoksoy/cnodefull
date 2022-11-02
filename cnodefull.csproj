@@ -16,5 +16,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Global\" />
+    <None Remove="Message\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Message\" />
   </ItemGroup>
 </Project>
