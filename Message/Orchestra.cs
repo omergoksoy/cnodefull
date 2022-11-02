@@ -15,7 +15,7 @@ namespace Notus.Message
         private bool readyForDispose = false;
         public System.Net.Sockets.Socket? listener;
         //public System.Net.Sockets.Socket? listener = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        public void Start(int portNo, string ipAddress = "")
+        public void Start(int portNo,string ipAddress="")
         {
             listener = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             byte[] byteArr = new byte[8192];
@@ -39,10 +39,10 @@ namespace Notus.Message
                     while (closeSocket == false)
                     {
                     */
-                    int byteArraySize = handler.Receive(byteArr);
-                    string contentText = Encoding.ASCII.GetString(byteArr, 0, byteArraySize);
-                    Console.WriteLine("Private Socket Server : " + contentText);
-                    Console.WriteLine("Private Socket Server : " + contentText);
+                        int byteArraySize = handler.Receive(byteArr);
+                        string contentText = Encoding.ASCII.GetString(byteArr, 0, byteArraySize);
+                        Console.WriteLine("Private Socket Server : " + contentText);
+                        Console.WriteLine("Private Socket Server : " + contentText);
                     /*
                     }
                     */
