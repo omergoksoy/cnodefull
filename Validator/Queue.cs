@@ -334,12 +334,14 @@ namespace Notus.Validator
                 }
                 if (tmpPortNo == 0)
                 {
+                    Console.WriteLine("Queue.cs -> tmpPortNo Is Zero");
                     return "fncResult-port-zero";
                 }
                 Variable.Class.BlockData? tmpBlockData =
                     Notus.Toolbox.Network.GetBlockFromNode(tmpIpAddress, tmpPortNo, tmpBlockNo, NVG.Settings);
                 if (tmpBlockData == null)
                 {
+                    Console.WriteLine("Queue.cs -> Block Is NULL");
                     return "tmpError-true";
                 }
                 if (Func_NewBlockIncome != null)
