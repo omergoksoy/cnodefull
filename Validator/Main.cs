@@ -540,8 +540,7 @@ namespace Notus.Validator
             {
                 NP.Basic(NVG.Settings, "Notus.Validator.Main -> Genesis Is NULL");
             }
-            //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Genesis.Empty.Interval.Time));
-            //Console.WriteLine("Obj_Integrity.EmptyBlockCount : " + NVG.Settings.EmptyBlockCount.ToString());
+
             Obj_Api = new Notus.Validator.Api();
 
             NGF.BlockQueue.Start();
@@ -635,6 +634,8 @@ namespace Notus.Validator
                 // her gelen blok bir listeye eklenmeli ve o liste ile sıra ile eklenmeli
                 ValidatorQueueObj.Func_NewBlockIncome = tmpNewBlockIncome =>
                 {
+                    //kontrol-noktasi
+                    Console.WriteLine("burada-blogu-validatorun-dogru-kisi-oldugunu-onayla");
                     NP.Info("Arrived New Block : " + tmpNewBlockIncome.info.uID.Substring(0, 15));
                     ProcessBlock(tmpNewBlockIncome, 2);
                     return true;
@@ -661,6 +662,8 @@ namespace Notus.Validator
                         ValidatorQueueObj.GiveMeNodeList(),
                         tmpNewBlockIncome =>
                         {
+                            Console.WriteLine(".tmp.");
+                            /*
                             bool sendToMyChain = false;
                             try
                             {
@@ -680,6 +683,13 @@ namespace Notus.Validator
                             catch { }
                             if (sendToMyChain == true)
                             {
+                            }
+                            */
+                            ProcessBlock(tmpNewBlockIncome, 3);
+
+                            /*
+                            if (sendToMyChain == true)
+                            {
                                 ProcessBlock(tmpNewBlockIncome, 3);
                             }
                             else
@@ -688,6 +698,7 @@ namespace Notus.Validator
                                 Console.WriteLine("Block Income But - Does Not Belong To Right Validator");
                                 Console.WriteLine("Block Income But - Does Not Belong To Right Validator");
                             }
+                            */
                         }
                     );
 
@@ -709,6 +720,8 @@ namespace Notus.Validator
                             }
                         }
                     }
+
+
                 }
             }
 
@@ -749,6 +762,9 @@ namespace Notus.Validator
                     FileStorageTimer();
                 }
                 NP.Success(NVG.Settings, "First Synchronization Is Done");
+
+
+                //kontrol-noktasi
             }
 
             DateTime LastPrintTime = NVG.NOW.Obj;

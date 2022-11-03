@@ -22,7 +22,8 @@ namespace Notus.Message
                     portNo = Notus.Network.Node.GetNetworkPort() + 10;
                 }
                 sender.Connect(new IPEndPoint(IPAddress.Parse(ipAddress), portNo));
-                control-POİNT
+
+                //control-POİNT
                 Console.WriteLine("Socket connected to {0}", sender.RemoteEndPoint.ToString());
                 return true;
             }

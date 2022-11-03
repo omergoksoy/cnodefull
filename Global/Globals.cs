@@ -339,7 +339,6 @@ namespace Notus.Variable
                     NP.Info("Waiting For Time Sync");
                 }
                 DateTime timerExecutedTime = DateTime.Now.Subtract(new TimeSpan(1, 0, 0));
-                //bool tmpBeginingRoutine = beginingRoutine;
                 while (NOW.DiffUpdated == false)
                 {
                     TimeSpan ts = DateTime.Now - timerExecutedTime;
@@ -349,7 +348,6 @@ namespace Notus.Variable
                         Thread.Sleep(150);
                         StartTimeSync();
                         timerExecutedTime = DateTime.Now;
-                        //tmpBeginingRoutine = false;
                     }
                 }
                 if (beginingRoutine == true)
