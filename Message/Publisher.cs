@@ -61,7 +61,6 @@ namespace Notus.Message
                 {
                     int byteArraySize = handler.Receive(byteArr);
                     string contentText = Encoding.ASCII.GetString(byteArr, 0, byteArraySize);
-                    //Console.WriteLine("Private Socket Server : " + contentText);
                     if (string.Equals(contentText, "ping"))
                     {
                         handler.Send(System.Text.Encoding.ASCII.GetBytes("pong"));
@@ -69,8 +68,10 @@ namespace Notus.Message
                     else {
                         if (Func_IncomeText != null)
                         {
+                            NP.Info("Before Func_IncomeText");
                             Func_IncomeText(contentText);
                             handler.Send(System.Text.Encoding.ASCII.GetBytes("done"));
+                            NP.Info("Before Func_IncomeText");
                         }
                         else
                         {

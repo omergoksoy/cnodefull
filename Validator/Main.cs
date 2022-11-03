@@ -635,7 +635,7 @@ namespace Notus.Validator
                 // her gelen blok bir listeye eklenmeli ve o liste ile sıra ile eklenmeli
                 ValidatorQueueObj.Func_NewBlockIncome = tmpNewBlockIncome =>
                 {
-                    NP.Info(NVG.Settings, "Arrived New Block : " + tmpNewBlockIncome.info.uID.Substring(0, 15));
+                    NP.Info("Arrived New Block : " + tmpNewBlockIncome.info.uID.Substring(0, 15));
                     ProcessBlock(tmpNewBlockIncome, 2);
                     return true;
                 };
@@ -777,19 +777,19 @@ namespace Notus.Validator
             // node kapatma işlemi şöyle yapılacak
 
 
-            */
 
             işlem sürelerinin uygunluğunu kontrol et
             işlem sürelerinin uygunluğunu kontrol et
             işlem sürelerinin uygunluğunu kontrol et
             işlem sürelerinin uygunluğunu kontrol et
+            */
             //kontrol-noktasi-1
 
             //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
             //Console.ReadLine();
             NVG.Settings.MsgOrch.OnReceive((string IncomeText) =>
             {
-                Console.WriteLine("Delegate IncomeText : " + IncomeText);
+                NP.Info("Delegate IncomeText : " + IncomeText);
                 ValidatorQueueObj.ProcessIncomeData(IncomeText);
             });
             NVG.Settings.MsgOrch.Start();
@@ -979,7 +979,7 @@ namespace Notus.Validator
             }
             if (blockSource == 2)
             {
-                Console.WriteLine("blockData.info.time : " + blockData.info.time.ToString() + " - " + blockData.info.rowNo.ToString());
+                //Console.WriteLine("blockData.info.time : " + blockData.info.time.ToString() + " - " + blockData.info.rowNo.ToString());
                 NP.Status(NVG.Settings,
                     "Block Came From The Validator Queue [ " + fixedRowNoLength(blockData) + " ] ->" +
                     blockData.info.type.ToString().PadLeft(4, ' ')
@@ -994,7 +994,7 @@ namespace Notus.Validator
             }
             if (blockSource == 4)
             {
-                Console.WriteLine("blockData.info.time : " + blockData.info.time.ToString() + " - " + blockData.info.rowNo.ToString());
+                //Console.WriteLine("blockData.info.time : " + blockData.info.time.ToString() + " - " + blockData.info.rowNo.ToString());
                 NP.Status(NVG.Settings,
                     "Block Came From The Main Loop [ " + fixedRowNoLength(blockData) + " ] ->" +
                     blockData.info.type.ToString().PadLeft(4, ' ')

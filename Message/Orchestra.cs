@@ -38,7 +38,8 @@ namespace Notus.Message
             string resultStr = string.Empty;
             if (subListObj.ContainsKey(walletId))
             {
-                resultStr=subListObj[walletId].Send(messageText);
+                NP.Info("Control-Point-1-For-SendMsg");
+                resultStr =subListObj[walletId].Send(messageText);
             }
             return resultStr;
         }
@@ -52,7 +53,7 @@ namespace Notus.Message
                 {
                     pubObj.Start();
                 });
-
+                pingTimerIsRunning = true;
                 pingTimer.Start(() =>
                 {
                     if (pingTimerIsRunning == false)

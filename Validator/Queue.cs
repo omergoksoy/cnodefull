@@ -115,11 +115,12 @@ namespace Notus.Validator
                         "</block>"
                     );
                     */
-                    string incomeResult=NVG.Settings.MsgOrch.SendMsg(
+                    NP.Info("Before Sending Message ");
+                    string incomeResult =NVG.Settings.MsgOrch.SendMsg(
                         entry.Value.IP.Wallet,
                         "<block>" + blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey + "</block>"
                     );
-                    Console.WriteLine("incomeResult : " + incomeResult);
+                    NP.Info("incomeResult : " + incomeResult);
                     ProcessIncomeData(incomeResult);
                     /*
                     NGF.SendMessage(
