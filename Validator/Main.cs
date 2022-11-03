@@ -637,6 +637,18 @@ namespace Notus.Validator
                     if (tmpNewBlockIncome != null)
                     {
                         bool innerSendToMyChain = false;
+
+
+                        * bloğu oluşturan validatör bir imza ila kendisinin oluşturduğunu ispatlamalı
+                          eğer hatalı işlem yaparsa bu işlem diğer validatörler tarafından validatörün imzası 
+                          ile doğrulanacağı için bu çok önemli
+
+                        * gereksiz debug noktalarını kapatabiliriz.
+                        
+                        * ayrıca bir node devre dışı kalıp yeniden ağa bağlanınca oluşan durumu gözlemle ve düzelt
+
+
+
                         NP.Info("burada-blogu-validatorun-dogru-kisi-oldugunu-onayla");
                         try
                         {
