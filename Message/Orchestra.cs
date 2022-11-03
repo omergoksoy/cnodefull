@@ -31,16 +31,15 @@ namespace Notus.Message
             pubObj.OnReceive(incomeTextFunc);
         }
         public string SendMsg(
-            string walletId, 
+            string walletId,
             string messageText
         )
         {
-            string resultStr = string.Empty;
             if (subListObj.ContainsKey(walletId))
             {
-                resultStr =subListObj[walletId].Send(messageText);
+                return subListObj[walletId].Send(messageText);
             }
-            return resultStr;
+            return string.Empty; ;
         }
         public void Start()
         {

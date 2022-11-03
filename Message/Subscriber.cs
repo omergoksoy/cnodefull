@@ -22,7 +22,7 @@ namespace Notus.Message
                     portNo = Notus.Network.Node.GetNetworkPort() + 10;
                 }
                 sender.Connect(new IPEndPoint(IPAddress.Parse(ipAddress), portNo));
-
+                control-POİNT
                 Console.WriteLine("Socket connected to {0}", sender.RemoteEndPoint.ToString());
                 return true;
             }
@@ -37,9 +37,9 @@ namespace Notus.Message
             int bytesSent = sender.Send(Encoding.ASCII.GetBytes(messageText));
             if (bytesSent > 0)
             {
-                NP.Info("Control-Point-3-For - SEND");
+                NP.Info("Control-Point-3-For - Receive");
                 int bytesArrLen = sender.Receive(byteArr);
-                NP.Info("Control-Point-4-For - SEND");
+                NP.Info("Control-Point-4-For - Receive");
                 return Encoding.UTF8.GetString(byteArr, 0, bytesArrLen);
             }
             return string.Empty;
