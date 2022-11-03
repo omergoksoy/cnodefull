@@ -641,8 +641,8 @@ namespace Notus.Validator
                         try
                         {
                             ulong queueTimePeriod = (ulong)(NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime);
-                            
-                            ulong blockTimeVal = Notus.Block.Key.BlockIdToUlong(tmpNewBlockIncome.info.time);
+                            ulong blockTimeVal = ND.ToLong(tmpNewBlockIncome.info.time);
+                            Console.WriteLine("blockTimeVal : " + blockTimeVal.ToString() + " - " + tmpNewBlockIncome.info.time);
                             ulong blockGenarationTime = blockTimeVal - (blockTimeVal % queueTimePeriod);
                             if (NVG.Settings.Nodes.Queue.ContainsKey(blockGenarationTime) == true)
                             {
@@ -655,7 +655,12 @@ namespace Notus.Validator
                             else
                             {
                                 Console.WriteLine("Time Does Not Have From Nodes List");
-                                Console.WriteLine("Main.cs -> blockGenarationTime : " + blockGenarationTime.ToString());
+                                
+                                Console.WriteLine("Main.cs -> blockGenarationTime [ " + 
+                                    tmpNewBlockIncome.info.rowNo.ToString() + 
+                                    " ]: " + 
+                                    blockGenarationTime.ToString()
+                                );
                                 Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue,NVC.JsonSetting));
                             }
                         }
