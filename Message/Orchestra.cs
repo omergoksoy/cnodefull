@@ -38,7 +38,6 @@ namespace Notus.Message
             string resultStr = string.Empty;
             if (subListObj.ContainsKey(walletId))
             {
-                NP.Info("Control-Point-1-For-SendMsg");
                 resultStr =subListObj[walletId].Send(messageText);
             }
             return resultStr;

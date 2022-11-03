@@ -101,34 +101,9 @@ namespace Notus.Validator
             {
                 if (string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false && entry.Value.Status == NVS.NodeStatus.Online)
                 {
-                    // ************************************************************************
-                    // gönderim işlemi yaklaşık 0.640 saniye sürüyor
-                    // bu işlemi hızlandırmak gerekiyor
-                    // ************************************************************************
                     /*
-                    //socket-exception
-                    SendMessageViaPrivateSocket(
-                        NVG.Settings.NodeWallet.WalletKey,
-                        entry.Value.IP.IpAddress,
-                        "<block>" +
-                            blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey +
-                        "</block>"
-                    );
-                    */
-                    NP.Info("Before Sending Message ");
-                    string incomeResult =NVG.Settings.MsgOrch.SendMsg(
-                        entry.Value.IP.Wallet,
-                        "<block>" + blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey + "</block>"
-                    );
                     NP.Info("incomeResult : " + incomeResult);
                     ProcessIncomeData(incomeResult);
-                    /*
-                    NGF.SendMessage(
-                        entry.Value.IP.IpAddress, 
-                        entry.Value.IP.Port,
-                        "<block>" + blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey + "</block>",
-                        entry.Key
-                    );
                     */
                     NP.Info(NVG.Settings,
                         "Distrubuting " +
@@ -139,6 +114,11 @@ namespace Notus.Validator
                         entry.Value.IP.Port.ToString()
                     );
                     NP.Info(NVG.Settings, "Distrubute : " + ND.ToDateTime(NVG.NOW.Int).ToString("HH mm ss fff"));
+
+                    string incomeResult = NVG.Settings.MsgOrch.SendMsg(
+                        entry.Value.IP.Wallet,
+                        "<block>" + blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey + "</block>"
+                    );
                 }
             }
         }
