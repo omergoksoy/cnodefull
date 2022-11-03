@@ -39,7 +39,7 @@ namespace Notus.Message
             {
                 return subListObj[walletId].Send(messageText);
             }
-            return string.Empty; ;
+            return string.Empty;
         }
         public void Start()
         {
@@ -51,6 +51,7 @@ namespace Notus.Message
                 {
                     pubObj.Start();
                 });
+                
                 pingTimerIsRunning = true;
                 pingTimer.Start(() =>
                 {

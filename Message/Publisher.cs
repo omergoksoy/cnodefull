@@ -5,8 +5,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using NVG = Notus.Variable.Globals;
 using NP = Notus.Print;
+using NVG = Notus.Variable.Globals;
 namespace Notus.Message
 {
     //socket-exception
@@ -40,7 +40,7 @@ namespace Notus.Message
         {
             if (portNo == 0)
             {
-                portNo = Notus.Network.Node.GetNetworkPort()+10;
+                portNo = Notus.Network.Node.GetNetworkPort() + 10;
             }
             listener = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             byte[] byteArr = new byte[8192];
@@ -50,7 +50,7 @@ namespace Notus.Message
             {
                 localEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), portNo);
             }
-
+            bool pingPrintedOneTime = false;
             try
             {
                 listener.Bind(localEndPoint);
@@ -63,15 +63,23 @@ namespace Notus.Message
                     string contentText = Encoding.ASCII.GetString(byteArr, 0, byteArraySize);
                     if (string.Equals(contentText, "ping"))
                     {
+                        if (pingPrintedOneTime == false)
+                        {
+                            pingPrintedOneTime = true;
+                            Console.WriteLine("Publisher.Cs -> contentText for ping [ " + contentText.Length + " ] : " + contentText);
+                        }
                         handler.Send(System.Text.Encoding.ASCII.GetBytes("pong"));
                     }
-                    else {
+                    else
+                    {
+                        Console.WriteLine("Publisher.Cs -> contentText  for other [ " + contentText.Length + " ] : " + contentText);
                         if (Func_IncomeText != null)
                         {
-                            NP.Info("Before Func_IncomeText");
+                            //kontrol-noktasi
+                            NP.Info("Publisher.Cs -> Before Func_IncomeText");
                             Func_IncomeText(contentText);
                             handler.Send(System.Text.Encoding.ASCII.GetBytes("done"));
-                            NP.Info("Before Func_IncomeText");
+                            NP.Info("Publisher.Cs -> Before Func_IncomeText");
                         }
                         else
                         {
@@ -103,7 +111,7 @@ namespace Notus.Message
             closeSocket = false;
             Start(ipAddress);
         }
-        public Publisher(int portNo,string ipAddress)
+        public Publisher(int portNo, string ipAddress)
         {
             closeSocket = false;
             Start(ipAddress);

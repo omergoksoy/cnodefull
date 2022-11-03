@@ -119,6 +119,7 @@ namespace Notus.Validator
                         entry.Value.IP.Wallet,
                         "<block>" + blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey + "</block>"
                     );
+                    Console.WriteLine("incomeResult [ " + incomeResult.Length +  " ] : " + incomeResult);
                 }
             }
         }
