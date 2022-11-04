@@ -120,6 +120,10 @@ namespace Notus.Validator
                     NP.Basic(NVG.Settings, "Sleep For 2.5 Seconds");
                     Thread.Sleep(2500);
                 }
+                if (NVG.Settings.GenesisCreated == true)
+                {
+                    Environment.Exit(0);
+                }
             }
         }
         private static void StartAsReplicant(bool LightNodeActive)

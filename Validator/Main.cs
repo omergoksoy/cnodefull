@@ -851,8 +851,13 @@ namespace Notus.Validator
             NVG.Settings.MsgOrch.Start();
 
             bool start_FirstQueueGroupTime = false;
-            //while (tmpExitMainLoop == false && NVG.Settings.NodeClosing == false)
-            while (tmpExitMainLoop == false)
+            //while (tmpExitMainLoop == false)
+            
+            while (
+                tmpExitMainLoop == false && 
+                NVG.Settings.NodeClosing == false &&
+                NVG.Settings.GenesisCreated == false
+            )
             {
                 if (prepareNextQueue == false)
                 {
@@ -922,6 +927,7 @@ namespace Notus.Validator
 
                                         //socket-exception
                                         ValidatorQueueObj.Distrubute(PreBlockData.info.rowNo, PreBlockData.info.type);
+                                        
                                         NGF.WalletUsageList.Clear();
                                     }
                                     else

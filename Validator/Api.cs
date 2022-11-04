@@ -22,6 +22,7 @@ namespace Notus.Validator
         private List<string> AllMasterList = new List<string>();
         private List<string> AllReplicantList = new List<string>();
 
+        private Notus.Mempool ObjMp_TestBlockOrder;
         private Notus.Mempool ObjMp_AirdropLimit;
         private Notus.Mempool ObjMp_MultiSignPool;
         public Notus.Mempool Obj_MultiSignPool
@@ -89,6 +90,15 @@ namespace Notus.Validator
                     ) + "airdrop_request");
 
                 ObjMp_AirdropLimit.AsyncActive = false;
+
+
+                ObjMp_TestBlockOrder = new Notus.Mempool(
+                    Notus.IO.GetFolderName(
+                        NVG.Settings, Notus.Variable.Constant.StorageFolderName.Block
+                    ) + "test_block_order");
+
+                ObjMp_TestBlockOrder.AsyncActive = false;
+                ObjMp_TestBlockOrder.Clear();
             }
         }
         private void Prepare_Layer2()
@@ -137,6 +147,27 @@ namespace Notus.Validator
 
         public void AddForCache(Notus.Variable.Class.BlockData Obj_BlockData)
         {
+            ObjMp_TestBlockOrder.Set(
+                DateTime.Now.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText),
+                Obj_BlockData.info.rowNo + " - " +
+                Obj_BlockData.prev + " = " +
+                Obj_BlockData.info.uID
+            );
+
+            if (Obj_BlockData.prev.Length < 20)
+            {
+                NP.Info("Block Is Proccessing -> " +
+                    Obj_BlockData.info.rowNo.ToString() + " -> " +
+                    "Prev is Empty [ " + Obj_BlockData.prev + " ]"
+                );
+            }
+            else
+            {
+                NP.Info("Block Is Proccessing -> " +
+                    Obj_BlockData.info.rowNo.ToString() + " -> " +
+                    Obj_BlockData.prev.Substring(0, 20)
+                );
+            }
             //DateTime start = NVG.NOW.Obj;
             if (NGF.BlockOrder.ContainsKey(Obj_BlockData.info.rowNo) == false)
             {
