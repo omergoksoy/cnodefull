@@ -119,7 +119,7 @@ namespace Notus.Validator
                         entry.Value.IP.Wallet,
                         "<block>" + blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey + "</block>"
                     );
-                    Console.WriteLine("incomeResult [ " + incomeResult.Length +  " ] : " + incomeResult);
+                    //Console.WriteLine("incomeResult [ " + incomeResult.Length +  " ] : " + incomeResult);
                 }
             }
         }
@@ -301,6 +301,7 @@ namespace Notus.Validator
         {
             if (CheckXmlTag(incomeData, "block"))
             {
+                //sync-control
                 /*
                 bu değişken true olunca, öncelikle diğer node'dan 
                 blok alınması işlemini tamamla,
@@ -308,17 +309,19 @@ namespace Notus.Validator
                 */
                 NVG.Settings.WaitForGeneratedBlock = true;
 
-                NP.Info(NVG.Settings, "Block Row No Income -> " + ND.ToDateTime(NVG.NOW.Int).ToString("HH mm ss fff"));
+                //NP.Info(NVG.Settings, "Block Row No Income -> " + ND.ToDateTime(NVG.NOW.Int).ToString("HH mm ss fff"));
+
+
 
                 string incomeDataStr = GetPureText(incomeData, "block");
+                //NP.Info(NVG.Settings, "Income Block Row No -> " + incomeDataStr);
                 if (incomeDataStr.IndexOf(":") < 0)
                 {
                     return "error-msg";
                 }
 
-                NP.Info(NVG.Settings, "Income Block Row No -> " + incomeDataStr);
-
                 string[] tmpArr = incomeDataStr.Split(":");
+                NP.Info(NVG.Settings, "Income Block Row No -> " + tmpArr[0] + ", Validator => " + tmpArr[1]);
                 long tmpBlockNo = long.Parse(tmpArr[0]);
                 string tmpNodeWalletKey = tmpArr[1];
                 string tmpIpAddress = string.Empty;

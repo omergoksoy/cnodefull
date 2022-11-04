@@ -113,6 +113,9 @@ bu iki node arasındaki süre
 //OMERGOKSOY
 // kontrol edilecek alanlar
 
+//sync-control
+//node'ların blok senkronizasyonu kontrol ediliyor
+
 //socket-exception
 //soket ile ilgili yapılan işlemler için oluşturulan istisna durumu
 

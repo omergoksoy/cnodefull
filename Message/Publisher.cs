@@ -50,7 +50,7 @@ namespace Notus.Message
             {
                 localEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), portNo);
             }
-            bool pingPrintedOneTime = false;
+            //bool pingPrintedOneTime = false;
             try
             {
                 listener.Bind(localEndPoint);
@@ -59,27 +59,31 @@ namespace Notus.Message
                 System.Net.Sockets.Socket handler = listener.Accept();
                 while (closeSocket == false)
                 {
+                    //sync-control
+
                     int byteArraySize = handler.Receive(byteArr);
                     string contentText = Encoding.ASCII.GetString(byteArr, 0, byteArraySize);
                     if (string.Equals(contentText, "ping"))
                     {
+                        /*
                         if (pingPrintedOneTime == false)
                         {
                             pingPrintedOneTime = true;
                             Console.WriteLine("Publisher.Cs -> contentText for ping [ " + contentText.Length + " ] : " + contentText);
                         }
+                        */
                         handler.Send(System.Text.Encoding.ASCII.GetBytes("pong"));
                     }
                     else
                     {
-                        Console.WriteLine("Publisher.Cs -> contentText  for other [ " + contentText.Length + " ] : " + contentText);
+                        //Console.WriteLine("Publisher.Cs -> contentText  for other [ " + contentText.Length + " ] : " + contentText);
                         if (Func_IncomeText != null)
                         {
                             //kontrol-noktasi
-                            NP.Info("Publisher.Cs -> Before Func_IncomeText");
+                            //NP.Info("Publisher.Cs -> Before Func_IncomeText");
                             Func_IncomeText(contentText);
                             handler.Send(System.Text.Encoding.ASCII.GetBytes("done"));
-                            NP.Info("Publisher.Cs -> Before Func_IncomeText");
+                            //NP.Info("Publisher.Cs -> After Func_IncomeText");
                         }
                         else
                         {

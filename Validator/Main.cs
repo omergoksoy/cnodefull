@@ -638,7 +638,7 @@ namespace Notus.Validator
                     {
                         bool innerSendToMyChain = false;
 
-
+                        /*
                         * bloğu oluşturan validatör bir imza ila kendisinin oluşturduğunu ispatlamalı
                           eğer hatalı işlem yaparsa bu işlem diğer validatörler tarafından validatörün imzası 
                           ile doğrulanacağı için bu çok önemli
@@ -646,15 +646,14 @@ namespace Notus.Validator
                         * gereksiz debug noktalarını kapatabiliriz.
                         
                         * ayrıca bir node devre dışı kalıp yeniden ağa bağlanınca oluşan durumu gözlemle ve düzelt
+                        */
 
 
-
-                        NP.Info("burada-blogu-validatorun-dogru-kisi-oldugunu-onayla");
+                        //NP.Info("burada-blogu-validatorun-dogru-kisi-oldugunu-onayla");
                         try
                         {
                             ulong queueTimePeriod = (ulong)(NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime);
                             ulong blockTimeVal = ND.ToLong(tmpNewBlockIncome.info.time);
-                            Console.WriteLine("blockTimeVal : " + blockTimeVal.ToString() + " - " + tmpNewBlockIncome.info.time);
                             ulong blockGenarationTime = blockTimeVal - (blockTimeVal % queueTimePeriod);
                             if (NVG.Settings.Nodes.Queue.ContainsKey(blockGenarationTime) == true)
                             {
@@ -667,6 +666,8 @@ namespace Notus.Validator
                             else
                             {
                                 Console.WriteLine("Time Does Not Have From Nodes List");
+
+                                Console.WriteLine("blockTimeVal : " + blockTimeVal.ToString() + " - " + tmpNewBlockIncome.info.time);
                                 
                                 Console.WriteLine("Main.cs -> blockGenarationTime [ " + 
                                     tmpNewBlockIncome.info.rowNo.ToString() + 
@@ -720,7 +721,9 @@ namespace Notus.Validator
                         ValidatorQueueObj.GiveMeNodeList(),
                         tmpNewBlockIncome =>
                         {
-                            Console.WriteLine(".tmp.");
+                            //sync-control
+                            ProcessBlock(tmpNewBlockIncome, 3);
+                            //Console.WriteLine(".tmp.");
                             /*
                             bool sendToMyChain = false;
                             try
@@ -743,7 +746,6 @@ namespace Notus.Validator
                             {
                             }
                             */
-                            ProcessBlock(tmpNewBlockIncome, 3);
 
                             /*
                             if (sendToMyChain == true)
@@ -841,9 +843,10 @@ namespace Notus.Validator
 
             NVG.Settings.MsgOrch.OnReceive((string IncomeText) =>
             {
-                Console.WriteLine("Main.Cs -> IncomeText [ " + IncomeText.Length + " ] : " + IncomeText);
+                //sync-control
                 string innerResultStr=ValidatorQueueObj.ProcessIncomeData(IncomeText);
-                Console.WriteLine("Main.Cs -> resultStr [ " + innerResultStr.Length + " ] : " + innerResultStr);
+                //Console.WriteLine("Main.Cs -> IncomeText [ " + IncomeText.Length + " ] : " + IncomeText);
+                //Console.WriteLine("Main.Cs -> resultStr [ " + innerResultStr.Length + " ] : " + innerResultStr);
             });
             NVG.Settings.MsgOrch.Start();
 
@@ -879,13 +882,14 @@ namespace Notus.Validator
 
                     if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
                     {
+                        /*
                         if (waitPrinted == false)
                         {
                             waitPrinted = true;
                             Console.WriteLine("My Turn ->" + NVG.NOW.Int.ToString() + " - " + currentQueueTime.ToString());
                         }
+                        */
 
-                        //Console.WriteLine("nodeOrderCount : " + nodeOrderCount.ToString());
                         while (NVG.Settings.WaitForGeneratedBlock == true)
                         {
                             Thread.Sleep(1);
@@ -1027,8 +1031,9 @@ namespace Notus.Validator
                     if (blockData.info.rowNo % 500 == 0)
                     {
                         NP.Status(NVG.Settings,
-                            "Block Came From The Loading DB [ " + fixedRowNoLength(blockData) + " ] ->" +
-                            blockData.info.type.ToString().PadLeft(4, ' ')
+                            "Block Came From The Loading DB [ " +
+                            fixedRowNoLength(blockData) + " : "+
+                            blockData.info.type.ToString().PadLeft(4, ' ') + " ]"
                         );
                     }
                 }
@@ -1037,30 +1042,34 @@ namespace Notus.Validator
             {
                 //Console.WriteLine("blockData.info.time : " + blockData.info.time.ToString() + " - " + blockData.info.rowNo.ToString());
                 NP.Status(NVG.Settings,
-                    "Block Came From The Validator Queue [ " + fixedRowNoLength(blockData) + " ] ->" +
-                    blockData.info.type.ToString().PadLeft(4, ' ')
+                    "Block Came From The Validator Queue [ " +
+                    fixedRowNoLength(blockData) + " : " +
+                    blockData.info.type.ToString().PadLeft(4, ' ') + " ]"
                 );
             }
             if (blockSource == 3)
             {
                 NP.Status(NVG.Settings,
-                    "Block Came From The Block Sync [ " + fixedRowNoLength(blockData) + " ] ->" +
-                    blockData.info.type.ToString().PadLeft(4, ' ')
-                    );
+                    "Block Came From The Block Sync [ " +
+                    fixedRowNoLength(blockData) + " : " +
+                    blockData.info.type.ToString().PadLeft(4, ' ') + " ]"
+                );
             }
             if (blockSource == 4)
             {
                 //Console.WriteLine("blockData.info.time : " + blockData.info.time.ToString() + " - " + blockData.info.rowNo.ToString());
                 NP.Status(NVG.Settings,
-                    "Block Came From The Main Loop [ " + fixedRowNoLength(blockData) + " ] ->" +
-                    blockData.info.type.ToString().PadLeft(4, ' ')
+                    "Block Came From The Main Loop [ " +
+                    fixedRowNoLength(blockData) + " : " +
+                    blockData.info.type.ToString().PadLeft(4, ' ') + " ]"
                 );
             }
             if (blockSource == 5)
             {
                 NP.Status(NVG.Settings,
-                    "Block Came From The Dictionary List [ " + fixedRowNoLength(blockData) + " ] ->" +
-                    blockData.info.type.ToString().PadLeft(4, ' ')
+                    "Block Came From The Dictionary List [ " +
+                    fixedRowNoLength(blockData) + " : " +
+                    blockData.info.type.ToString().PadLeft(4, ' ') + " ]"
                 );
             }
             if (blockData.info.type == NVE.BlockTypeList.GenesisBlock)
