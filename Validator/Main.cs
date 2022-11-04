@@ -668,13 +668,13 @@ namespace Notus.Validator
                                 Console.WriteLine("Time Does Not Have From Nodes List");
 
                                 Console.WriteLine("blockTimeVal : " + blockTimeVal.ToString() + " - " + tmpNewBlockIncome.info.time);
-                                
-                                Console.WriteLine("Main.cs -> blockGenarationTime [ " + 
-                                    tmpNewBlockIncome.info.rowNo.ToString() + 
-                                    " ]: " + 
+
+                                Console.WriteLine("Main.cs -> blockGenarationTime [ " +
+                                    tmpNewBlockIncome.info.rowNo.ToString() +
+                                    " ]: " +
                                     blockGenarationTime.ToString()
                                 );
-                                Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue,NVC.JsonSetting));
+                                Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue, NVC.JsonSetting));
                             }
                         }
                         catch (Exception innerErr)
@@ -844,7 +844,7 @@ namespace Notus.Validator
             NVG.Settings.MsgOrch.OnReceive((string IncomeText) =>
             {
                 //sync-control
-                string innerResultStr=ValidatorQueueObj.ProcessIncomeData(IncomeText);
+                string innerResultStr = ValidatorQueueObj.ProcessIncomeData(IncomeText);
                 //Console.WriteLine("Main.Cs -> IncomeText [ " + IncomeText.Length + " ] : " + IncomeText);
                 //Console.WriteLine("Main.Cs -> resultStr [ " + innerResultStr.Length + " ] : " + innerResultStr);
             });
@@ -1030,46 +1030,34 @@ namespace Notus.Validator
                 {
                     if (blockData.info.rowNo % 500 == 0)
                     {
-                        NP.Status(NVG.Settings,
-                            "Block Came From The Loading DB [ " +
-                            fixedRowNoLength(blockData) + " : "+
-                            blockData.info.type.ToString().PadLeft(4, ' ') + " ]"
+                        NP.Status("Block Came From The Loading DB [ " +
+                            fixedRowNoLength(blockData) + " : " + blockData.info.type.ToString().PadLeft(4, ' ') + " ]"
                         );
                     }
                 }
             }
             if (blockSource == 2)
             {
-                //Console.WriteLine("blockData.info.time : " + blockData.info.time.ToString() + " - " + blockData.info.rowNo.ToString());
-                NP.Status(NVG.Settings,
-                    "Block Came From The Validator Queue [ " +
-                    fixedRowNoLength(blockData) + " : " +
-                    blockData.info.type.ToString().PadLeft(4, ' ') + " ]"
+                NP.Status("Block Came From The Validator Queue [ " +
+                    fixedRowNoLength(blockData) + " : " + blockData.info.type.ToString().PadLeft(4, ' ') + " ]"
                 );
             }
             if (blockSource == 3)
             {
-                NP.Status(NVG.Settings,
-                    "Block Came From The Block Sync [ " +
-                    fixedRowNoLength(blockData) + " : " +
-                    blockData.info.type.ToString().PadLeft(4, ' ') + " ]"
+                NP.Status("Block Came From The Block Sync [ " +
+                    fixedRowNoLength(blockData) + " : " + blockData.info.type.ToString().PadLeft(4, ' ') + " ]"
                 );
             }
             if (blockSource == 4)
             {
-                //Console.WriteLine("blockData.info.time : " + blockData.info.time.ToString() + " - " + blockData.info.rowNo.ToString());
-                NP.Status(NVG.Settings,
-                    "Block Came From The Main Loop [ " +
-                    fixedRowNoLength(blockData) + " : " +
-                    blockData.info.type.ToString().PadLeft(4, ' ') + " ]"
+                NP.Status("Block Came From The Main Loop [ " +
+                    fixedRowNoLength(blockData) + " : " + blockData.info.type.ToString().PadLeft(4, ' ') + " ]"
                 );
             }
             if (blockSource == 5)
             {
-                NP.Status(NVG.Settings,
-                    "Block Came From The Dictionary List [ " +
-                    fixedRowNoLength(blockData) + " : " +
-                    blockData.info.type.ToString().PadLeft(4, ' ') + " ]"
+                NP.Status("Block Came From The Dictionary List [ " +
+                    fixedRowNoLength(blockData) + " : " + blockData.info.type.ToString().PadLeft(4, ' ') + " ]"
                 );
             }
             if (blockData.info.type == NVE.BlockTypeList.GenesisBlock)
