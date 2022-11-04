@@ -317,7 +317,7 @@ namespace Notus.Validator
                 blok alınması işlemini tamamla,
                 blok alma işi bitince yeni blok oluşturulsun
                 */
-                Console.WriteLine("NVG.Settings.WaitForGeneratedBlock = TRUE;");
+                //Console.WriteLine("NVG.Settings.WaitForGeneratedBlock = TRUE;");
                 NVG.Settings.WaitForGeneratedBlock = true;
 
                 //NP.Info(NVG.Settings, "Block Row No Income -> " + ND.ToDateTime(NVG.NOW.Int).ToString("HH mm ss fff"));
@@ -362,7 +362,7 @@ namespace Notus.Validator
                 {
                     if (Func_NewBlockIncome(tmpBlockData) == true)
                     {
-                        Console.WriteLine("NVG.Settings.WaitForGeneratedBlock = false;");
+                        //Console.WriteLine("NVG.Settings.WaitForGeneratedBlock = false;");
                         NVG.Settings.WaitForGeneratedBlock = false;
                         return "done";
                     }

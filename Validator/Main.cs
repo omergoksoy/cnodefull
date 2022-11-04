@@ -684,7 +684,7 @@ namespace Notus.Validator
                         }
                         if (innerSendToMyChain == true)
                         {
-                            NP.Info("Arrived New Block : " + tmpNewBlockIncome.info.uID.Substring(0, 15));
+                            NP.Info("New Block Arrived : " + tmpNewBlockIncome.info.uID.Substring(0, 15));
                             ProcessBlock(tmpNewBlockIncome, 2);
                         }
                         else

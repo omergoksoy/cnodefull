@@ -588,6 +588,7 @@ namespace Notus.Block
         //yeni blok hesaplanması tamamlandığı zaman buraya gelecek ve geçerli blok ise eklenecek.
         public void AddToChain(Notus.Variable.Class.BlockData NewBlock)
         {
+            /*
             if (NewBlock.prev.Length < 20)
             {
                 NP.Info("Block Added To Chain -> " +
@@ -602,7 +603,7 @@ namespace Notus.Block
                     NewBlock.prev.Substring(0,20)
                 );
             }
-
+            */
             BS_Storage.AddSync(NewBlock);
 
             string rawDataStr = Notus.Toolbox.Text.RawCipherData2String(
