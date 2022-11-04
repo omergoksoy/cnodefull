@@ -103,7 +103,7 @@ namespace Notus
         }
         public static void Status(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "", bool PrintAsync = true)
         {
-            subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.InfoMode, ConsoleColor.Blue, DetailsStr, PrintAsync);
+            subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.InfoMode, ConsoleColor.White, DetailsStr, PrintAsync);
         }
         public static void Basic(string DetailsStr = "", bool PrintAsync = true)
         {

@@ -1,6 +1,7 @@
 ﻿using Notus.Communication;
 using Notus.Encryption;
 using Notus.Network;
+using Notus.Variable.Class;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -94,7 +95,10 @@ namespace Notus.Validator
             }
         }
         */
-
+        private string fixedRowNoLength(long blockRowNo)
+        {
+            return blockRowNo.ToString().PadLeft(15, '_');
+        }
         public void Distrubute(long blockRowNo, int blockType = 0)
         {
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
@@ -105,16 +109,16 @@ namespace Notus.Validator
                     NP.Info("incomeResult : " + incomeResult);
                     ProcessIncomeData(incomeResult);
                     */
-                    NP.Info(NVG.Settings,
-                        "Distrubuting " +
-                        blockRowNo.ToString() + "[ " +
+                    NP.Info(
+                    "Distributing [ " +
+                        fixedRowNoLength(blockRowNo) + " : " +
                         blockType.ToString() +
-                        " ] . Block To " +
+                        " ] To " +
                         entry.Value.IP.IpAddress + ":" +
                         entry.Value.IP.Port.ToString()
                     );
-                    NP.Info(NVG.Settings, "Distrubute : " + ND.ToDateTime(NVG.NOW.Int).ToString("HH mm ss fff"));
 
+                    //NP.Info(NVG.Settings, "Distrubute : " + ND.ToDateTime(NVG.NOW.Int).ToString("HH mm ss fff"));
                     string incomeResult = NVG.Settings.MsgOrch.SendMsg(
                         entry.Value.IP.Wallet,
                         "<block>" + blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey + "</block>"
