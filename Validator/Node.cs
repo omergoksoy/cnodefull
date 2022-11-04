@@ -115,14 +115,16 @@ namespace Notus.Validator
                 {
                     MainObj.Start();
                 }
+
+                if (NVG.Settings.GenesisCreated == true)
+                {
+                    Environment.Exit(0);
+                }
+
                 if (NVG.Settings.NodeClosing == false)
                 {
                     NP.Basic(NVG.Settings, "Sleep For 2.5 Seconds");
                     Thread.Sleep(2500);
-                }
-                if (NVG.Settings.GenesisCreated == true)
-                {
-                    Environment.Exit(0);
                 }
             }
         }

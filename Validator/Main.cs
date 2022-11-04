@@ -1229,6 +1229,22 @@ namespace Notus.Validator
                 ProcessBlock_PrintSection(blockData, blockSource);
             }
 
+
+            if (NVG.Settings.LastBlock.prev.Length < 20)
+            {
+                NP.Info("Settings -> Last Block -> " +
+                    NVG.Settings.LastBlock.info.rowNo.ToString() + " -> " +
+                    "Prev is Empty [ " + NVG.Settings.LastBlock.prev + " ]"
+                );
+            }
+            else
+            {
+                NP.Info("Settings -> Last Block -> " +
+                    NVG.Settings.LastBlock.info.rowNo.ToString() + " -> " +
+                    NVG.Settings.LastBlock.prev.Substring(0, 20)
+                );
+            }
+
             if (addBlockToChain == true)
             {
                 NGF.BlockQueue.AddToChain(blockData);
