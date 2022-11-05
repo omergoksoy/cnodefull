@@ -70,7 +70,13 @@ namespace Notus.Variable
         public static Notus.Globals.Variable.NodeQueueList NodeQueue { get; set; }
         public static int OnlineNodeCount { get; set; }
 
-        //blok oluşturma sırası gelince, kullanımda olan cüzdan listesi alınacak
+
+        /*
+        blok oluşturma sırası gelince, kullanımda olan cüzdan listesi alınacak
+        burada bulunan cüzdan listesi imzalanarak diğer node'lara iletilecek
+        böylece eğer oluşturulan blok içeriği iletilene kadar 
+        
+        */
         public static ConcurrentDictionary<string, NVS.NodeQueueInfo> LockedWalletList { get; set; }
         
         public static ConcurrentDictionary<string, NVS.NodeQueueInfo> NodeList { get; set; }
