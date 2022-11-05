@@ -77,6 +77,17 @@ namespace Notus.Variable
         böylece eğer oluşturulan blok içeriği iletilene kadar 
         
         */
+        bu dictionary'ye işlenen bloğun içinde işlem yapan cüzdan adreslerinin listesi yazılacak
+        bu liste <block> bilgisi ile sıradaki node'a iletilecek
+        böylece node sıradaki bloğu hazırlarken kendisinden önce hazırlanan bloktan haberdar olacak
+
+
+        her node açılışta rastgele bir private key oluşturacak ve diğer validator'e ait özel bir metni imzalayacak
+        validator mesajını diğer node'a iletirken bu private key ile ilatecek 
+        eğer gönderdiği mesajda hata varsa hatalı mesaj diğer node'lara da gönderilerek onlarında bu olaya şahitlik etmesi sağlanacak
+
+        bu şahitlik ile birlitke ortak ir oy kullanılacak ve validator'e süre, sıra veya stake üzerinden ceza uygulanacak
+
         public static ConcurrentDictionary<string, NVS.NodeQueueInfo> LockedWalletList { get; set; }
         
         public static ConcurrentDictionary<string, NVS.NodeQueueInfo> NodeList { get; set; }
