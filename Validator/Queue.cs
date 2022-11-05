@@ -99,8 +99,11 @@ namespace Notus.Validator
         {
             return blockRowNo.ToString().PadLeft(15, '_');
         }
-        public void Distrubute(long blockRowNo, int blockType = 0)
+        public void Distrubute(long blockRowNo, int blockType, ulong currentNodeStartingTime)
         {
+            ulong totalQueuePeriod = (ulong)(NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime);
+            ulong nextValidatorNodeTime=ND.AddMiliseconds(currentNodeStartingTime, totalQueuePeriod);
+
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
                 if (string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false && entry.Value.Status == NVS.NodeStatus.Online)
@@ -109,6 +112,22 @@ namespace Notus.Validator
                     NP.Info("incomeResult : " + incomeResult);
                     ProcessIncomeData(incomeResult);
                     */
+
+
+                    //kullanılan cüzdanlar burada liste olarak gönderilecek...
+                    List<string> wList = new List<string>();
+                    if (blockType != 300)
+                    {
+                        foreach (var iEntry in NGF.WalletUsageList)
+                        {
+                            wList.Add(iEntry.Key);
+                        }
+                        if (wList.Count > 0)
+                        {
+                            Console.WriteLine(JsonSerializer.Serialize(wList));
+                        }
+                    }
+
                     NP.Info(
                     "Distributing [ " +
                         fixedRowNoLength(blockRowNo) + " : " +
@@ -122,8 +141,8 @@ namespace Notus.Validator
                     {
                         string incomeResult = NVG.Settings.MsgOrch.SendMsg(
                             entry.Value.IP.Wallet,
-                            "<block>" + 
-                                blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey + 
+                            "<block>" +
+                                blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey +
                             "</block>"
                         );
                     });

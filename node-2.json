@@ -1,0 +1,300 @@
+20:55:55.014 L1-Dev  -> Distributing [ ____________238 : 300 ] To 13.229.56.127:5002
++20:56:10.139 L1-Dev  -> Income Block Row No -> 239, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+20:56:10.467 L1-Dev  -> New Block Arrived : 1348cb13232a000
+20:56:10.467 L1-Dev  -> Block Came From The Validator Queue [ ____________239 :  300 ]
+20:56:10.467 L1-Dev  -> Settings -> Last Block -> 239 -> 1348cb1322f300387166
+20:56:10.467 L1-Dev  -> Block Is Proccessing -> 239 -> 1348cb1322f300387166
++20:56:25.139 L1-Dev  -> Income Block Row No -> 240, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+20:56:25.467 L1-Dev  -> New Block Arrived : 1348cb132339000
+20:56:25.467 L1-Dev  -> Block Came From The Validator Queue [ ____________240 :  300 ]
+20:56:25.467 L1-Dev  -> Settings -> Last Block -> 240 -> 1348cb13232a000af4fc
+20:56:25.467 L1-Dev  -> Block Is Proccessing -> 240 -> 1348cb13232a000af4fc
+20:56:40.013 L1-Dev  -> Empty Block Executed
+20:56:40.013 L1-Dev  -> Block Came From The Main Loop [ ____________241 :  300 ]
+20:56:40.013 L1-Dev  -> Settings -> Last Block -> 241 -> 1348cb132339000b8bd7
+20:56:40.013 L1-Dev  -> Block Is Proccessing -> 241 -> 1348cb132339000b8bd7
+[]
+20:56:40.013 L1-Dev  -> Distributing [ ____________241 : 300 ] To 13.229.56.127:5002
++20:56:55.154 L1-Dev  -> Income Block Row No -> 242, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+20:56:55.466 L1-Dev  -> New Block Arrived : 1348cb132357002
+20:56:55.482 L1-Dev  -> Block Came From The Validator Queue [ ____________242 :  300 ]
+20:56:55.482 L1-Dev  -> Settings -> Last Block -> 242 -> 1348cb13234800366c5f
+20:56:55.482 L1-Dev  -> Block Is Proccessing -> 242 -> 1348cb13234800366c5f
++20:57:10.154 L1-Dev  -> Income Block Row No -> 243, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+20:57:10.482 L1-Dev  -> New Block Arrived : 1348cb13238e002
+20:57:10.482 L1-Dev  -> Block Came From The Validator Queue [ ____________243 :  300 ]
+20:57:10.482 L1-Dev  -> Settings -> Last Block -> 243 -> 1348cb1323570021a277
+20:57:10.482 L1-Dev  -> Block Is Proccessing -> 243 -> 1348cb1323570021a277
++20:57:25.154 L1-Dev  -> Income Block Row No -> 244, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+20:57:25.466 L1-Dev  -> New Block Arrived : 1348cb13239d003
+20:57:25.482 L1-Dev  -> Block Came From The Validator Queue [ ____________244 :  300 ]
+20:57:25.482 L1-Dev  -> Settings -> Last Block -> 244 -> 1348cb13238e0024f9cd
+20:57:25.482 L1-Dev  -> Block Is Proccessing -> 244 -> 1348cb13238e0024f9cd
+20:57:40.013 L1-Dev  -> Empty Block Executed
+20:57:40.013 L1-Dev  -> Block Came From The Main Loop [ ____________245 :  300 ]
+20:57:40.013 L1-Dev  -> Settings -> Last Block -> 245 -> 1348cb13239d00389134
+20:57:40.013 L1-Dev  -> Block Is Proccessing -> 245 -> 1348cb13239d00389134
+[]
+20:57:40.013 L1-Dev  -> Distributing [ ____________245 : 300 ] To 13.229.56.127:5002
++20:57:55.013 L1-Dev  -> Empty Block Executed
+20:57:55.013 L1-Dev  -> Block Came From The Main Loop [ ____________246 :  300 ]
+20:57:55.013 L1-Dev  -> Settings -> Last Block -> 246 -> 1348cb1323ac00337d17
+20:57:55.013 L1-Dev  -> Block Is Proccessing -> 246 -> 1348cb1323ac00337d17
+[]
+20:57:55.028 L1-Dev  -> Distributing [ ____________246 : 300 ] To 13.229.56.127:5002
++20:58:10.153 L1-Dev  -> Income Block Row No -> 247, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+20:58:10.465 L1-Dev  -> New Block Arrived : 1348cb1323f2003
+20:58:10.465 L1-Dev  -> Block Came From The Validator Queue [ ____________247 :  300 ]
+20:58:10.465 L1-Dev  -> Settings -> Last Block -> 247 -> 1348cb1323bb0032f84e
+20:58:10.465 L1-Dev  -> Block Is Proccessing -> 247 -> 1348cb1323bb0032f84e
++20:58:25.153 L1-Dev  -> Income Block Row No -> 248, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+20:58:25.465 L1-Dev  -> New Block Arrived : 1348cb132401003
+20:58:25.481 L1-Dev  -> Block Came From The Validator Queue [ ____________248 :  300 ]
+20:58:25.481 L1-Dev  -> Settings -> Last Block -> 248 -> 1348cb1323f20039e97e
+20:58:25.481 L1-Dev  -> Block Is Proccessing -> 248 -> 1348cb1323f20039e97e
+20:58:40.153 L1-Dev  -> Income Block Row No -> 249, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+20:58:40.465 L1-Dev  -> New Block Arrived : 1348cb132410003
+20:58:40.465 L1-Dev  -> Block Came From The Validator Queue [ ____________249 :  300 ]
+20:58:40.481 L1-Dev  -> Settings -> Last Block -> 249 -> 1348cb132401003b0454
+20:58:40.481 L1-Dev  -> Block Is Proccessing -> 249 -> 1348cb132401003b0454
++20:58:55.012 L1-Dev  -> Empty Block Executed
+20:58:55.012 L1-Dev  -> Block Came From The Main Loop [ ____________250 :  300 ]
+20:58:55.012 L1-Dev  -> Settings -> Last Block -> 250 -> 1348cb132410003b507b
+20:58:55.012 L1-Dev  -> Block Is Proccessing -> 250 -> 1348cb132410003b507b
+[]
+20:58:55.012 L1-Dev  -> Distributing [ ____________250 : 300 ] To 13.229.56.127:5002
+20:58:55.027 L1-Dev  -> Income Block Row No -> 250, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+20:58:55.465 L1-Dev  -> That block generated by wrong validator
+20:58:55.465 L1-Dev  -> Block Time : 202211052058550003667
++20:59:10.152 L1-Dev  -> Income Block Row No -> 251, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+20:59:10.465 L1-Dev  -> New Block Arrived : 1348cb132456000
+20:59:10.465 L1-Dev  -> Block Came From The Validator Queue [ ____________251 :  300 ]
+20:59:10.465 L1-Dev  -> Settings -> Last Block -> 251 -> 1348cb13241f000e538f
+20:59:10.465 L1-Dev  -> Block Is Proccessing -> 251 -> 1348cb13241f000e538f
+20:59:25.011 L1-Dev  -> Empty Block Executed
+20:59:25.011 L1-Dev  -> Block Came From The Main Loop [ ____________252 :  300 ]
+20:59:25.011 L1-Dev  -> Settings -> Last Block -> 252 -> 1348cb132456000eeea7
+20:59:25.011 L1-Dev  -> Block Is Proccessing -> 252 -> 1348cb132456000eeea7
+[]
+20:59:25.027 L1-Dev  -> Distributing [ ____________252 : 300 ] To 13.229.56.127:5002
+20:59:25.043 L1-Dev  -> Income Block Row No -> 252, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+20:59:25.465 L1-Dev  -> That block generated by wrong validator
+20:59:25.465 L1-Dev  -> Block Time : 202211052059250003922
++20:59:40.152 L1-Dev  -> Income Block Row No -> 253, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+20:59:40.464 L1-Dev  -> New Block Arrived : 1348cb132474001
+20:59:40.464 L1-Dev  -> Block Came From The Validator Queue [ ____________253 :  300 ]
+20:59:40.464 L1-Dev  -> Settings -> Last Block -> 253 -> 1348cb132465000f5227
+20:59:40.464 L1-Dev  -> Block Is Proccessing -> 253 -> 1348cb132465000f5227
++20:59:55.152 L1-Dev  -> Income Block Row No -> 254, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+20:59:55.464 L1-Dev  -> New Block Arrived : 1348cb132483001
+20:59:55.464 L1-Dev  -> Block Came From The Validator Queue [ ____________254 :  300 ]
+20:59:55.464 L1-Dev  -> Settings -> Last Block -> 254 -> 1348cb132474001009d2
+20:59:55.464 L1-Dev  -> Block Is Proccessing -> 254 -> 1348cb132474001009d2
++21:00:10.152 L1-Dev  -> Income Block Row No -> 255, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:00:10.464 L1-Dev  -> New Block Arrived : 1348cb13345a002
+21:00:10.464 L1-Dev  -> Block Came From The Validator Queue [ ____________255 :  300 ]
+21:00:10.464 L1-Dev  -> Settings -> Last Block -> 255 -> 1348cb1324830013066f
+21:00:10.464 L1-Dev  -> Block Is Proccessing -> 255 -> 1348cb1324830013066f
+21:00:25.011 L1-Dev  -> Empty Block Executed
+21:00:25.011 L1-Dev  -> Block Came From The Main Loop [ ____________256 :  300 ]
+21:00:25.011 L1-Dev  -> Settings -> Last Block -> 256 -> 1348cb13345a0022fdfc
+21:00:25.011 L1-Dev  -> Block Is Proccessing -> 256 -> 1348cb13345a0022fdfc
+[]
+21:00:25.011 L1-Dev  -> Distributing [ ____________256 : 300 ] To 13.229.56.127:5002
++[ Date.cs ] -> Before update ntp : 20 46 15 777
+21:00:40.151 L1-Dev  -> Income Block Row No -> 257, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:00:40.464 L1-Dev  -> New Block Arrived : 1348cb133478002
+21:00:40.464 L1-Dev  -> Block Came From The Validator Queue [ ____________257 :  300 ]
+21:00:40.464 L1-Dev  -> Settings -> Last Block -> 257 -> 1348cb133469002bc8fc
+21:00:40.464 L1-Dev  -> Block Is Proccessing -> 257 -> 1348cb133469002bc8fc
++21:00:55.010 L1-Dev  -> Empty Block Executed
+21:00:55.010 L1-Dev  -> Block Came From The Main Loop [ ____________258 :  300 ]
+21:00:55.010 L1-Dev  -> Settings -> Last Block -> 258 -> 1348cb1334780023a9fc
+21:00:55.010 L1-Dev  -> Block Is Proccessing -> 258 -> 1348cb1334780023a9fc
+[]
+21:00:55.010 L1-Dev  -> Distributing [ ____________258 : 300 ] To 13.229.56.127:5002
++21:01:10.010 L1-Dev  -> Empty Block Executed
+21:01:10.010 L1-Dev  -> Block Came From The Main Loop [ ____________259 :  300 ]
+21:01:10.010 L1-Dev  -> Settings -> Last Block -> 259 -> 1348cb133487002a4783
+21:01:10.010 L1-Dev  -> Block Is Proccessing -> 259 -> 1348cb133487002a4783
+[]
+21:01:10.026 L1-Dev  -> Distributing [ ____________259 : 300 ] To 13.229.56.127:5002
+21:01:25.010 L1-Dev  -> Empty Block Executed
+21:01:25.010 L1-Dev  -> Block Came From The Main Loop [ ____________260 :  300 ]
+21:01:25.010 L1-Dev  -> Settings -> Last Block -> 260 -> 1348cb1334be0029a574
+21:01:25.010 L1-Dev  -> Block Is Proccessing -> 260 -> 1348cb1334be0029a574
+[]
+21:01:25.026 L1-Dev  -> Distributing [ ____________260 : 300 ] To 13.229.56.127:5002
++21:01:39.286 L1-Dev  -> NTP Time Updated
+21:01:40.161 L1-Dev  -> Income Block Row No -> 261, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:01:40.490 L1-Dev  -> New Block Arrived : 1348cb1334dc003
+21:01:40.490 L1-Dev  -> Block Came From The Validator Queue [ ____________261 :  300 ]
+21:01:40.490 L1-Dev  -> Settings -> Last Block -> 261 -> 1348cb1334cd0028c00c
+21:01:40.490 L1-Dev  -> Block Is Proccessing -> 261 -> 1348cb1334cd0028c00c
++21:01:55.162 L1-Dev  -> Income Block Row No -> 262, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:01:55.474 L1-Dev  -> New Block Arrived : 1348cb1334eb003
+21:01:55.474 L1-Dev  -> Block Came From The Validator Queue [ ____________262 :  300 ]
+21:01:55.490 L1-Dev  -> Settings -> Last Block -> 262 -> 1348cb1334dc003cbb6b
+21:01:55.490 L1-Dev  -> Block Is Proccessing -> 262 -> 1348cb1334dc003cbb6b
++21:02:10.006 L1-Dev  -> Empty Block Executed
+21:02:10.006 L1-Dev  -> Block Came From The Main Loop [ ____________263 :  300 ]
+21:02:10.006 L1-Dev  -> Settings -> Last Block -> 263 -> 1348cb1334eb00377de0
+21:02:10.006 L1-Dev  -> Block Is Proccessing -> 263 -> 1348cb1334eb00377de0
+[]
+21:02:10.006 L1-Dev  -> Distributing [ ____________263 : 300 ] To 13.229.56.127:5002
+21:02:25.005 L1-Dev  -> Empty Block Executed
+21:02:25.005 L1-Dev  -> Block Came From The Main Loop [ ____________264 :  300 ]
+21:02:25.005 L1-Dev  -> Settings -> Last Block -> 264 -> 1348cb1335220017e0d4
+21:02:25.005 L1-Dev  -> Block Is Proccessing -> 264 -> 1348cb1335220017e0d4
+[]
+21:02:25.005 L1-Dev  -> Distributing [ ____________264 : 300 ] To 13.229.56.127:5002
++21:02:40.005 L1-Dev  -> Empty Block Executed
+21:02:40.005 L1-Dev  -> Block Came From The Main Loop [ ____________265 :  300 ]
+21:02:40.005 L1-Dev  -> Settings -> Last Block -> 265 -> 1348cb133531001754e8
+21:02:40.005 L1-Dev  -> Block Is Proccessing -> 265 -> 1348cb133531001754e8
+[]
+21:02:40.005 L1-Dev  -> Distributing [ ____________265 : 300 ] To 13.229.56.127:5002
++21:02:55.161 L1-Dev  -> Income Block Row No -> 266, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:02:55.474 L1-Dev  -> New Block Arrived : 1348cb13354f003
+21:02:55.474 L1-Dev  -> Block Came From The Validator Queue [ ____________266 :  300 ]
+21:02:55.474 L1-Dev  -> Settings -> Last Block -> 266 -> 1348cb13354000168b2a
+21:02:55.474 L1-Dev  -> Block Is Proccessing -> 266 -> 1348cb13354000168b2a
++21:03:10.146 L1-Dev  -> Income Block Row No -> 267, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:03:10.458 L1-Dev  -> New Block Arrived : 1348cb133586000
+21:03:10.458 L1-Dev  -> Block Came From The Validator Queue [ ____________267 :  300 ]
+21:03:10.475 L1-Dev  -> Settings -> Last Block -> 267 -> 1348cb13354f003599c7
+21:03:10.475 L1-Dev  -> Block Is Proccessing -> 267 -> 1348cb13354f003599c7
+21:03:25.161 L1-Dev  -> Income Block Row No -> 268, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:03:25.474 L1-Dev  -> New Block Arrived : 1348cb133595000
+21:03:25.474 L1-Dev  -> Block Came From The Validator Queue [ ____________268 :  300 ]
+21:03:25.474 L1-Dev  -> Settings -> Last Block -> 268 -> 1348cb133586000dcd1e
+21:03:25.474 L1-Dev  -> Block Is Proccessing -> 268 -> 1348cb133586000dcd1e
++21:03:40.161 L1-Dev  -> Income Block Row No -> 269, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:03:40.473 L1-Dev  -> New Block Arrived : 1348cb1335a4000
+21:03:40.473 L1-Dev  -> Block Came From The Validator Queue [ ____________269 :  300 ]
+21:03:40.473 L1-Dev  -> Settings -> Last Block -> 269 -> 1348cb133595000f40dd
+21:03:40.473 L1-Dev  -> Block Is Proccessing -> 269 -> 1348cb133595000f40dd
++21:03:55.004 L1-Dev  -> Empty Block Executed
+21:03:55.004 L1-Dev  -> Block Came From The Main Loop [ ____________270 :  300 ]
+21:03:55.004 L1-Dev  -> Settings -> Last Block -> 270 -> 1348cb1335a4000efb54
+21:03:55.004 L1-Dev  -> Block Is Proccessing -> 270 -> 1348cb1335a4000efb54
+[]
+21:03:55.020 L1-Dev  -> Distributing [ ____________270 : 300 ] To 13.229.56.127:5002
++21:04:10.004 L1-Dev  -> Empty Block Executed
+21:04:10.004 L1-Dev  -> Block Came From The Main Loop [ ____________271 :  300 ]
+21:04:10.004 L1-Dev  -> Settings -> Last Block -> 271 -> 1348cb1335b3001300bd
+21:04:10.004 L1-Dev  -> Block Is Proccessing -> 271 -> 1348cb1335b3001300bd
+[]
+21:04:10.020 L1-Dev  -> Distributing [ ____________271 : 300 ] To 13.229.56.127:5002
+21:04:25.004 L1-Dev  -> Empty Block Executed
+21:04:25.004 L1-Dev  -> Block Came From The Main Loop [ ____________272 :  300 ]
+21:04:25.004 L1-Dev  -> Settings -> Last Block -> 272 -> 1348cb1335ea001261f7
+21:04:25.004 L1-Dev  -> Block Is Proccessing -> 272 -> 1348cb1335ea001261f7
+[]
+21:04:25.020 L1-Dev  -> Distributing [ ____________272 : 300 ] To 13.229.56.127:5002
++21:04:40.004 L1-Dev  -> Empty Block Executed
+21:04:40.004 L1-Dev  -> Block Came From The Main Loop [ ____________273 :  300 ]
+21:04:40.004 L1-Dev  -> Settings -> Last Block -> 273 -> 1348cb1335f90011dcca
+21:04:40.004 L1-Dev  -> Block Is Proccessing -> 273 -> 1348cb1335f90011dcca
+[]
+21:04:40.004 L1-Dev  -> Distributing [ ____________273 : 300 ] To 13.229.56.127:5002
++21:04:55.160 L1-Dev  -> Income Block Row No -> 274, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:04:55.472 L1-Dev  -> New Block Arrived : 1348cb133617002
+21:04:55.472 L1-Dev  -> Block Came From The Validator Queue [ ____________274 :  300 ]
+21:04:55.472 L1-Dev  -> Settings -> Last Block -> 274 -> 1348cb1336080010aa0e
+21:04:55.472 L1-Dev  -> Block Is Proccessing -> 274 -> 1348cb1336080010aa0e
++21:05:10.160 L1-Dev  -> Income Block Row No -> 275, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:05:10.472 L1-Dev  -> New Block Arrived : 1348cb13364e003
+21:05:10.488 L1-Dev  -> Block Came From The Validator Queue [ ____________275 :  300 ]
+21:05:10.488 L1-Dev  -> Settings -> Last Block -> 275 -> 1348cb133617002996e7
+21:05:10.488 L1-Dev  -> Block Is Proccessing -> 275 -> 1348cb133617002996e7
+21:05:25.159 L1-Dev  -> Income Block Row No -> 276, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:05:25.472 L1-Dev  -> New Block Arrived : 1348cb13365d004
+21:05:25.488 L1-Dev  -> Block Came From The Validator Queue [ ____________276 :  300 ]
+21:05:25.488 L1-Dev  -> Settings -> Last Block -> 276 -> 1348cb13364e003fe92a
+21:05:25.488 L1-Dev  -> Block Is Proccessing -> 276 -> 1348cb13364e003fe92a
++21:05:40.159 L1-Dev  -> Income Block Row No -> 277, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:05:40.472 L1-Dev  -> New Block Arrived : 1348cb13366c004
+21:05:40.487 L1-Dev  -> Block Came From The Validator Queue [ ____________277 :  300 ]
+21:05:40.487 L1-Dev  -> Settings -> Last Block -> 277 -> 1348cb13365d00400b1d
+21:05:40.487 L1-Dev  -> Block Is Proccessing -> 277 -> 1348cb13365d00400b1d
++21:05:55.003 L1-Dev  -> Empty Block Executed
+21:05:55.003 L1-Dev  -> Block Came From The Main Loop [ ____________278 :  300 ]
+21:05:55.003 L1-Dev  -> Settings -> Last Block -> 278 -> 1348cb13366c0040e586
+21:05:55.003 L1-Dev  -> Block Is Proccessing -> 278 -> 1348cb13366c0040e586
+[]
+21:05:55.003 L1-Dev  -> Distributing [ ____________278 : 300 ] To 13.229.56.127:5002
+21:05:55.159 L1-Dev  -> Income Block Row No -> 278, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:05:55.472 L1-Dev  -> New Block Arrived : 1348cb13367b004
+21:05:55.472 L1-Dev  -> Block Came From The Validator Queue [ ____________278 :  300 ]
+21:05:55.472 L1-Dev  -> We Already Processed The Block -> [ 278 ]
++21:06:10.159 L1-Dev  -> Income Block Row No -> 279, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:06:10.471 L1-Dev  -> New Block Arrived : 1348cb1336b2001
+21:06:10.471 L1-Dev  -> Block Came From The Validator Queue [ ____________279 :  300 ]
+21:06:10.471 L1-Dev  -> Settings -> Last Block -> 279 -> 1348cb13367b0041c9cb
+21:06:10.471 L1-Dev  -> Block Is Proccessing -> 279 -> 1348cb13367b0041c9cb
+21:06:25.002 L1-Dev  -> Empty Block Executed
+21:06:25.002 L1-Dev  -> Block Came From The Main Loop [ ____________280 :  300 ]
+21:06:25.002 L1-Dev  -> Settings -> Last Block -> 280 -> 1348cb1336b2001f1961
+21:06:25.002 L1-Dev  -> Block Is Proccessing -> 280 -> 1348cb1336b2001f1961
+[]
+21:06:25.002 L1-Dev  -> Distributing [ ____________280 : 300 ] To 13.229.56.127:5002
++21:06:40.159 L1-Dev  -> Income Block Row No -> 281, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:06:40.471 L1-Dev  -> New Block Arrived : 1348cb1336d0002
+21:06:40.471 L1-Dev  -> Block Came From The Validator Queue [ ____________281 :  300 ]
+21:06:40.471 L1-Dev  -> Settings -> Last Block -> 281 -> 1348cb1336c1000b9a95
+21:06:40.471 L1-Dev  -> Block Is Proccessing -> 281 -> 1348cb1336c1000b9a95
++21:06:55.158 L1-Dev  -> Income Block Row No -> 282, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:06:55.471 L1-Dev  -> New Block Arrived : 1348cb1336df002
+21:06:55.471 L1-Dev  -> Block Came From The Validator Queue [ ____________282 :  300 ]
+21:06:55.471 L1-Dev  -> Settings -> Last Block -> 282 -> 1348cb1336d00020321d
+21:06:55.471 L1-Dev  -> Block Is Proccessing -> 282 -> 1348cb1336d00020321d
++21:07:10.158 L1-Dev  -> Income Block Row No -> 283, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:07:10.486 L1-Dev  -> New Block Arrived : 1348cb133716003
+21:07:10.486 L1-Dev  -> Block Came From The Validator Queue [ ____________283 :  300 ]
+21:07:10.486 L1-Dev  -> Settings -> Last Block -> 283 -> 1348cb1336df00205a77
+21:07:10.486 L1-Dev  -> Block Is Proccessing -> 283 -> 1348cb1336df00205a77
+21:07:25.158 L1-Dev  -> Income Block Row No -> 284, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:07:25.486 L1-Dev  -> New Block Arrived : 1348cb133725003
+21:07:25.486 L1-Dev  -> Block Came From The Validator Queue [ ____________284 :  300 ]
+21:07:25.486 L1-Dev  -> Settings -> Last Block -> 284 -> 1348cb13371600382af8
+21:07:25.486 L1-Dev  -> Block Is Proccessing -> 284 -> 1348cb13371600382af8
++21:07:40.158 L1-Dev  -> Income Block Row No -> 285, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:07:40.470 L1-Dev  -> New Block Arrived : 1348cb133734003
+21:07:40.470 L1-Dev  -> Block Came From The Validator Queue [ ____________285 :  300 ]
+21:07:40.470 L1-Dev  -> Settings -> Last Block -> 285 -> 1348cb133725003946c5
+21:07:40.486 L1-Dev  -> Block Is Proccessing -> 285 -> 1348cb133725003946c5
++21:07:55.017 L1-Dev  -> Empty Block Executed
+21:07:55.017 L1-Dev  -> Block Came From The Main Loop [ ____________286 :  300 ]
+21:07:55.017 L1-Dev  -> Settings -> Last Block -> 286 -> 1348cb13373400395910
+21:07:55.017 L1-Dev  -> Block Is Proccessing -> 286 -> 1348cb13373400395910
+[]
+21:07:55.033 L1-Dev  -> Distributing [ ____________286 : 300 ] To 13.229.56.127:5002
++21:08:10.142 L1-Dev  -> Income Block Row No -> 287, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:08:10.470 L1-Dev  -> New Block Arrived : 1348cb13377a000
+21:08:10.470 L1-Dev  -> Block Came From The Validator Queue [ ____________287 :  300 ]
+21:08:10.470 L1-Dev  -> Settings -> Last Block -> 287 -> 1348cb1337430044702d
+21:08:10.470 L1-Dev  -> Block Is Proccessing -> 287 -> 1348cb1337430044702d
+21:08:25.001 L1-Dev  -> Empty Block Executed
+21:08:25.001 L1-Dev  -> Block Came From The Main Loop [ ____________288 :  300 ]
+21:08:25.001 L1-Dev  -> Settings -> Last Block -> 288 -> 1348cb13377a0009f0e0
+21:08:25.001 L1-Dev  -> Block Is Proccessing -> 288 -> 1348cb13377a0009f0e0
+[]
+21:08:25.017 L1-Dev  -> Distributing [ ____________288 : 300 ] To 13.229.56.127:5002
+21:08:25.017 L1-Dev  -> Income Block Row No -> 288, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:08:25.470 L1-Dev  -> That block generated by wrong validator
+21:08:25.470 L1-Dev  -> Block Time : 202211052108250002774
++21:08:40.001 L1-Dev  -> Empty Block Executed
+21:08:40.001 L1-Dev  -> Block Came From The Main Loop [ ____________289 :  300 ]
+21:08:40.001 L1-Dev  -> Settings -> Last Block -> 289 -> 1348cb133789000603a8
+21:08:40.001 L1-Dev  -> Block Is Proccessing -> 289 -> 1348cb133789000603a8
+[]
+21:08:40.001 L1-Dev  -> Distributing [ ____________289 : 300 ] To 13.229.56.127:5002
++21:08:51.834 L1-Dev  -> Node Just Left : NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+21:08:51.834 L1-Dev  -> Node Count : 1 / 2
+cevrim-disi-olanlar-siliniyor
+
+21:08:52.907 L1-Dev  -> Please Wait While Node Terminating
+21:08:52.907 L1-Dev  -> Sending Kill Signals To All Nodes
+
+C:\Users\Administrator\Desktop\test-node>
