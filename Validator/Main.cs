@@ -527,6 +527,8 @@ NVG.Settings.WaitForGeneratedBlock = TRUE;
 20:07:35.828 L1-Dev  -> Block Came From The Validator Queue [ ____________106 :  300 ]
 20:07:35.828 L1-Dev  -> We Already Processed The Block -> [ 106 ]
 NVG.Settings.WaitForGeneratedBlock = false;
+
+
             */
 
             bool executeEmptyBlock = false;
