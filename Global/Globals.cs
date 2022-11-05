@@ -378,7 +378,6 @@ namespace Notus.Variable
                     {
                         try
                         {
-
                             string cmdText = cmdName + ":" +
                                 Settings.Nodes.My.IP.Wallet + ":" +
                                 Settings.Nodes.My.IP.IpAddress;

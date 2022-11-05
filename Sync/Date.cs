@@ -48,7 +48,6 @@ namespace Notus.Sync
                                 }
                             }
                             counter = 0;
-                            //Console.WriteLine("[ Date.cs ] -> After refresh ntp : " + NVG.NOW.LastDiffUpdate.ToString("HH mm ss fff"));
                         }
                     }
                     timerRunning = false;
