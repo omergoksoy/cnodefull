@@ -30,10 +30,7 @@ namespace Notus.Sync
                         counter++;
                         if (counter > 180)
                         {
-                            // her 15 dakika da bir zmaan güncellenecek
-                            // her 15 dakika da bir zmaan güncellenecek
-
-                            //Console.WriteLine("BEfore update ntp : " + NVG.NOW.LastDiffUpdate.ToString("HH mm ss fff"));
+                            Console.WriteLine("[ Date.cs ] -> Before update ntp : " + NVG.NOW.LastDiffUpdate.ToString("HH mm ss fff"));
                             ulong lastUpdateTime = ND.ToLong(NVG.NOW.LastDiffUpdate);
                             bool updateNtpTimeDone = false;
                             while (updateNtpTimeDone == false)
@@ -42,6 +39,7 @@ namespace Notus.Sync
                                 NGF.StartTimeSync();
                                 if (ND.ToLong(NVG.NOW.LastDiffUpdate) > lastUpdateTime)
                                 {
+                                    NP.Info("NTP Time Updated");
                                     updateNtpTimeDone = true;
                                 }
                                 else
@@ -50,7 +48,7 @@ namespace Notus.Sync
                                 }
                             }
                             counter = 0;
-                            //Console.WriteLine("after refresh ntp : " + NVG.NOW.LastDiffUpdate.ToString("HH mm ss fff"));
+                            //Console.WriteLine("[ Date.cs ] -> After refresh ntp : " + NVG.NOW.LastDiffUpdate.ToString("HH mm ss fff"));
                         }
                     }
                     timerRunning = false;

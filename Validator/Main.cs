@@ -499,6 +499,13 @@ namespace Notus.Validator
 
             /*
             node'un bir tanesi
+20:07:20.009 L1-Dev  -> Empty Block Executed
+20:07:20.009 L1-Dev  -> Block Came From The Main Loop [ ____________105 :  300 ]
+20:07:20.009 L1-Dev  -> Settings -> Last Block -> 105 -> 1348cb0310010015747b
+20:07:20.009 L1-Dev  -> Block Added To Chain -> 105 -> 1348cb0310010015747b
+20:07:20.009 L1-Dev  -> Block Is Proccessing -> 105 -> 1348cb0310010015747b
+20:07:20.026 L1-Dev  -> Distributing [ ____________105 : 300 ] To 3.75.110.186:5002
+
 20:07:35.354 L1-Dev  -> Empty Block Executed
 20:07:35.354 L1-Dev  -> Block Came From The Main Loop [ ____________106 :  300 ]
 20:07:35.354 L1-Dev  -> Settings -> Last Block -> 106 -> 1348cb0310100026f39d
@@ -514,6 +521,15 @@ NVG.Settings.WaitForGeneratedBlock = false;
 
            
             node'un bir tanesi
+NVG.Settings.WaitForGeneratedBlock = TRUE;
+20:07:20.161 L1-Dev  -> Income Block Row No -> 105, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+20:07:20.474 L1-Dev  -> Arrived New Block : 1348cb031010002
+20:07:20.474 L1-Dev  -> Block Came From The Validator Queue [ ____________105 :  300 ]
+20:07:20.474 L1-Dev  -> Settings -> Last Block -> 105 -> 1348cb0310010015747b
+20:07:20.474 L1-Dev  -> Block Added To Chain -> 105 -> 1348cb0310010015747b
+20:07:20.474 L1-Dev  -> Block Is Proccessing -> 105 -> 1348cb0310010015747b
+NVG.Settings.WaitForGeneratedBlock = false;
+
 20:07:35.501 L1-Dev  -> Empty Block Executed
 20:07:35.501 L1-Dev  -> Block Came From The Main Loop [ ____________106 :  300 ]
 20:07:35.501 L1-Dev  -> Settings -> Last Block -> 106 -> 1348cb0310100026f39d
