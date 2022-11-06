@@ -493,7 +493,7 @@ namespace Notus.Validator
                 SetTimeStatusForBeginSync(false);       // release timer
             }
         }
-        public ulong EmptyBlockGenerationTime(ulong queueTimePeriod)
+        public ulong EmptyBlockGenerationTime()
         {
             /*
             şu andaki blok çakışmaları empty bloktan dolayı gerçekleşiyor
@@ -528,15 +528,16 @@ namespace Notus.Validator
             }
             if (executeEmptyBlock == true)
             {
-                NP.Info("CurrentQueueTime : " + CurrentQueueTime.ToString());
                 if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, NVG.Settings.Nodes.Queue[CurrentQueueTime].Wallet))
                 {
-                    NP.Info("My Turn To Empty block");
+                    NP.Success("My Turn For Empty block");
                 }
                 else
                 {
-                    NP.Info("Other Validator Turn To Empty block");
+                    NP.Success("Other Validator Turn For Empty block");
                 }
+                NP.Info("NVG.NOW.Int      : " + NVG.NOW.Int.ToString());
+                NP.Info("CurrentQueueTime : " + CurrentQueueTime.ToString());
                 NVG.Settings.OtherBlockCount = 0;
                 NVG.Settings.EmptyBlockCount++;
                 NGF.BlockQueue.AddEmptyBlock();
@@ -851,25 +852,17 @@ namespace Notus.Validator
 
             bool prepareNextQueue = false;
             byte nodeOrderCount = 0;
-            //bool waitPrinted = false;
-            //bool notMyTurnPrinted = false;
 
             NVG.Settings.MsgOrch.OnReceive((string IncomeText) =>
             {
                 //sync-control
                 string innerResultStr = ValidatorQueueObj.ProcessIncomeData(IncomeText);
-                //Console.WriteLine("Main.Cs -> IncomeText [ " + IncomeText.Length + " ] : " + IncomeText);
-                //Console.WriteLine("Main.Cs -> resultStr [ " + innerResultStr.Length + " ] : " + innerResultStr);
             });
             NVG.Settings.MsgOrch.Start();
 
             bool start_FirstQueueGroupTime = false;
-            //while (tmpExitMainLoop == false)
-
 
             // nodelar birbirlerine her durumda haber vermeli
-
-
             while (tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false)
             {
                 if (prepareNextQueue == false)
@@ -904,7 +897,6 @@ namespace Notus.Validator
 
                 if (NVG.NOW.Int >= CurrentQueueTime)
                 {
-                    //waitPrinted = false;
                     nodeOrderCount++;
                     if (nodeOrderCount == 1)
                     {
@@ -915,14 +907,6 @@ namespace Notus.Validator
 
                     if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, SelectedWalletId))
                     {
-                        /*
-                        if (waitPrinted == false)
-                        {
-                            waitPrinted = true;
-                            NP.Info("My Turn -> " + NVG.NOW.Int.ToString() + " ->> " + CurrentQueueTime.ToString());
-                        }
-                        */
-
                         while (NVG.Settings.WaitForGeneratedBlock == true)
                         {
                             Thread.Sleep(1);
@@ -934,7 +918,7 @@ namespace Notus.Validator
                         {
                             if (txExecuted == false)
                             {
-                                ulong emptyBlockGenerateTime = EmptyBlockGenerationTime(queueTimePeriod);
+                                ulong emptyBlockGenerateTime = EmptyBlockGenerationTime();
                                 //bool executeEmptyBlock = EmptyBlockGeneration();
 
                                 NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
@@ -1003,7 +987,6 @@ namespace Notus.Validator
                             NGF.BlockQueue.LoadFromPoolDb();
                         }
                     }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId)) ELSE 
-                    prepareNextQueue = false;
                     if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
                     {
                         // eğer yeterli sayıda node yokse
@@ -1022,12 +1005,14 @@ namespace Notus.Validator
                             ValidatorQueueObj.ReOrderNodeQueue(CurrentQueueTime, queueSeedStr);
                         }
                     } //if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
-                    CurrentQueueTime = ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod);
                     if (nodeOrderCount == 6)
                     {
                         nodeOrderCount = 0;
                         start_FirstQueueGroupTime = true;
                     } //if (nodeOrderCount == 6)
+
+                    prepareNextQueue = false;
+                    CurrentQueueTime = ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod);
                 }  // if (NVG.NOW.Int >= currentQueueTime)
             } // while ( tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false )
 

@@ -364,7 +364,7 @@ namespace Notus.Variable
                         Thread.Sleep(10);
                     }
                 }
-
+                /*
                 int count = NVG.Settings.Nodes.Queue.Count - 20;
                 int sayac = 0;
                 foreach (var entry in NVG.Settings.Nodes.Queue)
@@ -375,6 +375,7 @@ namespace Notus.Variable
                         Console.WriteLine(entry.Key + " -> " + JsonSerializer.Serialize(entry.Value));
                     }
                 }
+                */
                 Environment.Exit(0);
             }
             public static void GetUtcTimeFromNode(int howManySeconds, bool beginingRoutine)
