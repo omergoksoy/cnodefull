@@ -879,19 +879,27 @@ namespace Notus.Validator
                         {
                             Thread.Sleep(1);
                         }
-
+                        
                         bool txExecuted = false;
+                        bool emptyBlockChecked = false;
+
                         ulong endingTime = ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod - 10);
                         while (endingTime >= NVG.NOW.Int)
                         {
                             if (txExecuted == false)
                             {
-                                if (EmptyBlockGenerationTime() == true)
+                                if (emptyBlockChecked == false)
                                 {
-                                    NP.Success("Empty Block Executed");
-                                    NVG.Settings.OtherBlockCount = 0;
-                                    NVG.Settings.EmptyBlockCount++;
-                                    NGF.BlockQueue.AddEmptyBlock();
+                                    if (EmptyBlockGenerationTime() == true)
+                                    {
+                                        Console.WriteLine("NVG.NOW.Int : " + NVG.NOW.Int.ToString());
+                                        Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
+                                        NP.Success("Empty Block Executed");
+                                        NVG.Settings.OtherBlockCount = 0;
+                                        NVG.Settings.EmptyBlockCount++;
+                                        NGF.BlockQueue.AddEmptyBlock();
+                                    }
+                                    emptyBlockChecked = true;
                                 } // if (EmptyBlockGenerationTime() == true)
 
                                 NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(

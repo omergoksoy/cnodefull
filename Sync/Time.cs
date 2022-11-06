@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Notus.Communication;
 using NVG = Notus.Variable.Globals;
 using NP = Notus.Print;
+using ND = Notus.Date;
 using NVS = Notus.Variable.Struct;
 using NGF = Notus.Variable.Globals.Functions;
 namespace Notus.Sync
@@ -24,7 +25,7 @@ namespace Notus.Sync
                 if (NVG.NOW.DiffUpdated == true)
                 {
                     NVG.NOW.Obj = DateTime.UtcNow.Add(NVG.NOW.Diff);
-                    NVG.NOW.Int = Notus.Date.ToLong(NVG.NOW.Obj);
+                    NVG.NOW.Int = ND.ToLong(NVG.NOW.Obj);
                 }
             }, true);  //TimerObj.Start(() =>            
         }

@@ -458,30 +458,14 @@ namespace Notus.Variable
                         int transferSpeed = int.Parse(incomeArr[1]);
                         if (transferSpeed == 0)
                         {
-                            /*
-                            bool printedText = true; 
-                            if (NOW.DiffUpdated == true)
-                            {
-                                printedText = false;
-                                NP.Info("NTP Time Is Updating");
-                            }
-                            */
                             DateTime rightNow = DateTime.UtcNow;
                             if (NOW.LastDiffUpdate!= rightNow)
                             {
-                                //NP.Basic("Before Ticks : " + NOW.Diff.Ticks.ToString());
                                 NOW.Diff = DateTime.ParseExact(incomeArr[0], "yyyyMMddHHmmssfffff", CultureInfo.InvariantCulture) - dataArriveTimeObj;
-                                //NP.Basic("After Ticks : " + NOW.Diff.Ticks.ToString());
                                 NOW.DiffUpdated = true;
                                 NOW.LastDiffUpdate = rightNow;
                                 Thread.Sleep(1);
                             }
-                            /*
-                            if (printedText == true)
-                            {
-                                NP.Info("NTP Time Updated");
-                            }
-                            */
                         }
                     }
                 });

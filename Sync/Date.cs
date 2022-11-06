@@ -30,7 +30,6 @@ namespace Notus.Sync
                         counter++;
                         if (counter > 180)
                         {
-                            NP.Info("[ Date.cs ] -> Before update ntp : " + NVG.NOW.LastDiffUpdate.ToString("HH mm ss fff"));
                             ulong lastUpdateTime = ND.ToLong(NVG.NOW.LastDiffUpdate);
                             bool updateNtpTimeDone = false;
                             while (updateNtpTimeDone == false)
@@ -39,7 +38,6 @@ namespace Notus.Sync
                                 NGF.StartTimeSync();
                                 if (ND.ToLong(NVG.NOW.LastDiffUpdate) > lastUpdateTime)
                                 {
-                                    NP.Info("NTP Time Updated");
                                     updateNtpTimeDone = true;
                                 }
                                 else
