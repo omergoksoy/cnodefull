@@ -861,9 +861,8 @@ namespace Notus.Validator
                 */
 
 
-
-
-                if (NVG.NOW.Int >= CurrentQueueTime)
+                //NGF.NowInt();
+                if (NGF.NowInt() >= CurrentQueueTime)
                 {
                     nodeOrderCount++;
                     if (nodeOrderCount == 1)
@@ -884,7 +883,7 @@ namespace Notus.Validator
                         bool emptyBlockChecked = false;
 
                         ulong endingTime = ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod - 10);
-                        while (endingTime >= NVG.NOW.Int)
+                        while (endingTime >= NGF.NowInt())
                         {
                             if (txExecuted == false)
                             {
@@ -892,7 +891,7 @@ namespace Notus.Validator
                                 {
                                     if (EmptyBlockGenerationTime() == true)
                                     {
-                                        Console.WriteLine("NVG.NOW.Int : " + NVG.NOW.Int.ToString());
+                                        Console.WriteLine("NGF.NowInt() : " + NGF.NowInt().ToString());
                                         Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
                                         NP.Success("Empty Block Executed");
                                         NVG.Settings.OtherBlockCount = 0;
@@ -918,7 +917,7 @@ namespace Notus.Validator
                                         {
                                             if (PreparedBlockData.info.rowNo > 2)
                                             {
-                                                Console.WriteLine("NVG.NOW.Int : " + NVG.NOW.Int.ToString());
+                                                Console.WriteLine("NGF.NowInt() : " + NGF.NowInt().ToString());
                                                 Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
                                                 NGF.CloseMyNode();
                                             }
@@ -957,7 +956,7 @@ namespace Notus.Validator
                                     }
                                 } // if (TmpBlockStruct != null) ELSE 
                             } // if (txExecuted == false)
-                        } // while (endingTime >= NVG.NOW.Int)
+                        } // while (endingTime >= NGF.NowInt())
                     }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
                     else
                     {
@@ -992,7 +991,7 @@ namespace Notus.Validator
 
                     prepareNextQueue = false;
                     CurrentQueueTime = ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod);
-                }  // if (NVG.NOW.Int >= currentQueueTime)
+                }  // if (NGF.NowInt() >= currentQueueTime)
             } // while ( tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false )
 
             if (NVG.Settings.NodeClosing == false)

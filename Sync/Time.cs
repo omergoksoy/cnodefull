@@ -24,8 +24,7 @@ namespace Notus.Sync
             {
                 if (NVG.NOW.DiffUpdated == true)
                 {
-                    NVG.NOW.Obj = DateTime.UtcNow.Add(NVG.NOW.Diff);
-                    NVG.NOW.Int = ND.ToLong(NVG.NOW.Obj);
+                    NGF.UpdateTime();
                 }
             }, true);  //TimerObj.Start(() =>            
         }

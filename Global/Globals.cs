@@ -445,6 +445,16 @@ namespace Notus.Variable
                 SendMessageToTimeServer("a", 3);
             }
 
+            public static ulong NowInt()
+            {
+                UpdateTime();
+                return NVG.NOW.Int;
+            }
+            public static void UpdateTime()
+            {
+                NVG.NOW.Obj = DateTime.UtcNow.Add(NVG.NOW.Diff);
+                NVG.NOW.Int = ND.ToLong(NVG.NOW.Obj);
+            }
 
             //burada merkezi node'dan zaman bilgisini alıyor
             public static void ThreadNodeDinleme()
