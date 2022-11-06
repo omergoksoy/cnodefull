@@ -1,49 +1,39 @@
-
-2 => 14:08:55.505 L1-Dev  -> selectedWalletId : NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
-2 => 14:08:55.505 L1-Dev  -> My Turn -> 20221106140855505 ->> 20221106140855500
-2 => 14:08:56.505 L1-Dev  -> selectedWalletId : NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
-2 => 14:08:56.505 L1-Dev  -> My Turn -> 20221106140856505 ->> 20221106140856500
-2 => 14:08:57.506 L1-Dev  -> selectedWalletId : NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
-2 => 14:08:57.506 L1-Dev  -> My Turn -> 20221106140857506 ->> 20221106140857500
-2 => 14:08:58.505 L1-Dev  -> selectedWalletId : NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
-2 => 14:08:58.505 L1-Dev  -> My Turn -> 20221106140858505 ->> 20221106140858500
-2 => 14:08:59.505 L1-Dev  -> selectedWalletId : NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
-2 => 14:08:59.505 L1-Dev  -> My Turn -> 20221106140859505 ->> 20221106140859500
-
-2 => 14:09:00.005 L1-Dev  -> Empty Block - Blok Zamani Uygun
-2 => 14:09:00.005 L1-Dev  -> Empty Block Executed
-2 => 14:09:00.005 L1-Dev  -> currentQueueTime : 20221106140859500
-2 => 14:09:00.005 L1-Dev  -> queueTimePeriod  : 500
-2 => 14:09:00.005 L1-Dev  -> Block Came From The Main Loop [ _____________11 :  300 ]
-2 => 14:09:00.005 L1-Dev  -> Settings -> Last Block -> 11 -> 1348cb22262d00161feb
-2 => 14:09:00.005 L1-Dev  -> Block Is Proccessing -> 11 -> 1348cb22262d00161feb
-2 => 14:09:00.022 L1-Dev  -> Distributing [ _____________11 : 300 ] To 3.75.110.186:5002
-2 => 14:09:00.022 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
-2 => 14:09:00.022 L1-Dev  -> Income Block Row No -> 11:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
-2 => 14:09:00.022 L1-Dev  -> Income Block Row No -> 11, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
-2 => 14:09:00.365 L1-Dev  -> <block> Downloaded from other validator
-2 => 14:09:00.365 L1-Dev  -> New Block Arrived : 1348cb222664003
-2 => 14:09:00.365 L1-Dev  -> Block Came From The Validator Queue [ _____________11 :  300 ]
-2 => 14:09:00.365 L1-Dev  -> We Already Processed The Block -> [ 11 ]
-2 => 20221106140853000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":38}
-2 => 20221106140853500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":38}
-2 => 20221106140854000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":39}
-2 => 20221106140854500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":39}
-2 => 20221106140855000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":39}
-2 => 20221106140855500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":39}
-2 => 20221106140856000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":39}
-2 => 20221106140856500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":39}
-2 => 20221106140857000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":40}
-2 => 20221106140857500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":40}
-2 => 20221106140858000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":40}
-2 => 20221106140858500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":40}
-2 => 20221106140859000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":40}
-2 => 20221106140859500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":40}
-2 => 20221106140900000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":41}
-2 => 20221106140900500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":41}
-2 => 20221106140901000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":41}
-2 => 20221106140901500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":41}
-2 => 20221106140902000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":41}
-2 => 20221106140902500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":41}
+18:14:04.504 L1-Dev  -> selectedWalletId : NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+18:14:04.504 L1-Dev  -> My Turn -> 20221106181404504 ->> 20221106181404500
+18:14:05.004 L1-Dev  -> Empty Block - Blok Zamani Uygun
+18:14:05.004 L1-Dev  -> Empty Block Executed
+18:14:05.004 L1-Dev  -> currentQueueTime : 20221106181404500
+18:14:05.004 L1-Dev  -> queueTimePeriod  : 500
+18:14:05.004 L1-Dev  -> Block Came From The Main Loop [ _____________78 :  300 ]
+18:14:05.004 L1-Dev  -> Settings -> Last Block -> 78 -> 1348cb22c466001e1c90
+18:14:05.004 L1-Dev  -> Block Is Proccessing -> 78 -> 1348cb22c466001e1c90
+18:14:05.020 L1-Dev  -> Distributing [ _____________78 : 300 ] To 3.75.110.186:5002
+18:14:05.037 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+18:14:05.037 L1-Dev  -> Income Block Row No -> 78:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:14:05.037 L1-Dev  -> Income Block Row No -> 78, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:14:05.347 L1-Dev  -> <block> Downloaded from other validator
+18:14:05.347 L1-Dev  -> New Block Arrived : 1348cb22c49d001
+18:14:05.347 L1-Dev  -> Block Came From The Validator Queue [ _____________78 :  300 ]
+18:14:05.347 L1-Dev  -> We Already Processed The Block -> [ 78 ]
+20221106181358000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":373}
+20221106181358500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":373}
+20221106181359000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":374}
+20221106181359500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":374}
+20221106181400000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":374}
+20221106181400500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":374}
+20221106181401000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":374}
+20221106181401500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":374}
+20221106181402000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":375}
+20221106181402500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":375}
+20221106181403000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":375}
+20221106181403500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":375}
+20221106181404000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":375}
+20221106181404500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":375}
+20221106181405000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":376}
+20221106181405500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":376}
+20221106181406000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":376}
+20221106181406500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":376}
+20221106181407000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":376}
+20221106181407500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":376}
 
 C:\Users\Administrator\Desktop\test-node>

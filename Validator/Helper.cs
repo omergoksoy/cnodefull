@@ -36,7 +36,7 @@ namespace Notus.Validator
                     " ]: " +
                     blockGenarationTime.ToString()
                 );
-                Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue, NVC.JsonSetting));
+                //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue, NVC.JsonSetting));
             }
             return innerSendToMyChain;
         }

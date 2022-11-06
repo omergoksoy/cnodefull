@@ -30,7 +30,7 @@ namespace Notus.Sync
                         counter++;
                         if (counter > 180)
                         {
-                            Console.WriteLine("[ Date.cs ] -> Before update ntp : " + NVG.NOW.LastDiffUpdate.ToString("HH mm ss fff"));
+                            NP.Info("[ Date.cs ] -> Before update ntp : " + NVG.NOW.LastDiffUpdate.ToString("HH mm ss fff"));
                             ulong lastUpdateTime = ND.ToLong(NVG.NOW.LastDiffUpdate);
                             bool updateNtpTimeDone = false;
                             while (updateNtpTimeDone == false)
