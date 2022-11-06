@@ -514,19 +514,29 @@ namespace Notus.Validator
             }
             howManySeconds = 15;
             ulong earliestTime = ND.ToLong(ND.ToDateTime(NVG.Settings.LastBlock.info.time).AddSeconds(howManySeconds));
+
             if (NVG.NOW.Int > earliestTime)
             {
                 executeEmptyBlock = true;
-                NP.Success("Empty Block - Blok Zamani Uygun");
+                //NP.Success("Empty Block - Blok Zamani Uygun");
             }
             if (NVG.Settings.OtherBlockCount > NVG.Settings.Genesis.Empty.Interval.Block)
             {
                 earliestTime = ND.ToLong(ND.ToDateTime(NVG.Settings.LastBlock.info.time).AddSeconds(1));
-                NP.Success("Empty Block - Blok Miktari Uygun");
+                //NP.Success("Empty Block - Blok Miktari Uygun");
                 executeEmptyBlock = true;
             }
             if (executeEmptyBlock == true)
             {
+                NP.Info("CurrentQueueTime : " + CurrentQueueTime.ToString());
+                if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, NVG.Settings.Nodes.Queue[CurrentQueueTime].Wallet))
+                {
+                    NP.Info("My Turn To Empty block");
+                }
+                else
+                {
+                    NP.Info("Other Validator Turn To Empty block");
+                }
                 NVG.Settings.OtherBlockCount = 0;
                 NVG.Settings.EmptyBlockCount++;
                 NGF.BlockQueue.AddEmptyBlock();
