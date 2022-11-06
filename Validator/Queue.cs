@@ -145,6 +145,7 @@ namespace Notus.Validator
                                 blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey +
                             "</block>"
                         );
+                        NP.Info("<block> message sended");
                     });
 
                     //NP.Info(NVG.Settings, "Distrubute : " + ND.ToDateTime(NVG.NOW.Int).ToString("HH mm ss fff"));
@@ -336,7 +337,7 @@ namespace Notus.Validator
                 blok alınması işlemini tamamla,
                 blok alma işi bitince yeni blok oluşturulsun
                 */
-                //Console.WriteLine("NVG.Settings.WaitForGeneratedBlock = TRUE;");
+                NP.Info("NVG.Settings.WaitForGeneratedBlock = TRUE;");
                 NVG.Settings.WaitForGeneratedBlock = true;
 
                 //NP.Info(NVG.Settings, "Block Row No Income -> " + ND.ToDateTime(NVG.NOW.Int).ToString("HH mm ss fff"));
@@ -344,7 +345,7 @@ namespace Notus.Validator
 
 
                 string incomeDataStr = GetPureText(incomeData, "block");
-                //NP.Info(NVG.Settings, "Income Block Row No -> " + incomeDataStr);
+                NP.Info(NVG.Settings, "Income Block Row No -> " + incomeDataStr);
                 if (incomeDataStr.IndexOf(":") < 0)
                 {
                     return "error-msg";
@@ -377,11 +378,12 @@ namespace Notus.Validator
                     Console.WriteLine("Queue.cs -> Block Is NULL");
                     return "tmpError-true";
                 }
+                NP.Info("<block> Downloaded from other validator");
                 if (Func_NewBlockIncome != null)
                 {
                     if (Func_NewBlockIncome(tmpBlockData) == true)
                     {
-                        //Console.WriteLine("NVG.Settings.WaitForGeneratedBlock = false;");
+                        NP.Warning("NVG.Settings.WaitForGeneratedBlock = FALSE;");
                         NVG.Settings.WaitForGeneratedBlock = false;
                         return "done";
                     }

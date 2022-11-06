@@ -903,13 +903,11 @@ namespace Notus.Validator
 
                     if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
                     {
-                        /*
                         if (waitPrinted == false)
                         {
                             waitPrinted = true;
-                            Console.WriteLine("My Turn ->" + NVG.NOW.Int.ToString() + " - " + currentQueueTime.ToString());
+                            NP.Info("My Turn -> " + NVG.NOW.Int.ToString() + " ->> " + currentQueueTime.ToString());
                         }
-                        */
 
                         while (NVG.Settings.WaitForGeneratedBlock == true)
                         {
@@ -1174,6 +1172,7 @@ namespace Notus.Validator
                 bool innerSendToMyChain = Notus.Validator.Helper.RightBlockValidator(blockData);
                 ProcessBlock_PrintSection(blockData, blockSource);
                 NP.Warning(NVG.Settings, "We Already Processed The Block -> [ " + blockData.info.rowNo.ToString() + " ]");
+                Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue,Notus.Variable.Constant.JsonSetting));
                 return true;
             }
 
