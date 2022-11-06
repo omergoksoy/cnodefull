@@ -19,9 +19,7 @@ namespace Notus.Validator
 {
     public class Main : IDisposable
     {
-        private ulong EndingTime = 0;
         private ulong CurrentQueueTime = 0;
-        private string SelectedWalletId = string.Empty;
         private bool MyReadyMessageSended = false;
         private bool FirstSyncIsDone = false;
         //this variable hold current processing block number
@@ -493,7 +491,7 @@ namespace Notus.Validator
                 SetTimeStatusForBeginSync(false);       // release timer
             }
         }
-        public ulong EmptyBlockGenerationTime()
+        public bool EmptyBlockGenerationTime()
         {
             /*
             şu andaki blok çakışmaları empty bloktan dolayı gerçekleşiyor
@@ -501,8 +499,6 @@ namespace Notus.Validator
             ayrıca node sayısının kontrolünü farklı bir yöntem ile gerçekleştirmek gerekiyor
             burayı kontrol et
             */
-
-            bool executeEmptyBlock = false;
             int howManySeconds = NVG.Settings.Genesis.Empty.Interval.Time;
             if (NVG.Settings.Genesis.Empty.SlowBlock.Count >= NVG.Settings.EmptyBlockCount)
             {
@@ -517,39 +513,13 @@ namespace Notus.Validator
 
             if (NVG.NOW.Int > earliestTime)
             {
-                executeEmptyBlock = true;
-                //NP.Success("Empty Block - Blok Zamani Uygun");
+                return true;
             }
             if (NVG.Settings.OtherBlockCount > NVG.Settings.Genesis.Empty.Interval.Block)
             {
-                earliestTime = ND.ToLong(ND.ToDateTime(NVG.Settings.LastBlock.info.time).AddSeconds(1));
-                //NP.Success("Empty Block - Blok Miktari Uygun");
-                executeEmptyBlock = true;
+                return true;
             }
-            if (executeEmptyBlock == true)
-            {
-                if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, NVG.Settings.Nodes.Queue[CurrentQueueTime].Wallet))
-                {
-                    NP.Success("My Turn For Empty block");
-                }
-                else
-                {
-                    NP.Success("Other Validator Turn For Empty block");
-                }
-                NP.Info("NVG.NOW.Int      : " + NVG.NOW.Int.ToString());
-                NP.Info("CurrentQueueTime : " + CurrentQueueTime.ToString());
-                NVG.Settings.OtherBlockCount = 0;
-                NVG.Settings.EmptyBlockCount++;
-                NGF.BlockQueue.AddEmptyBlock();
-            }
-
-            if (executeEmptyBlock == true)
-            {
-                NP.Success(NVG.Settings, "Empty Block Executed");
-                //NP.Success("CurrentQueueTime : " + CurrentQueueTime.ToString());
-                //NP.Success("queueTimePeriod  : " + queueTimePeriod.ToString());
-            }
-            return earliestTime;
+            return false;
         }
         public void Start()
         {
@@ -701,8 +671,6 @@ namespace Notus.Validator
                             NP.Warning("Block Time : " + tmpNewBlockIncome.info.time);
 
                             Console.WriteLine("NVG.NOW.Int : " + NVG.NOW.Int.ToString());
-                            Console.WriteLine("SelectedWalletId : " + SelectedWalletId);
-                            Console.WriteLine("EndingTime       : " + EndingTime.ToString());
                             Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
                             NGF.CloseMyNode();
                         }
@@ -846,13 +814,6 @@ namespace Notus.Validator
                 ValidatorQueueObj.WaitForEnoughNode = false;
             }
 
-            CurrentQueueTime = NVG.NodeQueue.Starting;
-            // her node için ayrılan süre
-            ulong queueTimePeriod = (ulong)(NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime);
-
-            bool prepareNextQueue = false;
-            byte nodeOrderCount = 0;
-
             NVG.Settings.MsgOrch.OnReceive((string IncomeText) =>
             {
                 //sync-control
@@ -860,16 +821,23 @@ namespace Notus.Validator
             });
             NVG.Settings.MsgOrch.Start();
 
-            bool start_FirstQueueGroupTime = false;
 
-            // nodelar birbirlerine her durumda haber vermeli
+            // her node için ayrılan süre
+            ulong queueTimePeriod = (ulong)(NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime);
+
+            bool start_FirstQueueGroupTime = false;
+            bool prepareNextQueue = false;
+            byte nodeOrderCount = 0;
+            string selectedWalletId = string.Empty;
+            CurrentQueueTime = NVG.NodeQueue.Starting;
+
             while (tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false)
             {
                 if (prepareNextQueue == false)
                 {
                     prepareNextQueue = true;
-                    SelectedWalletId = NVG.Settings.Nodes.Queue[CurrentQueueTime].Wallet;
-                    if (SelectedWalletId.Length == 0)
+                    selectedWalletId = NVG.Settings.Nodes.Queue[CurrentQueueTime].Wallet;
+                    if (selectedWalletId.Length == 0)
                     {
                         if (NVG.Settings.NodeClosing == true)
                         {
@@ -905,7 +873,7 @@ namespace Notus.Validator
                         TimeBaseBlockUidList[CurrentQueueTime] = "id:" + CurrentQueueTime.ToString();
                     } // if (nodeOrderCount == 1)
 
-                    if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, SelectedWalletId))
+                    if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
                     {
                         while (NVG.Settings.WaitForGeneratedBlock == true)
                         {
@@ -913,13 +881,18 @@ namespace Notus.Validator
                         }
 
                         bool txExecuted = false;
-                        EndingTime = ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod - 10);
-                        while (EndingTime >= NVG.NOW.Int)
+                        ulong endingTime = ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod - 10);
+                        while (endingTime >= NVG.NOW.Int)
                         {
                             if (txExecuted == false)
                             {
-                                ulong emptyBlockGenerateTime = EmptyBlockGenerationTime();
-                                //bool executeEmptyBlock = EmptyBlockGeneration();
+                                if (EmptyBlockGenerationTime() == true)
+                                {
+                                    NP.Success("Empty Block Executed");
+                                    NVG.Settings.OtherBlockCount = 0;
+                                    NVG.Settings.EmptyBlockCount++;
+                                    NGF.BlockQueue.AddEmptyBlock();
+                                } // if (EmptyBlockGenerationTime() == true)
 
                                 NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
                                     ND.AddMiliseconds(CurrentQueueTime, NVC.BlockListeningForPoolTime)
@@ -938,8 +911,6 @@ namespace Notus.Validator
                                             if (PreparedBlockData.info.rowNo > 2)
                                             {
                                                 Console.WriteLine("NVG.NOW.Int : " + NVG.NOW.Int.ToString());
-                                                Console.WriteLine("SelectedWalletId : " + SelectedWalletId);
-                                                Console.WriteLine("EndingTime       : " + EndingTime.ToString());
                                                 Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
                                                 NGF.CloseMyNode();
                                             }
