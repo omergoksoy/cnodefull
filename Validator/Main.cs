@@ -891,6 +891,10 @@ namespace Notus.Validator
                 tarafından üretildiği için çakışma gerçekleşiyor.
 
                 Validatörler şu şekilde çalışacak.
+                sırsı gelen bloğunu oluşturacak.
+                eğer doğru sırada iletilmezse o zaman gelen blok reddedilmeyecek
+                alınacak ve bloklar sırasıyla ileri doğru atılacak.
+
 
 
 
