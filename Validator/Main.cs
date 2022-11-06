@@ -863,11 +863,7 @@ namespace Notus.Validator
             // nodelar birbirlerine her durumda haber vermeli
 
 
-            while (
-                tmpExitMainLoop == false && 
-                NVG.Settings.NodeClosing == false &&
-                NVG.Settings.GenesisCreated == false
-            )
+            while ( tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false )
             {
                 if (prepareNextQueue == false)
                 {
@@ -883,7 +879,7 @@ namespace Notus.Validator
                     }
                 }
 
-
+                /*
                 hatanın kaynağı şu:
                 validatör blok oluşturuyor, bu bloğu belirlenen süre içerisinde diğer validatörlere iletemiyor.
 
@@ -894,7 +890,7 @@ namespace Notus.Validator
                 sırsı gelen bloğunu oluşturacak.
                 eğer doğru sırada iletilmezse o zaman gelen blok reddedilmeyecek
                 alınacak ve bloklar sırasıyla ileri doğru atılacak.
-
+                */
 
 
 
@@ -908,7 +904,7 @@ namespace Notus.Validator
                         FirstQueueGroupTime = currentQueueTime;
                         TimeBaseBlockUidList.Add(currentQueueTime, "");
                         TimeBaseBlockUidList[currentQueueTime] = "id:" + currentQueueTime.ToString();
-                    }
+                    } // if (nodeOrderCount == 1)
 
                     if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
                     {
@@ -956,12 +952,12 @@ namespace Notus.Validator
                                         );
                                         
                                         NGF.WalletUsageList.Clear();
-                                    }
+                                    } // if (PreBlockData != null)
                                     else
                                     {
                                         NP.Danger(NVG.Settings, "Pre Block Is NULL");
-                                    }
-                                }
+                                    } // if (PreBlockData != null) ELSE
+                                } //if (TmpBlockStruct != null)
                                 else
                                 {
                                     if ((NVG.NOW.Obj - LastPrintTime).TotalSeconds > 20)
@@ -977,17 +973,17 @@ namespace Notus.Validator
                                             Console.Write("+");
                                         }
                                     }
-                                }
-                            }
-                        }
-                    }
+                                } // if (TmpBlockStruct != null) ELSE 
+                            } // if (txExecuted == false)
+                        } // while (endingTime >= NVG.NOW.Int)
+                    }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
                     else
                     {
                         if (NGF.BlockQueue.CheckPoolDb == true)
                         {
                             NGF.BlockQueue.LoadFromPoolDb();
                         }
-                    }
+                    }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId)) ELSE 
                     prepareNextQueue = false;
                     if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
                     {
@@ -1006,7 +1002,7 @@ namespace Notus.Validator
                             }
                             ValidatorQueueObj.ReOrderNodeQueue(currentQueueTime, queueSeedStr);
                         }
-                    }
+                    } //if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
                     Console.WriteLine("Before Time : " + currentQueueTime.ToString());
                     currentQueueTime = ND.AddMiliseconds(currentQueueTime, queueTimePeriod);
                     Console.WriteLine("After Time  : " + currentQueueTime.ToString());
@@ -1014,9 +1010,9 @@ namespace Notus.Validator
                     {
                         nodeOrderCount = 0;
                         start_FirstQueueGroupTime = true;
-                    }
-                }
-            }
+                    } //if (nodeOrderCount == 6)
+                }  // if (NVG.NOW.Int >= currentQueueTime)
+            } // while ( tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false )
 
             if (NVG.Settings.NodeClosing == false)
             {
