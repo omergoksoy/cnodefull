@@ -862,7 +862,7 @@ namespace Notus.Validator
 
 
                 //NGF.NowInt();
-                if (NGF.NowInt() >= CurrentQueueTime)
+                if (NGF.NowInt() > CurrentQueueTime)
                 {
                     nodeOrderCount++;
                     if (nodeOrderCount == 1)
@@ -883,7 +883,7 @@ namespace Notus.Validator
                         bool emptyBlockChecked = false;
 
                         ulong endingTime = ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod - 10);
-                        while (endingTime >= NGF.NowInt())
+                        while (endingTime > NGF.NowInt())
                         {
                             if (txExecuted == false)
                             {
