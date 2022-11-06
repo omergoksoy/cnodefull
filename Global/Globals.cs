@@ -431,12 +431,22 @@ namespace Notus.Variable
                     if (ulong.TryParse(incomeArr[0], out ulong ntpServerTimeLong))
                     {
                         int transferSpeed = int.Parse(incomeArr[1]);
-                        //Console.WriteLine("transferSpeed : " + transferSpeed.ToString());
                         if (transferSpeed == 0)
                         {
+                            bool printedText = true; 
+                            if (NOW.DiffUpdated == true)
+                            {
+                                printedText = false;
+                                NP.Info("NTP Time Is Updating");
+                            }
                             NOW.Diff = DateTime.ParseExact(incomeArr[0], "yyyyMMddHHmmssfffff", CultureInfo.InvariantCulture) - dataArriveTimeObj;
                             NOW.DiffUpdated = true;
                             NOW.LastDiffUpdate = DateTime.UtcNow;
+                            Thread.Sleep(1);
+                            if (printedText == true)
+                            {
+                                NP.Info("NTP Time Updated");
+                            }
                         }
                     }
                 });

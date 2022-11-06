@@ -43,6 +43,17 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
             Thread.Sleep(10);
         }
     }
+
+    int count = NVG.Settings.Nodes.Queue.Count - 20;
+    int sayac = 0;
+    foreach (var entry in NVG.Settings.Nodes.Queue)
+    {
+        sayac++;
+        if (sayac > count)
+        {
+            Console.WriteLine(entry.Key + " -> " + JsonSerializer.Serialize(entry.Value));
+        }
+    }
     Environment.Exit(0);
 }
 
