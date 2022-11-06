@@ -535,8 +535,8 @@ namespace Notus.Validator
             if (executeEmptyBlock == true)
             {
                 NP.Success(NVG.Settings, "Empty Block Executed");
-                NP.Success("CurrentQueueTime : " + CurrentQueueTime.ToString());
-                NP.Success("queueTimePeriod  : " + queueTimePeriod.ToString());
+                //NP.Success("CurrentQueueTime : " + CurrentQueueTime.ToString());
+                //NP.Success("queueTimePeriod  : " + queueTimePeriod.ToString());
             }
             return earliestTime;
         }
@@ -693,18 +693,7 @@ namespace Notus.Validator
                             Console.WriteLine("SelectedWalletId : " + SelectedWalletId);
                             Console.WriteLine("EndingTime       : " + EndingTime.ToString());
                             Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
-
-                            int count = NVG.Settings.Nodes.Queue.Count - 20;
-                            int sayac = 0;
-                            foreach (var entry in NVG.Settings.Nodes.Queue)
-                            {
-                                sayac++;
-                                if (sayac > count)
-                                {
-                                    Console.WriteLine(entry.Key + " -> " + JsonSerializer.Serialize(entry.Value));
-                                }
-                            }
-                            Environment.Exit(0);
+                            NGF.CloseMyNode();
                         }
                     }
                     else
@@ -958,17 +947,7 @@ namespace Notus.Validator
                                                 Console.WriteLine("SelectedWalletId : " + SelectedWalletId);
                                                 Console.WriteLine("EndingTime       : " + EndingTime.ToString());
                                                 Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
-                                                int count = NVG.Settings.Nodes.Queue.Count - 20;
-                                                int sayac = 0;
-                                                foreach (var entry in NVG.Settings.Nodes.Queue)
-                                                {
-                                                    sayac++;
-                                                    if (sayac > count)
-                                                    {
-                                                        Console.WriteLine(entry.Key + " -> " + JsonSerializer.Serialize(entry.Value));
-                                                    }
-                                                }
-                                                Environment.Exit(0);
+                                                NGF.CloseMyNode();
                                             }
                                         }
 

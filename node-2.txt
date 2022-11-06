@@ -1,39 +1,625 @@
-18:14:04.504 L1-Dev  -> selectedWalletId : NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
-18:14:04.504 L1-Dev  -> My Turn -> 20221106181404504 ->> 20221106181404500
-18:14:05.004 L1-Dev  -> Empty Block - Blok Zamani Uygun
-18:14:05.004 L1-Dev  -> Empty Block Executed
-18:14:05.004 L1-Dev  -> currentQueueTime : 20221106181404500
-18:14:05.004 L1-Dev  -> queueTimePeriod  : 500
-18:14:05.004 L1-Dev  -> Block Came From The Main Loop [ _____________78 :  300 ]
-18:14:05.004 L1-Dev  -> Settings -> Last Block -> 78 -> 1348cb22c466001e1c90
-18:14:05.004 L1-Dev  -> Block Is Proccessing -> 78 -> 1348cb22c466001e1c90
-18:14:05.020 L1-Dev  -> Distributing [ _____________78 : 300 ] To 3.75.110.186:5002
-18:14:05.037 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
-18:14:05.037 L1-Dev  -> Income Block Row No -> 78:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
-18:14:05.037 L1-Dev  -> Income Block Row No -> 78, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
-18:14:05.347 L1-Dev  -> <block> Downloaded from other validator
-18:14:05.347 L1-Dev  -> New Block Arrived : 1348cb22c49d001
-18:14:05.347 L1-Dev  -> Block Came From The Validator Queue [ _____________78 :  300 ]
-18:14:05.347 L1-Dev  -> We Already Processed The Block -> [ 78 ]
-20221106181358000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":373}
-20221106181358500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":373}
-20221106181359000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":374}
-20221106181359500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":374}
-20221106181400000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":374}
-20221106181400500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":374}
-20221106181401000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":374}
-20221106181401500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":374}
-20221106181402000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":375}
-20221106181402500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":375}
-20221106181403000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":375}
-20221106181403500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":375}
-20221106181404000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":375}
-20221106181404500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":375}
-20221106181405000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":376}
-20221106181405500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":376}
-20221106181406000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":376}
-20221106181406500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":376}
-20221106181407000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":376}
-20221106181407500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":376}
+Your Wallet Key : NTSBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+ >> [ 00 ] Start Node
+    [ 01 ] Node Type
+    [ 02 ] Change Ports
+    [ 03 ] Reset Ports
+    [ 04 ] Change Wallet Key
+    [ 05 ] Preferences
+    [ 06 ] Show My Settings
+    [ 07 ] Exit
+Press any key for setup
+Please wait for auto-start
+18:51:15.069 L1-Dev  -> Activated DevNET for Layer 1 ( Crypto Layer )
+18:51:15.069 L1-Dev  -> Starting As Main Node
+18:51:15.069 L1-Dev  -> Validator Count Sync Has Started
+18:51:15.069 L1-Dev  -> Waiting For Time Sync
+18:51:15.069 L1-Dev  -> Time Sync Is Done
+18:51:15.069 L1-Dev  -> Time Synchronizer Has Started
+18:51:19.218 L1-Dev  -> NTP Time Synchronizer Has Started
+18:51:19.218 L1-Dev  -> Enough NodeCount For Executing
+18:51:19.269 L1-Dev  -> Checking From -> 3.75.110.186
+18:51:19.770 L1-Dev  -> Current Block Were Deleted
+18:51:19.785 L1-Dev  -> Added Block : 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+18:51:20.098 L1-Dev  -> Added Block : 1348cb22d2de07186806d7372eff50995020500a76332043ea2685cdea3680817091a16d5cfd78dd683ebfb167
+18:51:20.817 L1-Dev  -> Block Integrity Valid
+18:51:20.879 L1-Dev  -> Last Block Row No : 2
+18:51:20.895 L1-Dev  -> Settings -> Last Block -> 2 -> 10000000000000000000
+18:51:20.895 L1-Dev  -> Block Is Proccessing -> 1 -> Prev is Empty [  ]
+18:51:21.113 L1-Dev  -> Settings -> Last Block -> 2 -> 10000000000000000000
+18:51:21.113 L1-Dev  -> Block Is Proccessing -> 2 -> 10000000000000000000
+18:51:21.113 L1-Dev  -> All Blocks Loaded
+18:51:21.113 L1-Dev  -> Main Validator Started
+18:51:21.113 L1-Dev  -> Listining : http://13.229.56.127:5002/
+18:51:21.113 L1-Dev  -> Http Has Started
+18:51:21.130 L1-Dev  -> Node Sync Starting
+18:51:21.130 L1-Dev  -> Waiting For Node Sync
+18:51:22.754 L1-Dev  -> Node Count : 2 / 2
+18:51:27.771 L1-Dev  -> I'm Sending Starting (When) Time / Current : 18:52:00.000 / 18:51:27.771
+18:51:28.086 L1-Dev  -> Node Blocks Are Checking For Sync
+Time Does Not Have From Nodes List
+blockTimeVal : 20221106185054046 - 202211061850540465000
+Main.cs -> blockGenarationTime [ 2 ]: 20221106185054000
+18:51:28.731 L1-Dev  -> Block Came From The Block Sync [ ______________2 :  300 ]
+18:51:28.731 L1-Dev  -> We Already Processed The Block -> [ 2 ]
+18:51:28.731 L1-Dev  -> Crypto Transfer Timer Has Started
+18:51:28.731 L1-Dev  -> First Synchronization Is Done
+18:51:28.731 L1-Dev  -> Message Listener Has Started
+18:51:29.888 L1-Dev  -> Message Node connected to 3.75.110.186:5012
+18:52:00.012 L1-Dev  -> Empty Block - Blok Zamani Uygun
+18:52:00.012 L1-Dev  -> Empty Block Executed
+18:52:00.012 L1-Dev  -> CurrentQueueTime : 20221106185200000
+18:52:00.012 L1-Dev  -> queueTimePeriod  : 500
+18:52:00.030 L1-Dev  -> Block Came From The Main Loop [ ______________3 :  300 ]
+18:52:00.030 L1-Dev  -> Settings -> Last Block -> 3 -> 1348cb22d2de07186806
+18:52:00.030 L1-Dev  -> Block Is Proccessing -> 3 -> 1348cb22d2de07186806
+18:52:00.045 L1-Dev  -> Distributing [ ______________3 : 300 ] To 3.75.110.186:5002
+18:52:00.045 L1-Dev  -> <block> message sended
++18:52:15.009 L1-Dev  -> Empty Block - Blok Zamani Uygun
+18:52:15.009 L1-Dev  -> Empty Block Executed
+18:52:15.009 L1-Dev  -> CurrentQueueTime : 20221106185215000
+18:52:15.009 L1-Dev  -> queueTimePeriod  : 500
+18:52:15.009 L1-Dev  -> Block Came From The Main Loop [ ______________4 :  300 ]
+18:52:15.009 L1-Dev  -> Settings -> Last Block -> 4 -> 1348cb22d3700031905e
+18:52:15.027 L1-Dev  -> Block Is Proccessing -> 4 -> 1348cb22d3700031905e
+18:52:15.027 L1-Dev  -> Distributing [ ______________4 : 300 ] To 3.75.110.186:5002
+18:52:15.027 L1-Dev  -> <block> message sended
++18:52:30.055 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+18:52:30.055 L1-Dev  -> Income Block Row No -> 5:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:52:30.055 L1-Dev  -> Income Block Row No -> 5, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:52:30.367 L1-Dev  -> <block> Downloaded from other validator
+18:52:30.367 L1-Dev  -> New Block Arrived : 1348cb22d38e003
+18:52:30.367 L1-Dev  -> Block Came From The Validator Queue [ ______________5 :  300 ]
+18:52:30.384 L1-Dev  -> Settings -> Last Block -> 5 -> 1348cb22d37f00250011
+18:52:30.384 L1-Dev  -> Block Is Proccessing -> 5 -> 1348cb22d37f00250011
+18:52:30.384 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++18:52:45.039 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+18:52:45.039 L1-Dev  -> Income Block Row No -> 6:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:52:45.039 L1-Dev  -> Income Block Row No -> 6, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:52:45.352 L1-Dev  -> <block> Downloaded from other validator
+18:52:45.352 L1-Dev  -> New Block Arrived : 1348cb22d39d003
+18:52:45.352 L1-Dev  -> Block Came From The Validator Queue [ ______________6 :  300 ]
+18:52:45.352 L1-Dev  -> Settings -> Last Block -> 6 -> 1348cb22d38e0034bf0f
+18:52:45.352 L1-Dev  -> Block Is Proccessing -> 6 -> 1348cb22d38e0034bf0f
+18:52:45.352 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+18:53:00.040 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+18:53:00.040 L1-Dev  -> Income Block Row No -> 7:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:53:00.040 L1-Dev  -> Income Block Row No -> 7, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:53:00.368 L1-Dev  -> <block> Downloaded from other validator
+18:53:00.368 L1-Dev  -> New Block Arrived : 1348cb22d3d4003
+18:53:00.368 L1-Dev  -> Block Came From The Validator Queue [ ______________7 :  300 ]
+18:53:00.368 L1-Dev  -> Settings -> Last Block -> 7 -> 1348cb22d39d0033ef1b
+18:53:00.368 L1-Dev  -> Block Is Proccessing -> 7 -> 1348cb22d39d0033ef1b
+18:53:00.368 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++18:53:15.008 L1-Dev  -> Empty Block - Blok Zamani Uygun
+18:53:15.008 L1-Dev  -> Empty Block Executed
+18:53:15.008 L1-Dev  -> CurrentQueueTime : 20221106185315000
+18:53:15.008 L1-Dev  -> queueTimePeriod  : 500
+18:53:15.008 L1-Dev  -> Block Came From The Main Loop [ ______________8 :  300 ]
+18:53:15.008 L1-Dev  -> Settings -> Last Block -> 8 -> 1348cb22d3d400334433
+18:53:15.026 L1-Dev  -> Block Is Proccessing -> 8 -> 1348cb22d3d400334433
+18:53:15.026 L1-Dev  -> Distributing [ ______________8 : 300 ] To 3.75.110.186:5002
+18:53:15.026 L1-Dev  -> <block> message sended
++18:53:30.034 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+18:53:30.050 L1-Dev  -> Income Block Row No -> 9:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:53:30.050 L1-Dev  -> Income Block Row No -> 9, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:53:30.378 L1-Dev  -> <block> Downloaded from other validator
+18:53:30.378 L1-Dev  -> New Block Arrived : 1348cb22d3f2003
+18:53:30.378 L1-Dev  -> Block Came From The Validator Queue [ ______________9 :  300 ]
+18:53:30.378 L1-Dev  -> Settings -> Last Block -> 9 -> 1348cb22d3e30022d6dd
+18:53:30.378 L1-Dev  -> Block Is Proccessing -> 9 -> 1348cb22d3e30022d6dd
+18:53:30.378 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++18:53:45.038 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+18:53:45.038 L1-Dev  -> Income Block Row No -> 10:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:53:45.038 L1-Dev  -> Income Block Row No -> 10, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:53:45.350 L1-Dev  -> <block> Downloaded from other validator
+18:53:45.366 L1-Dev  -> New Block Arrived : 1348cb22d401003
+18:53:45.366 L1-Dev  -> Block Came From The Validator Queue [ _____________10 :  300 ]
+18:53:45.366 L1-Dev  -> Settings -> Last Block -> 10 -> 1348cb22d3f20031695b
+18:53:45.366 L1-Dev  -> Block Is Proccessing -> 10 -> 1348cb22d3f20031695b
+18:53:45.366 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+18:54:00.038 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+18:54:00.038 L1-Dev  -> Income Block Row No -> 11:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:54:00.053 L1-Dev  -> Income Block Row No -> 11, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:54:00.366 L1-Dev  -> <block> Downloaded from other validator
+18:54:00.366 L1-Dev  -> New Block Arrived : 1348cb22d438002
+18:54:00.366 L1-Dev  -> Block Came From The Validator Queue [ _____________11 :  300 ]
+18:54:00.366 L1-Dev  -> Settings -> Last Block -> 11 -> 1348cb22d401003150d4
+18:54:00.366 L1-Dev  -> Block Is Proccessing -> 11 -> 1348cb22d401003150d4
+18:54:00.366 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++18:54:15.038 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+18:54:15.038 L1-Dev  -> Income Block Row No -> 12:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:54:15.054 L1-Dev  -> Income Block Row No -> 12, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:54:15.366 L1-Dev  -> <block> Downloaded from other validator
+18:54:15.366 L1-Dev  -> New Block Arrived : 1348cb22d447002
+18:54:15.366 L1-Dev  -> Block Came From The Validator Queue [ _____________12 :  300 ]
+18:54:15.366 L1-Dev  -> Settings -> Last Block -> 12 -> 1348cb22d438002fe21b
+18:54:15.366 L1-Dev  -> Block Is Proccessing -> 12 -> 1348cb22d438002fe21b
+18:54:15.366 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++18:54:30.038 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+18:54:30.038 L1-Dev  -> Income Block Row No -> 13:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:54:30.054 L1-Dev  -> Income Block Row No -> 13, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:54:30.366 L1-Dev  -> <block> Downloaded from other validator
+18:54:30.366 L1-Dev  -> New Block Arrived : 1348cb22d456002
+18:54:30.366 L1-Dev  -> Block Came From The Validator Queue [ _____________13 :  300 ]
+18:54:30.385 L1-Dev  -> Settings -> Last Block -> 13 -> 1348cb22d447002f802f
+18:54:30.385 L1-Dev  -> Block Is Proccessing -> 13 -> 1348cb22d447002f802f
+18:54:30.399 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++18:54:45.038 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+18:54:45.038 L1-Dev  -> Income Block Row No -> 14:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:54:45.038 L1-Dev  -> Income Block Row No -> 14, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:54:45.366 L1-Dev  -> <block> Downloaded from other validator
+18:54:45.366 L1-Dev  -> New Block Arrived : 1348cb22d465002
+18:54:45.366 L1-Dev  -> Block Came From The Validator Queue [ _____________14 :  300 ]
+18:54:45.366 L1-Dev  -> Settings -> Last Block -> 14 -> 1348cb22d456002ef09d
+18:54:45.366 L1-Dev  -> Block Is Proccessing -> 14 -> 1348cb22d456002ef09d
+18:54:45.384 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+18:55:00.006 L1-Dev  -> Empty Block - Blok Zamani Uygun
+18:55:00.006 L1-Dev  -> Empty Block Executed
+18:55:00.006 L1-Dev  -> CurrentQueueTime : 20221106185500000
+18:55:00.006 L1-Dev  -> queueTimePeriod  : 500
+18:55:00.006 L1-Dev  -> Block Came From The Main Loop [ _____________15 :  300 ]
+18:55:00.006 L1-Dev  -> Settings -> Last Block -> 15 -> 1348cb22d465002e2026
+18:55:00.006 L1-Dev  -> Block Is Proccessing -> 15 -> 1348cb22d465002e2026
+18:55:00.023 L1-Dev  -> Distributing [ _____________15 : 300 ] To 3.75.110.186:5002
+18:55:00.131 L1-Dev  -> <block> message sended
++18:55:15.007 L1-Dev  -> Empty Block - Blok Zamani Uygun
+18:55:15.007 L1-Dev  -> Empty Block Executed
+18:55:15.007 L1-Dev  -> CurrentQueueTime : 20221106185515000
+18:55:15.007 L1-Dev  -> queueTimePeriod  : 500
+18:55:15.007 L1-Dev  -> Block Came From The Main Loop [ _____________16 :  300 ]
+18:55:15.007 L1-Dev  -> Settings -> Last Block -> 16 -> 1348cb22d49c001b13f3
+18:55:15.007 L1-Dev  -> Block Is Proccessing -> 16 -> 1348cb22d49c001b13f3
+18:55:15.022 L1-Dev  -> Distributing [ _____________16 : 300 ] To 3.75.110.186:5002
+18:55:15.022 L1-Dev  -> <block> message sended
++18:55:30.038 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+18:55:30.038 L1-Dev  -> Income Block Row No -> 17:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:55:30.038 L1-Dev  -> Income Block Row No -> 17, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:55:30.351 L1-Dev  -> <block> Downloaded from other validator
+18:55:30.351 L1-Dev  -> New Block Arrived : 1348cb22d4ba002
+18:55:30.367 L1-Dev  -> Block Came From The Validator Queue [ _____________17 :  300 ]
+18:55:30.367 L1-Dev  -> Settings -> Last Block -> 17 -> 1348cb22d4ab001bb923
+18:55:30.367 L1-Dev  -> Block Is Proccessing -> 17 -> 1348cb22d4ab001bb923
+18:55:30.367 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++18:55:45.043 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+18:55:45.043 L1-Dev  -> Income Block Row No -> 18:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:55:45.043 L1-Dev  -> Income Block Row No -> 18, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:55:45.372 L1-Dev  -> <block> Downloaded from other validator
+18:55:45.372 L1-Dev  -> New Block Arrived : 1348cb22d4c9002
+18:55:45.372 L1-Dev  -> Block Came From The Validator Queue [ _____________18 :  300 ]
+18:55:45.372 L1-Dev  -> Settings -> Last Block -> 18 -> 1348cb22d4ba002bbdca
+18:55:45.372 L1-Dev  -> Block Is Proccessing -> 18 -> 1348cb22d4ba002bbdca
+18:55:45.372 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+18:56:00.039 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+18:56:00.039 L1-Dev  -> Income Block Row No -> 19:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:56:00.039 L1-Dev  -> Income Block Row No -> 19, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:56:00.367 L1-Dev  -> <block> Downloaded from other validator
+18:56:00.367 L1-Dev  -> New Block Arrived : 1348cb22d500002
+18:56:00.367 L1-Dev  -> Block Came From The Validator Queue [ _____________19 :  300 ]
+18:56:00.367 L1-Dev  -> Settings -> Last Block -> 19 -> 1348cb22d4c9002b5617
+18:56:00.367 L1-Dev  -> Block Is Proccessing -> 19 -> 1348cb22d4c9002b5617
+18:56:00.367 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++18:56:15.008 L1-Dev  -> Empty Block - Blok Zamani Uygun
+18:56:15.008 L1-Dev  -> Empty Block Executed
+18:56:15.008 L1-Dev  -> CurrentQueueTime : 20221106185615000
+18:56:15.008 L1-Dev  -> queueTimePeriod  : 500
+18:56:15.008 L1-Dev  -> Block Came From The Main Loop [ _____________20 :  300 ]
+18:56:15.008 L1-Dev  -> Settings -> Last Block -> 20 -> 1348cb22d500002a6f34
+18:56:15.008 L1-Dev  -> Block Is Proccessing -> 20 -> 1348cb22d500002a6f34
+18:56:15.023 L1-Dev  -> Distributing [ _____________20 : 300 ] To 3.75.110.186:5002
+18:56:15.023 L1-Dev  -> <block> message sended
++18:56:30.039 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+18:56:30.039 L1-Dev  -> Income Block Row No -> 21:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:56:30.039 L1-Dev  -> Income Block Row No -> 21, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:56:30.367 L1-Dev  -> <block> Downloaded from other validator
+18:56:30.367 L1-Dev  -> New Block Arrived : 1348cb22d51e002
+18:56:30.367 L1-Dev  -> Block Came From The Validator Queue [ _____________21 :  300 ]
+18:56:30.367 L1-Dev  -> Settings -> Last Block -> 21 -> 1348cb22d50f00202e70
+18:56:30.367 L1-Dev  -> Block Is Proccessing -> 21 -> 1348cb22d50f00202e70
+18:56:30.388 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++18:56:45.010 L1-Dev  -> Empty Block - Blok Zamani Uygun
+18:56:45.010 L1-Dev  -> Empty Block Executed
+18:56:45.010 L1-Dev  -> CurrentQueueTime : 20221106185645000
+18:56:45.010 L1-Dev  -> queueTimePeriod  : 500
+18:56:45.010 L1-Dev  -> Block Came From The Main Loop [ _____________22 :  300 ]
+18:56:45.010 L1-Dev  -> Settings -> Last Block -> 22 -> 1348cb22d51e0028c662
+18:56:45.010 L1-Dev  -> Block Is Proccessing -> 22 -> 1348cb22d51e0028c662
+18:56:45.027 L1-Dev  -> Distributing [ _____________22 : 300 ] To 3.75.110.186:5002
+18:56:45.027 L1-Dev  -> <block> message sended
+18:57:00.042 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+18:57:00.042 L1-Dev  -> Income Block Row No -> 23:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:57:00.042 L1-Dev  -> Income Block Row No -> 23, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:57:00.354 L1-Dev  -> <block> Downloaded from other validator
+18:57:00.354 L1-Dev  -> New Block Arrived : 1348cb22d564002
+18:57:00.354 L1-Dev  -> Block Came From The Validator Queue [ _____________23 :  300 ]
+18:57:00.354 L1-Dev  -> Settings -> Last Block -> 23 -> 1348cb22d52d002a1f9e
+18:57:00.354 L1-Dev  -> Block Is Proccessing -> 23 -> 1348cb22d52d002a1f9e
+18:57:00.375 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++18:57:15.043 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+18:57:15.043 L1-Dev  -> Income Block Row No -> 24:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:57:15.043 L1-Dev  -> Income Block Row No -> 24, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:57:15.365 L1-Dev  -> <block> Downloaded from other validator
+18:57:15.365 L1-Dev  -> New Block Arrived : 1348cb22d573002
+18:57:15.365 L1-Dev  -> Block Came From The Validator Queue [ _____________24 :  300 ]
+18:57:15.365 L1-Dev  -> Settings -> Last Block -> 24 -> 1348cb22d5640027650b
+18:57:15.365 L1-Dev  -> Block Is Proccessing -> 24 -> 1348cb22d5640027650b
+18:57:15.365 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++18:57:30.006 L1-Dev  -> Empty Block - Blok Zamani Uygun
+18:57:30.006 L1-Dev  -> Empty Block Executed
+18:57:30.006 L1-Dev  -> CurrentQueueTime : 20221106185729500
+18:57:30.006 L1-Dev  -> queueTimePeriod  : 500
+18:57:30.006 L1-Dev  -> Block Came From The Main Loop [ _____________25 :  300 ]
+18:57:30.006 L1-Dev  -> Settings -> Last Block -> 25 -> 1348cb22d573002685e6
+18:57:30.006 L1-Dev  -> Block Is Proccessing -> 25 -> 1348cb22d573002685e6
+18:57:30.022 L1-Dev  -> Distributing [ _____________25 : 300 ] To 3.75.110.186:5002
+18:57:30.046 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+18:57:30.046 L1-Dev  -> Income Block Row No -> 25:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:57:30.046 L1-Dev  -> Income Block Row No -> 25, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+18:57:30.350 L1-Dev  -> <block> Downloaded from other validator
+18:57:30.350 L1-Dev  -> New Block Arrived : 1348cb22d582002
+18:57:30.350 L1-Dev  -> Block Came From The Validator Queue [ _____________25 :  300 ]
+18:57:30.350 L1-Dev  -> We Already Processed The Block -> [ 25 ]
+18:57:30.350 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+18:57:45.510 L1-Dev  -> Empty Block - Blok Zamani Uygun
+18:57:45.510 L1-Dev  -> Empty Block Executed
+18:57:45.510 L1-Dev  -> CurrentQueueTime : 20221106185745500
+18:57:45.510 L1-Dev  -> queueTimePeriod  : 500
+18:57:45.510 L1-Dev  -> Block Came From The Main Loop [ _____________26 :  300 ]
+18:57:45.510 L1-Dev  -> Settings -> Last Block -> 26 -> 1348cb22d582001a5b22
+18:57:45.510 L1-Dev  -> Block Is Proccessing -> 26 -> 1348cb22d582001a5b22
+18:57:45.528 L1-Dev  -> Distributing [ _____________26 : 300 ] To 3.75.110.186:5002
++18:58:00.076 L1-Dev  -> Empty Block - Blok Zamani Uygun
+18:58:00.154 L1-Dev  -> Empty Block Executed
+18:58:00.168 L1-Dev  -> CurrentQueueTime : 20221106185800000
+18:58:00.168 L1-Dev  -> queueTimePeriod  : 500
+18:58:00.168 L1-Dev  -> Block Came From The Main Loop [ _____________27 :  300 ]
+18:58:00.168 L1-Dev  -> Settings -> Last Block -> 27 -> 1348cb22d59107cb6ac5
+18:58:00.186 L1-Dev  -> Block Is Proccessing -> 27 -> 1348cb22d59107cb6ac5
+18:58:00.186 L1-Dev  -> Distributing [ _____________27 : 300 ] To 3.75.110.186:5002
++18:58:15.511 L1-Dev  -> Empty Block - Blok Zamani Uygun
+18:58:15.511 L1-Dev  -> Empty Block Executed
+18:58:15.511 L1-Dev  -> CurrentQueueTime : 20221106185815500
+18:58:15.511 L1-Dev  -> queueTimePeriod  : 500
+18:58:15.511 L1-Dev  -> Block Came From The Main Loop [ _____________28 :  300 ]
+18:58:15.511 L1-Dev  -> Settings -> Last Block -> 28 -> 1348cb22d5c80293176f
+18:58:15.528 L1-Dev  -> Block Is Proccessing -> 28 -> 1348cb22d5c80293176f
+18:58:15.528 L1-Dev  -> Distributing [ _____________28 : 300 ] To 3.75.110.186:5002
++18:58:30.058 L1-Dev  -> Empty Block - Blok Zamani Uygun
+18:58:30.058 L1-Dev  -> Empty Block Executed
+18:58:30.058 L1-Dev  -> CurrentQueueTime : 20221106185830000
+18:58:30.058 L1-Dev  -> queueTimePeriod  : 500
+18:58:30.058 L1-Dev  -> Block Came From The Main Loop [ _____________29 :  300 ]
+18:58:30.058 L1-Dev  -> Settings -> Last Block -> 29 -> 1348cb22d5d707cc453b
+18:58:30.058 L1-Dev  -> Block Is Proccessing -> 29 -> 1348cb22d5d707cc453b
+18:58:30.073 L1-Dev  -> Distributing [ _____________29 : 300 ] To 3.75.110.186:5002
+18:58:45.511 L1-Dev  -> Empty Block - Blok Zamani Uygun
+18:58:45.511 L1-Dev  -> Empty Block Executed
+18:58:45.511 L1-Dev  -> CurrentQueueTime : 20221106185845500
+18:58:45.511 L1-Dev  -> queueTimePeriod  : 500
+18:58:45.511 L1-Dev  -> Block Came From The Main Loop [ _____________30 :  300 ]
+18:58:45.511 L1-Dev  -> Settings -> Last Block -> 30 -> 1348cb22d5e600e2e3ad
+18:58:45.511 L1-Dev  -> Block Is Proccessing -> 30 -> 1348cb22d5e600e2e3ad
+18:58:45.529 L1-Dev  -> Distributing [ _____________30 : 300 ] To 3.75.110.186:5002
++18:59:00.511 L1-Dev  -> Empty Block - Blok Zamani Uygun
+18:59:00.511 L1-Dev  -> Empty Block Executed
+18:59:00.511 L1-Dev  -> CurrentQueueTime : 20221106185900500
+18:59:00.511 L1-Dev  -> queueTimePeriod  : 500
+18:59:00.511 L1-Dev  -> Block Came From The Main Loop [ _____________31 :  300 ]
+18:59:00.511 L1-Dev  -> Settings -> Last Block -> 31 -> 1348cb22d5f507ccf698
+18:59:00.511 L1-Dev  -> Block Is Proccessing -> 31 -> 1348cb22d5f507ccf698
+18:59:00.529 L1-Dev  -> Distributing [ _____________31 : 300 ] To 3.75.110.186:5002
++18:59:15.058 L1-Dev  -> Empty Block - Blok Zamani Uygun
+18:59:15.058 L1-Dev  -> Empty Block Executed
+18:59:15.058 L1-Dev  -> CurrentQueueTime : 20221106185915000
+18:59:15.058 L1-Dev  -> queueTimePeriod  : 500
+18:59:15.058 L1-Dev  -> Block Came From The Main Loop [ _____________32 :  300 ]
+18:59:15.058 L1-Dev  -> Settings -> Last Block -> 32 -> 1348cb22d62c07ce3094
+18:59:15.058 L1-Dev  -> Block Is Proccessing -> 32 -> 1348cb22d62c07ce3094
+18:59:15.076 L1-Dev  -> Distributing [ _____________32 : 300 ] To 3.75.110.186:5002
++18:59:30.011 L1-Dev  -> Empty Block - Blok Zamani Uygun
+18:59:30.011 L1-Dev  -> Empty Block Executed
+18:59:30.011 L1-Dev  -> CurrentQueueTime : 20221106185930000
+18:59:30.011 L1-Dev  -> queueTimePeriod  : 500
+18:59:30.011 L1-Dev  -> Block Came From The Main Loop [ _____________33 :  300 ]
+18:59:30.011 L1-Dev  -> Settings -> Last Block -> 33 -> 1348cb22d63b00e3e1b1
+18:59:30.011 L1-Dev  -> Block Is Proccessing -> 33 -> 1348cb22d63b00e3e1b1
+18:59:30.027 L1-Dev  -> Distributing [ _____________33 : 300 ] To 3.75.110.186:5002
+18:59:45.501 L1-Dev  -> Empty Block - Blok Zamani Uygun
+18:59:45.501 L1-Dev  -> Empty Block Executed
+18:59:45.501 L1-Dev  -> CurrentQueueTime : 20221106185945500
+18:59:45.501 L1-Dev  -> queueTimePeriod  : 500
+18:59:45.501 L1-Dev  -> Block Came From The Main Loop [ _____________34 :  300 ]
+18:59:45.501 L1-Dev  -> Settings -> Last Block -> 34 -> 1348cb22d64a002d06cf
+18:59:45.518 L1-Dev  -> Block Is Proccessing -> 34 -> 1348cb22d64a002d06cf
+18:59:45.518 L1-Dev  -> Distributing [ _____________34 : 300 ] To 3.75.110.186:5002
++19:00:00.501 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:00:00.501 L1-Dev  -> Empty Block Executed
+19:00:00.501 L1-Dev  -> CurrentQueueTime : 20221106190000500
+19:00:00.501 L1-Dev  -> queueTimePeriod  : 500
+19:00:00.501 L1-Dev  -> Block Came From The Main Loop [ _____________35 :  300 ]
+19:00:00.501 L1-Dev  -> Settings -> Last Block -> 35 -> 1348cb22d65907a63796
+19:00:00.501 L1-Dev  -> Block Is Proccessing -> 35 -> 1348cb22d65907a63796
+19:00:00.517 L1-Dev  -> Distributing [ _____________35 : 300 ] To 3.75.110.186:5002
++19:00:15.064 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:00:15.064 L1-Dev  -> Empty Block Executed
+19:00:15.064 L1-Dev  -> CurrentQueueTime : 20221106190015000
+19:00:15.064 L1-Dev  -> queueTimePeriod  : 500
+19:00:15.064 L1-Dev  -> Block Came From The Main Loop [ _____________36 :  300 ]
+19:00:15.064 L1-Dev  -> Settings -> Last Block -> 36 -> 1348cb22e63007a68b7d
+19:00:15.064 L1-Dev  -> Block Is Proccessing -> 36 -> 1348cb22e63007a68b7d
+19:00:15.080 L1-Dev  -> Distributing [ _____________36 : 300 ] To 3.75.110.186:5002
++19:00:30.017 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:00:30.017 L1-Dev  -> Empty Block Executed
+19:00:30.017 L1-Dev  -> CurrentQueueTime : 20221106190030000
+19:00:30.017 L1-Dev  -> queueTimePeriod  : 500
+19:00:30.017 L1-Dev  -> Block Came From The Main Loop [ _____________37 :  300 ]
+19:00:30.017 L1-Dev  -> Settings -> Last Block -> 37 -> 1348cb22e63f00fac4ee
+19:00:30.017 L1-Dev  -> Block Is Proccessing -> 37 -> 1348cb22e63f00fac4ee
+19:00:30.033 L1-Dev  -> Distributing [ _____________37 : 300 ] To 3.75.110.186:5002
+19:00:45.003 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:00:45.003 L1-Dev  -> Empty Block Executed
+19:00:45.003 L1-Dev  -> CurrentQueueTime : 20221106190045000
+19:00:45.003 L1-Dev  -> queueTimePeriod  : 500
+19:00:45.003 L1-Dev  -> Block Came From The Main Loop [ _____________38 :  300 ]
+19:00:45.003 L1-Dev  -> Settings -> Last Block -> 38 -> 1348cb22e64e0043c773
+19:00:45.003 L1-Dev  -> Block Is Proccessing -> 38 -> 1348cb22e64e0043c773
+19:00:45.018 L1-Dev  -> Distributing [ _____________38 : 300 ] To 3.75.110.186:5002
++19:01:00.012 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:01:00.012 L1-Dev  -> Empty Block Executed
+19:01:00.012 L1-Dev  -> CurrentQueueTime : 20221106190100000
+19:01:00.012 L1-Dev  -> queueTimePeriod  : 500
+19:01:00.012 L1-Dev  -> Block Came From The Main Loop [ _____________39 :  300 ]
+19:01:00.012 L1-Dev  -> Settings -> Last Block -> 39 -> 1348cb22e65d000c1381
+19:01:00.012 L1-Dev  -> Block Is Proccessing -> 39 -> 1348cb22e65d000c1381
+19:01:00.027 L1-Dev  -> Distributing [ _____________39 : 300 ] To 3.75.110.186:5002
++19:01:15.012 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:01:15.012 L1-Dev  -> Empty Block Executed
+19:01:15.012 L1-Dev  -> CurrentQueueTime : 20221106190115000
+19:01:15.012 L1-Dev  -> queueTimePeriod  : 500
+19:01:15.012 L1-Dev  -> Block Came From The Main Loop [ _____________40 :  300 ]
+19:01:15.012 L1-Dev  -> Settings -> Last Block -> 40 -> 1348cb22e6940031a640
+19:01:15.012 L1-Dev  -> Block Is Proccessing -> 40 -> 1348cb22e6940031a640
+19:01:15.028 L1-Dev  -> Distributing [ _____________40 : 300 ] To 3.75.110.186:5002
++19:01:30.513 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:01:30.513 L1-Dev  -> Empty Block Executed
+19:01:30.513 L1-Dev  -> CurrentQueueTime : 20221106190130500
+19:01:30.513 L1-Dev  -> queueTimePeriod  : 500
+19:01:30.513 L1-Dev  -> Block Came From The Main Loop [ _____________41 :  300 ]
+19:01:30.513 L1-Dev  -> Settings -> Last Block -> 41 -> 1348cb22e6a3002f6612
+19:01:30.513 L1-Dev  -> Block Is Proccessing -> 41 -> 1348cb22e6a3002f6612
+19:01:30.530 L1-Dev  -> Distributing [ _____________41 : 300 ] To 3.75.110.186:5002
+19:01:45.065 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:01:45.065 L1-Dev  -> Empty Block Executed
+19:01:45.065 L1-Dev  -> CurrentQueueTime : 20221106190145000
+19:01:45.065 L1-Dev  -> queueTimePeriod  : 500
+19:01:45.065 L1-Dev  -> Block Came From The Main Loop [ _____________42 :  300 ]
+19:01:45.065 L1-Dev  -> Settings -> Last Block -> 42 -> 1348cb22e6b207d57cf6
+19:01:45.080 L1-Dev  -> Block Is Proccessing -> 42 -> 1348cb22e6b207d57cf6
+19:01:45.080 L1-Dev  -> Distributing [ _____________42 : 300 ] To 3.75.110.186:5002
++19:02:00.011 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:02:00.011 L1-Dev  -> Empty Block Executed
+19:02:00.011 L1-Dev  -> CurrentQueueTime : 20221106190200000
+19:02:00.011 L1-Dev  -> queueTimePeriod  : 500
+19:02:00.011 L1-Dev  -> Block Came From The Main Loop [ _____________43 :  300 ]
+19:02:00.011 L1-Dev  -> Settings -> Last Block -> 43 -> 1348cb22e6c100ffb2ef
+19:02:00.027 L1-Dev  -> Block Is Proccessing -> 43 -> 1348cb22e6c100ffb2ef
+19:02:00.027 L1-Dev  -> Distributing [ _____________43 : 300 ] To 3.75.110.186:5002
++19:02:15.013 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:02:15.013 L1-Dev  -> Empty Block Executed
+19:02:15.013 L1-Dev  -> CurrentQueueTime : 20221106190215000
+19:02:15.013 L1-Dev  -> queueTimePeriod  : 500
+19:02:15.013 L1-Dev  -> Block Came From The Main Loop [ _____________44 :  300 ]
+19:02:15.013 L1-Dev  -> Settings -> Last Block -> 44 -> 1348cb22e6f8002c331d
+19:02:15.013 L1-Dev  -> Block Is Proccessing -> 44 -> 1348cb22e6f8002c331d
+19:02:15.027 L1-Dev  -> Distributing [ _____________44 : 300 ] To 3.75.110.186:5002
+19:02:30.512 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:02:30.512 L1-Dev  -> Empty Block Executed
+19:02:30.512 L1-Dev  -> CurrentQueueTime : 20221106190230500
+19:02:30.512 L1-Dev  -> queueTimePeriod  : 500
+19:02:30.512 L1-Dev  -> Block Came From The Main Loop [ _____________45 :  300 ]
+19:02:30.512 L1-Dev  -> Settings -> Last Block -> 45 -> 1348cb22e7070034a9c5
+19:02:30.528 L1-Dev  -> Block Is Proccessing -> 45 -> 1348cb22e7070034a9c5
+19:02:30.528 L1-Dev  -> Distributing [ _____________45 : 300 ] To 3.75.110.186:5002
++19:02:45.054 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:02:45.054 L1-Dev  -> Empty Block Executed
+19:02:45.054 L1-Dev  -> CurrentQueueTime : 20221106190245000
+19:02:45.054 L1-Dev  -> queueTimePeriod  : 500
+19:02:45.054 L1-Dev  -> Block Came From The Main Loop [ _____________46 :  300 ]
+19:02:45.054 L1-Dev  -> Settings -> Last Block -> 46 -> 1348cb22e71607d10b18
+19:02:45.071 L1-Dev  -> Block Is Proccessing -> 46 -> 1348cb22e71607d10b18
+19:02:45.071 L1-Dev  -> Distributing [ _____________46 : 300 ] To 3.75.110.186:5002
++19:03:00.512 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:03:00.512 L1-Dev  -> Empty Block Executed
+19:03:00.512 L1-Dev  -> CurrentQueueTime : 20221106190300500
+19:03:00.512 L1-Dev  -> queueTimePeriod  : 500
+19:03:00.512 L1-Dev  -> Block Came From The Main Loop [ _____________47 :  300 ]
+19:03:00.512 L1-Dev  -> Settings -> Last Block -> 47 -> 1348cb22e72500d6c181
+19:03:00.512 L1-Dev  -> Block Is Proccessing -> 47 -> 1348cb22e72500d6c181
+19:03:00.512 L1-Dev  -> Distributing [ _____________47 : 300 ] To 3.75.110.186:5002
++19:03:15.059 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:03:15.059 L1-Dev  -> Empty Block Executed
+19:03:15.059 L1-Dev  -> CurrentQueueTime : 20221106190315000
+19:03:15.059 L1-Dev  -> queueTimePeriod  : 500
+19:03:15.059 L1-Dev  -> Block Came From The Main Loop [ _____________48 :  300 ]
+19:03:15.075 L1-Dev  -> Settings -> Last Block -> 48 -> 1348cb22e75c07d0dafa
+19:03:15.075 L1-Dev  -> Block Is Proccessing -> 48 -> 1348cb22e75c07d0dafa
+19:03:15.075 L1-Dev  -> Distributing [ _____________48 : 300 ] To 3.75.110.186:5002
+19:03:30.015 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:03:30.015 L1-Dev  -> Empty Block Executed
+19:03:30.015 L1-Dev  -> CurrentQueueTime : 20221106190330000
+19:03:30.015 L1-Dev  -> queueTimePeriod  : 500
+19:03:30.015 L1-Dev  -> Block Came From The Main Loop [ _____________49 :  300 ]
+19:03:30.015 L1-Dev  -> Settings -> Last Block -> 49 -> 1348cb22e76b00e75203
+19:03:30.028 L1-Dev  -> Block Is Proccessing -> 49 -> 1348cb22e76b00e75203
+19:03:30.028 L1-Dev  -> Distributing [ _____________49 : 300 ] To 3.75.110.186:5002
++19:03:45.015 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:03:45.015 L1-Dev  -> Empty Block Executed
+19:03:45.015 L1-Dev  -> CurrentQueueTime : 20221106190345000
+19:03:45.015 L1-Dev  -> queueTimePeriod  : 500
+19:03:45.015 L1-Dev  -> Block Came From The Main Loop [ _____________50 :  300 ]
+19:03:45.015 L1-Dev  -> Settings -> Last Block -> 50 -> 1348cb22e77a003b679a
+19:03:45.015 L1-Dev  -> Block Is Proccessing -> 50 -> 1348cb22e77a003b679a
+19:03:45.030 L1-Dev  -> Distributing [ _____________50 : 300 ] To 3.75.110.186:5002
++19:04:00.501 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:04:00.501 L1-Dev  -> Empty Block Executed
+19:04:00.501 L1-Dev  -> CurrentQueueTime : 20221106190400500
+19:04:00.501 L1-Dev  -> queueTimePeriod  : 500
+19:04:00.501 L1-Dev  -> Block Came From The Main Loop [ _____________51 :  300 ]
+19:04:00.501 L1-Dev  -> Settings -> Last Block -> 51 -> 1348cb22e789003bf915
+19:04:00.516 L1-Dev  -> Block Is Proccessing -> 51 -> 1348cb22e789003bf915
+19:04:00.516 L1-Dev  -> Distributing [ _____________51 : 300 ] To 3.75.110.186:5002
++19:04:15.064 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:04:15.064 L1-Dev  -> Empty Block Executed
+19:04:15.064 L1-Dev  -> CurrentQueueTime : 20221106190415000
+19:04:15.064 L1-Dev  -> queueTimePeriod  : 500
+19:04:15.064 L1-Dev  -> Block Came From The Main Loop [ _____________52 :  300 ]
+19:04:15.064 L1-Dev  -> Settings -> Last Block -> 52 -> 1348cb22e7c007a631e7
+19:04:15.080 L1-Dev  -> Block Is Proccessing -> 52 -> 1348cb22e7c007a631e7
+19:04:15.080 L1-Dev  -> Distributing [ _____________52 : 300 ] To 3.75.110.186:5002
+19:04:30.019 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:04:30.019 L1-Dev  -> Empty Block Executed
+19:04:30.019 L1-Dev  -> CurrentQueueTime : 20221106190430000
+19:04:30.019 L1-Dev  -> queueTimePeriod  : 500
+19:04:30.019 L1-Dev  -> Block Came From The Main Loop [ _____________53 :  300 ]
+19:04:30.019 L1-Dev  -> Settings -> Last Block -> 53 -> 1348cb22e7cf00fa549e
+19:04:30.033 L1-Dev  -> Block Is Proccessing -> 53 -> 1348cb22e7cf00fa549e
+19:04:30.033 L1-Dev  -> Distributing [ _____________53 : 300 ] To 3.75.110.186:5002
++19:04:45.501 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:04:45.501 L1-Dev  -> Empty Block Executed
+19:04:45.501 L1-Dev  -> CurrentQueueTime : 20221106190445500
+19:04:45.501 L1-Dev  -> queueTimePeriod  : 500
+19:04:45.501 L1-Dev  -> Block Came From The Main Loop [ _____________54 :  300 ]
+19:04:45.501 L1-Dev  -> Settings -> Last Block -> 54 -> 1348cb22e7de004d2667
+19:04:45.517 L1-Dev  -> Block Is Proccessing -> 54 -> 1348cb22e7de004d2667
+19:04:45.517 L1-Dev  -> Distributing [ _____________54 : 300 ] To 3.75.110.186:5002
++19:05:00.501 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:05:00.501 L1-Dev  -> Empty Block Executed
+19:05:00.501 L1-Dev  -> CurrentQueueTime : 20221106190500500
+19:05:00.501 L1-Dev  -> queueTimePeriod  : 500
+19:05:00.501 L1-Dev  -> Block Came From The Main Loop [ _____________55 :  300 ]
+19:05:00.501 L1-Dev  -> Settings -> Last Block -> 55 -> 1348cb22e7ed07a816f7
+19:05:00.501 L1-Dev  -> Block Is Proccessing -> 55 -> 1348cb22e7ed07a816f7
+19:05:00.501 L1-Dev  -> Distributing [ _____________55 : 300 ] To 3.75.110.186:5002
++19:05:15.051 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:05:15.051 L1-Dev  -> Empty Block Executed
+19:05:15.051 L1-Dev  -> CurrentQueueTime : 20221106190515000
+19:05:15.051 L1-Dev  -> queueTimePeriod  : 500
+19:05:15.051 L1-Dev  -> Block Came From The Main Loop [ _____________56 :  300 ]
+19:05:15.051 L1-Dev  -> Settings -> Last Block -> 56 -> 1348cb22e82407a676df
+19:05:15.051 L1-Dev  -> Block Is Proccessing -> 56 -> 1348cb22e82407a676df
+19:05:15.067 L1-Dev  -> Distributing [ _____________56 : 300 ] To 3.75.110.186:5002
+19:05:30.022 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:05:30.022 L1-Dev  -> Empty Block Executed
+19:05:30.022 L1-Dev  -> CurrentQueueTime : 20221106190530000
+19:05:30.022 L1-Dev  -> queueTimePeriod  : 500
+19:05:30.022 L1-Dev  -> Block Came From The Main Loop [ _____________57 :  300 ]
+19:05:30.036 L1-Dev  -> Settings -> Last Block -> 57 -> 1348cb22e83300c90abc
+19:05:30.036 L1-Dev  -> Block Is Proccessing -> 57 -> 1348cb22e83300c90abc
+19:05:30.036 L1-Dev  -> Distributing [ _____________57 : 300 ] To 3.75.110.186:5002
++19:05:45.505 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:05:45.505 L1-Dev  -> Empty Block Executed
+19:05:45.505 L1-Dev  -> CurrentQueueTime : 20221106190545500
+19:05:45.505 L1-Dev  -> queueTimePeriod  : 500
+19:05:45.505 L1-Dev  -> Block Came From The Main Loop [ _____________58 :  300 ]
+19:05:45.505 L1-Dev  -> Settings -> Last Block -> 58 -> 1348cb22e84200595563
+19:05:45.521 L1-Dev  -> Block Is Proccessing -> 58 -> 1348cb22e84200595563
+19:05:45.521 L1-Dev  -> Distributing [ _____________58 : 300 ] To 3.75.110.186:5002
++19:06:00.509 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:06:00.509 L1-Dev  -> Empty Block Executed
+19:06:00.509 L1-Dev  -> CurrentQueueTime : 20221106190600500
+19:06:00.509 L1-Dev  -> queueTimePeriod  : 500
+19:06:00.509 L1-Dev  -> Block Came From The Main Loop [ _____________59 :  300 ]
+19:06:00.509 L1-Dev  -> Settings -> Last Block -> 59 -> 1348cb22e85107b5621d
+19:06:00.509 L1-Dev  -> Block Is Proccessing -> 59 -> 1348cb22e85107b5621d
+19:06:00.526 L1-Dev  -> Distributing [ _____________59 : 300 ] To 3.75.110.186:5002
++19:06:15.056 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:06:15.056 L1-Dev  -> Empty Block Executed
+19:06:15.056 L1-Dev  -> CurrentQueueTime : 20221106190615000
+19:06:15.056 L1-Dev  -> queueTimePeriod  : 500
+19:06:15.056 L1-Dev  -> Block Came From The Main Loop [ _____________60 :  300 ]
+19:06:15.056 L1-Dev  -> Settings -> Last Block -> 60 -> 1348cb22e88807c6fab4
+19:06:15.073 L1-Dev  -> Block Is Proccessing -> 60 -> 1348cb22e88807c6fab4
+19:06:15.073 L1-Dev  -> Distributing [ _____________60 : 300 ] To 3.75.110.186:5002
+19:06:19.228 L1-Dev  -> [ Date.cs ] -> Before update ntp : 18 51 52 256
+19:06:30.510 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:06:30.510 L1-Dev  -> Empty Block Executed
+19:06:30.510 L1-Dev  -> CurrentQueueTime : 20221106190630500
+19:06:30.510 L1-Dev  -> queueTimePeriod  : 500
+19:06:30.510 L1-Dev  -> Block Came From The Main Loop [ _____________61 :  300 ]
+19:06:30.510 L1-Dev  -> Settings -> Last Block -> 61 -> 1348cb22e89700de541f
+19:06:30.510 L1-Dev  -> Block Is Proccessing -> 61 -> 1348cb22e89700de541f
+19:06:30.525 L1-Dev  -> Distributing [ _____________61 : 300 ] To 3.75.110.186:5002
++19:06:45.057 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:06:45.057 L1-Dev  -> Empty Block Executed
+19:06:45.057 L1-Dev  -> CurrentQueueTime : 20221106190645000
+19:06:45.057 L1-Dev  -> queueTimePeriod  : 500
+19:06:45.057 L1-Dev  -> Block Came From The Main Loop [ _____________62 :  300 ]
+19:06:45.057 L1-Dev  -> Settings -> Last Block -> 62 -> 1348cb22e8a607c89aa2
+19:06:45.072 L1-Dev  -> Block Is Proccessing -> 62 -> 1348cb22e8a607c89aa2
+19:06:45.072 L1-Dev  -> Distributing [ _____________62 : 300 ] To 3.75.110.186:5002
++19:07:00.511 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:07:00.511 L1-Dev  -> Empty Block Executed
+19:07:00.511 L1-Dev  -> CurrentQueueTime : 20221106190700500
+19:07:00.511 L1-Dev  -> queueTimePeriod  : 500
+19:07:00.511 L1-Dev  -> Block Came From The Main Loop [ _____________63 :  300 ]
+19:07:00.511 L1-Dev  -> Settings -> Last Block -> 63 -> 1348cb22e8b500ded31b
+19:07:00.511 L1-Dev  -> Block Is Proccessing -> 63 -> 1348cb22e8b500ded31b
+19:07:00.527 L1-Dev  -> Distributing [ _____________63 : 300 ] To 3.75.110.186:5002
+19:07:13.328 L1-Dev  -> NTP Time Updated
+19:07:15.502 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:07:15.502 L1-Dev  -> Empty Block Executed
+19:07:15.502 L1-Dev  -> CurrentQueueTime : 20221106190715500
+19:07:15.502 L1-Dev  -> queueTimePeriod  : 500
+19:07:15.502 L1-Dev  -> Block Came From The Main Loop [ _____________64 :  300 ]
+19:07:15.502 L1-Dev  -> Settings -> Last Block -> 64 -> 1348cb22e8ec07cc5741
+19:07:15.502 L1-Dev  -> Block Is Proccessing -> 64 -> 1348cb22e8ec07cc5741
+19:07:15.518 L1-Dev  -> Distributing [ _____________64 : 300 ] To 3.75.110.186:5002
++19:07:30.065 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:07:30.065 L1-Dev  -> Empty Block Executed
+19:07:30.065 L1-Dev  -> CurrentQueueTime : 20221106190730000
+19:07:30.065 L1-Dev  -> queueTimePeriod  : 500
+19:07:30.065 L1-Dev  -> Block Came From The Main Loop [ _____________65 :  300 ]
+19:07:30.065 L1-Dev  -> Settings -> Last Block -> 65 -> 1348cb22e8fb07ac6661
+19:07:30.065 L1-Dev  -> Block Is Proccessing -> 65 -> 1348cb22e8fb07ac6661
+19:07:30.080 L1-Dev  -> Distributing [ _____________65 : 300 ] To 3.75.110.186:5002
++19:07:45.503 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:07:45.503 L1-Dev  -> Empty Block Executed
+19:07:45.503 L1-Dev  -> CurrentQueueTime : 20221106190745500
+19:07:45.503 L1-Dev  -> queueTimePeriod  : 500
+19:07:45.503 L1-Dev  -> Block Came From The Main Loop [ _____________66 :  300 ]
+19:07:45.503 L1-Dev  -> Settings -> Last Block -> 66 -> 1348cb22e90a00fff2ac
+19:07:45.503 L1-Dev  -> Block Is Proccessing -> 66 -> 1348cb22e90a00fff2ac
+19:07:45.518 L1-Dev  -> Distributing [ _____________66 : 300 ] To 3.75.110.186:5002
++19:08:00.507 L1-Dev  -> Empty Block - Blok Zamani Uygun
+19:08:00.507 L1-Dev  -> Empty Block Executed
+19:08:00.507 L1-Dev  -> CurrentQueueTime : 20221106190800500
+19:08:00.507 L1-Dev  -> queueTimePeriod  : 500
+19:08:00.507 L1-Dev  -> Block Came From The Main Loop [ _____________67 :  300 ]
+19:08:00.507 L1-Dev  -> Settings -> Last Block -> 67 -> 1348cb22e91907ada5ae
+19:08:00.507 L1-Dev  -> Block Is Proccessing -> 67 -> 1348cb22e91907ada5ae
+19:08:00.507 L1-Dev  -> Distributing [ _____________67 : 300 ] To 3.75.110.186:5002
+
+19:08:02.476 L1-Dev  -> Please Wait While Node Terminating
+19:08:02.476 L1-Dev  -> Sending Kill Signals To All Nodes
+19:08:02.788 L1-Dev  -> Sending Kill Message To -> NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+20221106190756000 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":319}
+20221106190756500 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":319}
+20221106190757000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":320}
+20221106190757500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":320}
+20221106190758000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":320}
+20221106190758500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":320}
+20221106190759000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":320}
+20221106190759500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":320}
+20221106190800000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":321}
+20221106190800500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":321}
+20221106190801000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":321}
+20221106190801500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":321}
+20221106190802000 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":321}
+20221106190802500 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":321}
+20221106190803000 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":322}
+20221106190803500 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":322}
+20221106190804000 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":322}
+20221106190804500 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":322}
+20221106190805000 -> {"IpAddress":"13.229.56.127","Port":5002,"Wallet":"NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW","GroupNo":322}
+20221106190805500 -> {"IpAddress":"3.75.110.186","Port":5002,"Wallet":"NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK","GroupNo":322}
 
 C:\Users\Administrator\Desktop\test-node>

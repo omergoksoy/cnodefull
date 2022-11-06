@@ -62,13 +62,35 @@ namespace Notus.Message
                         {
                             Task.Run(() =>
                             {
+                                bool isOnline = false;
+                                string selectedKey = string.Empty;
+                                foreach (var iEntry in NVG.NodeList)
+                                {
+                                    if (string.Equals(iEntry.Value.IP.Wallet, entry.Key) == true)
+                                    {
+                                        selectedKey = iEntry.Key;
+                                    }
+                                }
+
                                 try
                                 {
-                                    entry.Value.Send("ping");
+                                    if (entry.Value.Send("ping") == "pong")
+                                    {
+                                        isOnline = true;
+                                    }
                                 }
                                 catch (Exception err)
                                 {
+                                    //NVG.NodeList[entry.Key].Status = NVS.NodeStatus.Offline;
                                     //Console.WriteLine("hata-olustu: " + err.Message);
+                                }
+                                if (isOnline == true)
+                                {
+                                    NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Online;
+                                }
+                                else
+                                {
+                                    NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Offline;
                                 }
                             });
                         }

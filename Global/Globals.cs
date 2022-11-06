@@ -353,6 +353,30 @@ namespace Notus.Variable
                 }
                 */
             }
+            public static void CloseMyNode()
+            {
+                NP.Warning(NVG.Settings, "Please Wait While Node Terminating");
+                if (NVG.Settings.CommEstablished == true)
+                {
+                    SendKillMessage();
+                    while (NVG.Settings.ClosingCompleted == false)
+                    {
+                        Thread.Sleep(10);
+                    }
+                }
+
+                int count = NVG.Settings.Nodes.Queue.Count - 20;
+                int sayac = 0;
+                foreach (var entry in NVG.Settings.Nodes.Queue)
+                {
+                    sayac++;
+                    if (sayac > count)
+                    {
+                        Console.WriteLine(entry.Key + " -> " + JsonSerializer.Serialize(entry.Value));
+                    }
+                }
+                Environment.Exit(0);
+            }
             public static void GetUtcTimeFromNode(int howManySeconds, bool beginingRoutine)
             {
                 if (beginingRoutine == true)
