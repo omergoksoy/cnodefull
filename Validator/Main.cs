@@ -525,8 +525,6 @@ namespace Notus.Validator
             NGF.GetUtcTimeFromNode(20, true);
             TimeBaseBlockUidList.Clear();
 
-            //Console.WriteLine(JsonSerializer.Serialize(NVG.NOW, Notus.Variable.Constant.JsonSetting));
-
             if (NVG.Settings.GenesisCreated == false)
             {
                 TimeSyncObj.Start();
@@ -613,12 +611,10 @@ namespace Notus.Validator
             {
                 SelectedPortVal = Notus.Toolbox.Network.FindFreeTcpPort();
             }
-            //Console.WriteLine(SelectedPortVal);
-            //NP.ReadLine();
 
             HttpObj.DefaultResult_OK = "null";
             HttpObj.DefaultResult_ERR = "null";
-            //NP.Basic(Settings.InfoMode,"empty count : " + Obj_Integrity.EmptyBlockCount);
+
             if (NVG.Settings.GenesisCreated == false)
             {
                 NP.Basic(NVG.Settings, "Main Validator Started");
@@ -635,14 +631,12 @@ namespace Notus.Validator
                 // her gelen blok bir listeye eklenmeli ve o liste ile sıra ile eklenmeli
                 ValidatorQueueObj.Func_NewBlockIncome = tmpNewBlockIncome =>
                 {
-                    if (tmpNewBlockIncome != null)
-                    {
-                        ProcessBlock(tmpNewBlockIncome, 2);
-                    }
-                    else
+                    if (tmpNewBlockIncome == null)
                     {
                         Console.WriteLine("Main.cs -> Income Block Is NULL !!!!");
+                        return true;
                     }
+                    ProcessBlock(tmpNewBlockIncome, 2);
                     return true;
                 };
             }
@@ -669,42 +663,6 @@ namespace Notus.Validator
                         {
                             //sync-control
                             ProcessBlock(tmpNewBlockIncome, 3);
-                            //Console.WriteLine(".tmp.");
-                            /*
-                            bool sendToMyChain = false;
-                            try
-                            {
-
-                                ulong queueTimePeriod = (ulong)(NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime);
-                                ulong blockTimeVal = ulong.Parse(tmpNewBlockIncome.info.time);
-                                ulong blockGenarationTime = blockTimeVal - (blockTimeVal % queueTimePeriod);
-                                if (NVG.Settings.Nodes.Queue.ContainsKey(blockGenarationTime) == true)
-                                {
-                                    string blockValidator = tmpNewBlockIncome.validator.count.First().Key;
-                                    if(string.Equals(blockValidator, NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet))
-                                    {
-                                        sendToMyChain = true;
-                                    }
-                                }
-                            }
-                            catch { }
-                            if (sendToMyChain == true)
-                            {
-                            }
-                            */
-
-                            /*
-                            if (sendToMyChain == true)
-                            {
-                                ProcessBlock(tmpNewBlockIncome, 3);
-                            }
-                            else
-                            {
-                                Console.WriteLine("Block Income But - Does Not Belong To Right Validator");
-                                Console.WriteLine("Block Income But - Does Not Belong To Right Validator");
-                                Console.WriteLine("Block Income But - Does Not Belong To Right Validator");
-                            }
-                            */
                         }
                     );
 
@@ -726,8 +684,6 @@ namespace Notus.Validator
                             }
                         }
                     }
-
-
                 }
             }
 
@@ -873,9 +829,10 @@ namespace Notus.Validator
                                         Console.WriteLine("NGF.NowInt() : " + NGF.NowInt().ToString());
                                         Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
                                         NP.Success("Empty Block Executed");
+
                                         Notus.Validator.Helper.CheckBlockAndEmptyCounter(300);
                                         NGF.BlockQueue.AddEmptyBlock();
-                                    }
+                                    } // if (EmptyBlockGenerationTime() == true)
                                     emptyBlockChecked = true;
                                 } // if (EmptyBlockGenerationTime() == true)
 
@@ -1302,28 +1259,16 @@ namespace Notus.Validator
 
         private void Start_HttpListener()
         {
-            if (NVG.Settings.LocalNode == true)
-            {
-                NP.Basic(NVG.Settings, "Listining : " +
-                Notus.Network.Node.MakeHttpListenerPath(NVG.Settings.IpInfo.Local, SelectedPortVal), false);
-            }
-            else
-            {
-                NP.Basic(NVG.Settings, "Listining : " +
-                Notus.Network.Node.MakeHttpListenerPath(NVG.Settings.IpInfo.Public, SelectedPortVal), false);
-            }
+            IPAddress NodeIpAddress = IPAddress.Parse(
+                NVG.Settings.LocalNode == false ? NVG.Settings.IpInfo.Public : NVG.Settings.IpInfo.Local
+            );
+
+            NP.Basic("Listining : " + Notus.Network.Node.MakeHttpListenerPath(NodeIpAddress.ToString(), SelectedPortVal));
             HttpObj.OnReceive(Fnc_OnReceiveData);
             HttpObj.ResponseType = "application/json";
-            IPAddress NodeIpAddress = IPAddress.Parse(
-                (
-                    NVG.Settings.LocalNode == false ?
-                    NVG.Settings.IpInfo.Public :
-                    NVG.Settings.IpInfo.Local
-                )
-            );
             HttpObj.StoreUrl = false;
             HttpObj.Start(NodeIpAddress, SelectedPortVal);
-            NP.Success(NVG.Settings, "Http Has Started", false);
+            NP.Success("Http Has Started");
         }
 
         private string Fnc_OnReceiveData(NVS.HttpRequestDetails IncomeData)
