@@ -104,6 +104,10 @@ namespace Notus.Validator
             ulong totalQueuePeriod = (ulong)(NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime);
             ulong nextValidatorNodeTime=ND.AddMiliseconds(currentNodeStartingTime, totalQueuePeriod);
 
+
+            // sonraki node'a doğrudan gönder,
+            // 2 sonraki node task ile gönderebilirsin.
+
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
                 if (string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false && entry.Value.Status == NVS.NodeStatus.Online)
@@ -139,14 +143,13 @@ namespace Notus.Validator
 
                     Task.Run(() =>
                     {
+                    });
                         string incomeResult = NVG.Settings.MsgOrch.SendMsg(
                             entry.Value.IP.Wallet,
                             "<block>" +
                                 blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey +
                             "</block>"
                         );
-                        NP.Info("<block> message sended");
-                    });
 
                     //NP.Info(NVG.Settings, "Distrubute : " + ND.ToDateTime(NVG.NOW.Int).ToString("HH mm ss fff"));
                     //Console.WriteLine("incomeResult [ " + incomeResult.Length +  " ] : " + incomeResult);

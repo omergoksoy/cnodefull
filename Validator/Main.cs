@@ -19,7 +19,6 @@ namespace Notus.Validator
 {
     public class Main : IDisposable
     {
-        private ulong CurrentQueueTime = 0;
         private bool MyReadyMessageSended = false;
         private bool FirstSyncIsDone = false;
         //this variable hold current processing block number
@@ -671,7 +670,7 @@ namespace Notus.Validator
                             NP.Warning("Block Time : " + tmpNewBlockIncome.info.time);
 
                             Console.WriteLine("NVG.NOW.Int : " + NVG.NOW.Int.ToString());
-                            Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
+                            //Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
                             NGF.CloseMyNode();
                         }
                     }
@@ -829,7 +828,7 @@ namespace Notus.Validator
             bool prepareNextQueue = false;
             byte nodeOrderCount = 0;
             string selectedWalletId = string.Empty;
-            CurrentQueueTime = NVG.NodeQueue.Starting;
+            ulong CurrentQueueTime = NVG.NodeQueue.Starting;
 
             while (tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false)
             {

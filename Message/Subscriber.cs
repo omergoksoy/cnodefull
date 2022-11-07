@@ -35,12 +35,19 @@ namespace Notus.Message
         }
         public string Send(string messageText)
         {
-            int bytesSent = sender.Send(Encoding.ASCII.GetBytes(messageText));
+            int bytesSent = 0;
+            try
+            {
+                bytesSent = sender.Send(Encoding.ASCII.GetBytes(messageText));
+            }
+            catch {
+            }
             if (bytesSent > 0)
             {
-                //NP.Info("Control-Point-3-For - Receive");
+                if (messageText.StartsWith("<block>")) {
+                    NP.Info("<block> message sended");
+                }
                 int bytesArrLen = sender.Receive(byteArr);
-                //NP.Info("Control-Point-4-For - Receive");
 
                 if (bytesArrLen == 0)
                 {
