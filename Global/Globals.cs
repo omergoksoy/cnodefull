@@ -63,6 +63,7 @@ namespace Notus.Variable
         şu an ki zamanın üzerine 1 dakika ekleyecek ve o zaman geldiğinde kuyruğa dahil edilmiş olacak
 
         */
+        public static bool LocalBlockLoaded { get; set; }
         public static int GroupNo { get; set; }
         public static string SessionPrivateKey { get; set; }
         public static bool NodeListPrinted { get; set; }
@@ -74,6 +75,7 @@ namespace Notus.Variable
         public static Notus.Globals.Variable.Settings Settings { get; set; }
         static Globals()
         {
+            LocalBlockLoaded = false;
             GroupNo = 1;
             SessionPrivateKey = Notus.Wallet.ID.New();
 

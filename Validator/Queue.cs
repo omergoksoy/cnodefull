@@ -340,17 +340,15 @@ namespace Notus.Validator
                 blok alınması işlemini tamamla,
                 blok alma işi bitince yeni blok oluşturulsun
                 */
-                NP.Info("NVG.Settings.WaitForGeneratedBlock = TRUE;");
                 NVG.Settings.WaitForGeneratedBlock = true;
-
-                //NP.Info(NVG.Settings, "Block Row No Income -> " + ND.ToDateTime(NVG.NOW.Int).ToString("HH mm ss fff"));
-
-
+                NP.Info("NVG.Settings.WaitForGeneratedBlock = TRUE;");
 
                 string incomeDataStr = GetPureText(incomeData, "block");
                 NP.Info(NVG.Settings, "Income Block Row No -> " + incomeDataStr);
                 if (incomeDataStr.IndexOf(":") < 0)
                 {
+                    NVG.Settings.WaitForGeneratedBlock = false;
+                    NP.Warning("NVG.Settings.WaitForGeneratedBlock = FALSE;");
                     return "error-msg";
                 }
 
@@ -371,6 +369,8 @@ namespace Notus.Validator
                 }
                 if (tmpPortNo == 0)
                 {
+                    NVG.Settings.WaitForGeneratedBlock = false;
+                    NP.Warning("NVG.Settings.WaitForGeneratedBlock = FALSE;");
                     Console.WriteLine("Queue.cs -> tmpPortNo Is Zero");
                     return "fncResult-port-zero";
                 }
@@ -378,6 +378,8 @@ namespace Notus.Validator
                     Notus.Toolbox.Network.GetBlockFromNode(tmpIpAddress, tmpPortNo, tmpBlockNo, NVG.Settings);
                 if (tmpBlockData == null)
                 {
+                    NVG.Settings.WaitForGeneratedBlock = false;
+                    NP.Warning("NVG.Settings.WaitForGeneratedBlock = FALSE;");
                     Console.WriteLine("Queue.cs -> Block Is NULL");
                     return "tmpError-true";
                 }
@@ -386,11 +388,13 @@ namespace Notus.Validator
                 {
                     if (Func_NewBlockIncome(tmpBlockData) == true)
                     {
-                        NP.Warning("NVG.Settings.WaitForGeneratedBlock = FALSE;");
                         NVG.Settings.WaitForGeneratedBlock = false;
+                        NP.Warning("NVG.Settings.WaitForGeneratedBlock = FALSE;");
                         return "done";
                     }
                 }
+                NVG.Settings.WaitForGeneratedBlock = false;
+                NP.Warning("NVG.Settings.WaitForGeneratedBlock = FALSE;");
                 return "fncResult-false";
             }
             if (CheckXmlTag(incomeData, "kill"))
