@@ -46,6 +46,26 @@ namespace Notus.Validator
         //private Notus.Block.Queue Obj_BlockQueue = new Notus.Block.Queue();
         private Notus.Validator.Queue ValidatorQueueObj = new Notus.Validator.Queue();
 
+        public void GarbageCollector()
+        {
+            NP.Basic("Garbage Collector starting");
+            Notus.Threads.Timer TimerObj = new Notus.Threads.Timer(250);
+            TimerObj.Start(() =>
+            {
+
+                if (TimeBaseBlockUidList.Count > 100)
+                {
+                    var el =TimeBaseBlockUidList.First();
+                    TimeBaseBlockUidList.Remove(el.Key);
+                }
+
+                if (NVG.Settings.Nodes.Queue.Count > 100)
+                {
+                    var el = NVG.Settings.Nodes.Queue.First();
+                    TimeBaseBlockUidList.Remove(el.Key);
+                }
+            });
+        }
         public void FileStorageTimer()
         {
             NP.Basic(NVG.Settings, "File Storage Timer Has Started");
@@ -716,8 +736,9 @@ namespace Notus.Validator
                     FileStorageTimer();
                 }
                 NP.Success(NVG.Settings, "First Synchronization Is Done");
+                
+                GarbageCollector();
             }
-
             DateTime LastPrintTime = NVG.NOW.Obj;
             bool tmpStartWorkingPrinted = false;
             bool tmpExitMainLoop = false;
