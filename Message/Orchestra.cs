@@ -52,7 +52,7 @@ namespace Notus.Message
                     pubObj.Start();
                 });
                 
-                pingTimerIsRunning = true;
+                //pingTimerIsRunning = true;
                 pingTimer.Start(() =>
                 {
                     if (pingTimerIsRunning == false)
@@ -60,39 +60,41 @@ namespace Notus.Message
                         pingTimerIsRunning = true;
                         foreach (KeyValuePair<string, NM.Subscriber> entry in subListObj)
                         {
+                            /*
                             Task.Run(() =>
                             {
-                                bool isOnline = false;
-                                string selectedKey = string.Empty;
-                                foreach (var iEntry in NVG.NodeList)
-                                {
-                                    if (string.Equals(iEntry.Value.IP.Wallet, entry.Key) == true)
-                                    {
-                                        selectedKey = iEntry.Key;
-                                    }
-                                }
-
-                                try
-                                {
-                                    if (entry.Value.Send("ping") == "pong")
-                                    {
-                                        isOnline = true;
-                                    }
-                                }
-                                catch (Exception err)
-                                {
-                                    //NVG.NodeList[entry.Key].Status = NVS.NodeStatus.Offline;
-                                    //Console.WriteLine("hata-olustu: " + err.Message);
-                                }
-                                if (isOnline == true)
-                                {
-                                    NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Online;
-                                }
-                                else
-                                {
-                                    NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Offline;
-                                }
                             });
+                            */
+                            bool isOnline = false;
+                            string selectedKey = string.Empty;
+                            foreach (var iEntry in NVG.NodeList)
+                            {
+                                if (string.Equals(iEntry.Value.IP.Wallet, entry.Key) == true)
+                                {
+                                    selectedKey = iEntry.Key;
+                                }
+                            }
+
+                            try
+                            {
+                                if (entry.Value.Send("ping") == "pong")
+                                {
+                                    isOnline = true;
+                                }
+                            }
+                            catch (Exception err)
+                            {
+                                //NVG.NodeList[entry.Key].Status = NVS.NodeStatus.Offline;
+                                //Console.WriteLine("hata-olustu: " + err.Message);
+                            }
+                            if (isOnline == true)
+                            {
+                                NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Online;
+                            }
+                            else
+                            {
+                                NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Offline;
+                            }
                         }
                         pingTimerIsRunning = false;
                     }

@@ -1,19 +1,2204 @@
-20:47:50.004 L1-Dev  -> My Turn For Empty block
-20:47:50.004 L1-Dev  -> NVG.NOW.Int      : 20221106204750004
-20:47:50.004 L1-Dev  -> CurrentQueueTime : 20221106204749500
-20:47:50.004 L1-Dev  -> Empty Block Executed
-20:47:50.004 L1-Dev  -> Block Came From The Main Loop [ ______________5 :  300 ]
-20:47:50.020 L1-Dev  -> Settings -> Last Block -> 5 -> 1348cb231fbf0011f126
-20:47:50.020 L1-Dev  -> Block Is Proccessing -> 5 -> 1348cb231fbf0011f126
-20:47:50.020 L1-Dev  -> Distributing [ ______________5 : 300 ] To 13.229.56.127:5002
-20:47:50.020 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
-20:47:50.020 L1-Dev  -> Income Block Row No -> 5:NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
-20:47:50.020 L1-Dev  -> Income Block Row No -> 5, Validator => NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
-20:47:50.488 L1-Dev  -> <block> Downloaded from other validator
-20:47:50.488 L1-Dev  -> New Block Arrived : 1348cb231fce000
-20:47:50.488 L1-Dev  -> Block Came From The Validator Queue [ ______________5 :  300 ]
-20:47:50.488 L1-Dev  -> We Already Processed The Block -> [ 5�]
-20:47:50.488 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
-20:47:50.707 L1-Dev  -> Node Just Left : NODBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
-20:47:50.707 L1-Dev  -> Node Count : 2 / 2
+Your Wallet Key : NTSBDuT7PTzAhdgBecamFJa8hSpXR6SV49bvaKW
+ >> [ 00 ] Start Node
+    [ 01 ] Node Type
+    [ 02 ] Change Ports
+    [ 03 ] Reset Ports
+    [ 04 ] Change Wallet Key
+    [ 05 ] Preferences
+    [ 06 ] Show My Settings
+    [ 07 ] Exit
+Press any key for setup
+Please wait for auto-start
+21:46:28.696 L1-Dev  -> Activated DevNET for Layer 1 ( Crypto Layer )
+21:46:28.696 L1-Dev  -> Starting As Main Node
+21:46:28.696 L1-Dev  -> Validator Count Sync Has Started
+21:46:28.696 L1-Dev  -> Waiting For Time Sync
+21:46:28.696 L1-Dev  -> Time Sync Is Done
+21:46:28.696 L1-Dev  -> Time Synchronizer Has Started
+21:46:33.569 L1-Dev  -> NTP Time Synchronizer Has Started
+21:46:33.569 L1-Dev  -> Enough NodeCount For Executing
+21:46:33.625 L1-Dev  -> Checking From -> 3.75.110.186
+21:46:35.123 L1-Dev  -> Notus.Core.Function.Get -> Line 116 -> No connection could be made because the target machine actively refused it. (3.75.110.186:5002)
+21:46:35.123 L1-Dev  -> Error Happened While Trying To Get Genesis From Other Node
+21:46:35.794 L1-Dev  -> Block Integrity Valid
+21:46:35.857 L1-Dev  -> Last Block Row No : 2
+21:46:35.857 L1-Dev  -> Settings -> Last Block -> 2 -> 10000000000000000000
+21:46:35.857 L1-Dev  -> Block Is Proccessing -> 1 -> Prev is Empty [  ]
+21:46:36.091 L1-Dev  -> Settings -> Last Block -> 2 -> 10000000000000000000
+21:46:36.091 L1-Dev  -> Block Is Proccessing -> 2 -> 10000000000000000000
+21:46:36.091 L1-Dev  -> All Blocks Loaded
+21:46:36.091 L1-Dev  -> Main Validator Started
+21:46:36.091 L1-Dev  -> Listining : http://13.229.56.127:5002/
+21:46:36.091 L1-Dev  -> Http Has Started
+21:46:36.108 L1-Dev  -> Node Sync Starting
+21:46:36.108 L1-Dev  -> Waiting For Node Sync
+21:46:41.888 L1-Dev  -> Node Count : 2 / 2
+21:46:47.452 L1-Dev  -> I'm Waiting Starting (When) Time / Current : 21:47:20.000 /  21:46:47.452
+21:46:47.452 L1-Dev  -> Node Blocks Are Checking For Sync
+Time Does Not Have From Nodes List
+blockTimeVal : 20221106214625066 - 202211062146250669000
+Main.cs -> blockGenarationTime [ 2 ]: 20221106214625000
+21:46:48.099 L1-Dev  -> Block Came From The Block Sync [ ______________2 :  300 ]
+21:46:48.099 L1-Dev  -> We Already Processed The Block -> [ 2 ]
+21:46:48.099 L1-Dev  -> Crypto Transfer Timer Has Started
+21:46:48.099 L1-Dev  -> First Synchronization Is Done
+21:46:48.108 L1-Dev  -> Message Listener Has Started
+21:46:49.256 L1-Dev  -> Message Node connected to 3.75.110.186:5012
+21:47:20.037 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:47:20.038 L1-Dev  -> Income Block Row No -> 3:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:47:20.039 L1-Dev  -> Income Block Row No -> 3, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:47:20.351 L1-Dev  -> <block> Downloaded from other validator
+21:47:20.353 L1-Dev  -> New Block Arrived : 1348cb2346c0000
+21:47:20.354 L1-Dev  -> Block Came From The Validator Queue [ ______________3 :  300 ]
+21:47:20.355 L1-Dev  -> Settings -> Last Block -> 3 -> 1348cb2346610a3548c8
+21:47:20.360 L1-Dev  -> Block Is Proccessing -> 3 -> 1348cb2346610a3548c8
+21:47:20.361 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++21:47:35.031 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:47:35.033 L1-Dev  -> Income Block Row No -> 4:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:47:35.034 L1-Dev  -> Income Block Row No -> 4, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:47:35.351 L1-Dev  -> <block> Downloaded from other validator
+21:47:35.364 L1-Dev  -> New Block Arrived : 1348cb2346cf000
+21:47:35.365 L1-Dev  -> Block Came From The Validator Queue [ ______________4 :  300 ]
+21:47:35.366 L1-Dev  -> Settings -> Last Block -> 4 -> 1348cb2346c000069148
+21:47:35.371 L1-Dev  -> Block Is Proccessing -> 4 -> 1348cb2346c000069148
+21:47:35.372 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++21:47:50.025 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:47:50.027 L1-Dev  -> Income Block Row No -> 5:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:47:50.028 L1-Dev  -> Income Block Row No -> 5, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:47:50.343 L1-Dev  -> <block> Downloaded from other validator
+21:47:50.344 L1-Dev  -> New Block Arrived : 1348cb2346de000
+21:47:50.345 L1-Dev  -> Block Came From The Validator Queue [ ______________5 :  300 ]
+21:47:50.346 L1-Dev  -> Settings -> Last Block -> 5 -> 1348cb2346cf0003f74c
+21:47:50.348 L1-Dev  -> Block Is Proccessing -> 5 -> 1348cb2346cf0003f74c
+21:47:50.349 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106214805001
+CurrentQueueTime : 20221106214805000
+21:48:05.001 L1-Dev  -> Empty Block Executed
+21:48:05.009 L1-Dev  -> Block Came From The Main Loop [ ______________6 :  300 ]
+21:48:05.009 L1-Dev  -> Settings -> Last Block -> 6 -> 1348cb2346de0003f7d3
+21:48:05.009 L1-Dev  -> Block Is Proccessing -> 6 -> 1348cb2346de0003f7d3
+21:48:05.028 L1-Dev  -> Distributing [ ______________6 : 300 ] To 3.75.110.186:5002
+21:48:05.522 L1-Dev  -> <block> message sended
+21:48:20.028 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:48:20.029 L1-Dev  -> Income Block Row No -> 7:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:48:20.030 L1-Dev  -> Income Block Row No -> 7, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:48:20.348 L1-Dev  -> <block> Downloaded from other validator
+21:48:20.349 L1-Dev  -> New Block Arrived : 1348cb234724000
+21:48:20.350 L1-Dev  -> Block Came From The Validator Queue [ ______________7 :  300 ]
+21:48:20.351 L1-Dev  -> Settings -> Last Block -> 7 -> 1348cb2347150003f833
+21:48:20.354 L1-Dev  -> Block Is Proccessing -> 7 -> 1348cb2347150003f833
+21:48:20.355 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++21:48:35.031 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:48:35.032 L1-Dev  -> Income Block Row No -> 8:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:48:35.034 L1-Dev  -> Income Block Row No -> 8, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:48:35.348 L1-Dev  -> <block> Downloaded from other validator
+21:48:35.349 L1-Dev  -> New Block Arrived : 1348cb234733000
+21:48:35.350 L1-Dev  -> Block Came From The Validator Queue [ ______________8 :  300 ]
+21:48:35.351 L1-Dev  -> Settings -> Last Block -> 8 -> 1348cb2347240003f892
+21:48:35.353 L1-Dev  -> Block Is Proccessing -> 8 -> 1348cb2347240003f892
+21:48:35.354 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++21:48:50.025 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:48:50.026 L1-Dev  -> Income Block Row No -> 9:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:48:50.027 L1-Dev  -> Income Block Row No -> 9, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:48:50.353 L1-Dev  -> <block> Downloaded from other validator
+21:48:50.354 L1-Dev  -> New Block Arrived : 1348cb234742000
+21:48:50.355 L1-Dev  -> Block Came From The Validator Queue [ ______________9 :  300 ]
+21:48:50.356 L1-Dev  -> Settings -> Last Block -> 9 -> 1348cb2347330003f657
+21:48:50.366 L1-Dev  -> Block Is Proccessing -> 9 -> 1348cb2347330003f657
+21:48:50.368 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106214905001
+CurrentQueueTime : 20221106214905000
+21:49:05.001 L1-Dev  -> Empty Block Executed
+21:49:05.007 L1-Dev  -> Block Came From The Main Loop [ _____________10 :  300 ]
+21:49:05.007 L1-Dev  -> Settings -> Last Block -> 10 -> 1348cb234742000405c6
+21:49:05.007 L1-Dev  -> Block Is Proccessing -> 10 -> 1348cb234742000405c6
+21:49:05.007 L1-Dev  -> Distributing [ _____________10 : 300 ] To 3.75.110.186:5002
+21:49:05.506 L1-Dev  -> <block> message sended
+NGF.NowInt() : 20221106214920001
+CurrentQueueTime : 20221106214920000
+21:49:20.001 L1-Dev  -> Empty Block Executed
+21:49:20.007 L1-Dev  -> Block Came From The Main Loop [ _____________11 :  300 ]
+21:49:20.007 L1-Dev  -> Settings -> Last Block -> 11 -> 1348cb2347790003fb91
+21:49:20.007 L1-Dev  -> Block Is Proccessing -> 11 -> 1348cb2347790003fb91
+21:49:20.007 L1-Dev  -> Distributing [ _____________11 : 300 ] To 3.75.110.186:5002
+21:49:20.513 L1-Dev  -> <block> message sended
++21:49:35.029 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:49:35.031 L1-Dev  -> Income Block Row No -> 12:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:49:35.032 L1-Dev  -> Income Block Row No -> 12, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:49:35.349 L1-Dev  -> <block> Downloaded from other validator
+21:49:35.351 L1-Dev  -> New Block Arrived : 1348cb234797000
+21:49:35.351 L1-Dev  -> Block Came From The Validator Queue [ _____________12 :  300 ]
+21:49:35.352 L1-Dev  -> Settings -> Last Block -> 12 -> 1348cb2347880003f9be
+21:49:35.359 L1-Dev  -> Block Is Proccessing -> 12 -> 1348cb2347880003f9be
+21:49:35.361 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++21:49:50.030 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:49:50.031 L1-Dev  -> Income Block Row No -> 13:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:49:50.033 L1-Dev  -> Income Block Row No -> 13, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:49:50.349 L1-Dev  -> <block> Downloaded from other validator
+21:49:50.351 L1-Dev  -> New Block Arrived : 1348cb2347a6000
+21:49:50.352 L1-Dev  -> Block Came From The Validator Queue [ _____________13 :  300 ]
+21:49:50.353 L1-Dev  -> Settings -> Last Block -> 13 -> 1348cb2347970003fd7f
+21:49:50.354 L1-Dev  -> Block Is Proccessing -> 13 -> 1348cb2347970003fd7f
+21:49:50.355 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106215005001
+CurrentQueueTime : 20221106215005000
+21:50:05.001 L1-Dev  -> Empty Block Executed
+21:50:05.001 L1-Dev  -> Block Came From The Main Loop [ _____________14 :  300 ]
+21:50:05.011 L1-Dev  -> Settings -> Last Block -> 14 -> 1348cb2347a60003fc3f
+21:50:05.011 L1-Dev  -> Block Is Proccessing -> 14 -> 1348cb2347a60003fc3f
+21:50:05.011 L1-Dev  -> Distributing [ _____________14 : 300 ] To 3.75.110.186:5002
+21:50:05.500 L1-Dev  -> <block> message sended
+21:50:20.028 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:50:20.029 L1-Dev  -> Income Block Row No -> 15:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:50:20.030 L1-Dev  -> Income Block Row No -> 15, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:50:20.344 L1-Dev  -> <block> Downloaded from other validator
+21:50:20.345 L1-Dev  -> New Block Arrived : 1348cb2347ec000
+21:50:20.346 L1-Dev  -> Block Came From The Validator Queue [ _____________15 :  300 ]
+21:50:20.347 L1-Dev  -> Settings -> Last Block -> 15 -> 1348cb2347dd0003f836
+21:50:20.349 L1-Dev  -> Block Is Proccessing -> 15 -> 1348cb2347dd0003f836
+21:50:20.350 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++21:50:35.028 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:50:35.030 L1-Dev  -> Income Block Row No -> 16:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:50:35.031 L1-Dev  -> Income Block Row No -> 16, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:50:35.348 L1-Dev  -> <block> Downloaded from other validator
+21:50:35.355 L1-Dev  -> New Block Arrived : 1348cb2347fb000
+21:50:35.357 L1-Dev  -> Block Came From The Validator Queue [ _____________16 :  300 ]
+21:50:35.359 L1-Dev  -> Settings -> Last Block -> 16 -> 1348cb2347ec0003f8ed
+21:50:35.368 L1-Dev  -> Block Is Proccessing -> 16 -> 1348cb2347ec0003f8ed
+21:50:35.375 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++21:50:50.029 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:50:50.031 L1-Dev  -> Income Block Row No -> 17:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:50:50.032 L1-Dev  -> Income Block Row No -> 17, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:50:50.348 L1-Dev  -> <block> Downloaded from other validator
+21:50:50.350 L1-Dev  -> New Block Arrived : 1348cb23480a000
+21:50:50.351 L1-Dev  -> Block Came From The Validator Queue [ _____________17 :  300 ]
+21:50:50.352 L1-Dev  -> Settings -> Last Block -> 17 -> 1348cb2347fb0003fefe
+21:50:50.354 L1-Dev  -> Block Is Proccessing -> 17 -> 1348cb2347fb0003fefe
+21:50:50.354 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++21:51:05.030 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:51:05.031 L1-Dev  -> Income Block Row No -> 18:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:51:05.032 L1-Dev  -> Income Block Row No -> 18, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:51:05.345 L1-Dev  -> <block> Downloaded from other validator
+21:51:05.346 L1-Dev  -> New Block Arrived : 1348cb234841000
+21:51:05.347 L1-Dev  -> Block Came From The Validator Queue [ _____________18 :  300 ]
+21:51:05.348 L1-Dev  -> Settings -> Last Block -> 18 -> 1348cb23480a0003fed9
+21:51:05.350 L1-Dev  -> Block Is Proccessing -> 18 -> 1348cb23480a0003fed9
+21:51:05.351 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+21:51:20.029 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:51:20.030 L1-Dev  -> Income Block Row No -> 19:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:51:20.031 L1-Dev  -> Income Block Row No -> 19, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:51:20.343 L1-Dev  -> <block> Downloaded from other validator
+21:51:20.345 L1-Dev  -> New Block Arrived : 1348cb234850000
+21:51:20.346 L1-Dev  -> Block Came From The Validator Queue [ _____________19 :  300 ]
+21:51:20.347 L1-Dev  -> Settings -> Last Block -> 19 -> 1348cb2348410003fb59
+21:51:20.348 L1-Dev  -> Block Is Proccessing -> 19 -> 1348cb2348410003fb59
+21:51:20.349 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++21:51:35.034 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:51:35.035 L1-Dev  -> Income Block Row No -> 20:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:51:35.036 L1-Dev  -> Income Block Row No -> 20, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:51:35.348 L1-Dev  -> <block> Downloaded from other validator
+21:51:35.350 L1-Dev  -> New Block Arrived : 1348cb23485f000
+21:51:35.351 L1-Dev  -> Block Came From The Validator Queue [ _____________20 :  300 ]
+21:51:35.352 L1-Dev  -> Settings -> Last Block -> 20 -> 1348cb2348500003fdff
+21:51:35.353 L1-Dev  -> Block Is Proccessing -> 20 -> 1348cb2348500003fdff
+21:51:35.354 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106215150001
+CurrentQueueTime : 20221106215150000
+21:51:50.001 L1-Dev  -> Empty Block Executed
+21:51:50.001 L1-Dev  -> Block Came From The Main Loop [ _____________21 :  300 ]
+21:51:50.001 L1-Dev  -> Settings -> Last Block -> 21 -> 1348cb23485f0003f7a1
+21:51:50.013 L1-Dev  -> Block Is Proccessing -> 21 -> 1348cb23485f0003f7a1
+21:51:50.013 L1-Dev  -> Distributing [ _____________21 : 300 ] To 3.75.110.186:5002
+21:51:50.521 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106215205001
+CurrentQueueTime : 20221106215205000
+21:52:05.002 L1-Dev  -> Empty Block Executed
+21:52:05.002 L1-Dev  -> Block Came From The Main Loop [ _____________22 :  300 ]
+21:52:05.002 L1-Dev  -> Settings -> Last Block -> 22 -> 1348cb23486e0003f6b6
+21:52:05.002 L1-Dev  -> Block Is Proccessing -> 22 -> 1348cb23486e0003f6b6
+21:52:05.002 L1-Dev  -> Distributing [ _____________22 : 300 ] To 3.75.110.186:5002
+21:52:05.511 L1-Dev  -> <block> message sended
+NGF.NowInt() : 20221106215220001
+CurrentQueueTime : 20221106215220000
+21:52:20.001 L1-Dev  -> Empty Block Executed
+21:52:20.001 L1-Dev  -> Block Came From The Main Loop [ _____________23 :  300 ]
+21:52:20.001 L1-Dev  -> Settings -> Last Block -> 23 -> 1348cb2348a50008450d
+21:52:20.013 L1-Dev  -> Block Is Proccessing -> 23 -> 1348cb2348a50008450d
+21:52:20.013 L1-Dev  -> Distributing [ _____________23 : 300 ] To 3.75.110.186:5002
+21:52:20.507 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106215235001
+CurrentQueueTime : 20221106215235000
+21:52:35.001 L1-Dev  -> Empty Block Executed
+21:52:35.001 L1-Dev  -> Block Came From The Main Loop [ _____________24 :  300 ]
+21:52:35.013 L1-Dev  -> Settings -> Last Block -> 24 -> 1348cb2348b40003f6ef
+21:52:35.013 L1-Dev  -> Block Is Proccessing -> 24 -> 1348cb2348b40003f6ef
+21:52:35.013 L1-Dev  -> Distributing [ _____________24 : 300 ] To 3.75.110.186:5002
+21:52:35.505 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106215250001
+CurrentQueueTime : 20221106215250000
+21:52:50.001 L1-Dev  -> Empty Block Executed
+21:52:50.001 L1-Dev  -> Block Came From The Main Loop [ _____________25 :  300 ]
+21:52:50.001 L1-Dev  -> Settings -> Last Block -> 25 -> 1348cb2348c30003f809
+21:52:50.013 L1-Dev  -> Block Is Proccessing -> 25 -> 1348cb2348c30003f809
+21:52:50.013 L1-Dev  -> Distributing [ _____________25 : 300 ] To 3.75.110.186:5002
+21:52:50.501 L1-Dev  -> <block> message sended
+21:53:05.031 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:53:05.032 L1-Dev  -> Income Block Row No -> 26:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:53:05.033 L1-Dev  -> Income Block Row No -> 26, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:53:05.351 L1-Dev  -> <block> Downloaded from other validator
+21:53:05.353 L1-Dev  -> New Block Arrived : 1348cb234909000
+21:53:05.354 L1-Dev  -> Block Came From The Validator Queue [ _____________26 :  300 ]
+21:53:05.355 L1-Dev  -> Settings -> Last Block -> 26 -> 1348cb2348d20003f858
+21:53:05.357 L1-Dev  -> Block Is Proccessing -> 26 -> 1348cb2348d20003f858
+21:53:05.358 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106215320001
+CurrentQueueTime : 20221106215320000
+21:53:20.001 L1-Dev  -> Empty Block Executed
+21:53:20.001 L1-Dev  -> Block Came From The Main Loop [ _____________27 :  300 ]
+21:53:20.001 L1-Dev  -> Settings -> Last Block -> 27 -> 1348cb2349090003f581
+21:53:20.015 L1-Dev  -> Block Is Proccessing -> 27 -> 1348cb2349090003f581
+21:53:20.015 L1-Dev  -> Distributing [ _____________27 : 300 ] To 3.75.110.186:5002
+21:53:20.502 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106215335001
+CurrentQueueTime : 20221106215335000
+21:53:35.001 L1-Dev  -> Empty Block Executed
+21:53:35.001 L1-Dev  -> Block Came From The Main Loop [ _____________28 :  300 ]
+21:53:35.001 L1-Dev  -> Settings -> Last Block -> 28 -> 1348cb2349180003f8df
+21:53:35.014 L1-Dev  -> Block Is Proccessing -> 28 -> 1348cb2349180003f8df
+21:53:35.014 L1-Dev  -> Distributing [ _____________28 : 300 ] To 3.75.110.186:5002
+21:53:35.499 L1-Dev  -> <block> message sended
++21:53:50.030 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:53:50.031 L1-Dev  -> Income Block Row No -> 29:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:53:50.032 L1-Dev  -> Income Block Row No -> 29, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:53:50.345 L1-Dev  -> <block> Downloaded from other validator
+21:53:50.346 L1-Dev  -> New Block Arrived : 1348cb234936000
+21:53:50.347 L1-Dev  -> Block Came From The Validator Queue [ _____________29 :  300 ]
+21:53:50.348 L1-Dev  -> Settings -> Last Block -> 29 -> 1348cb2349270003f293
+21:53:50.349 L1-Dev  -> Block Is Proccessing -> 29 -> 1348cb2349270003f293
+21:53:50.350 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+21:54:05.032 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:54:05.033 L1-Dev  -> Income Block Row No -> 30:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:54:05.034 L1-Dev  -> Income Block Row No -> 30, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:54:05.352 L1-Dev  -> <block> Downloaded from other validator
+21:54:05.353 L1-Dev  -> New Block Arrived : 1348cb23496d000
+21:54:05.354 L1-Dev  -> Block Came From The Validator Queue [ _____________30 :  300 ]
+21:54:05.355 L1-Dev  -> Settings -> Last Block -> 30 -> 1348cb2349360003f449
+21:54:05.357 L1-Dev  -> Block Is Proccessing -> 30 -> 1348cb2349360003f449
+21:54:05.358 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++21:54:20.043 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:54:20.044 L1-Dev  -> Income Block Row No -> 31:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:54:20.045 L1-Dev  -> Income Block Row No -> 31, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:54:20.362 L1-Dev  -> <block> Downloaded from other validator
+21:54:20.363 L1-Dev  -> New Block Arrived : 1348cb23497c000
+21:54:20.364 L1-Dev  -> Block Came From The Validator Queue [ _____________31 :  300 ]
+21:54:20.365 L1-Dev  -> Settings -> Last Block -> 31 -> 1348cb23496d0003f739
+21:54:20.367 L1-Dev  -> Block Is Proccessing -> 31 -> 1348cb23496d0003f739
+21:54:20.370 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++21:54:35.030 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:54:35.031 L1-Dev  -> Income Block Row No -> 32:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:54:35.032 L1-Dev  -> Income Block Row No -> 32, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:54:35.350 L1-Dev  -> <block> Downloaded from other validator
+21:54:35.351 L1-Dev  -> New Block Arrived : 1348cb23498b000
+21:54:35.352 L1-Dev  -> Block Came From The Validator Queue [ _____________32 :  300 ]
+21:54:35.353 L1-Dev  -> Settings -> Last Block -> 32 -> 1348cb23497c0003f9f4
+21:54:35.355 L1-Dev  -> Block Is Proccessing -> 32 -> 1348cb23497c0003f9f4
+21:54:35.356 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++21:54:50.030 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:54:50.031 L1-Dev  -> Income Block Row No -> 33:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:54:50.032 L1-Dev  -> Income Block Row No -> 33, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:54:50.346 L1-Dev  -> <block> Downloaded from other validator
+21:54:50.348 L1-Dev  -> New Block Arrived : 1348cb23499a000
+21:54:50.348 L1-Dev  -> Block Came From The Validator Queue [ _____________33 :  300 ]
+21:54:50.349 L1-Dev  -> Settings -> Last Block -> 33 -> 1348cb23498b0003f6cd
+21:54:50.351 L1-Dev  -> Block Is Proccessing -> 33 -> 1348cb23498b0003f6cd
+21:54:50.352 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+NGF.NowInt() : 20221106215505001
+CurrentQueueTime : 20221106215505000
+21:55:05.001 L1-Dev  -> Empty Block Executed
+21:55:05.005 L1-Dev  -> Block Came From The Main Loop [ _____________34 :  300 ]
+21:55:05.005 L1-Dev  -> Settings -> Last Block -> 34 -> 1348cb23499a0003f638
+21:55:05.005 L1-Dev  -> Block Is Proccessing -> 34 -> 1348cb23499a0003f638
+21:55:05.005 L1-Dev  -> Distributing [ _____________34 : 300 ] To 3.75.110.186:5002
+21:55:05.498 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106215520001
+CurrentQueueTime : 20221106215520000
+21:55:20.001 L1-Dev  -> Empty Block Executed
+21:55:20.004 L1-Dev  -> Block Came From The Main Loop [ _____________35 :  300 ]
+21:55:20.004 L1-Dev  -> Settings -> Last Block -> 35 -> 1348cb2349d10003f962
+21:55:20.004 L1-Dev  -> Block Is Proccessing -> 35 -> 1348cb2349d10003f962
+21:55:20.004 L1-Dev  -> Distributing [ _____________35 : 300 ] To 3.75.110.186:5002
+21:55:20.501 L1-Dev  -> <block> message sended
++21:55:35.030 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:55:35.031 L1-Dev  -> Income Block Row No -> 36:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:55:35.032 L1-Dev  -> Income Block Row No -> 36, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:55:35.352 L1-Dev  -> <block> Downloaded from other validator
+21:55:35.354 L1-Dev  -> New Block Arrived : 1348cb2349ef000
+21:55:35.355 L1-Dev  -> Block Came From The Validator Queue [ _____________36 :  300 ]
+21:55:35.356 L1-Dev  -> Settings -> Last Block -> 36 -> 1348cb2349e00003f836
+21:55:35.357 L1-Dev  -> Block Is Proccessing -> 36 -> 1348cb2349e00003f836
+21:55:35.358 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106215550001
+CurrentQueueTime : 20221106215550000
+21:55:50.001 L1-Dev  -> Empty Block Executed
+21:55:50.005 L1-Dev  -> Block Came From The Main Loop [ _____________37 :  300 ]
+21:55:50.005 L1-Dev  -> Settings -> Last Block -> 37 -> 1348cb2349ef0003fe82
+21:55:50.005 L1-Dev  -> Block Is Proccessing -> 37 -> 1348cb2349ef0003fe82
+21:55:50.005 L1-Dev  -> Distributing [ _____________37 : 300 ] To 3.75.110.186:5002
+21:55:50.500 L1-Dev  -> <block> message sended
+NGF.NowInt() : 20221106215605001
+CurrentQueueTime : 20221106215605000
+21:56:05.001 L1-Dev  -> Empty Block Executed
+21:56:05.009 L1-Dev  -> Block Came From The Main Loop [ _____________38 :  300 ]
+21:56:05.009 L1-Dev  -> Settings -> Last Block -> 38 -> 1348cb2349fe0003f0fb
+21:56:05.009 L1-Dev  -> Block Is Proccessing -> 38 -> 1348cb2349fe0003f0fb
+21:56:05.009 L1-Dev  -> Distributing [ _____________38 : 300 ] To 3.75.110.186:5002
+21:56:05.494 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106215620001
+CurrentQueueTime : 20221106215620000
+21:56:20.001 L1-Dev  -> Empty Block Executed
+21:56:20.009 L1-Dev  -> Block Came From The Main Loop [ _____________39 :  300 ]
+21:56:20.009 L1-Dev  -> Settings -> Last Block -> 39 -> 1348cb234a350003f8a0
+21:56:20.009 L1-Dev  -> Block Is Proccessing -> 39 -> 1348cb234a350003f8a0
+21:56:20.009 L1-Dev  -> Distributing [ _____________39 : 300 ] To 3.75.110.186:5002
+21:56:20.497 L1-Dev  -> <block> message sended
++21:56:35.031 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:56:35.032 L1-Dev  -> Income Block Row No -> 40:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:56:35.033 L1-Dev  -> Income Block Row No -> 40, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:56:35.348 L1-Dev  -> <block> Downloaded from other validator
+21:56:35.349 L1-Dev  -> New Block Arrived : 1348cb234a53000
+21:56:35.350 L1-Dev  -> Block Came From The Validator Queue [ _____________40 :  300 ]
+21:56:35.351 L1-Dev  -> Settings -> Last Block -> 40 -> 1348cb234a440003f99c
+21:56:35.353 L1-Dev  -> Block Is Proccessing -> 40 -> 1348cb234a440003f99c
+21:56:35.354 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106215650001
+CurrentQueueTime : 20221106215650000
+21:56:50.001 L1-Dev  -> Empty Block Executed
+21:56:50.009 L1-Dev  -> Block Came From The Main Loop [ _____________41 :  300 ]
+21:56:50.009 L1-Dev  -> Settings -> Last Block -> 41 -> 1348cb234a530003fc60
+21:56:50.009 L1-Dev  -> Block Is Proccessing -> 41 -> 1348cb234a530003fc60
+21:56:50.009 L1-Dev  -> Distributing [ _____________41 : 300 ] To 3.75.110.186:5002
+21:56:50.505 L1-Dev  -> <block> message sended
+NGF.NowInt() : 20221106215705001
+CurrentQueueTime : 20221106215705000
+21:57:05.001 L1-Dev  -> Empty Block Executed
+21:57:05.001 L1-Dev  -> Block Came From The Main Loop [ _____________42 :  300 ]
+21:57:05.001 L1-Dev  -> Settings -> Last Block -> 42 -> 1348cb234a620003f90a
+21:57:05.015 L1-Dev  -> Block Is Proccessing -> 42 -> 1348cb234a620003f90a
+21:57:05.015 L1-Dev  -> Distributing [ _____________42 : 300 ] To 3.75.110.186:5002
+21:57:05.502 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106215720001
+CurrentQueueTime : 20221106215720000
+21:57:20.001 L1-Dev  -> Empty Block Executed
+21:57:20.007 L1-Dev  -> Block Came From The Main Loop [ _____________43 :  300 ]
+21:57:20.007 L1-Dev  -> Settings -> Last Block -> 43 -> 1348cb234a990003f868
+21:57:20.007 L1-Dev  -> Block Is Proccessing -> 43 -> 1348cb234a990003f868
+21:57:20.007 L1-Dev  -> Distributing [ _____________43 : 300 ] To 3.75.110.186:5002
+21:57:20.499 L1-Dev  -> <block> message sended
++21:57:35.031 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:57:35.032 L1-Dev  -> Income Block Row No -> 44:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:57:35.033 L1-Dev  -> Income Block Row No -> 44, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:57:35.354 L1-Dev  -> <block> Downloaded from other validator
+21:57:35.355 L1-Dev  -> New Block Arrived : 1348cb234ab7000
+21:57:35.355 L1-Dev  -> Block Came From The Validator Queue [ _____________44 :  300 ]
+21:57:35.357 L1-Dev  -> Settings -> Last Block -> 44 -> 1348cb234aa80003f3c0
+21:57:35.358 L1-Dev  -> Block Is Proccessing -> 44 -> 1348cb234aa80003f3c0
+21:57:35.359 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+21:57:50.030 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:57:50.031 L1-Dev  -> Income Block Row No -> 45:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:57:50.032 L1-Dev  -> Income Block Row No -> 45, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:57:50.351 L1-Dev  -> <block> Downloaded from other validator
+21:57:50.352 L1-Dev  -> New Block Arrived : 1348cb234ac6000
+21:57:50.353 L1-Dev  -> Block Came From The Validator Queue [ _____________45 :  300 ]
+21:57:50.354 L1-Dev  -> Settings -> Last Block -> 45 -> 1348cb234ab70003f8ce
+21:57:50.355 L1-Dev  -> Block Is Proccessing -> 45 -> 1348cb234ab70003f8ce
+21:57:50.357 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++21:58:05.033 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:58:05.034 L1-Dev  -> Income Block Row No -> 46:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:58:05.035 L1-Dev  -> Income Block Row No -> 46, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:58:05.349 L1-Dev  -> <block> Downloaded from other validator
+21:58:05.350 L1-Dev  -> New Block Arrived : 1348cb234afd000
+21:58:05.351 L1-Dev  -> Block Came From The Validator Queue [ _____________46 :  300 ]
+21:58:05.352 L1-Dev  -> Settings -> Last Block -> 46 -> 1348cb234ac60003f4a4
+21:58:05.354 L1-Dev  -> Block Is Proccessing -> 46 -> 1348cb234ac60003f4a4
+21:58:05.355 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106215820001
+CurrentQueueTime : 20221106215820000
+21:58:20.001 L1-Dev  -> Empty Block Executed
+21:58:20.001 L1-Dev  -> Block Came From The Main Loop [ _____________47 :  300 ]
+21:58:20.001 L1-Dev  -> Settings -> Last Block -> 47 -> 1348cb234afd0003fcfa
+21:58:20.014 L1-Dev  -> Block Is Proccessing -> 47 -> 1348cb234afd0003fcfa
+21:58:20.014 L1-Dev  -> Distributing [ _____________47 : 300 ] To 3.75.110.186:5002
+21:58:20.520 L1-Dev  -> <block> message sended
++21:58:35.032 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:58:35.033 L1-Dev  -> Income Block Row No -> 48:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:58:35.034 L1-Dev  -> Income Block Row No -> 48, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:58:35.347 L1-Dev  -> <block> Downloaded from other validator
+21:58:35.348 L1-Dev  -> New Block Arrived : 1348cb234b1b000
+21:58:35.349 L1-Dev  -> Block Came From The Validator Queue [ _____________48 :  300 ]
+21:58:35.350 L1-Dev  -> Settings -> Last Block -> 48 -> 1348cb234b0c0003f862
+21:58:35.352 L1-Dev  -> Block Is Proccessing -> 48 -> 1348cb234b0c0003f862
+21:58:35.353 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+NGF.NowInt() : 20221106215850001
+CurrentQueueTime : 20221106215850000
+21:58:50.001 L1-Dev  -> Empty Block Executed
+21:58:50.001 L1-Dev  -> Block Came From The Main Loop [ _____________49 :  300 ]
+21:58:50.001 L1-Dev  -> Settings -> Last Block -> 49 -> 1348cb234b1b0003fede
+21:58:50.014 L1-Dev  -> Block Is Proccessing -> 49 -> 1348cb234b1b0003fede
+21:58:50.014 L1-Dev  -> Distributing [ _____________49 : 300 ] To 3.75.110.186:5002
+21:58:50.496 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106215905001
+CurrentQueueTime : 20221106215905000
+21:59:05.001 L1-Dev  -> Empty Block Executed
+21:59:05.001 L1-Dev  -> Block Came From The Main Loop [ _____________50 :  300 ]
+21:59:05.001 L1-Dev  -> Settings -> Last Block -> 50 -> 1348cb234b2a0003f8da
+21:59:05.015 L1-Dev  -> Block Is Proccessing -> 50 -> 1348cb234b2a0003f8da
+21:59:05.015 L1-Dev  -> Distributing [ _____________50 : 300 ] To 3.75.110.186:5002
+21:59:05.495 L1-Dev  -> <block> message sended
++21:59:20.033 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:59:20.034 L1-Dev  -> Income Block Row No -> 51:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:59:20.035 L1-Dev  -> Income Block Row No -> 51, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:59:20.351 L1-Dev  -> <block> Downloaded from other validator
+21:59:20.352 L1-Dev  -> New Block Arrived : 1348cb234b70000
+21:59:20.353 L1-Dev  -> Block Came From The Validator Queue [ _____________51 :  300 ]
+21:59:20.354 L1-Dev  -> Settings -> Last Block -> 51 -> 1348cb234b610003f4e4
+21:59:20.356 L1-Dev  -> Block Is Proccessing -> 51 -> 1348cb234b610003f4e4
+21:59:20.357 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106215935001
+CurrentQueueTime : 20221106215935000
+21:59:35.001 L1-Dev  -> Empty Block Executed
+21:59:35.001 L1-Dev  -> Block Came From The Main Loop [ _____________52 :  300 ]
+21:59:35.001 L1-Dev  -> Settings -> Last Block -> 52 -> 1348cb234b700003f598
+21:59:35.001 L1-Dev  -> Block Is Proccessing -> 52 -> 1348cb234b700003f598
+21:59:35.016 L1-Dev  -> Distributing [ _____________52 : 300 ] To 3.75.110.186:5002
+21:59:35.503 L1-Dev  -> <block> message sended
+21:59:50.032 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+21:59:50.033 L1-Dev  -> Income Block Row No -> 53:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:59:50.034 L1-Dev  -> Income Block Row No -> 53, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+21:59:50.353 L1-Dev  -> <block> Downloaded from other validator
+21:59:50.354 L1-Dev  -> New Block Arrived : 1348cb234b8e000
+21:59:50.355 L1-Dev  -> Block Came From The Validator Queue [ _____________53 :  300 ]
+21:59:50.356 L1-Dev  -> Settings -> Last Block -> 53 -> 1348cb234b7f00043f25
+21:59:50.358 L1-Dev  -> Block Is Proccessing -> 53 -> 1348cb234b7f00043f25
+21:59:50.359 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:00:05.035 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:00:05.036 L1-Dev  -> Income Block Row No -> 54:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:00:05.037 L1-Dev  -> Income Block Row No -> 54, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:00:05.351 L1-Dev  -> <block> Downloaded from other validator
+22:00:05.352 L1-Dev  -> New Block Arrived : 1348cb235b65000
+22:00:05.353 L1-Dev  -> Block Came From The Validator Queue [ _____________54 :  300 ]
+22:00:05.354 L1-Dev  -> Settings -> Last Block -> 54 -> 1348cb234b8e0003fa7d
+22:00:05.356 L1-Dev  -> Block Is Proccessing -> 54 -> 1348cb234b8e0003fa7d
+22:00:05.357 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:00:20.034 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:00:20.035 L1-Dev  -> Income Block Row No -> 55:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:00:20.036 L1-Dev  -> Income Block Row No -> 55, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:00:20.354 L1-Dev  -> <block> Downloaded from other validator
+22:00:20.356 L1-Dev  -> New Block Arrived : 1348cb235b74000
+22:00:20.357 L1-Dev  -> Block Came From The Validator Queue [ _____________55 :  300 ]
+22:00:20.357 L1-Dev  -> Settings -> Last Block -> 55 -> 1348cb235b650003fe6c
+22:00:20.359 L1-Dev  -> Block Is Proccessing -> 55 -> 1348cb235b650003fe6c
+22:00:20.361 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:00:35.034 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:00:35.035 L1-Dev  -> Income Block Row No -> 56:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:00:35.037 L1-Dev  -> Income Block Row No -> 56, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:00:35.350 L1-Dev  -> <block> Downloaded from other validator
+22:00:35.351 L1-Dev  -> New Block Arrived : 1348cb235b83000
+22:00:35.352 L1-Dev  -> Block Came From The Validator Queue [ _____________56 :  300 ]
+22:00:35.353 L1-Dev  -> Settings -> Last Block -> 56 -> 1348cb235b740003fe38
+22:00:35.355 L1-Dev  -> Block Is Proccessing -> 56 -> 1348cb235b740003fe38
+22:00:35.356 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+22:00:50.034 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:00:50.035 L1-Dev  -> Income Block Row No -> 57:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:00:50.036 L1-Dev  -> Income Block Row No -> 57, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:00:50.354 L1-Dev  -> <block> Downloaded from other validator
+22:00:50.355 L1-Dev  -> New Block Arrived : 1348cb235b92000
+22:00:50.356 L1-Dev  -> Block Came From The Validator Queue [ _____________57 :  300 ]
+22:00:50.357 L1-Dev  -> Settings -> Last Block -> 57 -> 1348cb235b830003f999
+22:00:50.359 L1-Dev  -> Block Is Proccessing -> 57 -> 1348cb235b830003f999
+22:00:50.360 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:01:05.036 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:01:05.037 L1-Dev  -> Income Block Row No -> 58:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:01:05.038 L1-Dev  -> Income Block Row No -> 58, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:01:05.351 L1-Dev  -> <block> Downloaded from other validator
+22:01:05.352 L1-Dev  -> New Block Arrived : 1348cb235bc9000
+22:01:05.353 L1-Dev  -> Block Came From The Validator Queue [ _____________58 :  300 ]
+22:01:05.354 L1-Dev  -> Settings -> Last Block -> 58 -> 1348cb235b920003fd0f
+22:01:05.356 L1-Dev  -> Block Is Proccessing -> 58 -> 1348cb235b920003fd0f
+22:01:05.357 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106220120001
+CurrentQueueTime : 20221106220120000
+22:01:20.001 L1-Dev  -> Empty Block Executed
+22:01:20.007 L1-Dev  -> Block Came From The Main Loop [ _____________59 :  300 ]
+22:01:20.007 L1-Dev  -> Settings -> Last Block -> 59 -> 1348cb235bc90003ff02
+22:01:20.007 L1-Dev  -> Block Is Proccessing -> 59 -> 1348cb235bc90003ff02
+22:01:20.007 L1-Dev  -> Distributing [ _____________59 : 300 ] To 3.75.110.186:5002
+22:01:20.496 L1-Dev  -> <block> message sended
++22:01:35.033 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:01:35.034 L1-Dev  -> Income Block Row No -> 60:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:01:35.035 L1-Dev  -> Income Block Row No -> 60, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:01:35.347 L1-Dev  -> <block> Downloaded from other validator
+22:01:35.348 L1-Dev  -> New Block Arrived : 1348cb235be7000
+22:01:35.349 L1-Dev  -> Block Came From The Validator Queue [ _____________60 :  300 ]
+22:01:35.350 L1-Dev  -> Settings -> Last Block -> 60 -> 1348cb235bd80003f464
+22:01:35.353 L1-Dev  -> Block Is Proccessing -> 60 -> 1348cb235bd80003f464
+22:01:35.353 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+NGF.NowInt() : 20221106220150001
+CurrentQueueTime : 20221106220150000
+22:01:50.001 L1-Dev  -> Empty Block Executed
+22:01:50.007 L1-Dev  -> Block Came From The Main Loop [ _____________61 :  300 ]
+22:01:50.007 L1-Dev  -> Settings -> Last Block -> 61 -> 1348cb235be70003fd80
+22:01:50.007 L1-Dev  -> Block Is Proccessing -> 61 -> 1348cb235be70003fd80
+22:01:50.007 L1-Dev  -> Distributing [ _____________61 : 300 ] To 3.75.110.186:5002
+22:01:50.497 L1-Dev  -> <block> message sended
++22:02:05.036 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:02:05.037 L1-Dev  -> Income Block Row No -> 62:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:02:05.038 L1-Dev  -> Income Block Row No -> 62, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:02:05.357 L1-Dev  -> <block> Downloaded from other validator
+22:02:05.358 L1-Dev  -> New Block Arrived : 1348cb235c2d000
+22:02:05.359 L1-Dev  -> Block Came From The Validator Queue [ _____________62 :  300 ]
+22:02:05.360 L1-Dev  -> Settings -> Last Block -> 62 -> 1348cb235bf60003f569
+22:02:05.362 L1-Dev  -> Block Is Proccessing -> 62 -> 1348cb235bf60003f569
+22:02:05.363 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:02:20.035 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:02:20.036 L1-Dev  -> Income Block Row No -> 63:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:02:20.037 L1-Dev  -> Income Block Row No -> 63, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:02:20.349 L1-Dev  -> <block> Downloaded from other validator
+22:02:20.350 L1-Dev  -> New Block Arrived : 1348cb235c3c000
+22:02:20.351 L1-Dev  -> Block Came From The Validator Queue [ _____________63 :  300 ]
+22:02:20.352 L1-Dev  -> Settings -> Last Block -> 63 -> 1348cb235c2d000400f2
+22:02:20.354 L1-Dev  -> Block Is Proccessing -> 63 -> 1348cb235c2d000400f2
+22:02:20.355 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106220235001
+CurrentQueueTime : 20221106220235000
+22:02:35.001 L1-Dev  -> Empty Block Executed
+22:02:35.001 L1-Dev  -> Block Came From The Main Loop [ _____________64 :  300 ]
+22:02:35.001 L1-Dev  -> Settings -> Last Block -> 64 -> 1348cb235c3c0004021d
+22:02:35.015 L1-Dev  -> Block Is Proccessing -> 64 -> 1348cb235c3c0004021d
+22:02:35.015 L1-Dev  -> Distributing [ _____________64 : 300 ] To 3.75.110.186:5002
+22:02:35.502 L1-Dev  -> <block> message sended
+22:02:50.032 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:02:50.033 L1-Dev  -> Income Block Row No -> 65:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:02:50.034 L1-Dev  -> Income Block Row No -> 65, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:02:50.351 L1-Dev  -> <block> Downloaded from other validator
+22:02:50.352 L1-Dev  -> New Block Arrived : 1348cb235c5a000
+22:02:50.353 L1-Dev  -> Block Came From The Validator Queue [ _____________65 :  300 ]
+22:02:50.354 L1-Dev  -> Settings -> Last Block -> 65 -> 1348cb235c4b0003f5b4
+22:02:50.356 L1-Dev  -> Block Is Proccessing -> 65 -> 1348cb235c4b0003f5b4
+22:02:50.357 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:03:05.031 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:03:05.032 L1-Dev  -> Income Block Row No -> 66:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:03:05.034 L1-Dev  -> Income Block Row No -> 66, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:03:05.352 L1-Dev  -> <block> Downloaded from other validator
+22:03:05.353 L1-Dev  -> New Block Arrived : 1348cb235c91000
+22:03:05.354 L1-Dev  -> Block Came From The Validator Queue [ _____________66 :  300 ]
+22:03:05.355 L1-Dev  -> Settings -> Last Block -> 66 -> 1348cb235c5a0003fee7
+22:03:05.357 L1-Dev  -> Block Is Proccessing -> 66 -> 1348cb235c5a0003fee7
+22:03:05.359 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:03:20.034 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:03:20.035 L1-Dev  -> Income Block Row No -> 67:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:03:20.036 L1-Dev  -> Income Block Row No -> 67, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:03:20.348 L1-Dev  -> <block> Downloaded from other validator
+22:03:20.349 L1-Dev  -> New Block Arrived : 1348cb235ca0000
+22:03:20.350 L1-Dev  -> Block Came From The Validator Queue [ _____________67 :  300 ]
+22:03:20.351 L1-Dev  -> Settings -> Last Block -> 67 -> 1348cb235c910003fbd4
+22:03:20.354 L1-Dev  -> Block Is Proccessing -> 67 -> 1348cb235c910003fbd4
+22:03:20.355 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:03:35.031 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:03:35.032 L1-Dev  -> Income Block Row No -> 68:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:03:35.033 L1-Dev  -> Income Block Row No -> 68, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:03:35.345 L1-Dev  -> <block> Downloaded from other validator
+22:03:35.346 L1-Dev  -> New Block Arrived : 1348cb235caf000
+22:03:35.347 L1-Dev  -> Block Came From The Validator Queue [ _____________68 :  300 ]
+22:03:35.348 L1-Dev  -> Settings -> Last Block -> 68 -> 1348cb235ca00003f87e
+22:03:35.351 L1-Dev  -> Block Is Proccessing -> 68 -> 1348cb235ca00003f87e
+22:03:35.352 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+22:03:50.032 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:03:50.034 L1-Dev  -> Income Block Row No -> 69:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:03:50.035 L1-Dev  -> Income Block Row No -> 69, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:03:50.349 L1-Dev  -> <block> Downloaded from other validator
+22:03:50.350 L1-Dev  -> New Block Arrived : 1348cb235cbe000
+22:03:50.351 L1-Dev  -> Block Came From The Validator Queue [ _____________69 :  300 ]
+22:03:50.352 L1-Dev  -> Settings -> Last Block -> 69 -> 1348cb235caf0003fdf1
+22:03:50.354 L1-Dev  -> Block Is Proccessing -> 69 -> 1348cb235caf0003fdf1
+22:03:50.355 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106220405001
+CurrentQueueTime : 20221106220405000
+22:04:05.001 L1-Dev  -> Empty Block Executed
+22:04:05.001 L1-Dev  -> Block Came From The Main Loop [ _____________70 :  300 ]
+22:04:05.001 L1-Dev  -> Settings -> Last Block -> 70 -> 1348cb235cbe0003fbac
+22:04:05.001 L1-Dev  -> Block Is Proccessing -> 70 -> 1348cb235cbe0003fbac
+22:04:05.017 L1-Dev  -> Distributing [ _____________70 : 300 ] To 3.75.110.186:5002
+22:04:05.505 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106220420001
+CurrentQueueTime : 20221106220420000
+22:04:20.001 L1-Dev  -> Empty Block Executed
+22:04:20.006 L1-Dev  -> Block Came From The Main Loop [ _____________71 :  300 ]
+22:04:20.006 L1-Dev  -> Settings -> Last Block -> 71 -> 1348cb235cf50007af2e
+22:04:20.006 L1-Dev  -> Block Is Proccessing -> 71 -> 1348cb235cf50007af2e
+22:04:20.006 L1-Dev  -> Distributing [ _____________71 : 300 ] To 3.75.110.186:5002
+22:04:20.494 L1-Dev  -> <block> message sended
+NGF.NowInt() : 20221106220435001
+CurrentQueueTime : 20221106220435000
+22:04:35.001 L1-Dev  -> Empty Block Executed
+22:04:35.006 L1-Dev  -> Block Came From The Main Loop [ _____________72 :  300 ]
+22:04:35.006 L1-Dev  -> Settings -> Last Block -> 72 -> 1348cb235d040003f9e6
+22:04:35.006 L1-Dev  -> Block Is Proccessing -> 72 -> 1348cb235d040003f9e6
+22:04:35.006 L1-Dev  -> Distributing [ _____________72 : 300 ] To 3.75.110.186:5002
+22:04:35.493 L1-Dev  -> <block> message sended
++22:04:50.033 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:04:50.034 L1-Dev  -> Income Block Row No -> 73:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:04:50.035 L1-Dev  -> Income Block Row No -> 73, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:04:50.352 L1-Dev  -> <block> Downloaded from other validator
+22:04:50.354 L1-Dev  -> New Block Arrived : 1348cb235d22000
+22:04:50.355 L1-Dev  -> Block Came From The Validator Queue [ _____________73 :  300 ]
+22:04:50.356 L1-Dev  -> Settings -> Last Block -> 73 -> 1348cb235d130003f616
+22:04:50.358 L1-Dev  -> Block Is Proccessing -> 73 -> 1348cb235d130003f616
+22:04:50.359 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:05:05.033 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:05:05.034 L1-Dev  -> Income Block Row No -> 74:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:05:05.035 L1-Dev  -> Income Block Row No -> 74, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:05:05.348 L1-Dev  -> <block> Downloaded from other validator
+22:05:05.349 L1-Dev  -> New Block Arrived : 1348cb235d59000
+22:05:05.351 L1-Dev  -> Block Came From The Validator Queue [ _____________74 :  300 ]
+22:05:05.352 L1-Dev  -> Settings -> Last Block -> 74 -> 1348cb235d220003fedb
+22:05:05.354 L1-Dev  -> Block Is Proccessing -> 74 -> 1348cb235d220003fedb
+22:05:05.355 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:05:20.033 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:05:20.035 L1-Dev  -> Income Block Row No -> 75:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:05:20.036 L1-Dev  -> Income Block Row No -> 75, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:05:20.354 L1-Dev  -> <block> Downloaded from other validator
+22:05:20.355 L1-Dev  -> New Block Arrived : 1348cb235d68000
+22:05:20.356 L1-Dev  -> Block Came From The Validator Queue [ _____________75 :  300 ]
+22:05:20.357 L1-Dev  -> Settings -> Last Block -> 75 -> 1348cb235d590003ff5c
+22:05:20.359 L1-Dev  -> Block Is Proccessing -> 75 -> 1348cb235d590003ff5c
+22:05:20.360 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+22:05:35.034 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:05:35.035 L1-Dev  -> Income Block Row No -> 76:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:05:35.036 L1-Dev  -> Income Block Row No -> 76, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:05:35.354 L1-Dev  -> <block> Downloaded from other validator
+22:05:35.355 L1-Dev  -> New Block Arrived : 1348cb235d77000
+22:05:35.356 L1-Dev  -> Block Came From The Validator Queue [ _____________76 :  300 ]
+22:05:35.357 L1-Dev  -> Settings -> Last Block -> 76 -> 1348cb235d680003f631
+22:05:35.359 L1-Dev  -> Block Is Proccessing -> 76 -> 1348cb235d680003f631
+22:05:35.360 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106220550001
+CurrentQueueTime : 20221106220550000
+22:05:50.001 L1-Dev  -> Empty Block Executed
+22:05:50.008 L1-Dev  -> Block Came From The Main Loop [ _____________77 :  300 ]
+22:05:50.008 L1-Dev  -> Settings -> Last Block -> 77 -> 1348cb235d770003fbcf
+22:05:50.008 L1-Dev  -> Block Is Proccessing -> 77 -> 1348cb235d770003fbcf
+22:05:50.008 L1-Dev  -> Distributing [ _____________77 : 300 ] To 3.75.110.186:5002
+22:05:50.495 L1-Dev  -> <block> message sended
++22:06:05.034 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:06:05.035 L1-Dev  -> Income Block Row No -> 78:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:06:05.036 L1-Dev  -> Income Block Row No -> 78, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:06:05.348 L1-Dev  -> <block> Downloaded from other validator
+22:06:05.350 L1-Dev  -> New Block Arrived : 1348cb235dbd000
+22:06:05.351 L1-Dev  -> Block Came From The Validator Queue [ _____________78 :  300 ]
+22:06:05.352 L1-Dev  -> Settings -> Last Block -> 78 -> 1348cb235d860003fc90
+22:06:05.354 L1-Dev  -> Block Is Proccessing -> 78 -> 1348cb235d860003fc90
+22:06:05.355 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:06:20.035 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:06:20.037 L1-Dev  -> Income Block Row No -> 79:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:06:20.038 L1-Dev  -> Income Block Row No -> 79, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:06:20.355 L1-Dev  -> <block> Downloaded from other validator
+22:06:20.356 L1-Dev  -> New Block Arrived : 1348cb235dcc000
+22:06:20.357 L1-Dev  -> Block Came From The Validator Queue [ _____________79 :  300 ]
+22:06:20.358 L1-Dev  -> Settings -> Last Block -> 79 -> 1348cb235dbd0003fdf8
+22:06:20.360 L1-Dev  -> Block Is Proccessing -> 79 -> 1348cb235dbd0003fdf8
+22:06:20.361 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+22:06:35.034 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:06:35.035 L1-Dev  -> Income Block Row No -> 80:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:06:35.036 L1-Dev  -> Income Block Row No -> 80, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:06:35.348 L1-Dev  -> <block> Downloaded from other validator
+22:06:35.349 L1-Dev  -> New Block Arrived : 1348cb235ddb000
+22:06:35.350 L1-Dev  -> Block Came From The Validator Queue [ _____________80 :  300 ]
+22:06:35.351 L1-Dev  -> Settings -> Last Block -> 80 -> 1348cb235dcc000400c2
+22:06:35.353 L1-Dev  -> Block Is Proccessing -> 80 -> 1348cb235dcc000400c2
+22:06:35.354 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:06:50.034 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:06:50.035 L1-Dev  -> Income Block Row No -> 81:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:06:50.036 L1-Dev  -> Income Block Row No -> 81, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:06:50.349 L1-Dev  -> <block> Downloaded from other validator
+22:06:50.350 L1-Dev  -> New Block Arrived : 1348cb235dea000
+22:06:50.351 L1-Dev  -> Block Came From The Validator Queue [ _____________81 :  300 ]
+22:06:50.352 L1-Dev  -> Settings -> Last Block -> 81 -> 1348cb235ddb0003f45f
+22:06:50.354 L1-Dev  -> Block Is Proccessing -> 81 -> 1348cb235ddb0003f45f
+22:06:50.355 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106220705001
+CurrentQueueTime : 20221106220705000
+22:07:05.001 L1-Dev  -> Empty Block Executed
+22:07:05.001 L1-Dev  -> Block Came From The Main Loop [ _____________82 :  300 ]
+22:07:05.015 L1-Dev  -> Settings -> Last Block -> 82 -> 1348cb235dea0003fdd6
+22:07:05.015 L1-Dev  -> Block Is Proccessing -> 82 -> 1348cb235dea0003fdd6
+22:07:05.015 L1-Dev  -> Distributing [ _____________82 : 300 ] To 3.75.110.186:5002
+22:07:05.499 L1-Dev  -> <block> message sended
++22:07:20.033 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:07:20.035 L1-Dev  -> Income Block Row No -> 83:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:07:20.036 L1-Dev  -> Income Block Row No -> 83, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:07:20.358 L1-Dev  -> <block> Downloaded from other validator
+22:07:20.359 L1-Dev  -> New Block Arrived : 1348cb235e30000
+22:07:20.360 L1-Dev  -> Block Came From The Validator Queue [ _____________83 :  300 ]
+22:07:20.361 L1-Dev  -> Settings -> Last Block -> 83 -> 1348cb235e210003f541
+22:07:20.363 L1-Dev  -> Block Is Proccessing -> 83 -> 1348cb235e210003f541
+22:07:20.364 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+22:07:35.036 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:07:35.037 L1-Dev  -> Income Block Row No -> 84:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:07:35.038 L1-Dev  -> Income Block Row No -> 84, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:07:35.355 L1-Dev  -> <block> Downloaded from other validator
+22:07:35.356 L1-Dev  -> New Block Arrived : 1348cb235e3f000
+22:07:35.358 L1-Dev  -> Block Came From The Validator Queue [ _____________84 :  300 ]
+22:07:35.359 L1-Dev  -> Settings -> Last Block -> 84 -> 1348cb235e3000040004
+22:07:35.361 L1-Dev  -> Block Is Proccessing -> 84 -> 1348cb235e3000040004
+22:07:35.362 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106220750001
+CurrentQueueTime : 20221106220750000
+22:07:50.001 L1-Dev  -> Empty Block Executed
+22:07:50.001 L1-Dev  -> Block Came From The Main Loop [ _____________85 :  300 ]
+22:07:50.001 L1-Dev  -> Settings -> Last Block -> 85 -> 1348cb235e3f0003f33e
+22:07:50.015 L1-Dev  -> Block Is Proccessing -> 85 -> 1348cb235e3f0003f33e
+22:07:50.015 L1-Dev  -> Distributing [ _____________85 : 300 ] To 3.75.110.186:5002
+22:07:50.497 L1-Dev  -> <block> message sended
++22:08:05.037 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:08:05.038 L1-Dev  -> Income Block Row No -> 86:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:08:05.039 L1-Dev  -> Income Block Row No -> 86, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:08:05.352 L1-Dev  -> <block> Downloaded from other validator
+22:08:05.353 L1-Dev  -> New Block Arrived : 1348cb235e85000
+22:08:05.354 L1-Dev  -> Block Came From The Validator Queue [ _____________86 :  300 ]
+22:08:05.355 L1-Dev  -> Settings -> Last Block -> 86 -> 1348cb235e4e0003fa1e
+22:08:05.357 L1-Dev  -> Block Is Proccessing -> 86 -> 1348cb235e4e0003fa1e
+22:08:05.358 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:08:20.037 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:08:20.038 L1-Dev  -> Income Block Row No -> 87:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:08:20.039 L1-Dev  -> Income Block Row No -> 87, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:08:20.357 L1-Dev  -> <block> Downloaded from other validator
+22:08:20.358 L1-Dev  -> New Block Arrived : 1348cb235e94000
+22:08:20.359 L1-Dev  -> Block Came From The Validator Queue [ _____________87 :  300 ]
+22:08:20.360 L1-Dev  -> Settings -> Last Block -> 87 -> 1348cb235e850003f705
+22:08:20.363 L1-Dev  -> Block Is Proccessing -> 87 -> 1348cb235e850003f705
+22:08:20.364 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+22:08:35.036 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:08:35.037 L1-Dev  -> Income Block Row No -> 88:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:08:35.038 L1-Dev  -> Income Block Row No -> 88, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:08:35.360 L1-Dev  -> <block> Downloaded from other validator
+22:08:35.362 L1-Dev  -> New Block Arrived : 1348cb235ea3000
+22:08:35.363 L1-Dev  -> Block Came From The Validator Queue [ _____________88 :  300 ]
+22:08:35.364 L1-Dev  -> Settings -> Last Block -> 88 -> 1348cb235e940003f9b3
+22:08:35.366 L1-Dev  -> Block Is Proccessing -> 88 -> 1348cb235e940003f9b3
+22:08:35.367 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:08:50.038 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:08:50.039 L1-Dev  -> Income Block Row No -> 89:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:08:50.040 L1-Dev  -> Income Block Row No -> 89, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:08:50.353 L1-Dev  -> <block> Downloaded from other validator
+22:08:50.354 L1-Dev  -> New Block Arrived : 1348cb235eb2000
+22:08:50.355 L1-Dev  -> Block Came From The Validator Queue [ _____________89 :  300 ]
+22:08:50.356 L1-Dev  -> Settings -> Last Block -> 89 -> 1348cb235ea30003f6d4
+22:08:50.358 L1-Dev  -> Block Is Proccessing -> 89 -> 1348cb235ea30003f6d4
+22:08:50.359 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106220905001
+CurrentQueueTime : 20221106220905000
+22:09:05.003 L1-Dev  -> Empty Block Executed
+22:09:05.003 L1-Dev  -> Block Came From The Main Loop [ _____________90 :  300 ]
+22:09:05.003 L1-Dev  -> Settings -> Last Block -> 90 -> 1348cb235eb20003ffa6
+22:09:05.003 L1-Dev  -> Block Is Proccessing -> 90 -> 1348cb235eb20003ffa6
+22:09:05.003 L1-Dev  -> Distributing [ _____________90 : 300 ] To 3.75.110.186:5002
+22:09:05.498 L1-Dev  -> <block> message sended
+22:09:20.035 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:09:20.036 L1-Dev  -> Income Block Row No -> 91:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:09:20.037 L1-Dev  -> Income Block Row No -> 91, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:09:20.352 L1-Dev  -> <block> Downloaded from other validator
+22:09:20.353 L1-Dev  -> New Block Arrived : 1348cb235ef8000
+22:09:20.354 L1-Dev  -> Block Came From The Validator Queue [ _____________91 :  300 ]
+22:09:20.355 L1-Dev  -> Settings -> Last Block -> 91 -> 1348cb235ee9000f3535
+22:09:20.358 L1-Dev  -> Block Is Proccessing -> 91 -> 1348cb235ee9000f3535
+22:09:20.359 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:09:35.036 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:09:35.037 L1-Dev  -> Income Block Row No -> 92:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:09:35.038 L1-Dev  -> Income Block Row No -> 92, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:09:35.351 L1-Dev  -> <block> Downloaded from other validator
+22:09:35.352 L1-Dev  -> New Block Arrived : 1348cb235f07000
+22:09:35.353 L1-Dev  -> Block Came From The Validator Queue [ _____________92 :  300 ]
+22:09:35.354 L1-Dev  -> Settings -> Last Block -> 92 -> 1348cb235ef80003fc78
+22:09:35.356 L1-Dev  -> Block Is Proccessing -> 92 -> 1348cb235ef80003fc78
+22:09:35.358 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:09:50.037 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:09:50.039 L1-Dev  -> Income Block Row No -> 93:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:09:50.040 L1-Dev  -> Income Block Row No -> 93, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:09:50.352 L1-Dev  -> <block> Downloaded from other validator
+22:09:50.353 L1-Dev  -> New Block Arrived : 1348cb235f16000
+22:09:50.354 L1-Dev  -> Block Came From The Validator Queue [ _____________93 :  300 ]
+22:09:50.355 L1-Dev  -> Settings -> Last Block -> 93 -> 1348cb235f070003fd6a
+22:09:50.357 L1-Dev  -> Block Is Proccessing -> 93 -> 1348cb235f070003fd6a
+22:09:50.358 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106221005001
+CurrentQueueTime : 20221106221005000
+22:10:05.001 L1-Dev  -> Empty Block Executed
+22:10:05.005 L1-Dev  -> Block Came From The Main Loop [ _____________94 :  300 ]
+22:10:05.005 L1-Dev  -> Settings -> Last Block -> 94 -> 1348cb235f160003f690
+22:10:05.005 L1-Dev  -> Block Is Proccessing -> 94 -> 1348cb235f160003f690
+22:10:05.005 L1-Dev  -> Distributing [ _____________94 : 300 ] To 3.75.110.186:5002
+22:10:05.498 L1-Dev  -> <block> message sended
+NGF.NowInt() : 20221106221020001
+CurrentQueueTime : 20221106221020000
+22:10:20.001 L1-Dev  -> Empty Block Executed
+22:10:20.005 L1-Dev  -> Block Came From The Main Loop [ _____________95 :  300 ]
+22:10:20.005 L1-Dev  -> Settings -> Last Block -> 95 -> 1348cb235f4d0003f171
+22:10:20.005 L1-Dev  -> Block Is Proccessing -> 95 -> 1348cb235f4d0003f171
+22:10:20.005 L1-Dev  -> Distributing [ _____________95 : 300 ] To 3.75.110.186:5002
+22:10:20.492 L1-Dev  -> <block> message sended
++22:10:35.037 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:10:35.039 L1-Dev  -> Income Block Row No -> 96:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:10:35.040 L1-Dev  -> Income Block Row No -> 96, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:10:35.356 L1-Dev  -> <block> Downloaded from other validator
+22:10:35.357 L1-Dev  -> New Block Arrived : 1348cb235f6b000
+22:10:35.358 L1-Dev  -> Block Came From The Validator Queue [ _____________96 :  300 ]
+22:10:35.359 L1-Dev  -> Settings -> Last Block -> 96 -> 1348cb235f5c0003f915
+22:10:35.361 L1-Dev  -> Block Is Proccessing -> 96 -> 1348cb235f5c0003f915
+22:10:35.362 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106221050001
+CurrentQueueTime : 20221106221050000
+22:10:50.001 L1-Dev  -> Empty Block Executed
+22:10:50.010 L1-Dev  -> Block Came From The Main Loop [ _____________97 :  300 ]
+22:10:50.010 L1-Dev  -> Settings -> Last Block -> 97 -> 1348cb235f6b0003faf0
+22:10:50.010 L1-Dev  -> Block Is Proccessing -> 97 -> 1348cb235f6b0003faf0
+22:10:50.010 L1-Dev  -> Distributing [ _____________97 : 300 ] To 3.75.110.186:5002
+22:10:50.497 L1-Dev  -> <block> message sended
++22:11:05.039 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:11:05.040 L1-Dev  -> Income Block Row No -> 98:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:11:05.042 L1-Dev  -> Income Block Row No -> 98, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:11:05.354 L1-Dev  -> <block> Downloaded from other validator
+22:11:05.355 L1-Dev  -> New Block Arrived : 1348cb235fb1000
+22:11:05.356 L1-Dev  -> Block Came From The Validator Queue [ _____________98 :  300 ]
+22:11:05.357 L1-Dev  -> Settings -> Last Block -> 98 -> 1348cb235f7a0003f957
+22:11:05.359 L1-Dev  -> Block Is Proccessing -> 98 -> 1348cb235f7a0003f957
+22:11:05.361 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+22:11:20.038 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:11:20.039 L1-Dev  -> Income Block Row No -> 99:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:11:20.040 L1-Dev  -> Income Block Row No -> 99, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:11:20.352 L1-Dev  -> <block> Downloaded from other validator
+22:11:20.354 L1-Dev  -> New Block Arrived : 1348cb235fc0000
+22:11:20.354 L1-Dev  -> Block Came From The Validator Queue [ _____________99 :  300 ]
+22:11:20.355 L1-Dev  -> Settings -> Last Block -> 99 -> 1348cb235fb1000c7b9d
+22:11:20.358 L1-Dev  -> Block Is Proccessing -> 99 -> 1348cb235fb1000c7b9d
+22:11:20.359 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106221135001
+CurrentQueueTime : 20221106221135000
+22:11:35.001 L1-Dev  -> Empty Block Executed
+22:11:35.010 L1-Dev  -> Block Came From The Main Loop [ ____________100 :  300 ]
+22:11:35.010 L1-Dev  -> Settings -> Last Block -> 100 -> 1348cb235fc0000bc953
+22:11:35.010 L1-Dev  -> Block Is Proccessing -> 100 -> 1348cb235fc0000bc953
+22:11:35.010 L1-Dev  -> Distributing [ ____________100 : 300 ] To 3.75.110.186:5002
+22:11:35.492 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106221150001
+CurrentQueueTime : 20221106221150000
+22:11:50.001 L1-Dev  -> Empty Block Executed
+22:11:50.011 L1-Dev  -> Block Came From The Main Loop [ ____________101 :  300 ]
+22:11:50.011 L1-Dev  -> Settings -> Last Block -> 101 -> 1348cb235fcf0003f0c9
+22:11:50.011 L1-Dev  -> Block Is Proccessing -> 101 -> 1348cb235fcf0003f0c9
+22:11:50.011 L1-Dev  -> Distributing [ ____________101 : 300 ] To 3.75.110.186:5002
+22:11:50.497 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106221205001
+CurrentQueueTime : 20221106221205000
+22:12:05.001 L1-Dev  -> Empty Block Executed
+22:12:05.012 L1-Dev  -> Block Came From The Main Loop [ ____________102 :  300 ]
+22:12:05.012 L1-Dev  -> Settings -> Last Block -> 102 -> 1348cb235fde0003fa27
+22:12:05.012 L1-Dev  -> Block Is Proccessing -> 102 -> 1348cb235fde0003fa27
+22:12:05.012 L1-Dev  -> Distributing [ ____________102 : 300 ] To 3.75.110.186:5002
+22:12:05.495 L1-Dev  -> <block> message sended
+NGF.NowInt() : 20221106221220001
+CurrentQueueTime : 20221106221220000
+22:12:20.001 L1-Dev  -> Empty Block Executed
+22:12:20.010 L1-Dev  -> Block Came From The Main Loop [ ____________103 :  300 ]
+22:12:20.010 L1-Dev  -> Settings -> Last Block -> 103 -> 1348cb2360150003f115
+22:12:20.010 L1-Dev  -> Block Is Proccessing -> 103 -> 1348cb2360150003f115
+22:12:20.010 L1-Dev  -> Distributing [ ____________103 : 300 ] To 3.75.110.186:5002
+22:12:20.498 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106221235001
+CurrentQueueTime : 20221106221235000
+22:12:35.001 L1-Dev  -> Empty Block Executed
+22:12:35.001 L1-Dev  -> Block Came From The Main Loop [ ____________104 :  300 ]
+22:12:35.014 L1-Dev  -> Settings -> Last Block -> 104 -> 1348cb2360240003f0c0
+22:12:35.014 L1-Dev  -> Block Is Proccessing -> 104 -> 1348cb2360240003f0c0
+22:12:35.014 L1-Dev  -> Distributing [ ____________104 : 300 ] To 3.75.110.186:5002
+22:12:35.499 L1-Dev  -> <block> message sended
++22:12:50.038 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:12:50.039 L1-Dev  -> Income Block Row No -> 105:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:12:50.040 L1-Dev  -> Income Block Row No -> 105, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:12:50.363 L1-Dev  -> <block> Downloaded from other validator
+22:12:50.364 L1-Dev  -> New Block Arrived : 1348cb236042000
+22:12:50.365 L1-Dev  -> Block Came From The Validator Queue [ ____________105 :  300 ]
+22:12:50.366 L1-Dev  -> Settings -> Last Block -> 105 -> 1348cb2360330003f838
+22:12:50.368 L1-Dev  -> Block Is Proccessing -> 105 -> 1348cb2360330003f838
+22:12:50.369 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106221305001
+CurrentQueueTime : 20221106221305000
+22:13:05.001 L1-Dev  -> Empty Block Executed
+22:13:05.001 L1-Dev  -> Block Came From The Main Loop [ ____________106 :  300 ]
+22:13:05.001 L1-Dev  -> Settings -> Last Block -> 106 -> 1348cb2360420007a0cc
+22:13:05.015 L1-Dev  -> Block Is Proccessing -> 106 -> 1348cb2360420007a0cc
+22:13:05.015 L1-Dev  -> Distributing [ ____________106 : 300 ] To 3.75.110.186:5002
+22:13:05.492 L1-Dev  -> <block> message sended
+22:13:20.039 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:13:20.041 L1-Dev  -> Income Block Row No -> 107:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:13:20.042 L1-Dev  -> Income Block Row No -> 107, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:13:20.358 L1-Dev  -> <block> Downloaded from other validator
+22:13:20.360 L1-Dev  -> New Block Arrived : 1348cb236088000
+22:13:20.361 L1-Dev  -> Block Came From The Validator Queue [ ____________107 :  300 ]
+22:13:20.362 L1-Dev  -> Settings -> Last Block -> 107 -> 1348cb2360790003f59e
+22:13:20.364 L1-Dev  -> Block Is Proccessing -> 107 -> 1348cb2360790003f59e
+22:13:20.365 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:13:35.039 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:13:35.040 L1-Dev  -> Income Block Row No -> 108:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:13:35.041 L1-Dev  -> Income Block Row No -> 108, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:13:35.358 L1-Dev  -> <block> Downloaded from other validator
+22:13:35.360 L1-Dev  -> New Block Arrived : 1348cb236097000
+22:13:35.361 L1-Dev  -> Block Came From The Validator Queue [ ____________108 :  300 ]
+22:13:35.362 L1-Dev  -> Settings -> Last Block -> 108 -> 1348cb23608800060f5b
+22:13:35.364 L1-Dev  -> Block Is Proccessing -> 108 -> 1348cb23608800060f5b
+22:13:35.365 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:13:50.040 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:13:50.041 L1-Dev  -> Income Block Row No -> 109:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:13:50.042 L1-Dev  -> Income Block Row No -> 109, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:13:50.360 L1-Dev  -> <block> Downloaded from other validator
+22:13:50.361 L1-Dev  -> New Block Arrived : 1348cb2360a6000
+22:13:50.362 L1-Dev  -> Block Came From The Validator Queue [ ____________109 :  300 ]
+22:13:50.363 L1-Dev  -> Settings -> Last Block -> 109 -> 1348cb236097000538df
+22:13:50.365 L1-Dev  -> Block Is Proccessing -> 109 -> 1348cb236097000538df
+22:13:50.366 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+22:14:05.041 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:14:05.042 L1-Dev  -> Income Block Row No -> 110:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:14:05.043 L1-Dev  -> Income Block Row No -> 110, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:14:05.361 L1-Dev  -> <block> Downloaded from other validator
+22:14:05.362 L1-Dev  -> New Block Arrived : 1348cb2360dd000
+22:14:05.363 L1-Dev  -> Block Came From The Validator Queue [ ____________110 :  300 ]
+22:14:05.364 L1-Dev  -> Settings -> Last Block -> 110 -> 1348cb2360a6000463bf
+22:14:05.367 L1-Dev  -> Block Is Proccessing -> 110 -> 1348cb2360a6000463bf
+22:14:05.368 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:14:20.040 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:14:20.041 L1-Dev  -> Income Block Row No -> 111:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:14:20.042 L1-Dev  -> Income Block Row No -> 111, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:14:20.364 L1-Dev  -> <block> Downloaded from other validator
+22:14:20.365 L1-Dev  -> New Block Arrived : 1348cb2360ec000
+22:14:20.366 L1-Dev  -> Block Came From The Validator Queue [ ____________111 :  300 ]
+22:14:20.367 L1-Dev  -> Settings -> Last Block -> 111 -> 1348cb2360dd0003f755
+22:14:20.369 L1-Dev  -> Block Is Proccessing -> 111 -> 1348cb2360dd0003f755
+22:14:20.370 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:14:35.041 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:14:35.042 L1-Dev  -> Income Block Row No -> 112:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:14:35.043 L1-Dev  -> Income Block Row No -> 112, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:14:35.356 L1-Dev  -> <block> Downloaded from other validator
+22:14:35.357 L1-Dev  -> New Block Arrived : 1348cb2360fb000
+22:14:35.358 L1-Dev  -> Block Came From The Validator Queue [ ____________112 :  300 ]
+22:14:35.359 L1-Dev  -> Settings -> Last Block -> 112 -> 1348cb2360ec0003fa0a
+22:14:35.361 L1-Dev  -> Block Is Proccessing -> 112 -> 1348cb2360ec0003fa0a
+22:14:35.362 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:14:50.041 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:14:50.042 L1-Dev  -> Income Block Row No -> 113:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:14:50.043 L1-Dev  -> Income Block Row No -> 113, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:14:50.359 L1-Dev  -> <block> Downloaded from other validator
+22:14:50.360 L1-Dev  -> New Block Arrived : 1348cb23610a000
+22:14:50.361 L1-Dev  -> Block Came From The Validator Queue [ ____________113 :  300 ]
+22:14:50.362 L1-Dev  -> Settings -> Last Block -> 113 -> 1348cb2360fb0003f4b8
+22:14:50.364 L1-Dev  -> Block Is Proccessing -> 113 -> 1348cb2360fb0003f4b8
+22:14:50.366 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+22:15:05.040 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:15:05.041 L1-Dev  -> Income Block Row No -> 114:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:15:05.042 L1-Dev  -> Income Block Row No -> 114, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:15:05.361 L1-Dev  -> <block> Downloaded from other validator
+22:15:05.362 L1-Dev  -> New Block Arrived : 1348cb236141000
+22:15:05.363 L1-Dev  -> Block Came From The Validator Queue [ ____________114 :  300 ]
+22:15:05.364 L1-Dev  -> Settings -> Last Block -> 114 -> 1348cb23610a0003fc0f
+22:15:05.367 L1-Dev  -> Block Is Proccessing -> 114 -> 1348cb23610a0003fc0f
+22:15:05.368 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:15:20.040 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:15:20.042 L1-Dev  -> Income Block Row No -> 115:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:15:20.043 L1-Dev  -> Income Block Row No -> 115, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:15:20.361 L1-Dev  -> <block> Downloaded from other validator
+22:15:20.362 L1-Dev  -> New Block Arrived : 1348cb236150000
+22:15:20.363 L1-Dev  -> Block Came From The Validator Queue [ ____________115 :  300 ]
+22:15:20.364 L1-Dev  -> Settings -> Last Block -> 115 -> 1348cb2361410003fb20
+22:15:20.366 L1-Dev  -> Block Is Proccessing -> 115 -> 1348cb2361410003fb20
+22:15:20.367 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:15:35.043 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:15:35.044 L1-Dev  -> Income Block Row No -> 116:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:15:35.045 L1-Dev  -> Income Block Row No -> 116, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:15:35.362 L1-Dev  -> <block> Downloaded from other validator
+22:15:35.363 L1-Dev  -> New Block Arrived : 1348cb23615f000
+22:15:35.364 L1-Dev  -> Block Came From The Validator Queue [ ____________116 :  300 ]
+22:15:35.365 L1-Dev  -> Settings -> Last Block -> 116 -> 1348cb2361500003ff1b
+22:15:35.367 L1-Dev  -> Block Is Proccessing -> 116 -> 1348cb2361500003ff1b
+22:15:35.368 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:15:50.042 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:15:50.043 L1-Dev  -> Income Block Row No -> 117:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:15:50.045 L1-Dev  -> Income Block Row No -> 117, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:15:50.357 L1-Dev  -> <block> Downloaded from other validator
+22:15:50.358 L1-Dev  -> New Block Arrived : 1348cb23616e000
+22:15:50.359 L1-Dev  -> Block Came From The Validator Queue [ ____________117 :  300 ]
+22:15:50.360 L1-Dev  -> Settings -> Last Block -> 117 -> 1348cb23615f0003fb59
+22:15:50.362 L1-Dev  -> Block Is Proccessing -> 117 -> 1348cb23615f0003fb59
+22:15:50.363 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+NGF.NowInt() : 20221106221605001
+CurrentQueueTime : 20221106221605000
+22:16:05.001 L1-Dev  -> Empty Block Executed
+22:16:05.007 L1-Dev  -> Block Came From The Main Loop [ ____________118 :  300 ]
+22:16:05.007 L1-Dev  -> Settings -> Last Block -> 118 -> 1348cb23616e0003fc43
+22:16:05.007 L1-Dev  -> Block Is Proccessing -> 118 -> 1348cb23616e0003fc43
+22:16:05.007 L1-Dev  -> Distributing [ ____________118 : 300 ] To 3.75.110.186:5002
+22:16:05.498 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106221620001
+CurrentQueueTime : 20221106221620000
+22:16:20.001 L1-Dev  -> Empty Block Executed
+22:16:20.007 L1-Dev  -> Block Came From The Main Loop [ ____________119 :  300 ]
+22:16:20.007 L1-Dev  -> Settings -> Last Block -> 119 -> 1348cb2361a50003f458
+22:16:20.007 L1-Dev  -> Block Is Proccessing -> 119 -> 1348cb2361a50003f458
+22:16:20.007 L1-Dev  -> Distributing [ ____________119 : 300 ] To 3.75.110.186:5002
+22:16:20.492 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106221635001
+CurrentQueueTime : 20221106221635000
+22:16:35.001 L1-Dev  -> Empty Block Executed
+22:16:35.012 L1-Dev  -> Block Came From The Main Loop [ ____________120 :  300 ]
+22:16:35.012 L1-Dev  -> Settings -> Last Block -> 120 -> 1348cb2361b40003f943
+22:16:35.012 L1-Dev  -> Block Is Proccessing -> 120 -> 1348cb2361b40003f943
+22:16:35.012 L1-Dev  -> Distributing [ ____________120 : 300 ] To 3.75.110.186:5002
+22:16:35.503 L1-Dev  -> <block> message sended
++22:16:50.043 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:16:50.044 L1-Dev  -> Income Block Row No -> 121:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:16:50.045 L1-Dev  -> Income Block Row No -> 121, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:16:50.357 L1-Dev  -> <block> Downloaded from other validator
+22:16:50.358 L1-Dev  -> New Block Arrived : 1348cb2361d2000
+22:16:50.359 L1-Dev  -> Block Came From The Validator Queue [ ____________121 :  300 ]
+22:16:50.360 L1-Dev  -> Settings -> Last Block -> 121 -> 1348cb2361c30003faef
+22:16:50.363 L1-Dev  -> Block Is Proccessing -> 121 -> 1348cb2361c30003faef
+22:16:50.364 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+NGF.NowInt() : 20221106221705001
+CurrentQueueTime : 20221106221705000
+22:17:05.001 L1-Dev  -> Empty Block Executed
+22:17:05.001 L1-Dev  -> Block Came From The Main Loop [ ____________122 :  300 ]
+22:17:05.012 L1-Dev  -> Settings -> Last Block -> 122 -> 1348cb2361d20003fc5a
+22:17:05.012 L1-Dev  -> Block Is Proccessing -> 122 -> 1348cb2361d20003fc5a
+22:17:05.012 L1-Dev  -> Distributing [ ____________122 : 300 ] To 3.75.110.186:5002
+22:17:05.499 L1-Dev  -> <block> message sended
++22:17:20.044 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:17:20.045 L1-Dev  -> Income Block Row No -> 123:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:17:20.046 L1-Dev  -> Income Block Row No -> 123, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:17:20.365 L1-Dev  -> <block> Downloaded from other validator
+22:17:20.367 L1-Dev  -> New Block Arrived : 1348cb236218000
+22:17:20.368 L1-Dev  -> Block Came From The Validator Queue [ ____________123 :  300 ]
+22:17:20.369 L1-Dev  -> Settings -> Last Block -> 123 -> 1348cb2362090003f4db
+22:17:20.371 L1-Dev  -> Block Is Proccessing -> 123 -> 1348cb2362090003f4db
+22:17:20.372 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106221735001
+CurrentQueueTime : 20221106221735000
+22:17:35.001 L1-Dev  -> Empty Block Executed
+22:17:35.009 L1-Dev  -> Block Came From The Main Loop [ ____________124 :  300 ]
+22:17:35.009 L1-Dev  -> Settings -> Last Block -> 124 -> 1348cb2362180003fa10
+22:17:35.009 L1-Dev  -> Block Is Proccessing -> 124 -> 1348cb2362180003fa10
+22:17:35.009 L1-Dev  -> Distributing [ ____________124 : 300 ] To 3.75.110.186:5002
+22:17:35.493 L1-Dev  -> <block> message sended
++22:17:50.045 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:17:50.046 L1-Dev  -> Income Block Row No -> 125:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:17:50.047 L1-Dev  -> Income Block Row No -> 125, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:17:50.359 L1-Dev  -> <block> Downloaded from other validator
+22:17:50.360 L1-Dev  -> New Block Arrived : 1348cb236236000
+22:17:50.361 L1-Dev  -> Block Came From The Validator Queue [ ____________125 :  300 ]
+22:17:50.362 L1-Dev  -> Settings -> Last Block -> 125 -> 1348cb2362270003f91b
+22:17:50.365 L1-Dev  -> Block Is Proccessing -> 125 -> 1348cb2362270003f91b
+22:17:50.366 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+NGF.NowInt() : 20221106221805001
+CurrentQueueTime : 20221106221805000
+22:18:05.001 L1-Dev  -> Empty Block Executed
+22:18:05.001 L1-Dev  -> Block Came From The Main Loop [ ____________126 :  300 ]
+22:18:05.001 L1-Dev  -> Settings -> Last Block -> 126 -> 1348cb2362360003fc03
+22:18:05.014 L1-Dev  -> Block Is Proccessing -> 126 -> 1348cb2362360003fc03
+22:18:05.014 L1-Dev  -> Distributing [ ____________126 : 300 ] To 3.75.110.186:5002
+22:18:05.493 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106221820001
+CurrentQueueTime : 20221106221820000
+22:18:20.001 L1-Dev  -> Empty Block Executed
+22:18:20.001 L1-Dev  -> Block Came From The Main Loop [ ____________127 :  300 ]
+22:18:20.001 L1-Dev  -> Settings -> Last Block -> 127 -> 1348cb23626d0003f336
+22:18:20.015 L1-Dev  -> Block Is Proccessing -> 127 -> 1348cb23626d0003f336
+22:18:20.015 L1-Dev  -> Distributing [ ____________127 : 300 ] To 3.75.110.186:5002
+22:18:20.495 L1-Dev  -> <block> message sended
++22:18:35.044 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:18:35.045 L1-Dev  -> Income Block Row No -> 128:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:18:35.046 L1-Dev  -> Income Block Row No -> 128, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:18:35.360 L1-Dev  -> <block> Downloaded from other validator
+22:18:35.361 L1-Dev  -> New Block Arrived : 1348cb23628b000
+22:18:35.362 L1-Dev  -> Block Came From The Validator Queue [ ____________128 :  300 ]
+22:18:35.363 L1-Dev  -> Settings -> Last Block -> 128 -> 1348cb23627c0003f9bb
+22:18:35.365 L1-Dev  -> Block Is Proccessing -> 128 -> 1348cb23627c0003f9bb
+22:18:35.366 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+22:18:50.030 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:18:50.032 L1-Dev  -> Income Block Row No -> 129:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:18:50.033 L1-Dev  -> Income Block Row No -> 129, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:18:50.351 L1-Dev  -> <block> Downloaded from other validator
+22:18:50.352 L1-Dev  -> New Block Arrived : 1348cb23629a000
+22:18:50.353 L1-Dev  -> Block Came From The Validator Queue [ ____________129 :  300 ]
+22:18:50.354 L1-Dev  -> Settings -> Last Block -> 129 -> 1348cb23628b0003f5ad
+22:18:50.356 L1-Dev  -> Block Is Proccessing -> 129 -> 1348cb23628b0003f5ad
+22:18:50.357 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106221905001
+CurrentQueueTime : 20221106221905000
+22:19:05.001 L1-Dev  -> Empty Block Executed
+22:19:05.010 L1-Dev  -> Block Came From The Main Loop [ ____________130 :  300 ]
+22:19:05.010 L1-Dev  -> Settings -> Last Block -> 130 -> 1348cb23629a0003f5ee
+22:19:05.010 L1-Dev  -> Block Is Proccessing -> 130 -> 1348cb23629a0003f5ee
+22:19:05.010 L1-Dev  -> Distributing [ ____________130 : 300 ] To 3.75.110.186:5002
+22:19:05.491 L1-Dev  -> <block> message sended
++22:19:20.023 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:19:20.024 L1-Dev  -> Income Block Row No -> 131:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:19:20.025 L1-Dev  -> Income Block Row No -> 131, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:19:20.343 L1-Dev  -> <block> Downloaded from other validator
+22:19:20.344 L1-Dev  -> New Block Arrived : 1348cb2362e0000
+22:19:20.345 L1-Dev  -> Block Came From The Validator Queue [ ____________131 :  300 ]
+22:19:20.346 L1-Dev  -> Settings -> Last Block -> 131 -> 1348cb2362d10003f6eb
+22:19:20.348 L1-Dev  -> Block Is Proccessing -> 131 -> 1348cb2362d10003f6eb
+22:19:20.349 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:19:35.024 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:19:35.025 L1-Dev  -> Income Block Row No -> 132:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:19:35.026 L1-Dev  -> Income Block Row No -> 132, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:19:35.339 L1-Dev  -> <block> Downloaded from other validator
+22:19:35.340 L1-Dev  -> New Block Arrived : 1348cb2362ef000
+22:19:35.341 L1-Dev  -> Block Came From The Validator Queue [ ____________132 :  300 ]
+22:19:35.342 L1-Dev  -> Settings -> Last Block -> 132 -> 1348cb2362e00003f68c
+22:19:35.344 L1-Dev  -> Block Is Proccessing -> 132 -> 1348cb2362e00003f68c
+22:19:35.345 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+22:19:50.023 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:19:50.024 L1-Dev  -> Income Block Row No -> 133:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:19:50.025 L1-Dev  -> Income Block Row No -> 133, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:19:50.347 L1-Dev  -> <block> Downloaded from other validator
+22:19:50.348 L1-Dev  -> New Block Arrived : 1348cb2362fe000
+22:19:50.349 L1-Dev  -> Block Came From The Validator Queue [ ____________133 :  300 ]
+22:19:50.350 L1-Dev  -> Settings -> Last Block -> 133 -> 1348cb2362ef0003fa77
+22:19:50.353 L1-Dev  -> Block Is Proccessing -> 133 -> 1348cb2362ef0003fa77
+22:19:50.354 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:20:05.022 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:20:05.023 L1-Dev  -> Income Block Row No -> 134:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:20:05.024 L1-Dev  -> Income Block Row No -> 134, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:20:05.342 L1-Dev  -> <block> Downloaded from other validator
+22:20:05.344 L1-Dev  -> New Block Arrived : 1348cb236335000
+22:20:05.345 L1-Dev  -> Block Came From The Validator Queue [ ____________134 :  300 ]
+22:20:05.346 L1-Dev  -> Settings -> Last Block -> 134 -> 1348cb2362fe0003fc64
+22:20:05.348 L1-Dev  -> Block Is Proccessing -> 134 -> 1348cb2362fe0003fc64
+22:20:05.349 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:20:20.022 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:20:20.023 L1-Dev  -> Income Block Row No -> 135:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:20:20.024 L1-Dev  -> Income Block Row No -> 135, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:20:20.337 L1-Dev  -> <block> Downloaded from other validator
+22:20:20.338 L1-Dev  -> New Block Arrived : 1348cb236344000
+22:20:20.339 L1-Dev  -> Block Came From The Validator Queue [ ____________135 :  300 ]
+22:20:20.340 L1-Dev  -> Settings -> Last Block -> 135 -> 1348cb2363350003fb02
+22:20:20.342 L1-Dev  -> Block Is Proccessing -> 135 -> 1348cb2363350003fb02
+22:20:20.343 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:20:35.023 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:20:35.024 L1-Dev  -> Income Block Row No -> 136:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:20:35.025 L1-Dev  -> Income Block Row No -> 136, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:20:35.343 L1-Dev  -> <block> Downloaded from other validator
+22:20:35.344 L1-Dev  -> New Block Arrived : 1348cb236353000
+22:20:35.345 L1-Dev  -> Block Came From The Validator Queue [ ____________136 :  300 ]
+22:20:35.346 L1-Dev  -> Settings -> Last Block -> 136 -> 1348cb2363440003fd17
+22:20:35.349 L1-Dev  -> Block Is Proccessing -> 136 -> 1348cb2363440003fd17
+22:20:35.350 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+NGF.NowInt() : 20221106222050001
+CurrentQueueTime : 20221106222050000
+22:20:50.001 L1-Dev  -> Empty Block Executed
+22:20:50.001 L1-Dev  -> Block Came From The Main Loop [ ____________137 :  300 ]
+22:20:50.001 L1-Dev  -> Settings -> Last Block -> 137 -> 1348cb2363530003fe61
+22:20:50.013 L1-Dev  -> Block Is Proccessing -> 137 -> 1348cb2363530003fe61
+22:20:50.013 L1-Dev  -> Distributing [ ____________137 : 300 ] To 3.75.110.186:5002
+22:20:50.500 L1-Dev  -> <block> message sended
++22:21:05.022 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:21:05.023 L1-Dev  -> Income Block Row No -> 138:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:21:05.024 L1-Dev  -> Income Block Row No -> 138, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:21:05.337 L1-Dev  -> <block> Downloaded from other validator
+22:21:05.338 L1-Dev  -> New Block Arrived : 1348cb236399000
+22:21:05.339 L1-Dev  -> Block Came From The Validator Queue [ ____________138 :  300 ]
+22:21:05.340 L1-Dev  -> Settings -> Last Block -> 138 -> 1348cb2363620003f953
+22:21:05.343 L1-Dev  -> Block Is Proccessing -> 138 -> 1348cb2363620003f953
+22:21:05.344 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106222120001
+CurrentQueueTime : 20221106222120000
+22:21:20.001 L1-Dev  -> Empty Block Executed
+22:21:20.001 L1-Dev  -> Block Came From The Main Loop [ ____________139 :  300 ]
+22:21:20.001 L1-Dev  -> Settings -> Last Block -> 139 -> 1348cb2363990003f6b7
+22:21:20.015 L1-Dev  -> Block Is Proccessing -> 139 -> 1348cb2363990003f6b7
+22:21:20.015 L1-Dev  -> Distributing [ ____________139 : 300 ] To 3.75.110.186:5002
+22:21:20.497 L1-Dev  -> <block> message sended
++22:21:35.023 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:21:35.024 L1-Dev  -> Income Block Row No -> 140:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:21:35.025 L1-Dev  -> Income Block Row No -> 140, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:21:35.337 L1-Dev  -> <block> Downloaded from other validator
+22:21:35.339 L1-Dev  -> New Block Arrived : 1348cb2363b7000
+22:21:35.339 L1-Dev  -> Block Came From The Validator Queue [ ____________140 :  300 ]
+22:21:35.340 L1-Dev  -> Settings -> Last Block -> 140 -> 1348cb2363a80003f94c
+22:21:35.343 L1-Dev  -> Block Is Proccessing -> 140 -> 1348cb2363a80003f94c
+22:21:35.344 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+NGF.NowInt() : 20221106222150001
+CurrentQueueTime : 20221106222150000
+22:21:50.001 L1-Dev  -> Empty Block Executed
+22:21:50.001 L1-Dev  -> Block Came From The Main Loop [ ____________141 :  300 ]
+22:21:50.012 L1-Dev  -> Settings -> Last Block -> 141 -> 1348cb2363b70003fd4e
+22:21:50.012 L1-Dev  -> Block Is Proccessing -> 141 -> 1348cb2363b70003fd4e
+22:21:50.012 L1-Dev  -> Distributing [ ____________141 : 300 ] To 3.75.110.186:5002
+22:21:50.498 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106222205001
+CurrentQueueTime : 20221106222205000
+22:22:05.001 L1-Dev  -> Empty Block Executed
+22:22:05.001 L1-Dev  -> Block Came From The Main Loop [ ____________142 :  300 ]
+22:22:05.012 L1-Dev  -> Settings -> Last Block -> 142 -> 1348cb2363c60003f2c0
+22:22:05.012 L1-Dev  -> Block Is Proccessing -> 142 -> 1348cb2363c60003f2c0
+22:22:05.012 L1-Dev  -> Distributing [ ____________142 : 300 ] To 3.75.110.186:5002
+22:22:05.494 L1-Dev  -> <block> message sended
++22:22:20.024 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:22:20.025 L1-Dev  -> Income Block Row No -> 143:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:22:20.026 L1-Dev  -> Income Block Row No -> 143, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:22:20.344 L1-Dev  -> <block> Downloaded from other validator
+22:22:20.345 L1-Dev  -> New Block Arrived : 1348cb23640c000
+22:22:20.346 L1-Dev  -> Block Came From The Validator Queue [ ____________143 :  300 ]
+22:22:20.347 L1-Dev  -> Settings -> Last Block -> 143 -> 1348cb2363fd0003f273
+22:22:20.349 L1-Dev  -> Block Is Proccessing -> 143 -> 1348cb2363fd0003f273
+22:22:20.350 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+22:22:35.024 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:22:35.025 L1-Dev  -> Income Block Row No -> 144:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:22:35.026 L1-Dev  -> Income Block Row No -> 144, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:22:35.338 L1-Dev  -> <block> Downloaded from other validator
+22:22:35.340 L1-Dev  -> New Block Arrived : 1348cb23641b000
+22:22:35.341 L1-Dev  -> Block Came From The Validator Queue [ ____________144 :  300 ]
+22:22:35.342 L1-Dev  -> Settings -> Last Block -> 144 -> 1348cb23640c0003f4b0
+22:22:35.344 L1-Dev  -> Block Is Proccessing -> 144 -> 1348cb23640c0003f4b0
+22:22:35.345 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106222250001
+CurrentQueueTime : 20221106222250000
+22:22:50.001 L1-Dev  -> Empty Block Executed
+22:22:50.001 L1-Dev  -> Block Came From The Main Loop [ ____________145 :  300 ]
+22:22:50.001 L1-Dev  -> Settings -> Last Block -> 145 -> 1348cb23641b0003f8f4
+22:22:50.001 L1-Dev  -> Block Is Proccessing -> 145 -> 1348cb23641b0003f8f4
+22:22:50.016 L1-Dev  -> Distributing [ ____________145 : 300 ] To 3.75.110.186:5002
+22:22:50.493 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106222305001
+CurrentQueueTime : 20221106222305000
+22:23:05.001 L1-Dev  -> Empty Block Executed
+22:23:05.001 L1-Dev  -> Block Came From The Main Loop [ ____________146 :  300 ]
+22:23:05.001 L1-Dev  -> Settings -> Last Block -> 146 -> 1348cb23642a0003f8ce
+22:23:05.016 L1-Dev  -> Block Is Proccessing -> 146 -> 1348cb23642a0003f8ce
+22:23:05.016 L1-Dev  -> Distributing [ ____________146 : 300 ] To 3.75.110.186:5002
+22:23:05.499 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106222320001
+CurrentQueueTime : 20221106222320000
+22:23:20.001 L1-Dev  -> Empty Block Executed
+22:23:20.001 L1-Dev  -> Block Came From The Main Loop [ ____________147 :  300 ]
+22:23:20.001 L1-Dev  -> Settings -> Last Block -> 147 -> 1348cb2364610003f46d
+22:23:20.001 L1-Dev  -> Block Is Proccessing -> 147 -> 1348cb2364610003f46d
+22:23:20.001 L1-Dev  -> Distributing [ ____________147 : 300 ] To 3.75.110.186:5002
+22:23:20.498 L1-Dev  -> <block> message sended
+NGF.NowInt() : 20221106222335001
+CurrentQueueTime : 20221106222335000
+22:23:35.001 L1-Dev  -> Empty Block Executed
+22:23:35.001 L1-Dev  -> Block Came From The Main Loop [ ____________148 :  300 ]
+22:23:35.001 L1-Dev  -> Settings -> Last Block -> 148 -> 1348cb2364700003fa42
+22:23:35.001 L1-Dev  -> Block Is Proccessing -> 148 -> 1348cb2364700003fa42
+22:23:35.016 L1-Dev  -> Distributing [ ____________148 : 300 ] To 3.75.110.186:5002
+22:23:35.500 L1-Dev  -> <block> message sended
++22:23:50.025 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:23:50.026 L1-Dev  -> Income Block Row No -> 149:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:23:50.027 L1-Dev  -> Income Block Row No -> 149, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:23:50.345 L1-Dev  -> <block> Downloaded from other validator
+22:23:50.346 L1-Dev  -> New Block Arrived : 1348cb23648e000
+22:23:50.347 L1-Dev  -> Block Came From The Validator Queue [ ____________149 :  300 ]
+22:23:50.348 L1-Dev  -> Settings -> Last Block -> 149 -> 1348cb23647f0003f9e0
+22:23:50.351 L1-Dev  -> Block Is Proccessing -> 149 -> 1348cb23647f0003f9e0
+22:23:50.352 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106222405001
+CurrentQueueTime : 20221106222405000
+22:24:05.002 L1-Dev  -> Empty Block Executed
+22:24:05.002 L1-Dev  -> Block Came From The Main Loop [ ____________150 :  300 ]
+22:24:05.002 L1-Dev  -> Settings -> Last Block -> 150 -> 1348cb23648e0003fcea
+22:24:05.002 L1-Dev  -> Block Is Proccessing -> 150 -> 1348cb23648e0003fcea
+22:24:05.002 L1-Dev  -> Distributing [ ____________150 : 300 ] To 3.75.110.186:5002
+22:24:05.500 L1-Dev  -> <block> message sended
++22:24:20.024 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:24:20.025 L1-Dev  -> Income Block Row No -> 151:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:24:20.026 L1-Dev  -> Income Block Row No -> 151, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:24:20.340 L1-Dev  -> <block> Downloaded from other validator
+22:24:20.341 L1-Dev  -> New Block Arrived : 1348cb2364d4000
+22:24:20.342 L1-Dev  -> Block Came From The Validator Queue [ ____________151 :  300 ]
+22:24:20.343 L1-Dev  -> Settings -> Last Block -> 151 -> 1348cb2364c5000841b7
+22:24:20.345 L1-Dev  -> Block Is Proccessing -> 151 -> 1348cb2364c5000841b7
+22:24:20.346 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+22:24:35.025 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:24:35.026 L1-Dev  -> Income Block Row No -> 152:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:24:35.027 L1-Dev  -> Income Block Row No -> 152, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:24:35.351 L1-Dev  -> <block> Downloaded from other validator
+22:24:35.352 L1-Dev  -> New Block Arrived : 1348cb2364e3000
+22:24:35.353 L1-Dev  -> Block Came From The Validator Queue [ ____________152 :  300 ]
+22:24:35.354 L1-Dev  -> Settings -> Last Block -> 152 -> 1348cb2364d40003f6b2
+22:24:35.357 L1-Dev  -> Block Is Proccessing -> 152 -> 1348cb2364d40003f6b2
+22:24:35.358 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106222450001
+CurrentQueueTime : 20221106222450000
+22:24:50.001 L1-Dev  -> Empty Block Executed
+22:24:50.006 L1-Dev  -> Block Came From The Main Loop [ ____________153 :  300 ]
+22:24:50.006 L1-Dev  -> Settings -> Last Block -> 153 -> 1348cb2364e30003f4f9
+22:24:50.006 L1-Dev  -> Block Is Proccessing -> 153 -> 1348cb2364e30003f4f9
+22:24:50.006 L1-Dev  -> Distributing [ ____________153 : 300 ] To 3.75.110.186:5002
+22:24:50.492 L1-Dev  -> <block> message sended
++22:25:05.025 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:25:05.027 L1-Dev  -> Income Block Row No -> 154:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:25:05.028 L1-Dev  -> Income Block Row No -> 154, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:25:05.346 L1-Dev  -> <block> Downloaded from other validator
+22:25:05.347 L1-Dev  -> New Block Arrived : 1348cb236529000
+22:25:05.348 L1-Dev  -> Block Came From The Validator Queue [ ____________154 :  300 ]
+22:25:05.349 L1-Dev  -> Settings -> Last Block -> 154 -> 1348cb2364f20003f8ca
+22:25:05.352 L1-Dev  -> Block Is Proccessing -> 154 -> 1348cb2364f20003f8ca
+22:25:05.353 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:25:20.025 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:25:20.026 L1-Dev  -> Income Block Row No -> 155:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:25:20.028 L1-Dev  -> Income Block Row No -> 155, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:25:20.350 L1-Dev  -> <block> Downloaded from other validator
+22:25:20.351 L1-Dev  -> New Block Arrived : 1348cb236538000
+22:25:20.352 L1-Dev  -> Block Came From The Validator Queue [ ____________155 :  300 ]
+22:25:20.353 L1-Dev  -> Settings -> Last Block -> 155 -> 1348cb2365290003f730
+22:25:20.355 L1-Dev  -> Block Is Proccessing -> 155 -> 1348cb2365290003f730
+22:25:20.356 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+NGF.NowInt() : 20221106222535001
+CurrentQueueTime : 20221106222535000
+22:25:35.001 L1-Dev  -> Empty Block Executed
+22:25:35.007 L1-Dev  -> Block Came From The Main Loop [ ____________156 :  300 ]
+22:25:35.007 L1-Dev  -> Settings -> Last Block -> 156 -> 1348cb2365380003f36c
+22:25:35.007 L1-Dev  -> Block Is Proccessing -> 156 -> 1348cb2365380003f36c
+22:25:35.007 L1-Dev  -> Distributing [ ____________156 : 300 ] To 3.75.110.186:5002
+22:25:35.492 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106222550001
+CurrentQueueTime : 20221106222550000
+22:25:50.001 L1-Dev  -> Empty Block Executed
+22:25:50.007 L1-Dev  -> Block Came From The Main Loop [ ____________157 :  300 ]
+22:25:50.007 L1-Dev  -> Settings -> Last Block -> 157 -> 1348cb2365470003f29e
+22:25:50.007 L1-Dev  -> Block Is Proccessing -> 157 -> 1348cb2365470003f29e
+22:25:50.007 L1-Dev  -> Distributing [ ____________157 : 300 ] To 3.75.110.186:5002
+22:25:50.492 L1-Dev  -> <block> message sended
++22:26:05.026 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:26:05.027 L1-Dev  -> Income Block Row No -> 158:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:26:05.028 L1-Dev  -> Income Block Row No -> 158, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:26:05.344 L1-Dev  -> <block> Downloaded from other validator
+22:26:05.346 L1-Dev  -> New Block Arrived : 1348cb23658d000
+22:26:05.347 L1-Dev  -> Block Came From The Validator Queue [ ____________158 :  300 ]
+22:26:05.348 L1-Dev  -> Settings -> Last Block -> 158 -> 1348cb2365560003f85b
+22:26:05.350 L1-Dev  -> Block Is Proccessing -> 158 -> 1348cb2365560003f85b
+22:26:05.351 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:26:20.027 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:26:20.028 L1-Dev  -> Income Block Row No -> 159:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:26:20.029 L1-Dev  -> Income Block Row No -> 159, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:26:20.351 L1-Dev  -> <block> Downloaded from other validator
+22:26:20.352 L1-Dev  -> New Block Arrived : 1348cb23659c000
+22:26:20.353 L1-Dev  -> Block Came From The Validator Queue [ ____________159 :  300 ]
+22:26:20.354 L1-Dev  -> Settings -> Last Block -> 159 -> 1348cb23658d0003fe45
+22:26:20.357 L1-Dev  -> Block Is Proccessing -> 159 -> 1348cb23658d0003fe45
+22:26:20.358 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+22:26:35.026 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:26:35.027 L1-Dev  -> Income Block Row No -> 160:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:26:35.028 L1-Dev  -> Income Block Row No -> 160, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:26:35.345 L1-Dev  -> <block> Downloaded from other validator
+22:26:35.346 L1-Dev  -> New Block Arrived : 1348cb2365ab000
+22:26:35.347 L1-Dev  -> Block Came From The Validator Queue [ ____________160 :  300 ]
+22:26:35.348 L1-Dev  -> Settings -> Last Block -> 160 -> 1348cb23659c0003fdca
+22:26:35.350 L1-Dev  -> Block Is Proccessing -> 160 -> 1348cb23659c0003fdca
+22:26:35.351 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106222650001
+CurrentQueueTime : 20221106222650000
+22:26:50.001 L1-Dev  -> Empty Block Executed
+22:26:50.001 L1-Dev  -> Block Came From The Main Loop [ ____________161 :  300 ]
+22:26:50.012 L1-Dev  -> Settings -> Last Block -> 161 -> 1348cb2365ab0003f3cb
+22:26:50.012 L1-Dev  -> Block Is Proccessing -> 161 -> 1348cb2365ab0003f3cb
+22:26:50.012 L1-Dev  -> Distributing [ ____________161 : 300 ] To 3.75.110.186:5002
+22:26:50.497 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106222705001
+CurrentQueueTime : 20221106222705000
+22:27:05.001 L1-Dev  -> Empty Block Executed
+22:27:05.013 L1-Dev  -> Block Came From The Main Loop [ ____________162 :  300 ]
+22:27:05.013 L1-Dev  -> Settings -> Last Block -> 162 -> 1348cb2365ba0003f892
+22:27:05.013 L1-Dev  -> Block Is Proccessing -> 162 -> 1348cb2365ba0003f892
+22:27:05.013 L1-Dev  -> Distributing [ ____________162 : 300 ] To 3.75.110.186:5002
+22:27:05.493 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106222720001
+CurrentQueueTime : 20221106222720000
+22:27:20.002 L1-Dev  -> Empty Block Executed
+22:27:20.002 L1-Dev  -> Block Came From The Main Loop [ ____________163 :  300 ]
+22:27:20.002 L1-Dev  -> Settings -> Last Block -> 163 -> 1348cb2365f10003f6bb
+22:27:20.002 L1-Dev  -> Block Is Proccessing -> 163 -> 1348cb2365f10003f6bb
+22:27:20.002 L1-Dev  -> Distributing [ ____________163 : 300 ] To 3.75.110.186:5002
+22:27:20.497 L1-Dev  -> <block> message sended
+22:27:35.027 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:27:35.028 L1-Dev  -> Income Block Row No -> 164:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:27:35.029 L1-Dev  -> Income Block Row No -> 164, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:27:35.347 L1-Dev  -> <block> Downloaded from other validator
+22:27:35.348 L1-Dev  -> New Block Arrived : 1348cb23660f000
+22:27:35.349 L1-Dev  -> Block Came From The Validator Queue [ ____________164 :  300 ]
+22:27:35.350 L1-Dev  -> Settings -> Last Block -> 164 -> 1348cb236600000a8ca7
+22:27:35.353 L1-Dev  -> Block Is Proccessing -> 164 -> 1348cb236600000a8ca7
+22:27:35.354 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:27:50.028 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:27:50.030 L1-Dev  -> Income Block Row No -> 165:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:27:50.031 L1-Dev  -> Income Block Row No -> 165, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:27:50.347 L1-Dev  -> <block> Downloaded from other validator
+22:27:50.348 L1-Dev  -> New Block Arrived : 1348cb23661e000
+22:27:50.350 L1-Dev  -> Block Came From The Validator Queue [ ____________165 :  300 ]
+22:27:50.352 L1-Dev  -> Settings -> Last Block -> 165 -> 1348cb23660f0003fbe8
+22:27:50.356 L1-Dev  -> Block Is Proccessing -> 165 -> 1348cb23660f0003fbe8
+22:27:50.358 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106222805001
+CurrentQueueTime : 20221106222805000
+22:28:05.001 L1-Dev  -> Empty Block Executed
+22:28:05.004 L1-Dev  -> Block Came From The Main Loop [ ____________166 :  300 ]
+22:28:05.004 L1-Dev  -> Settings -> Last Block -> 166 -> 1348cb23661e0003f5ae
+22:28:05.004 L1-Dev  -> Block Is Proccessing -> 166 -> 1348cb23661e0003f5ae
+22:28:05.004 L1-Dev  -> Distributing [ ____________166 : 300 ] To 3.75.110.186:5002
+22:28:05.499 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106222820001
+CurrentQueueTime : 20221106222820000
+22:28:20.001 L1-Dev  -> Empty Block Executed
+22:28:20.004 L1-Dev  -> Block Came From The Main Loop [ ____________167 :  300 ]
+22:28:20.004 L1-Dev  -> Settings -> Last Block -> 167 -> 1348cb2366550010067b
+22:28:20.004 L1-Dev  -> Block Is Proccessing -> 167 -> 1348cb2366550010067b
+22:28:20.004 L1-Dev  -> Distributing [ ____________167 : 300 ] To 3.75.110.186:5002
+22:28:20.492 L1-Dev  -> <block> message sended
+22:28:35.029 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:28:35.030 L1-Dev  -> Income Block Row No -> 168:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:28:35.031 L1-Dev  -> Income Block Row No -> 168, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:28:35.344 L1-Dev  -> <block> Downloaded from other validator
+22:28:35.345 L1-Dev  -> New Block Arrived : 1348cb236673000
+22:28:35.346 L1-Dev  -> Block Came From The Validator Queue [ ____________168 :  300 ]
+22:28:35.347 L1-Dev  -> Settings -> Last Block -> 168 -> 1348cb2366640010e4ec
+22:28:35.350 L1-Dev  -> Block Is Proccessing -> 168 -> 1348cb2366640010e4ec
+22:28:35.351 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:28:50.028 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:28:50.030 L1-Dev  -> Income Block Row No -> 169:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:28:50.031 L1-Dev  -> Income Block Row No -> 169, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:28:50.350 L1-Dev  -> <block> Downloaded from other validator
+22:28:50.353 L1-Dev  -> New Block Arrived : 1348cb236682000
+22:28:50.354 L1-Dev  -> Block Came From The Validator Queue [ ____________169 :  300 ]
+22:28:50.355 L1-Dev  -> Settings -> Last Block -> 169 -> 1348cb2366730003f64e
+22:28:50.357 L1-Dev  -> Block Is Proccessing -> 169 -> 1348cb2366730003f64e
+22:28:50.358 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106222905001
+CurrentQueueTime : 20221106222905000
+22:29:05.001 L1-Dev  -> Empty Block Executed
+22:29:05.001 L1-Dev  -> Block Came From The Main Loop [ ____________170 :  300 ]
+22:29:05.001 L1-Dev  -> Settings -> Last Block -> 170 -> 1348cb2366820003f3d4
+22:29:05.015 L1-Dev  -> Block Is Proccessing -> 170 -> 1348cb2366820003f3d4
+22:29:05.015 L1-Dev  -> Distributing [ ____________170 : 300 ] To 3.75.110.186:5002
+22:29:05.497 L1-Dev  -> <block> message sended
+NGF.NowInt() : 20221106222920001
+CurrentQueueTime : 20221106222920000
+22:29:20.001 L1-Dev  -> Empty Block Executed
+22:29:20.001 L1-Dev  -> Block Came From The Main Loop [ ____________171 :  300 ]
+22:29:20.001 L1-Dev  -> Settings -> Last Block -> 171 -> 1348cb2366b90003f830
+22:29:20.016 L1-Dev  -> Block Is Proccessing -> 171 -> 1348cb2366b90003f830
+22:29:20.016 L1-Dev  -> Distributing [ ____________171 : 300 ] To 3.75.110.186:5002
+22:29:20.497 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106222935001
+CurrentQueueTime : 20221106222935000
+22:29:35.001 L1-Dev  -> Empty Block Executed
+22:29:35.001 L1-Dev  -> Block Came From The Main Loop [ ____________172 :  300 ]
+22:29:35.001 L1-Dev  -> Settings -> Last Block -> 172 -> 1348cb2366c80003f4e4
+22:29:35.016 L1-Dev  -> Block Is Proccessing -> 172 -> 1348cb2366c80003f4e4
+22:29:35.016 L1-Dev  -> Distributing [ ____________172 : 300 ] To 3.75.110.186:5002
+22:29:35.493 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106222950001
+CurrentQueueTime : 20221106222950000
+22:29:50.001 L1-Dev  -> Empty Block Executed
+22:29:50.001 L1-Dev  -> Block Came From The Main Loop [ ____________173 :  300 ]
+22:29:50.001 L1-Dev  -> Settings -> Last Block -> 173 -> 1348cb2366d70003f986
+22:29:50.017 L1-Dev  -> Block Is Proccessing -> 173 -> 1348cb2366d70003f986
+22:29:50.017 L1-Dev  -> Distributing [ ____________173 : 300 ] To 3.75.110.186:5002
+22:29:50.500 L1-Dev  -> <block> message sended
++22:30:05.030 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:30:05.031 L1-Dev  -> Income Block Row No -> 174:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:30:05.032 L1-Dev  -> Income Block Row No -> 174, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:30:05.346 L1-Dev  -> <block> Downloaded from other validator
+22:30:05.347 L1-Dev  -> New Block Arrived : 1348cb23671d000
+22:30:05.348 L1-Dev  -> Block Came From The Validator Queue [ ____________174 :  300 ]
+22:30:05.349 L1-Dev  -> Settings -> Last Block -> 174 -> 1348cb2366e60003f59f
+22:30:05.352 L1-Dev  -> Block Is Proccessing -> 174 -> 1348cb2366e60003f59f
+22:30:05.353 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+NGF.NowInt() : 20221106223020001
+CurrentQueueTime : 20221106223020000
+22:30:20.001 L1-Dev  -> Empty Block Executed
+22:30:20.001 L1-Dev  -> Block Came From The Main Loop [ ____________175 :  300 ]
+22:30:20.001 L1-Dev  -> Settings -> Last Block -> 175 -> 1348cb23671d0003feb0
+22:30:20.016 L1-Dev  -> Block Is Proccessing -> 175 -> 1348cb23671d0003feb0
+22:30:20.016 L1-Dev  -> Distributing [ ____________175 : 300 ] To 3.75.110.186:5002
+22:30:20.499 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106223035001
+CurrentQueueTime : 20221106223035000
+22:30:35.001 L1-Dev  -> Empty Block Executed
+22:30:35.001 L1-Dev  -> Block Came From The Main Loop [ ____________176 :  300 ]
+22:30:35.001 L1-Dev  -> Settings -> Last Block -> 176 -> 1348cb23672c0003f92b
+22:30:35.015 L1-Dev  -> Block Is Proccessing -> 176 -> 1348cb23672c0003f92b
+22:30:35.015 L1-Dev  -> Distributing [ ____________176 : 300 ] To 3.75.110.186:5002
+22:30:35.498 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106223050001
+CurrentQueueTime : 20221106223050000
+22:30:50.001 L1-Dev  -> Empty Block Executed
+22:30:50.001 L1-Dev  -> Block Came From The Main Loop [ ____________177 :  300 ]
+22:30:50.001 L1-Dev  -> Settings -> Last Block -> 177 -> 1348cb23673b0003f5d2
+22:30:50.001 L1-Dev  -> Block Is Proccessing -> 177 -> 1348cb23673b0003f5d2
+22:30:50.016 L1-Dev  -> Distributing [ ____________177 : 300 ] To 3.75.110.186:5002
+22:30:50.497 L1-Dev  -> <block> message sended
++22:31:05.032 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:31:05.034 L1-Dev  -> Income Block Row No -> 178:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:31:05.035 L1-Dev  -> Income Block Row No -> 178, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:31:05.349 L1-Dev  -> <block> Downloaded from other validator
+22:31:05.350 L1-Dev  -> New Block Arrived : 1348cb236781000
+22:31:05.351 L1-Dev  -> Block Came From The Validator Queue [ ____________178 :  300 ]
+22:31:05.352 L1-Dev  -> Settings -> Last Block -> 178 -> 1348cb23674a0003f3a9
+22:31:05.354 L1-Dev  -> Block Is Proccessing -> 178 -> 1348cb23674a0003f3a9
+22:31:05.355 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+NGF.NowInt() : 20221106223120001
+CurrentQueueTime : 20221106223120000
+22:31:20.001 L1-Dev  -> Empty Block Executed
+22:31:20.005 L1-Dev  -> Block Came From The Main Loop [ ____________179 :  300 ]
+22:31:20.005 L1-Dev  -> Settings -> Last Block -> 179 -> 1348cb2367810003fc28
+22:31:20.005 L1-Dev  -> Block Is Proccessing -> 179 -> 1348cb2367810003fc28
+22:31:20.005 L1-Dev  -> Distributing [ ____________179 : 300 ] To 3.75.110.186:5002
+22:31:20.498 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106223135001
+CurrentQueueTime : 20221106223135000
+22:31:35.001 L1-Dev  -> Empty Block Executed
+22:31:35.005 L1-Dev  -> Block Came From The Main Loop [ ____________180 :  300 ]
+22:31:35.005 L1-Dev  -> Settings -> Last Block -> 180 -> 1348cb2367900003f646
+22:31:35.005 L1-Dev  -> Block Is Proccessing -> 180 -> 1348cb2367900003f646
+22:31:35.005 L1-Dev  -> Distributing [ ____________180 : 300 ] To 3.75.110.186:5002
+22:31:35.497 L1-Dev  -> <block> message sended
++22:31:50.031 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:31:50.032 L1-Dev  -> Income Block Row No -> 181:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:31:50.033 L1-Dev  -> Income Block Row No -> 181, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:31:50.345 L1-Dev  -> <block> Downloaded from other validator
+22:31:50.346 L1-Dev  -> New Block Arrived : 1348cb2367ae000
+22:31:50.347 L1-Dev  -> Block Came From The Validator Queue [ ____________181 :  300 ]
+22:31:50.349 L1-Dev  -> Settings -> Last Block -> 181 -> 1348cb23679f0003f935
+22:31:50.351 L1-Dev  -> Block Is Proccessing -> 181 -> 1348cb23679f0003f935
+22:31:50.352 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+NGF.NowInt() : 20221106223205001
+CurrentQueueTime : 20221106223205000
+22:32:05.001 L1-Dev  -> Empty Block Executed
+22:32:05.005 L1-Dev  -> Block Came From The Main Loop [ ____________182 :  300 ]
+22:32:05.005 L1-Dev  -> Settings -> Last Block -> 182 -> 1348cb2367ae0003f511
+22:32:05.005 L1-Dev  -> Block Is Proccessing -> 182 -> 1348cb2367ae0003f511
+22:32:05.005 L1-Dev  -> Distributing [ ____________182 : 300 ] To 3.75.110.186:5002
+22:32:05.497 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106223220001
+CurrentQueueTime : 20221106223220000
+22:32:20.001 L1-Dev  -> Empty Block Executed
+22:32:20.006 L1-Dev  -> Block Came From The Main Loop [ ____________183 :  300 ]
+22:32:20.006 L1-Dev  -> Settings -> Last Block -> 183 -> 1348cb2367e50003f8df
+22:32:20.006 L1-Dev  -> Block Is Proccessing -> 183 -> 1348cb2367e50003f8df
+22:32:20.006 L1-Dev  -> Distributing [ ____________183 : 300 ] To 3.75.110.186:5002
+22:32:20.494 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106223235001
+CurrentQueueTime : 20221106223235000
+22:32:35.001 L1-Dev  -> Empty Block Executed
+22:32:35.006 L1-Dev  -> Block Came From The Main Loop [ ____________184 :  300 ]
+22:32:35.006 L1-Dev  -> Settings -> Last Block -> 184 -> 1348cb2367f40003fb76
+22:32:35.006 L1-Dev  -> Block Is Proccessing -> 184 -> 1348cb2367f40003fb76
+22:32:35.006 L1-Dev  -> Distributing [ ____________184 : 300 ] To 3.75.110.186:5002
+22:32:35.493 L1-Dev  -> <block> message sended
++22:32:50.034 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:32:50.035 L1-Dev  -> Income Block Row No -> 185:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:32:50.036 L1-Dev  -> Income Block Row No -> 185, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:32:50.359 L1-Dev  -> <block> Downloaded from other validator
+22:32:50.360 L1-Dev  -> New Block Arrived : 1348cb236812000
+22:32:50.361 L1-Dev  -> Block Came From The Validator Queue [ ____________185 :  300 ]
+22:32:50.362 L1-Dev  -> Settings -> Last Block -> 185 -> 1348cb2368030003f415
+22:32:50.364 L1-Dev  -> Block Is Proccessing -> 185 -> 1348cb2368030003f415
+22:32:50.365 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+22:33:05.032 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:33:05.033 L1-Dev  -> Income Block Row No -> 186:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:33:05.034 L1-Dev  -> Income Block Row No -> 186, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:33:05.351 L1-Dev  -> <block> Downloaded from other validator
+22:33:05.351 L1-Dev  -> New Block Arrived : 1348cb236849000
+22:33:05.353 L1-Dev  -> Block Came From The Validator Queue [ ____________186 :  300 ]
+22:33:05.354 L1-Dev  -> Settings -> Last Block -> 186 -> 1348cb2368120003fe9c
+22:33:05.357 L1-Dev  -> Block Is Proccessing -> 186 -> 1348cb2368120003fe9c
+22:33:05.358 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106223320001
+CurrentQueueTime : 20221106223320000
+22:33:20.001 L1-Dev  -> Empty Block Executed
+22:33:20.010 L1-Dev  -> Block Came From The Main Loop [ ____________187 :  300 ]
+22:33:20.010 L1-Dev  -> Settings -> Last Block -> 187 -> 1348cb2368490003f98f
+22:33:20.010 L1-Dev  -> Block Is Proccessing -> 187 -> 1348cb2368490003f98f
+22:33:20.010 L1-Dev  -> Distributing [ ____________187 : 300 ] To 3.75.110.186:5002
+22:33:20.493 L1-Dev  -> <block> message sended
++22:33:35.032 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:33:35.033 L1-Dev  -> Income Block Row No -> 188:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:33:35.034 L1-Dev  -> Income Block Row No -> 188, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:33:35.348 L1-Dev  -> <block> Downloaded from other validator
+22:33:35.349 L1-Dev  -> New Block Arrived : 1348cb236867000
+22:33:35.350 L1-Dev  -> Block Came From The Validator Queue [ ____________188 :  300 ]
+22:33:35.351 L1-Dev  -> Settings -> Last Block -> 188 -> 1348cb2368580003f456
+22:33:35.353 L1-Dev  -> Block Is Proccessing -> 188 -> 1348cb2368580003f456
+22:33:35.354 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:33:50.033 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:33:50.034 L1-Dev  -> Income Block Row No -> 189:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:33:50.035 L1-Dev  -> Income Block Row No -> 189, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:33:50.347 L1-Dev  -> <block> Downloaded from other validator
+22:33:50.348 L1-Dev  -> New Block Arrived : 1348cb236876000
+22:33:50.349 L1-Dev  -> Block Came From The Validator Queue [ ____________189 :  300 ]
+22:33:50.350 L1-Dev  -> Settings -> Last Block -> 189 -> 1348cb2368670003f3a2
+22:33:50.353 L1-Dev  -> Block Is Proccessing -> 189 -> 1348cb2368670003f3a2
+22:33:50.354 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+NGF.NowInt() : 20221106223405001
+CurrentQueueTime : 20221106223405000
+22:34:05.001 L1-Dev  -> Empty Block Executed
+22:34:05.013 L1-Dev  -> Block Came From The Main Loop [ ____________190 :  300 ]
+22:34:05.013 L1-Dev  -> Settings -> Last Block -> 190 -> 1348cb2368760003f588
+22:34:05.013 L1-Dev  -> Block Is Proccessing -> 190 -> 1348cb2368760003f588
+22:34:05.013 L1-Dev  -> Distributing [ ____________190 : 300 ] To 3.75.110.186:5002
+22:34:05.495 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106223420001
+CurrentQueueTime : 20221106223420000
+22:34:20.001 L1-Dev  -> Empty Block Executed
+22:34:20.005 L1-Dev  -> Block Came From The Main Loop [ ____________191 :  300 ]
+22:34:20.005 L1-Dev  -> Settings -> Last Block -> 191 -> 1348cb2368ad0003f691
+22:34:20.005 L1-Dev  -> Block Is Proccessing -> 191 -> 1348cb2368ad0003f691
+22:34:20.005 L1-Dev  -> Distributing [ ____________191 : 300 ] To 3.75.110.186:5002
+22:34:20.492 L1-Dev  -> <block> message sended
++22:34:35.033 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:34:35.034 L1-Dev  -> Income Block Row No -> 192:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:34:35.035 L1-Dev  -> Income Block Row No -> 192, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:34:35.348 L1-Dev  -> <block> Downloaded from other validator
+22:34:35.349 L1-Dev  -> New Block Arrived : 1348cb2368cb000
+22:34:35.350 L1-Dev  -> Block Came From The Validator Queue [ ____________192 :  300 ]
+22:34:35.351 L1-Dev  -> Settings -> Last Block -> 192 -> 1348cb2368bc0003f80a
+22:34:35.354 L1-Dev  -> Block Is Proccessing -> 192 -> 1348cb2368bc0003f80a
+22:34:35.355 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106223450001
+CurrentQueueTime : 20221106223450000
+22:34:50.001 L1-Dev  -> Empty Block Executed
+22:34:50.005 L1-Dev  -> Block Came From The Main Loop [ ____________193 :  300 ]
+22:34:50.005 L1-Dev  -> Settings -> Last Block -> 193 -> 1348cb2368cb0003fced
+22:34:50.005 L1-Dev  -> Block Is Proccessing -> 193 -> 1348cb2368cb0003fced
+22:34:50.005 L1-Dev  -> Distributing [ ____________193 : 300 ] To 3.75.110.186:5002
+22:34:50.503 L1-Dev  -> <block> message sended
+NGF.NowInt() : 20221106223505001
+CurrentQueueTime : 20221106223505000
+22:35:05.001 L1-Dev  -> Empty Block Executed
+22:35:05.012 L1-Dev  -> Block Came From The Main Loop [ ____________194 :  300 ]
+22:35:05.012 L1-Dev  -> Settings -> Last Block -> 194 -> 1348cb2368da0003f4b5
+22:35:05.012 L1-Dev  -> Block Is Proccessing -> 194 -> 1348cb2368da0003f4b5
+22:35:05.012 L1-Dev  -> Distributing [ ____________194 : 300 ] To 3.75.110.186:5002
+22:35:05.499 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106223520001
+CurrentQueueTime : 20221106223520000
+22:35:20.001 L1-Dev  -> Empty Block Executed
+22:35:20.012 L1-Dev  -> Block Came From The Main Loop [ ____________195 :  300 ]
+22:35:20.012 L1-Dev  -> Settings -> Last Block -> 195 -> 1348cb2369110003f88f
+22:35:20.012 L1-Dev  -> Block Is Proccessing -> 195 -> 1348cb2369110003f88f
+22:35:20.012 L1-Dev  -> Distributing [ ____________195 : 300 ] To 3.75.110.186:5002
+22:35:20.496 L1-Dev  -> <block> message sended
++22:35:35.020 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:35:35.021 L1-Dev  -> Income Block Row No -> 196:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:35:35.022 L1-Dev  -> Income Block Row No -> 196, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:35:35.337 L1-Dev  -> <block> Downloaded from other validator
+22:35:35.338 L1-Dev  -> New Block Arrived : 1348cb23692f000
+22:35:35.339 L1-Dev  -> Block Came From The Validator Queue [ ____________196 :  300 ]
+22:35:35.340 L1-Dev  -> Settings -> Last Block -> 196 -> 1348cb2369200003f8d6
+22:35:35.343 L1-Dev  -> Block Is Proccessing -> 196 -> 1348cb2369200003f8d6
+22:35:35.344 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:35:50.020 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:35:50.021 L1-Dev  -> Income Block Row No -> 197:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:35:50.022 L1-Dev  -> Income Block Row No -> 197, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:35:50.336 L1-Dev  -> <block> Downloaded from other validator
+22:35:50.337 L1-Dev  -> New Block Arrived : 1348cb23693e000
+22:35:50.338 L1-Dev  -> Block Came From The Validator Queue [ ____________197 :  300 ]
+22:35:50.339 L1-Dev  -> Settings -> Last Block -> 197 -> 1348cb23692f0003f302
+22:35:50.341 L1-Dev  -> Block Is Proccessing -> 197 -> 1348cb23692f0003f302
+22:35:50.342 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+22:36:05.021 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:36:05.022 L1-Dev  -> Income Block Row No -> 198:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:36:05.024 L1-Dev  -> Income Block Row No -> 198, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:36:05.340 L1-Dev  -> <block> Downloaded from other validator
+22:36:05.341 L1-Dev  -> New Block Arrived : 1348cb236975000
+22:36:05.342 L1-Dev  -> Block Came From The Validator Queue [ ____________198 :  300 ]
+22:36:05.343 L1-Dev  -> Settings -> Last Block -> 198 -> 1348cb23693e0003f8d4
+22:36:05.346 L1-Dev  -> Block Is Proccessing -> 198 -> 1348cb23693e0003f8d4
+22:36:05.347 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106223620001
+CurrentQueueTime : 20221106223620000
+22:36:20.001 L1-Dev  -> Empty Block Executed
+22:36:20.001 L1-Dev  -> Block Came From The Main Loop [ ____________199 :  300 ]
+22:36:20.001 L1-Dev  -> Settings -> Last Block -> 199 -> 1348cb2369750003f41b
+22:36:20.016 L1-Dev  -> Block Is Proccessing -> 199 -> 1348cb2369750003f41b
+22:36:20.016 L1-Dev  -> Distributing [ ____________199 : 300 ] To 3.75.110.186:5002
+22:36:20.499 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106223635001
+CurrentQueueTime : 20221106223635000
+22:36:35.001 L1-Dev  -> Empty Block Executed
+22:36:35.001 L1-Dev  -> Block Came From The Main Loop [ ____________200 :  300 ]
+22:36:35.001 L1-Dev  -> Settings -> Last Block -> 200 -> 1348cb2369840003f349
+22:36:35.015 L1-Dev  -> Block Is Proccessing -> 200 -> 1348cb2369840003f349
+22:36:35.015 L1-Dev  -> Distributing [ ____________200 : 300 ] To 3.75.110.186:5002
+22:36:35.494 L1-Dev  -> <block> message sended
++22:36:50.021 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:36:50.023 L1-Dev  -> Income Block Row No -> 201:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:36:50.024 L1-Dev  -> Income Block Row No -> 201, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:36:50.336 L1-Dev  -> <block> Downloaded from other validator
+22:36:50.337 L1-Dev  -> New Block Arrived : 1348cb2369a2000
+22:36:50.338 L1-Dev  -> Block Came From The Validator Queue [ ____________201 :  300 ]
+22:36:50.339 L1-Dev  -> Settings -> Last Block -> 201 -> 1348cb2369930003f8f4
+22:36:50.341 L1-Dev  -> Block Is Proccessing -> 201 -> 1348cb2369930003f8f4
+22:36:50.343 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+NGF.NowInt() : 20221106223705001
+CurrentQueueTime : 20221106223705000
+22:37:05.003 L1-Dev  -> Empty Block Executed
+22:37:05.003 L1-Dev  -> Block Came From The Main Loop [ ____________202 :  300 ]
+22:37:05.003 L1-Dev  -> Settings -> Last Block -> 202 -> 1348cb2369a20003faee
+22:37:05.003 L1-Dev  -> Block Is Proccessing -> 202 -> 1348cb2369a20003faee
+22:37:05.003 L1-Dev  -> Distributing [ ____________202 : 300 ] To 3.75.110.186:5002
+22:37:05.494 L1-Dev  -> <block> message sended
++22:37:20.022 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:37:20.023 L1-Dev  -> Income Block Row No -> 203:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:37:20.024 L1-Dev  -> Income Block Row No -> 203, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:37:20.342 L1-Dev  -> <block> Downloaded from other validator
+22:37:20.343 L1-Dev  -> New Block Arrived : 1348cb2369e8000
+22:37:20.344 L1-Dev  -> Block Came From The Validator Queue [ ____________203 :  300 ]
+22:37:20.345 L1-Dev  -> Settings -> Last Block -> 203 -> 1348cb2369d9000c9ef7
+22:37:20.348 L1-Dev  -> Block Is Proccessing -> 203 -> 1348cb2369d9000c9ef7
+22:37:20.349 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:37:35.023 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:37:35.024 L1-Dev  -> Income Block Row No -> 204:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:37:35.025 L1-Dev  -> Income Block Row No -> 204, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:37:35.342 L1-Dev  -> <block> Downloaded from other validator
+22:37:35.344 L1-Dev  -> New Block Arrived : 1348cb2369f7000
+22:37:35.345 L1-Dev  -> Block Came From The Validator Queue [ ____________204 :  300 ]
+22:37:35.346 L1-Dev  -> Settings -> Last Block -> 204 -> 1348cb2369e80003fdb2
+22:37:35.349 L1-Dev  -> Block Is Proccessing -> 204 -> 1348cb2369e80003fdb2
+22:37:35.350 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106223750001
+CurrentQueueTime : 20221106223750000
+22:37:50.001 L1-Dev  -> Empty Block Executed
+22:37:50.004 L1-Dev  -> Block Came From The Main Loop [ ____________205 :  300 ]
+22:37:50.004 L1-Dev  -> Settings -> Last Block -> 205 -> 1348cb2369f7000cc8f0
+22:37:50.004 L1-Dev  -> Block Is Proccessing -> 205 -> 1348cb2369f7000cc8f0
+22:37:50.004 L1-Dev  -> Distributing [ ____________205 : 300 ] To 3.75.110.186:5002
+22:37:50.494 L1-Dev  -> <block> message sended
+NGF.NowInt() : 20221106223805001
+CurrentQueueTime : 20221106223805000
+22:38:05.001 L1-Dev  -> Empty Block Executed
+22:38:05.004 L1-Dev  -> Block Came From The Main Loop [ ____________206 :  300 ]
+22:38:05.004 L1-Dev  -> Settings -> Last Block -> 206 -> 1348cb236a0600110b20
+22:38:05.004 L1-Dev  -> Block Is Proccessing -> 206 -> 1348cb236a0600110b20
+22:38:05.004 L1-Dev  -> Distributing [ ____________206 : 300 ] To 3.75.110.186:5002
+22:38:05.494 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106223820001
+CurrentQueueTime : 20221106223820000
+22:38:20.001 L1-Dev  -> Empty Block Executed
+22:38:20.005 L1-Dev  -> Block Came From The Main Loop [ ____________207 :  300 ]
+22:38:20.005 L1-Dev  -> Settings -> Last Block -> 207 -> 1348cb236a3d001234f7
+22:38:20.005 L1-Dev  -> Block Is Proccessing -> 207 -> 1348cb236a3d001234f7
+22:38:20.005 L1-Dev  -> Distributing [ ____________207 : 300 ] To 3.75.110.186:5002
+22:38:20.494 L1-Dev  -> <block> message sended
++22:38:35.022 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:38:35.024 L1-Dev  -> Income Block Row No -> 208:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:38:35.025 L1-Dev  -> Income Block Row No -> 208, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:38:35.338 L1-Dev  -> <block> Downloaded from other validator
+22:38:35.339 L1-Dev  -> New Block Arrived : 1348cb236a5b000
+22:38:35.340 L1-Dev  -> Block Came From The Validator Queue [ ____________208 :  300 ]
+22:38:35.341 L1-Dev  -> Settings -> Last Block -> 208 -> 1348cb236a4c0003f6c2
+22:38:35.344 L1-Dev  -> Block Is Proccessing -> 208 -> 1348cb236a4c0003f6c2
+22:38:35.345 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106223850001
+CurrentQueueTime : 20221106223850000
+22:38:50.001 L1-Dev  -> Empty Block Executed
+22:38:50.005 L1-Dev  -> Block Came From The Main Loop [ ____________209 :  300 ]
+22:38:50.005 L1-Dev  -> Settings -> Last Block -> 209 -> 1348cb236a5b0009ecd0
+22:38:50.005 L1-Dev  -> Block Is Proccessing -> 209 -> 1348cb236a5b0009ecd0
+22:38:50.005 L1-Dev  -> Distributing [ ____________209 : 300 ] To 3.75.110.186:5002
+22:38:50.494 L1-Dev  -> <block> message sended
+22:39:05.022 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:39:05.023 L1-Dev  -> Income Block Row No -> 210:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:39:05.024 L1-Dev  -> Income Block Row No -> 210, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:39:05.337 L1-Dev  -> <block> Downloaded from other validator
+22:39:05.339 L1-Dev  -> New Block Arrived : 1348cb236aa1000
+22:39:05.340 L1-Dev  -> Block Came From The Validator Queue [ ____________210 :  300 ]
+22:39:05.341 L1-Dev  -> Settings -> Last Block -> 210 -> 1348cb236a6a0003fb6f
+22:39:05.343 L1-Dev  -> Block Is Proccessing -> 210 -> 1348cb236a6a0003fb6f
+22:39:05.344 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:39:20.023 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:39:20.024 L1-Dev  -> Income Block Row No -> 211:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:39:20.025 L1-Dev  -> Income Block Row No -> 211, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:39:20.342 L1-Dev  -> <block> Downloaded from other validator
+22:39:20.343 L1-Dev  -> New Block Arrived : 1348cb236ab0000
+22:39:20.344 L1-Dev  -> Block Came From The Validator Queue [ ____________211 :  300 ]
+22:39:20.345 L1-Dev  -> Settings -> Last Block -> 211 -> 1348cb236aa1000888e6
+22:39:20.348 L1-Dev  -> Block Is Proccessing -> 211 -> 1348cb236aa1000888e6
+22:39:20.349 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106223935001
+CurrentQueueTime : 20221106223935000
+22:39:35.001 L1-Dev  -> Empty Block Executed
+22:39:35.012 L1-Dev  -> Block Came From The Main Loop [ ____________212 :  300 ]
+22:39:35.012 L1-Dev  -> Settings -> Last Block -> 212 -> 1348cb236ab0000813a9
+22:39:35.012 L1-Dev  -> Block Is Proccessing -> 212 -> 1348cb236ab0000813a9
+22:39:35.012 L1-Dev  -> Distributing [ ____________212 : 300 ] To 3.75.110.186:5002
+22:39:35.496 L1-Dev  -> <block> message sended
+NGF.NowInt() : 20221106223950001
+CurrentQueueTime : 20221106223950000
+22:39:50.001 L1-Dev  -> Empty Block Executed
+22:39:50.001 L1-Dev  -> Block Came From The Main Loop [ ____________213 :  300 ]
+22:39:50.012 L1-Dev  -> Settings -> Last Block -> 213 -> 1348cb236abf0003f8f8
+22:39:50.012 L1-Dev  -> Block Is Proccessing -> 213 -> 1348cb236abf0003f8f8
+22:39:50.012 L1-Dev  -> Distributing [ ____________213 : 300 ] To 3.75.110.186:5002
+22:39:50.503 L1-Dev  -> <block> message sended
++22:40:05.024 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:40:05.026 L1-Dev  -> Income Block Row No -> 214:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:40:05.027 L1-Dev  -> Income Block Row No -> 214, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:40:05.345 L1-Dev  -> <block> Downloaded from other validator
+22:40:05.346 L1-Dev  -> New Block Arrived : 1348cb236b05000
+22:40:05.347 L1-Dev  -> Block Came From The Validator Queue [ ____________214 :  300 ]
+22:40:05.348 L1-Dev  -> Settings -> Last Block -> 214 -> 1348cb236ace0003f565
+22:40:05.350 L1-Dev  -> Block Is Proccessing -> 214 -> 1348cb236ace0003f565
+22:40:05.352 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106224020001
+CurrentQueueTime : 20221106224020000
+22:40:20.001 L1-Dev  -> Empty Block Executed
+22:40:20.001 L1-Dev  -> Block Came From The Main Loop [ ____________215 :  300 ]
+22:40:20.013 L1-Dev  -> Settings -> Last Block -> 215 -> 1348cb236b0500059618
+22:40:20.013 L1-Dev  -> Block Is Proccessing -> 215 -> 1348cb236b0500059618
+22:40:20.013 L1-Dev  -> Distributing [ ____________215 : 300 ] To 3.75.110.186:5002
+22:40:20.496 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106224035001
+CurrentQueueTime : 20221106224035000
+22:40:35.001 L1-Dev  -> Empty Block Executed
+22:40:35.001 L1-Dev  -> Block Came From The Main Loop [ ____________216 :  300 ]
+22:40:35.013 L1-Dev  -> Settings -> Last Block -> 216 -> 1348cb236b140003fb4b
+22:40:35.013 L1-Dev  -> Block Is Proccessing -> 216 -> 1348cb236b140003fb4b
+22:40:35.013 L1-Dev  -> Distributing [ ____________216 : 300 ] To 3.75.110.186:5002
+22:40:35.496 L1-Dev  -> <block> message sended
+NGF.NowInt() : 20221106224050001
+CurrentQueueTime : 20221106224050000
+22:40:50.001 L1-Dev  -> Empty Block Executed
+22:40:50.001 L1-Dev  -> Block Came From The Main Loop [ ____________217 :  300 ]
+22:40:50.001 L1-Dev  -> Settings -> Last Block -> 217 -> 1348cb236b230003f9de
+22:40:50.014 L1-Dev  -> Block Is Proccessing -> 217 -> 1348cb236b230003f9de
+22:40:50.014 L1-Dev  -> Distributing [ ____________217 : 300 ] To 3.75.110.186:5002
+22:40:50.495 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106224105001
+CurrentQueueTime : 20221106224105000
+22:41:05.001 L1-Dev  -> Empty Block Executed
+22:41:05.001 L1-Dev  -> Block Came From The Main Loop [ ____________218 :  300 ]
+22:41:05.001 L1-Dev  -> Settings -> Last Block -> 218 -> 1348cb236b320003f435
+22:41:05.015 L1-Dev  -> Block Is Proccessing -> 218 -> 1348cb236b320003f435
+22:41:05.015 L1-Dev  -> Distributing [ ____________218 : 300 ] To 3.75.110.186:5002
+22:41:05.497 L1-Dev  -> <block> message sended
++22:41:20.023 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:41:20.024 L1-Dev  -> Income Block Row No -> 219:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:41:20.026 L1-Dev  -> Income Block Row No -> 219, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:41:20.343 L1-Dev  -> <block> Downloaded from other validator
+22:41:20.344 L1-Dev  -> New Block Arrived : 1348cb236b78000
+22:41:20.345 L1-Dev  -> Block Came From The Validator Queue [ ____________219 :  300 ]
+22:41:20.346 L1-Dev  -> Settings -> Last Block -> 219 -> 1348cb236b690003f725
+22:41:20.349 L1-Dev  -> Block Is Proccessing -> 219 -> 1348cb236b690003f725
+22:41:20.350 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:41:35.024 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:41:35.026 L1-Dev  -> Income Block Row No -> 220:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:41:35.027 L1-Dev  -> Income Block Row No -> 220, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:41:35.342 L1-Dev  -> <block> Downloaded from other validator
+22:41:35.343 L1-Dev  -> New Block Arrived : 1348cb236b87000
+22:41:35.344 L1-Dev  -> Block Came From The Validator Queue [ ____________220 :  300 ]
+22:41:35.345 L1-Dev  -> Settings -> Last Block -> 220 -> 1348cb236b780003f528
+22:41:35.348 L1-Dev  -> Block Is Proccessing -> 220 -> 1348cb236b780003f528
+22:41:35.349 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+NGF.NowInt() : 20221106224150001
+CurrentQueueTime : 20221106224150000
+22:41:50.001 L1-Dev  -> Empty Block Executed
+22:41:50.008 L1-Dev  -> Block Came From The Main Loop [ ____________221 :  300 ]
+22:41:50.008 L1-Dev  -> Settings -> Last Block -> 221 -> 1348cb236b870003f64e
+22:41:50.008 L1-Dev  -> Block Is Proccessing -> 221 -> 1348cb236b870003f64e
+22:41:50.008 L1-Dev  -> Distributing [ ____________221 : 300 ] To 3.75.110.186:5002
+22:41:50.503 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106224205001
+CurrentQueueTime : 20221106224205000
+22:42:05.001 L1-Dev  -> Empty Block Executed
+22:42:05.008 L1-Dev  -> Block Came From The Main Loop [ ____________222 :  300 ]
+22:42:05.008 L1-Dev  -> Settings -> Last Block -> 222 -> 1348cb236b960003f7f7
+22:42:05.008 L1-Dev  -> Block Is Proccessing -> 222 -> 1348cb236b960003f7f7
+22:42:05.008 L1-Dev  -> Distributing [ ____________222 : 300 ] To 3.75.110.186:5002
+22:42:05.494 L1-Dev  -> <block> message sended
++22:42:20.028 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:42:20.029 L1-Dev  -> Income Block Row No -> 223:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:42:20.030 L1-Dev  -> Income Block Row No -> 223, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:42:20.348 L1-Dev  -> <block> Downloaded from other validator
+22:42:20.349 L1-Dev  -> New Block Arrived : 1348cb236bdc000
+22:42:20.351 L1-Dev  -> Block Came From The Validator Queue [ ____________223 :  300 ]
+22:42:20.351 L1-Dev  -> Settings -> Last Block -> 223 -> 1348cb236bcd0003f6c7
+22:42:20.354 L1-Dev  -> Block Is Proccessing -> 223 -> 1348cb236bcd0003f6c7
+22:42:20.355 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:42:35.026 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:42:35.027 L1-Dev  -> Income Block Row No -> 224:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:42:35.028 L1-Dev  -> Income Block Row No -> 224, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:42:35.346 L1-Dev  -> <block> Downloaded from other validator
+22:42:35.347 L1-Dev  -> New Block Arrived : 1348cb236beb000
+22:42:35.348 L1-Dev  -> Block Came From The Validator Queue [ ____________224 :  300 ]
+22:42:35.349 L1-Dev  -> Settings -> Last Block -> 224 -> 1348cb236bdc0003fc6e
+22:42:35.352 L1-Dev  -> Block Is Proccessing -> 224 -> 1348cb236bdc0003fc6e
+22:42:35.353 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+NGF.NowInt() : 20221106224250001
+CurrentQueueTime : 20221106224250000
+22:42:50.001 L1-Dev  -> Empty Block Executed
+22:42:50.006 L1-Dev  -> Block Came From The Main Loop [ ____________225 :  300 ]
+22:42:50.006 L1-Dev  -> Settings -> Last Block -> 225 -> 1348cb236beb0003fd51
+22:42:50.006 L1-Dev  -> Block Is Proccessing -> 225 -> 1348cb236beb0003fd51
+22:42:50.006 L1-Dev  -> Distributing [ ____________225 : 300 ] To 3.75.110.186:5002
+22:42:50.502 L1-Dev  -> <block> message sended
++22:43:05.027 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:43:05.028 L1-Dev  -> Income Block Row No -> 226:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:43:05.029 L1-Dev  -> Income Block Row No -> 226, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:43:05.341 L1-Dev  -> <block> Downloaded from other validator
+22:43:05.342 L1-Dev  -> New Block Arrived : 1348cb236c31000
+22:43:05.343 L1-Dev  -> Block Came From The Validator Queue [ ____________226 :  300 ]
+22:43:05.344 L1-Dev  -> Settings -> Last Block -> 226 -> 1348cb236bfa0003f7f5
+22:43:05.347 L1-Dev  -> Block Is Proccessing -> 226 -> 1348cb236bfa0003f7f5
+22:43:05.348 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:43:20.028 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:43:20.029 L1-Dev  -> Income Block Row No -> 227:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:43:20.030 L1-Dev  -> Income Block Row No -> 227, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:43:20.342 L1-Dev  -> <block> Downloaded from other validator
+22:43:20.343 L1-Dev  -> New Block Arrived : 1348cb236c40000
+22:43:20.344 L1-Dev  -> Block Came From The Validator Queue [ ____________227 :  300 ]
+22:43:20.345 L1-Dev  -> Settings -> Last Block -> 227 -> 1348cb236c310003fc53
+22:43:20.348 L1-Dev  -> Block Is Proccessing -> 227 -> 1348cb236c310003fc53
+22:43:20.349 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106224335001
+CurrentQueueTime : 20221106224335000
+22:43:35.001 L1-Dev  -> Empty Block Executed
+22:43:35.001 L1-Dev  -> Block Came From The Main Loop [ ____________228 :  300 ]
+22:43:35.012 L1-Dev  -> Settings -> Last Block -> 228 -> 1348cb236c400003f661
+22:43:35.012 L1-Dev  -> Block Is Proccessing -> 228 -> 1348cb236c400003f661
+22:43:35.012 L1-Dev  -> Distributing [ ____________228 : 300 ] To 3.75.110.186:5002
+22:43:35.494 L1-Dev  -> <block> message sended
+NGF.NowInt() : 20221106224350001
+CurrentQueueTime : 20221106224350000
+22:43:50.001 L1-Dev  -> Empty Block Executed
+22:43:50.001 L1-Dev  -> Block Came From The Main Loop [ ____________229 :  300 ]
+22:43:50.012 L1-Dev  -> Settings -> Last Block -> 229 -> 1348cb236c4f0003f472
+22:43:50.012 L1-Dev  -> Block Is Proccessing -> 229 -> 1348cb236c4f0003f472
+22:43:50.012 L1-Dev  -> Distributing [ ____________229 : 300 ] To 3.75.110.186:5002
+22:43:50.494 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106224405001
+CurrentQueueTime : 20221106224405000
+22:44:05.001 L1-Dev  -> Empty Block Executed
+22:44:05.013 L1-Dev  -> Block Came From The Main Loop [ ____________230 :  300 ]
+22:44:05.013 L1-Dev  -> Settings -> Last Block -> 230 -> 1348cb236c5e0003f543
+22:44:05.013 L1-Dev  -> Block Is Proccessing -> 230 -> 1348cb236c5e0003f543
+22:44:05.013 L1-Dev  -> Distributing [ ____________230 : 300 ] To 3.75.110.186:5002
+22:44:05.496 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106224420001
+CurrentQueueTime : 20221106224420000
+22:44:20.001 L1-Dev  -> Empty Block Executed
+22:44:20.001 L1-Dev  -> Block Came From The Main Loop [ ____________231 :  300 ]
+22:44:20.012 L1-Dev  -> Settings -> Last Block -> 231 -> 1348cb236c950003f984
+22:44:20.012 L1-Dev  -> Block Is Proccessing -> 231 -> 1348cb236c950003f984
+22:44:20.012 L1-Dev  -> Distributing [ ____________231 : 300 ] To 3.75.110.186:5002
+22:44:20.498 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106224435001
+CurrentQueueTime : 20221106224435000
+22:44:35.001 L1-Dev  -> Empty Block Executed
+22:44:35.013 L1-Dev  -> Block Came From The Main Loop [ ____________232 :  300 ]
+22:44:35.013 L1-Dev  -> Settings -> Last Block -> 232 -> 1348cb236ca40003f5af
+22:44:35.013 L1-Dev  -> Block Is Proccessing -> 232 -> 1348cb236ca40003f5af
+22:44:35.013 L1-Dev  -> Distributing [ ____________232 : 300 ] To 3.75.110.186:5002
+22:44:35.495 L1-Dev  -> <block> message sended
+22:44:50.027 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:44:50.029 L1-Dev  -> Income Block Row No -> 233:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:44:50.030 L1-Dev  -> Income Block Row No -> 233, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:44:50.349 L1-Dev  -> <block> Downloaded from other validator
+22:44:50.350 L1-Dev  -> New Block Arrived : 1348cb236cc2000
+22:44:50.351 L1-Dev  -> Block Came From The Validator Queue [ ____________233 :  300 ]
+22:44:50.352 L1-Dev  -> Settings -> Last Block -> 233 -> 1348cb236cb30003f634
+22:44:50.355 L1-Dev  -> Block Is Proccessing -> 233 -> 1348cb236cb30003f634
+22:44:50.356 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106224505001
+CurrentQueueTime : 20221106224505000
+22:45:05.001 L1-Dev  -> Empty Block Executed
+22:45:05.001 L1-Dev  -> Block Came From The Main Loop [ ____________234 :  300 ]
+22:45:05.013 L1-Dev  -> Settings -> Last Block -> 234 -> 1348cb236cc20003fd2d
+22:45:05.013 L1-Dev  -> Block Is Proccessing -> 234 -> 1348cb236cc20003fd2d
+22:45:05.013 L1-Dev  -> Distributing [ ____________234 : 300 ] To 3.75.110.186:5002
+22:45:05.500 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106224520001
+CurrentQueueTime : 20221106224520000
+22:45:20.002 L1-Dev  -> Empty Block Executed
+22:45:20.002 L1-Dev  -> Block Came From The Main Loop [ ____________235 :  300 ]
+22:45:20.002 L1-Dev  -> Settings -> Last Block -> 235 -> 1348cb236cf90003f991
+22:45:20.002 L1-Dev  -> Block Is Proccessing -> 235 -> 1348cb236cf90003f991
+22:45:20.002 L1-Dev  -> Distributing [ ____________235 : 300 ] To 3.75.110.186:5002
+22:45:20.495 L1-Dev  -> <block> message sended
+22:45:35.028 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:45:35.029 L1-Dev  -> Income Block Row No -> 236:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:45:35.030 L1-Dev  -> Income Block Row No -> 236, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:45:35.353 L1-Dev  -> <block> Downloaded from other validator
+22:45:35.354 L1-Dev  -> New Block Arrived : 1348cb236d17000
+22:45:35.355 L1-Dev  -> Block Came From The Validator Queue [ ____________236 :  300 ]
+22:45:35.356 L1-Dev  -> Settings -> Last Block -> 236 -> 1348cb236d08000a04fb
+22:45:35.359 L1-Dev  -> Block Is Proccessing -> 236 -> 1348cb236d08000a04fb
+22:45:35.360 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:45:50.028 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:45:50.029 L1-Dev  -> Income Block Row No -> 237:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:45:50.030 L1-Dev  -> Income Block Row No -> 237, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:45:50.342 L1-Dev  -> <block> Downloaded from other validator
+22:45:50.343 L1-Dev  -> New Block Arrived : 1348cb236d26000
+22:45:50.344 L1-Dev  -> Block Came From The Validator Queue [ ____________237 :  300 ]
+22:45:50.345 L1-Dev  -> Settings -> Last Block -> 237 -> 1348cb236d170003fb75
+22:45:50.348 L1-Dev  -> Block Is Proccessing -> 237 -> 1348cb236d170003fb75
+22:45:50.349 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106224605001
+CurrentQueueTime : 20221106224605000
+22:46:05.002 L1-Dev  -> Empty Block Executed
+22:46:05.002 L1-Dev  -> Block Came From The Main Loop [ ____________238 :  300 ]
+22:46:05.002 L1-Dev  -> Settings -> Last Block -> 238 -> 1348cb236d260003f549
+22:46:05.002 L1-Dev  -> Block Is Proccessing -> 238 -> 1348cb236d260003f549
+22:46:05.002 L1-Dev  -> Distributing [ ____________238 : 300 ] To 3.75.110.186:5002
+22:46:05.492 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106224620001
+CurrentQueueTime : 20221106224620000
+22:46:20.002 L1-Dev  -> Empty Block Executed
+22:46:20.002 L1-Dev  -> Block Came From The Main Loop [ ____________239 :  300 ]
+22:46:20.002 L1-Dev  -> Settings -> Last Block -> 239 -> 1348cb236d5d000ba903
+22:46:20.002 L1-Dev  -> Block Is Proccessing -> 239 -> 1348cb236d5d000ba903
+22:46:20.002 L1-Dev  -> Distributing [ ____________239 : 300 ] To 3.75.110.186:5002
+22:46:20.496 L1-Dev  -> <block> message sended
+22:46:35.031 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:46:35.032 L1-Dev  -> Income Block Row No -> 240:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:46:35.033 L1-Dev  -> Income Block Row No -> 240, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:46:35.351 L1-Dev  -> <block> Downloaded from other validator
+22:46:35.352 L1-Dev  -> New Block Arrived : 1348cb236d7b000
+22:46:35.353 L1-Dev  -> Block Came From The Validator Queue [ ____________240 :  300 ]
+22:46:35.354 L1-Dev  -> Settings -> Last Block -> 240 -> 1348cb236d6c0008f9d1
+22:46:35.357 L1-Dev  -> Block Is Proccessing -> 240 -> 1348cb236d6c0008f9d1
+22:46:35.358 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++22:46:50.030 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:46:50.031 L1-Dev  -> Income Block Row No -> 241:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:46:50.032 L1-Dev  -> Income Block Row No -> 241, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:46:50.344 L1-Dev  -> <block> Downloaded from other validator
+22:46:50.345 L1-Dev  -> New Block Arrived : 1348cb236d8a000
+22:46:50.346 L1-Dev  -> Block Came From The Validator Queue [ ____________241 :  300 ]
+22:46:50.347 L1-Dev  -> Settings -> Last Block -> 241 -> 1348cb236d7b0003fc0a
+22:46:50.350 L1-Dev  -> Block Is Proccessing -> 241 -> 1348cb236d7b0003fc0a
+22:46:50.351 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106224705001
+CurrentQueueTime : 20221106224705000
+22:47:05.002 L1-Dev  -> Empty Block Executed
+22:47:05.002 L1-Dev  -> Block Came From The Main Loop [ ____________242 :  300 ]
+22:47:05.002 L1-Dev  -> Settings -> Last Block -> 242 -> 1348cb236d8a0003fe4f
+22:47:05.002 L1-Dev  -> Block Is Proccessing -> 242 -> 1348cb236d8a0003fe4f
+22:47:05.002 L1-Dev  -> Distributing [ ____________242 : 300 ] To 3.75.110.186:5002
+22:47:05.501 L1-Dev  -> <block> message sended
++22:47:20.029 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:47:20.031 L1-Dev  -> Income Block Row No -> 243:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:47:20.032 L1-Dev  -> Income Block Row No -> 243, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:47:20.349 L1-Dev  -> <block> Downloaded from other validator
+22:47:20.350 L1-Dev  -> New Block Arrived : 1348cb236dd0000
+22:47:20.351 L1-Dev  -> Block Came From The Validator Queue [ ____________243 :  300 ]
+22:47:20.352 L1-Dev  -> Settings -> Last Block -> 243 -> 1348cb236dc1000a9078
+22:47:20.355 L1-Dev  -> Block Is Proccessing -> 243 -> 1348cb236dc1000a9078
+22:47:20.356 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+NGF.NowInt() : 20221106224735001
+CurrentQueueTime : 20221106224735000
+22:47:35.003 L1-Dev  -> Empty Block Executed
+22:47:35.003 L1-Dev  -> Block Came From The Main Loop [ ____________244 :  300 ]
+22:47:35.003 L1-Dev  -> Settings -> Last Block -> 244 -> 1348cb236dd00003f4cb
+22:47:35.003 L1-Dev  -> Block Is Proccessing -> 244 -> 1348cb236dd00003f4cb
+22:47:35.003 L1-Dev  -> Distributing [ ____________244 : 300 ] To 3.75.110.186:5002
+22:47:35.503 L1-Dev  -> <block> message sended
++22:47:50.031 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:47:50.032 L1-Dev  -> Income Block Row No -> 245:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:47:50.033 L1-Dev  -> Income Block Row No -> 245, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:47:50.351 L1-Dev  -> <block> Downloaded from other validator
+22:47:50.353 L1-Dev  -> New Block Arrived : 1348cb236dee000
+22:47:50.354 L1-Dev  -> Block Came From The Validator Queue [ ____________245 :  300 ]
+22:47:50.355 L1-Dev  -> Settings -> Last Block -> 245 -> 1348cb236ddf000f8bb9
+22:47:50.357 L1-Dev  -> Block Is Proccessing -> 245 -> 1348cb236ddf000f8bb9
+22:47:50.358 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106224805001
+CurrentQueueTime : 20221106224805000
+22:48:05.001 L1-Dev  -> Empty Block Executed
+22:48:05.004 L1-Dev  -> Block Came From The Main Loop [ ____________246 :  300 ]
+22:48:05.004 L1-Dev  -> Settings -> Last Block -> 246 -> 1348cb236dee0003fc12
+22:48:05.004 L1-Dev  -> Block Is Proccessing -> 246 -> 1348cb236dee0003fc12
+22:48:05.004 L1-Dev  -> Distributing [ ____________246 : 300 ] To 3.75.110.186:5002
+22:48:05.492 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106224820001
+CurrentQueueTime : 20221106224820000
+22:48:20.003 L1-Dev  -> Empty Block Executed
+22:48:20.003 L1-Dev  -> Block Came From The Main Loop [ ____________247 :  300 ]
+22:48:20.003 L1-Dev  -> Settings -> Last Block -> 247 -> 1348cb236e2500101998
+22:48:20.003 L1-Dev  -> Block Is Proccessing -> 247 -> 1348cb236e2500101998
+22:48:20.003 L1-Dev  -> Distributing [ ____________247 : 300 ] To 3.75.110.186:5002
+22:48:20.498 L1-Dev  -> <block> message sended
+NGF.NowInt() : 20221106224835001
+CurrentQueueTime : 20221106224835000
+22:48:35.001 L1-Dev  -> Empty Block Executed
+22:48:35.004 L1-Dev  -> Block Came From The Main Loop [ ____________248 :  300 ]
+22:48:35.004 L1-Dev  -> Settings -> Last Block -> 248 -> 1348cb236e34000ee387
+22:48:35.004 L1-Dev  -> Block Is Proccessing -> 248 -> 1348cb236e34000ee387
+22:48:35.004 L1-Dev  -> Distributing [ ____________248 : 300 ] To 3.75.110.186:5002
+22:48:35.499 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106224850001
+CurrentQueueTime : 20221106224850000
+22:48:50.001 L1-Dev  -> Empty Block Executed
+22:48:50.004 L1-Dev  -> Block Came From The Main Loop [ ____________249 :  300 ]
+22:48:50.004 L1-Dev  -> Settings -> Last Block -> 249 -> 1348cb236e43000fcf09
+22:48:50.004 L1-Dev  -> Block Is Proccessing -> 249 -> 1348cb236e43000fcf09
+22:48:50.004 L1-Dev  -> Distributing [ ____________249 : 300 ] To 3.75.110.186:5002
+22:48:50.494 L1-Dev  -> <block> message sended
++22:49:05.031 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:49:05.032 L1-Dev  -> Income Block Row No -> 250:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:49:05.033 L1-Dev  -> Income Block Row No -> 250, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:49:05.350 L1-Dev  -> <block> Downloaded from other validator
+22:49:05.351 L1-Dev  -> New Block Arrived : 1348cb236e89000
+22:49:05.352 L1-Dev  -> Block Came From The Validator Queue [ ____________250 :  300 ]
+22:49:05.353 L1-Dev  -> Settings -> Last Block -> 250 -> 1348cb236e5200106046
+22:49:05.356 L1-Dev  -> Block Is Proccessing -> 250 -> 1348cb236e5200106046
+22:49:05.357 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
++NGF.NowInt() : 20221106224920001
+CurrentQueueTime : 20221106224920000
+22:49:20.001 L1-Dev  -> Empty Block Executed
+22:49:20.004 L1-Dev  -> Block Came From The Main Loop [ ____________251 :  300 ]
+22:49:20.004 L1-Dev  -> Settings -> Last Block -> 251 -> 1348cb236e890003fd6d
+22:49:20.004 L1-Dev  -> Block Is Proccessing -> 251 -> 1348cb236e890003fd6d
+22:49:20.004 L1-Dev  -> Distributing [ ____________251 : 300 ] To 3.75.110.186:5002
+22:49:20.493 L1-Dev  -> <block> message sended
+NGF.NowInt() : 20221106224935001
+CurrentQueueTime : 20221106224935000
+22:49:35.001 L1-Dev  -> Empty Block Executed
+22:49:35.006 L1-Dev  -> Block Came From The Main Loop [ ____________252 :  300 ]
+22:49:35.006 L1-Dev  -> Settings -> Last Block -> 252 -> 1348cb236e980011846f
+22:49:35.006 L1-Dev  -> Block Is Proccessing -> 252 -> 1348cb236e980011846f
+22:49:35.006 L1-Dev  -> Distributing [ ____________252 : 300 ] To 3.75.110.186:5002
+22:49:35.496 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106224950001
+CurrentQueueTime : 20221106224950000
+22:49:50.001 L1-Dev  -> Empty Block Executed
+22:49:50.006 L1-Dev  -> Block Came From The Main Loop [ ____________253 :  300 ]
+22:49:50.006 L1-Dev  -> Settings -> Last Block -> 253 -> 1348cb236ea70003fb1a
+22:49:50.006 L1-Dev  -> Block Is Proccessing -> 253 -> 1348cb236ea70003fb1a
+22:49:50.006 L1-Dev  -> Distributing [ ____________253 : 300 ] To 3.75.110.186:5002
+22:49:50.497 L1-Dev  -> <block> message sended
++NGF.NowInt() : 20221106225005501
+CurrentQueueTime : 20221106225005500
+22:50:05.501 L1-Dev  -> Empty Block Executed
+22:50:05.506 L1-Dev  -> Block Came From The Main Loop [ ____________254 :  300 ]
+22:50:05.506 L1-Dev  -> Settings -> Last Block -> 254 -> 1348cb236eb60003fae2
+22:50:05.506 L1-Dev  -> Block Is Proccessing -> 254 -> 1348cb236eb60003fae2
+22:50:05.506 L1-Dev  -> Distributing [ ____________254 : 300 ] To 3.75.110.186:5002
+22:50:05.677 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = TRUE;
+22:50:05.678 L1-Dev  -> Income Block Row No -> 254:NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:50:05.679 L1-Dev  -> Income Block Row No -> 254, Validator => NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:50:06.788 L1-Dev  -> <block> Downloaded from other validator
+22:50:06.788 L1-Dev  -> New Block Arrived : 1348cb236eed000
+22:50:06.788 L1-Dev  -> Block Came From The Validator Queue [ ____________254 :  300 ]
+22:50:06.788 L1-Dev  -> We Already Processed The Block -> [ 254 ]
+22:50:06.788 L1-Dev  -> NVG.Settings.WaitForGeneratedBlock = FALSE;
+22:50:07.224 L1-Dev  -> Node Just Left : NODHmAk7wnknZNG7cXhwErudh7KJTNBDF4xmcuK
+22:50:07.225 L1-Dev  -> Node Count : 2 / 2
 cevrim-disi-olanlar-siliniyor

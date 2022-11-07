@@ -858,9 +858,15 @@ namespace Notus.Validator
                 sırsı gelen bloğunu oluşturacak.
                 eğer doğru sırada iletilmezse o zaman gelen blok reddedilmeyecek
                 alınacak ve bloklar sırasıyla ileri doğru atılacak.
+
                 */
 
+                /*
 
+                
+                 
+                 
+                */
                 //NGF.NowInt();
                 if (NGF.NowInt() > CurrentQueueTime)
                 {
