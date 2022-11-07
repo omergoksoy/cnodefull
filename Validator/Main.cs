@@ -33,14 +33,6 @@ namespace Notus.Validator
         private Notus.Block.Integrity Obj_Integrity;
         private Notus.Validator.Api Obj_Api;
 
-        /*
-        private ConcurrentDictionary<string, NVS.BlockStatus> Obj_BlockStatusList = new ConcurrentDictionary<string, NVS.BlockStatus>();
-        public ConcurrentDictionary<string, NVS.BlockStatus> BlockStatusList
-        {
-            get { return BlockStatusList; }
-        }
-        */
-
         private bool CryptoTransferTimerIsRunning = false;
         private DateTime CryptoTransferTime = NVG.NOW.Obj;
 
@@ -49,7 +41,7 @@ namespace Notus.Validator
 
         //bu liste diğer nodelardan gelen yeni blokları tutan liste
         public ulong FirstQueueGroupTime = 0;
-        public Dictionary<ulong, string> TimeBaseBlockUidList = new Dictionary<ulong, string>();
+        public SortedDictionary<ulong, string> TimeBaseBlockUidList = new SortedDictionary<ulong, string>();
         public SortedDictionary<long, NVClass.BlockData> IncomeBlockList = new SortedDictionary<long, NVClass.BlockData>();
         //private Notus.Block.Queue Obj_BlockQueue = new Notus.Block.Queue();
         private Notus.Validator.Queue ValidatorQueueObj = new Notus.Validator.Queue();
@@ -1019,6 +1011,7 @@ namespace Notus.Validator
             if (blockSource == 2 || blockSource == 4)
             {
                 /*
+                
                 * bloğu oluşturan validatör bir imza ila kendisinin oluşturduğunu ispatlamalı
                   eğer hatalı işlem yaparsa bu işlem diğer validatörler tarafından validatörün imzası 
                   ile doğrulanacağı için bu çok önemli
@@ -1036,6 +1029,9 @@ namespace Notus.Validator
                 * 
                 
                 * 
+                
+                * 
+                
                 */
 
 
