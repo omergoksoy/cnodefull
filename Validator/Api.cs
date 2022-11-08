@@ -2037,6 +2037,10 @@ namespace Notus.Validator
                     const int transferTimeOut = 86400;
                     string CurrentCurrency = NVG.Settings.Genesis.CoinInfo.Tag;
                     Notus.Variable.Struct.WalletBalanceStruct tmpGeneratorBalanceObj = NGF.Balance.Get(WalletKeyStr, 0);
+                    //Console.WriteLine("WalletKeyStr           : " + WalletKeyStr);
+                    ////Console.WriteLine("WalletKeyStr           : " + WalletKeyStr);
+                    //Console.WriteLine("tmpGeneratorBalanceObj : " + JsonSerializer.Serialize(tmpGeneratorBalanceObj));
+                    //Console.WriteLine("tmpGeneratorBalanceObj : " + JsonSerializer.Serialize(tmpGeneratorBalanceObj));
                     if (tmpGeneratorBalanceObj.Balance.ContainsKey(CurrentCurrency) == false)
                     {
                         return JsonSerializer.Serialize(new Notus.Variable.Struct.BlockResponseStruct()
