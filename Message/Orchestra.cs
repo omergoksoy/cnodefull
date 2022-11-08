@@ -125,7 +125,7 @@ namespace Notus.Message
                                                 );
                                                 if (socketconnected == false)
                                                 {
-                                                    Console.WriteLine("Baglanti Hatasi");
+                                                    //Console.WriteLine("Baglanti Hatasi");
                                                     subListObj.TryRemove(tList[i].Value.IP.Wallet, out _);
                                                 }
                                             }

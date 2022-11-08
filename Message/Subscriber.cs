@@ -22,14 +22,13 @@ namespace Notus.Message
                     portNo = Notus.Network.Node.GetNetworkPort() + 10;
                 }
                 sender.Connect(new IPEndPoint(IPAddress.Parse(ipAddress), portNo));
-
                 //control-POİNT
                 NP.Info("Message Node connected to "+ sender.RemoteEndPoint.ToString());
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception: {0}", e.ToString());
+                //Console.WriteLine("Exception: {0}", e.ToString());
             }
             return false;
         }
@@ -73,9 +72,17 @@ namespace Notus.Message
         {
             if (sender != null)
             {
-                sender.Shutdown(SocketShutdown.Both);
-                sender.Close();
-                sender.Dispose();
+                try
+                {
+
+                    sender.Shutdown(SocketShutdown.Both);
+                    sender.Close();
+                    sender.Dispose();
+                }
+                catch
+                {
+
+                }
             }
         }
 
