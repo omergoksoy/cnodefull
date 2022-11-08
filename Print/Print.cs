@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NVG = Notus.Variable.Globals;
 using NVC = Notus.Variable.Constant;
@@ -137,15 +138,8 @@ namespace Notus
             string DetailsStr
         )
         {
-            DateTime exacTime = DateTime.UtcNow;
-            try
-            {
-                exacTime = NVG.NOW.Obj;
-            }
-            catch { }
-
             Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.Write(exacTime.ToString("HH:mm:ss.fff"));
+            Console.Write(ND.NowObj().ToString("HH:mm:ss.fff"));
             if (tmpLayer != NVE.NetworkLayer.Unknown && tmpType != NVE.NetworkType.Unknown)
             {
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
