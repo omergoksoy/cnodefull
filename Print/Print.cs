@@ -137,8 +137,15 @@ namespace Notus
             string DetailsStr
         )
         {
+            DateTime exacTime = DateTime.UtcNow;
+            try
+            {
+                exacTime = NVG.NOW.Obj;
+            }
+            catch { }
+
             Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.Write(NVG.NOW.Obj.ToString("HH:mm:ss.fff"));
+            Console.Write(exacTime.ToString("HH:mm:ss.fff"));
             if (tmpLayer != NVE.NetworkLayer.Unknown && tmpType != NVE.NetworkType.Unknown)
             {
                 Console.ForegroundColor = ConsoleColor.DarkGreen;

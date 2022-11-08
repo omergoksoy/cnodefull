@@ -257,7 +257,6 @@ namespace Notus.Variable
             public static string GenerateTxUid()
             {
                 string seedStr = "node-wallet-key";
-                DateTime uidTime = NVG.NOW.Obj;
                 if (Settings != null)
                 {
                     if (Settings.NodeWallet != null)
@@ -265,7 +264,7 @@ namespace Notus.Variable
                         seedStr = Settings.NodeWallet.WalletKey;
                     }
                 }
-                return Notus.Block.Key.Generate(uidTime, seedStr);
+                return Notus.Block.Key.Generate(ND.NowObj(), seedStr);
             }
             public static void Dispose()
             {

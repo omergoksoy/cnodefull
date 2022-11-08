@@ -59,7 +59,7 @@ namespace Notus.Wallet
                     }
                     catch (Exception err)
                     {
-                        NP.Basic(true, "Error Text [8ae5cf]: " + err.Message);
+                        NP.Basic(true, "Error Text [a32d5gjhnr87]: " + err.Message);
                         return new Notus.Variable.Struct.FeeCalculationStruct()
                         {
                             Fee = 0,

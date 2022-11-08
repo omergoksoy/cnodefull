@@ -140,7 +140,7 @@ namespace Notus.Wallet
                             null,
                             err
                         );
-                        Notus.Print.Basic(true, "Error Text [8ae5cf]: " + err.Message);
+                        Notus.Print.Basic(true, "Error Text [8ahgd6s4d]: " + err.Message);
                     }
                 }
             }

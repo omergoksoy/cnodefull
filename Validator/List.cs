@@ -2,7 +2,6 @@
 
 namespace Notus.Validator
 {
-    /*
     public static class List
     {
         // omergoksoy
@@ -81,12 +80,12 @@ namespace Notus.Validator
                 }
             };
     }
+    /*
 
 */
 
     /*
     aws üzerindeki sunucuların bilgileri
-    */
     public static class List
     {
         // omergoksoy
@@ -165,4 +164,5 @@ namespace Notus.Validator
                 }
             };
     }
+    */
 }

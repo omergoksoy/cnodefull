@@ -9,6 +9,7 @@ using System.Text.Json;
 using NGF = Notus.Variable.Globals.Functions;
 using NVG = Notus.Variable.Globals;
 using NP = Notus.Print;
+using ND = Notus.Date;
 namespace Notus.Validator
 {
     public class Api : IDisposable
@@ -49,7 +50,7 @@ namespace Notus.Validator
 
         //ffb_CurrencyList Currency list buffer
         private List<Notus.Variable.Struct.CurrencyList> ffb_CurrencyList = new List<Notus.Variable.Struct.CurrencyList>();
-        private DateTime ffb_CurrencyList_LastCheck = NVG.NOW.Obj.Subtract(TimeSpan.FromDays(1));
+        private DateTime ffb_CurrencyList_LastCheck = ND.NowObj().Subtract(TimeSpan.FromDays(1));
         //private bool ffb_CurrencyList_Defined = false;
         private Notus.Variable.Enum.NetworkType ffb_CurrencyList_Network = Notus.Variable.Enum.NetworkType.MainNet;
         private Notus.Variable.Enum.NetworkLayer ffb_CurrencyList_Layer = Notus.Variable.Enum.NetworkLayer.Layer1;
@@ -168,7 +169,6 @@ namespace Notus.Validator
                     Obj_BlockData.prev.Substring(0, 20)
                 );
             }
-            //DateTime start = NVG.NOW.Obj;
             if (NGF.BlockOrder.ContainsKey(Obj_BlockData.info.rowNo) == false)
             {
                 NGF.BlockOrder.TryAdd(Obj_BlockData.info.rowNo, Obj_BlockData.info.uID);
@@ -233,8 +233,6 @@ namespace Notus.Validator
                 }
                 */
             }
-            //Console.WriteLine(NVG.NOW.Obj-start);
-            //Console.ReadLine();
         }
 
         //layer -1 kontrolünü sağla
@@ -663,9 +661,9 @@ namespace Notus.Validator
                 {
                     if (string.Equals(IncomeData.UrlList[1].ToLower(), "list"))
                     {
-                        if ((NVG.NOW.Obj - ffb_CurrencyList_LastCheck).TotalMinutes > 1)
+                        if ((ND.NowObj() - ffb_CurrencyList_LastCheck).TotalMinutes > 1)
                         {
-                            ffb_CurrencyList_LastCheck = NVG.NOW.Obj;
+                            ffb_CurrencyList_LastCheck = ND.NowObj();
                             ffb_CurrencyList = Notus.Wallet.Block.GetList(NVG.Settings.Network, NVG.Settings.Layer);
                         }
                         else
@@ -1052,7 +1050,7 @@ namespace Notus.Validator
             }
 
             string tmpStorageIdKey = tmpChunkData.UID;
-            string tmpChunkIdKey = Notus.Block.Key.Generate(NVG.NOW.Obj, NVG.Settings.NodeWallet.WalletKey);
+            string tmpChunkIdKey = Notus.Block.Key.Generate(ND.NowObj(), NVG.Settings.NodeWallet.WalletKey);
             int tmpStorageNo = Notus.Block.Key.CalculateStorageNumber(Notus.Convert.Hex2BigInteger(tmpChunkIdKey).ToString());
 
             using (Notus.Mempool ObjMp_FileChunkList =
@@ -1190,7 +1188,7 @@ namespace Notus.Validator
                 });
             }
 
-            string tmpTransferIdKey = Notus.Block.Key.Generate(NVG.NOW.Obj, NVG.Settings.NodeWallet.WalletKey);
+            string tmpTransferIdKey = Notus.Block.Key.Generate(ND.NowObj(), NVG.Settings.NodeWallet.WalletKey);
             using (Notus.Mempool ObjMp_FileChunkList =
                 new Notus.Mempool(
                     Notus.IO.GetFolderName(
@@ -1258,7 +1256,7 @@ namespace Notus.Validator
             }
 
             string tmpStorageIdKey = tmpChunkData.UID;
-            string tmpChunkIdKey = Notus.Block.Key.Generate(NVG.NOW.Obj, NVG.Settings.NodeWallet.WalletKey);
+            string tmpChunkIdKey = Notus.Block.Key.Generate(ND.NowObj(), NVG.Settings.NodeWallet.WalletKey);
             int tmpStorageNo = Notus.Block.Key.CalculateStorageNumber(Notus.Convert.Hex2BigInteger(tmpChunkIdKey).ToString());
 
             using (Notus.Mempool ObjMp_FileChunkList =
@@ -1680,7 +1678,7 @@ namespace Notus.Validator
                     Result = Notus.Variable.Enum.BlockStatusCode.WrongWallet_Receiver
                 });
             }
-            DateTime rightNow = NVG.NOW.Obj;
+            DateTime rightNow = ND.NowObj();
             DateTime currentTime = Notus.Date.ToDateTime(tmpTransfer.CurrentTime);
             double totaSeconds = Math.Abs((rightNow - currentTime).TotalSeconds);
             // iki günden eski ise  zaman aşımı olarak işaretle
@@ -2913,7 +2911,7 @@ namespace Notus.Validator
                 });
             }
             string tmpChunkIdKey = Notus.Block.Key.Generate(
-                NVG.NOW.Obj,
+                ND.NowObj(),
                 NVG.Settings.NodeWallet.WalletKey
             );
             Notus.Variable.Struct.MultiWalletStoreStruct tmpLockObj = new Notus.Variable.Struct.MultiWalletStoreStruct()

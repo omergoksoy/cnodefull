@@ -302,6 +302,8 @@ namespace Notus.Block
                         ) == false
                     )
                     {
+
+                        /*
                         Console.WriteLine("");
                         Console.WriteLine("");
                         Console.WriteLine(JsonSerializer.Serialize(BlockPreviousList));
@@ -310,6 +312,7 @@ namespace Notus.Block
                         Console.WriteLine(JsonSerializer.Serialize(BlockOrderList));
                         Console.WriteLine("");
                         Console.WriteLine("");
+                        */
                         Notus.Archive.DeleteFromInside(
                             BlockOrderList[BiggestBlockHeight - 1],
                             NVG.Settings,

@@ -10,6 +10,18 @@ namespace Notus
 {
     public static class Date
     {
+        public static DateTime NowObj()
+        {
+            if (NVG.NOW == null)
+            {
+                return DateTime.UtcNow;
+            }
+            if (NVG.NOW.Obj == null)
+            {
+                return DateTime.UtcNow;
+            }
+            return NVG.NOW.Obj;
+        }
         public static ulong AddMiliseconds(ulong convertTime, int miliseconds)
         {
             return AddMiliseconds(convertTime, (ulong)miliseconds);

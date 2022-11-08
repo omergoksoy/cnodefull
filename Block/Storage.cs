@@ -87,7 +87,6 @@ namespace Notus.Block
             }
             catch (Exception err)
             {
-                Console.WriteLine("reading error");
             }
             */
 
@@ -127,7 +126,6 @@ namespace Notus.Block
         {
             string BlockFileName = Notus.Block.Key.GetBlockStorageFileName(NewBlock.info.uID, true);
             string ZipFileName = Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Block) + BlockFileName + ".zip";
-            //Console.WriteLine("ZipFileName : " + ZipFileName);
             bool exitInnerLoop = false;
             while (exitInnerLoop == false)
             {
@@ -158,12 +156,6 @@ namespace Notus.Block
             {
                 fileModeObj = FileMode.Create;
                 zipModeObj = ZipArchiveMode.Create;
-                //Console.WriteLine("Before File Size : 0");
-            }
-            else
-            {
-                //FileInfo fi1 = new FileInfo(ZipFileName);
-                //Console.WriteLine("Before File Size : " + fi1.Length.ToString());
             }
 
             using (FileStream fileStream = new FileStream(ZipFileName, fileModeObj))
@@ -179,7 +171,6 @@ namespace Notus.Block
                 }
             }
             FileInfo fi2 = new FileInfo(ZipFileName);
-            //Console.WriteLine("After File Size : " + fi2.Length.ToString());
 
             OpenFileName = string.Empty;
 
@@ -189,10 +180,6 @@ namespace Notus.Block
             //tgz-exception
             //tgz-exception
             //tgz-exception
-            Console.WriteLine();
-            Console.WriteLine("Storage.Cs -> Line 171");
-            Console.WriteLine(NewBlock.info.uID);
-            Console.WriteLine();
             Notus.TGZArchiver BS_Storage = new Notus.TGZArchiver(true, 50);
             Guid guid = BS_Storage.addFileToGZ(NewBlock);
             BS_Storage.WaitUntilIsDone(guid);

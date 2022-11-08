@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using NVC = Notus.Variable.Constant;
 //using NT = Notus.Time;
 using ND = Notus.Date;
+using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 namespace Notus.Communication
 {
@@ -34,7 +35,8 @@ namespace Notus.Communication
             {
                 listener = new UdpClient(listenPort);
             }
-            catch(Exception err) {
+            catch (Exception err)
+            {
                 //Console.WriteLine("Socket Error [SCCCCC] : " + err.Message);
             }
             if (listener != null)

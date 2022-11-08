@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
+using ND = Notus.Date;
 using NVG = Notus.Variable.Globals;
 namespace Notus.Prepare
 {
@@ -34,7 +35,7 @@ namespace Notus.Prepare
                 },
                 Creation = new Notus.Variable.Struct.CreationStruct()
                 {
-                    UID = Notus.Block.Key.Generate(NVG.NOW.Obj, ""),
+                    UID = Notus.Block.Key.Generate(ND.NowObj(), ""),
                     PublicKey = PublicKeyHex,
                     Sign = Sign
                 },
@@ -57,6 +58,7 @@ namespace Notus.Prepare
                     {
                         nodeIpAddress = whichNodeIpAddress;
                     }
+                    string MainResultStr = string.Empty;
                     try
                     {
                         string fullUrlAddress =
@@ -64,7 +66,7 @@ namespace Notus.Prepare
                                 nodeIpAddress,
                                 Notus.Network.Node.GetNetworkPort(currentNetwork, Notus.Variable.Enum.NetworkLayer.Layer1)
                             ) + "token/generate/" + WalletKeyStr + "/";
-                        string MainResultStr = await Notus.Communication.Request.Post(
+                        MainResultStr = await Notus.Communication.Request.Post(
                             fullUrlAddress,
                             new Dictionary<string, string>
                             {
@@ -76,12 +78,12 @@ namespace Notus.Prepare
                     }
                     catch (Exception err)
                     {
-                        Notus.Print.Basic(true, "Error Text [8ae5cf]: " + err.Message);
+                        //Notus.Print.Basic(true, "Error Text [9a5f4g12v3f]: " + err.Message);
                         return new Notus.Variable.Struct.BlockResponseStruct()
                         {
                             UID = "",
                             Code = Notus.Variable.Constant.ErrorNoList.UnknownError,
-                            Status = "UnknownError"
+                            Status = "UnknownError -> " + MainResultStr + " >> " + err.Message
                         };
                     }
                 }
