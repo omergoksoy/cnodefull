@@ -1118,6 +1118,10 @@ namespace Notus.Validator
             }
             else
             {
+                büyük değerli bir sayı var ise bu sayının 100 saniye eksiği ile listeye eklenecek
+                ve her turda 1 saniye eklenecek ta ki diğer  en başta belirlene sync numarasına erişene kadar
+                sonrasında kuraya da
+
                 Console.WriteLine("There Is Biggest Sync No");
                 NP.ReadLine();
             }
