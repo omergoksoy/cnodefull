@@ -839,8 +839,8 @@ namespace Notus.Validator
                                 {
                                     if (EmptyBlockGenerationTime() == true)
                                     {
-                                        Console.WriteLine("NGF.NowInt() : " + NGF.NowInt().ToString());
-                                        Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
+                                        //Console.WriteLine("NGF.NowInt() : " + NGF.NowInt().ToString());
+                                        //Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
                                         NP.Success("Empty Block Executed");
 
                                         Notus.Validator.Helper.CheckBlockAndEmptyCounter(300);
@@ -861,6 +861,7 @@ namespace Notus.Validator
                                         PreBlockData = NGF.BlockQueue.OrganizeBlockOrder(PreBlockData);
                                         NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
                                         bool processResult = ProcessBlock(PreparedBlockData, 4);
+                                        /*
                                         if (processResult == false)
                                         {
                                             if (PreparedBlockData.info.rowNo > 2)
@@ -870,7 +871,7 @@ namespace Notus.Validator
                                                 //NGF.CloseMyNode();
                                             }
                                         }
-
+                                        */
                                         if (processResult == true)
                                         {
                                             // sonraki sırada olan validatör'e direkt gönder
@@ -1083,10 +1084,11 @@ namespace Notus.Validator
                     {
                         NP.Warning("That block came my validator but wrong queue order");
                     }
-                    NP.Warning("Block Time : " + blockData.info.time);
+                    //NP.Warning("Block Time : " + blockData.info.time);
                     //Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
-                    Console.WriteLine("NVG.NOW.Int : " + NVG.NOW.Int.ToString());
+                    //Console.WriteLine("NVG.NOW.Int : " + NVG.NOW.Int.ToString());
                     //NGF.CloseMyNode();
+                    return false;
                 }
             }
             //gelen blok datası

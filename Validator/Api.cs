@@ -157,14 +157,14 @@ namespace Notus.Validator
 
             if (Obj_BlockData.prev.Length < 20)
             {
-                NP.Info("Block Is Proccessing -> " +
+                NP.Info("Block Is Proccessing   -> " +
                     Obj_BlockData.info.rowNo.ToString() + " -> " +
                     "Prev is Empty [ " + Obj_BlockData.prev + " ]"
                 );
             }
             else
             {
-                NP.Info("Block Is Proccessing -> " +
+                NP.Info("Block Is Proccessing   -> " +
                     Obj_BlockData.info.rowNo.ToString() + " -> " +
                     Obj_BlockData.prev.Substring(0, 20)
                 );

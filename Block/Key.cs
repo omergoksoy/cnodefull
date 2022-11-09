@@ -89,11 +89,8 @@ namespace Notus.Block
             {
                 return "000000-00";
             }
-            else
-            {
-                string TimeKey = GetTimeFromKey(BlockKey, ProcessKeyAsHex);
-                return TimeKey.Substring(0, 6) + "-" + CalculateStorageNumber(TimeKey).ToString().PadLeft(2, '0');
-            }
+            string TimeKey = GetTimeFromKey(BlockKey, ProcessKeyAsHex);
+            return TimeKey.Substring(0, 6) + "-" + CalculateStorageNumber(TimeKey).ToString().PadLeft(2, '0');
         }
         public static string GetTimeFromKey(string TimeKey, bool ProcessKeyAsHex = false)
         {
