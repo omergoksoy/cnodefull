@@ -828,7 +828,7 @@ namespace Notus.Validator
                         if (myTurnPrinted == false)
                         {
                             myTurnPrinted=true;
-                            NP.Info("My Turn : " + CurrentQueueTime.ToString() + " -> " + endingTime.ToString());
+                            //NP.Info("My Turn : " + CurrentQueueTime.ToString() + " -> " + endingTime.ToString());
                         }
 
                         while (endingTime > NGF.NowInt())
@@ -867,18 +867,21 @@ namespace Notus.Validator
                                             {
                                                 Console.WriteLine("NGF.NowInt() : " + NGF.NowInt().ToString());
                                                 Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
-                                                NGF.CloseMyNode();
+                                                //NGF.CloseMyNode();
                                             }
                                         }
 
-                                        // sonraki sırada olan validatör'e direkt gönder
-                                        // 2 sonraki validatöre task ile gönder
-                                        //socket-exception
-                                        ValidatorQueueObj.Distrubute(
-                                            PreBlockData.info.rowNo,
-                                            PreBlockData.info.type,
-                                            CurrentQueueTime
-                                        );
+                                        if (processResult == true)
+                                        {
+                                            // sonraki sırada olan validatör'e direkt gönder
+                                            // 2 sonraki validatöre task ile gönder
+                                            //socket-exception
+                                            ValidatorQueueObj.Distrubute(
+                                                PreBlockData.info.rowNo,
+                                                PreBlockData.info.type,
+                                                CurrentQueueTime
+                                            );
+                                        }
 
                                         NGF.WalletUsageList.Clear();
                                     } // if (PreBlockData != null)
@@ -1083,7 +1086,7 @@ namespace Notus.Validator
                     NP.Warning("Block Time : " + blockData.info.time);
                     //Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
                     Console.WriteLine("NVG.NOW.Int : " + NVG.NOW.Int.ToString());
-                    NGF.CloseMyNode();
+                    //NGF.CloseMyNode();
                 }
             }
             //gelen blok datası
