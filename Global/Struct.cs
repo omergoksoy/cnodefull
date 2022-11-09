@@ -10,6 +10,10 @@ namespace Notus.Globals.Variable
 
     }
 
+    public class CacheClass
+    {
+        public Notus.Cache.Transaction Transaction { get; set; }
+    }
     public class Settings
     {
         public bool WaitForGeneratedBlock { get; set; }

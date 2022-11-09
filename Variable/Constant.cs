@@ -242,7 +242,8 @@ namespace Notus.Variable
             //{ "BlockStorageList", "block_list" },
             { "MempoolListBeforeBlockStorage", "block_file" },
 
-            { "NetworkNodeList", "node_list" }
+            { "NetworkNodeList", "node_list" },
+            { "TransactionList", "tx_list_" }
         };
 
         public readonly static Dictionary<int, int> NonceHashLength = new Dictionary<int, int>()
@@ -293,6 +294,7 @@ namespace Notus.Variable
             public const string Block = "blocks";
             public const string Balance = "balance";
             public const string Node = "node";
+            public const string TxList = "tx_list";
             public const string Common = "common";
             public const string File = "file";
             public const string Storage = "storage";

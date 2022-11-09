@@ -72,12 +72,18 @@ namespace Notus.Variable
         public static int OnlineNodeCount { get; set; }
 
         public static ConcurrentDictionary<string, NVS.NodeQueueInfo> NodeList { get; set; }
+        public static Notus.Globals.Variable.CacheClass Cache { get; set; }
         public static Notus.Globals.Variable.Settings Settings { get; set; }
         static Globals()
         {
             LocalBlockLoaded = false;
             GroupNo = 1;
             SessionPrivateKey = Notus.Wallet.ID.New();
+
+            Cache = new Notus.Globals.Variable.CacheClass()
+            {
+                Transaction = new Notus.Cache.Transaction()
+            };
 
             Settings = new Notus.Globals.Variable.Settings()
             {
@@ -153,7 +159,7 @@ namespace Notus.Variable
             public static Thread? UdpListenThread { get; set; }
             public static Notus.Communication.UDP? JoinObj { get; set; }
             public static ConcurrentDictionary<string, string> LockWalletList { get; set; }
-            
+
             /*
                   blok oluşturma sırası gelince, kullanımda olan cüzdan listesi alınacak
                   burada bulunan cüzdan listesi imzalanarak diğer node'lara iletilecek
@@ -470,7 +476,7 @@ namespace Notus.Variable
                         if (transferSpeed == 0)
                         {
                             DateTime rightNow = DateTime.UtcNow;
-                            if (NOW.LastDiffUpdate!= rightNow)
+                            if (NOW.LastDiffUpdate != rightNow)
                             {
                                 NOW.Diff = DateTime.ParseExact(incomeArr[0], "yyyyMMddHHmmssfffff", CultureInfo.InvariantCulture) - dataArriveTimeObj;
                                 NOW.DiffUpdated = true;

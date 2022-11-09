@@ -38,16 +38,6 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     NGF.CloseMyNode();
 }
 
-/*
-string blockIdStr = Notus.Block.Key.Generate(DateTime.UtcNow, "deneme");
-string bgInt = BigInteger.Parse("0" + blockIdStr, NumberStyles.AllowHexSpecifier).ToString();
-string lastHexStr = bgInt.Substring(bgInt.Length - 2);
-Console.WriteLine(lastHexStr);
-Console.WriteLine(blockIdStr);
-Console.WriteLine(bgInt.ToString());
-Console.ReadLine();
-*/
-
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
 
