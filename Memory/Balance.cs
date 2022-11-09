@@ -38,15 +38,23 @@ namespace Notus.Memory
             }, true);
         }
 
-        public void Set(string WalletId)
+        public bool Set(string WalletId)
         {
             ulong exactTime = NVG.NOW.Int;
-            WalletTime.TryAdd(WalletId, exactTime);
-            AccessTime.TryAdd(exactTime, WalletId);
+            bool add1 = WalletTime.TryAdd(WalletId, exactTime);
+            bool add2 = AccessTime.TryAdd(exactTime, WalletId);
 
             // burada wallet adresi eklenecek,
             // eklenme tarihi güncellenecek
-            WalletList.TryAdd(WalletId, new Notus.Variable.Struct.WalletBalanceStruct() { });
+            bool add3 = WalletList.TryAdd(WalletId, new Notus.Variable.Struct.WalletBalanceStruct() { });
+            if (add1 == true && add2 == true && add3 == true)
+            {
+                return true;
+            }
+            WalletTime.Remove(WalletId, out _);
+            AccessTime.Remove(exactTime, out _);
+            WalletList.Remove(WalletId, out _);
+            return false;
         }
         public Notus.Variable.Struct.WalletBalanceStruct? Get(string WalletId)
         {
