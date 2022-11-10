@@ -22,17 +22,31 @@ static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEv
     Console.SetError(new StreamWriter(@".\" + directoryName + "\\" + DateTime.UtcNow.ToString("yyyy_MM_dd_HH_mm_ss_fff") + ".log"));
     Console.Error.WriteLine(fatalErrorText);
     Console.Error.Close();
+    Console.WriteLine();
     Notus.Print.Danger("Fatal Error : " + fatalErrorText);
 }
 
+/*
+
+auto update uygulaması
+https://gist.github.com/sbrl/7709dfc5268e1acde6f3
+
+
+run multiple exe on console app
+https://www.codeproject.com/Questions/999027/Multiple-Consoles-in-single-Csharp-Console-Applica
+
+*/
+/*
 // DLL 'in version bilgisini çekiyor.
-// Console.WriteLine("{0}", System.Reflection.AssemblyName.GetAssemblyName("Microsoft.Data.Sqlite.dll").Version);
+Console.WriteLine("{0}", System.Reflection.AssemblyName.GetAssemblyName("Microsoft.Data.Sqlite.dll").Version);
+Console.WriteLine("{0}", System.Reflection.AssemblyName.GetAssemblyName("cnodefull.dll").Version);
+Console.ReadLine();
+*/
 
 static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 {
     NVG.Settings.NodeClosing = true;
     e.Cancel = true;
-
     Console.WriteLine();
     NGF.CloseMyNode();
 }
