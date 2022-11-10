@@ -53,13 +53,13 @@ namespace Notus.Validator
             TimerObj.Start(() =>
             {
 
-                if (TimeBaseBlockUidList.Count > 100)
+                if (TimeBaseBlockUidList.Count > 20000)
                 {
                     var el =TimeBaseBlockUidList.First();
                     TimeBaseBlockUidList.Remove(el.Key);
                 }
 
-                if (NVG.Settings.Nodes.Queue.Count > 100)
+                if (NVG.Settings.Nodes.Queue.Count > 20000)
                 {
                     var el = NVG.Settings.Nodes.Queue.First();
                     TimeBaseBlockUidList.Remove(el.Key);
