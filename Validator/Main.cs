@@ -429,7 +429,6 @@ namespace Notus.Validator
                                 Console.WriteLine("Contents : Null -> " + entry.Value.Data);
                             }
                         }
-                        //Console.WriteLine("transactionCount   [2] : " + transactionCount.ToString());
                         if (transactionCount > 0)
                         {
                             foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> walletEntry in tmpBlockCipherData.Out)
@@ -558,7 +557,7 @@ namespace Notus.Validator
 
             Obj_Api.Prepare();
 
-            //Obj_MainCache = new Notus.Cache.Main();
+            // Obj_MainCache = new Notus.Cache.Main();
             // Obj_TokenStorage = new Notus.Token.Storage();
             // Obj_TokenStorage.Settings = NVG.Settings;
 
@@ -799,7 +798,7 @@ namespace Notus.Validator
                 eğer doğru sırada iletilmezse o zaman gelen blok reddedilmeyecek
                 alınacak ve bloklar sırasıyla ileri doğru atılacak.
                 */
-                //NGF.NowInt();
+
                 if (NGF.NowInt() > CurrentQueueTime)
                 {
                     nodeOrderCount++;
