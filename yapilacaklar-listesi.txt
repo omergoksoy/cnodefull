@@ -1,4 +1,7 @@
 1- bir timer olmalı, bu timer hem gereksiz değişkenleri temizlemeli
+
 2- cüzdan bakiyeleri için bir memory sınıfı oluşturulmalı ve tüm bakiyeler hafızada bu değişkende tutulmalı
+
 3- bir node kapatılıp açıldığında mutlaka senkronizasyon da yapılmalı
+
 4- node sayısı gerekli miktarın altına düşünce, çalışmaya devam etmesin

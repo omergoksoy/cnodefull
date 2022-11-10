@@ -9,21 +9,20 @@ using System.Text.Json;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
 using NVG = Notus.Variable.Globals;
+
 static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 {
     string fatalErrorText = (e.ExceptionObject as Exception).Message + "Unhandled UnhandledExceptionEventArgs Exception -> Sender(" + sender.ToString() + ")";
-    Notus.Print.Log(
-        Notus.Variable.Enum.LogLevel.Fatal,
-        1,
-        fatalErrorText,
-        "FATAL-ERROR",
-        null,
-        null
-    );
-    Console.WriteLine(fatalErrorText);
-    Console.WriteLine(sender.ToString());
-    Console.WriteLine("press enter to continue");
-    Console.ReadLine();
+    const string directoryName = "log_list";
+    if (Directory.Exists(directoryName) == false)
+    {
+        Directory.CreateDirectory(directoryName);
+    }
+
+    Console.SetError(new StreamWriter(@".\" + directoryName + "\\" + DateTime.UtcNow.ToString("yyyy_MM_dd_HH_mm_ss_fff") + ".log"));
+    Console.Error.WriteLine(fatalErrorText);
+    Console.Error.Close();
+    Notus.Print.Danger("Fatal Error : " + fatalErrorText);
 }
 
 // DLL 'in version bilgisini çekiyor.
@@ -38,9 +37,9 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     NGF.CloseMyNode();
 }
 
+System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
-
 /*
 YAPILACAK İŞLEMLER
 
