@@ -33,6 +33,7 @@ namespace Notus.Sync
                     }
                 }
             }
+            /*
             if (NVG.Settings.LastBlock.info.rowNo > smallestBlockRow)
             {
                 //Console.WriteLine("My Node Higher Than Other");
@@ -41,6 +42,7 @@ namespace Notus.Sync
             {
                 //Console.WriteLine("My Node Smaller Than Other");
             }
+            */
             bool exitForLoop = false;
             int nCount = 0;
             List<bool> nodeControlList = new List<bool>();
@@ -88,6 +90,7 @@ namespace Notus.Sync
                     }
                 }
             }
+            downloadDone = true;
             return waitForOtherNodes;
         }
 
