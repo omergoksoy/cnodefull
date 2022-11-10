@@ -26,7 +26,6 @@ namespace Notus.Validator
         }
         public static bool RightBlockValidator(Notus.Variable.Class.BlockData incomeBlock)
         {
-            //bool innerSendToMyChain = false;
             ulong queueTimePeriod = (ulong)(NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime);
             ulong blockTimeVal = ND.ToLong(incomeBlock.info.time);
             ulong blockGenarationTime = blockTimeVal - (blockTimeVal % queueTimePeriod);
@@ -34,37 +33,12 @@ namespace Notus.Validator
             if (NVG.Settings.Nodes.Queue.ContainsKey(blockGenarationTime) == true)
             {
                 string blockValidator = incomeBlock.validator.count.First().Key;
-                /*
-                if (NVG.LocalBlockLoaded == true)
-                {
-                    Console.WriteLine("blockTimeVal        : " + blockTimeVal.ToString());
-                    Console.WriteLine("blockGenarationTime : " + blockGenarationTime.ToString());
-                    Console.WriteLine("blockValidator      : " + blockValidator);
-                    Console.WriteLine("NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet) : " + NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet);
-                }
-                */
                 if (string.Equals(blockValidator, NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet))
                 {
                     return true;
-                    //innerSendToMyChain = true;
                 }
-                return false;
             }
             return false;
-            /*
-            if (NVG.LocalBlockLoaded == true)
-            {
-                Console.WriteLine("Time Does Not Have From Nodes List");
-                Console.WriteLine("blockTimeVal : " + blockTimeVal.ToString() + " - " + incomeBlock.info.time);
-                Console.WriteLine("Main.cs -> blockGenarationTime [ " +
-                    incomeBlock.info.rowNo.ToString() +
-                    " ]: " +
-                    blockGenarationTime.ToString()
-                );
-                //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue, NVC.JsonSetting));
-            }
-            return innerSendToMyChain;
-            */
         }
     }
 }

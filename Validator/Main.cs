@@ -677,7 +677,7 @@ namespace Notus.Validator
                             ProcessBlock(tmpNewBlockIncome, 3);
                         }
                     );
-                    
+        
                     while (Notus.Sync.Block.downloadDone == false)
                     {
                         Thread.Sleep(10);
@@ -770,9 +770,8 @@ namespace Notus.Validator
             string selectedWalletId = string.Empty;
             ulong CurrentQueueTime = NVG.NodeQueue.Starting;
             bool myTurnPrinted = false;
-            while (
-                tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false
-            )
+
+            while (tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false)
             {
                 if (prepareNextQueue == false)
                 {
@@ -799,14 +798,6 @@ namespace Notus.Validator
                 sırsı gelen bloğunu oluşturacak.
                 eğer doğru sırada iletilmezse o zaman gelen blok reddedilmeyecek
                 alınacak ve bloklar sırasıyla ileri doğru atılacak.
-
-                */
-
-                /*
-
-                
-                 
-                 
                 */
                 //NGF.NowInt();
                 if (NGF.NowInt() > CurrentQueueTime)
@@ -844,10 +835,7 @@ namespace Notus.Validator
                                 {
                                     if (EmptyBlockGenerationTime() == true)
                                     {
-                                        //Console.WriteLine("NGF.NowInt() : " + NGF.NowInt().ToString());
-                                        //Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
                                         NP.Success("Empty Block Executed");
-
                                         Notus.Validator.Helper.CheckBlockAndEmptyCounter(300);
                                         NGF.BlockQueue.AddEmptyBlock();
                                     } // if (EmptyBlockGenerationTime() == true)
@@ -866,17 +854,6 @@ namespace Notus.Validator
                                         PreBlockData = NGF.BlockQueue.OrganizeBlockOrder(PreBlockData);
                                         NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
                                         bool processResult = ProcessBlock(PreparedBlockData, 4);
-                                        /*
-                                        if (processResult == false)
-                                        {
-                                            if (PreparedBlockData.info.rowNo > 2)
-                                            {
-                                                Console.WriteLine("NGF.NowInt() : " + NGF.NowInt().ToString());
-                                                Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
-                                                //NGF.CloseMyNode();
-                                            }
-                                        }
-                                        */
                                         if (processResult == true)
                                         {
                                             // sonraki sırada olan validatör'e direkt gönder
@@ -1089,10 +1066,6 @@ namespace Notus.Validator
                     {
                         NP.Warning("That block came my validator but wrong queue order");
                     }
-                    //NP.Warning("Block Time : " + blockData.info.time);
-                    //Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
-                    //Console.WriteLine("NVG.NOW.Int : " + NVG.NOW.Int.ToString());
-                    //NGF.CloseMyNode();
                     return false;
                 }
             }
@@ -1105,7 +1078,6 @@ namespace Notus.Validator
             //işlenen blok datası
             //Console.WriteLine("CurrentBlockRowNo                 : " + CurrentBlockRowNo.ToString());
             bool addBlockToChain = false;
-
             // yeni blok geldiğinde burası devreye girecek
             if (blockData.info.rowNo > NVG.Settings.LastBlock.info.rowNo)
             {
@@ -1138,7 +1110,6 @@ namespace Notus.Validator
                 else
                 {
                     Console.WriteLine("Block Convert Error -> Main.Cs -> Line 986");
-                    //ProcessBlock_PrintSection(blockData, blockSource);
                 }
                 return true;
             }
