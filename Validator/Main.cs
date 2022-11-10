@@ -669,7 +669,7 @@ namespace Notus.Validator
                 if (NVG.Settings.GenesisCreated == false)
                 {
                     NP.Info(NVG.Settings, "Node Blocks Are Checking For Sync");
-                    bool waitForOtherNodes = Notus.Sync.Block.Block2(
+                    bool waitForOtherNodes = Notus.Sync.Block.Data(
                         ValidatorQueueObj.GiveMeNodeList(),
                         tmpNewBlockIncome =>
                         {
@@ -677,6 +677,11 @@ namespace Notus.Validator
                             ProcessBlock(tmpNewBlockIncome, 3);
                         }
                     );
+                    
+                    while (Notus.Sync.Block.downloadDone == false)
+                    {
+                        Thread.Sleep(10);
+                    }
 
                     if (MyReadyMessageSended == false && waitForOtherNodes == false)
                     {

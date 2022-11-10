@@ -11,7 +11,8 @@ namespace Notus.Sync
 {
     public class Block
     {
-        public static bool Block2(
+        public static bool downloadDone = false;
+        public static bool Data(
             List<Notus.Variable.Struct.IpInfo> nodeList,
             System.Action<Notus.Variable.Class.BlockData>? Func_NewBlockIncome = null
         )
