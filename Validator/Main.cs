@@ -566,10 +566,8 @@ namespace Notus.Validator
                 NP.Basic(NVG.Settings, "Last Block Row No : " + NVG.Settings.LastBlock.info.rowNo.ToString());
                 using (Notus.Block.Storage Obj_Storage = new Notus.Block.Storage(false))
                 {
-                    //Console.WriteLine(JsonSerializer.Serialize( NGF.BlockOrder));
                     foreach (KeyValuePair<long, string> entry in NGF.BlockOrder)
                     {
-                        //Console.WriteLine(entry.Key.ToString() + " -  "  + entry.Value);
                         //tgz-exception
                         NVClass.BlockData? tmpBlockData = Obj_Storage.ReadBlock(entry.Value);
                         if (tmpBlockData != null)

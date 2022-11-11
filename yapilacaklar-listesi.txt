@@ -5,3 +5,15 @@
 3- bir node kapatılıp açıldığında mutlaka senkronizasyon da yapılmalı
 
 4- node sayısı gerekli miktarın altına düşünce, çalışmaya devam etmesin
+
+5- yapılan işlemlerin listesi bir veri tabanı listesinde olsun
+
+6- 
+
+7- 
+
+8-
+
+9-
+
+10-

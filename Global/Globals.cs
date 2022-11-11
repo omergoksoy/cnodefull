@@ -179,7 +179,11 @@ namespace Notus.Variable
             bu şahitlik ile birlitke ortak ir oy kullanılacak ve validator'e süre, sıra veya stake üzerinden ceza uygulanacak
             */
             public static ConcurrentDictionary<string, byte> WalletUsageList { get; set; }
-            public static ConcurrentDictionary<long, string> BlockOrder { get; set; }
+            
+
+            blok sırası için class eklendiğinden dolayı bu değişken devre dışı bırakıldı
+            //public static ConcurrentDictionary<long, string> BlockOrder { get; set; }
+
             //public static ConcurrentDictionary<ulong, string> BlockCreatorList { get; set; }
             //public static Notus.Mempool BlockOrder { get; set; }
             public static Notus.Block.Storage Storage { get; set; }
