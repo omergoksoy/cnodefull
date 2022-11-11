@@ -56,7 +56,6 @@ namespace Notus.Validator
             Notus.Variable.Class.BlockData? tmpBlockData = storageObj.ReadBlock(LastBlockUid);
             Console.WriteLine(JsonSerializer.Serialize(tmpBlockData, NVC.JsonSetting));
             Console.ReadLine();
-            Console.ReadLine();
             */
 
             NP.Info(NVG.Settings, "Activated DevNET for " + NVC.LayerText[NVG.Settings.Layer]);
@@ -120,11 +119,13 @@ namespace Notus.Validator
                 {
                     Environment.Exit(0);
                 }
-
-                if (NVG.Settings.NodeClosing == false)
+                else
                 {
-                    NP.Basic(NVG.Settings, "Sleep For 2.5 Seconds");
-                    Thread.Sleep(2500);
+                    if (NVG.Settings.NodeClosing == false)
+                    {
+                        NP.Basic(NVG.Settings, "Sleep For 2.5 Seconds");
+                        Thread.Sleep(2500);
+                    }
                 }
             }
         }

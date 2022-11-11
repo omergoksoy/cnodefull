@@ -52,13 +52,11 @@ namespace Notus.Validator
             Notus.Threads.Timer TimerObj = new Notus.Threads.Timer(250);
             TimerObj.Start(() =>
             {
-
                 if (TimeBaseBlockUidList.Count > 20000)
                 {
                     var el =TimeBaseBlockUidList.First();
                     TimeBaseBlockUidList.Remove(el.Key);
                 }
-
                 if (NVG.Settings.Nodes.Queue.Count > 20000)
                 {
                     var el = NVG.Settings.Nodes.Queue.First();

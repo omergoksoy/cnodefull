@@ -132,7 +132,6 @@ bu iki node arasındaki süre
 //sync-disable-exception
 // senkronizasyon düzeltmesi için yapılan devre dışı bırakma işlemleri
 
-Console.WriteLine("Test-Node");
 //tgz-exception
 Notus.Validator.Node.Start(args);
 
