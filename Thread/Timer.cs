@@ -50,6 +50,16 @@ namespace Notus.Threads
             TimerStarted = true;
             //aTimer.Start();
         }
+        public void Start(int interval, System.Action incomeAction, bool executeImmediately)
+        {
+            IntervalTimeValue = interval;
+            Start(incomeAction, executeImmediately);
+        }
+        public void Start(int interval, System.Action incomeAction)
+        {
+            IntervalTimeValue = interval;
+            Start(incomeAction);
+        }
         public void Start(System.Action incomeAction)
         {
             SubStart(incomeAction);
@@ -73,7 +83,8 @@ namespace Notus.Threads
         {
             Kill();
         }
-        ~Timer() {
+        ~Timer()
+        {
             //Dispose(true);
         }
     }

@@ -120,6 +120,7 @@ namespace Notus.Block
             {
                 return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
             }
+            NVG.Settings.BlockOrder.Clear();
 
             SortedDictionary<long, string> BlockOrderList = new SortedDictionary<long, string>();
             Dictionary<string, int> BlockTypeList = new Dictionary<string, int>();
@@ -204,6 +205,8 @@ namespace Notus.Block
                                                         BlockOrderList.Add(ControlBlock.info.rowNo, ControlBlock.info.uID);
                                                         BlockPreviousList.Add(ControlBlock.info.uID, ControlBlock.prev);
                                                         BlockTypeList.Add(ControlBlock.info.uID, ControlBlock.info.type);
+
+                                                        NVG.Settings.BlockOrder.Add(ControlBlock.info.rowNo, ControlBlock.info.uID);
                                                     }
                                                 }
                                             }

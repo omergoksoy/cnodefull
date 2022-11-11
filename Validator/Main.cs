@@ -39,9 +39,11 @@ namespace Notus.Validator
         private bool FileStorageTimerIsRunning = false;
         private DateTime FileStorageTime = NVG.NOW.Obj;
 
+        public SortedDictionary<ulong, string> TimeBaseBlockUidList = new SortedDictionary<ulong, string>();
+
         //bu liste diğer nodelardan gelen yeni blokları tutan liste
         public ulong FirstQueueGroupTime = 0;
-        public SortedDictionary<ulong, string> TimeBaseBlockUidList = new SortedDictionary<ulong, string>();
+
         public SortedDictionary<long, NVClass.BlockData> IncomeBlockList = new SortedDictionary<long, NVClass.BlockData>();
         //private Notus.Block.Queue Obj_BlockQueue = new Notus.Block.Queue();
         private Notus.Validator.Queue ValidatorQueueObj = new Notus.Validator.Queue();
@@ -50,11 +52,11 @@ namespace Notus.Validator
         {
             NP.Basic("Garbage Collector starting");
             Notus.Threads.Timer TimerObj = new Notus.Threads.Timer(250);
-            TimerObj.Start(() =>
+            TimerObj.Start(250,() =>
             {
                 if (TimeBaseBlockUidList.Count > 20000)
                 {
-                    var el =TimeBaseBlockUidList.First();
+                    var el = TimeBaseBlockUidList.First();
                     TimeBaseBlockUidList.Remove(el.Key);
                 }
                 if (NVG.Settings.Nodes.Queue.Count > 20000)
@@ -674,7 +676,7 @@ namespace Notus.Validator
                             ProcessBlock(tmpNewBlockIncome, 3);
                         }
                     );
-        
+
                     while (Notus.Sync.Block.downloadDone == false)
                     {
                         Thread.Sleep(10);
@@ -738,7 +740,7 @@ namespace Notus.Validator
                     FileStorageTimer();
                 }
                 NP.Success(NVG.Settings, "First Synchronization Is Done");
-                
+
                 GarbageCollector();
             }
             DateTime LastPrintTime = NVG.NOW.Obj;
@@ -813,14 +815,14 @@ namespace Notus.Validator
                         {
                             Thread.Sleep(1);
                         }
-                        
+
                         bool txExecuted = false;
                         bool emptyBlockChecked = false;
 
                         ulong endingTime = ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod - 10);
                         if (myTurnPrinted == false)
                         {
-                            myTurnPrinted=true;
+                            myTurnPrinted = true;
                             //NP.Info("My Turn : " + CurrentQueueTime.ToString() + " -> " + endingTime.ToString());
                         }
 
@@ -1051,6 +1053,7 @@ namespace Notus.Validator
                 }
                 if (innerSendToMyChain == true)
                 {
+                    NVG.Settings.BlockOrder.Add(blockData.info.rowNo, blockData.info.uID);
                     NP.Info("New Block Arrived : " + blockData.info.uID.Substring(0, 15));
                 }
                 else

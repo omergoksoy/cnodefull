@@ -76,7 +76,7 @@ namespace Notus.Validator
 
                 // if node only store the data
                 case NVE.NetworkNodeType.Replicant:
-                    StartAsReplicant( LightNodeActive);
+                    StartAsReplicant(LightNodeActive);
                     break;
 
                 default:

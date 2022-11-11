@@ -291,6 +291,7 @@ namespace Notus.Variable
         public class StorageFolderName
         {
             public const string BlockForTgz = "blocks_tgz";
+            public const string BlockInfo = "block_info";
             public const string Block = "blocks";
             public const string Balance = "balance";
             public const string Node = "node";

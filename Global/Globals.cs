@@ -150,7 +150,7 @@ namespace Notus.Variable
                     TestNet = 0,
                     DevNet = 0
                 },
-                BlockOrder = new Dictionary<ulong, string>() { }
+                BlockOrder = new Notus.Memory.BlockOrder()
             };
         }
 

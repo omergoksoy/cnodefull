@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Notus.Memory;
+using System;
 using System.Collections.Generic;
 
 namespace Notus.Globals.Variable
@@ -37,7 +38,8 @@ namespace Notus.Globals.Variable
         public Notus.Variable.Enum.NetworkType Network { get; set; }
         public Notus.Variable.Enum.NetworkLayer Layer { get; set; }
         public Notus.Variable.Struct.CommunicationPorts? Port { get; set; }
-        public Dictionary<ulong, string> BlockOrder { get; set; }
+        public BlockOrder BlockOrder { get; set; }
+        //public Dictionary<long, string> BlockOrder { get; set; }
 
         //public ulong PacketSend { get; set; }
         //public ulong PacketReceive { get; set; }
