@@ -18,17 +18,36 @@ namespace Notus.Memory
         // buradaki sayı 1 milyonu geçince gruplandırma işlemi yapalım
         // block row no ve block uid
         private ConcurrentDictionary<long, string> blockList = new ConcurrentDictionary<long, string>();
-
+        public ConcurrentDictionary<long, string> List
+        {
+            get { return blockList; }
+        }
         private Notus.Threads.Timer TimerObj = new Notus.Threads.Timer();
         public void Clear()
         {
             blockList.Clear();
+        }
+        public long Count()
+        {
+            return blockList.Count;
+        }
+        public string Get(long blockRowNo)
+        {
+            if (blockList.ContainsKey(blockRowNo) == true)
+            {
+                return blockList[blockRowNo];
+            }
+            return string.Empty;
         }
         public void Add(long blockRowNo, string blockUid)
         {
             if (blockList.ContainsKey(blockRowNo) == false)
             {
                 blockList.TryAdd(blockRowNo, blockUid);
+            }
+            else
+            {
+                blockList[blockRowNo] = blockUid;
             }
         }
         public BlockOrder()

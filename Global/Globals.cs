@@ -180,8 +180,9 @@ namespace Notus.Variable
             */
             public static ConcurrentDictionary<string, byte> WalletUsageList { get; set; }
             
-
+            /*
             blok sırası için class eklendiğinden dolayı bu değişken devre dışı bırakıldı
+            */
             //public static ConcurrentDictionary<long, string> BlockOrder { get; set; }
 
             //public static ConcurrentDictionary<ulong, string> BlockCreatorList { get; set; }
@@ -296,7 +297,7 @@ namespace Notus.Variable
             {
                 WalletUsageList = new ConcurrentDictionary<string, byte>();
                 LockWalletList = new ConcurrentDictionary<string, string>();
-                BlockOrder = new ConcurrentDictionary<long, string>();
+                //BlockOrder = new ConcurrentDictionary<long, string>();
                 Storage = new Notus.Block.Storage();
                 BlockQueue = new Notus.Block.Queue();
                 Archiver = new Notus.TGZArchiver();
@@ -318,7 +319,7 @@ namespace Notus.Variable
                 Globals.NodeQueue.TimeBaseWalletList = new Dictionary<ulong, string>();
 
 
-                BlockOrder.Clear();
+                //BlockOrder.Clear();
                 /*
                 string tmpFolderName = Notus.IO.GetFolderName(
                     Settings,

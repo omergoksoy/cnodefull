@@ -170,6 +170,10 @@ namespace Notus.Validator
                     Obj_BlockData.prev.Substring(0, 20)
                 );
             }
+
+            NVG.Settings.BlockOrder.Add(Obj_BlockData.info.rowNo, Obj_BlockData.info.uID);
+
+            /*
             if (NGF.BlockOrder.ContainsKey(Obj_BlockData.info.rowNo) == false)
             {
                 NGF.BlockOrder.TryAdd(Obj_BlockData.info.rowNo, Obj_BlockData.info.uID);
@@ -179,7 +183,6 @@ namespace Notus.Validator
                 NGF.BlockOrder[Obj_BlockData.info.rowNo] = Obj_BlockData.info.uID;
             }
 
-            /*
             string tmpBlockKey = ObjMp_BlockOrderList.Get(Obj_BlockData.info.rowNo.ToString(), string.Empty);
             if (tmpBlockKey.Length == 0)
             {
@@ -879,9 +882,10 @@ namespace Notus.Validator
                 {
                     return NVG.Settings.LastBlock;
                 }
-
+                
                 //string tmpBlockKey = ObjMp_BlockOrderList.Get(BlockRowNo.ToString(), string.Empty);
-                string tmpBlockKey = string.Empty;
+                string tmpBlockKey = NVG.Settings.BlockOrder.Get(BlockRowNo);
+                /*
                 if (NGF.BlockOrder.ContainsKey(BlockRowNo) == true)
                 {
                     tmpBlockKey = NGF.BlockOrder[BlockRowNo];
@@ -890,7 +894,7 @@ namespace Notus.Validator
                 {
                     //Console.WriteLine("ContainsKey == false;");
                 }
-
+                */
                 if (tmpBlockKey.Length > 0)
                 {
                     Notus.Variable.Class.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(tmpBlockKey);

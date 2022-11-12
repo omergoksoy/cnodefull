@@ -305,17 +305,6 @@ namespace Notus.Block
                         ) == false
                     )
                     {
-
-                        /*
-                        Console.WriteLine("");
-                        Console.WriteLine("");
-                        Console.WriteLine(JsonSerializer.Serialize(BlockPreviousList));
-                        Console.WriteLine("");
-                        Console.WriteLine("");
-                        Console.WriteLine(JsonSerializer.Serialize(BlockOrderList));
-                        Console.WriteLine("");
-                        Console.WriteLine("");
-                        */
                         Notus.Archive.DeleteFromInside(
                             BlockOrderList[BiggestBlockHeight - 1],
                             NVG.Settings,
@@ -347,7 +336,8 @@ namespace Notus.Block
                 return (Notus.Variable.Enum.BlockIntegrityStatus.CheckAgain, null);
             }
             NP.Success(NVG.Settings, "Block Integrity Valid");
-
+            /*
+            NVG.Settings.BlockOrder.Add();
             foreach (KeyValuePair<long, string> item in BlockOrderList)
             {
                 if (NGF.BlockOrder.ContainsKey(item.Key) == false)
@@ -356,6 +346,7 @@ namespace Notus.Block
                 }
                 //NGF.BlockOrder.Add(item.Key.ToString(), item.Value);
             }
+            */
             return (Notus.Variable.Enum.BlockIntegrityStatus.Valid, LastBlock);
         }
 
