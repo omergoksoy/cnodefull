@@ -178,7 +178,7 @@ namespace Notus.Validator
         }
         private void PingOtherNodes()
         {
-            NP.Info(NVG.Settings, "Waiting For Node Sync", false);
+            NP.Info("Waiting For Node Sync", false);
             bool tmpExitWhileLoop = false;
             while (tmpExitWhileLoop == false)
             {
@@ -344,7 +344,7 @@ namespace Notus.Validator
                 NP.Info("NVG.Settings.WaitForGeneratedBlock = TRUE;");
 
                 string incomeDataStr = GetPureText(incomeData, "block");
-                NP.Info(NVG.Settings, "Income Block Row No -> " + incomeDataStr);
+                NP.Info("Income Block Row No -> " + incomeDataStr);
                 if (incomeDataStr.IndexOf(":") < 0)
                 {
                     NVG.Settings.WaitForGeneratedBlock = false;
@@ -353,7 +353,7 @@ namespace Notus.Validator
                 }
 
                 string[] tmpArr = incomeDataStr.Split(":");
-                NP.Info(NVG.Settings, "Income Block Row No -> " + tmpArr[0] + ", Validator => " + tmpArr[1]);
+                NP.Info("Income Block Row No -> " + tmpArr[0] + ", Validator => " + tmpArr[1]);
                 long tmpBlockNo = long.Parse(tmpArr[0]);
                 string tmpNodeWalletKey = tmpArr[1];
                 string tmpIpAddress = string.Empty;
@@ -383,7 +383,7 @@ namespace Notus.Validator
                     Console.WriteLine("Queue.cs -> Block Is NULL");
                     return "tmpError-true";
                 }
-                NP.Info("<block> Downloaded from other validator");
+                //NP.Info("<block> Downloaded from other validator");
                 if (Func_NewBlockIncome != null)
                 {
                     if (Func_NewBlockIncome(tmpBlockData) == true)
@@ -426,7 +426,7 @@ namespace Notus.Validator
                             if (NVG.NodeList.ContainsKey(entry.Key))
                             {
                                 NVG.NodeList[entry.Key].Status = NVS.NodeStatus.Offline;
-                                NP.Info(NVG.Settings, "Node Just Left : " + entry.Value.IP.Wallet);
+                                NP.Info("Node Just Left : " + entry.Value.IP.Wallet);
                                 NP.NodeCount();
                                 return "1";
                             }
@@ -969,6 +969,15 @@ namespace Notus.Validator
                 return;
             if (NVG.Settings.GenesisCreated == true)
                 return;
+
+            control-point
+            burada sync numaraları sıfır ile başlıyorsa ilk başlangıç demektir.
+            "Sync No" eğer sıfırdan büyük ise o zaman "JoinTime" geçerli zaman değerini referans alarak 
+            içeri eklenecek.
+            seçilen "JoinTime" değeri zaman olarak geldiğinde sıralamaya dahil edilecek
+            o zamana kadar dinlemeye devam edecek
+
+            
             foreach (NVS.IpInfo defaultNodeInfo in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
             {
                 AddToMainAddressList(defaultNodeInfo.IpAddress, defaultNodeInfo.Port, false);
@@ -990,6 +999,7 @@ namespace Notus.Validator
                     }
                 }
             }
+
             AddToNodeList(new NVS.NodeQueueInfo()
             {
                 Ready = true,
@@ -1032,7 +1042,7 @@ namespace Notus.Validator
                 }
             }
 
-            NP.Info(NVG.Settings, "Node Sync Starting", false);
+            NP.Info("Node Sync Starting", false);
 
             //listedekilere ping atıyor, eğer 1 adet node aktif ise çıkış yapıyor...
             PingOtherNodes();
@@ -1342,7 +1352,7 @@ namespace Notus.Validator
             Val_Ready = true;
             if (ActiveNodeCount_Val > 1)
             {
-                NP.Info(NVG.Settings, "Sending Ready Signal To Other Nodes");
+                NP.Info("Sending Ready Signal To Other Nodes");
                 NVG.NodeList[NVG.Settings.Nodes.My.HexKey].Ready = true;
                 foreach (KeyValuePair<string, NVS.IpInfo> entry in MainAddressList)
                 {
