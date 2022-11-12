@@ -26,6 +26,19 @@ static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEv
     Notus.Print.Danger("Fatal Error : " + fatalErrorText);
 }
 
+static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
+{
+    NVG.Settings.NodeClosing = true;
+    e.Cancel = true;
+    Console.WriteLine();
+    NGF.CloseMyNode();
+}
+
+System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
+
+
 /*
 
 auto update uygulaması
@@ -42,19 +55,6 @@ Console.WriteLine("{0}", System.Reflection.AssemblyName.GetAssemblyName("Microso
 Console.WriteLine("{0}", System.Reflection.AssemblyName.GetAssemblyName("cnodefull.dll").Version);
 Console.ReadLine();
 */
-
-static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
-{
-    NVG.Settings.NodeClosing = true;
-    e.Cancel = true;
-    Console.WriteLine();
-    NGF.CloseMyNode();
-}
-
-System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
-
 
 
 

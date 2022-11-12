@@ -5,12 +5,6 @@ namespace Notus.Validator
 {
     public class Replicant : IDisposable
     {
-        private bool LightNodeActive = true;
-        public bool LightNode
-        {
-            get { return LightNodeActive; }
-            set { LightNodeActive = value; }
-        }
         private Notus.Block.Integrity Obj_Integrity;
 
         private Notus.Block.Storage Obj_Storage;

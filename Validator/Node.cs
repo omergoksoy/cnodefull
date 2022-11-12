@@ -13,40 +13,30 @@ namespace Notus.Validator
     {
         public static void Start(string[] argsFromCLI)
         {
-            bool LightNodeActive = false;
             NGF.PreStart();
-
             using (Notus.Validator.Menu menuObj = new Notus.Validator.Menu())
             {
                 menuObj.PreStart(argsFromCLI);
                 menuObj.Start();
                 menuObj.DefineMySetting();
             }
-
-            if (NVG.Settings.NodeType != NVE.NetworkNodeType.Replicant)
-            {
-                LightNodeActive = false;
-            }
-
             if (NVG.Settings.DevelopmentNode == true)
             {
                 NVG.Settings.Network = NVE.NetworkType.DevNet;
-                Notus.Validator.Node.Start(LightNodeActive);
             }
             else
             {
                 NVG.Settings.Network = NVE.NetworkType.MainNet;
-                Notus.Validator.Node.Start(LightNodeActive);
             }
+            Notus.Validator.Node.Start();
         }
-        public static void Start(bool LightNodeActive)
+        public static void Start()
         {
             if (NVG.Settings.LocalNode == true)
             {
                 NP.Info(NVG.Settings, "LocalNode Activated");
             }
             Notus.IO.NodeFolderControl();
-
 
             /*
             Notus.Block.Storage storageObj = new Notus.Block.Storage(false);
@@ -76,7 +66,7 @@ namespace Notus.Validator
 
                 // if node only store the data
                 case NVE.NetworkNodeType.Replicant:
-                    StartAsReplicant(LightNodeActive);
+                    StartAsReplicant();
                     break;
 
                 default:
@@ -129,7 +119,7 @@ namespace Notus.Validator
                 }
             }
         }
-        private static void StartAsReplicant(bool LightNodeActive)
+        private static void StartAsReplicant()
         {
             bool exitOuterLoop = false;
             while (exitOuterLoop == false)
@@ -138,7 +128,6 @@ namespace Notus.Validator
                 {
                     using (Notus.Validator.Replicant ReplicantObj = new Notus.Validator.Replicant())
                     {
-                        ReplicantObj.LightNode = LightNodeActive;
                         ReplicantObj.Start();
                     }
                 }

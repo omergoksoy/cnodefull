@@ -1063,7 +1063,7 @@ namespace Notus.Validator
                     ulong syncStaringTime = ND.ToLong(StartingTimeAfterEnoughNode);
                     GenerateNodeQueue(biggestSyncNo, syncStaringTime, tmpWalletList);
 
-                    NP.Info(NVG.Settings,
+                    NP.Info(
                         "I'm Sending Starting (When) Time / Current : " +
                         StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
                         " / " + NVG.NOW.Obj.ToString("HH:mm:ss.fff")
@@ -1108,7 +1108,7 @@ namespace Notus.Validator
                     }
 
                     GenerateNodeQueue(biggestSyncNo, NVG.NodeQueue.Starting, tmpWalletList);
-                    NP.Info(NVG.Settings,
+                    NP.Info(
                         "I'm Waiting Starting (When) Time / Current : " +
                         StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
                         " /  " +

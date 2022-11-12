@@ -44,9 +44,11 @@ namespace Notus.Message
             }
             if (bytesSent > 0)
             {
+                /*
                 if (messageText.StartsWith("<block>")) {
                     NP.Info("<block> message sended");
                 }
+                */
                 int bytesArrLen = sender.Receive(byteArr);
 
                 if (bytesArrLen == 0)
