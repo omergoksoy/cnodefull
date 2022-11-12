@@ -883,6 +883,7 @@ namespace Notus.Validator
                                         {
                                             Console.ForegroundColor = ConsoleColor.DarkGreen;
                                             Console.Write("+");
+                                            //Console.WriteLine("NVG.Settings.BlockOrder.Count() : " + NVG.Settings.BlockOrder.Count().ToString());
                                         }
                                     }
                                 } // if (TmpBlockStruct != null) ELSE 
@@ -1201,7 +1202,7 @@ namespace Notus.Validator
                 ProcessBlock_PrintSection(blockData, blockSource);
             }
 
-
+            /*
             if (NVG.Settings.LastBlock.prev.Length < 20)
             {
                 NP.Info("Settings -> Last Block -> " +
@@ -1216,15 +1217,15 @@ namespace Notus.Validator
                     NVG.Settings.LastBlock.prev.Substring(0, 20)
                 );
             }
+            */
 
             if (addBlockToChain == true)
             {
                 NGF.BlockQueue.AddToChain(blockData);
             }
 
-
             //gelen blok burada işleniyor...
-            Obj_Api.AddForCache(blockData);
+            Obj_Api.AddForCache(blockData, blockSource);
 
             //eğer blok numarası varsa, işlem bittiği için listeden silinir
             if (IncomeBlockList.ContainsKey(CurrentBlockRowNo))

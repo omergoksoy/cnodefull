@@ -180,13 +180,13 @@ namespace Notus.Variable
             */
             public static ConcurrentDictionary<string, byte> WalletUsageList { get; set; }
             
-            /*
-            blok sırası için class eklendiğinden dolayı bu değişken devre dışı bırakıldı
-            */
+            //public static ConcurrentDictionary<ulong, string> BlockCreatorList { get; set; }
+
+
+            // blok sırası için class eklendiğinden dolayı bu değişken devre dışı bırakıldı
+            //public static Notus.Mempool BlockOrder { get; set; }
             //public static ConcurrentDictionary<long, string> BlockOrder { get; set; }
 
-            //public static ConcurrentDictionary<ulong, string> BlockCreatorList { get; set; }
-            //public static Notus.Mempool BlockOrder { get; set; }
             public static Notus.Block.Storage Storage { get; set; }
             public static Notus.Wallet.Balance Balance { get; set; }
             public static Notus.TGZArchiver Archiver { get; set; }
