@@ -767,6 +767,8 @@ namespace Notus.Validator
             string selectedWalletId = string.Empty;
             ulong CurrentQueueTime = NVG.NodeQueue.Starting;
             bool myTurnPrinted = false;
+            //Console.WriteLine("Main.cs->Line 770");
+            //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList,NVC.JsonSetting));
 
             while (tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false)
             {

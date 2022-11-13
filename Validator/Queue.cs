@@ -242,8 +242,26 @@ namespace Notus.Validator
                 MainAddressListHash = CalculateMainAddressListHash();
             }
         }
-        private void AddToNodeList(NVS.NodeQueueInfo NodeQueueInfo)
+        private void AddToNodeList(NVS.NodeQueueInfo NodeQueueInfo,bool localList)
         {
+            control - point
+            burada sync numaraları sıfır ile başlıyorsa ilk başlangıç demektir.
+            "Sync No" eğer sıfırdan büyük ise o zaman "JoinTime" geçerli zaman değerini referans alarak
+            içeri eklenecek.
+            seçilen "JoinTime" değeri zaman olarak geldiğinde sıralamaya dahil edilecek
+            o zamana kadar dinlemeye devam edecek
+
+            if (localList == true)
+            {
+                if (NVG.NodeList.ContainsKey(NodeQueueInfo.HexKey))
+                {
+                    Console.WriteLine("VAR");
+                }
+                else
+                {
+                    Console.WriteLine("YOK");
+                }
+            }
             if (NVG.NodeList.ContainsKey(NodeQueueInfo.HexKey))
             {
                 NVG.NodeList[NodeQueueInfo.HexKey] = NodeQueueInfo;
@@ -507,7 +525,9 @@ namespace Notus.Validator
                         JsonSerializer.Deserialize<NVS.NodeQueueInfo>(incomeData);
                     if (tmpNodeQueueInfo != null)
                     {
-                        AddToNodeList(tmpNodeQueueInfo);
+                        AddToNodeList(tmpNodeQueueInfo,false);
+                        //Console.WriteLine("Queue.cs->Line 511");
+                        //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                         return "1";
                     }
                 }
@@ -969,15 +989,6 @@ namespace Notus.Validator
                 return;
             if (NVG.Settings.GenesisCreated == true)
                 return;
-
-            control-point
-            burada sync numaraları sıfır ile başlıyorsa ilk başlangıç demektir.
-            "Sync No" eğer sıfırdan büyük ise o zaman "JoinTime" geçerli zaman değerini referans alarak 
-            içeri eklenecek.
-            seçilen "JoinTime" değeri zaman olarak geldiğinde sıralamaya dahil edilecek
-            o zamana kadar dinlemeye devam edecek
-
-            
             foreach (NVS.IpInfo defaultNodeInfo in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
             {
                 AddToMainAddressList(defaultNodeInfo.IpAddress, defaultNodeInfo.Port, false);
@@ -1000,7 +1011,8 @@ namespace Notus.Validator
                 }
             }
 
-            AddToNodeList(new NVS.NodeQueueInfo()
+            NVG.NodeList.Clear();
+            NVG.NodeList.TryAdd(NVG.Settings.Nodes.My.HexKey, new NVS.NodeQueueInfo()
             {
                 Ready = true,
                 Status = NVS.NodeStatus.Online,
@@ -1017,6 +1029,11 @@ namespace Notus.Validator
                 JoinTime = 0,
                 PublicKey = NVG.Settings.Nodes.My.PublicKey,
             });
+            AddToMainAddressList(
+                NVG.Settings.Nodes.My.IP.IpAddress,
+                NVG.Settings.Nodes.My.IP.Port
+            );
+
 
             foreach (KeyValuePair<string, NVS.IpInfo> entry in MainAddressList)
             {
@@ -1038,10 +1055,14 @@ namespace Notus.Validator
                         },
                         JoinTime = 0,
                         PublicKey = ""
-                    });
+                    },true);
                 }
             }
-
+            /*
+            Console.WriteLine("Queue.cs->Line 1044");
+            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
+            NP.ReadLine();
+            */
             NP.Info("Node Sync Starting", false);
 
             //listedekilere ping atıyor, eğer 1 adet node aktif ise çıkış yapıyor...
