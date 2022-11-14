@@ -22,6 +22,7 @@ namespace Notus.Globals.Variable
         public bool ClosingCompleted { get; set; }
         public bool CommEstablished { get; set; }
 
+        public bool SyncStarted { get; set; }
         public bool LocalNode { get; set; }
         public bool DevelopmentNode { get; set; }
         //public ulong NodeStartingTime { get; set; }

@@ -102,7 +102,7 @@ namespace Notus.Validator
         public void Distrubute(long blockRowNo, int blockType, ulong currentNodeStartingTime)
         {
             ulong totalQueuePeriod = (ulong)(NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime);
-            ulong nextValidatorNodeTime=ND.AddMiliseconds(currentNodeStartingTime, totalQueuePeriod);
+            ulong nextValidatorNodeTime = ND.AddMiliseconds(currentNodeStartingTime, totalQueuePeriod);
 
 
             // sonraki node'a doğrudan gönder,
@@ -144,12 +144,12 @@ namespace Notus.Validator
                     Task.Run(() =>
                     {
                     });
-                        string incomeResult = NVG.Settings.MsgOrch.SendMsg(
-                            entry.Value.IP.Wallet,
-                            "<block>" +
-                                blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey +
-                            "</block>"
-                        );
+                    string incomeResult = NVG.Settings.MsgOrch.SendMsg(
+                        entry.Value.IP.Wallet,
+                        "<block>" +
+                            blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey +
+                        "</block>"
+                    );
 
                     //NP.Info(NVG.Settings, "Distrubute : " + ND.ToDateTime(NVG.NOW.Int).ToString("HH mm ss fff"));
                     //Console.WriteLine("incomeResult [ " + incomeResult.Length +  " ] : " + incomeResult);
@@ -241,36 +241,6 @@ namespace Notus.Validator
                 }
                 MainAddressListHash = CalculateMainAddressListHash();
             }
-        }
-        private void AddToNodeList(NVS.NodeQueueInfo NodeQueueInfo,bool localList)
-        {
-            control - point
-            burada sync numaraları sıfır ile başlıyorsa ilk başlangıç demektir.
-            "Sync No" eğer sıfırdan büyük ise o zaman "JoinTime" geçerli zaman değerini referans alarak
-            içeri eklenecek.
-            seçilen "JoinTime" değeri zaman olarak geldiğinde sıralamaya dahil edilecek
-            o zamana kadar dinlemeye devam edecek
-
-            if (localList == true)
-            {
-                if (NVG.NodeList.ContainsKey(NodeQueueInfo.HexKey))
-                {
-                    Console.WriteLine("VAR");
-                }
-                else
-                {
-                    Console.WriteLine("YOK");
-                }
-            }
-            if (NVG.NodeList.ContainsKey(NodeQueueInfo.HexKey))
-            {
-                NVG.NodeList[NodeQueueInfo.HexKey] = NodeQueueInfo;
-            }
-            else
-            {
-                NVG.NodeList.TryAdd(NodeQueueInfo.HexKey, NodeQueueInfo);
-            }
-            AddToMainAddressList(NodeQueueInfo.IP.IpAddress, NodeQueueInfo.IP.Port);
         }
         private string CalculateMyNodeListHash()
         {
@@ -525,9 +495,44 @@ namespace Notus.Validator
                         JsonSerializer.Deserialize<NVS.NodeQueueInfo>(incomeData);
                     if (tmpNodeQueueInfo != null)
                     {
-                        AddToNodeList(tmpNodeQueueInfo,false);
-                        //Console.WriteLine("Queue.cs->Line 511");
-                        //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
+                        /*
+                        control - point
+                        burada sync numaraları sıfır ile başlıyorsa ilk başlangıç demektir.
+                        "Sync No" eğer sıfırdan büyük ise o zaman "JoinTime" geçerli zaman değerini referans alarak
+                        içeri eklenecek.
+                        seçilen "JoinTime" değeri zaman olarak geldiğinde sıralamaya dahil edilecek
+                        o zamana kadar dinlemeye devam edecek
+                        */
+                        if (NVG.NodeList.ContainsKey(tmpNodeQueueInfo.HexKey))
+                        {
+                            NVG.NodeList[tmpNodeQueueInfo.HexKey].PublicKey = tmpNodeQueueInfo.PublicKey;
+                            NVG.NodeList[tmpNodeQueueInfo.HexKey].Status = NVS.NodeStatus.Online;
+                            NVG.NodeList[tmpNodeQueueInfo.HexKey].Tick = tmpNodeQueueInfo.Tick;
+                            NVG.NodeList[tmpNodeQueueInfo.HexKey].Begin = tmpNodeQueueInfo.Begin;
+                            NVG.NodeList[tmpNodeQueueInfo.HexKey].IP.Wallet = tmpNodeQueueInfo.IP.Wallet;
+                            //NVG.Settings.Nodes.My.Begin = NVG.NOW.Int;
+                            //NVG.NodeList[NodeQueueInfo.HexKey].JoinTime = 0;
+                            //NVG.NodeList[NodeQueueInfo.HexKey].SyncNo = 0;
+                        }
+                        else
+                        {
+                            tmpNodeQueueInfo.Status = NVS.NodeStatus.Online;
+                            tmpNodeQueueInfo.JoinTime = 0;
+                            tmpNodeQueueInfo.SyncNo = 0;
+                            NVG.NodeList.TryAdd(tmpNodeQueueInfo.HexKey, tmpNodeQueueInfo);
+                        }
+
+                        // eğer false ise senkronizasyon başlamamış demektir...
+                        // NVG.Settings.SyncStarted = false;
+                        //Console.WriteLine("*******************************");
+                        Console.WriteLine("Queue.cs->Line 511");
+                        Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+
+                        //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+                        //Console.WriteLine("*******************************");
+                        AddToMainAddressList(NodeQueueInfo.IP.IpAddress, NodeQueueInfo.IP.Port);
+                        Console.WriteLine("Queue.cs->Line 547");
+                        Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
                         return "1";
                     }
                 }
@@ -1039,14 +1044,15 @@ namespace Notus.Validator
             {
                 if (string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false)
                 {
-                    AddToNodeList(new NVS.NodeQueueInfo()
+                    string tmpHexKeyStr = Notus.Toolbox.Network.IpAndPortToHex(entry.Value.IpAddress, entry.Value.Port);
+                    NVG.NodeList.TryAdd(tmpHexKeyStr,new NVS.NodeQueueInfo()
                     {
                         Ready = false,
                         Status = NVS.NodeStatus.Unknown,
                         Begin = 0,
                         Tick = 0,
                         SyncNo = 0,
-                        HexKey = Notus.Toolbox.Network.IpAndPortToHex(entry.Value.IpAddress, entry.Value.Port),
+                        HexKey = tmpHexKeyStr,
                         IP = new NVS.NodeInfo()
                         {
                             IpAddress = entry.Value.IpAddress,
@@ -1055,7 +1061,8 @@ namespace Notus.Validator
                         },
                         JoinTime = 0,
                         PublicKey = ""
-                    },true);
+                    });
+                    AddToMainAddressList(entry.Value.IpAddress, entry.Value.Port);
                 }
             }
             /*
@@ -1103,6 +1110,8 @@ namespace Notus.Validator
                     NVG.NodeQueue.Starting = syncStaringTime;
                     NVG.NodeQueue.OrderCount = 1;
                     NVG.NodeQueue.Begin = true;
+                    // eğer false ise senkronizasyon başlamamış demektir...
+                    NVG.Settings.SyncStarted = false;
 
                     // diğer nodelara belirlediğimiz zaman bilgisini gönderiyoruz
                     foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
@@ -1130,6 +1139,10 @@ namespace Notus.Validator
                             }
                         }
                     }
+
+                    Console.WriteLine("Queue.cs->Line 1152");
+                    Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+
                 }
                 else
                 {
@@ -1145,10 +1158,18 @@ namespace Notus.Validator
                         " /  " +
                         NVG.NOW.Obj.ToString("HH:mm:ss.fff")
                     );
+                    Console.WriteLine("Queue.cs->Line 1170");
+                    Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+                    // eğer false ise senkronizasyon başlamamış demektir...
+                    NVG.Settings.SyncStarted = false;
                 }
             }
             else
             {
+                // bu değişken true ise, senkronizasyonun başladığı anlaşılıyor...
+
+                NVG.Settings.SyncStarted = true;
+
                 /*
                 büyük değerli bir sayı var ise bu sayının 100 saniye eksiği ile listeye eklenecek
                 ve her turda 1 saniye eklenecek ta ki diğer  en başta belirlene sync numarasına erişene kadar
