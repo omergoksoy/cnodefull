@@ -495,13 +495,24 @@ namespace Notus.Validator
                         JsonSerializer.Deserialize<NVS.NodeQueueInfo>(incomeData);
                     if (tmpNodeQueueInfo != null)
                     {
-                        /*
                         control - point
+
+
+                        burası normal şekilde çalışacak
+                        bir kişi ağa katılmak istediğinde mevcut 
+                        sync olanlar arasından bir tanesi ona ne zaman dahil olacağını bildirecek.
+                        yeni node o zamana kadar bekleyecek ve o zaman geldiğinde ağa dahil olacak
+                        eğer ağda yeterli sayıda node yok ise hemen bağlanacak
+                        eğer ağda yeterli sayıda node var ise o zaman group numarası verecek o numara gelince başlayacak
+
+
+
                         burada sync numaraları sıfır ile başlıyorsa ilk başlangıç demektir.
                         "Sync No" eğer sıfırdan büyük ise o zaman "JoinTime" geçerli zaman değerini referans alarak
                         içeri eklenecek.
                         seçilen "JoinTime" değeri zaman olarak geldiğinde sıralamaya dahil edilecek
                         o zamana kadar dinlemeye devam edecek
+                        /*
                         */
                         if (NVG.NodeList.ContainsKey(tmpNodeQueueInfo.HexKey))
                         {
