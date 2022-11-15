@@ -146,9 +146,13 @@ namespace Notus.Communication
         }
         public void Dispose()
         {
-            SocObj.Shutdown(SocketShutdown.Both);
-            SocObj.Close();
-            SocObj.Dispose();
+            try
+            {
+                SocObj.Shutdown(SocketShutdown.Both);
+                SocObj.Close();
+                SocObj.Dispose();
+            }
+            catch { }
         }
         ~Sender() { }
     }
