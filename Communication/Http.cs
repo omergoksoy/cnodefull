@@ -184,6 +184,7 @@ namespace Notus.Communication
                 ListenerObj.Begin(true);
                 ListenerObj.OnError((int errorCode, string errorText) =>
                 {
+                    NP.Danger("Check Line : Http.Cs -> Line 187");
                     NP.Danger("Error Code : " + errorCode.ToString());
                     NP.Danger("Error Text : " + errorText);
                 });

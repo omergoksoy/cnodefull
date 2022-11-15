@@ -7,9 +7,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
-using NVG = Notus.Variable.Globals;
 using NVC = Notus.Variable.Constant;
 using NVE = Notus.Variable.Enum;
+using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
 
 namespace Notus
@@ -61,9 +61,11 @@ namespace Notus
                 true
             );
         }
-        public static void NodeCount()
+        public static bool NodeCount()
         {
-            Info(NVG.Settings, "Node Count : " + NVG.OnlineNodeCount.ToString() + " / " + NVG.NodeList.Count.ToString());
+            Info("Node Count : " + NVG.OnlineNodeCount.ToString() + " / " + NVG.NodeList.Count.ToString());
+
+            return (NVG.OnlineNodeCount >= NVC.MinimumNodeCount ? true : false);
         }
         public static void ReadLine()
         {

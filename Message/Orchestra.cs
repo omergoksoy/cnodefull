@@ -5,10 +5,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using NM = Notus.Message;
 using NP = Notus.Print;
 using NT = Notus.Threads;
+using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
 namespace Notus.Message
@@ -51,7 +53,7 @@ namespace Notus.Message
                 {
                     pubObj.Start();
                 });
-                
+
                 //pingTimerIsRunning = true;
                 pingTimer.Start(() =>
                 {
@@ -139,6 +141,7 @@ namespace Notus.Message
                                     if (subListObj.ContainsKey(tList[i].Value.IP.Wallet) == true)
                                     {
                                         Console.WriteLine("cevrim-disi-olanlar-siliniyor");
+                                        Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                                         subListObj.TryRemove(tList[i].Value.IP.Wallet, out _);
                                     }
                                 }

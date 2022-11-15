@@ -414,6 +414,8 @@ namespace Notus.Validator
                             if (NVG.NodeList.ContainsKey(entry.Key))
                             {
                                 NVG.NodeList[entry.Key].Status = NVS.NodeStatus.Offline;
+                                NVG.NodeList[entry.Key].SyncNo = 0;
+                                Thread.Sleep(10);
                                 NP.Info("Node Just Left : " + entry.Value.IP.Wallet);
                                 NP.NodeCount();
                                 return "1";
@@ -495,8 +497,10 @@ namespace Notus.Validator
                         JsonSerializer.Deserialize<NVS.NodeQueueInfo>(incomeData);
                     if (tmpNodeQueueInfo != null)
                     {
-                        control - point
+                        // NVC.MinimumNodeCount
 
+                        /*
+                        control - point
 
                         burası normal şekilde çalışacak
                         bir kişi ağa katılmak istediğinde mevcut 
@@ -506,13 +510,11 @@ namespace Notus.Validator
                         eğer ağda yeterli sayıda node var ise o zaman group numarası verecek o numara gelince başlayacak
 
 
-
                         burada sync numaraları sıfır ile başlıyorsa ilk başlangıç demektir.
                         "Sync No" eğer sıfırdan büyük ise o zaman "JoinTime" geçerli zaman değerini referans alarak
                         içeri eklenecek.
                         seçilen "JoinTime" değeri zaman olarak geldiğinde sıralamaya dahil edilecek
                         o zamana kadar dinlemeye devam edecek
-                        /*
                         */
                         if (NVG.NodeList.ContainsKey(tmpNodeQueueInfo.HexKey))
                         {
@@ -536,14 +538,17 @@ namespace Notus.Validator
                         // eğer false ise senkronizasyon başlamamış demektir...
                         // NVG.Settings.SyncStarted = false;
                         //Console.WriteLine("*******************************");
+                        /*
                         Console.WriteLine("Queue.cs->Line 511");
                         Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
-
+                        */
                         //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
                         //Console.WriteLine("*******************************");
-                        AddToMainAddressList(NodeQueueInfo.IP.IpAddress, NodeQueueInfo.IP.Port);
+                        AddToMainAddressList(tmpNodeQueueInfo.IP.IpAddress, tmpNodeQueueInfo.IP.Port);
+                        /*
                         Console.WriteLine("Queue.cs->Line 547");
                         Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+                        */
                         return "1";
                     }
                 }

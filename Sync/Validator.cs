@@ -61,10 +61,7 @@ namespace Notus.Sync
                             }
                             enoughPrinted = false;
                         }
-                        //if(enoughPrinted==true)
                     }
-                    //private bool enoughPrinted = false;
-                    //private bool notEnoughPrinted = false;
 
                 }
             }, true);  //TimerObj.Start(() =>
