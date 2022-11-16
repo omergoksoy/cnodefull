@@ -55,17 +55,20 @@ namespace Notus
                 new Dictionary<string, string>()
                 {
                     { "data", JsonSerializer.Serialize(logObject) }
-                },
-                0,
-                true,
-                true
+                }, 0, true, true
             );
         }
-        public static bool NodeCount()
+        public static void NodeCount(bool exitIfNotEnoughNode)
         {
             Info("Node Count : " + NVG.OnlineNodeCount.ToString() + " / " + NVG.NodeList.Count.ToString());
-
-            return (NVG.OnlineNodeCount >= NVC.MinimumNodeCount ? true : false);
+            if (exitIfNotEnoughNode == true)
+            {
+                if (NVC.MinimumNodeCount > NVG.OnlineNodeCount)
+                {
+                    NVG.Settings.NodeClosing = true;
+                    Console.WriteLine("Node Must Close");
+                }
+            }
         }
         public static void ReadLine()
         {

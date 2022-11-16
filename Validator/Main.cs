@@ -905,6 +905,8 @@ namespace Notus.Validator
                         // zamanları hazırlasın ancak node verileri boş oluşturulsun
                         if (NVC.MinimumNodeCount > NVG.OnlineNodeCount)
                         {
+                            NP.Warning("Closing The Node Because There Are Not Enough Nodes");
+                            tmpExitMainLoop = true;
                             ValidatorQueueObj.GenerateNotEnoughNodeQueue(ND.AddMiliseconds(CurrentQueueTime, 1500));
                         }
                         else

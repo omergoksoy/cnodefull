@@ -413,11 +413,12 @@ namespace Notus.Validator
                         {
                             if (NVG.NodeList.ContainsKey(entry.Key))
                             {
-                                NVG.NodeList[entry.Key].Status = NVS.NodeStatus.Offline;
-                                NVG.NodeList[entry.Key].SyncNo = 0;
+                                NVG.NodeList.TryRemove(entry.Key, out _);
+                                //NVG.NodeList[entry.Key].Status = NVS.NodeStatus.Offline;
+                                //NVG.NodeList[entry.Key].SyncNo = 0;
                                 Thread.Sleep(10);
                                 NP.Info("Node Just Left : " + entry.Value.IP.Wallet);
-                                NP.NodeCount();
+                                NP.NodeCount(true);
                                 return "1";
                             }
                         }
@@ -1061,7 +1062,7 @@ namespace Notus.Validator
                 if (string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false)
                 {
                     string tmpHexKeyStr = Notus.Toolbox.Network.IpAndPortToHex(entry.Value.IpAddress, entry.Value.Port);
-                    NVG.NodeList.TryAdd(tmpHexKeyStr,new NVS.NodeQueueInfo()
+                    NVG.NodeList.TryAdd(tmpHexKeyStr, new NVS.NodeQueueInfo()
                     {
                         Ready = false,
                         Status = NVS.NodeStatus.Unknown,
@@ -1102,7 +1103,7 @@ namespace Notus.Validator
             StartingTimeAfterEnoughNode_Arrived = false;
             if (biggestSyncNo == 0)
             {
-                NP.NodeCount();
+                NP.NodeCount(false);
                 //cüzdanların hashleri alınıp sıraya koyuluyor.
                 SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, "beginning");
 
@@ -1156,8 +1157,8 @@ namespace Notus.Validator
                         }
                     }
 
-                    Console.WriteLine("Queue.cs->Line 1152");
-                    Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+                    // Console.WriteLine("Queue.cs->Line 1152");
+                    // Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
 
                 }
                 else
@@ -1174,8 +1175,8 @@ namespace Notus.Validator
                         " /  " +
                         NVG.NOW.Obj.ToString("HH:mm:ss.fff")
                     );
-                    Console.WriteLine("Queue.cs->Line 1170");
-                    Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+                    // Console.WriteLine("Queue.cs->Line 1170");
+                    // Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
                     // eğer false ise senkronizasyon başlamamış demektir...
                     NVG.Settings.SyncStarted = false;
                 }

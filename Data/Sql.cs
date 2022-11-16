@@ -267,6 +267,17 @@ namespace Notus.Data
                 }
                 DbOpened = false;
             }
+            else
+            {
+                try
+                {
+                    conObj.Dispose();
+                }
+                catch (Exception err)
+                {
+                    Console.WriteLine("Sql.cs -> " + err.Message);
+                }
+            }
             conObj = null;
         }
         public Sql()
