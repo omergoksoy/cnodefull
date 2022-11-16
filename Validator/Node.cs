@@ -113,8 +113,8 @@ namespace Notus.Validator
                 {
                     if (NVG.Settings.NodeClosing == false)
                     {
-                        NP.Basic(NVG.Settings, "Sleep For 2.5 Seconds");
-                        Thread.Sleep(2500);
+                        NP.Basic(NVG.Settings, "Sleep For 0.5 Seconds");
+                        Thread.Sleep(500);
                     }
                 }
             }

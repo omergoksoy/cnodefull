@@ -87,7 +87,7 @@ namespace Notus.Variable
 
             Settings = new Notus.Globals.Variable.Settings()
             {
-                SyncStarted=true,
+                SyncStarted = true,
                 WaitForGeneratedBlock = false,
                 NodeClosing = false,
                 ClosingCompleted = false,
@@ -107,7 +107,6 @@ namespace Notus.Variable
                 EncryptKey = "key-password-string",
 
                 HashSalt = Notus.Encryption.Toolbox.GenerateSalt(),
-
 
                 Layer = NVE.NetworkLayer.Layer1,
                 Network = NVE.NetworkType.MainNet,

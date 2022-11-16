@@ -899,6 +899,7 @@ namespace Notus.Validator
                             NGF.BlockQueue.LoadFromPoolDb();
                         }
                     }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId)) ELSE 
+                    
                     if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
                     {
                         // eğer yeterli sayıda node yokse
@@ -906,8 +907,8 @@ namespace Notus.Validator
                         if (NVC.MinimumNodeCount > NVG.OnlineNodeCount)
                         {
                             NP.Warning("Closing The Node Because There Are Not Enough Nodes");
-                            tmpExitMainLoop = true;
-                            ValidatorQueueObj.GenerateNotEnoughNodeQueue(ND.AddMiliseconds(CurrentQueueTime, 1500));
+                            NGF.CloseMyNode();
+                            //ValidatorQueueObj.GenerateNotEnoughNodeQueue(ND.AddMiliseconds(CurrentQueueTime, 1500));
                         }
                         else
                         {
@@ -919,6 +920,7 @@ namespace Notus.Validator
                             ValidatorQueueObj.ReOrderNodeQueue(CurrentQueueTime, queueSeedStr);
                         }
                     } //if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
+                    
                     if (nodeOrderCount == 6)
                     {
                         nodeOrderCount = 0;
@@ -928,6 +930,14 @@ namespace Notus.Validator
                     prepareNextQueue = false;
                     myTurnPrinted = false;
                     CurrentQueueTime = ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod);
+
+                    /*
+                    if (NVC.MinimumNodeCount > NVG.OnlineNodeCount)
+                    {
+                        NP.Warning("Closing The Node Because There Are Not Enough Nodes -> 1");
+                        NGF.CloseMyNode();
+                    }
+                    */
                 }  // if (NGF.NowInt() >= currentQueueTime)
             } // while ( tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false )
 

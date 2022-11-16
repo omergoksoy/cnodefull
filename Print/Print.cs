@@ -58,17 +58,18 @@ namespace Notus
                 }, 0, true, true
             );
         }
-        public static void NodeCount(bool exitIfNotEnoughNode)
+        public static void NodeCount(/* bool exitIfNotEnoughNode */)
         {
             Info("Node Count : " + NVG.OnlineNodeCount.ToString() + " / " + NVG.NodeList.Count.ToString());
+            /*
             if (exitIfNotEnoughNode == true)
             {
                 if (NVC.MinimumNodeCount > NVG.OnlineNodeCount)
                 {
-                    NVG.Settings.NodeClosing = true;
                     Console.WriteLine("Node Must Close");
                 }
             }
+            */
         }
         public static void ReadLine()
         {

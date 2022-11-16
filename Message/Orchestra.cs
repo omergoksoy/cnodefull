@@ -140,7 +140,8 @@ namespace Notus.Message
                                 {
                                     if (subListObj.ContainsKey(tList[i].Value.IP.Wallet) == true)
                                     {
-                                        Console.WriteLine("cevrim-disi-olanlar-siliniyor");
+                                        NP.Info("Offline Node Remove From List");
+                                        //Console.WriteLine("cevrim-disi-olanlar-siliniyor");
                                         //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                                         subListObj.TryRemove(tList[i].Value.IP.Wallet, out _);
                                     }

@@ -273,10 +273,7 @@ namespace Notus.Data
                 {
                     conObj.Dispose();
                 }
-                catch (Exception err)
-                {
-                    Console.WriteLine("Sql.cs -> " + err.Message);
-                }
+                catch{}
             }
             conObj = null;
         }

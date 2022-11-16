@@ -416,9 +416,9 @@ namespace Notus.Validator
                                 NVG.NodeList.TryRemove(entry.Key, out _);
                                 //NVG.NodeList[entry.Key].Status = NVS.NodeStatus.Offline;
                                 //NVG.NodeList[entry.Key].SyncNo = 0;
-                                Thread.Sleep(10);
+                                //Thread.Sleep(10);
                                 NP.Info("Node Just Left : " + entry.Value.IP.Wallet);
-                                NP.NodeCount(true);
+                                NP.NodeCount();
                                 return "1";
                             }
                         }
@@ -539,9 +539,9 @@ namespace Notus.Validator
                         // eğer false ise senkronizasyon başlamamış demektir...
                         // NVG.Settings.SyncStarted = false;
                         //Console.WriteLine("*******************************");
-                        /*
                         Console.WriteLine("Queue.cs->Line 511");
                         Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+                        /*
                         */
                         //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
                         //Console.WriteLine("*******************************");
@@ -1103,10 +1103,9 @@ namespace Notus.Validator
             StartingTimeAfterEnoughNode_Arrived = false;
             if (biggestSyncNo == 0)
             {
-                NP.NodeCount(false);
+                NP.NodeCount();
                 //cüzdanların hashleri alınıp sıraya koyuluyor.
                 SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, "beginning");
-
 
                 //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                 //birinci sırada ki cüzdan seçiliyor...
@@ -1156,10 +1155,6 @@ namespace Notus.Validator
                             }
                         }
                     }
-
-                    // Console.WriteLine("Queue.cs->Line 1152");
-                    // Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
-
                 }
                 else
                 {
@@ -1192,6 +1187,10 @@ namespace Notus.Validator
                 ve her turda 1 saniye eklenecek ta ki diğer  en başta belirlene sync numarasına erişene kadar
                 sonrasında kuraya da
                 */
+                Console.WriteLine("------------------------------------------");
+                Console.WriteLine("Queue.cs -> Line 1194");
+                Console.WriteLine(JsonSerializer.Serialize(NVG.NodeQueue));
+                Console.WriteLine("------------------------------------------");
                 Console.WriteLine("There Is Biggest Sync No");
                 NP.ReadLine();
             }
@@ -1330,6 +1329,11 @@ namespace Notus.Validator
         }
         private void SyncListWithNode()
         {
+            burada diğer node'ların eklenmesi sorunu var
+            burada diğer node'ların eklenmesi sorunu var
+            burada diğer node'ların eklenmesi sorunu var
+            burada diğer node'ların eklenmesi sorunu var
+
             KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = MainAddressList.ToArray();
             if (tmpMainList != null)
             {
@@ -1348,6 +1352,7 @@ namespace Notus.Validator
                                     tmpMainList[i].Value.Port,
                                     "<nList>" + JsonSerializer.Serialize(MainAddressList) + "</nList>"
                                 );
+                                Console.WriteLine("<nList> innerResponseStr: [ "+ tmpMainList[i].Value.IpAddress + " ] " + innerResponseStr);
                                 if (innerResponseStr == "1")
                                 {
                                     exitListSendingLoop = true;
@@ -1371,6 +1376,7 @@ namespace Notus.Validator
                                 tmpMainList[i].Value.Port,
                                 "<lhash>" + MainAddressListHash + "</lhash>"
                             );
+                            Console.WriteLine("<lhash> innerResponseStr: [ " + tmpMainList[i].Value.IpAddress + " ] " + innerResponseStr);
                             if (innerResponseStr == "0")
                             {
                                 allListSyncWithNode = false;

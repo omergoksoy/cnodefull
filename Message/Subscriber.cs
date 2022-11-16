@@ -40,7 +40,7 @@ namespace Notus.Message
                 bytesSent = sender.Send(Encoding.ASCII.GetBytes(messageText));
             }
             catch (Exception err){
-                Console.WriteLine("Message Sending Error : " + err.Message);
+                //Console.WriteLine("Message Sending Error : " + err.Message);
             }
             if (bytesSent > 0)
             {
