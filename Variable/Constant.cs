@@ -95,8 +95,11 @@ namespace Notus.Variable
         };
 
         public static readonly int MinimumNodeCount = 2;
+
+        //özel iletişim için kullanılan port numarası ( gossip yapılacak hat )
         public static readonly int TimeSyncCommPort = 27000;
 
+        //zaman senkronizasyonu için kullanılan ip ve port
         public static readonly string TimeSyncNodeIpAddress = "89.252.134.111";
         public static readonly int TimeSyncAddingCommPort = 25000;
 

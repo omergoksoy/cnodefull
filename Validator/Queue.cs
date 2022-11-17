@@ -1329,11 +1329,13 @@ namespace Notus.Validator
         }
         private void SyncListWithNode()
         {
+            /*
+             * omergoksoy
             burada diğer node'ların eklenmesi sorunu var
             burada diğer node'ların eklenmesi sorunu var
             burada diğer node'ların eklenmesi sorunu var
             burada diğer node'ların eklenmesi sorunu var
-
+                */
             KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = MainAddressList.ToArray();
             if (tmpMainList != null)
             {

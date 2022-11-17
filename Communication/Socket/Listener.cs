@@ -261,7 +261,9 @@ namespace Notus.Communication
         {
             System.Net.IPAddress ipAddress;
             if(
-                string.Equals(CommIpAddress, "3.75.110.186") || 
+                string.Equals(CommIpAddress, "3.75.110.186") ||
+                string.Equals(CommIpAddress, "3.70.179.101") ||
+                string.Equals(CommIpAddress, "13.229.61.209") ||
                 string.Equals(CommIpAddress, "13.229.56.127")
             )
             {
@@ -281,9 +283,6 @@ namespace Notus.Communication
                 }
             }
 
-            //Console.WriteLine("Listener.cs -> Line 304");
-            //Console.WriteLine(ipAddress + " - " + CommPortNo.ToString());
-            //NP.ReadLine();
             System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(ipAddress, CommPortNo);
             ListenTcpObj = new System.Net.Sockets.Socket(
                 ipAddress.AddressFamily,
