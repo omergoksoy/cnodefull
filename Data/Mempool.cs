@@ -458,7 +458,7 @@ namespace Notus
             {
                 SqlObj.Close();
                 Thread.Sleep(150);
-                SqlObj.Dispose();
+                //SqlObj.Dispose();
             }
             catch (Exception err)
             {

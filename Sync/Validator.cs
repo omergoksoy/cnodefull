@@ -40,29 +40,28 @@ namespace Notus.Sync
                             }
                         }
                         NVG.OnlineNodeCount = onlineNodeCount;
-                    }
-                    if (Notus.Variable.Constant.MinimumNodeCount >= NVG.OnlineNodeCount)
-                    {
-                        if (enoughPrinted == false)
+                        if (Notus.Variable.Constant.MinimumNodeCount >= NVG.OnlineNodeCount)
                         {
-                            NP.Success("Enough NodeCount For Executing");
-                            enoughPrinted = true;
-                            notEnoughPrinted = false;
-                        }
-                    }
-                    else
-                    {
-                        if (enoughPrinted == true)
-                        {
-                            if (notEnoughPrinted == false)
+                            if (enoughPrinted == false)
                             {
-                                NP.Success("Not Enough NodeCount For Executing");
-                                notEnoughPrinted = true;
+                                NP.Success("Enough NodeCount For Executing");
+                                enoughPrinted = true;
+                                notEnoughPrinted = false;
                             }
-                            enoughPrinted = false;
+                        }
+                        else
+                        {
+                            if (enoughPrinted == true)
+                            {
+                                if (notEnoughPrinted == false)
+                                {
+                                    NP.Success("Not Enough NodeCount For Executing");
+                                    notEnoughPrinted = true;
+                                }
+                                enoughPrinted = false;
+                            }
                         }
                     }
-
                 }
             }, true);  //TimerObj.Start(() =>
         }

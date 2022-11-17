@@ -454,6 +454,13 @@ namespace Notus.Validator
             if (CheckXmlTag(incomeData, "lhash"))
             {
                 incomeData = GetPureText(incomeData, "lhash");
+                Console.WriteLine("MainAddressListHash : " + MainAddressListHash);
+                Console.WriteLine("incomeData : " + incomeData);
+                Console.WriteLine(JsonSerializer.Serialize( MainAddressList));
+                if(string.Equals(incomeData, MainAddressListHash) == false)
+                {
+
+                }
                 return (string.Equals(incomeData, MainAddressListHash) == true ? "1" : "0");
             }
             if (CheckXmlTag(incomeData, "nList"))
@@ -519,20 +526,10 @@ namespace Notus.Validator
                         */
                         if (NVG.NodeList.ContainsKey(tmpNodeQueueInfo.HexKey))
                         {
-                            NVG.NodeList[tmpNodeQueueInfo.HexKey].PublicKey = tmpNodeQueueInfo.PublicKey;
-                            NVG.NodeList[tmpNodeQueueInfo.HexKey].Status = NVS.NodeStatus.Online;
-                            NVG.NodeList[tmpNodeQueueInfo.HexKey].Tick = tmpNodeQueueInfo.Tick;
-                            NVG.NodeList[tmpNodeQueueInfo.HexKey].Begin = tmpNodeQueueInfo.Begin;
-                            NVG.NodeList[tmpNodeQueueInfo.HexKey].IP.Wallet = tmpNodeQueueInfo.IP.Wallet;
-                            //NVG.Settings.Nodes.My.Begin = NVG.NOW.Int;
-                            //NVG.NodeList[NodeQueueInfo.HexKey].JoinTime = 0;
-                            //NVG.NodeList[NodeQueueInfo.HexKey].SyncNo = 0;
+                            NVG.NodeList[tmpNodeQueueInfo.HexKey] = tmpNodeQueueInfo;
                         }
                         else
                         {
-                            tmpNodeQueueInfo.Status = NVS.NodeStatus.Online;
-                            tmpNodeQueueInfo.JoinTime = 0;
-                            tmpNodeQueueInfo.SyncNo = 0;
                             NVG.NodeList.TryAdd(tmpNodeQueueInfo.HexKey, tmpNodeQueueInfo);
                         }
 
@@ -1187,6 +1184,7 @@ namespace Notus.Validator
                 ve her turda 1 saniye eklenecek ta ki diğer  en başta belirlene sync numarasına erişene kadar
                 sonrasında kuraya da
                 */
+                NewNodeJoinToGroup();
                 Console.WriteLine("------------------------------------------");
                 Console.WriteLine("Queue.cs -> Line 1194");
                 Console.WriteLine(JsonSerializer.Serialize(NVG.NodeQueue));
@@ -1196,6 +1194,15 @@ namespace Notus.Validator
             }
 
             //Console.WriteLine(JsonSerializer.Serialize(NodeList, NVC.JsonSetting));
+        }
+        public string NewNodeJoinToGroup()
+        {
+            foreach(var entry in NVG.NodeQueue)
+            {
+                burada yeni katılan node için bir karar verecek node seçilecek
+                karar verecek node diğer nodelara bilgi verecek bu node'un katılma zamanını bildirecek.
+            }
+            return string.Empty;
         }
         public void ReOrderNodeQueue(ulong currentQueueTime, string queueSeedStr = "")
         {
@@ -1354,7 +1361,7 @@ namespace Notus.Validator
                                     tmpMainList[i].Value.Port,
                                     "<nList>" + JsonSerializer.Serialize(MainAddressList) + "</nList>"
                                 );
-                                Console.WriteLine("<nList> innerResponseStr: [ "+ tmpMainList[i].Value.IpAddress + " ] " + innerResponseStr);
+                                //Console.WriteLine("<nList> innerResponseStr: [ "+ tmpMainList[i].Value.IpAddress + " ] " + innerResponseStr);
                                 if (innerResponseStr == "1")
                                 {
                                     exitListSendingLoop = true;
@@ -1378,7 +1385,7 @@ namespace Notus.Validator
                                 tmpMainList[i].Value.Port,
                                 "<lhash>" + MainAddressListHash + "</lhash>"
                             );
-                            Console.WriteLine("<lhash> innerResponseStr: [ " + tmpMainList[i].Value.IpAddress + " ] " + innerResponseStr);
+                            //Console.WriteLine("<lhash> innerResponseStr: [ " + tmpMainList[i].Value.IpAddress + " ] " + innerResponseStr);
                             if (innerResponseStr == "0")
                             {
                                 allListSyncWithNode = false;

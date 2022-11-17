@@ -271,7 +271,7 @@ namespace Notus.Data
             {
                 try
                 {
-                    conObj.Dispose();
+                    //conObj.Dispose();
                 }
                 catch{}
             }
