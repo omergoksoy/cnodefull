@@ -178,7 +178,8 @@ namespace Notus.Validator
         }
         private void PingOtherNodes()
         {
-            NP.Info("Waiting For Node Sync", false);
+            NP.Info("Waiting For Node Sync");
+            Console.WriteLine(JsonSerializer.Serialize(MainAddressList));
             bool tmpExitWhileLoop = false;
             while (tmpExitWhileLoop == false)
             {
@@ -1091,9 +1092,14 @@ namespace Notus.Validator
 
             // mevcut node ile diğer nodeların listeleri senkron hale getiriliyor
             SyncListWithNode();
-
+            Console.WriteLine("WaitUntilAvailable -> Before");
+            //önce node'ların içerisinde senkronizasyon bekleyen olmadığına emin ol
+            WaitUntilAvailable();
+            Console.WriteLine("WaitUntilAvailable -> After");
             // diğer node'lara bizim kim olduğumuz söyleniyor...
             TellThemWhoTheNodeIs();
+
+
 
             //bu fonksyion ile amaç en çok sayıda olan sync no bulunacak
             ulong biggestSyncNo = FindBiggestSyncNo();
@@ -1184,10 +1190,11 @@ namespace Notus.Validator
                 ve her turda 1 saniye eklenecek ta ki diğer  en başta belirlene sync numarasına erişene kadar
                 sonrasında kuraya da
                 */
-                NewNodeJoinToGroup();
+                NewNodeJoinToGroup(biggestSyncNo);
                 Console.WriteLine("------------------------------------------");
                 Console.WriteLine("Queue.cs -> Line 1194");
-                Console.WriteLine(JsonSerializer.Serialize(NVG.NodeQueue));
+                //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeQueue));
+                Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
                 Console.WriteLine("------------------------------------------");
                 Console.WriteLine("There Is Biggest Sync No");
                 NP.ReadLine();
@@ -1195,12 +1202,23 @@ namespace Notus.Validator
 
             //Console.WriteLine(JsonSerializer.Serialize(NodeList, NVC.JsonSetting));
         }
-        public string NewNodeJoinToGroup()
+        public string NewNodeJoinToGroup(ulong biggestSyncNo)
         {
-            foreach(var entry in NVG.NodeQueue)
+            //var nList= NVG.NodeQueue
+            foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
+                if (
+                    entry.Value.SyncNo == biggestSyncNo 
+                        && 
+                    entry.Value.Status==NVS.NodeStatus.Online
+                )
+                {
+
+                }
+                /*
                 burada yeni katılan node için bir karar verecek node seçilecek
                 karar verecek node diğer nodelara bilgi verecek bu node'un katılma zamanını bildirecek.
+                */
             }
             return string.Empty;
         }
@@ -1210,6 +1228,33 @@ namespace Notus.Validator
             SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, queueSeedStr);
             GenerateNodeQueue(currentQueueTime, ND.AddMiliseconds(currentQueueTime, 1500), tmpWalletList);
             NVG.NodeQueue.OrderCount++;
+        }
+        private void WaitUntilAvailable()
+        {
+            Dictionary<ulong, bool> syncNoCount = new Dictionary<ulong, bool>();
+            bool exitLoop = false;
+            while(exitLoop == false)
+            {
+                syncNoCount.Clear();
+                foreach (var iEntry in NVG.NodeList)
+                {
+                    if (iEntry.Value.Status == NVS.NodeStatus.Online)
+                    {
+                        if (syncNoCount.ContainsKey(iEntry.Value.SyncNo) == false)
+                        {
+                            syncNoCount.Add(iEntry.Value.SyncNo, true);
+                        }
+                    }
+                }
+                if (syncNoCount.Count == 1)
+                {
+                    exitLoop = true;
+                }
+                else
+                {
+                    Thread.Sleep(10);
+                }
+            }
         }
         private ulong FindBiggestSyncNo()
         {

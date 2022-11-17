@@ -1,13 +1,8 @@
-﻿using System;
-using System.Threading;
-using System.IO;
-using System.Net;
+﻿using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text.Json;
-using System.Net.Http;
 using NVG = Notus.Variable.Globals;
-using NGF = Notus.Variable.Globals.Functions;
 
 namespace Notus.Toolbox
 {
@@ -27,15 +22,13 @@ namespace Notus.Toolbox
         {
             return PingToNode(NodeIp.IpAddress, NodeIp.Port);
         }
-        public static bool PingToNode(string ipAddress,int portNo)
+        public static bool PingToNode(string ipAddress, int portNo)
         {
-            return string.Equals(
-                Notus.Communication.Request.GetSync(
-                    Notus.Network.Node.MakeHttpListenerPath(ipAddress, portNo) + "ping/", 
-                    2, true, false
-                ), 
-                "pong"
-            );
+            string urlPath = Notus.Network.Node.MakeHttpListenerPath(ipAddress, portNo) + "ping/";
+            string urlResult = Notus.Communication.Request.GetSync(urlPath, 2, true, false);
+            Console.WriteLine(urlPath);
+            Console.WriteLine(urlResult);
+            return string.Equals(urlResult, "pong");
         }
         public static string IpAndPortToHex(Notus.Variable.Struct.NodeInfo NodeIp)
         {
@@ -145,7 +138,7 @@ namespace Notus.Toolbox
             {
                 NVG.Settings.Nodes.My.IP.IpAddress = NVG.Settings.IpInfo.Public;
             }
-            NVG.Settings.Nodes.My.HexKey=Notus.Toolbox.Network.IpAndPortToHex(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
+            NVG.Settings.Nodes.My.HexKey = Notus.Toolbox.Network.IpAndPortToHex(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
             if (Notus.Variable.Constant.ListMainNodeIp.IndexOf(NVG.Settings.IpInfo.Public) >= 0)
             {
                 //NVG.Settings.Nodes.My.InTheCode = true;
