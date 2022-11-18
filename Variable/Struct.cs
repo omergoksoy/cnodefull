@@ -469,6 +469,7 @@ namespace Notus.Variable.Struct
     {
         public string IpAddress { get; set; }
         public int Port { get; set; }
+        public NodeStatus Status { get; set; }
     }
     public class NodeInfo
     {

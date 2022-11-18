@@ -1,17 +1,7 @@
-﻿using Notus.Communication;
-using Notus.Encryption;
-using Notus.Network;
-using Notus.Variable.Class;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 using System.Globalization;
-using System.Linq;
 using System.Numerics;
 using System.Text.Json;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NH = Notus.Hash;
@@ -53,6 +43,7 @@ namespace Notus.Validator
         }
         private bool SyncReady = true;
 
+        private SortedDictionary<string, NVS.IpInfo> MainAddressOfflineList = new SortedDictionary<string, NVS.IpInfo>();
         private SortedDictionary<string, NVS.IpInfo> MainAddressList = new SortedDictionary<string, NVS.IpInfo>();
         private string MainAddressListHash = string.Empty;
 
@@ -176,39 +167,33 @@ namespace Notus.Validator
                 );
             return afterMiliSecondTime.AddSeconds(secondVal);
         }
-        private void PingOtherNodes()
+        private void PingOtherNodes(bool firstExecution)
         {
             NP.Info("Waiting For Node Sync");
             Console.WriteLine(JsonSerializer.Serialize(MainAddressList));
-            bool tmpExitWhileLoop = false;
-            while (tmpExitWhileLoop == false)
+            KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = MainAddressList.ToArray();
+            if (tmpMainList != null)
             {
-                KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = MainAddressList.ToArray();
-                if (tmpMainList != null)
+                for (int i = 0; i < tmpMainList.Length; i++)
                 {
-                    for (int i = 0; i < tmpMainList.Length && tmpExitWhileLoop == false; i++)
+                    if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
-                        if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
-                        {
-                            tmpExitWhileLoop = Notus.Toolbox.Network.PingToNode(tmpMainList[i].Value);
-                        }
+                        MainAddressList[tmpMainList[i].Key].Status = Notus.Toolbox.Network.PingToNode(tmpMainList[i].Value);
                     }
-                }
-                if (tmpExitWhileLoop == false)
-                {
-                    Thread.Sleep(2000);
                 }
             }
         }
         private string CalculateMainAddressListHash()
         {
-            List<UInt64> tmpAllWordlTimeList = new List<UInt64>();
+            SortedDictionary<UInt64, string> tmpNodeList = new SortedDictionary<ulong, string>();
             foreach (KeyValuePair<string, NVS.IpInfo> entry in MainAddressList)
             {
-                tmpAllWordlTimeList.Add(UInt64.Parse(entry.Key, NumberStyles.AllowHexSpecifier));
+                tmpNodeList.Add(
+                    UInt64.Parse(entry.Key, NumberStyles.AllowHexSpecifier),
+                    entry.Value.Status.ToString()
+                );
             }
-            tmpAllWordlTimeList.Sort();
-            return new NH().CommonHash("sha1", JsonSerializer.Serialize(tmpAllWordlTimeList));
+            return new NH().CommonHash("sha1", JsonSerializer.Serialize(tmpNodeList));
         }
         public List<NVS.IpInfo> GiveMeNodeList()
         {
@@ -457,8 +442,8 @@ namespace Notus.Validator
                 incomeData = GetPureText(incomeData, "lhash");
                 Console.WriteLine("MainAddressListHash : " + MainAddressListHash);
                 Console.WriteLine("incomeData : " + incomeData);
-                Console.WriteLine(JsonSerializer.Serialize( MainAddressList));
-                if(string.Equals(incomeData, MainAddressListHash) == false)
+                Console.WriteLine(JsonSerializer.Serialize(MainAddressList));
+                if (string.Equals(incomeData, MainAddressListHash) == false)
                 {
 
                 }
@@ -1080,6 +1065,10 @@ namespace Notus.Validator
                     AddToMainAddressList(entry.Value.IpAddress, entry.Value.Port);
                 }
             }
+            foreach (KeyValuePair<string, NVS.IpInfo> entry in MainAddressList)
+            {
+                MainAddressList[entry.Key].Status = NVS.NodeStatus.Unknown;
+            }
             /*
             Console.WriteLine("Queue.cs->Line 1044");
             Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
@@ -1088,7 +1077,7 @@ namespace Notus.Validator
             NP.Info("Node Sync Starting", false);
 
             //listedekilere ping atıyor, eğer 1 adet node aktif ise çıkış yapıyor...
-            PingOtherNodes();
+            PingOtherNodes(true);
 
             // mevcut node ile diğer nodeların listeleri senkron hale getiriliyor
             SyncListWithNode();
@@ -1208,9 +1197,9 @@ namespace Notus.Validator
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
                 if (
-                    entry.Value.SyncNo == biggestSyncNo 
-                        && 
-                    entry.Value.Status==NVS.NodeStatus.Online
+                    entry.Value.SyncNo == biggestSyncNo
+                        &&
+                    entry.Value.Status == NVS.NodeStatus.Online
                 )
                 {
 
@@ -1233,7 +1222,7 @@ namespace Notus.Validator
         {
             Dictionary<ulong, bool> syncNoCount = new Dictionary<ulong, bool>();
             bool exitLoop = false;
-            while(exitLoop == false)
+            while (exitLoop == false)
             {
                 syncNoCount.Clear();
                 foreach (var iEntry in NVG.NodeList)
@@ -1387,7 +1376,7 @@ namespace Notus.Validator
             burada diğer node'ların eklenmesi sorunu var
             burada diğer node'ların eklenmesi sorunu var
             burada diğer node'ların eklenmesi sorunu var
-                */
+            */
             KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = MainAddressList.ToArray();
             if (tmpMainList != null)
             {

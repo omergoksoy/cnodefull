@@ -3,7 +3,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text.Json;
 using NVG = Notus.Variable.Globals;
-
+using NVS = Notus.Variable.Struct;
 namespace Notus.Toolbox
 {
     public class Network
@@ -18,17 +18,19 @@ namespace Notus.Toolbox
         {
             return GetBlockFromNode(ipNode.IpAddress, ipNode.Port, blockNo, objSettings);
         }
-        public static bool PingToNode(Notus.Variable.Struct.IpInfo NodeIp)
+        public static NVS.NodeStatus PingToNode(Notus.Variable.Struct.IpInfo NodeIp)
         {
             return PingToNode(NodeIp.IpAddress, NodeIp.Port);
         }
-        public static bool PingToNode(string ipAddress, int portNo)
+        public static NVS.NodeStatus PingToNode(string ipAddress, int portNo)
         {
-            string urlPath = Notus.Network.Node.MakeHttpListenerPath(ipAddress, portNo) + "ping/";
-            string urlResult = Notus.Communication.Request.GetSync(urlPath, 2, true, false);
-            Console.WriteLine(urlPath);
-            Console.WriteLine(urlResult);
-            return string.Equals(urlResult, "pong");
+            string tmpResult = Notus.Communication.Request.GetSync(
+                Notus.Network.Node.MakeHttpListenerPath(ipAddress, portNo) + "ping/",
+                2,
+                true,
+                false
+            );
+            return string.Equals(tmpResult,"pong")==true ? NVS.NodeStatus.Online : NVS.NodeStatus.Offline;
         }
         public static string IpAndPortToHex(Notus.Variable.Struct.NodeInfo NodeIp)
         {
