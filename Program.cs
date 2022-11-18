@@ -1,4 +1,5 @@
 ﻿using Notus.Communication;
+using Notus.Network;
 using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
@@ -137,6 +138,9 @@ bu iki node arasındaki süre
 // senkronizasyon düzeltmesi için yapılan devre dışı bırakma işlemleri
 
 //tgz-exception
+
+//node-order-exception
+//Node sıralama istisnası
 Notus.Validator.Node.Start(args);
 
 

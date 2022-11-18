@@ -645,6 +645,7 @@ namespace Notus.Validator
                 };
             }
 
+
             ValidatorQueueObj.PreStart();
 
             //şimdilik kapatıldı
@@ -896,20 +897,30 @@ namespace Notus.Validator
 
                         string tmpNodeHexStr = string.Empty;
                         Dictionary<ulong, string> oldestNode = new Dictionary<ulong, string>();
-                        foreach (KeyValuePair<string, NVS.NodeQueueInfo> innerEntry in NVG.NodeList)
+                        KeyValuePair<string, NVS.NodeQueueInfo>[]? nList = NVG.NodeList.ToArray();
+                        if (nList != null)
                         {
-                            if (innerEntry.Value.Status == NVS.NodeStatus.Online)
+                            for (int i = 0; i < nList.Length; i++)
                             {
-                                if (innerEntry.Value.SyncNo == 0)
+                                if (nList[i].Value.Status == NVS.NodeStatus.Online)
                                 {
-                                    oldestNode.Add(innerEntry.Value.Begin, innerEntry.Value.IP.Wallet);
-                                }
-                            }
-                        }
-                        if (oldestNode.Count > 0)
-                        {
-                            Console.WriteLine(JsonSerializer.Serialize(oldestNode));
-                        }
+                                    if (nList[i].Value.SyncNo == 0)
+                                    {
+                                        oldestNode.Add(nList[i].Value.Begin, nList[i].Value.IP.Wallet);
+                                    }// if (nList[i].Value.SyncNo == 0)
+                                }// if (nList[i].Value.Status == NVS.NodeStatus.Online)
+                            }// for (int i = 0; i < nList.Length; i++)
+                            if (oldestNode.Count > 0)
+                            {
+                                // burada seçilen node en eski başlangıç zamanına sahip olan node
+                                // önce bu node'a onay verilerek ağa dahil edilecek
+                                // sonra diğerleri sırasıyla içeri giriş yapacak
+
+                                Console.WriteLine("Main.cs -> Line 915");
+                                Console.WriteLine(JsonSerializer.Serialize(oldestNode.First()));
+                                Console.WriteLine(JsonSerializer.Serialize(oldestNode));
+                            }// if (oldestNode.Count > 0)
+                        }// if (nList != null)
                     }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId)) ELSE 
 
                     if (NVC.RegenerateNodeQueueCount == nodeOrderCount)

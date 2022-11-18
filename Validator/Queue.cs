@@ -804,6 +804,11 @@ namespace Notus.Validator
             SortedDictionary<BigInteger, string> resultList = new SortedDictionary<BigInteger, string>();
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
+                //node-order-exception
+                //burada hangi nodeların devreye gireceğini seçelim
+                //burada hangi nodeların devreye gireceğini seçelim
+                //burada hangi nodeların devreye gireceğini seçelim
+                //burada hangi nodeların devreye gireceğini seçelim
                 if (entry.Value.Status == NVS.NodeStatus.Online && entry.Value.SyncNo == biggestSyncNo)
                 {
                     bool exitInnerWhileLoop = false;
@@ -943,7 +948,8 @@ namespace Notus.Validator
             //önce node'ların içerisinde senkronizasyon bekleyen olmadığına emin ol
             WaitUntilAvailable();
             //Console.WriteLine("WaitUntilAvailable -> After");
-
+            
+            //node-order-exception
             //NP.ReadLine();
 
 
