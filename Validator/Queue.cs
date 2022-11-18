@@ -216,7 +216,7 @@ namespace Notus.Validator
             string tmpHexKeyStr = Notus.Toolbox.Network.IpAndPortToHex(ipAddress, portNo);
             if (MainAddressList.ContainsKey(tmpHexKeyStr) == false)
             {
-                MainAddressHashList.Add(tmpHexKeyStr, DateTime.Now.ToString());
+                MainAddressHashList.Add(tmpHexKeyStr, DateTime.Now.ToString(NVC.DefaultDateTimeFormatText));
                 MainAddressList.Add(tmpHexKeyStr, new NVS.IpInfo()
                 {
                     IpAddress = ipAddress,
