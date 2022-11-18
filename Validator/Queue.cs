@@ -43,7 +43,7 @@ namespace Notus.Validator
         }
         private bool SyncReady = true;
 
-        private SortedDictionary<string, NVS.IpInfo> MainAddressOfflineList = new SortedDictionary<string, NVS.IpInfo>();
+        private Dictionary<string, string> MainAddressHashList = new Dictionary<string, string>();
         private SortedDictionary<string, NVS.IpInfo> MainAddressList = new SortedDictionary<string, NVS.IpInfo>();
         private string MainAddressListHash = string.Empty;
 
@@ -167,9 +167,9 @@ namespace Notus.Validator
                 );
             return afterMiliSecondTime.AddSeconds(secondVal);
         }
-        private void PingOtherNodes(bool firstExecution)
+        private void PingOtherNodes()
         {
-            NP.Info("Waiting For Node Sync");
+            NP.Info("Sending Ping To Nodes");
             Console.WriteLine(JsonSerializer.Serialize(MainAddressList));
             KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = MainAddressList.ToArray();
             if (tmpMainList != null)
@@ -216,6 +216,7 @@ namespace Notus.Validator
             string tmpHexKeyStr = Notus.Toolbox.Network.IpAndPortToHex(ipAddress, portNo);
             if (MainAddressList.ContainsKey(tmpHexKeyStr) == false)
             {
+                MainAddressHashList.Add(tmpHexKeyStr, DateTime.Now.ToString());
                 MainAddressList.Add(tmpHexKeyStr, new NVS.IpInfo()
                 {
                     IpAddress = ipAddress,
@@ -439,15 +440,7 @@ namespace Notus.Validator
             }
             if (CheckXmlTag(incomeData, "lhash"))
             {
-                incomeData = GetPureText(incomeData, "lhash");
-                Console.WriteLine("MainAddressListHash : " + MainAddressListHash);
-                Console.WriteLine("incomeData : " + incomeData);
-                Console.WriteLine(JsonSerializer.Serialize(MainAddressList));
-                if (string.Equals(incomeData, MainAddressListHash) == false)
-                {
-
-                }
-                return (string.Equals(incomeData, MainAddressListHash) == true ? "1" : "0");
+                return (string.Equals(GetPureText(incomeData, "lhash"), MainAddressListHash) == true ? "1" : "0");
             }
             if (CheckXmlTag(incomeData, "nList"))
             {
@@ -994,6 +987,8 @@ namespace Notus.Validator
                 return;
             if (NVG.Settings.GenesisCreated == true)
                 return;
+
+            MainAddressHashList.Clear();
             foreach (NVS.IpInfo defaultNodeInfo in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
             {
                 AddToMainAddressList(defaultNodeInfo.IpAddress, defaultNodeInfo.Port, false);
@@ -1077,7 +1072,7 @@ namespace Notus.Validator
             NP.Info("Node Sync Starting", false);
 
             //listedekilere ping atıyor, eğer 1 adet node aktif ise çıkış yapıyor...
-            PingOtherNodes(true);
+            PingOtherNodes();
 
             // mevcut node ile diğer nodeların listeleri senkron hale getiriliyor
             SyncListWithNode();
@@ -1370,46 +1365,39 @@ namespace Notus.Validator
         }
         private void SyncListWithNode()
         {
-            /*
-             * omergoksoy
-            burada diğer node'ların eklenmesi sorunu var
-            burada diğer node'ların eklenmesi sorunu var
-            burada diğer node'ların eklenmesi sorunu var
-            burada diğer node'ların eklenmesi sorunu var
-            */
+            NP.Info("Node List Sync With Other Nodes");
+
             KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = MainAddressList.ToArray();
             if (tmpMainList != null)
             {
                 bool exitSyncLoop = false;
                 while (exitSyncLoop == false)
                 {
+                    //liste değişimi yaıplıyor
                     for (int i = 0; i < tmpMainList.Length; i++)
                     {
                         if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
                         {
-                            bool exitListSendingLoop = false;
-                            while (exitListSendingLoop == false)
+                            string innerResponseStr = SendMessageED(tmpMainList[i].Key,
+                                tmpMainList[i].Value.IpAddress,
+                                tmpMainList[i].Value.Port,
+                                "<nList>" + JsonSerializer.Serialize(MainAddressList) + "</nList>"
+                            );
+                            if (innerResponseStr == "1")
                             {
-                                string innerResponseStr = SendMessageED(tmpMainList[i].Key,
-                                    tmpMainList[i].Value.IpAddress,
-                                    tmpMainList[i].Value.Port,
-                                    "<nList>" + JsonSerializer.Serialize(MainAddressList) + "</nList>"
-                                );
-                                //Console.WriteLine("<nList> innerResponseStr: [ "+ tmpMainList[i].Value.IpAddress + " ] " + innerResponseStr);
-                                if (innerResponseStr == "1")
-                                {
-                                    exitListSendingLoop = true;
-                                }
-                                else
-                                {
-                                    Thread.Sleep(3500);
-                                }
+                                MainAddressList[tmpMainList[i].Key].Status = NVS.NodeStatus.Online;
+                            }
+                            else
+                            {
+                                MainAddressList[tmpMainList[i].Key].Status = NVS.NodeStatus.Offline;
                             }
                         }
                     }
 
                     bool allListSyncWithNode = true;
+                    //return (string.Equals(GetPureText(incomeData, "lhash"), MainAddressListHash) == true ? "1" : "0");
 
+                    // liste hashleri takas ediliyor
                     for (int i = 0; i < tmpMainList.Length; i++)
                     {
                         if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
