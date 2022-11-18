@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Collections.Concurrent;
 using System.Net;
 using System.Numerics;
 using System.Text.Json;
-using System.Threading;
 using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
@@ -52,7 +47,7 @@ namespace Notus.Validator
         {
             NP.Basic("Garbage Collector starting");
             Notus.Threads.Timer TimerObj = new Notus.Threads.Timer(250);
-            TimerObj.Start(250,() =>
+            TimerObj.Start(250, () =>
             {
                 if (TimeBaseBlockUidList.Count > 20000)
                 {
@@ -900,22 +895,23 @@ namespace Notus.Validator
                         }
 
                         string tmpNodeHexStr = string.Empty;
-                        foreach(KeyValuePair<string, NVS.NodeQueueInfo> innerEntry in NVG.NodeList)
+                        Dictionary<ulong, string> oldestNode = new Dictionary<ulong, string>();
+                        foreach (KeyValuePair<string, NVS.NodeQueueInfo> innerEntry in NVG.NodeList)
                         {
                             if (innerEntry.Value.Status == NVS.NodeStatus.Online)
                             {
                                 if (innerEntry.Value.SyncNo == 0)
                                 {
-
+                                    oldestNode.Add(innerEntry.Value.Begin, innerEntry.Value.IP.Wallet);
                                 }
                             }
                         }
-                        if (tmpNodeHexStr.Length > 0)
+                        if (oldestNode.Count > 0)
                         {
-
+                            Console.WriteLine(JsonSerializer.Serialize(oldestNode));
                         }
                     }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId)) ELSE 
-                    
+
                     if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
                     {
                         // eğer yeterli sayıda node yokse
@@ -935,7 +931,7 @@ namespace Notus.Validator
                             ValidatorQueueObj.ReOrderNodeQueue(CurrentQueueTime, queueSeedStr);
                         }
                     } //if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
-                    
+
                     if (nodeOrderCount == 6)
                     {
                         nodeOrderCount = 0;
