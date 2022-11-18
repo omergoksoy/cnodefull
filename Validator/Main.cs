@@ -684,7 +684,7 @@ namespace Notus.Validator
                     {
                         FirstSyncIsDone = true;
                         MyReadyMessageSended = true;
-                        ValidatorQueueObj.MyNodeIsReady();
+                        NVG.NodeList[NVG.Settings.Nodes.My.HexKey].Ready = true;
                     }
                     else
                     {
@@ -694,7 +694,7 @@ namespace Notus.Validator
                             {
                                 FirstSyncIsDone = true;
                                 MyReadyMessageSended = true;
-                                ValidatorQueueObj.MyNodeIsReady();
+                                NVG.NodeList[NVG.Settings.Nodes.My.HexKey].Ready = true;
                             }
                         }
                     }
@@ -898,6 +898,22 @@ namespace Notus.Validator
                         {
                             NGF.BlockQueue.LoadFromPoolDb();
                         }
+
+                        string tmpNodeHexStr = string.Empty;
+                        foreach(KeyValuePair<string, NVS.NodeQueueInfo> innerEntry in NVG.NodeList)
+                        {
+                            if (innerEntry.Value.Status == NVS.NodeStatus.Online)
+                            {
+                                if (innerEntry.Value.SyncNo == 0)
+                                {
+
+                                }
+                            }
+                        }
+                        if (tmpNodeHexStr.Length > 0)
+                        {
+
+                        }
                     }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId)) ELSE 
                     
                     if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
@@ -908,7 +924,6 @@ namespace Notus.Validator
                         {
                             NP.Warning("Closing The Node Because There Are Not Enough Nodes");
                             NGF.CloseMyNode();
-                            //ValidatorQueueObj.GenerateNotEnoughNodeQueue(ND.AddMiliseconds(CurrentQueueTime, 1500));
                         }
                         else
                         {
@@ -1260,7 +1275,7 @@ namespace Notus.Validator
                 {
                     if (IncomeBlockList.Count == 0)
                     {
-                        ValidatorQueueObj.MyNodeIsReady();
+                        NVG.NodeList[NVG.Settings.Nodes.My.HexKey].Ready = true;
                     }
                 }
             }
