@@ -353,6 +353,7 @@ namespace Notus.Validator
             {
                 StartingTimeAfterEnoughNode = ND.ToDateTime(GetPureText(incomeData, "when"));
                 NVG.NodeQueue.Starting = Notus.Date.ToLong(StartingTimeAfterEnoughNode);
+                NVG.CurrentSyncNo = NVG.NodeQueue.Starting;
                 NVG.NodeQueue.OrderCount = 1;
                 NVG.NodeQueue.Begin = true;
                 StartingTimeAfterEnoughNode_Arrived = true;
@@ -944,10 +945,8 @@ namespace Notus.Validator
             //eğer bende bilgisi olmayan node varsa bilgisini istiyor
             AskInfoFromNode();
 
-            //Console.WriteLine("WaitUntilAvailable -> Before");
             //önce node'ların içerisinde senkronizasyon bekleyen olmadığına emin ol
             WaitUntilAvailable();
-            //Console.WriteLine("WaitUntilAvailable -> After");
             
             //node-order-exception
             //NP.ReadLine();
@@ -977,7 +976,7 @@ namespace Notus.Validator
                         StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
                         " / " + NVG.NOW.Obj.ToString("HH:mm:ss.fff")
                     );
-
+                    NVG.CurrentSyncNo = syncStaringTime;
                     NVG.NodeQueue.Starting = syncStaringTime;
                     NVG.NodeQueue.OrderCount = 1;
                     NVG.NodeQueue.Begin = true;
@@ -1077,6 +1076,10 @@ namespace Notus.Validator
         }
         private void WaitUntilAvailable()
         {
+            burada beklerken diğer node'dan syncno zamanı gelecek
+            gelen zamana kadar buradan ve diğer işlemleri bypass ederek 
+            doğrudan iletişim kısmına geçecek
+
             // buradaki sayı 2 olana kadar bekle
             Dictionary<ulong, bool> syncNoCount = new Dictionary<ulong, bool>();
             bool exitLoop = false;

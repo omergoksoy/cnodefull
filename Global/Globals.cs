@@ -63,6 +63,7 @@ namespace Notus.Variable
         şu an ki zamanın üzerine 1 dakika ekleyecek ve o zaman geldiğinde kuyruğa dahil edilmiş olacak
 
         */
+        public static ulong CurrentSyncNo { get; set; }
         public static bool LocalBlockLoaded { get; set; }
         public static int GroupNo { get; set; }
         public static string SessionPrivateKey { get; set; }

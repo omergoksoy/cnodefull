@@ -908,14 +908,20 @@ namespace Notus.Validator
                                     {
                                         oldestNode.Add(nList[i].Value.Begin, nList[i].Value.IP.Wallet);
                                     }// if (nList[i].Value.SyncNo == 0)
+                                    else
+                                    {
+                                        burada aynı SYNC_NO değerine sahip olan nodelardan bir liste yapılacak
+                                        yapılan liste ile ilk sıradaki node bildirecek
+                                    } // else if (nList[i].Value.SyncNo == 0)
                                 }// if (nList[i].Value.Status == NVS.NodeStatus.Online)
                             }// for (int i = 0; i < nList.Length; i++)
                             if (oldestNode.Count > 0)
                             {
+                                KeyValuePair<ulong, string> firstNode = oldestNode.First();
                                 // burada seçilen node en eski başlangıç zamanına sahip olan node
                                 // önce bu node'a onay verilerek ağa dahil edilecek
                                 // sonra diğerleri sırasıyla içeri giriş yapacak
-
+                                NVG.CurrentSyncNo
                                 Console.WriteLine("Main.cs -> Line 915");
                                 Console.WriteLine(JsonSerializer.Serialize(oldestNode.First()));
                                 Console.WriteLine(JsonSerializer.Serialize(oldestNode));
