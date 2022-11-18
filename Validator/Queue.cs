@@ -1367,6 +1367,11 @@ namespace Notus.Validator
         {
             NP.Info("Node List Sync With Other Nodes");
 
+            burayı düzeltelim
+            sadece liste değiştirilsin,
+            liste değiştirilmesi tamamlandıktan sonra sonraki adıma geçilsin
+            çünkü katılmak isteyen node'lar sıra ile içeri alınacak
+
             KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = MainAddressList.ToArray();
             if (tmpMainList != null)
             {
