@@ -1,18 +1,17 @@
 ﻿using System.Collections.Concurrent;
+using System.Globalization;
 using System.Net;
 using System.Numerics;
 using System.Text.Json;
-using System.Xml;
 using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
-using NP = Notus.Print;
 using NH = Notus.Hash;
+using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
-using System.Globalization;
 
 namespace Notus.Validator
 {
@@ -927,7 +926,7 @@ namespace Notus.Validator
                             if (oldestNode.Count > 0)
                             {
                                 SortedDictionary<BigInteger, string> oldestNodeChooser = new();
-                                KeyValuePair<ulong, string> firstNode = oldestNode.First();
+                                var firstNode = oldestNode.First();
                                 ulong oldestBeginTime = firstNode.Key;
                                 string oldestWallet = firstNode.Value;
 
@@ -935,7 +934,7 @@ namespace Notus.Validator
                                 {
                                     string tmpOrderHash = new NH().CommonHash("sha1", iEntry.Key + NVC.CommonDelimeterChar + oldestWallet);
                                     BigInteger intWalletNo = BigInteger.Parse("0" + tmpOrderHash, NumberStyles.AllowHexSpecifier);
-                                    oldestNodeChooser.Add(intWalletNo,iEntry.Key);
+                                    oldestNodeChooser.Add(intWalletNo, iEntry.Key);
                                 }
 
                                 // burada seçilen node en eski başlangıç zamanına sahip olan node
@@ -946,6 +945,20 @@ namespace Notus.Validator
                                 Console.WriteLine("oldestBeginTime : " + oldestBeginTime.ToString());
                                 Console.WriteLine("oldestWallet    : " + oldestWallet);
                                 Console.WriteLine("chooser         : " + oldChooser.Value);
+                                if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, oldChooser.Value))
+                                {
+                                    birinci sıradaki wallet diğer node'a başlangıç zamanını söyleyecek
+                                    belirli bir süre sonra diğer wallet söyleyecek ( eğer birinci node düşürse diye )
+
+                                    Console.WriteLine("I Must Tell");
+                                    // NVG.Settings.Nodes.My.IP.Wallet
+                                    //NVG.Settings.Nodes.My.IP.Wallet
+                                    ValidatorQueueObj.TellSyncNoToEarlistNode(oldestWallet);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Others Must Tell");
+                                }
                             }// if (oldestNode.Count > 0)
                         }// if (nList != null)
                     }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId)) ELSE 

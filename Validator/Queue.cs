@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Numerics;
 using System.Text.Json;
 using ND = Notus.Date;
@@ -7,7 +6,6 @@ using NGF = Notus.Variable.Globals.Functions;
 using NH = Notus.Hash;
 using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
-using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
 namespace Notus.Validator
@@ -947,7 +945,7 @@ namespace Notus.Validator
 
             //önce node'ların içerisinde senkronizasyon bekleyen olmadığına emin ol
             WaitUntilAvailable();
-            
+
             //node-order-exception
             //NP.ReadLine();
 
@@ -1074,6 +1072,30 @@ namespace Notus.Validator
             GenerateNodeQueue(currentQueueTime, ND.AddMiliseconds(currentQueueTime, 1500), tmpWalletList);
             NVG.NodeQueue.OrderCount++;
         }
+        public void TellSyncNoToEarlistNode(string receiverWalletId)
+        {
+            // NVG.CurrentSyncNo
+            string tmpSyncNoStr = "<syncNo>" +
+                NVG.CurrentSyncNo +
+                NVC.CommonDelimeterChar +
+                Notus.Wallet.ID.Sign(
+                    receiverWalletId +
+                        NVC.CommonDelimeterChar + 
+                    NVG.CurrentSyncNo.ToString() +
+                        NVC.CommonDelimeterChar +
+                    NVG.Settings.Nodes.My.IP.Wallet +
+                        NVC.CommonDelimeterChar +
+                    receiverWalletId,
+                    NVG.SessionPrivateKey
+                ) +
+                "</syncNo>";
+
+            NVG.NodeQueue.
+            if (SendMessageED(tmpMainList[i].Key, tmpMainList[i].Value, myNodeDataText) == "1")
+            {
+                NVG.NodeList[tmpMainList[i].Key].Status = NVS.NodeStatus.Online;
+            }
+        }
         private void WaitUntilAvailable()
         {
             /*
@@ -1082,7 +1104,7 @@ namespace Notus.Validator
             doğrudan iletişim kısmına geçecek
             */
             // buradaki sayı 2 olana kadar bekle
-            Dictionary<ulong, bool> syncNoCount = new Dictionary<ulong, bool>();
+            Dictionary<ulong, bool> syncNoCount = new();
             bool exitLoop = false;
             while (exitLoop == false)
             {
@@ -1091,7 +1113,7 @@ namespace Notus.Validator
                 {
                     if (iEntry.Value.Status == NVS.NodeStatus.Online)
                     {
-                        Console.WriteLine(iEntry.Key + " -> "  + iEntry.Value.SyncNo.ToString());
+                        Console.WriteLine(iEntry.Key + " -> " + iEntry.Value.SyncNo.ToString());
                         if (syncNoCount.ContainsKey(iEntry.Value.SyncNo) == false)
                         {
                             syncNoCount.Add(iEntry.Value.SyncNo, true);
@@ -1100,7 +1122,7 @@ namespace Notus.Validator
                 }
 
                 sayı 1 adet veya benim SYNC_NO değerim eşit olduğunda çıkış yapılsın
-                çıkış yapıldıktan sonra eksik bloklar yüklenecek ve senkronizasyon 
+                çıkış yapıldıktan sonra eksik bloklar yüklenecek ve senkronizasyon
                 süreci tamamlanana kadar bekleyecek.
                 if (syncNoCount.Count == 1)
                 {
