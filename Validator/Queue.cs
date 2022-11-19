@@ -413,6 +413,7 @@ namespace Notus.Validator
             if (CheckXmlTag(incomeData, "syncNo"))
             {
                 incomeData = GetPureText(incomeData, "syncNo");
+                Console.WriteLine("incomeData : " + incomeData);
                 string[] tmpArr = incomeData.Split(":");
                 ulong chooserSyncNo = ulong.Parse(tmpArr[0]);
                 string chooserWalletId = tmpArr[1];
@@ -423,11 +424,13 @@ namespace Notus.Validator
                     NVG.CurrentSyncNo.ToString() +
                         NVC.CommonDelimeterChar +
                     chooserWalletId;
-                foreach ( var iEntry in NVG.NodeList)
+                Console.WriteLine("controlText : " + controlText);
+                foreach (var iEntry in NVG.NodeList)
                 {
-                    if(iEntry.Value.IP.Equals(chooserWalletId) == true)
+                    if (iEntry.Value.IP.Equals(chooserWalletId) == true)
                     {
-                        if(Notus.Wallet.ID.Verify(controlText,chooserSignStr, iEntry.Value.PublicKey) == true)
+                        Console.WriteLine("iEntry.Value.PublicKey : " + iEntry.Value.PublicKey);
+                        if (Notus.Wallet.ID.Verify(controlText, chooserSignStr, iEntry.Value.PublicKey) == true)
                         {
                             return "true";
                         }
@@ -1103,10 +1106,14 @@ namespace Notus.Validator
         public void TellSyncNoToEarlistNode(string receiverWalletId)
         {
             // NVG.CurrentSyncNo
+            string rawStr = receiverWalletId + NVC.CommonDelimeterChar +
+                NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar + NVG.Settings.Nodes.My.IP.Wallet;
+            Console.WriteLine("rawStr : " + rawStr);
+
             string tmpSyncNoStr = "<syncNo>" +
                 NVG.CurrentSyncNo +
                 NVC.CommonDelimeterChar +
-                NVG.Settings.Nodes.My.IP.Wallet + 
+                NVG.Settings.Nodes.My.IP.Wallet +
                 NVC.CommonDelimeterChar +
                 Notus.Wallet.ID.Sign(
                     receiverWalletId +
@@ -1117,6 +1124,7 @@ namespace Notus.Validator
                     NVG.SessionPrivateKey
                 ) +
                 "</syncNo>";
+            Console.WriteLine("tmpSyncNoStr : " + tmpSyncNoStr);
             foreach (var iEntry in NVG.NodeList)
             {
                 bool youCanSend = false;
@@ -1137,10 +1145,10 @@ namespace Notus.Validator
 
                 if (youCanSend == true)
                 {
-                    string resultStr=SendMessageED(
-                        iEntry.Key, 
-                        iEntry.Value.IP.IpAddress, 
-                        iEntry.Value.IP.Port, 
+                    string resultStr = SendMessageED(
+                        iEntry.Key,
+                        iEntry.Value.IP.IpAddress,
+                        iEntry.Value.IP.Port,
                         tmpSyncNoStr
                     );
                     Console.WriteLine("resultStr : " + resultStr);
