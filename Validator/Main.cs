@@ -929,11 +929,11 @@ namespace Notus.Validator
                                 SortedDictionary<BigInteger, string> oldestNodeChooser = new();
                                 var firstNode = oldestNode.First();
                                 ulong oldestBeginTime = firstNode.Key;
-                                string oldestWallet = firstNode.Value;
+                                string choosenOldestWallet = firstNode.Value;
 
                                 foreach (var iEntry in syncNodeList)
                                 {
-                                    string tmpOrderHash = new NH().CommonHash("sha1", iEntry.Key + NVC.CommonDelimeterChar + oldestWallet);
+                                    string tmpOrderHash = new NH().CommonHash("sha1", iEntry.Key + NVC.CommonDelimeterChar + choosenOldestWallet);
                                     BigInteger intWalletNo = BigInteger.Parse("0" + tmpOrderHash, NumberStyles.AllowHexSpecifier);
                                     oldestNodeChooser.Add(intWalletNo, iEntry.Key);
                                 }
@@ -943,16 +943,16 @@ namespace Notus.Validator
                                 // sonra diğerleri sırasıyla içeri giriş yapacak
                                 var oldChooser = oldestNodeChooser.First();
                                 Console.WriteLine("Main.cs -> Line 915");
-                                Console.WriteLine("oldestBeginTime : " + oldestBeginTime.ToString());
-                                Console.WriteLine("oldestWallet    : " + oldestWallet);
-                                Console.WriteLine("chooser         : " + oldChooser.Value);
+                                Console.WriteLine("oldestBeginTime     : " + oldestBeginTime.ToString());
+                                Console.WriteLine("choosenOldestWallet : " + choosenOldestWallet);
+                                Console.WriteLine("chooser             : " + oldChooser.Value);
                                 if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, oldChooser.Value))
                                 {
                                     /*
                                     birinci sıradaki wallet diğer node'a başlangıç zamanını söyleyecek
                                     belirli bir süre sonra diğer wallet söyleyecek ( eğer birinci node düşürse diye )
                                     */
-                                    ValidatorQueueObj.TellSyncNoToEarlistNode(oldestWallet);
+                                    ValidatorQueueObj.TellSyncNoToEarlistNode(choosenOldestWallet);
                                     Console.WriteLine("I Must Tell");
                                 }
                                 else
