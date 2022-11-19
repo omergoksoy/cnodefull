@@ -1098,6 +1098,10 @@ namespace Notus.Validator
                         }
                     }
                 }
+
+                sayı 1 adet veya benim SYNC_NO değerim eşit olduğunda çıkış yapılsın
+                çıkış yapıldıktan sonra eksik bloklar yüklenecek ve senkronizasyon 
+                süreci tamamlanana kadar bekleyecek.
                 if (syncNoCount.Count == 1)
                 {
                     exitLoop = true;
