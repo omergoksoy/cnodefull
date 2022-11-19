@@ -923,6 +923,7 @@ namespace Notus.Validator
                                     } // else if (nList[i].Value.SyncNo == 0)
                                 }// if (nList[i].Value.Status == NVS.NodeStatus.Online)
                             }// for (int i = 0; i < nList.Length; i++)
+
                             if (oldestNode.Count > 0)
                             {
                                 SortedDictionary<BigInteger, string> oldestNodeChooser = new();
@@ -947,13 +948,12 @@ namespace Notus.Validator
                                 Console.WriteLine("chooser         : " + oldChooser.Value);
                                 if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, oldChooser.Value))
                                 {
+                                    /*
                                     birinci sıradaki wallet diğer node'a başlangıç zamanını söyleyecek
                                     belirli bir süre sonra diğer wallet söyleyecek ( eğer birinci node düşürse diye )
-
-                                    Console.WriteLine("I Must Tell");
-                                    // NVG.Settings.Nodes.My.IP.Wallet
-                                    //NVG.Settings.Nodes.My.IP.Wallet
+                                    */
                                     ValidatorQueueObj.TellSyncNoToEarlistNode(oldestWallet);
+                                    Console.WriteLine("I Must Tell");
                                 }
                                 else
                                 {
