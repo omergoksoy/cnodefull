@@ -1076,10 +1076,11 @@ namespace Notus.Validator
         }
         private void WaitUntilAvailable()
         {
+            /*
             burada beklerken diğer node'dan syncno zamanı gelecek
             gelen zamana kadar buradan ve diğer işlemleri bypass ederek 
             doğrudan iletişim kısmına geçecek
-
+            */
             // buradaki sayı 2 olana kadar bekle
             Dictionary<ulong, bool> syncNoCount = new Dictionary<ulong, bool>();
             bool exitLoop = false;

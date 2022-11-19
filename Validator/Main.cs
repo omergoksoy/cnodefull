@@ -2,14 +2,18 @@
 using System.Net;
 using System.Numerics;
 using System.Text.Json;
+using System.Xml;
 using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
+using NH = Notus.Hash;
 using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
+using System.Globalization;
+
 namespace Notus.Validator
 {
     public class Main : IDisposable
@@ -896,10 +900,11 @@ namespace Notus.Validator
                         }
 
                         string tmpNodeHexStr = string.Empty;
-                        Dictionary<ulong, string> oldestNode = new Dictionary<ulong, string>();
+                        Dictionary<ulong, string> oldestNode = new();
                         KeyValuePair<string, NVS.NodeQueueInfo>[]? nList = NVG.NodeList.ToArray();
                         if (nList != null)
                         {
+                            SortedDictionary<string, string> syncNodeList = new();
                             for (int i = 0; i < nList.Length; i++)
                             {
                                 if (nList[i].Value.Status == NVS.NodeStatus.Online)
@@ -910,21 +915,37 @@ namespace Notus.Validator
                                     }// if (nList[i].Value.SyncNo == 0)
                                     else
                                     {
-                                        burada aynı SYNC_NO değerine sahip olan nodelardan bir liste yapılacak
-                                        yapılan liste ile ilk sıradaki node bildirecek
+                                        // burada aynı SYNC_NO değerine sahip olan nodelardan bir liste yapılacak
+                                        // yapılan liste ile ilk sıradaki node bildirecek
+                                        if (NVG.CurrentSyncNo == nList[i].Value.SyncNo)
+                                        {
+                                            syncNodeList.Add(nList[i].Value.IP.Wallet, "");
+                                        }
                                     } // else if (nList[i].Value.SyncNo == 0)
                                 }// if (nList[i].Value.Status == NVS.NodeStatus.Online)
                             }// for (int i = 0; i < nList.Length; i++)
                             if (oldestNode.Count > 0)
                             {
+                                SortedDictionary<BigInteger, string> oldestNodeChooser = new();
                                 KeyValuePair<ulong, string> firstNode = oldestNode.First();
+                                ulong oldestBeginTime = firstNode.Key;
+                                string oldestWallet = firstNode.Value;
+
+                                foreach (var iEntry in syncNodeList)
+                                {
+                                    string tmpOrderHash = new NH().CommonHash("sha1", iEntry.Key + NVC.CommonDelimeterChar + oldestWallet);
+                                    BigInteger intWalletNo = BigInteger.Parse("0" + tmpOrderHash, NumberStyles.AllowHexSpecifier);
+                                    oldestNodeChooser.Add(intWalletNo,iEntry.Key);
+                                }
+
                                 // burada seçilen node en eski başlangıç zamanına sahip olan node
                                 // önce bu node'a onay verilerek ağa dahil edilecek
                                 // sonra diğerleri sırasıyla içeri giriş yapacak
-                                NVG.CurrentSyncNo
+                                var oldChooser = oldestNodeChooser.First();
                                 Console.WriteLine("Main.cs -> Line 915");
-                                Console.WriteLine(JsonSerializer.Serialize(oldestNode.First()));
-                                Console.WriteLine(JsonSerializer.Serialize(oldestNode));
+                                Console.WriteLine("oldestBeginTime : " + oldestBeginTime.ToString());
+                                Console.WriteLine("oldestWallet    : " + oldestWallet);
+                                Console.WriteLine("chooser         : " + oldChooser.Value);
                             }// if (oldestNode.Count > 0)
                         }// if (nList != null)
                     }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId)) ELSE 
