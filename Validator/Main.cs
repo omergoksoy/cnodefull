@@ -590,9 +590,9 @@ namespace Notus.Validator
                         // sonra diğerleri sırasıyla içeri giriş yapacak
                         var earliestNodeSelector = earlistNodeChoosing.First();
                         Console.WriteLine("Main.cs -> Line 915");
-                        Console.WriteLine("earlistBeginTime     : " + earlistBeginTime.ToString());
+                        Console.WriteLine("earlistBeginTime        : " + earlistBeginTime.ToString());
                         Console.WriteLine("selectiveEarliestWallet : " + selectiveEarliestWallet);
-                        Console.WriteLine("chooser             : " + earliestNodeSelector.Value);
+                        Console.WriteLine("chooser                 : " + earliestNodeSelector.Value);
 
                         if (NetworkSelectorList.ContainsKey(selectiveEarliestWallet) == false)
                         {
@@ -737,10 +737,10 @@ namespace Notus.Validator
                 };
             }
 
-            PreStart();
 
             ValidatorQueueObj.PreStart();
 
+            PreStart();
             //şimdilik kapatıldı
             //ValidatorQueueObj.Start();
 
