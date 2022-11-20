@@ -63,6 +63,8 @@ namespace Notus.Variable
         şu an ki zamanın üzerine 1 dakika ekleyecek ve o zaman geldiğinde kuyruğa dahil edilmiş olacak
 
         */
+        //başka bir node tarafından devam edilmesi söylendiğinde true olarak işaretlenecek
+        public static bool OtherValidatorSelectedMe = false;
         // sıradaki cüzdan, sıradaki node'a haber verecek node
         public static Dictionary<string, string> NetworkSelectorList = new Dictionary<string, string>();
         public static ulong CurrentSyncNo { get; set; }
@@ -79,6 +81,7 @@ namespace Notus.Variable
         public static Notus.Globals.Variable.Settings Settings { get; set; }
         static Globals()
         {
+            OtherValidatorSelectedMe = false;
             LocalBlockLoaded = false;
             GroupNo = 1;
             SessionPrivateKey = Notus.Wallet.ID.New();

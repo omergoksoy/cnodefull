@@ -25,7 +25,6 @@ namespace Notus.Sync
         }
         public void Start()
         {
-            bool controlRun = false;
             ValidatorCountTimerObj = new Notus.Threads.Timer(5);
             ValidatorCountTimerObj.Start(() =>
             {
@@ -43,22 +42,6 @@ namespace Notus.Sync
                                 if (nList[i].Value.Status == NVS.NodeStatus.Online)
                                 {
                                     onlineNodeCount++;
-                                }
-                                if (controlRun == false)
-                                {
-                                    controlRun = true;
-                                    if (nList[i].Value.Status == NVS.NodeStatus.Offline)
-                                    {
-                                        Console.WriteLine(nList[i].Value.IP.IpAddress + " -> OFFLINE");
-                                    }
-                                    if (nList[i].Value.Status == NVS.NodeStatus.Unknown)
-                                    {
-                                        Console.WriteLine(nList[i].Value.IP.IpAddress + " -> UNKNOWN");
-                                    }
-                                    if (nList[i].Value.Status == NVS.NodeStatus.Error)
-                                    {
-                                        Console.WriteLine(nList[i].Value.IP.IpAddress + " -> ERROR");
-                                    }
                                 }
                             }
                             /*
@@ -85,6 +68,21 @@ namespace Notus.Sync
                                     if (notEnoughPrinted == false)
                                     {
                                         NP.Success("Not Enough NodeCount For Executing");
+                                        foreach (var iE in NVG.NodeList)
+                                        {
+                                            if (iE.Value.Status == NVS.NodeStatus.Offline)
+                                            {
+                                                Console.WriteLine(iE.Value.IP.IpAddress + " -> OFFLINE");
+                                            }
+                                            if (iE.Value.Status == NVS.NodeStatus.Unknown)
+                                            {
+                                                Console.WriteLine(iE.Value.IP.IpAddress + " -> UNKNOWN");
+                                            }
+                                            if (iE.Value.Status == NVS.NodeStatus.Error)
+                                            {
+                                                Console.WriteLine(iE.Value.IP.IpAddress + " -> ERROR");
+                                            }
+                                        }
                                         notEnoughPrinted = true;
                                     }
                                     enoughPrinted = false;

@@ -588,10 +588,6 @@ namespace Notus.Validator
                         // önce bu node'a onay verilerek ağa dahil edilecek
                         // sonra diğerleri sırasıyla içeri giriş yapacak
                         var earliestNodeSelector = earlistNodeChoosing.First();
-                        // Console.WriteLine("Main.cs -> Line 915");
-                        // Console.WriteLine("earlistBeginTime        : " + earlistBeginTime.ToString());
-                        // Console.WriteLine("selectiveEarliestWallet : " + selectiveEarliestWallet);
-                        // Console.WriteLine("chooser                 : " + earliestNodeSelector.Value);
                         NP.Info("The Node Will Join The Network : " + selectedEarliestWalletId);
                         if (NVG.NetworkSelectorList.ContainsKey(selectedEarliestWalletId) == false)
                         {
@@ -604,8 +600,8 @@ namespace Notus.Validator
                             birinci sıradaki wallet diğer node'a başlangıç zamanını söyleyecek
                             belirli bir süre sonra diğer wallet söyleyecek ( eğer birinci node düşürse diye )
                             */
-
                             ValidatorQueueObj.TellSyncNoToEarlistNode(selectedEarliestWalletId);
+                            ValidatorQueueObj.TeelTheNodeWhoWaitingRoom(selectedEarliestWalletId);
                             Console.WriteLine("I Must Tell");
                         }
                         else
@@ -739,6 +735,11 @@ namespace Notus.Validator
 
             ValidatorQueueObj.PreStart();
 
+            bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.
+            bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.
+
+            if (NVG.OtherValidatorSelectedMe == true) { 
+            }
             PreStart();
             //şimdilik kapatıldı
             //ValidatorQueueObj.Start();

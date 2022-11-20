@@ -412,12 +412,9 @@ namespace Notus.Validator
             }
             if (CheckXmlTag(incomeData, "syncNo"))
             {
-                //Console.WriteLine("incomeData   : " + incomeData);
                 incomeData = GetPureText(incomeData, "syncNo");
-                //Console.WriteLine("incomeData   : " + incomeData);
                 string[] tmpArr = incomeData.Split(":");
                 string selectedEarliestWalletId = tmpArr[0];
-                //ulong chooserSyncNo = ulong.Parse(tmpArr[1]);
                 string chooserWalletId = tmpArr[2];
                 string chooserSignStr = tmpArr[3];
                 string controlText =
@@ -426,22 +423,60 @@ namespace Notus.Validator
                     NVG.CurrentSyncNo.ToString() +
                         NVC.CommonDelimeterChar +
                     chooserWalletId;
-                //Console.WriteLine("controlText  : " + controlText);
                 foreach (var iEntry in NVG.NodeList)
                 {
                     if (string.Equals(iEntry.Value.IP.Wallet, chooserWalletId) == true)
                     {
-                        //Console.WriteLine("iEntry.Value.PublicKey : " + iEntry.Value.PublicKey);
                         if (Notus.Wallet.ID.Verify(controlText, chooserSignStr, iEntry.Value.PublicKey) == true)
                         {
                             if (NVG.NetworkSelectorList.ContainsKey(selectedEarliestWalletId) == false)
                             {
                                 // sıradaki cüzdan, sıradaki node'a haber verecek node
                                 NVG.NetworkSelectorList.Add(selectedEarliestWalletId, chooserWalletId);
-                                Console.WriteLine("Queue.cs -> Line 441");
-                                Console.WriteLine(JsonSerializer.Serialize(NVG.NetworkSelectorList));
                             }
+                            Console.WriteLine("Queue.cs -> Line 441");
+                            Console.WriteLine(JsonSerializer.Serialize(NVG.NetworkSelectorList));
                             return "1";
+                        }
+                    }
+                }
+                return "0";
+            }
+            if (CheckXmlTag(incomeData, "yourTurn"))
+            {
+                incomeData = GetPureText(incomeData, "yourTurn");
+                string[] tmpArr = incomeData.Split(":");
+                ulong selectedSyncNo = ulong.Parse(tmpArr[0]);
+                string chooserWalletId = tmpArr[1];
+                string chooserSignStr = tmpArr[2];
+
+                foreach (var iEntry in NVG.NodeList)
+                {
+                    if (string.Equals(iEntry.Value.IP.Wallet, chooserWalletId) == true)
+                    {
+                        string controlText =
+                            NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
+                            selectedSyncNo.ToString() + NVC.CommonDelimeterChar + chooserWalletId;
+
+                        if (Notus.Wallet.ID.Verify(controlText, chooserSignStr, iEntry.Value.PublicKey) == true)
+                        {
+                            Console.WriteLine("My Turn Sign Valid");
+                            /*
+                            if (NVG.NetworkSelectorList.ContainsKey(selectedEarliestWalletId) == false)
+                            {
+                                // sıradaki cüzdan, sıradaki node'a haber verecek node
+                                NVG.NetworkSelectorList.Add(selectedEarliestWalletId, chooserWalletId);
+                            }
+                            Console.WriteLine("Queue.cs -> Line 441");
+                            Console.WriteLine(JsonSerializer.Serialize(NVG.NetworkSelectorList));
+                            */
+                            NVG.OtherValidatorSelectedMe = true;
+                            return "1";
+                        }
+                        else
+                        {
+                            Console.WriteLine("My Turn Sign WRONG");
+                            Console.WriteLine("My Turn Sign WRONG");
                         }
                     }
                 }
@@ -992,100 +1027,107 @@ namespace Notus.Validator
             //NP.ReadLine();
 
 
-            //bu fonksyion ile amaç en çok sayıda olan sync no bulunacak
-            ulong biggestSyncNo = FindBiggestSyncNo();
-            StartingTimeAfterEnoughNode_Arrived = false;
-            if (biggestSyncNo == 0)
+            bu değişken true ise sync_no diğer validator tarafından gönderilecek demektir
+            node'un önce kendi bloklarını eşitlemesi gerekir
+            sonrasıda ise izin verilen zamana kadar beklemesi gerekir.
+
+            if (NVG.OtherValidatorSelectedMe == false)
             {
-                NP.NodeCount();
-                //cüzdanların hashleri alınıp sıraya koyuluyor.
-                SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, "beginning");
-
-                //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
-                //birinci sırada ki cüzdan seçiliyor...
-                string tmpFirstWalletId = tmpWalletList.First().Value;
-                if (string.Equals(tmpFirstWalletId, NVG.Settings.Nodes.My.IP.Wallet))
+                //bu fonksyion ile amaç en çok sayıda olan sync no bulunacak
+                ulong biggestSyncNo = FindBiggestSyncNo();
+                StartingTimeAfterEnoughNode_Arrived = false;
+                if (biggestSyncNo == 0)
                 {
-                    Thread.Sleep(5000);
-                    StartingTimeAfterEnoughNode = CalculateStartingTime();
-                    ulong syncStaringTime = ND.ToLong(StartingTimeAfterEnoughNode);
-                    GenerateNodeQueue(biggestSyncNo, syncStaringTime, tmpWalletList);
+                    NP.NodeCount();
+                    //cüzdanların hashleri alınıp sıraya koyuluyor.
+                    SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, "beginning");
 
-                    NP.Info(
-                        "I'm Sending Starting (When) Time / Current : " +
-                        StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
-                        " / " + NVG.NOW.Obj.ToString("HH:mm:ss.fff")
-                    );
-                    NVG.CurrentSyncNo = syncStaringTime;
-                    NVG.NodeQueue.Starting = syncStaringTime;
-                    NVG.NodeQueue.OrderCount = 1;
-                    NVG.NodeQueue.Begin = true;
-                    // eğer false ise senkronizasyon başlamamış demektir...
-                    NVG.Settings.SyncStarted = false;
-
-                    // diğer nodelara belirlediğimiz zaman bilgisini gönderiyoruz
-                    foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
+                    //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
+                    //birinci sırada ki cüzdan seçiliyor...
+                    string tmpFirstWalletId = tmpWalletList.First().Value;
+                    if (string.Equals(tmpFirstWalletId, NVG.Settings.Nodes.My.IP.Wallet))
                     {
-                        if (string.Equals(entry.Key, NVG.Settings.Nodes.My.HexKey) == false)
+                        Thread.Sleep(5000);
+                        StartingTimeAfterEnoughNode = CalculateStartingTime();
+                        ulong syncStaringTime = ND.ToLong(StartingTimeAfterEnoughNode);
+                        GenerateNodeQueue(biggestSyncNo, syncStaringTime, tmpWalletList);
+
+                        NP.Info(
+                            "I'm Sending Starting (When) Time / Current : " +
+                            StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
+                            " / " + NVG.NOW.Obj.ToString("HH:mm:ss.fff")
+                        );
+                        NVG.CurrentSyncNo = syncStaringTime;
+                        NVG.NodeQueue.Starting = syncStaringTime;
+                        NVG.NodeQueue.OrderCount = 1;
+                        NVG.NodeQueue.Begin = true;
+                        // eğer false ise senkronizasyon başlamamış demektir...
+                        NVG.Settings.SyncStarted = false;
+
+                        // diğer nodelara belirlediğimiz zaman bilgisini gönderiyoruz
+                        foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
                         {
-                            if (entry.Value.Status == NVS.NodeStatus.Online)
+                            if (string.Equals(entry.Key, NVG.Settings.Nodes.My.HexKey) == false)
                             {
-                                if (entry.Value.SyncNo == syncStaringTime)
+                                if (entry.Value.Status == NVS.NodeStatus.Online)
                                 {
-                                    bool sendedToNode = false;
-                                    while (sendedToNode == false)
+                                    if (entry.Value.SyncNo == syncStaringTime)
                                     {
-                                        string tmpResult = SendMessage(entry.Value.IP, "<when>" + syncStaringTime + "</when>", entry.Key);
-                                        if (string.Equals(tmpResult, "done"))
+                                        bool sendedToNode = false;
+                                        while (sendedToNode == false)
                                         {
-                                            sendedToNode = true;
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine("when-error-a-01");
+                                            string tmpResult = SendMessage(entry.Value.IP, "<when>" + syncStaringTime + "</when>", entry.Key);
+                                            if (string.Equals(tmpResult, "done"))
+                                            {
+                                                sendedToNode = true;
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("when-error-a-01");
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
+                    else
+                    {
+                        while (StartingTimeAfterEnoughNode_Arrived == false)
+                        {
+                            Thread.Sleep(10);
+                        }
+
+                        GenerateNodeQueue(biggestSyncNo, NVG.NodeQueue.Starting, tmpWalletList);
+                        NP.Info(
+                            "I'm Waiting Starting (When) Time / Current : " +
+                            StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
+                            " /  " +
+                            NVG.NOW.Obj.ToString("HH:mm:ss.fff")
+                        );
+                        // eğer false ise senkronizasyon başlamamış demektir...
+                        NVG.Settings.SyncStarted = false;
+                    }
                 }
                 else
                 {
-                    while (StartingTimeAfterEnoughNode_Arrived == false)
-                    {
-                        Thread.Sleep(10);
-                    }
+                    // bu değişken true ise, senkronizasyonun başladığı anlaşılıyor...
 
-                    GenerateNodeQueue(biggestSyncNo, NVG.NodeQueue.Starting, tmpWalletList);
-                    NP.Info(
-                        "I'm Waiting Starting (When) Time / Current : " +
-                        StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
-                        " /  " +
-                        NVG.NOW.Obj.ToString("HH:mm:ss.fff")
-                    );
-                    // eğer false ise senkronizasyon başlamamış demektir...
-                    NVG.Settings.SyncStarted = false;
+                    NVG.Settings.SyncStarted = true;
+
+                    /*
+                    büyük değerli bir sayı var ise bu sayının 100 saniye eksiği ile listeye eklenecek
+                    ve her turda 1 saniye eklenecek ta ki diğer  en başta belirlene sync numarasına erişene kadar
+                    sonrasında kuraya da
+                    */
+                    NewNodeJoinToGroup(biggestSyncNo);
+                    Console.WriteLine("------------------------------------------");
+                    Console.WriteLine("Queue.cs -> Line 1194");
+                    Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+                    Console.WriteLine("------------------------------------------");
+                    Console.WriteLine("There Is Biggest Sync No");
+                    NP.ReadLine();
                 }
-            }
-            else
-            {
-                // bu değişken true ise, senkronizasyonun başladığı anlaşılıyor...
-
-                NVG.Settings.SyncStarted = true;
-
-                /*
-                büyük değerli bir sayı var ise bu sayının 100 saniye eksiği ile listeye eklenecek
-                ve her turda 1 saniye eklenecek ta ki diğer  en başta belirlene sync numarasına erişene kadar
-                sonrasında kuraya da
-                */
-                NewNodeJoinToGroup(biggestSyncNo);
-                Console.WriteLine("------------------------------------------");
-                Console.WriteLine("Queue.cs -> Line 1194");
-                Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
-                Console.WriteLine("------------------------------------------");
-                Console.WriteLine("There Is Biggest Sync No");
-                NP.ReadLine();
             }
         }
         public string NewNodeJoinToGroup(ulong biggestSyncNo)
@@ -1114,14 +1156,41 @@ namespace Notus.Validator
             GenerateNodeQueue(currentQueueTime, ND.AddMiliseconds(currentQueueTime, 1500), tmpWalletList);
             NVG.NodeQueue.OrderCount++;
         }
+        public void TeelTheNodeWhoWaitingRoom(string selectedEarliestWalletId)
+        {
+            foreach (var iEntry in NVG.NodeList)
+            {
+                if (string.Equals(iEntry.Value.IP.Wallet, selectedEarliestWalletId) == true)
+                {
+                    string tmpSyncNoStr = "<yourTurn>" +
+                        NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar +
+                        NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
+                        Notus.Wallet.ID.Sign(
+                            selectedEarliestWalletId + NVC.CommonDelimeterChar +
+                            NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar + 
+                            NVG.Settings.Nodes.My.IP.Wallet,
+                            NVG.SessionPrivateKey
+                        ) +
+                        "</yourTurn>";
+                    /*
+                    NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
+                    selectedSyncNo.ToString() + NVC.CommonDelimeterChar + chooserWalletId;
+                    */
+                    string resultStr = SendMessageED(
+                        iEntry.Key,
+                        iEntry.Value.IP.IpAddress,
+                        iEntry.Value.IP.Port,
+                        tmpSyncNoStr
+                    );
+                    Console.WriteLine("TeelTheNodeWhoWaitingRoom : " + resultStr);
+                }
+            }
+        }
         public void TellSyncNoToEarlistNode(string selectedEarliestWalletId)
         {
-            string rawStr = selectedEarliestWalletId + NVC.CommonDelimeterChar +
-                NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar + NVG.Settings.Nodes.My.IP.Wallet;
-
             string tmpSyncNoStr = "<syncNo>" +
                 selectedEarliestWalletId + NVC.CommonDelimeterChar +
-                NVG.CurrentSyncNo + NVC.CommonDelimeterChar +
+                NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar +
                 NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
                 Notus.Wallet.ID.Sign(
                     selectedEarliestWalletId +
@@ -1132,8 +1201,6 @@ namespace Notus.Validator
                     NVG.SessionPrivateKey
                 ) +
                 "</syncNo>";
-            //Console.WriteLine("rawStr       : " + rawStr);
-            //Console.WriteLine("tmpSyncNoStr : " + tmpSyncNoStr);
             foreach (var iEntry in NVG.NodeList)
             {
                 bool youCanSend = false;
@@ -1160,10 +1227,8 @@ namespace Notus.Validator
                         iEntry.Value.IP.Port,
                         tmpSyncNoStr
                     );
-                    //Console.WriteLine("resultStr    : " + resultStr);
                 }
             }
-
         }
         private void WaitUntilAvailable()
         {
@@ -1188,6 +1253,14 @@ namespace Notus.Validator
                             syncNoCount.Add(iEntry.Value.SyncNo, true);
                         }
                     }
+                }
+
+                /*
+                bu değişken diğer validator tarafından verilen izni temsil ediyor
+                */
+                if (NVG.OtherValidatorSelectedMe == true)
+                {
+                    exitLoop = true;
                 }
 
                 /*
