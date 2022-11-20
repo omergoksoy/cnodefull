@@ -26,9 +26,7 @@ namespace Notus.Toolbox
         {
             string tmpResult = Notus.Communication.Request.GetSync(
                 Notus.Network.Node.MakeHttpListenerPath(ipAddress, portNo) + "ping/",
-                2,
-                true,
-                false
+                1, true, false
             );
             return string.Equals(tmpResult,"pong")==true ? NVS.NodeStatus.Online : NVS.NodeStatus.Offline;
         }

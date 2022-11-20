@@ -44,11 +44,13 @@ namespace Notus.Sync
                                     onlineNodeCount++;
                                 }
                             }
+                            /*
                             if (onlineNodeCount == 2)
                             {
                                 Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
                                 NP.ReadLine();
                             }
+                            */
                             NVG.OnlineNodeCount = onlineNodeCount;
                             if (Notus.Variable.Constant.MinimumNodeCount >= NVG.OnlineNodeCount)
                             {

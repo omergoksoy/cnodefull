@@ -926,7 +926,7 @@ namespace Notus.Validator
                 NVG.Settings.Nodes.My.IP.Port
             );
 
-
+            //MainAddressList
             foreach (KeyValuePair<string, NVS.IpInfo> entry in MainAddressList)
             {
                 if (string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false)
@@ -952,10 +952,12 @@ namespace Notus.Validator
                     AddToMainAddressList(entry.Value.IpAddress, entry.Value.Port);
                 }
             }
+
             foreach (KeyValuePair<string, NVS.IpInfo> entry in MainAddressList)
             {
                 MainAddressList[entry.Key].Status = NVS.NodeStatus.Unknown;
             }
+            MainAddressList[NVG.Settings.Nodes.My.HexKey].Status = NVS.NodeStatus.Online;
             /*
             Console.WriteLine("Queue.cs->Line 1044");
             Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));

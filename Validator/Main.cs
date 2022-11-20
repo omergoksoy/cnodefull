@@ -995,6 +995,8 @@ namespace Notus.Validator
                         // zamanları hazırlasın ancak node verileri boş oluşturulsun
                         if (NVC.MinimumNodeCount > NVG.OnlineNodeCount)
                         {
+                            Console.WriteLine("NVC.OnlineNodeCount  : " + NVG.OnlineNodeCount.ToString());
+                            Console.WriteLine("NVC.MinimumNodeCount : " + NVC.MinimumNodeCount.ToString());
                             NP.Warning("Closing The Node Because There Are Not Enough Nodes");
                             NGF.CloseMyNode();
                         }
@@ -1018,14 +1020,6 @@ namespace Notus.Validator
                     prepareNextQueue = false;
                     myTurnPrinted = false;
                     CurrentQueueTime = ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod);
-
-                    /*
-                    if (NVC.MinimumNodeCount > NVG.OnlineNodeCount)
-                    {
-                        NP.Warning("Closing The Node Because There Are Not Enough Nodes -> 1");
-                        NGF.CloseMyNode();
-                    }
-                    */
                 }  // if (NGF.NowInt() >= currentQueueTime)
             } // while ( tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false )
 
