@@ -87,7 +87,7 @@ namespace Notus.Message
                             catch (Exception err)
                             {
                                 //NVG.NodeList[entry.Key].Status = NVS.NodeStatus.Offline;
-                                //Console.WriteLine("hata-olustu: " + err.Message);
+                                Console.WriteLine("PING -> hata-olustu: " + err.Message);
                             }
                             if (isOnline == true)
                             {
