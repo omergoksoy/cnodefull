@@ -917,6 +917,7 @@ namespace Notus.Validator
                                     }// if (nList[i].Value.SyncNo == 0)
                                     else
                                     {
+
                                         // burada aynı SYNC_NO değerine sahip olan nodelardan bir liste yapılacak
                                         // yapılan liste ile ilk sıradaki node bildirecek
                                         if (NVG.CurrentSyncNo == nList[i].Value.SyncNo)
