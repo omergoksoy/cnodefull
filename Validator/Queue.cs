@@ -479,7 +479,7 @@ namespace Notus.Validator
 
                         // eğer false ise senkronizasyon başlamamış demektir...
                         // NVG.Settings.SyncStarted = false;
-                        //Console.WriteLine("*******************************");
+                        // Console.WriteLine("*******************************");
                         Console.WriteLine("Queue.cs->Line 511");
                         Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
                         AddToMainAddressList(tmpNodeQueueInfo.IP.IpAddress, tmpNodeQueueInfo.IP.Port);

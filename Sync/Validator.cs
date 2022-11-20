@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using NP = Notus.Print;
 using NVG = Notus.Variable.Globals;
@@ -10,6 +11,7 @@ namespace Notus.Sync
 {
     public class Validator : IDisposable
     {
+        private bool countTimerRunning = false;
         private bool enoughPrinted = false;
         private bool notEnoughPrinted = false;
         private Notus.Threads.Timer? ValidatorCountTimerObj;
@@ -26,42 +28,52 @@ namespace Notus.Sync
             ValidatorCountTimerObj = new Notus.Threads.Timer(5);
             ValidatorCountTimerObj.Start(() =>
             {
-                if (NVG.NodeList != null)
+                if (countTimerRunning == false)
                 {
-                    KeyValuePair<string, NVS.NodeQueueInfo>[]? nList = NVG.NodeList.ToArray();
-                    if (nList != null)
+                    countTimerRunning = true;
+                    if (NVG.NodeList != null)
                     {
-                        int onlineNodeCount = 0;
-                        for (int i = 0; i < nList.Length; i++)
+                        KeyValuePair<string, NVS.NodeQueueInfo>[]? nList = NVG.NodeList.ToArray();
+                        if (nList != null)
                         {
-                            if (nList[i].Value.Status == NVS.NodeStatus.Online)
+                            int onlineNodeCount = 0;
+                            for (int i = 0; i < nList.Length; i++)
                             {
-                                onlineNodeCount++;
-                            }
-                        }
-                        NVG.OnlineNodeCount = onlineNodeCount;
-                        if (Notus.Variable.Constant.MinimumNodeCount >= NVG.OnlineNodeCount)
-                        {
-                            if (enoughPrinted == false)
-                            {
-                                NP.Success("Enough NodeCount For Executing");
-                                enoughPrinted = true;
-                                notEnoughPrinted = false;
-                            }
-                        }
-                        else
-                        {
-                            if (enoughPrinted == true)
-                            {
-                                if (notEnoughPrinted == false)
+                                if (nList[i].Value.Status == NVS.NodeStatus.Online)
                                 {
-                                    NP.Success("Not Enough NodeCount For Executing");
-                                    notEnoughPrinted = true;
+                                    onlineNodeCount++;
                                 }
-                                enoughPrinted = false;
+                            }
+                            if (onlineNodeCount == 2)
+                            {
+                                Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+                                NP.ReadLine();
+                            }
+                            NVG.OnlineNodeCount = onlineNodeCount;
+                            if (Notus.Variable.Constant.MinimumNodeCount >= NVG.OnlineNodeCount)
+                            {
+                                if (enoughPrinted == false)
+                                {
+                                    NP.Success("Enough NodeCount For Executing");
+                                    enoughPrinted = true;
+                                    notEnoughPrinted = false;
+                                }
+                            }
+                            else
+                            {
+                                if (enoughPrinted == true)
+                                {
+                                    if (notEnoughPrinted == false)
+                                    {
+                                        NP.Success("Not Enough NodeCount For Executing");
+                                        notEnoughPrinted = true;
+                                    }
+                                    enoughPrinted = false;
+                                }
                             }
                         }
                     }
+                    countTimerRunning = false;
                 }
             }, true);  //TimerObj.Start(() =>
         }
