@@ -46,6 +46,7 @@ namespace Notus.Validator
         //private Notus.Block.Queue Obj_BlockQueue = new Notus.Block.Queue();
         private Notus.Validator.Queue ValidatorQueueObj = new Notus.Validator.Queue();
 
+        private Dictionary<string, string> networkSelectorList = new Dictionary<string, string>();
         public void GarbageCollector()
         {
             NP.Basic("Garbage Collector starting");
@@ -898,6 +899,8 @@ namespace Notus.Validator
                             NGF.BlockQueue.LoadFromPoolDb();
                         }
 
+                        networkSelectorList
+
                         string tmpNodeHexStr = string.Empty;
                         Dictionary<ulong, string> oldestNode = new();
                         KeyValuePair<string, NVS.NodeQueueInfo>[]? nList = NVG.NodeList.ToArray();
@@ -926,25 +929,25 @@ namespace Notus.Validator
 
                             if (oldestNode.Count > 0)
                             {
-                                SortedDictionary<BigInteger, string> oldestNodeChooser = new();
+                                SortedDictionary<BigInteger, string> oldestNodeChoosing = new();
                                 var firstNode = oldestNode.First();
                                 ulong oldestBeginTime = firstNode.Key;
-                                string choosenOldestWallet = firstNode.Value;
+                                string selectiveOldestWallet = firstNode.Value;
 
                                 foreach (var iEntry in syncNodeList)
                                 {
                                     string tmpOrderHash = new NH().CommonHash("sha1", iEntry.Key + NVC.CommonDelimeterChar + choosenOldestWallet);
                                     BigInteger intWalletNo = BigInteger.Parse("0" + tmpOrderHash, NumberStyles.AllowHexSpecifier);
-                                    oldestNodeChooser.Add(intWalletNo, iEntry.Key);
+                                    oldestNodeChoosing.Add(intWalletNo, iEntry.Key);
                                 }
 
                                 // burada seçilen node en eski başlangıç zamanına sahip olan node
                                 // önce bu node'a onay verilerek ağa dahil edilecek
                                 // sonra diğerleri sırasıyla içeri giriş yapacak
-                                var oldChooser = oldestNodeChooser.First();
+                                var oldChooser = oldestNodeChoosing.First();
                                 Console.WriteLine("Main.cs -> Line 915");
                                 Console.WriteLine("oldestBeginTime     : " + oldestBeginTime.ToString());
-                                Console.WriteLine("choosenOldestWallet : " + choosenOldestWallet);
+                                Console.WriteLine("choosenOldestWallet : " + selectiveOldestWallet);
                                 Console.WriteLine("chooser             : " + oldChooser.Value);
                                 if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, oldChooser.Value))
                                 {
@@ -952,7 +955,7 @@ namespace Notus.Validator
                                     birinci sıradaki wallet diğer node'a başlangıç zamanını söyleyecek
                                     belirli bir süre sonra diğer wallet söyleyecek ( eğer birinci node düşürse diye )
                                     */
-                                    ValidatorQueueObj.TellSyncNoToEarlistNode(choosenOldestWallet);
+                                    ValidatorQueueObj.TellSyncNoToEarlistNode(selectiveOldestWallet);
                                     Console.WriteLine("I Must Tell");
                                 }
                                 else

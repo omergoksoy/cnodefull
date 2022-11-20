@@ -1105,17 +1105,17 @@ namespace Notus.Validator
             GenerateNodeQueue(currentQueueTime, ND.AddMiliseconds(currentQueueTime, 1500), tmpWalletList);
             NVG.NodeQueue.OrderCount++;
         }
-        public void TellSyncNoToEarlistNode(string choosenOldestWallet)
+        public void TellSyncNoToEarlistNode(string selectiveOldestWallet)
         {
-            string rawStr = choosenOldestWallet + NVC.CommonDelimeterChar +
+            string rawStr = selectiveOldestWallet + NVC.CommonDelimeterChar +
                 NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar + NVG.Settings.Nodes.My.IP.Wallet;
 
             string tmpSyncNoStr = "<syncNo>" +
-                choosenOldestWallet + NVC.CommonDelimeterChar +
+                selectiveOldestWallet + NVC.CommonDelimeterChar +
                 NVG.CurrentSyncNo + NVC.CommonDelimeterChar +
                 NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
                 Notus.Wallet.ID.Sign(
-                    choosenOldestWallet +
+                    selectiveOldestWallet +
                         NVC.CommonDelimeterChar +
                     NVG.CurrentSyncNo.ToString() +
                         NVC.CommonDelimeterChar +
@@ -1128,7 +1128,7 @@ namespace Notus.Validator
             foreach (var iEntry in NVG.NodeList)
             {
                 bool youCanSend = false;
-                if (string.Equals(iEntry.Value.IP.Wallet, choosenOldestWallet) == false)
+                if (string.Equals(iEntry.Value.IP.Wallet, selectiveOldestWallet) == false)
                 {
                     youCanSend = true;
                 }
