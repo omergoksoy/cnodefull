@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Net;
 using System.Numerics;
 using System.Text.Json;
+using Notus.Variable.Genesis;
 using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NH = Notus.Hash;
@@ -46,7 +47,10 @@ namespace Notus.Validator
         //private Notus.Block.Queue Obj_BlockQueue = new Notus.Block.Queue();
         private Notus.Validator.Queue ValidatorQueueObj = new Notus.Validator.Queue();
 
-        private Dictionary<string, string> networkSelectorList = new Dictionary<string, string>();
+        // sıradaki cüzdan, sıradaki node'a haber verecek node
+        private Dictionary<string, string> NetworkSelectorList = new Dictionary<string, string>();
+        private Notus.Threads.Timer NetworkSelectorTimer = new Notus.Threads.Timer();
+
         public void GarbageCollector()
         {
             NP.Basic("Garbage Collector starting");
@@ -530,6 +534,90 @@ namespace Notus.Validator
             }
             return false;
         }
+        private void PreStart()
+        {
+            NetworkSelectorList.Clear();
+            NetworkSelectorTimer.Start(5000, () => {
+                string tmpNodeHexStr = string.Empty;
+                Dictionary<ulong, string> earliestNode = new();
+                KeyValuePair<string, NVS.NodeQueueInfo>[]? nList = NVG.NodeList.ToArray();
+                if (nList != null)
+                {
+                    SortedDictionary<string, string> syncNodeList = new();
+                    for (int i = 0; i < nList.Length; i++)
+                    {
+                        if (nList[i].Value.Status == NVS.NodeStatus.Online)
+                        {
+                            //beklemede olan nodeların listesi çıkartılıyor
+                            if (nList[i].Value.SyncNo == 0)
+                            {
+                                earliestNode.Add(nList[i].Value.Begin, nList[i].Value.IP.Wallet);
+                            }// if (nList[i].Value.SyncNo == 0)
+                            else
+                            {
+                                // burada aynı SYNC_NO değerine sahip olan nodelardan bir liste yapılacak
+                                // yapılan liste ile ilk sıradaki node bildirecek
+                                if (NVG.CurrentSyncNo == nList[i].Value.SyncNo)
+                                {
+                                    syncNodeList.Add(nList[i].Value.IP.Wallet, "");
+                                }
+                            } // else if (nList[i].Value.SyncNo == 0)
+                        }// if (nList[i].Value.Status == NVS.NodeStatus.Online)
+                    }// for (int i = 0; i < nList.Length; i++)
+
+                    if (earliestNode.Count > 0)
+                    {
+                        //bekleme listesindeki ilk node'u ağa dahil etmek için seçiyoruz
+                        SortedDictionary<BigInteger, string> earlistNodeChoosing = new();
+                        var firstNodeForWaitingList = earliestNode.First();
+                        ulong earlistBeginTime = firstNodeForWaitingList.Key;
+                        string selectiveEarliestWallet = firstNodeForWaitingList.Value;
+
+
+                        foreach (var iEntry in syncNodeList)
+                        {
+                            earlistNodeChoosing.Add(
+                                BigInteger.Parse(
+                                    "0" + new NH().CommonHash("sha1", iEntry.Key + NVC.CommonDelimeterChar + selectiveEarliestWallet)
+                                    , NumberStyles.AllowHexSpecifier
+                                ),
+                                iEntry.Key
+                            );
+                        }
+
+                        // burada seçilen node en eski başlangıç zamanına sahip olan node
+                        // önce bu node'a onay verilerek ağa dahil edilecek
+                        // sonra diğerleri sırasıyla içeri giriş yapacak
+                        var earliestNodeSelector = earlistNodeChoosing.First();
+                        Console.WriteLine("Main.cs -> Line 915");
+                        Console.WriteLine("earlistBeginTime     : " + earlistBeginTime.ToString());
+                        Console.WriteLine("selectiveEarliestWallet : " + selectiveEarliestWallet);
+                        Console.WriteLine("chooser             : " + earliestNodeSelector.Value);
+
+                        if (NetworkSelectorList.ContainsKey(selectiveEarliestWallet) == false)
+                        {
+                            // sıradaki cüzdan, sıradaki node'a haber verecek node
+                            NetworkSelectorList.Add(selectiveEarliestWallet, NVG.Settings.Nodes.My.IP.Wallet);
+                        }
+                        if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, earliestNodeSelector.Value))
+                        {
+                            /*
+                            birinci sıradaki wallet diğer node'a başlangıç zamanını söyleyecek
+                            belirli bir süre sonra diğer wallet söyleyecek ( eğer birinci node düşürse diye )
+                            */
+
+                            ValidatorQueueObj.TellSyncNoToEarlistNode(selectiveEarliestWallet);
+                            Console.WriteLine("I Must Tell");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Others Must Tell");
+                        }
+                    }// if (oldestNode.Count > 0)
+                }// if (nList != null)
+            });
+        }
+
         public void Start()
         {
             NGF.GetUtcTimeFromNode(20, true);
@@ -649,6 +737,7 @@ namespace Notus.Validator
                 };
             }
 
+            PreStart();
 
             ValidatorQueueObj.PreStart();
 
@@ -898,73 +987,6 @@ namespace Notus.Validator
                         {
                             NGF.BlockQueue.LoadFromPoolDb();
                         }
-
-                        networkSelectorList
-
-                        string tmpNodeHexStr = string.Empty;
-                        Dictionary<ulong, string> oldestNode = new();
-                        KeyValuePair<string, NVS.NodeQueueInfo>[]? nList = NVG.NodeList.ToArray();
-                        if (nList != null)
-                        {
-                            SortedDictionary<string, string> syncNodeList = new();
-                            for (int i = 0; i < nList.Length; i++)
-                            {
-                                if (nList[i].Value.Status == NVS.NodeStatus.Online)
-                                {
-                                    if (nList[i].Value.SyncNo == 0)
-                                    {
-                                        oldestNode.Add(nList[i].Value.Begin, nList[i].Value.IP.Wallet);
-                                    }// if (nList[i].Value.SyncNo == 0)
-                                    else
-                                    {
-
-                                        // burada aynı SYNC_NO değerine sahip olan nodelardan bir liste yapılacak
-                                        // yapılan liste ile ilk sıradaki node bildirecek
-                                        if (NVG.CurrentSyncNo == nList[i].Value.SyncNo)
-                                        {
-                                            syncNodeList.Add(nList[i].Value.IP.Wallet, "");
-                                        }
-                                    } // else if (nList[i].Value.SyncNo == 0)
-                                }// if (nList[i].Value.Status == NVS.NodeStatus.Online)
-                            }// for (int i = 0; i < nList.Length; i++)
-
-                            if (oldestNode.Count > 0)
-                            {
-                                SortedDictionary<BigInteger, string> oldestNodeChoosing = new();
-                                var firstNode = oldestNode.First();
-                                ulong oldestBeginTime = firstNode.Key;
-                                string selectiveOldestWallet = firstNode.Value;
-
-                                foreach (var iEntry in syncNodeList)
-                                {
-                                    string tmpOrderHash = new NH().CommonHash("sha1", iEntry.Key + NVC.CommonDelimeterChar + choosenOldestWallet);
-                                    BigInteger intWalletNo = BigInteger.Parse("0" + tmpOrderHash, NumberStyles.AllowHexSpecifier);
-                                    oldestNodeChoosing.Add(intWalletNo, iEntry.Key);
-                                }
-
-                                // burada seçilen node en eski başlangıç zamanına sahip olan node
-                                // önce bu node'a onay verilerek ağa dahil edilecek
-                                // sonra diğerleri sırasıyla içeri giriş yapacak
-                                var oldChooser = oldestNodeChoosing.First();
-                                Console.WriteLine("Main.cs -> Line 915");
-                                Console.WriteLine("oldestBeginTime     : " + oldestBeginTime.ToString());
-                                Console.WriteLine("choosenOldestWallet : " + selectiveOldestWallet);
-                                Console.WriteLine("chooser             : " + oldChooser.Value);
-                                if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, oldChooser.Value))
-                                {
-                                    /*
-                                    birinci sıradaki wallet diğer node'a başlangıç zamanını söyleyecek
-                                    belirli bir süre sonra diğer wallet söyleyecek ( eğer birinci node düşürse diye )
-                                    */
-                                    ValidatorQueueObj.TellSyncNoToEarlistNode(selectiveOldestWallet);
-                                    Console.WriteLine("I Must Tell");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Others Must Tell");
-                                }
-                            }// if (oldestNode.Count > 0)
-                        }// if (nList != null)
                     }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId)) ELSE 
 
                     if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
