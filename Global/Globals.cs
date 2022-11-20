@@ -63,6 +63,8 @@ namespace Notus.Variable
         şu an ki zamanın üzerine 1 dakika ekleyecek ve o zaman geldiğinde kuyruğa dahil edilmiş olacak
 
         */
+        // sıradaki cüzdan, sıradaki node'a haber verecek node
+        public static Dictionary<string, string> NetworkSelectorList = new Dictionary<string, string>();
         public static ulong CurrentSyncNo { get; set; }
         public static bool LocalBlockLoaded { get; set; }
         public static int GroupNo { get; set; }

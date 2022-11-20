@@ -48,7 +48,6 @@ namespace Notus.Validator
         private Notus.Validator.Queue ValidatorQueueObj = new Notus.Validator.Queue();
 
         // sıradaki cüzdan, sıradaki node'a haber verecek node
-        private Dictionary<string, string> NetworkSelectorList = new Dictionary<string, string>();
         private Notus.Threads.Timer NetworkSelectorTimer = new Notus.Threads.Timer();
 
         public void GarbageCollector()
@@ -536,7 +535,7 @@ namespace Notus.Validator
         }
         private void PreStart()
         {
-            NetworkSelectorList.Clear();
+            NVG.NetworkSelectorList.Clear();
             NetworkSelectorTimer.Start(5000, () => {
                 string tmpNodeHexStr = string.Empty;
                 Dictionary<ulong, string> earliestNode = new();
@@ -571,14 +570,14 @@ namespace Notus.Validator
                         SortedDictionary<BigInteger, string> earlistNodeChoosing = new();
                         var firstNodeForWaitingList = earliestNode.First();
                         ulong earlistBeginTime = firstNodeForWaitingList.Key;
-                        string selectiveEarliestWallet = firstNodeForWaitingList.Value;
+                        string selectedEarliestWalletId = firstNodeForWaitingList.Value;
 
 
                         foreach (var iEntry in syncNodeList)
                         {
                             earlistNodeChoosing.Add(
                                 BigInteger.Parse(
-                                    "0" + new NH().CommonHash("sha1", iEntry.Key + NVC.CommonDelimeterChar + selectiveEarliestWallet)
+                                    "0" + new NH().CommonHash("sha1", iEntry.Key + NVC.CommonDelimeterChar + selectedEarliestWalletId)
                                     , NumberStyles.AllowHexSpecifier
                                 ),
                                 iEntry.Key
@@ -589,15 +588,15 @@ namespace Notus.Validator
                         // önce bu node'a onay verilerek ağa dahil edilecek
                         // sonra diğerleri sırasıyla içeri giriş yapacak
                         var earliestNodeSelector = earlistNodeChoosing.First();
-                        Console.WriteLine("Main.cs -> Line 915");
-                        Console.WriteLine("earlistBeginTime        : " + earlistBeginTime.ToString());
-                        Console.WriteLine("selectiveEarliestWallet : " + selectiveEarliestWallet);
-                        Console.WriteLine("chooser                 : " + earliestNodeSelector.Value);
-
-                        if (NetworkSelectorList.ContainsKey(selectiveEarliestWallet) == false)
+                        // Console.WriteLine("Main.cs -> Line 915");
+                        // Console.WriteLine("earlistBeginTime        : " + earlistBeginTime.ToString());
+                        // Console.WriteLine("selectiveEarliestWallet : " + selectiveEarliestWallet);
+                        // Console.WriteLine("chooser                 : " + earliestNodeSelector.Value);
+                        NP.Info("The Node Will Join The Network : " + selectedEarliestWalletId);
+                        if (NVG.NetworkSelectorList.ContainsKey(selectedEarliestWalletId) == false)
                         {
                             // sıradaki cüzdan, sıradaki node'a haber verecek node
-                            NetworkSelectorList.Add(selectiveEarliestWallet, NVG.Settings.Nodes.My.IP.Wallet);
+                            NVG.NetworkSelectorList.Add(selectedEarliestWalletId, NVG.Settings.Nodes.My.IP.Wallet);
                         }
                         if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, earliestNodeSelector.Value))
                         {
@@ -606,7 +605,7 @@ namespace Notus.Validator
                             belirli bir süre sonra diğer wallet söyleyecek ( eğer birinci node düşürse diye )
                             */
 
-                            ValidatorQueueObj.TellSyncNoToEarlistNode(selectiveEarliestWallet);
+                            ValidatorQueueObj.TellSyncNoToEarlistNode(selectedEarliestWalletId);
                             Console.WriteLine("I Must Tell");
                         }
                         else
