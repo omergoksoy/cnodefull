@@ -140,8 +140,19 @@ namespace Notus.Validator
                     {
                         if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
                         {
-                            MainAddressList[tmpMainList[i].Key].Status = Notus.Toolbox.Network.PingToNode(tmpMainList[i].Value);
-                            if (MainAddressList[tmpMainList[i].Key].Status == NVS.NodeStatus.Online)
+                            var nodeStatus = Notus.Toolbox.Network.PingToNode(tmpMainList[i].Value);
+                            if (nodeStatus == NVS.NodeStatus.Online)
+                            {
+                                MainAddressList[tmpMainList[i].Key].Status = NVS.NodeStatus.Online;
+                                Console.WriteLine("Queue.cs -> Line 147 -> PING online -> " + tmpMainList[i].Value.IpAddress);
+                            }
+                            if (nodeStatus == NVS.NodeStatus.Offline)
+                            {
+                                MainAddressList[tmpMainList[i].Key].Status = NVS.NodeStatus.Offline;
+                                Console.WriteLine("Queue.cs -> Line 147 -> PING Offline -> " + tmpMainList[i].Value.IpAddress);
+                            }
+                            MainAddressList[tmpMainList[i].Key].Status = nodeStatus;
+                            if (nodeStatus == NVS.NodeStatus.Online)
                             {
                                 exitInnerWhile = true;
                             }
@@ -1421,10 +1432,12 @@ namespace Notus.Validator
                             if (innerResponseStr == "1")
                             {
                                 MainAddressList[tmpMainList[i].Key].Status = NVS.NodeStatus.Online;
+                                Console.WriteLine("Queue.cs -> Line 1435 -> PING online -> " + MainAddressList[tmpMainList[i].Key].IpAddress);
                             }
                             else
                             {
                                 MainAddressList[tmpMainList[i].Key].Status = NVS.NodeStatus.Offline;
+                                Console.WriteLine("Queue.cs -> Line 1435 -> PING offline -> " + MainAddressList[tmpMainList[i].Key].IpAddress);
                             }
                         }
                     }

@@ -91,10 +91,13 @@ namespace Notus.Message
                             }
                             if (isOnline == true)
                             {
+                                Console.WriteLine("Orchestra.cs -> Line 94 -> PING onnline -> " + NVG.NodeList[selectedKey].IP.IpAddress);
                                 NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Online;
                             }
                             else
                             {
+                                Console.WriteLine("Orchestra.cs -> Line 94 -> PING Offline -> " + NVG.NodeList[selectedKey].IP.IpAddress);
+                                
                                 NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Offline;
                             }
                         }
