@@ -1036,9 +1036,20 @@ namespace Notus.Validator
 
             if (NVG.OtherValidatorSelectedMe == true)
             {
-                Console.WriteLine("Queue.cs -> Line 1035");
-                Console.WriteLine("biggestSyncNo : " + biggestSyncNo.ToString());
-                Console.WriteLine("if (NVG.OtherValidatorSelectedMe == true)");
+                // NVG.CurrentSyncNo = biggestSyncNo;
+                // NVG.NodeQueue.Starting = biggestSyncNo;
+                //NVG.NodeQueue.OrderCount = 1;
+
+                // NVG.NodeQueue.Begin = false;
+                // NVG.Settings.Nodes.My.JoinTime = ND.GetJoinTime(biggestSyncNo);
+                // NVG.NodeQueue.
+                // NVG.NodeList[NVG.Settings.Nodes.My.HexKey].
+                // eğer false ise senkronizasyon başlamamış demektir...
+                //NVG.Settings.SyncStarted = false;
+
+                //Console.WriteLine("Queue.cs -> Line 1035");
+                //Console.WriteLine("biggestSyncNo : " + biggestSyncNo.ToString());
+                //Console.WriteLine("if (NVG.OtherValidatorSelectedMe == true)");
             }
 
             if (NVG.OtherValidatorSelectedMe == false)

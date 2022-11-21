@@ -22,11 +22,15 @@ namespace Notus
             }
             return NVG.NOW.Obj;
         }
+        public static ulong GetJoinTime(ulong syncNo)
+        {
+            return ToLong(ToDateTime(syncNo).Subtract(new TimeSpan(0, 0, 1)));
+        }
         public static ulong AddMiliseconds(ulong convertTime, int miliseconds)
         {
             return AddMiliseconds(convertTime, (ulong)miliseconds);
         }
-        public static ulong AddMiliseconds(ulong convertTime,ulong miliseconds)
+        public static ulong AddMiliseconds(ulong convertTime, ulong miliseconds)
         {
             return Notus.Date.ToLong(Notus.Date.ToDateTime(convertTime).AddMilliseconds(miliseconds));
         }
@@ -45,7 +49,7 @@ namespace Notus
             {
                 return DateTimeObj.ToString(Variable.Constant.DefaultDateTimeFormatText);
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 return "19810125020000000";
             }
@@ -64,7 +68,7 @@ namespace Notus
             {
                 return DateTime.ParseExact(DateTimeStr.Substring(0, 17), Variable.Constant.DefaultDateTimeFormatText, System.Globalization.CultureInfo.InvariantCulture);
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 return new DateTime(1981, 01, 25, 2, 00, 00);
             }

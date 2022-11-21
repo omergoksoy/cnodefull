@@ -565,7 +565,7 @@ namespace Notus.Validator
                         }// if (nList[i].Value.Status == NVS.NodeStatus.Online)
                     }// for (int i = 0; i < nList.Length; i++)
 
-                    if (earliestNode.Count > 0 && syncNodeList.Count > 0)
+                    if (earliestNode.Count > 0 && syncNodeList.Count > 0    )
                     {
                         //bekleme listesindeki ilk node'u ağa dahil etmek için seçiyoruz
                         SortedDictionary<BigInteger, string> earlistNodeChoosing = new();
@@ -743,7 +743,7 @@ namespace Notus.Validator
             {
                 Console.WriteLine("Main.cs -> Line 742");
                 Console.WriteLine("bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.");
-                NP.ReadLine();
+                // NP.ReadLine();
             }
             PreStart();
             //şimdilik kapatıldı
@@ -866,166 +866,185 @@ namespace Notus.Validator
 
             while (tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false)
             {
-                if (prepareNextQueue == false)
+                if (NVG.OtherValidatorSelectedMe == true)
                 {
-                    prepareNextQueue = true;
-                    selectedWalletId = NVG.Settings.Nodes.Queue[CurrentQueueTime].Wallet;
-                    if (selectedWalletId.Length == 0)
+                    if ((NVG.NOW.Obj - LastPrintTime).TotalSeconds > 20)
                     {
-                        if (NVG.Settings.NodeClosing == true)
+                        LastPrintTime = NVG.NOW.Obj;
+                        if (NVG.Settings.GenesisCreated == true)
                         {
                             tmpExitMainLoop = true;
-                            NVG.Settings.ClosingCompleted = true;
-                        }
-                    }
-                }
-
-                /*
-                hatanın kaynağı şu:
-                validatör blok oluşturuyor, bu bloğu belirlenen süre içerisinde diğer validatörlere iletemiyor.
-
-                diğer validatör sırası gelince blok üretme işlemi yapıyor ancak o blok numarası diğer validatör
-                tarafından üretildiği için çakışma gerçekleşiyor.
-
-                Validatörler şu şekilde çalışacak.
-                sırsı gelen bloğunu oluşturacak.
-                eğer doğru sırada iletilmezse o zaman gelen blok reddedilmeyecek
-                alınacak ve bloklar sırasıyla ileri doğru atılacak.
-                */
-
-                if (NGF.NowInt() > CurrentQueueTime)
-                {
-                    nodeOrderCount++;
-                    if (nodeOrderCount == 1)
-                    {
-                        FirstQueueGroupTime = CurrentQueueTime;
-                        TimeBaseBlockUidList.Add(CurrentQueueTime, "");
-                        TimeBaseBlockUidList[CurrentQueueTime] = "id:" + CurrentQueueTime.ToString();
-                    } // if (nodeOrderCount == 1)
-
-                    if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
-                    {
-                        while (NVG.Settings.WaitForGeneratedBlock == true)
-                        {
-                            Thread.Sleep(1);
-                        }
-
-                        bool txExecuted = false;
-                        bool emptyBlockChecked = false;
-
-                        ulong endingTime = ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod - 10);
-                        if (myTurnPrinted == false)
-                        {
-                            myTurnPrinted = true;
-                            //NP.Info("My Turn : " + CurrentQueueTime.ToString() + " -> " + endingTime.ToString());
-                        }
-
-                        while (endingTime > NGF.NowInt())
-                        {
-                            if (txExecuted == false)
-                            {
-                                if (emptyBlockChecked == false)
-                                {
-                                    if (EmptyBlockGenerationTime() == true)
-                                    {
-                                        NP.Success("Empty Block Executed");
-                                        Notus.Validator.Helper.CheckBlockAndEmptyCounter(300);
-                                        NGF.BlockQueue.AddEmptyBlock();
-                                    } // if (EmptyBlockGenerationTime() == true)
-                                    emptyBlockChecked = true;
-                                } // if (EmptyBlockGenerationTime() == true)
-
-                                NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
-                                    ND.AddMiliseconds(CurrentQueueTime, NVC.BlockListeningForPoolTime)
-                                );
-                                if (TmpBlockStruct != null)
-                                {
-                                    txExecuted = true;
-                                    NVClass.BlockData? PreBlockData = JsonSerializer.Deserialize<NVClass.BlockData>(TmpBlockStruct.data);
-                                    if (PreBlockData != null)
-                                    {
-                                        PreBlockData = NGF.BlockQueue.OrganizeBlockOrder(PreBlockData);
-                                        NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
-                                        bool processResult = ProcessBlock(PreparedBlockData, 4);
-                                        if (processResult == true)
-                                        {
-                                            // sonraki sırada olan validatör'e direkt gönder
-                                            // 2 sonraki validatöre task ile gönder
-                                            //socket-exception
-                                            ValidatorQueueObj.Distrubute(
-                                                PreBlockData.info.rowNo,
-                                                PreBlockData.info.type,
-                                                CurrentQueueTime
-                                            );
-                                        }
-
-                                        NGF.WalletUsageList.Clear();
-                                    } // if (PreBlockData != null)
-                                    else
-                                    {
-                                        NP.Danger(NVG.Settings, "Pre Block Is NULL");
-                                    } // if (PreBlockData != null) ELSE
-                                } //if (TmpBlockStruct != null)
-                                else
-                                {
-                                    if ((NVG.NOW.Obj - LastPrintTime).TotalSeconds > 20)
-                                    {
-                                        LastPrintTime = NVG.NOW.Obj;
-                                        if (NVG.Settings.GenesisCreated == true)
-                                        {
-                                            tmpExitMainLoop = true;
-                                        }
-                                        else
-                                        {
-                                            Console.ForegroundColor = ConsoleColor.DarkGreen;
-                                            Console.Write("+");
-                                            //Console.WriteLine("NVG.Settings.BlockOrder.Count() : " + NVG.Settings.BlockOrder.Count().ToString());
-                                        }
-                                    }
-                                } // if (TmpBlockStruct != null) ELSE 
-                            } // if (txExecuted == false)
-                        } // while (endingTime >= NGF.NowInt())
-                    }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
-                    else
-                    {
-                        if (NGF.BlockQueue.CheckPoolDb == true)
-                        {
-                            NGF.BlockQueue.LoadFromPoolDb();
-                        }
-                    }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId)) ELSE 
-
-                    if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
-                    {
-                        // eğer yeterli sayıda node yokse
-                        // zamanları hazırlasın ancak node verileri boş oluşturulsun
-                        if (NVC.MinimumNodeCount > NVG.OnlineNodeCount)
-                        {
-                            Console.WriteLine("NVC.OnlineNodeCount  : " + NVG.OnlineNodeCount.ToString());
-                            Console.WriteLine("NVC.MinimumNodeCount : " + NVC.MinimumNodeCount.ToString());
-                            NP.Warning("Closing The Node Because There Are Not Enough Nodes");
-                            NGF.CloseMyNode();
                         }
                         else
                         {
-                            string queueSeedStr = "";
-                            if (start_FirstQueueGroupTime == true)
-                            {
-                                queueSeedStr = TimeBaseBlockUidList[FirstQueueGroupTime];
-                            }
-                            ValidatorQueueObj.ReOrderNodeQueue(CurrentQueueTime, queueSeedStr);
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
+                            Console.Write("+");
                         }
-                    } //if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
-
-                    if (nodeOrderCount == 6)
+                    }
+                }
+                else
+                {
+                    if (prepareNextQueue == false)
                     {
-                        nodeOrderCount = 0;
-                        start_FirstQueueGroupTime = true;
-                    } //if (nodeOrderCount == 6)
+                        prepareNextQueue = true;
+                        selectedWalletId = NVG.Settings.Nodes.Queue[CurrentQueueTime].Wallet;
+                        if (selectedWalletId.Length == 0)
+                        {
+                            if (NVG.Settings.NodeClosing == true)
+                            {
+                                tmpExitMainLoop = true;
+                                NVG.Settings.ClosingCompleted = true;
+                            }
+                        }
+                    }
 
-                    prepareNextQueue = false;
-                    myTurnPrinted = false;
-                    CurrentQueueTime = ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod);
-                }  // if (NGF.NowInt() >= currentQueueTime)
+                    /*
+                    hatanın kaynağı şu:
+                    validatör blok oluşturuyor, bu bloğu belirlenen süre içerisinde diğer validatörlere iletemiyor.
+
+                    diğer validatör sırası gelince blok üretme işlemi yapıyor ancak o blok numarası diğer validatör
+                    tarafından üretildiği için çakışma gerçekleşiyor.
+
+                    Validatörler şu şekilde çalışacak.
+                    sırsı gelen bloğunu oluşturacak.
+                    eğer doğru sırada iletilmezse o zaman gelen blok reddedilmeyecek
+                    alınacak ve bloklar sırasıyla ileri doğru atılacak.
+                    */
+
+                    if (NGF.NowInt() > CurrentQueueTime)
+                    {
+                        nodeOrderCount++;
+                        if (nodeOrderCount == 1)
+                        {
+                            FirstQueueGroupTime = CurrentQueueTime;
+                            TimeBaseBlockUidList.Add(CurrentQueueTime, "");
+                            TimeBaseBlockUidList[CurrentQueueTime] = "id:" + CurrentQueueTime.ToString();
+                        } // if (nodeOrderCount == 1)
+
+                        if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
+                        {
+                            while (NVG.Settings.WaitForGeneratedBlock == true)
+                            {
+                                Thread.Sleep(1);
+                            }
+
+                            bool txExecuted = false;
+                            bool emptyBlockChecked = false;
+
+                            ulong endingTime = ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod - 10);
+                            if (myTurnPrinted == false)
+                            {
+                                myTurnPrinted = true;
+                                //NP.Info("My Turn : " + CurrentQueueTime.ToString() + " -> " + endingTime.ToString());
+                            }
+
+                            while (endingTime > NGF.NowInt())
+                            {
+                                if (txExecuted == false)
+                                {
+                                    if (emptyBlockChecked == false)
+                                    {
+                                        if (EmptyBlockGenerationTime() == true)
+                                        {
+                                            NP.Success("Empty Block Executed");
+                                            Notus.Validator.Helper.CheckBlockAndEmptyCounter(300);
+                                            NGF.BlockQueue.AddEmptyBlock();
+                                        } // if (EmptyBlockGenerationTime() == true)
+                                        emptyBlockChecked = true;
+                                    } // if (EmptyBlockGenerationTime() == true)
+
+                                    NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
+                                        ND.AddMiliseconds(CurrentQueueTime, NVC.BlockListeningForPoolTime)
+                                    );
+                                    if (TmpBlockStruct != null)
+                                    {
+                                        txExecuted = true;
+                                        NVClass.BlockData? PreBlockData = JsonSerializer.Deserialize<NVClass.BlockData>(TmpBlockStruct.data);
+                                        if (PreBlockData != null)
+                                        {
+                                            PreBlockData = NGF.BlockQueue.OrganizeBlockOrder(PreBlockData);
+                                            NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
+                                            bool processResult = ProcessBlock(PreparedBlockData, 4);
+                                            if (processResult == true)
+                                            {
+                                                // sonraki sırada olan validatör'e direkt gönder
+                                                // 2 sonraki validatöre task ile gönder
+                                                //socket-exception
+                                                ValidatorQueueObj.Distrubute(
+                                                    PreBlockData.info.rowNo,
+                                                    PreBlockData.info.type,
+                                                    CurrentQueueTime
+                                                );
+                                            }
+
+                                            NGF.WalletUsageList.Clear();
+                                        } // if (PreBlockData != null)
+                                        else
+                                        {
+                                            NP.Danger(NVG.Settings, "Pre Block Is NULL");
+                                        } // if (PreBlockData != null) ELSE
+                                    } //if (TmpBlockStruct != null)
+                                    else
+                                    {
+                                        if ((NVG.NOW.Obj - LastPrintTime).TotalSeconds > 20)
+                                        {
+                                            LastPrintTime = NVG.NOW.Obj;
+                                            if (NVG.Settings.GenesisCreated == true)
+                                            {
+                                                tmpExitMainLoop = true;
+                                            }
+                                            else
+                                            {
+                                                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                                                Console.Write("+");
+                                                //Console.WriteLine("NVG.Settings.BlockOrder.Count() : " + NVG.Settings.BlockOrder.Count().ToString());
+                                            }
+                                        }
+                                    } // if (TmpBlockStruct != null) ELSE 
+                                } // if (txExecuted == false)
+                            } // while (endingTime >= NGF.NowInt())
+                        }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
+                        else
+                        {
+                            if (NGF.BlockQueue.CheckPoolDb == true)
+                            {
+                                NGF.BlockQueue.LoadFromPoolDb();
+                            }
+                        }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId)) ELSE 
+
+                        if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
+                        {
+                            // eğer yeterli sayıda node yokse
+                            // zamanları hazırlasın ancak node verileri boş oluşturulsun
+                            if (NVC.MinimumNodeCount > NVG.OnlineNodeCount)
+                            {
+                                Console.WriteLine("NVC.OnlineNodeCount  : " + NVG.OnlineNodeCount.ToString());
+                                Console.WriteLine("NVC.MinimumNodeCount : " + NVC.MinimumNodeCount.ToString());
+                                NP.Warning("Closing The Node Because There Are Not Enough Nodes");
+                                NGF.CloseMyNode();
+                            }
+                            else
+                            {
+                                string queueSeedStr = "";
+                                if (start_FirstQueueGroupTime == true)
+                                {
+                                    queueSeedStr = TimeBaseBlockUidList[FirstQueueGroupTime];
+                                }
+                                ValidatorQueueObj.ReOrderNodeQueue(CurrentQueueTime, queueSeedStr);
+                            }
+                        } //if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
+
+                        if (nodeOrderCount == 6)
+                        {
+                            nodeOrderCount = 0;
+                            start_FirstQueueGroupTime = true;
+                        } //if (nodeOrderCount == 6)
+
+                        prepareNextQueue = false;
+                        myTurnPrinted = false;
+                        CurrentQueueTime = ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod);
+                    }  // if (NGF.NowInt() >= currentQueueTime)
+                }
             } // while ( tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false )
 
             if (NVG.Settings.NodeClosing == false)
