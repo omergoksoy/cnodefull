@@ -91,6 +91,7 @@ namespace Notus.Validator
 
                     Task.Run(() =>
                     {
+                        Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
                     });
                     string incomeResult = NVG.Settings.MsgOrch.SendMsg(
                         entry.Value.IP.Wallet,

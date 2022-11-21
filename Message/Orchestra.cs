@@ -138,6 +138,7 @@ namespace Notus.Message
                                 //çevrimdışı olanlar kapatılsın
                                 if (tList[i].Value.Status == Variable.Struct.NodeStatus.Offline)
                                 {
+                                    Console.WriteLine("tList[i].Value.IP.IpAddress : " + tList[i].Value.IP.IpAddress);
                                     if (subListObj.ContainsKey(tList[i].Value.IP.Wallet) == true)
                                     {
                                         NP.Info("Offline Node Remove From List");
