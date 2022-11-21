@@ -735,10 +735,13 @@ namespace Notus.Validator
 
             ValidatorQueueObj.PreStart();
 
-            bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.
-            bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.
+            //bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.
+            //bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.
 
-            if (NVG.OtherValidatorSelectedMe == true) { 
+            if (NVG.OtherValidatorSelectedMe == true) {
+                Console.WriteLine("Main.cs -> Line 742");
+                Console.WriteLine("bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.");
+                NP.ReadLine();
             }
             PreStart();
             //şimdilik kapatıldı

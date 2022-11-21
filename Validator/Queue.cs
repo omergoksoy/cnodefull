@@ -1026,11 +1026,17 @@ namespace Notus.Validator
             //node-order-exception
             //NP.ReadLine();
 
-
+            /*
             bu değişken true ise sync_no diğer validator tarafından gönderilecek demektir
             node'un önce kendi bloklarını eşitlemesi gerekir
             sonrasıda ise izin verilen zamana kadar beklemesi gerekir.
+            */
 
+            if (NVG.OtherValidatorSelectedMe == true)
+            {
+                Console.WriteLine("Queue.cs -> Line 1035");
+                Console.WriteLine("if (NVG.OtherValidatorSelectedMe == true)");
+            }
             if (NVG.OtherValidatorSelectedMe == false)
             {
                 //bu fonksyion ile amaç en çok sayıda olan sync no bulunacak
@@ -1167,7 +1173,7 @@ namespace Notus.Validator
                         NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
                         Notus.Wallet.ID.Sign(
                             selectedEarliestWalletId + NVC.CommonDelimeterChar +
-                            NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar + 
+                            NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar +
                             NVG.Settings.Nodes.My.IP.Wallet,
                             NVG.SessionPrivateKey
                         ) +
