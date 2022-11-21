@@ -1032,15 +1032,18 @@ namespace Notus.Validator
             sonrasıda ise izin verilen zamana kadar beklemesi gerekir.
             */
 
+            ulong biggestSyncNo = FindBiggestSyncNo();
+
             if (NVG.OtherValidatorSelectedMe == true)
             {
                 Console.WriteLine("Queue.cs -> Line 1035");
+                Console.WriteLine("biggestSyncNo : " + biggestSyncNo.ToString());
                 Console.WriteLine("if (NVG.OtherValidatorSelectedMe == true)");
             }
+
             if (NVG.OtherValidatorSelectedMe == false)
             {
                 //bu fonksyion ile amaç en çok sayıda olan sync no bulunacak
-                ulong biggestSyncNo = FindBiggestSyncNo();
                 StartingTimeAfterEnoughNode_Arrived = false;
                 if (biggestSyncNo == 0)
                 {
