@@ -12,6 +12,7 @@ namespace Notus.Validator
 {
     public class Menu : IDisposable
     {
+        private int multiply = 1;
         private NVS.NodeInfoForMenu nodeObj;
 
         private bool Node_WalletDefined = false;
@@ -764,7 +765,7 @@ namespace Notus.Validator
                 Console.WriteLine("Please wait for auto-start");
                 bool keyExist = false;
                 byte iCounter = 0;
-                DateTime bitis = DateTime.Now.AddSeconds(10);
+                DateTime bitis = DateTime.Now.AddSeconds(2* multiply);
                 while (bitis > DateTime.Now && keyExist == false)
                 {
                     if (Console.KeyAvailable == true)
@@ -800,7 +801,7 @@ namespace Notus.Validator
                     Console.ResetColor();
                     keyExist = false;
                     iCounter = 0;
-                    bitis = DateTime.Now.AddSeconds(5);
+                    bitis = DateTime.Now.AddSeconds(1* multiply);
                     while (bitis > DateTime.Now && keyExist == false)
                     {
                         if (Console.KeyAvailable == true)
