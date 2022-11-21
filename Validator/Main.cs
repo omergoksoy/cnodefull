@@ -536,7 +536,8 @@ namespace Notus.Validator
         private void PreStart()
         {
             NVG.NetworkSelectorList.Clear();
-            NetworkSelectorTimer.Start(5000, () => {
+            NetworkSelectorTimer.Start(5000, () =>
+            {
                 string tmpNodeHexStr = string.Empty;
                 Dictionary<ulong, string> earliestNode = new();
                 KeyValuePair<string, NVS.NodeQueueInfo>[]? nList = NVG.NodeList.ToArray();
@@ -564,7 +565,7 @@ namespace Notus.Validator
                         }// if (nList[i].Value.Status == NVS.NodeStatus.Online)
                     }// for (int i = 0; i < nList.Length; i++)
 
-                    if (earliestNode.Count > 0)
+                    if (earliestNode.Count > 0 && syncNodeList.Count > 0)
                     {
                         //bekleme listesindeki ilk node'u ağa dahil etmek için seçiyoruz
                         SortedDictionary<BigInteger, string> earlistNodeChoosing = new();
@@ -738,7 +739,8 @@ namespace Notus.Validator
             //bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.
             //bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.
 
-            if (NVG.OtherValidatorSelectedMe == true) {
+            if (NVG.OtherValidatorSelectedMe == true)
+            {
                 Console.WriteLine("Main.cs -> Line 742");
                 Console.WriteLine("bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.");
                 NP.ReadLine();
