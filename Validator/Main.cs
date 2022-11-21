@@ -551,6 +551,7 @@ namespace Notus.Validator
                             //beklemede olan nodeların listesi çıkartılıyor
                             if (nList[i].Value.SyncNo == 0)
                             {
+                                Console.WriteLine("Cevrim Ici Ve Sync No Sifir Olan -> " + nList[i].Value.IP.IpAddress);
                                 earliestNode.Add(nList[i].Value.Begin, nList[i].Value.IP.Wallet);
                             }// if (nList[i].Value.SyncNo == 0)
                             else
@@ -565,7 +566,7 @@ namespace Notus.Validator
                         }// if (nList[i].Value.Status == NVS.NodeStatus.Online)
                     }// for (int i = 0; i < nList.Length; i++)
 
-                    if (earliestNode.Count > 0 && syncNodeList.Count > 0    )
+                    if (earliestNode.Count > 0 && syncNodeList.Count > 0 )
                     {
                         //bekleme listesindeki ilk node'u ağa dahil etmek için seçiyoruz
                         SortedDictionary<BigInteger, string> earlistNodeChoosing = new();
