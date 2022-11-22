@@ -31,10 +31,6 @@ namespace Notus.Validator
 
         private bool SyncReady = true;
 
-        private SortedDictionary<string, NVS.IpInfo> MainAddressList = new SortedDictionary<string, NVS.IpInfo>();
-        private string MainAddressListHash = string.Empty;
-
-        private Notus.Mempool ObjMp_NodeList;
         private bool ExitFromLoop = false;
         private string LastHashForStoreList = "#####";
         private string NodeListHash = "#";
@@ -131,7 +127,7 @@ namespace Notus.Validator
             // döngüden çıkış yapacak
             NP.Info("Sending Ping To Nodes");
             bool exitInnerWhile = false;
-            KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = MainAddressList.ToArray();
+            KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = NGF.ValidatorList.ToArray();
             if (tmpMainList != null)
             {
                 while (exitInnerWhile == false)
@@ -143,13 +139,13 @@ namespace Notus.Validator
                             var nodeStatus = Notus.Toolbox.Network.PingToNode(tmpMainList[i].Value);
                             if (nodeStatus == NVS.NodeStatus.Online)
                             {
-                                MainAddressList[tmpMainList[i].Key].Status = NVS.NodeStatus.Online;
+                                NGF.ValidatorList[tmpMainList[i].Key].Status = NVS.NodeStatus.Online;
                             }
                             if (nodeStatus == NVS.NodeStatus.Offline)
                             {
-                                MainAddressList[tmpMainList[i].Key].Status = NVS.NodeStatus.Offline;
+                                NGF.ValidatorList[tmpMainList[i].Key].Status = NVS.NodeStatus.Offline;
                             }
-                            MainAddressList[tmpMainList[i].Key].Status = nodeStatus;
+                            NGF.ValidatorList[tmpMainList[i].Key].Status = nodeStatus;
                             if (nodeStatus == NVS.NodeStatus.Online)
                             {
                                 exitInnerWhile = true;
@@ -163,22 +159,10 @@ namespace Notus.Validator
                 }
             }
         }
-        private string CalculateMainAddressListHash()
-        {
-            SortedDictionary<UInt64, string> tmpNodeList = new SortedDictionary<ulong, string>();
-            foreach (KeyValuePair<string, NVS.IpInfo> entry in MainAddressList)
-            {
-                tmpNodeList.Add(
-                    UInt64.Parse(entry.Key, NumberStyles.AllowHexSpecifier),
-                    entry.Value.Status.ToString()
-                );
-            }
-            return new NH().CommonHash("sha1", JsonSerializer.Serialize(tmpNodeList));
-        }
         public List<NVS.IpInfo> GiveMeNodeList()
         {
             List<NVS.IpInfo> tmpNodeList = new List<NVS.IpInfo>();
-            foreach (KeyValuePair<string, NVS.IpInfo> entry in MainAddressList)
+            foreach (KeyValuePair<string, NVS.IpInfo> entry in NGF.ValidatorList)
             {
                 if (string.Equals(entry.Key, NVG.Settings.Nodes.My.HexKey) == false)
                 {
@@ -193,45 +177,6 @@ namespace Notus.Validator
                 }
             }
             return tmpNodeList;
-        }
-        private void AddToMainAddressList(string ipAddress, int portNo, bool storeToDb = true)
-        {
-            string tmpHexKeyStr = Notus.Toolbox.Network.IpAndPortToHex(ipAddress, portNo);
-            if (MainAddressList.ContainsKey(tmpHexKeyStr) == false)
-            {
-                MainAddressList.Add(tmpHexKeyStr, new NVS.IpInfo()
-                {
-                    IpAddress = ipAddress,
-                    Port = portNo,
-                });
-                if (storeToDb == true)
-                {
-                    StoreNodeListToDb();
-                }
-                MainAddressListHash = CalculateMainAddressListHash();
-            }
-        }
-        private void StoreNodeListToDb()
-        {
-            bool storeList = true;
-            string tmpNodeListStr = ObjMp_NodeList.Get("ip_list", "");
-            if (tmpNodeListStr.Length > 0)
-            {
-                SortedDictionary<string, NVS.IpInfo>? tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(tmpNodeListStr);
-                if (
-                    string.Equals(
-                        JsonSerializer.Serialize(tmpDbNodeList),
-                        JsonSerializer.Serialize(MainAddressList)
-                    )
-                )
-                {
-                    storeList = false;
-                }
-            }
-            if (storeList)
-            {
-                ObjMp_NodeList.Set("ip_list", JsonSerializer.Serialize(MainAddressList), true);
-            }
         }
         private bool CheckXmlTag(string rawDataStr, string tagName)
         {
@@ -371,7 +316,7 @@ namespace Notus.Validator
             {
                 incomeData = GetPureText(incomeData, "hash");
                 string[] tmpHashPart = incomeData.Split(':');
-                if (string.Equals(tmpHashPart[0], MainAddressListHash.Substring(0, 20)) == false)
+                if (string.Equals(tmpHashPart[0], NGF.ValidatorListHash.Substring(0, 20)) == false)
                 {
                     return "1";
                 }
@@ -384,7 +329,7 @@ namespace Notus.Validator
             }
             if (CheckXmlTag(incomeData, "lhash"))
             {
-                return (string.Equals(GetPureText(incomeData, "lhash"), MainAddressListHash) == true ? "1" : "0");
+                return (string.Equals(GetPureText(incomeData, "lhash"), NGF.ValidatorListHash) == true ? "1" : "0");
             }
             if (CheckXmlTag(incomeData, "nList"))
             {
@@ -598,7 +543,7 @@ namespace Notus.Validator
                 _ipAddress,
                 _portNo,
                 "<hash>" +
-                    MainAddressListHash.Substring(0, 20) + ":" + NodeListHash.Substring(0, 20) +
+                    NGF.ValidatorListHash.Substring(0, 20) + ":" + NodeListHash.Substring(0, 20) +
                 "</hash>"
             );
         }
@@ -933,28 +878,6 @@ namespace Notus.Validator
             if (NVG.Settings.GenesisCreated == true)
                 return;
 
-            foreach (NVS.IpInfo defaultNodeInfo in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
-            {
-                AddToMainAddressList(defaultNodeInfo.IpAddress, defaultNodeInfo.Port, false);
-            }
-
-            string tmpNodeListStr = ObjMp_NodeList.Get("ip_list", "");
-            if (tmpNodeListStr.Length == 0)
-            {
-                StoreNodeListToDb();
-            }
-            else
-            {
-                SortedDictionary<string, NVS.IpInfo>? tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(tmpNodeListStr);
-                if (tmpDbNodeList != null)
-                {
-                    foreach (KeyValuePair<string, NVS.IpInfo> entry in tmpDbNodeList)
-                    {
-                        AddToMainAddressList(entry.Value.IpAddress, entry.Value.Port);
-                    }
-                }
-            }
-
             NVG.NodeList.Clear();
             NVG.NodeList.TryAdd(NVG.Settings.Nodes.My.HexKey, new NVS.NodeQueueInfo()
             {
@@ -973,13 +896,9 @@ namespace Notus.Validator
                 JoinTime = 0,
                 PublicKey = NVG.Settings.Nodes.My.PublicKey,
             });
-            AddToMainAddressList(
-                NVG.Settings.Nodes.My.IP.IpAddress,
-                NVG.Settings.Nodes.My.IP.Port
-            );
+            NGF.AddToValidatorList(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
 
-            //MainAddressList
-            foreach (KeyValuePair<string, NVS.IpInfo> entry in MainAddressList)
+            foreach (KeyValuePair<string, NVS.IpInfo> entry in NGF.ValidatorList)
             {
                 if (string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false)
                 {
@@ -1001,15 +920,14 @@ namespace Notus.Validator
                         JoinTime = 0,
                         PublicKey = ""
                     });
-                    AddToMainAddressList(entry.Value.IpAddress, entry.Value.Port);
                 }
             }
 
-            foreach (KeyValuePair<string, NVS.IpInfo> entry in MainAddressList)
+            foreach (KeyValuePair<string, NVS.IpInfo> entry in NGF.ValidatorList)
             {
-                MainAddressList[entry.Key].Status = NVS.NodeStatus.Unknown;
+                NGF.ValidatorList[entry.Key].Status = NVS.NodeStatus.Unknown;
             }
-            MainAddressList[NVG.Settings.Nodes.My.HexKey].Status = NVS.NodeStatus.Online;
+            NGF.ValidatorList[NVG.Settings.Nodes.My.HexKey].Status = NVS.NodeStatus.Online;
             /*
             Console.WriteLine("Queue.cs->Line 1044");
             Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
@@ -1022,7 +940,6 @@ namespace Notus.Validator
 
             // mevcut node ile diğer nodeların listeleri senkron hale getiriliyor
             SyncListWithNode();
-
 
             // diğer node'lara bizim kim olduğumuz söyleniyor...
             SendMyInfoToAllNodes();
@@ -1442,7 +1359,7 @@ namespace Notus.Validator
 
                     /*
                     bool allListSyncWithNode = true;
-                    //return (string.Equals(GetPureText(incomeData, "lhash"), MainAddressListHash) == true ? "1" : "0");
+                    //return (string.Equals(GetPureText(incomeData, "lhash"), NGF.ValidatorListHash) == true ? "1" : "0");
 
                     // liste hashleri takas ediliyor
                     for (int i = 0; i < tmpMainList.Length; i++)
@@ -1451,7 +1368,7 @@ namespace Notus.Validator
                         {
                             string innerResponseStr = SendMessageED(
                                 tmpMainList[i].Key, tmpMainList[i].Value,
-                                "<lhash>" + MainAddressListHash + "</lhash>"
+                                "<lhash>" + NGF.ValidatorListHash + "</lhash>"
                             );
                             //Console.WriteLine("<lhash> innerResponseStr: [ " + tmpMainList[i].Value.IpAddress + " ] " + innerResponseStr);
                             if (innerResponseStr == "0")
@@ -1473,8 +1390,6 @@ namespace Notus.Validator
         {
             NVG.NodeList.Clear();
             LastPingTime = NVC.DefaultTime;
-            ObjMp_NodeList = new Notus.Mempool("node_pool_list");
-            ObjMp_NodeList.AsyncActive = false;
         }
         ~Queue()
         {
@@ -1483,10 +1398,6 @@ namespace Notus.Validator
         public void Dispose()
         {
             ExitFromLoop = true;
-            if (ObjMp_NodeList != null)
-            {
-                ObjMp_NodeList.Dispose();
-            }
         }
     }
 }

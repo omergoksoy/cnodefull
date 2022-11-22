@@ -1,19 +1,10 @@
-﻿using Notus.Compression.TGZ;
-using Notus.Globals.Variable;
+﻿using Notus.Globals.Variable;
 using Notus.Sync;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using ND = Notus.Date;
 using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
@@ -75,7 +66,6 @@ namespace Notus.Variable
         public static TimeStruct NOW { get; set; }
         public static Notus.Globals.Variable.NodeQueueList NodeQueue { get; set; }
         public static int OnlineNodeCount { get; set; }
-
         public static ConcurrentDictionary<string, NVS.NodeQueueInfo> NodeList { get; set; }
         public static Notus.Globals.Variable.CacheClass Cache { get; set; }
         public static Notus.Globals.Variable.Settings Settings { get; set; }
@@ -185,7 +175,7 @@ namespace Notus.Variable
             bu şahitlik ile birlitke ortak ir oy kullanılacak ve validator'e süre, sıra veya stake üzerinden ceza uygulanacak
             */
             public static ConcurrentDictionary<string, byte> WalletUsageList { get; set; }
-            
+
             //public static ConcurrentDictionary<ulong, string> BlockCreatorList { get; set; }
 
 
@@ -197,6 +187,8 @@ namespace Notus.Variable
             public static Notus.Wallet.Balance Balance { get; set; }
             public static Notus.TGZArchiver Archiver { get; set; }
             public static Notus.Block.Queue BlockQueue { get; set; }
+            public static string ValidatorListHash { get; set; }
+            public static SortedDictionary<string, NVS.IpInfo> ValidatorList { get; set; }
             public static string SendMessage(string receiverIpAddress, int receiverPortNo, string messageText, string nodeHexStr = "")
             {
                 if (nodeHexStr == "")
@@ -301,6 +293,8 @@ namespace Notus.Variable
             }
             public static void Start()
             {
+                ValidatorListHash = "";
+                ValidatorList = new SortedDictionary<string, NVS.IpInfo>();
                 WalletUsageList = new ConcurrentDictionary<string, byte>();
                 LockWalletList = new ConcurrentDictionary<string, string>();
                 //BlockOrder = new ConcurrentDictionary<long, string>();
@@ -335,6 +329,103 @@ namespace Notus.Variable
                 BlockOrder.AsyncActive = false;
                 BlockOrder.Clear();
                 */
+
+                ValidatorList.Clear();
+                foreach (NVS.IpInfo defaultNodeInfo in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
+                {
+                    AddToValidatorList(defaultNodeInfo.IpAddress, defaultNodeInfo.Port);
+                }
+
+                using (Notus.Mempool objMpNodeList = new Notus.Mempool("validator_list"))
+                {
+                    string tmpOfflineNodeListStr = objMpNodeList.Get("offline_list", "");
+                    if (tmpOfflineNodeListStr.Length > 0)
+                    {
+                        SortedDictionary<string, NVS.IpInfo>? tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(tmpOfflineNodeListStr);
+                        if (tmpDbNodeList != null)
+                        {
+                            foreach (var iE in tmpDbNodeList)
+                            {
+                                AddToValidatorList(iE.Value.IpAddress, iE.Value.Port);
+                            }
+                        }
+                    }
+
+                    string tmpNodeListStr = objMpNodeList.Get("address_list", "");
+                    if (tmpNodeListStr.Length > 0)
+                    {
+                        SortedDictionary<string, NVS.IpInfo>? tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(tmpNodeListStr);
+                        if (tmpDbNodeList != null)
+                        {
+                            foreach (var iE in tmpDbNodeList)
+                            {
+                                AddToValidatorList(iE.Value.IpAddress, iE.Value.Port);
+                            }
+                        }
+                    }
+                }
+            }
+            public static void RemoveFromValidatorList(string nodeHexKey)
+            {
+                if (ValidatorList.ContainsKey(nodeHexKey) == true)
+                {
+                    using (Notus.Mempool objMpNodeList = new Notus.Mempool("validator_list"))
+                    {
+                        SortedDictionary<string, NVS.IpInfo>? tmpDbNodeList = new SortedDictionary<string, NVS.IpInfo>();
+                        string tmpOfflineNodeListStr = objMpNodeList.Get("offline_list", "");
+                        if (tmpOfflineNodeListStr.Length > 0)
+                        {
+                            tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(tmpOfflineNodeListStr);
+                        }
+                        else
+                        {
+                            tmpDbNodeList.Clear();
+                        }
+                        if (tmpDbNodeList != null)
+                        {
+                            if (tmpDbNodeList.ContainsKey(nodeHexKey) == false)
+                            {
+                                tmpDbNodeList.Add(nodeHexKey, new NVS.IpInfo()
+                                {
+                                    IpAddress = "",
+                                    Port = 0,
+                                    Status = NVS.NodeStatus.Unknown
+                                });
+                            }
+                            tmpDbNodeList[nodeHexKey].IpAddress = ValidatorList[nodeHexKey].IpAddress;
+                            tmpDbNodeList[nodeHexKey].Port = ValidatorList[nodeHexKey].Port;
+                            tmpDbNodeList[nodeHexKey].Status = NVS.NodeStatus.Unknown;
+                            objMpNodeList.Set("address_list", JsonSerializer.Serialize(tmpDbNodeList), true);
+                            ValidatorList.Remove(nodeHexKey);
+                        }
+                    }
+                }
+            }
+            public static void AddToValidatorList(string ipAddress, int portNo)
+            {
+                string tmpHexKeyStr = Notus.Toolbox.Network.IpAndPortToHex(ipAddress, portNo);
+                if (ValidatorList.ContainsKey(tmpHexKeyStr) == false)
+                {
+                    ValidatorList.Add(tmpHexKeyStr, new NVS.IpInfo()
+                    {
+                        IpAddress = ipAddress,
+                        Port = portNo,
+                    });
+                    using (Notus.Mempool objMpNodeList = new Notus.Mempool("validator_list"))
+                    {
+                        objMpNodeList.AsyncActive = false;
+                        objMpNodeList.Set("address_list", JsonSerializer.Serialize(ValidatorList), true);
+                    }
+                    SortedDictionary<ulong, string> tmpNodeList = new SortedDictionary<ulong, string>();
+                    foreach (KeyValuePair<string, NVS.IpInfo> entry in ValidatorList)
+                    {
+                        tmpNodeList.Add(
+                            UInt64.Parse(entry.Key, NumberStyles.AllowHexSpecifier),
+                            entry.Value.Status.ToString()
+                        );
+                    }
+                    ValidatorListHash = new Notus.Hash().CommonHash("sha1", JsonSerializer.Serialize(tmpNodeList));
+                }
             }
 
             public static void CloseMessageSockets(string walletId = "")
