@@ -131,10 +131,10 @@ namespace Notus.Validator
             // döngüden çıkış yapacak
             NP.Info("Sending Ping To Nodes");
             bool exitInnerWhile = false;
-            while (exitInnerWhile == false)
+            KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = MainAddressList.ToArray();
+            if (tmpMainList != null)
             {
-                KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = MainAddressList.ToArray();
-                if (tmpMainList != null)
+                while (exitInnerWhile == false)
                 {
                     for (int i = 0; i < tmpMainList.Length && exitInnerWhile == false; i++)
                     {
@@ -144,12 +144,10 @@ namespace Notus.Validator
                             if (nodeStatus == NVS.NodeStatus.Online)
                             {
                                 MainAddressList[tmpMainList[i].Key].Status = NVS.NodeStatus.Online;
-                                Console.WriteLine("Queue.cs -> Line 147 -> PING online -> " + tmpMainList[i].Value.IpAddress);
                             }
                             if (nodeStatus == NVS.NodeStatus.Offline)
                             {
                                 MainAddressList[tmpMainList[i].Key].Status = NVS.NodeStatus.Offline;
-                                Console.WriteLine("Queue.cs -> Line 147 -> PING Offline -> " + tmpMainList[i].Value.IpAddress);
                             }
                             MainAddressList[tmpMainList[i].Key].Status = nodeStatus;
                             if (nodeStatus == NVS.NodeStatus.Online)

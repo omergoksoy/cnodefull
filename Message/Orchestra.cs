@@ -81,29 +81,26 @@ namespace Notus.Message
                             {
                                 if (entry.Value.Send("ping") == "pong")
                                 {
+                                    //Console.WriteLine("Orchestra.cs -> Line 94 -> PING onnline -> " + NVG.NodeList[selectedKey].IP.IpAddress);
+                                    NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Online;
                                     isOnline = true;
                                 }
                             }
                             catch (Exception err)
                             {
-                                //NVG.NodeList[entry.Key].Status = NVS.NodeStatus.Offline;
+                                // NVG.NodeList[entry.Key].Status = NVS.NodeStatus.Error;
                                 Console.WriteLine("PING -> hata-olustu: " + err.Message);
                             }
-                            if (isOnline == true)
+                            if (isOnline == false)
                             {
-                                Console.WriteLine("Orchestra.cs -> Line 94 -> PING onnline -> " + NVG.NodeList[selectedKey].IP.IpAddress);
-                                NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Online;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Orchestra.cs -> Line 94 -> PING Offline -> " + NVG.NodeList[selectedKey].IP.IpAddress);
-                                
-                                NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Offline;
+                                Console.WriteLine("Orchestra.cs -> Line 94 -> PING Offline -> " + NVG.NodeList[selectedKey].IP.IpAddress);                                
+                                // NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Offline;
                             }
                         }
                         pingTimerIsRunning = false;
                     }
                 }, true);
+
 
                 subTimer.Start(() =>
                 {
@@ -144,6 +141,7 @@ namespace Notus.Message
                                     //Console.WriteLine("tList[i].Value.IP.IpAddress : " + tList[i].Value.IP.IpAddress);
                                     if (subListObj.ContainsKey(tList[i].Value.IP.Wallet) == true)
                                     {
+                                        Console.WriteLine(JsonSerializer.Serialize(tList[i].Value, NVC.JsonSetting));
                                         NP.Info("Offline Node Remove From List");
                                         //Console.WriteLine("cevrim-disi-olanlar-siliniyor");
                                         //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
