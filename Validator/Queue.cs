@@ -479,7 +479,7 @@ namespace Notus.Validator
                         // Console.WriteLine("*******************************");
                         Console.WriteLine("Queue.cs->Line 511");
                         Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
-                        AddToMainAddressList(tmpNodeQueueInfo.IP.IpAddress, tmpNodeQueueInfo.IP.Port);
+                        NGF.AddToValidatorList(tmpNodeQueueInfo.IP.IpAddress, tmpNodeQueueInfo.IP.Port);
                         return "1";
                     }
                 }
@@ -497,9 +497,9 @@ namespace Notus.Validator
                 }
                 foreach (KeyValuePair<string, NVS.IpInfo> entry in tmpNodeList)
                 {
-                    AddToMainAddressList(entry.Value.IpAddress, entry.Value.Port, true);
+                    NGF.AddToValidatorList(entry.Value.IpAddress, entry.Value.Port);
                 }
-                return "<list>" + JsonSerializer.Serialize(MainAddressList) + "</list>";
+                return "<list>" + JsonSerializer.Serialize(NGF.ValidatorList) + "</list>";
             }
             return "<err>1</err>";
         }
