@@ -371,6 +371,7 @@ namespace Notus.Variable
                 {
                     using (Notus.Mempool objMpNodeList = new Notus.Mempool("validator_list"))
                     {
+                        objMpNodeList.AsyncActive = false;
                         SortedDictionary<string, NVS.IpInfo>? tmpDbNodeList = new SortedDictionary<string, NVS.IpInfo>();
                         string tmpOfflineNodeListStr = objMpNodeList.Get("offline_list", "");
                         if (tmpOfflineNodeListStr.Length > 0)
@@ -395,7 +396,7 @@ namespace Notus.Variable
                             tmpDbNodeList[nodeHexKey].IpAddress = ValidatorList[nodeHexKey].IpAddress;
                             tmpDbNodeList[nodeHexKey].Port = ValidatorList[nodeHexKey].Port;
                             tmpDbNodeList[nodeHexKey].Status = NVS.NodeStatus.Unknown;
-                            objMpNodeList.Set("address_list", JsonSerializer.Serialize(tmpDbNodeList), true);
+                            objMpNodeList.Set("offline_list", JsonSerializer.Serialize(tmpDbNodeList), true);
                             ValidatorList.Remove(nodeHexKey);
                         }
                     }

@@ -121,11 +121,11 @@ namespace Notus.Validator
                 );
             return afterMiliSecondTime.AddSeconds(secondVal);
         }
-        private void PingOtherNodes()
+        private void FindOnlineNode()
         {
             // listesinde eğer 1 adet çevrim içi node varsa 
             // döngüden çıkış yapacak
-            NP.Info("Sending Ping To Nodes");
+            NP.Info("Finding Online Nodes");
             bool exitInnerWhile = false;
             KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = NGF.ValidatorList.ToArray();
             if (tmpMainList != null)
@@ -157,6 +157,27 @@ namespace Notus.Validator
                         Thread.Sleep(300);
                     }
                 }
+            }
+        }
+
+        private void RemoveOfflineNodes()
+        {
+            // çevrim dışı node'lar devre dışı bırakılıyor...
+            NP.Info("Removeing Offline Nodes");
+            List<string> tmpRemoveKeyList = new List<string>();
+            foreach (var iE in NGF.ValidatorList)
+            {
+                if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
+                {
+                    if (Notus.Toolbox.Network.PingToNode(iE.Value) == NVS.NodeStatus.Offline)
+                    {
+                        tmpRemoveKeyList.Add(iE.Key);
+                    }
+                }
+            }
+            for(int i=0;i< tmpRemoveKeyList.Count; i++)
+            {
+                NGF.RemoveFromValidatorList(tmpRemoveKeyList[i]);
             }
         }
         public List<NVS.IpInfo> GiveMeNodeList()
@@ -564,7 +585,7 @@ namespace Notus.Validator
                 _nodeHex = Notus.Toolbox.Network.IpAndPortToHex(_ipAddress, _portNo);
             }
             string _nodeKeyText = _nodeHex + "list";
-            string tmpReturnStr = NGF.SendMessage(_ipAddress, _portNo, "<list>" + JsonSerializer.Serialize(MainAddressList) + "</list>", _nodeHex);
+            string tmpReturnStr = NGF.SendMessage(_ipAddress, _portNo, "<list>" + JsonSerializer.Serialize(NGF.ValidatorList) + "</list>", _nodeHex);
             if (string.Equals("err", tmpReturnStr) == false)
             {
                 ProcessIncomeData(tmpReturnStr);
@@ -583,7 +604,7 @@ namespace Notus.Validator
                     {
                         try
                         {
-                            tmpData = JsonSerializer.Serialize(MainAddressList);
+                            tmpData = JsonSerializer.Serialize(NGF.ValidatorList);
                             innerControlLoop = true;
                         }
                         catch { }
@@ -677,23 +698,6 @@ namespace Notus.Validator
                 if (nodeCount == 0)
                 {
                     SyncReady = false;
-                }
-
-                //Console.WriteLine(SyncReady);
-                if (SyncReady == true)
-                {
-                    // Console.WriteLine(NtpTime);
-                    // Console.WriteLine(NextQueueValidNtpTime);
-                    if (LastHashForStoreList != NodeListHash)
-                    {
-                        /*
-                        if (NtpTime > NextQueueValidNtpTime)
-                        {
-                            CheckNodeCount();
-                        }
-                        */
-                        StoreNodeListToDb();
-                    }
                 }
             }
         }
@@ -936,7 +940,9 @@ namespace Notus.Validator
             NP.Info("Node Sync Starting", false);
 
             //listedekilere ping atıyor, eğer 1 adet node aktif ise çıkış yapıyor...
-            PingOtherNodes();
+            FindOnlineNode();
+
+            RemoveOfflineNodes();
 
             // mevcut node ile diğer nodeların listeleri senkron hale getiriliyor
             SyncListWithNode();
@@ -1278,7 +1284,7 @@ namespace Notus.Validator
         private void SendMyInfoToAllNodes()
         {
             // her 30 saniyede bir diğer node'ları kim olduğumu söylüyor.
-            KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = MainAddressList.ToArray();
+            KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = NGF.ValidatorList.ToArray();
             if (tmpMainList != null)
             {
                 string myNodeDataText = "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
@@ -1296,7 +1302,7 @@ namespace Notus.Validator
         }
         private void AskInfoFromNode()
         {
-            KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = MainAddressList.ToArray();
+            KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = NGF.ValidatorList.ToArray();
             if (tmpMainList != null)
             {
                 for (int i = 0; i < tmpMainList.Length; i++)
@@ -1330,7 +1336,7 @@ namespace Notus.Validator
             */
 
             bool exitSyncLoop = false;
-            KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = MainAddressList.ToArray();
+            KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = NGF.ValidatorList.ToArray();
             while (exitSyncLoop == false)
             {
                 if (tmpMainList != null)
@@ -1342,17 +1348,17 @@ namespace Notus.Validator
                         {
                             string innerResponseStr = SendMessageED(
                                 tmpMainList[i].Key, tmpMainList[i].Value,
-                                "<nList>" + JsonSerializer.Serialize(MainAddressList) + "</nList>"
+                                "<nList>" + JsonSerializer.Serialize(NGF.ValidatorList) + "</nList>"
                             );
                             if (innerResponseStr == "1")
                             {
-                                MainAddressList[tmpMainList[i].Key].Status = NVS.NodeStatus.Online;
-                                Console.WriteLine("Queue.cs -> Line 1435 -> PING online -> " + MainAddressList[tmpMainList[i].Key].IpAddress);
+                                NGF.ValidatorList[tmpMainList[i].Key].Status = NVS.NodeStatus.Online;
+                                Console.WriteLine("Queue.cs -> Line 1435 -> PING online -> " + NGF.ValidatorList[tmpMainList[i].Key].IpAddress);
                             }
                             else
                             {
-                                MainAddressList[tmpMainList[i].Key].Status = NVS.NodeStatus.Offline;
-                                Console.WriteLine("Queue.cs -> Line 1435 -> PING offline -> " + MainAddressList[tmpMainList[i].Key].IpAddress);
+                                //MainAddressList[tmpMainList[i].Key].Status = NVS.NodeStatus.Offline;
+                                //Console.WriteLine("Queue.cs -> Line 1435 -> PING offline -> " + MainAddressList[tmpMainList[i].Key].IpAddress);
                             }
                         }
                     }
