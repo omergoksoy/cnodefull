@@ -342,7 +342,7 @@ namespace Notus.Validator
                 }
                 foreach (KeyValuePair<string, NVS.IpInfo> entry in tmpNodeList)
                 {
-                    AddToMainAddressList(entry.Value.IpAddress, entry.Value.Port, true);
+                    NGF.AddToValidatorList(entry.Value.IpAddress, entry.Value.Port);
                 }
                 return "1";
             }
