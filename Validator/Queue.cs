@@ -125,38 +125,26 @@ namespace Notus.Validator
         {
             // listesinde eğer 1 adet çevrim içi node varsa 
             // döngüden çıkış yapacak
-            NP.Info("Finding Online Nodes");
             bool exitInnerWhile = false;
-            KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = NGF.ValidatorList.ToArray();
-            if (tmpMainList != null)
+            NP.Info("Finding Online Nodes");
+            Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList, NVC.JsonSetting));
+
+            while (exitInnerWhile == false)
             {
-                while (exitInnerWhile == false)
+                foreach (var iE in NGF.ValidatorList)
                 {
-                    for (int i = 0; i < tmpMainList.Length && exitInnerWhile == false; i++)
+                    if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
-                        if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
+                        if (Notus.Toolbox.Network.PingToNode(iE.Value) == NVS.NodeStatus.Online)
                         {
-                            var nodeStatus = Notus.Toolbox.Network.PingToNode(tmpMainList[i].Value);
-                            if (nodeStatus == NVS.NodeStatus.Online)
-                            {
-                                NGF.ValidatorList[tmpMainList[i].Key].Status = NVS.NodeStatus.Online;
-                            }
-                            if (nodeStatus == NVS.NodeStatus.Offline)
-                            {
-                                NGF.ValidatorList[tmpMainList[i].Key].Status = NVS.NodeStatus.Offline;
-                            }
-                            NGF.ValidatorList[tmpMainList[i].Key].Status = nodeStatus;
-                            if (nodeStatus == NVS.NodeStatus.Online)
-                            {
-                                exitInnerWhile = true;
-                            }
+                            NGF.ValidatorList[iE.Key].Status = NVS.NodeStatus.Online;
+                            exitInnerWhile = true;
+                            break;
                         }
                     }
-                    if (exitInnerWhile == false)
-                    {
-                        Thread.Sleep(300);
-                    }
                 }
+                if (exitInnerWhile == false)
+                    Thread.Sleep(100);
             }
         }
 
@@ -169,13 +157,17 @@ namespace Notus.Validator
             {
                 if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
                 {
-                    if (Notus.Toolbox.Network.PingToNode(iE.Value) == NVS.NodeStatus.Offline)
+                    if (Notus.Toolbox.Network.PingToNode(iE.Value) == NVS.NodeStatus.Online)
+                    {
+                        NGF.ValidatorList[iE.Key].Status = NVS.NodeStatus.Online;
+                    }
+                    else
                     {
                         tmpRemoveKeyList.Add(iE.Key);
                     }
                 }
             }
-            for(int i=0;i< tmpRemoveKeyList.Count; i++)
+            for (int i = 0; i < tmpRemoveKeyList.Count; i++)
             {
                 NGF.RemoveFromValidatorList(tmpRemoveKeyList[i]);
             }
@@ -942,6 +934,7 @@ namespace Notus.Validator
             //listedekilere ping atıyor, eğer 1 adet node aktif ise çıkış yapıyor...
             FindOnlineNode();
 
+            // offline olan node'ları listeden çıkartılıyor
             RemoveOfflineNodes();
 
             // mevcut node ile diğer nodeların listeleri senkron hale getiriliyor
@@ -1198,13 +1191,9 @@ namespace Notus.Validator
                 syncNoCount.Clear();
                 foreach (var iEntry in NVG.NodeList)
                 {
-                    if (iEntry.Value.Status == NVS.NodeStatus.Online)
+                    if (syncNoCount.ContainsKey(iEntry.Value.SyncNo) == false)
                     {
-                        Console.WriteLine(iEntry.Key + " -> " + iEntry.Value.SyncNo.ToString());
-                        if (syncNoCount.ContainsKey(iEntry.Value.SyncNo) == false)
-                        {
-                            syncNoCount.Add(iEntry.Value.SyncNo, true);
-                        }
+                        syncNoCount.Add(iEntry.Value.SyncNo, true);
                     }
                 }
 
@@ -1292,10 +1281,7 @@ namespace Notus.Validator
                 {
                     if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
-                        if (SendMessageED(tmpMainList[i].Key, tmpMainList[i].Value, myNodeDataText) == "1")
-                        {
-                            NVG.NodeList[tmpMainList[i].Key].Status = NVS.NodeStatus.Online;
-                        }
+                        SendMessageED(tmpMainList[i].Key, tmpMainList[i].Value, myNodeDataText);
                     }
                 }
             }
@@ -1311,15 +1297,9 @@ namespace Notus.Validator
                     {
                         if (NVG.NodeList.ContainsKey(tmpMainList[i].Key))
                         {
-                            if (NVG.NodeList[tmpMainList[i].Key].Status == NVS.NodeStatus.Online)
-                            {
-                                if (NVG.NodeList[tmpMainList[i].Key].Tick == 0)
-                                {
-                                    ProcessIncomeData(SendMessageED(
-                                        tmpMainList[i].Key, tmpMainList[i].Value, "<rNode>1</rNode>"
-                                    ));
-                                }
-                            }
+                            ProcessIncomeData(SendMessageED(
+                                tmpMainList[i].Key, tmpMainList[i].Value, "<rNode>1</rNode>"
+                            ));
                         }
                     }
                 }
@@ -1328,68 +1308,28 @@ namespace Notus.Validator
         private void SyncListWithNode()
         {
             NP.Info("Node List Sync With Other Nodes");
-            /*
-            burayı düzeltelim
-            sadece liste değiştirilsin,
-            liste değiştirilmesi tamamlandıktan sonra sonraki adıma geçilsin
-            çünkü katılmak isteyen node'lar sıra ile içeri alınacak
-            */
-
-            bool exitSyncLoop = false;
-            KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = NGF.ValidatorList.ToArray();
-            while (exitSyncLoop == false)
+            List<string> tmpRemoveKeyList = new List<string>();
+            foreach (var iE in NGF.ValidatorList)
             {
-                if (tmpMainList != null)
+                if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
                 {
-                    //liste değişimi yapılıyor
-                    for (int i = 0; i < tmpMainList.Length; i++)
+                    string innerResponseStr = SendMessageED(
+                        iE.Key, iE.Value,
+                        "<nList>" + JsonSerializer.Serialize(NGF.ValidatorList) + "</nList>"
+                    );
+                    if (innerResponseStr == "1")
                     {
-                        if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
-                        {
-                            string innerResponseStr = SendMessageED(
-                                tmpMainList[i].Key, tmpMainList[i].Value,
-                                "<nList>" + JsonSerializer.Serialize(NGF.ValidatorList) + "</nList>"
-                            );
-                            if (innerResponseStr == "1")
-                            {
-                                NGF.ValidatorList[tmpMainList[i].Key].Status = NVS.NodeStatus.Online;
-                                Console.WriteLine("Queue.cs -> Line 1435 -> PING online -> " + NGF.ValidatorList[tmpMainList[i].Key].IpAddress);
-                            }
-                            else
-                            {
-                                //MainAddressList[tmpMainList[i].Key].Status = NVS.NodeStatus.Offline;
-                                //Console.WriteLine("Queue.cs -> Line 1435 -> PING offline -> " + MainAddressList[tmpMainList[i].Key].IpAddress);
-                            }
-                        }
+                        NGF.ValidatorList[iE.Key].Status = NVS.NodeStatus.Online;
                     }
-
-                    /*
-                    bool allListSyncWithNode = true;
-                    //return (string.Equals(GetPureText(incomeData, "lhash"), NGF.ValidatorListHash) == true ? "1" : "0");
-
-                    // liste hashleri takas ediliyor
-                    for (int i = 0; i < tmpMainList.Length; i++)
+                    else
                     {
-                        if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
-                        {
-                            string innerResponseStr = SendMessageED(
-                                tmpMainList[i].Key, tmpMainList[i].Value,
-                                "<lhash>" + NGF.ValidatorListHash + "</lhash>"
-                            );
-                            //Console.WriteLine("<lhash> innerResponseStr: [ " + tmpMainList[i].Value.IpAddress + " ] " + innerResponseStr);
-                            if (innerResponseStr == "0")
-                            {
-                                allListSyncWithNode = false;
-                            }
-                        }
+                        tmpRemoveKeyList.Add(iE.Key);
                     }
-                    if (allListSyncWithNode == true)
-                    {
-                        exitSyncLoop = true;
-                    }
-                    */
                 }
-                exitSyncLoop = true;
+            }
+            for (int i = 0; i < tmpRemoveKeyList.Count; i++)
+            {
+                NGF.RemoveFromValidatorList(tmpRemoveKeyList[i]);
             }
         }
         public Queue()
