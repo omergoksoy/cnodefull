@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
+﻿using System.Collections.Concurrent;
 using System.Text.Json;
-using System.Threading.Tasks;
 using NM = Notus.Message;
 using NP = Notus.Print;
 using NT = Notus.Threads;
@@ -20,7 +13,7 @@ namespace Notus.Message
     {
         private bool started = false;
 
-        private ConcurrentDictionary<string,int> errorCountList = new ConcurrentDictionary<string, int>();
+        private ConcurrentDictionary<string, int> errorCountList = new ConcurrentDictionary<string, int>();
         private bool pingTimerIsRunning = false;
         private NT.Timer pingTimer = new NT.Timer(5000);
 
@@ -60,6 +53,7 @@ namespace Notus.Message
                 {
                     if (pingTimerIsRunning == false)
                     {
+                        List<string> tmpRemoveFromList = new List<string>();
                         pingTimerIsRunning = true;
                         foreach (KeyValuePair<string, NM.Subscriber> entry in subListObj)
                         {
@@ -95,17 +89,23 @@ namespace Notus.Message
                                 }
                                 if (isOnline == false)
                                 {
-                                    buradaki eleman silindiği için NodeList access error hatası veriyor...
-                                    Console.WriteLine("Orchestra.cs -> Line 94 -> PING Offline -> " + NVG.NodeList[selectedKey].IP.IpAddress);
-                                    if (errorCountList.ContainsKey(selectedKey) == false)
+                                    if (NVG.NodeList.ContainsKey(selectedKey))
                                     {
-                                        errorCountList.TryAdd(selectedKey, 0);
+                                        Console.WriteLine("Orchestra.cs -> Line 94 -> PING Offline -> " + NVG.NodeList[selectedKey].IP.IpAddress);
+                                        if (errorCountList.ContainsKey(selectedKey) == false)
+                                        {
+                                            errorCountList.TryAdd(selectedKey, 0);
+                                        }
+                                        errorCountList[selectedKey]++;
+                                        if (errorCountList[selectedKey] > 3)
+                                        {
+                                            Console.WriteLine("Orchestra.cs -> Node Assigned As Offline -> " + NVG.NodeList[selectedKey].IP.IpAddress);
+                                            NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Offline;
+                                        }
                                     }
-                                    errorCountList[selectedKey]++;
-                                    if (errorCountList[selectedKey] > 3)
+                                    else
                                     {
-                                        Console.WriteLine("Orchestra.cs -> Node Assigned As Offline -> " + NVG.NodeList[selectedKey].IP.IpAddress);
-                                        NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Offline;
+                                        tmpRemoveFromList.Add(selectedKey);
                                     }
                                 }
                                 else
@@ -116,6 +116,13 @@ namespace Notus.Message
                                     }
                                 }
                             }
+                        }
+
+                        // döngü esnasında silinmiş olan node bilgisini varsa,
+                        // bu listeyi bizim sahip olduğumuz yerel listeden çıkartıyor...
+                        for (int i = 0; i < tmpRemoveFromList.Count; i++)
+                        {
+                            NVG.NodeList.TryRemove(tmpRemoveFromList[i],out _);
                         }
                         pingTimerIsRunning = false;
                     }
