@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Net;
 using System.Numerics;
 using System.Text.Json;
 using ND = Notus.Date;
@@ -1288,6 +1287,7 @@ namespace Notus.Validator
             {
                 for (int i = 0; i < tmpMainList.Length; i++)
                 {
+                    bool weHaveNodeInfo = false;
                     if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
                         if (NVG.NodeList.ContainsKey(tmpMainList[i].Key))
@@ -1295,12 +1295,18 @@ namespace Notus.Validator
                             string tmpNodeHex = Notus.Toolbox.Network.IpAndPortToHex(tmpMainList[i].Value);
                             if (NVG.NodeList.ContainsKey(tmpNodeHex))
                             {
-                                Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList[tmpNodeHex], NVC.JsonSetting));
+                                if (NVG.NodeList[tmpNodeHex].Begin > 0)
+                                {
+                                    weHaveNodeInfo = true;
+                                }
                             }
-                            ProcessIncomeData(SendMessageED(
-                                tmpMainList[i].Key, tmpMainList[i].Value, "<rNode>1</rNode>"
-                            ));
                         }
+                    }
+                    if (weHaveNodeInfo == false)
+                    {
+                        ProcessIncomeData(SendMessageED(
+                            tmpMainList[i].Key, tmpMainList[i].Value, "<rNode>1</rNode>"
+                        ));
                     }
                 }
             }
