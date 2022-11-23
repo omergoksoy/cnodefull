@@ -134,7 +134,7 @@ namespace Notus.Validator
                 if (exitInnerWhile == false)
                     Thread.Sleep(100);
             }
-            Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList, NVC.JsonSetting));
+            //Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList, NVC.JsonSetting));
         }
 
         private void RemoveOfflineNodes()
@@ -365,7 +365,6 @@ namespace Notus.Validator
             }
             if (CheckXmlTag(incomeData, "rNode"))
             {
-                Console.WriteLine("Sending Node Info -> Queue-333");
                 return "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
             }
             if (CheckXmlTag(incomeData, "syncNo"))
@@ -472,7 +471,7 @@ namespace Notus.Validator
 
                         // eğer false ise senkronizasyon başlamamış demektir...
                         // NVG.Settings.SyncStarted = false;
-                        NP.Info("Validator Info Just Came Up -> " + tmpNodeQueueInfo.IP.Wallet);
+                        //NP.Info("Validator Info Just Came Up -> " + tmpNodeQueueInfo.IP.Wallet);
                         NGF.AddToValidatorList(tmpNodeQueueInfo.IP.IpAddress, tmpNodeQueueInfo.IP.Port);
                         return "1";
                     }
