@@ -1293,9 +1293,9 @@ namespace Notus.Validator
                         if (NVG.NodeList.ContainsKey(tmpMainList[i].Key))
                         {
                             string tmpNodeHex = Notus.Toolbox.Network.IpAndPortToHex(tmpMainList[i].Value);
-                            if (NGF.ValidatorList.ContainsKey(tmpNodeHex))
+                            if (NGF.NodeList.ContainsKey(tmpNodeHex))
                             {
-                                Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList[tmpNodeHex], NVC.JsonSetting));
+                                Console.WriteLine(JsonSerializer.Serialize(NGF.NodeList[tmpNodeHex], NVC.JsonSetting));
                             }
                             ProcessIncomeData(SendMessageED(
                                 tmpMainList[i].Key, tmpMainList[i].Value, "<rNode>1</rNode>"
