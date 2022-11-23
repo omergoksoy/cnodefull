@@ -45,7 +45,7 @@ namespace Notus.Validator
         }
         public void Distrubute(long blockRowNo, int blockType, ulong currentNodeStartingTime)
         {
-            ulong totalQueuePeriod = (ulong)(NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime);
+            ulong totalQueuePeriod = NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime;
             ulong nextValidatorNodeTime = ND.AddMiliseconds(currentNodeStartingTime, totalQueuePeriod);
 
 
@@ -54,14 +54,11 @@ namespace Notus.Validator
 
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
-                if (string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false && entry.Value.Status == NVS.NodeStatus.Online)
+                if (
+                    string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false && 
+                    entry.Value.Status == NVS.NodeStatus.Online
+                )
                 {
-                    /*
-                    NP.Info("incomeResult : " + incomeResult);
-                    ProcessIncomeData(incomeResult);
-                    */
-
-
                     //kullanılan cüzdanlar burada liste olarak gönderilecek...
                     List<string> wList = new List<string>();
                     if (blockType != 300)
@@ -78,26 +75,18 @@ namespace Notus.Validator
 
                     NP.Info(
                     "Distributing [ " +
-                        fixedRowNoLength(blockRowNo) + " : " +
-                        blockType.ToString() +
-                        " ] To " +
-                        entry.Value.IP.IpAddress + ":" +
-                        entry.Value.IP.Port.ToString()
+                        fixedRowNoLength(blockRowNo) + " : " + blockType.ToString() +
+                    " ] To " +
+                        entry.Value.IP.IpAddress + ":" + entry.Value.IP.Port.ToString(),
+                    true
                     );
-
-                    Task.Run(() =>
-                    {
-                        Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
-                    });
                     string incomeResult = NVG.Settings.MsgOrch.SendMsg(
                         entry.Value.IP.Wallet,
                         "<block>" +
                             blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey +
                         "</block>"
                     );
-
-                    //NP.Info(NVG.Settings, "Distrubute : " + ND.ToDateTime(NVG.NOW.Int).ToString("HH mm ss fff"));
-                    //Console.WriteLine("incomeResult [ " + incomeResult.Length +  " ] : " + incomeResult);
+                    Console.WriteLine("Distribute Result : " + incomeResult);
                 }
             }
         }
@@ -151,7 +140,7 @@ namespace Notus.Validator
         private void RemoveOfflineNodes()
         {
             // çevrim dışı node'lar devre dışı bırakılıyor...
-            NP.Info("Removing Offline Nodes");
+            NP.Info("Removing Offline Nodes From List");
             List<string> tmpRemoveKeyList = new List<string>();
             foreach (var iE in NGF.ValidatorList)
             {
@@ -167,7 +156,6 @@ namespace Notus.Validator
                     }
                 }
             }
-            Console.WriteLine(JsonSerializer.Serialize(tmpRemoveKeyList));
             for (int i = 0; i < tmpRemoveKeyList.Count; i++)
             {
                 NGF.RemoveFromValidatorList(tmpRemoveKeyList[i]);
@@ -484,10 +472,7 @@ namespace Notus.Validator
 
                         // eğer false ise senkronizasyon başlamamış demektir...
                         // NVG.Settings.SyncStarted = false;
-                        // Console.WriteLine("*******************************");
-                        Console.WriteLine("Queue.cs->Line 511");
-                        Console.WriteLine("Wallet Info Just Came -> " + tmpNodeQueueInfo.IP.Wallet);
-                        //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+                        NP.Info("Validator Info Just Came Up -> " + tmpNodeQueueInfo.IP.Wallet);
                         NGF.AddToValidatorList(tmpNodeQueueInfo.IP.IpAddress, tmpNodeQueueInfo.IP.Port);
                         return "1";
                     }
@@ -711,7 +696,7 @@ namespace Notus.Validator
             int firstListcount = 0;
 
             // her node için ayrılan süre
-            int queueTimePeriod = NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime;
+            ulong queueTimePeriod = NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime;
 
             Dictionary<int, ulong> tmpTimeList = new Dictionary<int, ulong>();
             Dictionary<int, NVS.NodeInfo> tmpNodeList = new Dictionary<int, NVS.NodeInfo>();

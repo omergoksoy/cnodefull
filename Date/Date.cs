@@ -26,10 +26,6 @@ namespace Notus
         {
             return ToLong(ToDateTime(syncNo).Subtract(new TimeSpan(0, 0, 1)));
         }
-        public static ulong AddMiliseconds(ulong convertTime, int miliseconds)
-        {
-            return AddMiliseconds(convertTime, (ulong)miliseconds);
-        }
         public static ulong AddMiliseconds(ulong convertTime, ulong miliseconds)
         {
             return Notus.Date.ToLong(Notus.Date.ToDateTime(convertTime).AddMilliseconds(miliseconds));
