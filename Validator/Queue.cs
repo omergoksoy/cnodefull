@@ -376,6 +376,7 @@ namespace Notus.Validator
             }
             if (CheckXmlTag(incomeData, "rNode"))
             {
+                Console.WriteLine("Sending Node Info -> Queue-333");
                 return "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
             }
             if (CheckXmlTag(incomeData, "syncNo"))
@@ -555,6 +556,7 @@ namespace Notus.Validator
         }
         private void Message_Node_ViaSocket(string _ipAddress, int _portNo, string _nodeHex = "")
         {
+            Console.WriteLine("Sending Node Info");
             string responseStr = NGF.SendMessage(_ipAddress, _portNo,
                 "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>"
             );
@@ -1268,6 +1270,7 @@ namespace Notus.Validator
             KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = NGF.ValidatorList.ToArray();
             if (tmpMainList != null)
             {
+                Console.WriteLine("Sending Node Info -> Queue-1");
                 string myNodeDataText = "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
                 for (int i = 0; i < tmpMainList.Length; i++)
                 {
