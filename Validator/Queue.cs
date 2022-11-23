@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Net;
 using System.Numerics;
 using System.Text.Json;
 using ND = Notus.Date;
@@ -1291,7 +1292,11 @@ namespace Notus.Validator
                     {
                         if (NVG.NodeList.ContainsKey(tmpMainList[i].Key))
                         {
-                            Console.WriteLine(JsonSerializer.Serialize(tmpMainList[i].Value, NVC.JsonSetting));
+                            string tmpNodeHex = Notus.Toolbox.Network.IpAndPortToHex(tmpMainList[i].Value);
+                            if (NGF.ValidatorList.ContainsKey(tmpNodeHex))
+                            {
+                                Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList[tmpNodeHex], NVC.JsonSetting));
+                            }
                             ProcessIncomeData(SendMessageED(
                                 tmpMainList[i].Key, tmpMainList[i].Value, "<rNode>1</rNode>"
                             ));
