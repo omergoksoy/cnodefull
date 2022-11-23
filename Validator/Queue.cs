@@ -127,7 +127,6 @@ namespace Notus.Validator
             // döngüden çıkış yapacak
             bool exitInnerWhile = false;
             NP.Info("Finding Online Nodes");
-            Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList, NVC.JsonSetting));
 
             while (exitInnerWhile == false)
             {
@@ -146,6 +145,7 @@ namespace Notus.Validator
                 if (exitInnerWhile == false)
                     Thread.Sleep(100);
             }
+            Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList, NVC.JsonSetting));
         }
 
         private void RemoveOfflineNodes()
@@ -478,27 +478,20 @@ namespace Notus.Validator
                         seçilen "JoinTime" değeri zaman olarak geldiğinde sıralamaya dahil edilecek
                         o zamana kadar dinlemeye devam edecek
                         */
-                        if (NVG.NodeList.ContainsKey(tmpNodeQueueInfo.HexKey))
-                        {
-                            NVG.NodeList[tmpNodeQueueInfo.HexKey] = tmpNodeQueueInfo;
-                        }
-                        else
-                        {
-                            NVG.NodeList.TryAdd(tmpNodeQueueInfo.HexKey, tmpNodeQueueInfo);
-                        }
+                        NGF.AddValidatorInfo(tmpNodeQueueInfo, true);
 
                         // eğer false ise senkronizasyon başlamamış demektir...
                         // NVG.Settings.SyncStarted = false;
                         // Console.WriteLine("*******************************");
                         Console.WriteLine("Queue.cs->Line 511");
-                        Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+                        Console.WriteLine("Wallet Info Just Came -> " + tmpNodeQueueInfo.IP.Wallet);
+                        //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
                         NGF.AddToValidatorList(tmpNodeQueueInfo.IP.IpAddress, tmpNodeQueueInfo.IP.Port);
                         return "1";
                     }
                 }
                 catch { }
                 return "0";
-                //return "<node>" + JsonSerializer.Serialize(NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
             }
             if (CheckXmlTag(incomeData, "list"))
             {
@@ -875,7 +868,7 @@ namespace Notus.Validator
                 return;
 
             NVG.NodeList.Clear();
-            NVG.NodeList.TryAdd(NVG.Settings.Nodes.My.HexKey, new NVS.NodeQueueInfo()
+            NGF.AddValidatorInfo(new NVS.NodeQueueInfo()
             {
                 Ready = true,
                 Status = NVS.NodeStatus.Online,
@@ -891,22 +884,21 @@ namespace Notus.Validator
                 },
                 JoinTime = 0,
                 PublicKey = NVG.Settings.Nodes.My.PublicKey,
-            });
+            }, true);
             NGF.AddToValidatorList(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
 
             foreach (KeyValuePair<string, NVS.IpInfo> entry in NGF.ValidatorList)
             {
                 if (string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false)
                 {
-                    string tmpHexKeyStr = Notus.Toolbox.Network.IpAndPortToHex(entry.Value.IpAddress, entry.Value.Port);
-                    NVG.NodeList.TryAdd(tmpHexKeyStr, new NVS.NodeQueueInfo()
+                    NGF.AddValidatorInfo(new NVS.NodeQueueInfo()
                     {
                         Ready = false,
                         Status = NVS.NodeStatus.Unknown,
                         Begin = 0,
                         Tick = 0,
                         SyncNo = 0,
-                        HexKey = tmpHexKeyStr,
+                        HexKey = Notus.Toolbox.Network.IpAndPortToHex(entry.Value.IpAddress, entry.Value.Port),
                         IP = new NVS.NodeInfo()
                         {
                             IpAddress = entry.Value.IpAddress,
@@ -915,7 +907,7 @@ namespace Notus.Validator
                         },
                         JoinTime = 0,
                         PublicKey = ""
-                    });
+                    }, false);
                 }
             }
 

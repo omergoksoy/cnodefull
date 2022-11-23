@@ -402,6 +402,17 @@ namespace Notus.Variable
                     }
                 }
             }
+            public static void AddValidatorInfo(NVS.NodeQueueInfo nodeQueueInfo,bool structCameFromOwner)
+            {
+                if (NVG.NodeList.ContainsKey(nodeQueueInfo.HexKey))
+                {
+                    NVG.NodeList[nodeQueueInfo.HexKey] = nodeQueueInfo;
+                }
+                else
+                {
+                    NVG.NodeList.TryAdd(nodeQueueInfo.HexKey, nodeQueueInfo);
+                }
+            }
             public static void AddToValidatorList(string ipAddress, int portNo)
             {
                 string tmpHexKeyStr = Notus.Toolbox.Network.IpAndPortToHex(ipAddress, portNo);
