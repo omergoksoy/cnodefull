@@ -1270,7 +1270,6 @@ namespace Notus.Validator
             KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = NGF.ValidatorList.ToArray();
             if (tmpMainList != null)
             {
-                Console.WriteLine("Sending Node Info -> Queue-1");
                 string myNodeDataText = "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
                 for (int i = 0; i < tmpMainList.Length; i++)
                 {
@@ -1292,6 +1291,7 @@ namespace Notus.Validator
                     {
                         if (NVG.NodeList.ContainsKey(tmpMainList[i].Key))
                         {
+                            Console.WriteLine(JsonSerializer.Serialize(tmpMainList[i].Value, NVC.JsonSetting));
                             ProcessIncomeData(SendMessageED(
                                 tmpMainList[i].Key, tmpMainList[i].Value, "<rNode>1</rNode>"
                             ));
