@@ -20,6 +20,7 @@ namespace Notus.Message
     {
         private bool started = false;
 
+        private ConcurrentDictionary<string,int> errorCountList = new ConcurrentDictionary<string, int>();
         private bool pingTimerIsRunning = false;
         private NT.Timer pingTimer = new NT.Timer(5000);
 
@@ -67,7 +68,6 @@ namespace Notus.Message
                             {
                             });
                             */
-                            bool isOnline = false;
                             string selectedKey = string.Empty;
                             foreach (var iEntry in NVG.NodeList)
                             {
@@ -76,25 +76,44 @@ namespace Notus.Message
                                     selectedKey = iEntry.Key;
                                 }
                             }
-
-                            try
+                            if (selectedKey.Length > 0)
                             {
-                                if (entry.Value.Send("ping") == "pong")
+                                bool isOnline = false;
+                                try
                                 {
-                                    //Console.WriteLine("Orchestra.cs -> Line 94 -> PING onnline -> " + NVG.NodeList[selectedKey].IP.IpAddress);
-                                    NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Online;
-                                    isOnline = true;
+                                    if (entry.Value.Send("ping") == "pong")
+                                    {
+                                        //Console.WriteLine("Orchestra.cs -> Line 94 -> PING onnline -> " + NVG.NodeList[selectedKey].IP.IpAddress);
+                                        NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Online;
+                                        isOnline = true;
+                                    }
                                 }
-                            }
-                            catch (Exception err)
-                            {
-                                // NVG.NodeList[entry.Key].Status = NVS.NodeStatus.Error;
-                                Console.WriteLine("PING -> hata-olustu: " + err.Message);
-                            }
-                            if (isOnline == false)
-                            {
-                                Console.WriteLine("Orchestra.cs -> Line 94 -> PING Offline -> " + NVG.NodeList[selectedKey].IP.IpAddress);                                
-                                // NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Offline;
+                                catch (Exception err)
+                                {
+                                    // NVG.NodeList[entry.Key].Status = NVS.NodeStatus.Error;
+                                    Console.WriteLine("PING -> hata-olustu: " + err.Message);
+                                }
+                                if (isOnline == false)
+                                {
+                                    Console.WriteLine("Orchestra.cs -> Line 94 -> PING Offline -> " + NVG.NodeList[selectedKey].IP.IpAddress);
+                                    if (errorCountList.ContainsKey(selectedKey) == false)
+                                    {
+                                        errorCountList.TryAdd(selectedKey, 0);
+                                    }
+                                    errorCountList[selectedKey]++;
+                                    if (errorCountList[selectedKey] > 3)
+                                    {
+                                        Console.WriteLine("Orchestra.cs -> Node Assigned As Offline -> " + NVG.NodeList[selectedKey].IP.IpAddress);
+                                        NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Offline;
+                                    }
+                                }
+                                else
+                                {
+                                    if (errorCountList.ContainsKey(selectedKey) == true)
+                                    {
+                                        errorCountList.TryRemove(selectedKey, out _);
+                                    }
+                                }
                             }
                         }
                         pingTimerIsRunning = false;
@@ -161,7 +180,7 @@ namespace Notus.Message
         }
         public Orchestra()
         {
-
+            errorCountList.Clear();
         }
         ~Orchestra()
         {
