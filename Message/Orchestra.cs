@@ -95,6 +95,7 @@ namespace Notus.Message
                                 }
                                 if (isOnline == false)
                                 {
+                                    buradaki eleman silindiği için NodeList access error hatası veriyor...
                                     Console.WriteLine("Orchestra.cs -> Line 94 -> PING Offline -> " + NVG.NodeList[selectedKey].IP.IpAddress);
                                     if (errorCountList.ContainsKey(selectedKey) == false)
                                     {

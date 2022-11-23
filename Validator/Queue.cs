@@ -151,7 +151,7 @@ namespace Notus.Validator
         private void RemoveOfflineNodes()
         {
             // çevrim dışı node'lar devre dışı bırakılıyor...
-            NP.Info("Removeing Offline Nodes");
+            NP.Info("Removing Offline Nodes");
             List<string> tmpRemoveKeyList = new List<string>();
             foreach (var iE in NGF.ValidatorList)
             {
