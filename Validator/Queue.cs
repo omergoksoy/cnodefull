@@ -167,6 +167,7 @@ namespace Notus.Validator
                     }
                 }
             }
+            Console.WriteLine(JsonSerializer.Serialize(tmpRemoveKeyList));
             for (int i = 0; i < tmpRemoveKeyList.Count; i++)
             {
                 NGF.RemoveFromValidatorList(tmpRemoveKeyList[i]);
