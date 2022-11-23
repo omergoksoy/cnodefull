@@ -69,24 +69,31 @@ namespace Notus.Validator
                         }
                         if (wList.Count > 0)
                         {
+                            Console.WriteLine("Queue.cs -> Line 72");
                             Console.WriteLine(JsonSerializer.Serialize(wList));
                         }
                     }
-
-                    NP.Info(
-                    "Distributing [ " +
-                        fixedRowNoLength(blockRowNo) + " : " + blockType.ToString() +
-                    " ] To " +
-                        entry.Value.IP.IpAddress + ":" + entry.Value.IP.Port.ToString(),
-                    true
-                    );
                     string incomeResult = NVG.Settings.MsgOrch.SendMsg(
                         entry.Value.IP.Wallet,
                         "<block>" +
                             blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey +
                         "</block>"
                     );
-                    Console.WriteLine("Distribute Result : " + incomeResult);
+                    if (incomeResult.ToLower().Equals("incomeResult"))
+                    {
+                        NP.Info(
+                        "Distributed [ " + fixedRowNoLength(blockRowNo) + " : " + blockType.ToString() + " ] To " +
+                            entry.Value.IP.IpAddress + ":" + entry.Value.IP.Port.ToString()
+                        );
+                    }
+                    else
+                    {
+                        NP.Warning(
+                        "Distribute Error [ " + fixedRowNoLength(blockRowNo) + " : " + blockType.ToString() + " ] " +
+                            entry.Value.IP.IpAddress + ":" + entry.Value.IP.Port.ToString() +
+                            " -> " + incomeResult
+                        );
+                    }
                 }
             }
         }
