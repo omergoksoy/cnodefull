@@ -331,7 +331,6 @@ namespace Notus.Variable
                 */
 
                 ValidatorList.Clear();
-                Console.WriteLine(JsonSerializer.Serialize(ValidatorList, NVC.JsonSetting));
                 string tmpOfflineNodeListStr = string.Empty;
                 string tmpNodeListStr = string.Empty;
                 using (Notus.Mempool objMpNodeList = new Notus.Mempool("validator_list"))
@@ -349,7 +348,6 @@ namespace Notus.Variable
                 }
                 else
                 {
-                    Console.WriteLine("tmpOfflineNodeListStr : " + tmpOfflineNodeListStr);
                     if (tmpOfflineNodeListStr.Length > 0)
                     {
                         SortedDictionary<string, NVS.IpInfo>? tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(tmpOfflineNodeListStr);
@@ -361,8 +359,6 @@ namespace Notus.Variable
                             }
                         }
                     }
-
-                    Console.WriteLine("tmpNodeListStr : " + tmpNodeListStr);
                     if (tmpNodeListStr.Length > 0)
                     {
                         SortedDictionary<string, NVS.IpInfo>? tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(tmpNodeListStr);
@@ -374,7 +370,6 @@ namespace Notus.Variable
                             }
                         }
                     }
-                    Console.WriteLine(JsonSerializer.Serialize(ValidatorList, NVC.JsonSetting));
                 }
             }
             public static void RemoveFromValidatorList(string nodeHexKey)
@@ -386,7 +381,6 @@ namespace Notus.Variable
                         objMpNodeList.AsyncActive = false;
                         SortedDictionary<string, NVS.IpInfo>? tmpDbNodeList = new SortedDictionary<string, NVS.IpInfo>();
                         string tmpOfflineNodeListStr = objMpNodeList.Get("offline_list", "");
-                        Console.WriteLine("tmpOfflineNodeListStr : " + tmpOfflineNodeListStr);
                         if (tmpOfflineNodeListStr.Length > 0)
                         {
                             tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(tmpOfflineNodeListStr);
@@ -395,6 +389,7 @@ namespace Notus.Variable
                         {
                             tmpDbNodeList.Clear();
                         }
+                        
                         if (tmpDbNodeList != null)
                         {
                             if (tmpDbNodeList.ContainsKey(nodeHexKey) == false)
@@ -409,11 +404,14 @@ namespace Notus.Variable
                             tmpDbNodeList[nodeHexKey].IpAddress = ValidatorList[nodeHexKey].IpAddress;
                             tmpDbNodeList[nodeHexKey].Port = ValidatorList[nodeHexKey].Port;
                             tmpDbNodeList[nodeHexKey].Status = NVS.NodeStatus.Unknown;
-                            string tmpNodeListStr = JsonSerializer.Serialize(tmpDbNodeList);
-                            Console.WriteLine("tmpNodeListStr : " + tmpNodeListStr);
                             objMpNodeList.Set("offline_list", JsonSerializer.Serialize(tmpDbNodeList), true);
-                            ValidatorList.Remove(nodeHexKey);
                         }
+                        else
+                        {
+                            objMpNodeList.Set("offline_list", string.Empty, true);
+                        }
+                        ValidatorList.Remove(nodeHexKey);
+                        objMpNodeList.Set("address_list", JsonSerializer.Serialize(ValidatorList), true);
                     }
                 }
             }
