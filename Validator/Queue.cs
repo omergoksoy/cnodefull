@@ -1321,6 +1321,7 @@ namespace Notus.Validator
                         iE.Key, iE.Value,
                         "<nList>" + JsonSerializer.Serialize(NGF.ValidatorList) + "</nList>"
                     );
+                    Console.WriteLine(innerResponseStr);
                     if (innerResponseStr == "1")
                     {
                         NGF.ValidatorList[iE.Key].Status = NVS.NodeStatus.Online;
