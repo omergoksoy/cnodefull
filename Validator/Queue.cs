@@ -380,7 +380,6 @@ namespace Notus.Validator
                 string[] tmpArr = incomeData.Split(":");
                 if (tmpArr.Length > 3)
                 {
-
                     string selectedEarliestWalletId = tmpArr[0];
                     string chooserWalletId = tmpArr[2];
                     string chooserSignStr = tmpArr[3];
