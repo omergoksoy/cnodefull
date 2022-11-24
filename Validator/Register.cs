@@ -48,11 +48,11 @@ namespace Notus.Validator
 
                 if (syncNodeList.Count > 0)
                 {
-                    Console.WriteLine("syncNodeList : " + JsonSerializer.Serialize(syncNodeList, NVC.JsonSetting);
+                    Console.WriteLine("syncNodeList : " + JsonSerializer.Serialize(syncNodeList, NVC.JsonSetting));
                 }
                 if (earliestNode.Count > 0)
                 {
-                    Console.WriteLine("earliestNode : " + JsonSerializer.Serialize(earliestNode, NVC.JsonSetting);
+                    Console.WriteLine("earliestNode : " + JsonSerializer.Serialize(earliestNode, NVC.JsonSetting));
                 }
                 /*
                 if (earliestNode.Count > 0 && syncNodeList.Count > 0 )
