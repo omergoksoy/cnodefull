@@ -83,6 +83,16 @@ namespace Notus.Validator
                 }
             }
         }
+        public static void SetNodeOnline(string nodeHexKey)
+        {
+            NVG.NodeList[nodeHexKey].Status = NVS.NodeStatus.Online;
+            NGF.ValidatorList[nodeHexKey].Status = NVS.NodeStatus.Online;
+        }
+        public static void SetNodeOffline(string nodeHexKey)
+        {
+            NVG.NodeList[nodeHexKey].Status = NVS.NodeStatus.Offline;
+            NGF.ValidatorList[nodeHexKey].Status = NVS.NodeStatus.Offline;
+        }
         public static void RemoveFromValidatorList(string nodeHexKey)
         {
             if (NVG.NodeList.ContainsKey(nodeHexKey) == true)

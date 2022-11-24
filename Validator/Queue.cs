@@ -973,7 +973,7 @@ namespace Notus.Validator
                 if (biggestSyncNo == 0)
                 {
                     NP.NodeCount();
-                    Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
+                    //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                     //cüzdanların hashleri alınıp sıraya koyuluyor.
                     SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, "beginning");
 

@@ -5,6 +5,8 @@ using NP = Notus.Print;
 using NT = Notus.Threads;
 using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
+using NVH = Notus.Validator.Helper;
+using NGF = Notus.Variable.Globals.Functions;
 using NVS = Notus.Variable.Struct;
 namespace Notus.Message
 {
@@ -77,7 +79,7 @@ namespace Notus.Message
                                 {
                                     if (entry.Value.Send("ping") == "pong")
                                     {
-                                        NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Online;
+                                        NVH.SetNodeOnline(selectedKey);
                                         isOnline = true;
                                     }
                                 }
@@ -90,7 +92,6 @@ namespace Notus.Message
                                 {
                                     if (NVG.NodeList.ContainsKey(selectedKey))
                                     {
-                                        Console.WriteLine("Orchestra.cs -> Line 94 -> PING Offline -> " + NVG.NodeList[selectedKey].IP.IpAddress);
                                         if (errorCountList.ContainsKey(selectedKey) == false)
                                         {
                                             errorCountList.TryAdd(selectedKey, 0);
@@ -98,8 +99,7 @@ namespace Notus.Message
                                         errorCountList[selectedKey]++;
                                         if (errorCountList[selectedKey] > 3)
                                         {
-                                            Console.WriteLine("Orchestra.cs -> Node Assigned As Offline -> " + NVG.NodeList[selectedKey].IP.IpAddress);
-                                            NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Offline;
+                                            NVH.SetNodeOffline(selectedKey);
                                         }
                                     }
                                     else
