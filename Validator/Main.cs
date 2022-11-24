@@ -656,7 +656,7 @@ namespace Notus.Validator
                 };
             }
 
-
+            //omergoksoy
             ValidatorQueueObj.PreStart();
 
             ValidatorRegisterObj.Start();

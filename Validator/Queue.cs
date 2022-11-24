@@ -946,9 +946,6 @@ namespace Notus.Validator
 
             ulong biggestSyncNo = FindBiggestSyncNo();
             NP.Info("Biggest Sync No : " + biggestSyncNo.ToString());
-            Console.WriteLine(NVG.OtherValidatorSelectedMe);
-            Console.WriteLine(NVG.OtherValidatorSelectedMe);
-            Console.WriteLine(NVG.OtherValidatorSelectedMe);
             if (NVG.OtherValidatorSelectedMe == true)
             {
                 // NVG.CurrentSyncNo = biggestSyncNo;
@@ -974,6 +971,25 @@ namespace Notus.Validator
                 if (biggestSyncNo == 0)
                 {
                     NP.NodeCount();
+                    /*
+                    foreach(var iE in NVG.NodeList)
+                    {
+
+                    }
+                    //private string SendMessageED(string nodeHex, NVS.IpInfo nodeInfo, string messageText)
+                    string resultStr = SendMessageED(
+                        iEntry.Key,
+                        iEntry.Value.IP.IpAddress,
+                        iEntry.Value.IP.Port,
+                        tmpSyncNoStr
+                    );
+
+                    
+
+                    burada iki tarafında ready olması beklenecek
+                    çünkü node'lardan biri diğerinden önce hareket ederse
+                    diğer node önde hareket ediyor
+                    */
                     // node'lar diğerini beklemeden başlangıç işlemine başlıyor bu yüzden 
                     // karşılıklı ready işlemi yapılmalı
 
