@@ -91,7 +91,6 @@ namespace Notus.Validator
             }
             if (NGF.ValidatorList.ContainsKey(nodeHexKey) == true)
             {
-                NGF.ValidatorList.Remove(nodeHexKey);
                 using (Notus.Mempool objMpNodeList = new Notus.Mempool("validator_list"))
                 {
                     objMpNodeList.AsyncActive = false;
@@ -128,6 +127,7 @@ namespace Notus.Validator
                     }
                     objMpNodeList.Set("address_list", JsonSerializer.Serialize(NGF.ValidatorList), true);
                 }
+                NGF.ValidatorList.Remove(nodeHexKey);
             }
         }
         public static void AddValidatorInfo(NVS.NodeQueueInfo nodeQueueInfo, bool structCameFromOwner)
