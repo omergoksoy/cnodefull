@@ -55,7 +55,7 @@ namespace Notus.Validator
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
                 if (
-                    string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false && 
+                    string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false &&
                     entry.Value.Status == NVS.NodeStatus.Online
                 )
                 {
@@ -378,29 +378,33 @@ namespace Notus.Validator
             {
                 incomeData = GetPureText(incomeData, "syncNo");
                 string[] tmpArr = incomeData.Split(":");
-                string selectedEarliestWalletId = tmpArr[0];
-                string chooserWalletId = tmpArr[2];
-                string chooserSignStr = tmpArr[3];
-                string controlText =
-                    selectedEarliestWalletId +
-                        NVC.CommonDelimeterChar +
-                    NVG.CurrentSyncNo.ToString() +
-                        NVC.CommonDelimeterChar +
-                    chooserWalletId;
-                foreach (var iEntry in NVG.NodeList)
+                if (tmpArr.Length > 3)
                 {
-                    if (string.Equals(iEntry.Value.IP.Wallet, chooserWalletId) == true)
+
+                    string selectedEarliestWalletId = tmpArr[0];
+                    string chooserWalletId = tmpArr[2];
+                    string chooserSignStr = tmpArr[3];
+                    string controlText =
+                        selectedEarliestWalletId +
+                            NVC.CommonDelimeterChar +
+                        NVG.CurrentSyncNo.ToString() +
+                            NVC.CommonDelimeterChar +
+                        chooserWalletId;
+                    foreach (var iEntry in NVG.NodeList)
                     {
-                        if (Notus.Wallet.ID.Verify(controlText, chooserSignStr, iEntry.Value.PublicKey) == true)
+                        if (string.Equals(iEntry.Value.IP.Wallet, chooserWalletId) == true)
                         {
-                            if (NVG.NetworkSelectorList.ContainsKey(selectedEarliestWalletId) == false)
+                            if (Notus.Wallet.ID.Verify(controlText, chooserSignStr, iEntry.Value.PublicKey) == true)
                             {
-                                // sıradaki cüzdan, sıradaki node'a haber verecek node
-                                NVG.NetworkSelectorList.Add(selectedEarliestWalletId, chooserWalletId);
+                                if (NVG.NetworkSelectorList.ContainsKey(selectedEarliestWalletId) == false)
+                                {
+                                    // sıradaki cüzdan, sıradaki node'a haber verecek node
+                                    NVG.NetworkSelectorList.Add(selectedEarliestWalletId, chooserWalletId);
+                                }
+                                Console.WriteLine("Queue.cs -> Line 441");
+                                Console.WriteLine(JsonSerializer.Serialize(NVG.NetworkSelectorList));
+                                return "1";
                             }
-                            Console.WriteLine("Queue.cs -> Line 441");
-                            Console.WriteLine(JsonSerializer.Serialize(NVG.NetworkSelectorList));
-                            return "1";
                         }
                     }
                 }
