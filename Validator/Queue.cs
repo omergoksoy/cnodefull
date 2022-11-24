@@ -79,7 +79,7 @@ namespace Notus.Validator
                             blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey +
                         "</block>"
                     );
-                    if (incomeResult.ToLower().Equals("incomeResult"))
+                    if (string.Equals(incomeResult.ToLower(), "done"))
                     {
                         NP.Info(
                         "Distributed [ " + fixedRowNoLength(blockRowNo) + " : " + blockType.ToString() + " ] To " +
@@ -89,7 +89,7 @@ namespace Notus.Validator
                     else
                     {
                         NP.Warning(
-                        "Distribute Error [ " + fixedRowNoLength(blockRowNo) + " : " + blockType.ToString() + " ] " +
+                        "Distribution Error [ " + fixedRowNoLength(blockRowNo) + " : " + blockType.ToString() + " ] " +
                             entry.Value.IP.IpAddress + ":" + entry.Value.IP.Port.ToString() +
                             " -> " + incomeResult
                         );
@@ -974,10 +974,10 @@ namespace Notus.Validator
                 if (biggestSyncNo == 0)
                 {
                     NP.NodeCount();
+                    Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                     //cüzdanların hashleri alınıp sıraya koyuluyor.
                     SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, "beginning");
 
-                    //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                     //birinci sırada ki cüzdan seçiliyor...
                     string tmpFirstWalletId = tmpWalletList.First().Value;
                     if (string.Equals(tmpFirstWalletId, NVG.Settings.Nodes.My.IP.Wallet))

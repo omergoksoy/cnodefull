@@ -77,7 +77,6 @@ namespace Notus.Message
                                 {
                                     if (entry.Value.Send("ping") == "pong")
                                     {
-                                        //Console.WriteLine("Orchestra.cs -> Line 94 -> PING onnline -> " + NVG.NodeList[selectedKey].IP.IpAddress);
                                         NVG.NodeList[selectedKey].Status = NVS.NodeStatus.Online;
                                         isOnline = true;
                                     }
@@ -85,7 +84,7 @@ namespace Notus.Message
                                 catch (Exception err)
                                 {
                                     // NVG.NodeList[entry.Key].Status = NVS.NodeStatus.Error;
-                                    Console.WriteLine("PING -> hata-olustu: " + err.Message);
+                                    // Console.WriteLine("PING -> hata-olustu: " + err.Message);
                                 }
                                 if (isOnline == false)
                                 {
