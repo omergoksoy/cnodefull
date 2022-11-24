@@ -659,7 +659,8 @@ namespace Notus.Validator
 
             ValidatorQueueObj.PreStart();
 
-            //ValidatorRegisterObj.Start();
+            ValidatorRegisterObj.Start();
+            
             //bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.
             //bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.
 
