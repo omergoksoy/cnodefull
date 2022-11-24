@@ -912,11 +912,7 @@ namespace Notus.Validator
                 NGF.ValidatorList[entry.Key].Status = NVS.NodeStatus.Unknown;
             }
             NGF.ValidatorList[NVG.Settings.Nodes.My.HexKey].Status = NVS.NodeStatus.Online;
-            /*
-            Console.WriteLine("Queue.cs->Line 1044");
-            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
-            NP.ReadLine();
-            */
+
             NP.Info("Node Sync Starting", false);
 
             //listedekilere ping atıyor, eğer 1 adet node aktif ise çıkış yapıyor...
@@ -938,7 +934,6 @@ namespace Notus.Validator
             WaitUntilAvailable();
 
             //node-order-exception
-            //NP.ReadLine();
 
             /*
             bu değişken true ise sync_no diğer validator tarafından gönderilecek demektir
