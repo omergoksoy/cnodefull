@@ -945,7 +945,10 @@ namespace Notus.Validator
             */
 
             ulong biggestSyncNo = FindBiggestSyncNo();
-
+            NP.Info("Biggest Sync No : " + biggestSyncNo.ToString());
+            Console.WriteLine(NVG.OtherValidatorSelectedMe);
+            Console.WriteLine(NVG.OtherValidatorSelectedMe);
+            Console.WriteLine(NVG.OtherValidatorSelectedMe);
             if (NVG.OtherValidatorSelectedMe == true)
             {
                 // NVG.CurrentSyncNo = biggestSyncNo;
@@ -971,6 +974,9 @@ namespace Notus.Validator
                 if (biggestSyncNo == 0)
                 {
                     NP.NodeCount();
+                    // node'lar diğerini beklemeden başlangıç işlemine başlıyor bu yüzden 
+                    // karşılıklı ready işlemi yapılmalı
+
                     //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                     //cüzdanların hashleri alınıp sıraya koyuluyor.
                     SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, "beginning");
@@ -1193,6 +1199,14 @@ namespace Notus.Validator
                             syncNoCount[iE.Value.SyncNo] = syncNoCount[iE.Value.SyncNo] + 1;
                         }
 
+                        if (syncNoCount.ContainsKey(0))
+                        {
+                            if (syncNoCount[0] == 2)
+                            {
+                                Console.WriteLine("Ilk-Baslangic-Durumu");
+                                Console.WriteLine("Ilk-Baslangic-Durumu");
+                            }
+                        }
                         // sayı 1 adet veya benim SYNC_NO değerim eşit olduğunda çıkış yapılsın
                         // çıkış yapıldıktan sonra eksik bloklar yüklenecek ve senkronizasyon
                         // süreci tamamlanana kadar bekleyecek.
@@ -1211,49 +1225,22 @@ namespace Notus.Validator
         }
         private ulong FindBiggestSyncNo()
         {
-            Dictionary<ulong, int> syncNoCount = new Dictionary<ulong, int>();
-            foreach (var iEntry in NVG.NodeList)
-            {
-                if (syncNoCount.ContainsKey(iEntry.Value.SyncNo) == false)
-                {
-                    syncNoCount.Add(iEntry.Value.SyncNo, 0);
-                }
-                syncNoCount[iEntry.Value.SyncNo]++;
-            }
-            int zeroCount = 0;
-            int biggestCount = 0;
             ulong biggestSyncNo = 0;
-            foreach (var iEntry in syncNoCount)
+            Dictionary<ulong, int> syncNoCount = new Dictionary<ulong, int>();
+            foreach (var iE in NVG.NodeList.ToArray())
             {
-                if (iEntry.Key == 0)
+                if (syncNoCount.ContainsKey(iE.Value.SyncNo) == false)
                 {
-                    zeroCount = zeroCount + iEntry.Value;
+                    syncNoCount.Add(iE.Value.SyncNo, 0);
                 }
-                else
+                syncNoCount[iE.Value.SyncNo]++;
+            }
+            foreach (var iE in syncNoCount)
+            {
+                if (iE.Key > biggestSyncNo)
                 {
-                    if (iEntry.Key > biggestSyncNo)
-                    {
-                        biggestSyncNo = iEntry.Key;
-                        biggestCount = iEntry.Value;
-                    }
-                    else
-                    {
-                        if (iEntry.Key == biggestSyncNo)
-                        {
-                            Console.WriteLine("Ayni SyncNo sayısına sahip node'lar var.");
-                        }
-                    }
+                    biggestSyncNo = iE.Key;
                 }
-            }
-
-            //eğer büyük sayılardan hiç yok ise, olan node'lar kendi aralarında birinci belirleyecek
-            if (biggestCount == 0)
-            {
-                return 0;
-            }
-            if (biggestSyncNo > 0)
-            {
-                //Console.WriteLine(JsonSerializer.Serialize(syncNoCount));
             }
             return biggestSyncNo;
         }
