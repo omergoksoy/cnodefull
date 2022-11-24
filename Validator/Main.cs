@@ -661,8 +661,8 @@ namespace Notus.Validator
 
             ValidatorRegisterObj.Start();
             
-            //bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.
-            //bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.
+            // bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.
+            // bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.
 
             if (NVG.OtherValidatorSelectedMe == true)
             {

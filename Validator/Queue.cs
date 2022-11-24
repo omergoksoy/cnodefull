@@ -915,12 +915,10 @@ namespace Notus.Validator
 
             NP.Info("Node Sync Starting", false);
 
-            /*
-            eğer sadece 2 adet node var ise, node selector timer devreye girmeyecek
-            ilk 2 node'un devreye girişinden sonra selector timer çalışmaya başlayacak ve
-            diğer node'ların başlangıç zamanlarını baz alarak içeriye alacak
-            */
-            //listedekilere ping atıyor, eğer 1 adet node aktif ise çıkış yapıyor...
+            // eğer sadece 2 adet node var ise, node selector timer devreye girmeyecek
+            // ilk 2 node'un devreye girişinden sonra selector timer çalışmaya başlayacak ve
+            // diğer node'ların başlangıç zamanlarını baz alarak içeriye alacak
+            // listedekilere ping atıyor, eğer 1 adet node aktif ise çıkış yapıyor...
             FindOnlineNode();
 
             // offline olan node'ları listeden çıkartılıyor
@@ -932,13 +930,13 @@ namespace Notus.Validator
             // diğer node'lara bizim kim olduğumuz söyleniyor...
             SendMyInfoToAllNodes();
 
-            //eğer bende bilgisi olmayan node varsa bilgisini istiyor
+            // eğer bende bilgisi olmayan node varsa bilgisini istiyor
             AskInfoFromNode();
 
-            //önce node'ların içerisinde senkronizasyon bekleyen olmadığına emin ol
+            // önce node'ların içerisinde senkronizasyon bekleyen olmadığına emin ol
             WaitUntilAvailable();
 
-            //node-order-exception
+            // node-order-exception
 
             /*
             bu değişken true ise sync_no diğer validator tarafından gönderilecek demektir
@@ -1209,6 +1207,7 @@ namespace Notus.Validator
                     }
                 }
             }
+            Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
         }
         private ulong FindBiggestSyncNo()
         {
