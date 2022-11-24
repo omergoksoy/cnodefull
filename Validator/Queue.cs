@@ -1238,6 +1238,8 @@ namespace Notus.Validator
                 }
             }
             Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
+            Console.WriteLine("Queue.cs -> Line 1241");
+            NP.ReadLine();
         }
         private ulong FindBiggestSyncNo()
         {
