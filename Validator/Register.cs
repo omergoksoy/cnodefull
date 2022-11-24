@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Text.Json;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
+using NVC = Notus.Variable.Constant;
 namespace Notus.Validator
 {
     public class Register : IDisposable
@@ -45,6 +46,14 @@ namespace Notus.Validator
                     }// if (nList[i].Value.Status == NVS.NodeStatus.Online)
                 }// for (int i = 0; i < nList.Length; i++)
 
+                if (syncNodeList.Count > 0)
+                {
+                    Console.WriteLine("syncNodeList : " + JsonSerializer.Serialize(syncNodeList, NVC.JsonSetting);
+                }
+                if (earliestNode.Count > 0)
+                {
+                    Console.WriteLine("earliestNode : " + JsonSerializer.Serialize(earliestNode, NVC.JsonSetting);
+                }
                 /*
                 if (earliestNode.Count > 0 && syncNodeList.Count > 0 )
                 {
