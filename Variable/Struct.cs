@@ -496,7 +496,7 @@ namespace Notus.Variable.Struct
     {
         public string PublicKey { get; set; }
         public string HexKey { get; set; }
-        public bool Ready { get; set; }                 // eğer IP adresi kodun içine gömülü ise, tru değeri olacak, gömülü olanlar önemli
+        //public bool Ready { get; set; }                 // eğer IP adresi kodun içine gömülü ise, tru değeri olacak, gömülü olanlar önemli
         public NodeInfo IP { get; set; }
         public NodeStatus Status { get; set; }
         public ulong Tick { get; set; }             // node'un son hata verme zamanı

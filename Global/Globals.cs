@@ -56,8 +56,6 @@ namespace Notus.Variable
         */
         //başka bir node tarafından devam edilmesi söylendiğinde true olarak işaretlenecek
         public static bool OtherValidatorSelectedMe = false;
-        // sıradaki cüzdan, sıradaki node'a haber verecek node
-        public static Dictionary<string, string> NetworkSelectorList = new Dictionary<string, string>();
         public static ulong CurrentSyncNo { get; set; }
         public static bool LocalBlockLoaded { get; set; }
         public static int GroupNo { get; set; }
@@ -124,7 +122,7 @@ namespace Notus.Variable
                             Port = 0,
                             Wallet = ""
                         },
-                        Ready = false,
+                        //Ready = false,
                         Status = NVS.NodeStatus.Unknown,
                     },
                     Lists = new List<NVS.IpInfo>() { },
