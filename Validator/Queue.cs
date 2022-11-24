@@ -8,6 +8,7 @@ using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
+using NVH = Notus.Validator.Helper;
 namespace Notus.Validator
 {
     public class Queue : IDisposable
@@ -119,8 +120,7 @@ namespace Notus.Validator
         }
         private void FindOnlineNode()
         {
-            // listesinde eğer 1 adet çevrim içi node varsa 
-            // döngüden çıkış yapacak
+            // listesinde eğer 1 adet çevrim içi node varsa döngüden çıkış yapacak
             bool exitInnerWhile = false;
             NP.Info("Finding Online Nodes");
 
@@ -141,7 +141,6 @@ namespace Notus.Validator
                 if (exitInnerWhile == false)
                     Thread.Sleep(100);
             }
-            //Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList, NVC.JsonSetting));
         }
 
         private void RemoveOfflineNodes()
@@ -165,7 +164,7 @@ namespace Notus.Validator
             }
             for (int i = 0; i < tmpRemoveKeyList.Count; i++)
             {
-                NGF.RemoveFromValidatorList(tmpRemoveKeyList[i]);
+                NVH.RemoveFromValidatorList(tmpRemoveKeyList[i]);
             }
         }
         public List<NVS.IpInfo> GiveMeNodeList()
@@ -351,7 +350,7 @@ namespace Notus.Validator
                 }
                 foreach (KeyValuePair<string, NVS.IpInfo> entry in tmpNodeList)
                 {
-                    NGF.AddToValidatorList(entry.Value.IpAddress, entry.Value.Port);
+                    NVH.AddToValidatorList(entry.Value.IpAddress, entry.Value.Port);
                 }
                 return "1";
             }
@@ -477,12 +476,12 @@ namespace Notus.Validator
                         seçilen "JoinTime" değeri zaman olarak geldiğinde sıralamaya dahil edilecek
                         o zamana kadar dinlemeye devam edecek
                         */
-                        NGF.AddValidatorInfo(tmpNodeQueueInfo, true);
+                        NVH.AddValidatorInfo(tmpNodeQueueInfo, true);
 
                         // eğer false ise senkronizasyon başlamamış demektir...
                         // NVG.Settings.SyncStarted = false;
                         //NP.Info("Validator Info Just Came Up -> " + tmpNodeQueueInfo.IP.Wallet);
-                        NGF.AddToValidatorList(tmpNodeQueueInfo.IP.IpAddress, tmpNodeQueueInfo.IP.Port);
+                        NVH.AddToValidatorList(tmpNodeQueueInfo.IP.IpAddress, tmpNodeQueueInfo.IP.Port);
                         return "1";
                     }
                 }
@@ -499,7 +498,7 @@ namespace Notus.Validator
                 }
                 foreach (KeyValuePair<string, NVS.IpInfo> entry in tmpNodeList)
                 {
-                    NGF.AddToValidatorList(entry.Value.IpAddress, entry.Value.Port);
+                    NVH.AddToValidatorList(entry.Value.IpAddress, entry.Value.Port);
                 }
                 return "<list>" + JsonSerializer.Serialize(NGF.ValidatorList) + "</list>";
             }
@@ -865,7 +864,7 @@ namespace Notus.Validator
                 return;
 
             NVG.NodeList.Clear();
-            NGF.AddValidatorInfo(new NVS.NodeQueueInfo()
+            NVH.AddValidatorInfo(new NVS.NodeQueueInfo()
             {
                 Ready = true,
                 Status = NVS.NodeStatus.Online,
@@ -882,13 +881,13 @@ namespace Notus.Validator
                 JoinTime = 0,
                 PublicKey = NVG.Settings.Nodes.My.PublicKey,
             }, true);
-            NGF.AddToValidatorList(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
+            NVH.AddToValidatorList(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
 
             foreach (KeyValuePair<string, NVS.IpInfo> entry in NGF.ValidatorList)
             {
                 if (string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false)
                 {
-                    NGF.AddValidatorInfo(new NVS.NodeQueueInfo()
+                    NVH.AddValidatorInfo(new NVS.NodeQueueInfo()
                     {
                         Ready = false,
                         Status = NVS.NodeStatus.Unknown,
@@ -1330,7 +1329,7 @@ namespace Notus.Validator
             }
             for (int i = 0; i < tmpRemoveKeyList.Count; i++)
             {
-                NGF.RemoveFromValidatorList(tmpRemoveKeyList[i]);
+                NVH.RemoveFromValidatorList(tmpRemoveKeyList[i]);
             }
         }
         public Queue()
