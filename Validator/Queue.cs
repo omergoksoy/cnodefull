@@ -373,6 +373,8 @@ namespace Notus.Validator
             {
                 return "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
             }
+
+            /*
             if (CheckXmlTag(incomeData, "syncNo"))
             {
                 incomeData = GetPureText(incomeData, "syncNo");
@@ -427,15 +429,13 @@ namespace Notus.Validator
                         if (Notus.Wallet.ID.Verify(controlText, chooserSignStr, iEntry.Value.PublicKey) == true)
                         {
                             Console.WriteLine("My Turn Sign Valid");
-                            /*
-                            if (NVG.NetworkSelectorList.ContainsKey(selectedEarliestWalletId) == false)
-                            {
+                            // if (NVG.NetworkSelectorList.ContainsKey(selectedEarliestWalletId) == false)
+                            // {
                                 // sıradaki cüzdan, sıradaki node'a haber verecek node
-                                NVG.NetworkSelectorList.Add(selectedEarliestWalletId, chooserWalletId);
-                            }
-                            Console.WriteLine("Queue.cs -> Line 441");
-                            Console.WriteLine(JsonSerializer.Serialize(NVG.NetworkSelectorList));
-                            */
+                                // NVG.NetworkSelectorList.Add(selectedEarliestWalletId, chooserWalletId);
+                            // }
+                            // Console.WriteLine("Queue.cs -> Line 441");
+                            // Console.WriteLine(JsonSerializer.Serialize(NVG.NetworkSelectorList));
                             NVG.OtherValidatorSelectedMe = true;
                             return "1";
                         }
@@ -448,6 +448,8 @@ namespace Notus.Validator
                 }
                 return "0";
             }
+            */
+
             if (CheckXmlTag(incomeData, "node"))
             {
                 incomeData = GetPureText(incomeData, "node");

@@ -536,6 +536,7 @@ namespace Notus.Validator
         private void PreStart()
         {
             NVG.NetworkSelectorList.Clear();
+            /*
             NetworkSelectorTimer.Start(5000, () =>
             {
                 string tmpNodeHexStr = string.Empty;
@@ -598,13 +599,11 @@ namespace Notus.Validator
                         }
                         if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, earliestNodeSelector.Value))
                         {
-                            /*
-                            birinci sıradaki wallet diğer node'a başlangıç zamanını söyleyecek
-                            belirli bir süre sonra diğer wallet söyleyecek ( eğer birinci node düşürse diye )
-                            */
+                            // birinci sıradaki wallet diğer node'a başlangıç zamanını söyleyecek
+                            // belirli bir süre sonra diğer wallet söyleyecek ( eğer birinci node düşürse diye )
+                            Console.WriteLine("I Must Tell");
                             ValidatorQueueObj.TellSyncNoToEarlistNode(selectedEarliestWalletId);
                             ValidatorQueueObj.TeelTheNodeWhoWaitingRoom(selectedEarliestWalletId);
-                            Console.WriteLine("I Must Tell");
                         }
                         else
                         {
@@ -613,6 +612,7 @@ namespace Notus.Validator
                     }// if (oldestNode.Count > 0)
                 }// if (nList != null)
             });
+            */
         }
 
         public void Start()
@@ -794,7 +794,6 @@ namespace Notus.Validator
                     }
                 }
             }
-
 
 
             if (NVG.Settings.GenesisCreated == false)
