@@ -7,8 +7,8 @@ using NH = Notus.Hash;
 using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
-using NVS = Notus.Variable.Struct;
 using NVH = Notus.Validator.Helper;
+using NVS = Notus.Variable.Struct;
 namespace Notus.Validator
 {
     public class Queue : IDisposable
@@ -914,11 +914,12 @@ namespace Notus.Validator
             NGF.ValidatorList[NVG.Settings.Nodes.My.HexKey].Status = NVS.NodeStatus.Online;
 
             NP.Info("Node Sync Starting", false);
-            
+
+            /*
             eğer sadece 2 adet node var ise, node selector timer devreye girmeyecek
             ilk 2 node'un devreye girişinden sonra selector timer çalışmaya başlayacak ve
             diğer node'ların başlangıç zamanlarını baz alarak içeriye alacak
-
+            */
             //listedekilere ping atıyor, eğer 1 adet node aktif ise çıkış yapıyor...
             FindOnlineNode();
 
@@ -1165,47 +1166,47 @@ namespace Notus.Validator
         }
         private void WaitUntilAvailable()
         {
-            /*
-            burada beklerken diğer node'dan syncno zamanı gelecek
-            gelen zamana kadar buradan ve diğer işlemleri bypass ederek 
-            doğrudan iletişim kısmına geçecek
-            */
+            // burada beklerken diğer node'dan syncno zamanı gelecek
+            // gelen zamana kadar buradan ve diğer işlemleri bypass ederek 
+            // doğrudan iletişim kısmına geçecek
+
             // buradaki sayı 2 olana kadar bekle
-            Dictionary<ulong, bool> syncNoCount = new();
+            Dictionary<ulong, int> syncNoCount = new Dictionary<ulong, int>();
             bool exitLoop = false;
             while (exitLoop == false)
             {
-                syncNoCount.Clear();
-                foreach (var iEntry in NVG.NodeList)
-                {
-                    if (syncNoCount.ContainsKey(iEntry.Value.SyncNo) == false)
-                    {
-                        syncNoCount.Add(iEntry.Value.SyncNo, true);
-                    }
-                }
-
-                /*
-                bu değişken diğer validator tarafından verilen izni temsil ediyor
-                */
+                // bu değişken diğer validator tarafından verilen izni temsil ediyor
                 if (NVG.OtherValidatorSelectedMe == true)
-                {
-                    exitLoop = true;
-                }
-
-                /*
-                
-                sayı 1 adet veya benim SYNC_NO değerim eşit olduğunda çıkış yapılsın
-                çıkış yapıldıktan sonra eksik bloklar yüklenecek ve senkronizasyon
-                süreci tamamlanana kadar bekleyecek.
-                
-                */
-                if (syncNoCount.Count == 1)
                 {
                     exitLoop = true;
                 }
                 else
                 {
-                    Thread.Sleep(10);
+                    syncNoCount.Clear();
+                    KeyValuePair<string, NVS.NodeQueueInfo>[]? tmpArr = NVG.NodeList.ToArray();
+                    if (tmpArr != null)
+                    {
+                        foreach (KeyValuePair<string, NVS.NodeQueueInfo> iE in tmpArr)
+                        {
+                            if (syncNoCount.ContainsKey(iE.Value.SyncNo) == false)
+                            {
+                                syncNoCount.Add(iE.Value.SyncNo, 0);
+                            }
+                            syncNoCount[iE.Value.SyncNo] = syncNoCount[iE.Value.SyncNo] + 1;
+                        }
+
+                        // sayı 1 adet veya benim SYNC_NO değerim eşit olduğunda çıkış yapılsın
+                        // çıkış yapıldıktan sonra eksik bloklar yüklenecek ve senkronizasyon
+                        // süreci tamamlanana kadar bekleyecek.
+                        if (syncNoCount.Count == 1)
+                        {
+                            exitLoop = true;
+                        }
+                        else
+                        {
+                            Thread.Sleep(10);
+                        }
+                    }
                 }
             }
         }
