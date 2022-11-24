@@ -1186,6 +1186,7 @@ namespace Notus.Validator
         }
         private void WaitUntilAvailable()
         {
+            NP.Info("Wait Until Nodes Available");
             // burada beklerken diğer node'dan syncno zamanı gelecek
             // gelen zamana kadar buradan ve diğer işlemleri bypass ederek 
             // doğrudan iletişim kısmına geçecek
@@ -1264,6 +1265,7 @@ namespace Notus.Validator
         }
         private void SendMyInfoToAllNodes()
         {
+            NP.Info("Send My Node Full Info");
             // her 30 saniyede bir diğer node'ları kim olduğumu söylüyor.
             KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = NGF.ValidatorList.ToArray();
             if (tmpMainList != null)
@@ -1280,6 +1282,7 @@ namespace Notus.Validator
         }
         private void AskInfoFromNode()
         {
+            NP.Info("Ask Other Nodes Full Info");
             KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = NGF.ValidatorList.ToArray();
             if (tmpMainList != null)
             {
@@ -1321,8 +1324,7 @@ namespace Notus.Validator
                         iE.Key, iE.Value,
                         "<nList>" + JsonSerializer.Serialize(NGF.ValidatorList) + "</nList>"
                     );
-                    Console.WriteLine(innerResponseStr);
-                    if (innerResponseStr == "1")
+                    if (string.Equals( innerResponseStr.Trim(),"1"))
                     {
                         NGF.ValidatorList[iE.Key].Status = NVS.NodeStatus.Online;
                     }
