@@ -1142,6 +1142,8 @@ namespace Notus.Validator
         }
         public void TellSyncNoToEarlistNode(string selectedEarliestWalletId)
         {
+            tüm node'lara sync no değerinin hangi node'as bildireleceğini söyleyecek
+
             string tmpSyncNoStr = "<syncNo>" +
                 selectedEarliestWalletId + NVC.CommonDelimeterChar +
                 NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar +
