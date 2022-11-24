@@ -139,6 +139,7 @@ namespace Notus.Validator
                 }
                 NGF.ValidatorList.Remove(nodeHexKey);
             }
+            NVG.OnlineNodeCount = NVG.NodeList.Count;
         }
         public static void AddValidatorInfo(NVS.NodeQueueInfo nodeQueueInfo, bool structCameFromOwner)
         {
@@ -150,6 +151,7 @@ namespace Notus.Validator
             {
                 NVG.NodeList.TryAdd(nodeQueueInfo.HexKey, nodeQueueInfo);
             }
+            NVG.OnlineNodeCount = NVG.NodeList.Count;
         }
         public static void AddToValidatorList(string ipAddress, int portNo, bool storeToTable = true)
         {
@@ -179,6 +181,7 @@ namespace Notus.Validator
                 }
                 NGF.ValidatorListHash = new Notus.Hash().CommonHash("sha1", JsonSerializer.Serialize(tmpNodeList));
             }
+            NVG.OnlineNodeCount = NVG.NodeList.Count;
         }
     }
 }

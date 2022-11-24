@@ -624,7 +624,6 @@ namespace Notus.Validator
             {
                 TimeSyncObj.Start();
                 NtpDateSyncObj.Start();
-                ValidatorCountObj.Start();
             }
             Obj_Integrity = new Notus.Block.Integrity();
             Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with onther node
