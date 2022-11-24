@@ -868,7 +868,6 @@ namespace Notus.Validator
             NVG.NodeList.Clear();
             NVH.AddValidatorInfo(new NVS.NodeQueueInfo()
             {
-                //Ready = true,
                 Status = NVS.NodeStatus.Online,
                 HexKey = NVG.Settings.Nodes.My.HexKey,
                 Begin = NVG.Settings.Nodes.My.Begin,
@@ -891,7 +890,6 @@ namespace Notus.Validator
                 {
                     NVH.AddValidatorInfo(new NVS.NodeQueueInfo()
                     {
-                        //Ready = false,
                         Status = NVS.NodeStatus.Unknown,
                         Begin = 0,
                         Tick = 0,
@@ -916,6 +914,10 @@ namespace Notus.Validator
             NGF.ValidatorList[NVG.Settings.Nodes.My.HexKey].Status = NVS.NodeStatus.Online;
 
             NP.Info("Node Sync Starting", false);
+            
+            eğer sadece 2 adet node var ise, node selector timer devreye girmeyecek
+            ilk 2 node'un devreye girişinden sonra selector timer çalışmaya başlayacak ve
+            diğer node'ların başlangıç zamanlarını baz alarak içeriye alacak
 
             //listedekilere ping atıyor, eğer 1 adet node aktif ise çıkış yapıyor...
             FindOnlineNode();

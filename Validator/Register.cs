@@ -94,13 +94,14 @@ namespace Notus.Validator
         }
         public void Start()
         {
-            burası düzeltilecek
             NetworkSelectorTimer.Start(5000, () =>
             {
                 if (timerRunning == false)
                 {
                     timerRunning= true;
+                    
                     TimerFunc();
+                    
                     timerRunning = false;
                 }
             });
