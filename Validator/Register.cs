@@ -21,23 +21,33 @@ namespace Notus.Validator
         {
             //string tmpNodeHexStr = string.Empty;
             Dictionary<ulong, string> earliestNode = new();
-            Console.WriteLine("NVG.NodeList.Count : " + NVG.NodeList.Count.ToString());
+            //Console.WriteLine("NVG.NodeList.Count : " + NVG.NodeList.Count.ToString());
 
             KeyValuePair<string, NVS.NodeQueueInfo>[]? nList = NVG.NodeList.ToArray();
             if (nList == null)
-            {
                 return false;
-            }
+
+            int waitingRoomCount = 0;
             int onlineCount = 0;
             for (int i = 0; i < nList.Length; i++)
             {
                 if (nList[i].Value.Status == NVS.NodeStatus.Online)
                 {
                     onlineCount++;
+                    if (nList[i].Value.SyncNo == 0)
+                    {
+                        waitingRoomCount++;
+                    }
                 }
             }
             if (onlineCount < 3)
+            {
                 return false;
+            }
+            if (waitingRoomCount == 0)
+            {
+                return false;
+            }
 
 
             SortedDictionary<string, string> syncNodeList = new();
@@ -48,13 +58,10 @@ namespace Notus.Validator
                     //beklemede olan nodeların listesi çıkartılıyor
                     if (nList[i].Value.SyncNo == 0)
                     {
-                        Console.WriteLine("Cevrim Ici Ve Sync No Sifir Olan -> " + nList[i].Value.IP.IpAddress);
                         earliestNode.Add(nList[i].Value.Begin, nList[i].Value.IP.Wallet);
                     }// if (nList[i].Value.SyncNo == 0)
                     else
                     {
-                        // burada aynı SYNC_NO değerine sahip olan nodelardan bir liste yapılacak
-                        // yapılan liste ile ilk sıradaki node bildirecek
                         if (NVG.CurrentSyncNo == nList[i].Value.SyncNo)
                         {
                             syncNodeList.Add(nList[i].Value.IP.Wallet, "");
