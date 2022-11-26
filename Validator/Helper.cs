@@ -247,7 +247,7 @@ namespace Notus.Validator
                         }
                     }
                 }
-
+                Console.WriteLine(youCanSend);
                 if (youCanSend == true)
                 {
                     string resultStr = NCH.SendMessageED(
@@ -256,6 +256,7 @@ namespace Notus.Validator
                         iEntry.Value.IP.Port,
                         tmpSyncNoStr
                     );
+                    Console.WriteLine("TellSyncNoToEarlistNode -> resultStr : " + resultStr);
                 }
             }
         }
