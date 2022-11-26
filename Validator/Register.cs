@@ -5,8 +5,10 @@ using NP = Notus.Print;
 using NTN = Notus.Toolbox.Number;
 using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
+using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
-
+using NVH = Notus.Validator.Helper;
+using NCH = Notus.Communication.Helper;
 namespace Notus.Validator
 {
     public class Register : IDisposable
@@ -70,26 +72,15 @@ namespace Notus.Validator
                 }// if (nList[i].Value.Status == NVS.NodeStatus.Online)
             }// for (int i = 0; i < nList.Length; i++)
 
-            if (syncNodeList.Count > 0)
-            {
-                Console.WriteLine("syncNodeList");
-                Console.WriteLine(JsonSerializer.Serialize(syncNodeList));
-            }
-            if (earliestNode.Count > 0)
-            {
-                Console.WriteLine("earliestNode");
-                Console.WriteLine(JsonSerializer.Serialize(earliestNode));
-            }
-
-            /*
             if (earliestNode.Count > 0 && syncNodeList.Count > 0)
             {
+                Console.WriteLine("-----------------------------------");
+                Console.WriteLine("syncNodeList : " + JsonSerializer.Serialize(syncNodeList));
+                Console.WriteLine("earliestNode : " + JsonSerializer.Serialize(earliestNode));
+                Console.WriteLine("-----------------------------------");
+
                 KeyValuePair<ulong, string> firstNodeForWaitingList = earliestNode.First();
                 string selectedEarliestWalletId = firstNodeForWaitingList.Value;
-                Console.WriteLine("Selected Node : " + selectedEarliestWalletId);
-                //Console.WriteLine("syncNodeList : " + JsonSerializer.Serialize(syncNodeList, NVC.JsonSetting));
-                //Console.WriteLine("earliestNode : " + JsonSerializer.Serialize(earliestNode, NVC.JsonSetting));
-                //bekleme listesindeki ilk node'u ağa dahil etmek için seçiyoruz
                 SortedDictionary<BigInteger, string> earlistNodeChoosing = new();
 
                 foreach (var iEntry in syncNodeList)
@@ -102,40 +93,51 @@ namespace Notus.Validator
                         ), iEntry.Key
                     );
                 }
-
-                // burada seçilen node en eski başlangıç zamanına sahip olan node
-                // önce bu node'a onay verilerek ağa dahil edilecek
-                // sonra diğerleri sırasıyla içeri giriş yapacak
-                KeyValuePair<BigInteger, string> earliestNodeSelector = earlistNodeChoosing.First();
-                string whoWillSayToEarlistNode = earliestNodeSelector.Value;
-                NP.Info("The Node Will Join The Network : " + selectedEarliestWalletId);
-
-                if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, whoWillSayToEarlistNode))
+                if (NVR.NetworkSelectorList.ContainsKey(selectedEarliestWalletId) == false)
                 {
-                    Console.WriteLine("I Must Tell");
-                    // omergoksoy-kontrol-noktası
-                    // omergoksoy-kontrol-noktası
-                    // omergoksoy-kontrol-noktası
-                    // birinci sıradaki wallet diğer node'a başlangıç zamanını söyleyecek
-                    // belirli bir süre sonra diğer wallet söyleyecek ( eğer birinci node düşürse diye )
-
-                    // ValidatorQueueObj.TeelTheNodeWhoWaitingRoom(selectedEarliestWalletId);
-                    // ValidatorQueueObj.TellSyncNoToEarlistNode(selectedEarliestWalletId);
+                    KeyValuePair<BigInteger, string> earliestNodeSelector = earlistNodeChoosing.First();
+                    string whoWillSayToEarlistNode = earliestNodeSelector.Value;
+                    Console.WriteLine("selectedEarliestWalletId : " + selectedEarliestWalletId);
+                    if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, whoWillSayToEarlistNode))
+                    {
+                        Console.WriteLine("I Must Tell The Node");
+                        NVH.TeelTheNodeWhoWaitingRoom(selectedEarliestWalletId);
+                        NVH.TellSyncNoToEarlistNode(selectedEarliestWalletId);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Other Must Tell The Node");
+                    }
+                    NP.Info("The Node Will Join The Network : " + selectedEarliestWalletId);
+                    // sıradaki cüzdan, sıradaki node'a haber verecek node
+                    NVR.NetworkSelectorList.Add(selectedEarliestWalletId, whoWillSayToEarlistNode);
                 }
                 else
                 {
-                    Console.WriteLine("Others Must Tell");
-                }
+                    if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, NVR.NetworkSelectorList[selectedEarliestWalletId]))
+                    {
 
-                //hangi node'a kimin haber vereceğini tutan liste
-                //if (NVG.NetworkSelectorList.ContainsKey(selectedEarliestWalletId) == false)
-                //{
-                    // sıradaki cüzdan, sıradaki node'a haber verecek node
-                    //NVG.NetworkSelectorList.Add(selectedEarliestWalletId, NVG.Settings.Nodes.My.IP.Wallet);
-                //}
-            }// if (oldestNode.Count > 0)
-            */
-            return false;
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+            else
+            {
+                if (syncNodeList.Count > 0)
+                {
+                    Console.WriteLine("syncNodeList");
+                    Console.WriteLine(JsonSerializer.Serialize(syncNodeList));
+                }
+                if (earliestNode.Count > 0)
+                {
+                    Console.WriteLine("earliestNode");
+                    Console.WriteLine(JsonSerializer.Serialize(earliestNode));
+                }
+                return false;
+            }
         }
         public void Start()
         {

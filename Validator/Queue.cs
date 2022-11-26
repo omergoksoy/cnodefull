@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Numerics;
 using System.Text.Json;
+using NCH = Notus.Communication.Helper;
 using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NH = Notus.Hash;
@@ -406,45 +407,46 @@ namespace Notus.Validator
                 }
                 return "0";
             }
+            */
+
             if (CheckXmlTag(incomeData, "yourTurn"))
             {
+                Console.WriteLine("incomeData : " + incomeData);
                 incomeData = GetPureText(incomeData, "yourTurn");
-                string[] tmpArr = incomeData.Split(":");
-                ulong selectedSyncNo = ulong.Parse(tmpArr[0]);
-                string chooserWalletId = tmpArr[1];
-                string chooserSignStr = tmpArr[2];
-
-                foreach (var iEntry in NVG.NodeList)
+                if (incomeData.IndexOf(':') >= 0)
                 {
-                    if (string.Equals(iEntry.Value.IP.Wallet, chooserWalletId) == true)
+                    string[] tmpArr = incomeData.Split(":");
+                    if (tmpArr.Length > 2)
                     {
-                        string controlText =
-                            NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
-                            selectedSyncNo.ToString() + NVC.CommonDelimeterChar + chooserWalletId;
+                        ulong selectedSyncNo = ulong.Parse(tmpArr[0]);
+                        string chooserWalletId = tmpArr[1];
+                        string chooserSignStr = tmpArr[2];
 
-                        if (Notus.Wallet.ID.Verify(controlText, chooserSignStr, iEntry.Value.PublicKey) == true)
+                        foreach (var iEntry in NVG.NodeList)
                         {
-                            Console.WriteLine("My Turn Sign Valid");
-                            // if (NVG.NetworkSelectorList.ContainsKey(selectedEarliestWalletId) == false)
-                            // {
-                                // sıradaki cüzdan, sıradaki node'a haber verecek node
-                                // NVG.NetworkSelectorList.Add(selectedEarliestWalletId, chooserWalletId);
-                            // }
-                            // Console.WriteLine("Queue.cs -> Line 441");
-                            // Console.WriteLine(JsonSerializer.Serialize(NVG.NetworkSelectorList));
-                            NVG.OtherValidatorSelectedMe = true;
-                            return "1";
-                        }
-                        else
-                        {
-                            Console.WriteLine("My Turn Sign WRONG");
-                            Console.WriteLine("My Turn Sign WRONG");
+                            if (string.Equals(iEntry.Value.IP.Wallet, chooserWalletId) == true)
+                            {
+                                string controlText =
+                                    NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
+                                    selectedSyncNo.ToString() + NVC.CommonDelimeterChar + chooserWalletId;
+                                if (Notus.Wallet.ID.Verify(controlText, chooserSignStr, iEntry.Value.PublicKey) == true)
+                                {
+                                    Console.WriteLine("Verify");
+                                    NVG.OtherValidatorSelectedMe = true;
+                                    return "1";
+                                }
+                                else
+                                {
+                                    Console.WriteLine("NOT Verify");
+                                }
+                                return "0";
+                            }
                         }
                     }
                 }
+
                 return "0";
             }
-            */
 
             if (CheckXmlTag(incomeData, "node"))
             {
@@ -509,33 +511,7 @@ namespace Notus.Validator
                 NVG.NodeList[nodeHexText].Status = NVS.NodeStatus.Online;
             }
         }
-        private string SendMessage(NVS.NodeInfo receiverIp, string messageText, string nodeHexStr = "")
-        {
-            return NGF.SendMessage(receiverIp.IpAddress, receiverIp.Port, messageText, nodeHexStr);
-        }
-        private string SendMessageED(string nodeHex, string ipAddress, int portNo, string messageText)
-        {
-            (bool worksCorrent, string incodeResponse) = Notus.Communication.Request.PostSync(
-                Notus.Network.Node.MakeHttpListenerPath(ipAddress, portNo) +
-                "queue/node/" + nodeHex,
-                new Dictionary<string, string>()
-                {
-                    { "data",messageText }
-                },
-                2,
-                true,
-                false
-            );
-            if (worksCorrent == true)
-            {
-                return incodeResponse;
-            }
-            return string.Empty;
-        }
-        private string SendMessageED(string nodeHex, NVS.IpInfo nodeInfo, string messageText)
-        {
-            return SendMessageED(nodeHex, nodeInfo.IpAddress, nodeInfo.Port, messageText);
-        }
+
         private string Message_Hash_ViaSocket(string _ipAddress, int _portNo)
         {
             return NGF.SendMessage(
@@ -972,7 +948,7 @@ namespace Notus.Validator
                     {
 
                     }
-                    //private string SendMessageED(string nodeHex, NVS.IpInfo nodeInfo, string messageText)
+                    //private string NCH.SendMessageED(string nodeHex, NVS.IpInfo nodeInfo, string messageText)
                     string resultStr = SendMessageED(
                         iEntry.Key,
                         iEntry.Value.IP.IpAddress,
@@ -1026,7 +1002,7 @@ namespace Notus.Validator
                                         bool sendedToNode = false;
                                         while (sendedToNode == false)
                                         {
-                                            string tmpResult = SendMessage(entry.Value.IP, "<when>" + syncStaringTime + "</when>", entry.Key);
+                                            string tmpResult = NCH.SendMessage(entry.Value.IP, "<when>" + syncStaringTime + "</when>", entry.Key);
                                             if (string.Equals(tmpResult, "done"))
                                             {
                                                 sendedToNode = true;
@@ -1105,84 +1081,6 @@ namespace Notus.Validator
             SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, queueSeedStr);
             GenerateNodeQueue(currentQueueTime, ND.AddMiliseconds(currentQueueTime, 1500), tmpWalletList);
             NVG.NodeQueue.OrderCount++;
-        }
-        public void TeelTheNodeWhoWaitingRoom(string selectedEarliestWalletId)
-        {
-            foreach (var iEntry in NVG.NodeList)
-            {
-                if (string.Equals(iEntry.Value.IP.Wallet, selectedEarliestWalletId) == true)
-                {
-                    string tmpSyncNoStr = "<yourTurn>" +
-                        NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar +
-                        NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
-                        Notus.Wallet.ID.Sign(
-                            selectedEarliestWalletId + NVC.CommonDelimeterChar +
-                            NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar +
-                            NVG.Settings.Nodes.My.IP.Wallet,
-                            NVG.SessionPrivateKey
-                        ) +
-                        "</yourTurn>";
-                    /*
-                    NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
-                    selectedSyncNo.ToString() + NVC.CommonDelimeterChar + chooserWalletId;
-                    */
-                    string resultStr = SendMessageED(
-                        iEntry.Key,
-                        iEntry.Value.IP.IpAddress,
-                        iEntry.Value.IP.Port,
-                        tmpSyncNoStr
-                    );
-                    Console.WriteLine("TeelTheNodeWhoWaitingRoom : " + resultStr);
-                }
-            }
-        }
-        public void TellSyncNoToEarlistNode(string selectedEarliestWalletId)
-        {
-            //omergoksoy-kontrol-noktası
-            //omergoksoy-kontrol-noktası
-            // tüm node'lara sync no değerinin hangi node'as bildireleceğini söyleyecek
-
-            string tmpSyncNoStr = "<syncNo>" +
-                selectedEarliestWalletId + NVC.CommonDelimeterChar +
-                NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar +
-                NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
-                Notus.Wallet.ID.Sign(
-                    selectedEarliestWalletId +
-                        NVC.CommonDelimeterChar +
-                    NVG.CurrentSyncNo.ToString() +
-                        NVC.CommonDelimeterChar +
-                    NVG.Settings.Nodes.My.IP.Wallet,
-                    NVG.SessionPrivateKey
-                ) +
-                "</syncNo>";
-            foreach (var iEntry in NVG.NodeList)
-            {
-                bool youCanSend = false;
-                if (string.Equals(iEntry.Value.IP.Wallet, selectedEarliestWalletId) == false)
-                {
-                    youCanSend = true;
-                }
-                else
-                {
-                    if (iEntry.Value.SyncNo == NVG.CurrentSyncNo)
-                    {
-                        if (string.Equals(iEntry.Value.IP.Wallet, NVG.Settings.Nodes.My.IP.Wallet) == false)
-                        {
-                            youCanSend = true;
-                        }
-                    }
-                }
-
-                if (youCanSend == true)
-                {
-                    string resultStr = SendMessageED(
-                        iEntry.Key,
-                        iEntry.Value.IP.IpAddress,
-                        iEntry.Value.IP.Port,
-                        tmpSyncNoStr
-                    );
-                }
-            }
         }
         private void WaitUntilAvailable()
         {
@@ -1278,7 +1176,7 @@ namespace Notus.Validator
                 {
                     if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
-                        SendMessageED(tmpMainList[i].Key, tmpMainList[i].Value, myNodeDataText);
+                        NCH.SendMessageED(tmpMainList[i].Key, tmpMainList[i].Value, myNodeDataText);
                     }
                 }
             }
@@ -1308,7 +1206,7 @@ namespace Notus.Validator
                     }
                     if (weHaveNodeInfo == false)
                     {
-                        ProcessIncomeData(SendMessageED(
+                        ProcessIncomeData(NCH.SendMessageED(
                             tmpMainList[i].Key, tmpMainList[i].Value, "<rNode>1</rNode>"
                         ));
                     }
@@ -1323,11 +1221,11 @@ namespace Notus.Validator
             {
                 if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
                 {
-                    string innerResponseStr = SendMessageED(
+                    string innerResponseStr = NCH.SendMessageED(
                         iE.Key, iE.Value,
                         "<nList>" + JsonSerializer.Serialize(NGF.ValidatorList) + "</nList>"
                     );
-                    if (string.Equals( innerResponseStr.Trim(),"1"))
+                    if (string.Equals(innerResponseStr.Trim(), "1"))
                     {
                         NGF.ValidatorList[iE.Key].Status = NVS.NodeStatus.Online;
                     }

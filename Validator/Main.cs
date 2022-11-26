@@ -13,6 +13,7 @@ using NVClass = Notus.Variable.Class;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
+using NVR = Notus.Validator.Register;
 
 namespace Notus.Validator
 {
@@ -529,15 +530,10 @@ namespace Notus.Validator
             }
             return false;
         }
-        /*
-        private void PreStart()
-        {
-            NVG.NetworkSelectorList.Clear();
-        }
-        */
-
         public void Start()
         {
+            NVR.NetworkSelectorList.Clear();
+
             NGF.GetUtcTimeFromNode(20, true);
             TimeBaseBlockUidList.Clear();
 

@@ -6,6 +6,7 @@ using NGF = Notus.Variable.Globals.Functions;
 using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
+using NCH = Notus.Communication.Helper;
 
 namespace Notus.Validator
 {
@@ -184,6 +185,80 @@ namespace Notus.Validator
                 NGF.ValidatorListHash = new Notus.Hash().CommonHash("sha1", JsonSerializer.Serialize(tmpNodeList));
             }
             NVG.OnlineNodeCount = NVG.NodeList.Count;
+        }
+        public static void TeelTheNodeWhoWaitingRoom(string selectedEarliestWalletId)
+        {
+            foreach (var iEntry in NVG.NodeList)
+            {
+                if (string.Equals(iEntry.Value.IP.Wallet, selectedEarliestWalletId) == true)
+                {
+                    string tmpSyncNoStr = "<yourTurn>" +
+                        NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar +
+                        NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
+                        Notus.Wallet.ID.Sign(
+                            selectedEarliestWalletId + NVC.CommonDelimeterChar +
+                            NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar +
+                            NVG.Settings.Nodes.My.IP.Wallet,
+                            NVG.SessionPrivateKey
+                        ) +
+                        "</yourTurn>";
+                    string resultStr = NCH.SendMessageED(
+                        iEntry.Key,
+                        iEntry.Value.IP.IpAddress,
+                        iEntry.Value.IP.Port,
+                        tmpSyncNoStr
+                    );
+                    Console.WriteLine("TeelTheNodeWhoWaitingRoom : " + resultStr);
+                }
+            }
+        }
+        public static void TellSyncNoToEarlistNode(string selectedEarliestWalletId)
+        {
+            //omergoksoy-kontrol-noktası
+            //omergoksoy-kontrol-noktası
+            // tüm node'lara sync no değerinin hangi node'as bildireleceğini söyleyecek
+
+            string tmpSyncNoStr = "<syncNo>" +
+                selectedEarliestWalletId + NVC.CommonDelimeterChar +
+                NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar +
+                NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
+                Notus.Wallet.ID.Sign(
+                    selectedEarliestWalletId +
+                        NVC.CommonDelimeterChar +
+                    NVG.CurrentSyncNo.ToString() +
+                        NVC.CommonDelimeterChar +
+                    NVG.Settings.Nodes.My.IP.Wallet,
+                    NVG.SessionPrivateKey
+                ) +
+                "</syncNo>";
+            foreach (var iEntry in NVG.NodeList)
+            {
+                bool youCanSend = false;
+                if (string.Equals(iEntry.Value.IP.Wallet, selectedEarliestWalletId) == false)
+                {
+                    youCanSend = true;
+                }
+                else
+                {
+                    if (iEntry.Value.SyncNo == NVG.CurrentSyncNo)
+                    {
+                        if (string.Equals(iEntry.Value.IP.Wallet, NVG.Settings.Nodes.My.IP.Wallet) == false)
+                        {
+                            youCanSend = true;
+                        }
+                    }
+                }
+
+                if (youCanSend == true)
+                {
+                    string resultStr = NCH.SendMessageED(
+                        iEntry.Key,
+                        iEntry.Value.IP.IpAddress,
+                        iEntry.Value.IP.Port,
+                        tmpSyncNoStr
+                    );
+                }
+            }
         }
     }
 }
