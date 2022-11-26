@@ -296,10 +296,7 @@ namespace Notus.Validator
                         {
                             if (NVG.NodeList.ContainsKey(entry.Key))
                             {
-                                NVG.NodeList.TryRemove(entry.Key, out _);
-                                //NVG.NodeList[entry.Key].Status = NVS.NodeStatus.Offline;
-                                //NVG.NodeList[entry.Key].SyncNo = 0;
-                                //Thread.Sleep(10);
+                                NVH.RemoveFromValidatorList(entry.Key);
                                 NP.Info("Node Just Left : " + entry.Value.IP.Wallet);
                                 NP.NodeCount();
                                 return "1";
