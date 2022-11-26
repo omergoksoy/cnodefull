@@ -1203,10 +1203,10 @@ namespace Notus.Validator
                 }
                 else
                 {
-                    syncNoCount.Clear();
                     KeyValuePair<string, NVS.NodeQueueInfo>[]? tmpArr = NVG.NodeList.ToArray();
                     if (tmpArr != null)
                     {
+                        syncNoCount.Clear();
                         foreach (KeyValuePair<string, NVS.NodeQueueInfo> iE in tmpArr)
                         {
                             if (syncNoCount.ContainsKey(iE.Value.SyncNo) == false)
@@ -1222,6 +1222,11 @@ namespace Notus.Validator
                             {
                                 Console.WriteLine("Ilk-Baslangic-Durumu");
                             }
+                        }
+                        else
+                        {
+                            Console.WriteLine(JsonSerializer.Serialize(syncNoCount));
+                            NP.ReadLine();
                         }
                         // sayı 1 adet veya benim SYNC_NO değerim eşit olduğunda çıkış yapılsın
                         // çıkış yapıldıktan sonra eksik bloklar yüklenecek ve senkronizasyon
