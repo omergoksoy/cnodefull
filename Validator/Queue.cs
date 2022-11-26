@@ -1225,7 +1225,6 @@ namespace Notus.Validator
                             if (syncNoCount[0] == 2)
                             {
                                 Console.WriteLine("Ilk-Baslangic-Durumu");
-                                Console.WriteLine("Ilk-Baslangic-Durumu");
                             }
                         }
                         // sayı 1 adet veya benim SYNC_NO değerim eşit olduğunda çıkış yapılsın
