@@ -56,13 +56,11 @@ namespace Notus.Validator
             {
                 if (TimeBaseBlockUidList.Count > 20000)
                 {
-                    var el = TimeBaseBlockUidList.First();
-                    TimeBaseBlockUidList.Remove(el.Key);
+                    TimeBaseBlockUidList.Remove(TimeBaseBlockUidList.First().Key);
                 }
                 if (NVG.Settings.Nodes.Queue.Count > 20000)
                 {
-                    var el = NVG.Settings.Nodes.Queue.First();
-                    TimeBaseBlockUidList.Remove(el.Key);
+                    TimeBaseBlockUidList.Remove(NVG.Settings.Nodes.Queue.First().Key);
                 }
             });
         }
