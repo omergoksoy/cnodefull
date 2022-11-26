@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Net;
-using System.Numerics;
-using System.Text.Json;
+﻿using System.Numerics;
 using NH = Notus.Hash;
+using NP = Notus.Print;
+using NTN = Notus.Toolbox.Number;
+using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
-using NVC = Notus.Variable.Constant;
-using NTN = Notus.Toolbox.Number;
-using System.Globalization;
 
 namespace Notus.Validator
 {
@@ -57,7 +53,7 @@ namespace Notus.Validator
                 {
                 }
 
-                if (earliestNode.Count > 0 && syncNodeList.Count > 0 )
+                if (earliestNode.Count > 0 && syncNodeList.Count > 0)
                 {
                     KeyValuePair<ulong, string> firstNodeForWaitingList = earliestNode.First();
                     string selectedEarliestWalletId = firstNodeForWaitingList.Value;
@@ -71,10 +67,10 @@ namespace Notus.Validator
                     {
                         earlistNodeChoosing.Add(
                             NTN.HexToNumber(
-                                new NH().CommonHash("sha1", 
+                                new NH().CommonHash("sha1",
                                     iEntry.Key + NVC.CommonDelimeterChar + selectedEarliestWalletId
                                 )
-                            ),iEntry.Key
+                            ), iEntry.Key
                         );
                     }
 
@@ -88,23 +84,28 @@ namespace Notus.Validator
                     if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, whoWillSayToEarlistNode))
                     {
                         Console.WriteLine("I Must Tell");
-                        birinci sıradaki wallet diğer node'a başlangıç zamanını söyleyecek
-                        belirli bir süre sonra diğer wallet söyleyecek ( eğer birinci node düşürse diye )
+                        // omergoksoy-kontrol-noktası
+                        // omergoksoy-kontrol-noktası
+                        // omergoksoy-kontrol-noktası
+                        // birinci sıradaki wallet diğer node'a başlangıç zamanını söyleyecek
+                        // belirli bir süre sonra diğer wallet söyleyecek ( eğer birinci node düşürse diye )
 
-                        ValidatorQueueObj.TeelTheNodeWhoWaitingRoom(selectedEarliestWalletId);
-                        ValidatorQueueObj.TellSyncNoToEarlistNode(selectedEarliestWalletId);
+                        // ValidatorQueueObj.TeelTheNodeWhoWaitingRoom(selectedEarliestWalletId);
+                        // ValidatorQueueObj.TellSyncNoToEarlistNode(selectedEarliestWalletId);
                     }
                     else
                     {
                         Console.WriteLine("Others Must Tell");
                     }
 
-                    hangi node'a kimin haber vereceğini tutan liste
+                    /*
+                    //hangi node'a kimin haber vereceğini tutan liste
                     if (NVG.NetworkSelectorList.ContainsKey(selectedEarliestWalletId) == false)
                     {
                         // sıradaki cüzdan, sıradaki node'a haber verecek node
                         NVG.NetworkSelectorList.Add(selectedEarliestWalletId, NVG.Settings.Nodes.My.IP.Wallet);
                     }
+                    */
                 }// if (oldestNode.Count > 0)
             }// if (nList != null)
         }
@@ -114,10 +115,10 @@ namespace Notus.Validator
             {
                 if (timerRunning == false)
                 {
-                    timerRunning= true;
-                    
+                    timerRunning = true;
+
                     TimerFunc();
-                    
+
                     timerRunning = false;
                 }
             });
