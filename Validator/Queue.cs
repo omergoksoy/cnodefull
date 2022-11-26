@@ -296,9 +296,8 @@ namespace Notus.Validator
                         {
                             if (NVG.NodeList.ContainsKey(entry.Key))
                             {
-                                NVH.RemoveFromValidatorList(entry.Key);
                                 NP.Info("Node Just Left : " + entry.Value.IP.Wallet);
-                                NP.NodeCount();
+                                NVH.RemoveFromValidatorList(entry.Key);
                                 return "1";
                             }
                         }

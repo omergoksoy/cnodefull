@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Text.Json;
 using ND = Notus.Date;
+using NP = Notus.Print;
 using NGF = Notus.Variable.Globals.Functions;
 using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
@@ -140,6 +141,7 @@ namespace Notus.Validator
                 NGF.ValidatorList.Remove(nodeHexKey);
             }
             NVG.OnlineNodeCount = NVG.NodeList.Count;
+            NP.NodeCount();
         }
         public static void AddValidatorInfo(NVS.NodeQueueInfo nodeQueueInfo, bool structCameFromOwner)
         {
