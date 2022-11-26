@@ -373,12 +373,18 @@ namespace Notus.Validator
 
             if (CheckXmlTag(incomeData, "syncNo"))
             {
+                burada syncNo diğer nodelar tarafından kabul edilecek
+                burada syncNo diğer nodelar tarafından kabul edilecek
+                burada syncNo diğer nodelar tarafından kabul edilecek
+                burada syncNo diğer nodelar tarafından kabul edilecek
+
+
                 Console.WriteLine("incomeData : " + incomeData);
                 incomeData = GetPureText(incomeData, "syncNo");
-                /*
                 string[] tmpArr = incomeData.Split(":");
                 if (tmpArr.Length > 3)
                 {
+                    /*
                     string selectedEarliestWalletId = tmpArr[0];
                     string chooserWalletId = tmpArr[2];
                     string chooserSignStr = tmpArr[3];
@@ -405,8 +411,8 @@ namespace Notus.Validator
                             }
                         }
                     }
+                    */
                 }
-                */
                 return "0";
             }
 
