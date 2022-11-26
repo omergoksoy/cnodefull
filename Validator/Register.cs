@@ -123,6 +123,7 @@ namespace Notus.Validator
 
                     }
                 }
+                return false;
             }
             else
             {
