@@ -127,6 +127,7 @@ namespace Notus.Validator
             }
             else
             {
+                /*
                 if (syncNodeList.Count > 0)
                 {
                     Console.WriteLine("syncNodeList");
@@ -137,6 +138,7 @@ namespace Notus.Validator
                     Console.WriteLine("earliestNode");
                     Console.WriteLine(JsonSerializer.Serialize(earliestNode));
                 }
+                */
                 return false;
             }
         }

@@ -208,7 +208,6 @@ namespace Notus.Validator
                         iEntry.Value.IP.Port,
                         tmpSyncNoStr
                     );
-                    Console.WriteLine("TeelTheNodeWhoWaitingRoom : " + resultStr);
                 }
             }
         }

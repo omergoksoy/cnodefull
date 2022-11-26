@@ -371,10 +371,11 @@ namespace Notus.Validator
                 return "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
             }
 
-            /*
             if (CheckXmlTag(incomeData, "syncNo"))
             {
+                Console.WriteLine("incomeData : " + incomeData);
                 incomeData = GetPureText(incomeData, "syncNo");
+                /*
                 string[] tmpArr = incomeData.Split(":");
                 if (tmpArr.Length > 3)
                 {
@@ -405,9 +406,9 @@ namespace Notus.Validator
                         }
                     }
                 }
+                */
                 return "0";
             }
-            */
 
             if (CheckXmlTag(incomeData, "yourTurn"))
             {
