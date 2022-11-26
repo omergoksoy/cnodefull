@@ -411,7 +411,6 @@ namespace Notus.Validator
 
             if (CheckXmlTag(incomeData, "yourTurn"))
             {
-                Console.WriteLine("incomeData : " + incomeData);
                 incomeData = GetPureText(incomeData, "yourTurn");
                 if (incomeData.IndexOf(':') >= 0)
                 {
@@ -431,13 +430,8 @@ namespace Notus.Validator
                                     selectedSyncNo.ToString() + NVC.CommonDelimeterChar + chooserWalletId;
                                 if (Notus.Wallet.ID.Verify(controlText, chooserSignStr, iEntry.Value.PublicKey) == true)
                                 {
-                                    Console.WriteLine("Verify");
                                     NVG.OtherValidatorSelectedMe = true;
                                     return "1";
-                                }
-                                else
-                                {
-                                    Console.WriteLine("NOT Verify");
                                 }
                                 return "0";
                             }
