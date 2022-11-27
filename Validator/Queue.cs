@@ -400,8 +400,6 @@ namespace Notus.Validator
                         {
                             if (NVG.NodeList.ContainsKey(entry.Key))
                             {
-                                Console.WriteLine("my wallet : " + NVG.Settings.Nodes.My.IP.Wallet);
-                                Console.WriteLine("income wallet : " + entry.Value.IP.Wallet);
                                 if (ReadyMessageIncomeList.ContainsKey(entry.Value.IP.Wallet)==false)
                                 {
                                     ReadyMessageIncomeList.Add(entry.Value.IP.Wallet, true);
@@ -1201,13 +1199,12 @@ namespace Notus.Validator
                     NVG.Settings.Nodes.My.IP.Wallet,
                     NVG.SessionPrivateKey
                 );
-                Dictionary<string, string> response = new Dictionary<string, string>();
                 ReadyMessageIncomeList.Add(NVG.Settings.Nodes.My.IP.Wallet,true);
                 foreach (var iE in NVG.NodeList)
                 {
                     if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
-                        string resultStr=NCH.SendMessageED(iE.Key, iE.Value.IP.IpAddress, iE.Value.IP.Port, 
+                        NCH.SendMessageED(iE.Key, iE.Value.IP.IpAddress, iE.Value.IP.Port, 
                             "<fReady>" +
                                 NVG.Settings.Nodes.My.IP.Wallet +
                                 NVC.CommonDelimeterChar +
@@ -1216,16 +1213,12 @@ namespace Notus.Validator
                                 controlSignForReadyMsg +
                             "</fReady>"
                         );
-                        Console.WriteLine("resultStr : " + resultStr);
                     }
                 }
-                Console.WriteLine(JsonSerializer.Serialize(ReadyMessageIncomeList));
-                Console.WriteLine(ReadyMessageIncomeList.Count);
                 while (ReadyMessageIncomeList.Count == 1)
                 {
                     Thread.Sleep(5);
                 }
-                Console.WriteLine(ReadyMessageIncomeList.Count);
             }
         }
         private ulong FindBiggestSyncNo()
