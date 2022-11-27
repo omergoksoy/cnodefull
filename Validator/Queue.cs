@@ -426,46 +426,40 @@ namespace Notus.Validator
                     string controlText =
                         selectedEarliestWalletId +
                             NVC.CommonDelimeterChar +
-                        NVG.CurrentSyncNo.ToString() +
+                        incomeSyncNo.ToString() +
                             NVC.CommonDelimeterChar +
                         chooserWalletId;
                     string chooserPublicKeyStr = string.Empty;
+                    string earlistNodeKeyStr = string.Empty;
                     foreach (var iEntry in NVG.NodeList)
                     {
                         if (string.Equals(iEntry.Value.IP.Wallet, chooserWalletId) == true)
                         {
                             chooserPublicKeyStr = iEntry.Value.PublicKey;
                         }
+                        if (string.Equals(iEntry.Value.IP.Wallet, selectedEarliestWalletId) == true)
+                        {
+                            earlistNodeKeyStr = iEntry.Key;
+                        }
+
                     }
 
-                    Console.WriteLine("NVG.Settings.Nodes.My.IP.Wallet : " + NVG.Settings.Nodes.My.IP.Wallet);
-                    Console.WriteLine("selectedEarliestWalletId        : " + selectedEarliestWalletId);
-                    Console.WriteLine("incomeSyncNo                    : " + incomeSyncNo.ToString());
-                    Console.WriteLine("chooserWalletId                 : " + chooserWalletId);
-                    Console.WriteLine("chooserSignStr                  : " + chooserSignStr);
-                    Console.WriteLine("chooserPublicKeyStr             : " + chooserPublicKeyStr);
-                    if (chooserPublicKeyStr.Length > 0)
+                    if (chooserPublicKeyStr.Length > 0 && earlistNodeKeyStr.Length > 0)
                     {
                         if (Notus.Wallet.ID.Verify(controlText, chooserSignStr, chooserPublicKeyStr) == true)
                         {
+                            // sıradaki cüzdan, sıradaki node'a haber verecek node
                             if (NVR.NetworkSelectorList.ContainsKey(selectedEarliestWalletId) == false)
                             {
-                                // sıradaki cüzdan, sıradaki node'a haber verecek node
                                 NVR.NetworkSelectorList.Add(selectedEarliestWalletId, chooserWalletId);
                             }
-                            Console.WriteLine("Queue.cs -> Line 441");
-                            Console.WriteLine(JsonSerializer.Serialize(NVR.NetworkSelectorList));
                             if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedEarliestWalletId))
                             {
                                 Console.WriteLine("This Is Me");
-                                Console.WriteLine("incomeData SyncNo: " + incomeSyncNo.ToString());
-                                Console.WriteLine("incomeData : " + incomeData);
                             }
+                            NVG.NodeList[earlistNodeKeyStr].JoinTime = ulong.MaxValue;
+                            NVG.NodeList[earlistNodeKeyStr].SyncNo = incomeSyncNo;
                             return "1";
-                        }
-                        else
-                        {
-                            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                         }
                     }
                 }
