@@ -800,6 +800,12 @@ namespace Notus.Validator
                             Console.Write("+");
                         }
                     }
+
+                    /*
+
+                    diğer validatörler tarafından ağa dahil edilen node
+
+                    */
                 }
                 else
                 {
@@ -1087,31 +1093,48 @@ namespace Notus.Validator
 
 
                 bool innerSendToMyChain = false;
-                try
+                if (NVG.OtherValidatorSelectedMe == false)
                 {
-                    innerSendToMyChain = Notus.Validator.Helper.RightBlockValidator(blockData);
-                }
-                catch (Exception innerErr)
-                {
-                    Console.WriteLine("Main.cs -> tmpNewBlockIncome.info.time : " + blockData.info.time);
-                    Console.WriteLine("Main.cs -> innerErr.Message : " + innerErr.Message);
-                }
-                if (innerSendToMyChain == true)
-                {
-                    NVG.Settings.BlockOrder.Add(blockData.info.rowNo, blockData.info.uID);
-                    NP.Info("New Block Arrived : " + blockData.info.uID.Substring(0, 15));
+                    try
+                    {
+                        innerSendToMyChain = Notus.Validator.Helper.RightBlockValidator(blockData);
+                    }
+                    catch (Exception innerErr)
+                    {
+                        Console.WriteLine("Main.cs -> tmpNewBlockIncome.info.time : " + blockData.info.time);
+                        Console.WriteLine("Main.cs -> innerErr.Message : " + innerErr.Message);
+                    }
+                    if (innerSendToMyChain == true)
+                    {
+                        NVG.Settings.BlockOrder.Add(blockData.info.rowNo, blockData.info.uID);
+                        NP.Info("New Block Arrived : " + blockData.info.uID.Substring(0, 15));
+                    }
+                    else
+                    {
+                        if (blockSource == 2)
+                        {
+                            NP.Warning("That block came from validator and wrong block");
+                        }
+                        if (blockSource == 4)
+                        {
+                            NP.Warning("That block came my validator but wrong queue order");
+                        }
+                        return false;
+                    }
                 }
                 else
                 {
-                    if (blockSource == 2)
-                    {
-                        NP.Warning("That block came from validator and wrong block");
-                    }
-                    if (blockSource == 4)
-                    {
-                        NP.Warning("That block came my validator but wrong queue order");
-                    }
-                    return false;
+                    /*
+
+                    eğer validatör diğer validatörler tarafından ağa dahil edilen bir validatör ise,
+                    gelen bloğu diğer validatörler tarafından doğrulayacak
+                    eğer blok imzası doğru ise
+                    validatör bloğu kabul edecek
+
+                    */
+                    innerSendToMyChain = true;
+                    NVG.Settings.BlockOrder.Add(blockData.info.rowNo, blockData.info.uID);
+                    NP.Info("New Block Arrived : " + blockData.info.uID.Substring(0, 15));
                 }
             }
             //gelen blok datası
