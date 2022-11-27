@@ -414,13 +414,6 @@ namespace Notus.Validator
             }
             if (CheckXmlTag(incomeData, "syncNo"))
             {
-                /*
-                burada syncNo diğer nodelar tarafından kabul edilecek
-                burada syncNo diğer nodelar tarafından kabul edilecek
-                burada syncNo diğer nodelar tarafından kabul edilecek
-                burada syncNo diğer nodelar tarafından kabul edilecek
-                */
-
                 incomeData = GetPureText(incomeData, "syncNo");
                 string[] tmpArr = incomeData.Split(":");
                 if (tmpArr.Length > 3)

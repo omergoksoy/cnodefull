@@ -229,7 +229,7 @@ namespace Notus.Validator
             //omergoksoy-kontrol-noktası
             //omergoksoy-kontrol-noktası
             // tüm node'lara sync no değerinin hangi node'as bildireleceğini söyleyecek
-
+            Console.WriteLine("selectedEarliestWalletId : " + selectedEarliestWalletId);
             string tmpSyncNoStr = "<syncNo>" +
                 selectedEarliestWalletId + NVC.CommonDelimeterChar +
                 NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar +
@@ -243,34 +243,34 @@ namespace Notus.Validator
                     NVG.SessionPrivateKey
                 ) +
                 "</syncNo>";
+            List<string> tmpNodeList = new List<string>();
             foreach (var iEntry in NVG.NodeList)
             {
-                bool youCanSend = false;
-                if (string.Equals(iEntry.Value.IP.Wallet, selectedEarliestWalletId) == false)
+                if (string.Equals(iEntry.Value.IP.Wallet, selectedEarliestWalletId) == true)
                 {
-                    youCanSend = true;
+                    tmpNodeList.Add(iEntry.Key);
                 }
                 else
                 {
-                    if (iEntry.Value.SyncNo == NVG.CurrentSyncNo)
+                    if (string.Equals(iEntry.Value.IP.Wallet, NVG.Settings.Nodes.My.IP.Wallet) == false)
                     {
-                        if (string.Equals(iEntry.Value.IP.Wallet, NVG.Settings.Nodes.My.IP.Wallet) == false)
+                        if (iEntry.Value.SyncNo == NVG.CurrentSyncNo)
                         {
-                            youCanSend = true;
+                            tmpNodeList.Add(iEntry.Key);
                         }
                     }
                 }
-                Console.WriteLine(youCanSend);
-                if (youCanSend == true)
-                {
-                    string resultStr = NCH.SendMessageED(
-                        iEntry.Key,
-                        iEntry.Value.IP.IpAddress,
-                        iEntry.Value.IP.Port,
-                        tmpSyncNoStr
-                    );
-                    Console.WriteLine("TellSyncNoToEarlistNode -> resultStr : " + resultStr);
-                }
+            }
+
+            foreach (var nodeKey in tmpNodeList)
+            {
+                string resultStr = NCH.SendMessageED(
+                    nodeKey,
+                    NVG.NodeList[nodeKey].IP.IpAddress,
+                    NVG.NodeList[nodeKey].IP.Port,
+                    tmpSyncNoStr
+                );
+                Console.WriteLine("We Are Sending SyncNo To -> " + NVG.NodeList[nodeKey].IP.Wallet + " -> " + resultStr);
             }
         }
     }
