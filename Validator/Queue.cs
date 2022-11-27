@@ -453,12 +453,12 @@ namespace Notus.Validator
                             {
                                 NVR.NetworkSelectorList.Add(selectedEarliestWalletId, chooserWalletId);
                             }
-                            if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedEarliestWalletId))
-                            {
-                                Console.WriteLine("This Is Me");
-                            }
                             NVG.NodeList[earlistNodeKeyStr].JoinTime = ulong.MaxValue;
                             NVG.NodeList[earlistNodeKeyStr].SyncNo = incomeSyncNo;
+                            NVG.CurrentSyncNo = incomeSyncNo;
+                            NVG.NodeQueue.Starting = incomeSyncNo;
+                            // NVG.NodeQueue.OrderCount = 1;
+                            // NVG.NodeQueue.Begin = true;
                             return "1";
                         }
                     }
@@ -837,6 +837,7 @@ namespace Notus.Validator
                 Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue, NVC.JsonSetting));
             }
             */
+            Console.WriteLine("Node-Siralama-Fonksiyon-111");
         }
         public SortedDictionary<BigInteger, string> MakeOrderToNode(ulong biggestSyncNo, string seedForQueue)
         {
@@ -879,6 +880,7 @@ namespace Notus.Validator
                     }
                 }
             }
+            Console.WriteLine("Node-Siralama-Fonksiyon-222");
             return resultList;
         }
         public void PreStart()
