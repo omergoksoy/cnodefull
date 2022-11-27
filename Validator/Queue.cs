@@ -434,31 +434,36 @@ namespace Notus.Validator
                         NVG.CurrentSyncNo.ToString() +
                             NVC.CommonDelimeterChar +
                         chooserWalletId;
+                    string chooserPublicKeyStr = string.Empty;
                     foreach (var iEntry in NVG.NodeList)
                     {
                         if (string.Equals(iEntry.Value.IP.Wallet, chooserWalletId) == true)
                         {
-                            if (Notus.Wallet.ID.Verify(controlText, chooserSignStr, iEntry.Value.PublicKey) == true)
+                            chooserPublicKeyStr = iEntry.Value.PublicKey;
+                        }
+                    }
+                    if (chooserPublicKeyStr.Length > 0)
+                    {
+                        if (Notus.Wallet.ID.Verify(controlText, chooserSignStr, chooserPublicKeyStr) == true)
+                        {
+                            if (NVR.NetworkSelectorList.ContainsKey(selectedEarliestWalletId) == false)
                             {
-                                if (NVR.NetworkSelectorList.ContainsKey(selectedEarliestWalletId) == false)
-                                {
-                                    // sıradaki cüzdan, sıradaki node'a haber verecek node
-                                    NVR.NetworkSelectorList.Add(selectedEarliestWalletId, chooserWalletId);
-                                }
-                                Console.WriteLine("Queue.cs -> Line 441");
-                                Console.WriteLine(JsonSerializer.Serialize(NVR.NetworkSelectorList));
-                                if(string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedEarliestWalletId))
-                                {
-                                    Console.WriteLine("This Is Me");
-                                    Console.WriteLine("incomeData SyncNo: " + incomeSyncNo.ToString());
-                                    Console.WriteLine("incomeData : " + incomeData);
-                                }
-                                return "1";
+                                // sıradaki cüzdan, sıradaki node'a haber verecek node
+                                NVR.NetworkSelectorList.Add(selectedEarliestWalletId, chooserWalletId);
                             }
-                            else
+                            Console.WriteLine("Queue.cs -> Line 441");
+                            Console.WriteLine(JsonSerializer.Serialize(NVR.NetworkSelectorList));
+                            if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedEarliestWalletId))
                             {
-                                Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
+                                Console.WriteLine("This Is Me");
+                                Console.WriteLine("incomeData SyncNo: " + incomeSyncNo.ToString());
+                                Console.WriteLine("incomeData : " + incomeData);
                             }
+                            return "1";
+                        }
+                        else
+                        {
+                            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                         }
                     }
                 }
