@@ -61,7 +61,7 @@ namespace Notus.Validator
                 }
                 if (NVG.Settings.Nodes.Queue.Count > 20000)
                 {
-                    TimeBaseBlockUidList.Remove(NVG.Settings.Nodes.Queue.First().Key);
+                    NVG.Settings.Nodes.Queue.Remove(NVG.Settings.Nodes.Queue.First().Key);
                 }
             });
         }
