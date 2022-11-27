@@ -188,29 +188,39 @@ namespace Notus.Validator
         }
         public static void TellTheNodeWhoWaitingRoom(string selectedEarliestWalletId)
         {
-            Console.WriteLine("TellTheNodeWhoWaitingRoom -> Begin");
-            foreach (var iEntry in NVG.NodeList)
+            NP.Info("We Told The Node Whose In The Waiting Room");
+            bool exitLoop = false;
+            while (exitLoop == false)
             {
-                Console.WriteLine("iEntry.Value.IP.Wallet : " + iEntry.Value.IP.Wallet);
-                if (string.Equals(iEntry.Value.IP.Wallet, selectedEarliestWalletId) == true)
+                foreach (var iEntry in NVG.NodeList)
                 {
-                    string tmpSyncNoStr = "<yourTurn>" +
-                        NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar +
-                        NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
-                        Notus.Wallet.ID.Sign(
-                            selectedEarliestWalletId + NVC.CommonDelimeterChar +
+                    if (string.Equals(iEntry.Value.IP.Wallet, selectedEarliestWalletId) == true)
+                    {
+                        string tmpSyncNoStr = "<yourTurn>" +
                             NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar +
-                            NVG.Settings.Nodes.My.IP.Wallet,
-                            NVG.SessionPrivateKey
-                        ) +
-                        "</yourTurn>";
-                    string resultStr = NCH.SendMessageED(
-                        iEntry.Key,
-                        iEntry.Value.IP.IpAddress,
-                        iEntry.Value.IP.Port,
-                        tmpSyncNoStr
-                    );
-                    Console.WriteLine("yourTurn resultStr : " + resultStr);
+                            NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
+                            Notus.Wallet.ID.Sign(
+                                selectedEarliestWalletId + NVC.CommonDelimeterChar +
+                                NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar +
+                                NVG.Settings.Nodes.My.IP.Wallet,
+                                NVG.SessionPrivateKey
+                            ) +
+                            "</yourTurn>";
+                        string resultStr = NCH.SendMessageED(
+                            iEntry.Key,
+                            iEntry.Value.IP.IpAddress,
+                            iEntry.Value.IP.Port,
+                            tmpSyncNoStr
+                        );
+                        if (resultStr == "1")
+                        {
+                            exitLoop = true;
+                        }
+                        else
+                        {
+                            Thread.Sleep(100);
+                        }
+                    }
                 }
             }
         }

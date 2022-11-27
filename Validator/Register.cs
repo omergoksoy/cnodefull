@@ -97,20 +97,18 @@ namespace Notus.Validator
                 {
                     KeyValuePair<BigInteger, string> earliestNodeSelector = earlistNodeChoosing.First();
                     string whoWillSayToEarlistNode = earliestNodeSelector.Value;
+                    NVR.NetworkSelectorList.Add(selectedEarliestWalletId, whoWillSayToEarlistNode);
+
+                    NP.Info("The Node Will Join The Network : " + selectedEarliestWalletId);
                     // Console.WriteLine("selectedEarliestWalletId : " + selectedEarliestWalletId);
                     if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, whoWillSayToEarlistNode))
                     {
-                        Console.WriteLine("I Must Tell The Node");
+                        NP.Info("I Will Tell The Node");
                         NVH.TellTheNodeWhoWaitingRoom(selectedEarliestWalletId);
                         NVH.TellSyncNoToEarlistNode(selectedEarliestWalletId);
                     }
-                    else
-                    {
-                        // Console.WriteLine("Other Must Tell The Node");
-                    }
-                    NP.Info("The Node Will Join The Network : " + selectedEarliestWalletId);
+
                     // sıradaki cüzdan, sıradaki node'a haber verecek node
-                    NVR.NetworkSelectorList.Add(selectedEarliestWalletId, whoWillSayToEarlistNode);
                 }
                 else
                 {
