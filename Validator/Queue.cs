@@ -314,14 +314,21 @@ namespace Notus.Validator
                 StartingTimeAfterEnoughNode = ND.ToDateTime(GetPureText(incomeData, "when"));
                 NVG.NodeQueue.Starting = Notus.Date.ToLong(StartingTimeAfterEnoughNode);
                 NVG.CurrentSyncNo = NVG.NodeQueue.Starting;
+                foreach (var iE in NVG.NodeList)
+                {
+                    if (string.Equals(iE.Value.IP.Wallet, NVG.Settings.Nodes.My.IP.Wallet) == true)
+                    {
+                        //NVG.NodeList[iE.Key].SyncNo= NVG.CurrentSyncNo;
+                        NVH.SetJoinTimeToNode(iE.Key, NVG.CurrentSyncNo);
+                    }
+                    if (iE.Value.SyncNo == NVG.CurrentSyncNo)
+                    {
+                        NVH.SetJoinTimeToNode(iE.Key, NVG.CurrentSyncNo);
+                    }
+                }
                 NVG.NodeQueue.OrderCount = 1;
                 NVG.NodeQueue.Begin = true;
-                NVG.NodeList[NVG.Settings.Nodes.My.HexKey].JoinTime = ND.ToLong(
-                    ND.ToDateTime(NVG.CurrentSyncNo).Subtract(
-                        new TimeSpan(0, 1, 0)
-                    )
-                );
-
+                NVH.SetJoinTimeToNode(NVG.Settings.Nodes.My.HexKey, NVG.CurrentSyncNo);
 
                 StartingTimeAfterEnoughNode_Arrived = true;
                 return "done";
@@ -1055,25 +1062,20 @@ namespace Notus.Validator
                         NVG.NodeQueue.Starting = syncStaringTime;
                         NVG.NodeQueue.OrderCount = 1;
                         NVG.NodeQueue.Begin = true;
+                        NVH.SetJoinTimeToNode(NVG.Settings.Nodes.My.HexKey, syncStaringTime);
+
                         // eğer false ise senkronizasyon başlamamış demektir...
                         NVG.Settings.SyncStarted = false;
                         // diğer nodelara belirlediğimiz zaman bilgisini gönderiyoruz
                         foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
                         {
-                            if (string.Equals(entry.Key, NVG.Settings.Nodes.My.HexKey) == true)
-                            {
-                                NVG.NodeList[entry.Key].JoinTime = ND.ToLong(
-                                    ND.ToDateTime(syncStaringTime).Subtract(
-                                        new TimeSpan(0, 1, 0)
-                                    )
-                                );
-                            }
                             if (string.Equals(entry.Key, NVG.Settings.Nodes.My.HexKey) == false)
                             {
                                 if (entry.Value.Status == NVS.NodeStatus.Online)
                                 {
                                     if (entry.Value.SyncNo == syncStaringTime)
                                     {
+                                        NVH.SetJoinTimeToNode(entry.Key, syncStaringTime);
                                         bool sendedToNode = false;
                                         while (sendedToNode == false)
                                         {

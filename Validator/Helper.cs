@@ -224,6 +224,14 @@ namespace Notus.Validator
                 }
             }
         }
+        public static void SetJoinTimeToNode(string nodeKey,ulong startingTime)
+        {
+            NVG.NodeList[nodeKey].JoinTime = ND.ToLong(
+                ND.ToDateTime(startingTime).Subtract(
+                    new TimeSpan(0, 1, 0)
+                )
+            );
+        }
         public static void TellSyncNoToEarlistNode(string selectedEarliestWalletId)
         {
             string tmpSyncNoStr = "<syncNo>" +
