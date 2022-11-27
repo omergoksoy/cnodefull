@@ -779,6 +779,7 @@ namespace Notus.Validator
             string selectedWalletId = string.Empty;
             ulong CurrentQueueTime = NVG.NodeQueue.Starting;
             bool myTurnPrinted = false;
+            bool notMyTurnPrinted = false;
             //Console.WriteLine("Main.cs->Line 770");
             //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList,NVC.JsonSetting));
 
@@ -853,7 +854,7 @@ namespace Notus.Validator
                             if (myTurnPrinted == false)
                             {
                                 myTurnPrinted = true;
-                                //NP.Info("My Turn : " + CurrentQueueTime.ToString() + " -> " + endingTime.ToString());
+                                NP.Info("My Turn : " + CurrentQueueTime.ToString() + " -> " + endingTime.ToString());
                             }
 
                             while (endingTime > NGF.NowInt())
@@ -924,6 +925,12 @@ namespace Notus.Validator
                         }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))
                         else
                         {
+                            if (notMyTurnPrinted == false)
+                            {
+                                notMyTurnPrinted = true;
+                                NP.Info("Not My Turn : " + CurrentQueueTime.ToString());
+                            }
+
                             if (NGF.BlockQueue.CheckPoolDb == true)
                             {
                                 NGF.BlockQueue.LoadFromPoolDb();
@@ -960,6 +967,7 @@ namespace Notus.Validator
 
                         prepareNextQueue = false;
                         myTurnPrinted = false;
+                        notMyTurnPrinted = false;
                         CurrentQueueTime = ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod);
                     }  // if (NGF.NowInt() >= currentQueueTime)
                 }
