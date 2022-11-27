@@ -1,9 +1,9 @@
-﻿using System.Collections.Concurrent;
+﻿using Notus.Variable.Genesis;
+using System.Collections.Concurrent;
 using System.Globalization;
 using System.Net;
 using System.Numerics;
 using System.Text.Json;
-using Notus.Variable.Genesis;
 using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NH = Notus.Hash;
@@ -12,8 +12,8 @@ using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
-using NVS = Notus.Variable.Struct;
 using NVR = Notus.Validator.Register;
+using NVS = Notus.Variable.Struct;
 
 namespace Notus.Validator
 {
@@ -654,7 +654,7 @@ namespace Notus.Validator
             ValidatorQueueObj.PreStart();
 
             ValidatorRegisterObj.Start();
-            
+
             // bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.
             // bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.
 
