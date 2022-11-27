@@ -49,7 +49,12 @@ namespace Notus.Message
                     NP.Info("<block> message sended");
                 }
                 */
-                int bytesArrLen = sender.Receive(byteArr);
+                int bytesArrLen = 0;
+                try
+                {
+                    bytesArrLen = sender.Receive(byteArr);
+                }
+                catch { }
 
                 if (bytesArrLen == 0)
                 {
