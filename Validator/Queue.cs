@@ -1205,7 +1205,7 @@ namespace Notus.Validator
                 {
                     if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
-                        NCH.SendMessageED(iE.Key, iE.Value.IP.IpAddress, iE.Value.IP.Port, 
+                        string resultStr=NCH.SendMessageED(iE.Key, iE.Value.IP.IpAddress, iE.Value.IP.Port, 
                             "<fReady>" +
                                 NVG.Settings.Nodes.My.IP.Wallet +
                                 NVC.CommonDelimeterChar +
@@ -1214,11 +1214,12 @@ namespace Notus.Validator
                                 controlSignForReadyMsg +
                             "</fReady>"
                         );
+                        Console.WriteLine("resultStr : " + resultStr);
                     }
                 }
                 Console.WriteLine(JsonSerializer.Serialize(ReadyMessageIncomeList));
                 Console.WriteLine(ReadyMessageIncomeList.Count);
-                while (ReadyMessageIncomeList.Count > 1)
+                while (ReadyMessageIncomeList.Count == 1)
                 {
                     Thread.Sleep(5);
                 }
