@@ -1026,7 +1026,9 @@ namespace Notus.Validator
                     NP.NodeCount();
 
 
-                    //burada iki node'un da blokları senkron mu diye kontrol edilsin
+                    burada iki node'un da blokları senkron mu diye kontrol edilsin
+                    eğer bloklar senkron değilse önce karşılıklı blokları tamamlasınlar 
+                    sonra ilk senkronizasyon başlasın
 
                     /*
                     foreach(var iE in NVG.NodeList)
