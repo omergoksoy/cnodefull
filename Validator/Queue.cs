@@ -400,7 +400,9 @@ namespace Notus.Validator
                         {
                             if (NVG.NodeList.ContainsKey(entry.Key))
                             {
-                                if (ReadyMessageIncomeList.ContainsKey(entry.Value.IP.Wallet))
+                                Console.WriteLine("my wallet : " + NVG.Settings.Nodes.My.IP.Wallet);
+                                Console.WriteLine("income wallet : " + entry.Value.IP.Wallet);
+                                if (ReadyMessageIncomeList.ContainsKey(entry.Value.IP.Wallet)==false)
                                 {
                                     ReadyMessageIncomeList.Add(entry.Value.IP.Wallet, true);
                                 }
