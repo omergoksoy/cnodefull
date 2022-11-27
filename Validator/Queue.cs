@@ -1049,7 +1049,7 @@ namespace Notus.Validator
                     {
                         if (entry.Value.Status == NVS.NodeStatus.Online && entry.Value.SyncNo == biggestSyncNo)
                         {
-                            NVH.SetJoinTimeToNode(entry.Key, ND.ToLong(StartingTimeAfterEnoughNode));
+                            NVH.SetJoinTimeToNode(entry.Key, ND.ToLong(calculatedStartingTime));
                         }
                     }
 
