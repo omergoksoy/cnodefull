@@ -1187,8 +1187,11 @@ namespace Notus.Validator
                     }
                 }
             }
-            Console.WriteLine("Queue.cs -> Line 1241");
-            Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
+            if (firstHandShake == false)
+            {
+                Console.WriteLine("Queue.cs -> Line 1241");
+                Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
+            }
 
             if (firstHandShake == true)
             {

@@ -74,10 +74,10 @@ namespace Notus.Validator
 
             if (earliestNode.Count > 0 && syncNodeList.Count > 0)
             {
-                Console.WriteLine("-----------------------------------");
-                Console.WriteLine("syncNodeList : " + JsonSerializer.Serialize(syncNodeList));
-                Console.WriteLine("earliestNode : " + JsonSerializer.Serialize(earliestNode));
-                Console.WriteLine("-----------------------------------");
+                // Console.WriteLine("-----------------------------------");
+                // Console.WriteLine("syncNodeList : " + JsonSerializer.Serialize(syncNodeList));
+                // Console.WriteLine("earliestNode : " + JsonSerializer.Serialize(earliestNode));
+                // Console.WriteLine("-----------------------------------");
 
                 KeyValuePair<ulong, string> firstNodeForWaitingList = earliestNode.First();
                 string selectedEarliestWalletId = firstNodeForWaitingList.Value;
@@ -97,16 +97,16 @@ namespace Notus.Validator
                 {
                     KeyValuePair<BigInteger, string> earliestNodeSelector = earlistNodeChoosing.First();
                     string whoWillSayToEarlistNode = earliestNodeSelector.Value;
-                    Console.WriteLine("selectedEarliestWalletId : " + selectedEarliestWalletId);
+                    // Console.WriteLine("selectedEarliestWalletId : " + selectedEarliestWalletId);
                     if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, whoWillSayToEarlistNode))
                     {
                         Console.WriteLine("I Must Tell The Node");
-                        NVH.TeelTheNodeWhoWaitingRoom(selectedEarliestWalletId);
+                        NVH.TellTheNodeWhoWaitingRoom(selectedEarliestWalletId);
                         NVH.TellSyncNoToEarlistNode(selectedEarliestWalletId);
                     }
                     else
                     {
-                        Console.WriteLine("Other Must Tell The Node");
+                        // Console.WriteLine("Other Must Tell The Node");
                     }
                     NP.Info("The Node Will Join The Network : " + selectedEarliestWalletId);
                     // sıradaki cüzdan, sıradaki node'a haber verecek node

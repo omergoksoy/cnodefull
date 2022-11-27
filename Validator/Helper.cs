@@ -186,10 +186,12 @@ namespace Notus.Validator
             }
             NVG.OnlineNodeCount = NVG.NodeList.Count;
         }
-        public static void TeelTheNodeWhoWaitingRoom(string selectedEarliestWalletId)
+        public static void TellTheNodeWhoWaitingRoom(string selectedEarliestWalletId)
         {
+            Console.WriteLine("TellTheNodeWhoWaitingRoom -> Begin");
             foreach (var iEntry in NVG.NodeList)
             {
+                Console.WriteLine("iEntry.Value.IP.Wallet : " + iEntry.Value.IP.Wallet);
                 if (string.Equals(iEntry.Value.IP.Wallet, selectedEarliestWalletId) == true)
                 {
                     string tmpSyncNoStr = "<yourTurn>" +
@@ -208,6 +210,7 @@ namespace Notus.Validator
                         iEntry.Value.IP.Port,
                         tmpSyncNoStr
                     );
+                    Console.WriteLine("yourTurn resultStr : " + resultStr);
                 }
             }
         }
