@@ -9,12 +9,13 @@ using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
+using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
 namespace Notus.Validator
 {
     public class Queue : IDisposable
     {
-        private Dictionary<string,bool> ReadyMessageIncomeList = new Dictionary<string, bool>();
+        private Dictionary<string, bool> ReadyMessageIncomeList = new Dictionary<string, bool>();
         private bool StartingTimeAfterEnoughNode_Arrived = false;
         private DateTime StartingTimeAfterEnoughNode;
 
@@ -400,7 +401,7 @@ namespace Notus.Validator
                         {
                             if (NVG.NodeList.ContainsKey(entry.Key))
                             {
-                                if (ReadyMessageIncomeList.ContainsKey(entry.Value.IP.Wallet)==false)
+                                if (ReadyMessageIncomeList.ContainsKey(entry.Value.IP.Wallet) == false)
                                 {
                                     ReadyMessageIncomeList.Add(entry.Value.IP.Wallet, true);
                                 }
@@ -420,13 +421,12 @@ namespace Notus.Validator
                 burada syncNo diğer nodelar tarafından kabul edilecek
                 */
 
-                Console.WriteLine("incomeData : " + incomeData);
                 incomeData = GetPureText(incomeData, "syncNo");
                 string[] tmpArr = incomeData.Split(":");
                 if (tmpArr.Length > 3)
                 {
-                    /*
                     string selectedEarliestWalletId = tmpArr[0];
+                    ulong incomeSyncNo = ulong.Parse(tmpArr[1]);
                     string chooserWalletId = tmpArr[2];
                     string chooserSignStr = tmpArr[3];
                     string controlText =
@@ -441,18 +441,23 @@ namespace Notus.Validator
                         {
                             if (Notus.Wallet.ID.Verify(controlText, chooserSignStr, iEntry.Value.PublicKey) == true)
                             {
-                                if (NVG.NetworkSelectorList.ContainsKey(selectedEarliestWalletId) == false)
+                                if (NVR.NetworkSelectorList.ContainsKey(selectedEarliestWalletId) == false)
                                 {
                                     // sıradaki cüzdan, sıradaki node'a haber verecek node
-                                    NVG.NetworkSelectorList.Add(selectedEarliestWalletId, chooserWalletId);
+                                    NVR.NetworkSelectorList.Add(selectedEarliestWalletId, chooserWalletId);
                                 }
                                 Console.WriteLine("Queue.cs -> Line 441");
-                                Console.WriteLine(JsonSerializer.Serialize(NVG.NetworkSelectorList));
+                                Console.WriteLine(JsonSerializer.Serialize(NVR.NetworkSelectorList));
+                                if(string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedEarliestWalletId))
+                                {
+                                    Console.WriteLine("This Is Me");
+                                    Console.WriteLine("incomeData SyncNo: " + incomeSyncNo.ToString());
+                                    Console.WriteLine("incomeData : " + incomeData);
+                                }
                                 return "1";
                             }
                         }
                     }
-                    */
                 }
                 return "0";
             }
@@ -959,6 +964,7 @@ namespace Notus.Validator
             */
 
             ulong biggestSyncNo = FindBiggestSyncNo();
+            //if(biggestSyncNo)
             NP.Info("Biggest Sync No : " + biggestSyncNo.ToString());
             if (NVG.OtherValidatorSelectedMe == true)
             {
@@ -1202,12 +1208,12 @@ namespace Notus.Validator
                     NVG.Settings.Nodes.My.IP.Wallet,
                     NVG.SessionPrivateKey
                 );
-                ReadyMessageIncomeList.Add(NVG.Settings.Nodes.My.IP.Wallet,true);
+                ReadyMessageIncomeList.Add(NVG.Settings.Nodes.My.IP.Wallet, true);
                 foreach (var iE in NVG.NodeList)
                 {
                     if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
-                        NCH.SendMessageED(iE.Key, iE.Value.IP.IpAddress, iE.Value.IP.Port, 
+                        NCH.SendMessageED(iE.Key, iE.Value.IP.IpAddress, iE.Value.IP.Port,
                             "<fReady>" +
                                 NVG.Settings.Nodes.My.IP.Wallet +
                                 NVC.CommonDelimeterChar +
