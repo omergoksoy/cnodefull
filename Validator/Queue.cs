@@ -453,8 +453,11 @@ namespace Notus.Validator
                             {
                                 NVR.NetworkSelectorList.Add(selectedEarliestWalletId, chooserWalletId);
                             }
+                            
+                            // kontrol-noktasi
                             NVG.NodeList[earlistNodeKeyStr].JoinTime = ulong.MaxValue;
-                            NVG.NodeList[earlistNodeKeyStr].SyncNo = incomeSyncNo;
+                            // NVG.NodeList[earlistNodeKeyStr].SyncNo = incomeSyncNo;
+
                             NVG.CurrentSyncNo = incomeSyncNo;
                             NVG.NodeQueue.Starting = incomeSyncNo;
                             // NVG.NodeQueue.OrderCount = 1;
@@ -825,6 +828,7 @@ namespace Notus.Validator
 
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
+                Console.WriteLine(entry.Value.JoinTime.ToString() + " - " + NVG.NOW.Int.ToString());
                 if (entry.Value.Status == NVS.NodeStatus.Online && entry.Value.SyncNo == biggestSyncNo)
                 {
                     NVG.NodeList[entry.Key].SyncNo = syncStaringTime;
@@ -838,6 +842,7 @@ namespace Notus.Validator
             }
             */
             Console.WriteLine("Node-Siralama-Fonksiyon-111");
+            Console.WriteLine("---------------------------------------");
         }
         public SortedDictionary<BigInteger, string> MakeOrderToNode(ulong biggestSyncNo, string seedForQueue)
         {
@@ -849,6 +854,7 @@ namespace Notus.Validator
                 //burada hangi nodeların devreye gireceğini seçelim
                 //burada hangi nodeların devreye gireceğini seçelim
                 //burada hangi nodeların devreye gireceğini seçelim
+                Console.WriteLine(entry.Value.JoinTime.ToString() + " - " + NVG.NOW.Int.ToString());
                 if (entry.Value.Status == NVS.NodeStatus.Online && entry.Value.SyncNo == biggestSyncNo)
                 {
                     bool exitInnerWhileLoop = false;
@@ -881,6 +887,7 @@ namespace Notus.Validator
                 }
             }
             Console.WriteLine("Node-Siralama-Fonksiyon-222");
+            Console.WriteLine("---------------------------------------");
             return resultList;
         }
         public void PreStart()
