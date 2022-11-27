@@ -423,11 +423,6 @@ namespace Notus.Validator
                     string chooserWalletId = tmpArr[2];
                     string chooserSignStr = tmpArr[3];
 
-                    Console.WriteLine("selectedEarliestWalletId : " + selectedEarliestWalletId);
-                    Console.WriteLine("incomeSyncNo             : " + incomeSyncNo.ToString());
-                    Console.WriteLine("chooserWalletId          : " + chooserWalletId);
-                    Console.WriteLine("chooserSignStr           : " + chooserSignStr);
-
                     string controlText =
                         selectedEarliestWalletId +
                             NVC.CommonDelimeterChar +
@@ -442,6 +437,13 @@ namespace Notus.Validator
                             chooserPublicKeyStr = iEntry.Value.PublicKey;
                         }
                     }
+
+                    Console.WriteLine("NVG.Settings.Nodes.My.IP.Wallet : " + NVG.Settings.Nodes.My.IP.Wallet);
+                    Console.WriteLine("selectedEarliestWalletId        : " + selectedEarliestWalletId);
+                    Console.WriteLine("incomeSyncNo                    : " + incomeSyncNo.ToString());
+                    Console.WriteLine("chooserWalletId                 : " + chooserWalletId);
+                    Console.WriteLine("chooserSignStr                  : " + chooserSignStr);
+                    Console.WriteLine("chooserPublicKeyStr             : " + chooserPublicKeyStr);
                     if (chooserPublicKeyStr.Length > 0)
                     {
                         if (Notus.Wallet.ID.Verify(controlText, chooserSignStr, chooserPublicKeyStr) == true)
