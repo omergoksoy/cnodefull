@@ -270,7 +270,14 @@ namespace Notus.Validator
                     NVG.NodeList[nodeKey].IP.Port,
                     tmpSyncNoStr
                 );
-                Console.WriteLine("We Are Sending SyncNo To -> " + NVG.NodeList[nodeKey].IP.Wallet + " -> " + resultStr);
+                if (resultStr == "1")
+                {
+                    Console.WriteLine("We Sended SyncNo To -> " + NVG.NodeList[nodeKey].IP.Wallet);
+                }
+                else
+                {
+                    Console.WriteLine("SyncNo Sending Error -> " + NVG.NodeList[nodeKey].IP.Wallet);
+                }
             }
         }
     }

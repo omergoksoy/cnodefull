@@ -449,9 +449,18 @@ namespace Notus.Validator
                                 }
                                 return "1";
                             }
+                            else
+                            {
+                                Console.WriteLine("Sync-No-Not_Verify");
+                            }
                         }
                     }
                 }
+                else
+                {
+                    Console.WriteLine("Dizi-Boyut-Hatasi");
+                }
+                Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                 return "0";
             }
 
