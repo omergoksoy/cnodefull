@@ -484,7 +484,7 @@ namespace Notus.Variable.Struct
         //public ConcurrentDictionary<string, Notus.Communication.Sync.Socket.Server> Listener { get; set; }
         public NodeQueueInfo My { get; set; }             // node ile alınan zaman bilgisi
         public List<IpInfo> Lists { get; set; }             // node ile alınan zaman bilgisi
-        public Dictionary<ulong, NodeInfo> Queue { get; set; }             // node ile alınan zaman bilgisi
+        public SortedDictionary<ulong, NodeInfo> Queue { get; set; }             // node ile alınan zaman bilgisi
     }
     public class NodeQueueInfo_Time
     {

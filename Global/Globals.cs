@@ -126,7 +126,7 @@ namespace Notus.Variable
                         Status = NVS.NodeStatus.Unknown,
                     },
                     Lists = new List<NVS.IpInfo>() { },
-                    Queue = new Dictionary<ulong, NVS.NodeInfo> { },
+                    Queue = new SortedDictionary<ulong, NVS.NodeInfo> { },
                     //Listener = new ConcurrentDictionary<string, Notus.Communication.Sync.Socket.Server> { }
                 },
                 NodeWallet = new NVS.EccKeyPair()

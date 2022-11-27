@@ -1024,6 +1024,10 @@ namespace Notus.Validator
                 if (biggestSyncNo == 0)
                 {
                     NP.NodeCount();
+
+
+                    //burada iki node'un da blokları senkron mu diye kontrol edilsin
+
                     /*
                     foreach(var iE in NVG.NodeList)
                     {
