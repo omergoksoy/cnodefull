@@ -422,6 +422,12 @@ namespace Notus.Validator
                     ulong incomeSyncNo = ulong.Parse(tmpArr[1]);
                     string chooserWalletId = tmpArr[2];
                     string chooserSignStr = tmpArr[3];
+
+                    Console.WriteLine("selectedEarliestWalletId : " + selectedEarliestWalletId);
+                    Console.WriteLine("incomeSyncNo             : " + incomeSyncNo.ToString());
+                    Console.WriteLine("chooserWalletId          : " + chooserWalletId);
+                    Console.WriteLine("chooserSignStr           : " + chooserSignStr);
+
                     string controlText =
                         selectedEarliestWalletId +
                             NVC.CommonDelimeterChar +
@@ -451,16 +457,11 @@ namespace Notus.Validator
                             }
                             else
                             {
-                                Console.WriteLine("Sync-No-Not_Verify");
+                                Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                             }
                         }
                     }
                 }
-                else
-                {
-                    Console.WriteLine("Dizi-Boyut-Hatasi");
-                }
-                Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                 return "0";
             }
 
