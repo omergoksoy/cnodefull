@@ -844,7 +844,7 @@ namespace Notus.Validator
 
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
-                Console.WriteLine(entry.Value.JoinTime.ToString() + " - " + NVG.NOW.Int.ToString());
+                //Console.WriteLine(entry.Value.JoinTime.ToString() + " - " + NVG.NOW.Int.ToString());
                 if (entry.Value.Status == NVS.NodeStatus.Online && entry.Value.SyncNo == biggestSyncNo)
                 {
                     NVG.NodeList[entry.Key].SyncNo = syncStaringTime;
@@ -857,8 +857,8 @@ namespace Notus.Validator
                 Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue, NVC.JsonSetting));
             }
             */
-            Console.WriteLine("Node-Siralama-Fonksiyon-111");
-            Console.WriteLine("---------------------------------------");
+            //Console.WriteLine("Node-Siralama-Fonksiyon-111");
+            //Console.WriteLine("---------------------------------------");
         }
         public SortedDictionary<BigInteger, string> MakeOrderToNode(ulong biggestSyncNo, string seedForQueue)
         {
@@ -906,8 +906,8 @@ namespace Notus.Validator
                     }
                 }
             }
-            Console.WriteLine("Node-Siralama-Fonksiyon-222");
-            Console.WriteLine("---------------------------------------");
+            //Console.WriteLine("Node-Siralama-Fonksiyon-222");
+            //Console.WriteLine("---------------------------------------");
             return resultList;
         }
         public void PreStart()
