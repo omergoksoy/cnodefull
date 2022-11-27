@@ -711,7 +711,6 @@ namespace Notus.Validator
                 Console.WriteLine("Main.cs -> Line 742");
                 Console.WriteLine("NVG.CurrentSyncNo : " + NVG.CurrentSyncNo.ToString());
                 // Console.WriteLine("bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.");
-                // NP.ReadLine();
             }
 
 
