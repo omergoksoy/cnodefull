@@ -316,6 +316,13 @@ namespace Notus.Validator
                 NVG.CurrentSyncNo = NVG.NodeQueue.Starting;
                 NVG.NodeQueue.OrderCount = 1;
                 NVG.NodeQueue.Begin = true;
+                NVG.NodeList[NVG.Settings.Nodes.My.HexKey].JoinTime = ND.ToLong(
+                    ND.ToDateTime(NVG.CurrentSyncNo).Subtract(
+                        new TimeSpan(0, 1, 0)
+                    )
+                );
+
+
                 StartingTimeAfterEnoughNode_Arrived = true;
                 return "done";
             }
@@ -453,7 +460,7 @@ namespace Notus.Validator
                             {
                                 NVR.NetworkSelectorList.Add(selectedEarliestWalletId, chooserWalletId);
                             }
-                            
+
                             // kontrol-noktasi
                             NVG.NodeList[earlistNodeKeyStr].JoinTime = ulong.MaxValue;
                             // NVG.NodeList[earlistNodeKeyStr].SyncNo = incomeSyncNo;
@@ -1050,10 +1057,17 @@ namespace Notus.Validator
                         NVG.NodeQueue.Begin = true;
                         // eğer false ise senkronizasyon başlamamış demektir...
                         NVG.Settings.SyncStarted = false;
-
                         // diğer nodelara belirlediğimiz zaman bilgisini gönderiyoruz
                         foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
                         {
+                            if (string.Equals(entry.Key, NVG.Settings.Nodes.My.HexKey) == true)
+                            {
+                                NVG.NodeList[entry.Key].JoinTime = ND.ToLong(
+                                    ND.ToDateTime(syncStaringTime).Subtract(
+                                        new TimeSpan(0, 1, 0)
+                                    )
+                                );
+                            }
                             if (string.Equals(entry.Key, NVG.Settings.Nodes.My.HexKey) == false)
                             {
                                 if (entry.Value.Status == NVS.NodeStatus.Online)
