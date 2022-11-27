@@ -14,6 +14,7 @@ namespace Notus.Validator
 {
     public class Queue : IDisposable
     {
+        private List<string> ReadyMessageIncomeList = new List<string>();
         private bool StartingTimeAfterEnoughNode_Arrived = false;
         private DateTime StartingTimeAfterEnoughNode;
 
@@ -371,13 +372,62 @@ namespace Notus.Validator
                 return "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
             }
 
+            if (CheckXmlTag(incomeData, "fReady"))
+            {
+                incomeData = GetPureText(incomeData, "fReady");
+                Console.WriteLine("incomeData : " + incomeData);
+                string[] tmpHashPart = incomeData.Split(NVC.CommonDelimeterChar);
+                ulong incomeUtc = ulong.Parse(tmpHashPart[1]);
+                ulong incomeDiff = (ulong)Math.Abs((decimal)NVG.NOW.Int - incomeUtc);
+
+                //100 saniyeden eski ise göz ardı edilecek
+                if (incomeDiff > 100000)
+                {
+                    return "0";
+                }
+                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
+                {
+                    if (string.Equals(tmpHashPart[0], entry.Value.IP.Wallet) == true)
+                    {
+                        if (
+                            Notus.Wallet.ID.Verify(
+                                tmpHashPart[1] +
+                                    Notus.Variable.Constant.CommonDelimeterChar +
+                                tmpHashPart[0],
+                                tmpHashPart[2],
+                                entry.Value.PublicKey
+                            ) == true
+                        )
+                        {
+                            Console.WriteLine("Handshake - Verify");
+                            if (NVG.NodeList.ContainsKey(entry.Key))
+                            {
+                                Console.WriteLine("First Hand Shake Is OK");
+                                //NP.Info("Node Just Left : " + entry.Value.IP.Wallet);
+                                //NVH.RemoveFromValidatorList(entry.Key);
+                                return "1";
+                            }
+                            else
+                            {
+                                Console.WriteLine("First Hand Shake Is NOT OK");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Handshake - NOT Verify");
+                        }
+                    }
+                }
+                return "0";
+            }
             if (CheckXmlTag(incomeData, "syncNo"))
             {
+                /*
                 burada syncNo diğer nodelar tarafından kabul edilecek
                 burada syncNo diğer nodelar tarafından kabul edilecek
                 burada syncNo diğer nodelar tarafından kabul edilecek
                 burada syncNo diğer nodelar tarafından kabul edilecek
-
+                */
 
                 Console.WriteLine("incomeData : " + incomeData);
                 incomeData = GetPureText(incomeData, "syncNo");
@@ -1092,6 +1142,7 @@ namespace Notus.Validator
 
             // buradaki sayı 2 olana kadar bekle
             Dictionary<ulong, int> syncNoCount = new Dictionary<ulong, int>();
+            bool firstHandShake = false;
             bool exitLoop = false;
             while (exitLoop == false)
             {
@@ -1120,6 +1171,10 @@ namespace Notus.Validator
                             if (syncNoCount[0] == 2)
                             {
                                 Console.WriteLine("Ilk-Baslangic-Durumu");
+                                Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+                                firstHandShake = true;
+                                // burada diğer node'un hazır olması durumunu bekleyecek
+                                // kendisinin de buraya geldiğini belirtecek
                             }
                         }
                         else
@@ -1143,6 +1198,35 @@ namespace Notus.Validator
             }
             Console.WriteLine("Queue.cs -> Line 1241");
             Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
+
+            if (firstHandShake == true)
+            {
+                ulong nowUtcValue = NVG.NOW.Int;
+                string controlSignForReadyMsg = Notus.Wallet.ID.Sign(
+                    nowUtcValue.ToString() +
+                        NVC.CommonDelimeterChar +
+                    NVG.Settings.Nodes.My.IP.Wallet,
+                    NVG.SessionPrivateKey
+                );
+                Dictionary<string, string> response = new Dictionary<string, string>();
+                ReadyMessageIncomeList.Add(NVG.Settings.Nodes.My.IP.Wallet);
+                foreach (var iE in NVG.NodeList)
+                {
+                    if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
+                    {
+                        NCH.SendMessageED(iE.Key, iE.Value.IP.IpAddress, iE.Value.IP.Port, 
+                            "<fReady>" +
+                                NVG.Settings.Nodes.My.IP.Wallet +
+                                NVC.CommonDelimeterChar +
+                                nowUtcValue.ToString() +
+                                NVC.CommonDelimeterChar +
+                                controlSignForReadyMsg +
+                            "</fReady>"
+                        );
+                    }
+                }
+                Console.WriteLine(JsonSerializer.Serialize(ReadyMessageIncomeList));
+            }
         }
         private ulong FindBiggestSyncNo()
         {
