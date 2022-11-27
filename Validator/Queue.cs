@@ -314,6 +314,7 @@ namespace Notus.Validator
                 StartingTimeAfterEnoughNode = ND.ToDateTime(GetPureText(incomeData, "when"));
                 NVG.NodeQueue.Starting = Notus.Date.ToLong(StartingTimeAfterEnoughNode);
                 NVG.CurrentSyncNo = NVG.NodeQueue.Starting;
+                /*
                 foreach (var iE in NVG.NodeList)
                 {
                     if (string.Equals(iE.Value.IP.Wallet, NVG.Settings.Nodes.My.IP.Wallet) == true)
@@ -326,9 +327,10 @@ namespace Notus.Validator
                         NVH.SetJoinTimeToNode(iE.Key, NVG.CurrentSyncNo);
                     }
                 }
+                */
                 NVG.NodeQueue.OrderCount = 1;
                 NVG.NodeQueue.Begin = true;
-                NVH.SetJoinTimeToNode(NVG.Settings.Nodes.My.HexKey, NVG.CurrentSyncNo);
+                //NVH.SetJoinTimeToNode(NVG.Settings.Nodes.My.HexKey, NVG.CurrentSyncNo);
 
                 StartingTimeAfterEnoughNode_Arrived = true;
                 return "done";
@@ -1042,6 +1044,15 @@ namespace Notus.Validator
 
                     //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                     //cüzdanların hashleri alınıp sıraya koyuluyor.
+                    DateTime calculatedStartingTime = CalculateStartingTime();
+                    foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
+                    {
+                        if (entry.Value.Status == NVS.NodeStatus.Online && entry.Value.SyncNo == biggestSyncNo)
+                        {
+                            NVH.SetJoinTimeToNode(entry.Key, ND.ToLong(StartingTimeAfterEnoughNode));
+                        }
+                    }
+
                     SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, "beginning");
 
                     //birinci sırada ki cüzdan seçiliyor...
@@ -1049,7 +1060,7 @@ namespace Notus.Validator
                     if (string.Equals(tmpFirstWalletId, NVG.Settings.Nodes.My.IP.Wallet))
                     {
                         Thread.Sleep(5000);
-                        StartingTimeAfterEnoughNode = CalculateStartingTime();
+                        StartingTimeAfterEnoughNode = calculatedStartingTime;
                         ulong syncStaringTime = ND.ToLong(StartingTimeAfterEnoughNode);
                         GenerateNodeQueue(biggestSyncNo, syncStaringTime, tmpWalletList);
 
@@ -1062,7 +1073,7 @@ namespace Notus.Validator
                         NVG.NodeQueue.Starting = syncStaringTime;
                         NVG.NodeQueue.OrderCount = 1;
                         NVG.NodeQueue.Begin = true;
-                        NVH.SetJoinTimeToNode(NVG.Settings.Nodes.My.HexKey, syncStaringTime);
+                        //NVH.SetJoinTimeToNode(NVG.Settings.Nodes.My.HexKey, syncStaringTime);
 
                         // eğer false ise senkronizasyon başlamamış demektir...
                         NVG.Settings.SyncStarted = false;
@@ -1075,7 +1086,7 @@ namespace Notus.Validator
                                 {
                                     if (entry.Value.SyncNo == syncStaringTime)
                                     {
-                                        NVH.SetJoinTimeToNode(entry.Key, syncStaringTime);
+                                        //NVH.SetJoinTimeToNode(entry.Key, syncStaringTime);
                                         bool sendedToNode = false;
                                         while (sendedToNode == false)
                                         {
