@@ -711,13 +711,14 @@ namespace Notus.Validator
                 }
             }
 
+            /*
             if (NVG.OtherValidatorSelectedMe == true)
             {
                 Console.WriteLine("Main.cs -> Line 742");
                 Console.WriteLine("NVG.CurrentSyncNo : " + NVG.CurrentSyncNo.ToString());
                 // Console.WriteLine("bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.");
             }
-
+            */
 
             if (NVG.Settings.GenesisCreated == false)
             {
@@ -793,6 +794,8 @@ namespace Notus.Validator
             {
                 if (NVG.OtherValidatorSelectedMe == true)
                 {
+                    // diğer validatörler tarafından ağa dahil edilecek olan node
+                    // burada yapılan kontrol ile ağa dahil edilecek.
                     if ((NVG.NOW.Obj - LastPrintTime).TotalSeconds > 20)
                     {
                         LastPrintTime = NVG.NOW.Obj;
@@ -806,9 +809,6 @@ namespace Notus.Validator
                             Console.Write("+");
                         }
                     }
-                    
-                    diğer validatörler tarafından ağa dahil edilecek olan node
-                    burada yapılan kontrol ile ağa dahil edilecek.
                 }
                 else
                 {
@@ -971,6 +971,12 @@ namespace Notus.Validator
                                     queueSeedStr = TimeBaseBlockUidList[FirstQueueGroupTime];
                                 }
                                 ValidatorQueueObj.ReOrderNodeQueue(CurrentQueueTime, queueSeedStr);
+
+                                if (NVR.NetworkSelectorList.Count > 0)
+                                {
+                                    Console.WriteLine("Some Node Wait In The Waiting Room");
+                                } // if (NVR.NetworkSelectorList.Count > 0)
+                                //NVR.NetworkSelectorList.Add(selectedEarliestWalletId, whoWillSayToEarlistNode);
                             }
                         } //if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
 

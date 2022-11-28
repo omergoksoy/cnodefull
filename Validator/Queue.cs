@@ -467,6 +467,7 @@ namespace Notus.Validator
                 return "0";
             }
 
+            //bu komut ile bekleme odasındaki node ağa dahil ediliyor
             if (CheckXmlTag(incomeData, "yourTurn"))
             {
                 incomeData = GetPureText(incomeData, "yourTurn");
@@ -981,6 +982,7 @@ namespace Notus.Validator
             ulong biggestSyncNo = FindBiggestSyncNo();
             //if(biggestSyncNo)
             NP.Info("Biggest Sync No : " + biggestSyncNo.ToString());
+            /*
             if (NVG.OtherValidatorSelectedMe == true)
             {
                 // NVG.CurrentSyncNo = biggestSyncNo;
@@ -998,6 +1000,7 @@ namespace Notus.Validator
                 //Console.WriteLine("biggestSyncNo : " + biggestSyncNo.ToString());
                 //Console.WriteLine("if (NVG.OtherValidatorSelectedMe == true)");
             }
+            */
 
             if (NVG.OtherValidatorSelectedMe == false)
             {
@@ -1014,15 +1017,23 @@ namespace Notus.Validator
                     {
                         if (NVG.Settings.GenesisCreated == false)
                         {
-                            Dictionary<string, long> lastBlockNoList = new Dictionary<string, long>();
-                            lastBlockNoList.Add(NVG.Settings.Nodes.My.IP.Wallet, NVG.Settings.LastBlock.info.rowNo);
-                            long minValue = long.MaxValue,
-                                maxValue = 0;
-                            foreach (var iE in NVG.NodeList)
+                            long minValue = long.MaxValue;
+                            long maxValue = 0;
+                            
+                            // yerel node'un max ve min değerleri kontrol ediliyor
+                            if (minValue > NVG.Settings.LastBlock.info.rowNo)
+                            {
+                                minValue = NVG.Settings.LastBlock.info.rowNo;
+                            }
+                            if (NVG.Settings.LastBlock.info.rowNo > maxValue)
+                            {
+                                maxValue = NVG.Settings.LastBlock.info.rowNo;
+                            }
+
+                            foreach (KeyValuePair<string, NVS.NodeQueueInfo> iE in NVG.NodeList)
                             {
                                 if (string.Equals(iE.Value.IP.Wallet, NVG.Settings.Nodes.My.IP.Wallet) == false)
                                 {
-                                    lastBlockNoList.Add(iE.Value.IP.Wallet, 0);
                                     NVClass.BlockData? tmpBlockData = Notus.Toolbox.Network.GetLastBlock(
                                         Notus.Network.Node.MakeHttpListenerPath(
                                             iE.Value.IP.IpAddress,
@@ -1040,49 +1051,13 @@ namespace Notus.Validator
                                         {
                                             maxValue = tmpBlockData.info.rowNo;
                                         }
-                                        lastBlockNoList[iE.Value.IP.Wallet] = tmpBlockData.info.rowNo;
                                     }
                                 }
                             }
                             extraSeconds = (ulong)((maxValue - minValue) * 10);
-                            Console.WriteLine("maxValue : " + maxValue.ToString());
-                            Console.WriteLine("minValue : " + maxValue.ToString());
-                            Console.WriteLine(JsonSerializer.Serialize(lastBlockNoList, NVC.JsonSetting));
                         }
                     }
-                    /*
 
-                    burada iki node'un da blokları senkron mu diye kontrol edilsin
-                    eğer bloklar senkron değilse önce karşılıklı blokları tamamlasınlar
-                    sonra ilk senkronizasyon başlasın
-                    */
-
-                    /*
-                    https://www.youtube.com/watch?v=ipwxYa-F1uY
-                    
-                    https://www.youtube.com/watch?v=gyMwXuJrbJQ
-                    foreach(var iE in NVG.NodeList)
-                    {
-
-                    }
-                    //private string NCH.SendMessageED(string nodeHex, NVS.IpInfo nodeInfo, string messageText)
-                    string resultStr = SendMessageED(
-                        iEntry.Key,
-                        iEntry.Value.IP.IpAddress,
-                        iEntry.Value.IP.Port,
-                        tmpSyncNoStr
-                    );
-
-                    
-
-                    burada iki tarafında ready olması beklenecek
-                    çünkü node'lardan biri diğerinden önce hareket ederse
-                    diğer node önde hareket ediyor
-                    */
-                    // node'lar diğerini beklemeden başlangıç işlemine başlıyor bu yüzden 
-                    // karşılıklı ready işlemi yapılmalı
-
-                    //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                     //cüzdanların hashleri alınıp sıraya koyuluyor.
                     DateTime calculatedStartingTime = CalculateStartingTime(extraSeconds);
                     foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
@@ -1113,10 +1088,10 @@ namespace Notus.Validator
                         NVG.NodeQueue.Starting = syncStaringTime;
                         NVG.NodeQueue.OrderCount = 1;
                         NVG.NodeQueue.Begin = true;
-                        //NVH.SetJoinTimeToNode(NVG.Settings.Nodes.My.HexKey, syncStaringTime);
 
                         // eğer false ise senkronizasyon başlamamış demektir...
                         NVG.Settings.SyncStarted = false;
+
                         // diğer nodelara belirlediğimiz zaman bilgisini gönderiyoruz
                         foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
                         {
