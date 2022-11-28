@@ -1021,6 +1021,7 @@ namespace Notus.Validator
                                     }
                                     else
                                     {
+                                        Console.WriteLine(JsonSerializer.Serialize(NVR.ReadyMessageFromNode));
                                         Console.WriteLine("Some Node Wait In The Waiting Room");
                                     }
                                 } // if (NVR.NetworkSelectorList.Count > 0)
