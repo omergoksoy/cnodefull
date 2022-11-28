@@ -1015,7 +1015,8 @@ namespace Notus.Validator
                             // diğer node'un blok sayısını al
                             Dictionary<string, long> lastBlockNoList = new Dictionary<string, long>();
                             lastBlockNoList.Add(NVG.Settings.Nodes.My.IP.Wallet, NVG.Settings.LastBlock.info.rowNo);
-
+                            long minValue = long.MaxValue,
+                                maxValue = 0;
                             foreach (var iE in NVG.NodeList)
                             {
                                 if (string.Equals(iE.Value.IP.Wallet, NVG.Settings.Nodes.My.IP.Wallet) == false)
@@ -1030,10 +1031,22 @@ namespace Notus.Validator
                                     );
                                     if (tmpBlockData != null)
                                     {
+                                        if (minValue > tmpBlockData.info.rowNo)
+                                        {
+                                            minValue = tmpBlockData.info.rowNo;
+                                        }
+                                        if(tmpBlockData.info.rowNo> maxValue)
+                                        {
+                                            maxValue = tmpBlockData.info.rowNo;
+                                        }
                                         lastBlockNoList[iE.Value.IP.Wallet] = tmpBlockData.info.rowNo;
                                     }
                                 }
                             }
+                            long difference = maxValue - minValue;
+                            extraSeconds = (ulong)(difference * 10);
+                            Console.WriteLine("maxValue : " + maxValue.ToString());
+                            Console.WriteLine("minValue : " + maxValue.ToString());
                             Console.WriteLine(JsonSerializer.Serialize(lastBlockNoList, NVC.JsonSetting));
                             NP.ReadLine();
                         }
