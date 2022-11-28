@@ -17,6 +17,8 @@ namespace Notus.Validator
         // sıradaki cüzdan, sıradaki node'a haber verecek node
         private Notus.Threads.Timer NetworkSelectorTimer = new Notus.Threads.Timer();
 
+        public static Dictionary<string, ulong> ReadyMessageFromNode = new Dictionary<string, ulong>();
+
         // sıradaki cüzdan, sıradaki node'a haber verecek node
         public static Dictionary<string, string> NetworkSelectorList = new Dictionary<string, string>();
         private bool TimerFunc()

@@ -439,7 +439,10 @@ namespace Notus.Validator
                         {
                             if (NVG.NodeList.ContainsKey(entry.Key))
                             {
-                                Console.WriteLine("Message Came From Waiting Room : " + incomeData);
+                                if (NVR.ReadyMessageFromNode.ContainsKey(NVG.NodeList[entry.Key].IP.Wallet))
+                                {
+                                    NVR.ReadyMessageFromNode.Add(NVG.NodeList[entry.Key].IP.Wallet, NVG.NOW.Int);
+                                }
                                 return "1";
                             }
                         }

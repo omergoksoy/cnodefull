@@ -817,10 +817,8 @@ namespace Notus.Validator
                                 controlSignForReadyMsg +
                             "</waitingRoomNodeReady>"
                         );
-                        Console.WriteLine("waitingRoomNodeReady : " + resultStr);
                     }
                 }
-
             }
 
             while (tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false)
@@ -1007,7 +1005,14 @@ namespace Notus.Validator
 
                                 if (NVR.NetworkSelectorList.Count > 0)
                                 {
+                                    KeyValuePair<string, string> firstNode =NVR.NetworkSelectorList.First();
                                     Console.WriteLine("Some Node Wait In The Waiting Room");
+                                    Console.WriteLine("This Node Wait : " + firstNode.Key);
+                                    Console.WriteLine("This Node Allow : " + firstNode.Value);
+                                    if (NVR.ReadyMessageFromNode.ContainsKey(firstNode.Key))
+                                    {
+                                        Console.WriteLine("Node Ready For Join The Network");
+                                    }
                                 } // if (NVR.NetworkSelectorList.Count > 0)
                                 //NVR.NetworkSelectorList.Add(selectedEarliestWalletId, whoWillSayToEarlistNode);
                             }
