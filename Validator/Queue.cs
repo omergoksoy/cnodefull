@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using Notus.Network;
+using System.Globalization;
 using System.Numerics;
 using System.Text.Json;
 using NCH = Notus.Communication.Helper;
@@ -1020,7 +1021,13 @@ namespace Notus.Validator
                                 if (string.Equals(iE.Value.IP.Wallet, NVG.Settings.Nodes.My.IP.Wallet) == false)
                                 {
                                     lastBlockNoList.Add(iE.Value.IP.Wallet, 0);
-                                    NVClass.BlockData? tmpBlockData = Notus.Toolbox.Network.GetLastBlock(iE.Value.IP.IpAddress, NVG.Settings);
+                                    NVClass.BlockData? tmpBlockData = Notus.Toolbox.Network.GetLastBlock(
+                                        Notus.Network.Node.MakeHttpListenerPath(
+                                            iE.Value.IP.IpAddress,
+                                            iE.Value.IP.Port
+                                        ),
+                                        NVG.Settings
+                                    );
                                     if (tmpBlockData != null)
                                     {
                                         lastBlockNoList[iE.Value.IP.Wallet] = tmpBlockData.info.rowNo;
