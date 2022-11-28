@@ -1005,24 +1005,21 @@ namespace Notus.Validator
 
                                 if (NVR.NetworkSelectorList.Count > 0)
                                 {
-                                    KeyValuePair<string, string> firstNode =NVR.NetworkSelectorList.First();
+                                    KeyValuePair<string, string> firstNode = NVR.NetworkSelectorList.First();
                                     if (NVR.ReadyMessageFromNode.ContainsKey(firstNode.Key))
                                     {
-                                        Console.WriteLine("Node Ready For Join The Network");
-                                        Console.WriteLine("This Node Wait : " + firstNode.Key);
-                                        if(string.Equals(NVG.Settings.Nodes.My.IP.Wallet, firstNode.Value))
+                                        NP.Info("This Node Ready For Join The Network : " + firstNode.Key);
+                                        if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, firstNode.Value))
                                         {
-                                            Console.WriteLine("I Will Allow The Node");
+                                            burada group no ve başlangıç zamanı bildirilecek
+                                            burada group no ve başlangıç zamanı bildirilecek
+                                            burada group no ve başlangıç zamanı bildirilecek
+                                            //NP.Info("I Will Allow The Node");
                                         }
                                         else
                                         {
-                                            Console.WriteLine("I Will Not Allow The Node");
+                                            //Console.WriteLine("I Will Not Allow The Node");
                                         }
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine(JsonSerializer.Serialize(NVR.ReadyMessageFromNode));
-                                        Console.WriteLine("Some Node Wait In The Waiting Room");
                                     }
                                 } // if (NVR.NetworkSelectorList.Count > 0)
                                 //NVR.NetworkSelectorList.Add(selectedEarliestWalletId, whoWillSayToEarlistNode);

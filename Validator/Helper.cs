@@ -61,7 +61,15 @@ namespace Notus.Validator
             }
             else
             {
-                if (NVG.OtherValidatorSelectedMe == false)
+                bool canBePrint = false;
+                if (NVG.LocalBlockLoaded == true)
+                {
+                    if (NVG.OtherValidatorSelectedMe == false)
+                    {
+                        canBePrint = true;
+                    }
+                }
+                if (canBePrint == true)
                 {
                     Console.WriteLine("Queue Time Does Not Exist : " + blockGenarationTime.ToString());
                     Console.WriteLine("Queue Time Does Not Exist : " + blockGenarationTime.ToString());
