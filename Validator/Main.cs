@@ -806,12 +806,9 @@ namespace Notus.Validator
                             Console.Write("+");
                         }
                     }
-
-                    /*
-
-                    diğer validatörler tarafından ağa dahil edilen node
-
-                    */
+                    
+                    diğer validatörler tarafından ağa dahil edilecek olan node
+                    burada yapılan kontrol ile ağa dahil edilecek.
                 }
                 else
                 {
