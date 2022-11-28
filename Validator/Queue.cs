@@ -1007,11 +1007,13 @@ namespace Notus.Validator
                 {
                     ulong extraSeconds = 0;
                     NP.NodeCount();
+
+                    // diğer node'un blok sayısını al
+                    // alınan blok sayısına göre bekleme süresi ayarlanıyor
                     if (NVG.Settings.LocalNode == false)
                     {
                         if (NVG.Settings.GenesisCreated == false)
                         {
-                            // diğer node'un blok sayısını al
                             Dictionary<string, long> lastBlockNoList = new Dictionary<string, long>();
                             lastBlockNoList.Add(NVG.Settings.Nodes.My.IP.Wallet, NVG.Settings.LastBlock.info.rowNo);
                             long minValue = long.MaxValue,
