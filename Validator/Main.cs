@@ -13,6 +13,7 @@ using NVClass = Notus.Variable.Class;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVR = Notus.Validator.Register;
+using NVH = Notus.Validator.Helper;
 using NVS = Notus.Variable.Struct;
 
 namespace Notus.Validator
@@ -51,7 +52,10 @@ namespace Notus.Validator
 
         public void GarbageCollector()
         {
+
             NP.Basic("Garbage Collector starting");
+            NP.Warning("Garbage Collector Disabled");
+            /*
             Notus.Threads.Timer TimerObj = new Notus.Threads.Timer(250);
             TimerObj.Start(250, () =>
             {
@@ -64,6 +68,7 @@ namespace Notus.Validator
                     NVG.Settings.Nodes.Queue.Remove(NVG.Settings.Nodes.Queue.First().Key);
                 }
             });
+            */
         }
         public void FileStorageTimer()
         {
@@ -672,7 +677,7 @@ namespace Notus.Validator
                 {
                     NP.Info(NVG.Settings, "Node Blocks Are Checking For Sync");
                     bool waitForOtherNodes = Notus.Sync.Block.Data(
-                        ValidatorQueueObj.GiveMeNodeList(),
+                        NVH.GiveMeNodeList(),
                         tmpNewBlockIncome =>
                         {
                             //sync-control
@@ -1096,7 +1101,7 @@ namespace Notus.Validator
                 {
                     try
                     {
-                        innerSendToMyChain = Notus.Validator.Helper.RightBlockValidator(blockData);
+                        innerSendToMyChain = NVH.RightBlockValidator(blockData);
                     }
                     catch (Exception innerErr)
                     {

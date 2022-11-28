@@ -12,6 +12,26 @@ namespace Notus.Validator
 {
     public static class Helper
     {
+        public static List<NVS.IpInfo> GiveMeNodeList()
+        {
+            List<NVS.IpInfo> tmpNodeList = new List<NVS.IpInfo>();
+            foreach (KeyValuePair<string, NVS.IpInfo> entry in NGF.ValidatorList)
+            {
+                if (string.Equals(entry.Key, NVG.Settings.Nodes.My.HexKey) == false)
+                {
+                    if (entry.Value.Status == NVS.NodeStatus.Online)
+                    {
+                        tmpNodeList.Add(new NVS.IpInfo()
+                        {
+                            IpAddress = entry.Value.IpAddress,
+                            Port = entry.Value.Port
+                        });
+                    }
+                }
+            }
+            return tmpNodeList;
+        }
+
         public static void CheckBlockAndEmptyCounter(int blockTypeNo)
         {
             if (blockTypeNo == 300)

@@ -102,7 +102,7 @@ namespace Notus.Validator
             }
         }
 
-        private DateTime CalculateStartingTime()
+        private DateTime CalculateStartingTime(ulong addExtraSeconds)
         {
             DateTime tmpNtpTime = NVG.NOW.Obj;
             const ulong secondPointConst = 1000;
@@ -110,7 +110,7 @@ namespace Notus.Validator
             DateTime afterMiliSecondTime = tmpNtpTime.AddMilliseconds(
                 secondPointConst + (secondPointConst - (ND.ToLong(tmpNtpTime) % secondPointConst))
             );
-            double secondVal = NVC.NodeStartingSync +
+            double secondVal = addExtraSeconds + NVC.NodeStartingSync +
                 (NVC.NodeStartingSync -
                     (
                         ulong.Parse(
@@ -169,25 +169,6 @@ namespace Notus.Validator
             {
                 NVH.RemoveFromValidatorList(tmpRemoveKeyList[i]);
             }
-        }
-        public List<NVS.IpInfo> GiveMeNodeList()
-        {
-            List<NVS.IpInfo> tmpNodeList = new List<NVS.IpInfo>();
-            foreach (KeyValuePair<string, NVS.IpInfo> entry in NGF.ValidatorList)
-            {
-                if (string.Equals(entry.Key, NVG.Settings.Nodes.My.HexKey) == false)
-                {
-                    if (entry.Value.Status == NVS.NodeStatus.Online)
-                    {
-                        tmpNodeList.Add(new NVS.IpInfo()
-                        {
-                            IpAddress = entry.Value.IpAddress,
-                            Port = entry.Value.Port
-                        });
-                    }
-                }
-            }
-            return tmpNodeList;
         }
         private bool CheckXmlTag(string rawDataStr, string tagName)
         {
@@ -872,7 +853,7 @@ namespace Notus.Validator
                 //burada hangi nodeların devreye gireceğini seçelim
                 //Console.WriteLine(entry.Value.JoinTime.ToString() + " - " + NVG.NOW.Int.ToString());
                 if (
-                    entry.Value.Status == NVS.NodeStatus.Online && 
+                    entry.Value.Status == NVS.NodeStatus.Online &&
                     entry.Value.SyncNo == biggestSyncNo &&
                     NVG.NOW.Int > entry.Value.JoinTime
                 )
@@ -986,7 +967,7 @@ namespace Notus.Validator
             AskInfoFromNode();
 
             // önce node'ların içerisinde senkronizasyon bekleyen olmadığına emin ol
-            WaitUntilAvailable();
+            bool firstHandShake=WaitUntilAvailable();
 
             // node-order-exception
 
@@ -1023,14 +1004,26 @@ namespace Notus.Validator
                 StartingTimeAfterEnoughNode_Arrived = false;
                 if (biggestSyncNo == 0)
                 {
+                    ulong extraSeconds = 0;
                     NP.NodeCount();
+                    if (NVG.Settings.LocalNode == false)
+                    {
+                        if (NVG.Settings.GenesisCreated == false)
+                        {
 
+                        }
+                    }
+                    /*
 
                     burada iki node'un da blokları senkron mu diye kontrol edilsin
-                    eğer bloklar senkron değilse önce karşılıklı blokları tamamlasınlar 
+                    eğer bloklar senkron değilse önce karşılıklı blokları tamamlasınlar
                     sonra ilk senkronizasyon başlasın
+                    */
 
                     /*
+                    https://www.youtube.com/watch?v=ipwxYa-F1uY
+                    
+                    https://www.youtube.com/watch?v=gyMwXuJrbJQ
                     foreach(var iE in NVG.NodeList)
                     {
 
@@ -1054,7 +1047,7 @@ namespace Notus.Validator
 
                     //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                     //cüzdanların hashleri alınıp sıraya koyuluyor.
-                    DateTime calculatedStartingTime = CalculateStartingTime();
+                    DateTime calculatedStartingTime = CalculateStartingTime(extraSeconds);
                     foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
                     {
                         if (entry.Value.Status == NVS.NodeStatus.Online && entry.Value.SyncNo == biggestSyncNo)
