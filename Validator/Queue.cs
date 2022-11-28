@@ -1173,7 +1173,7 @@ namespace Notus.Validator
             GenerateNodeQueue(currentQueueTime, ND.AddMiliseconds(currentQueueTime, 1500), tmpWalletList);
             NVG.NodeQueue.OrderCount++;
         }
-        private void WaitUntilAvailable()
+        private bool WaitUntilAvailable()
         {
             NP.Info("Wait Until Nodes Available");
             // burada beklerken diğer node'dan syncno zamanı gelecek
@@ -1272,6 +1272,7 @@ namespace Notus.Validator
                     Thread.Sleep(5);
                 }
             }
+            return firstHandShake;
         }
         private ulong FindBiggestSyncNo()
         {
