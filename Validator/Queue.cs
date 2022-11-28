@@ -409,8 +409,8 @@ namespace Notus.Validator
                     }
                 }
                 return "0";
-            }            
-            
+            }
+
             if (CheckXmlTag(incomeData, "waitingRoomNodeReady"))
             {
                 incomeData = GetPureText(incomeData, "waitingRoomNodeReady");
@@ -439,7 +439,7 @@ namespace Notus.Validator
                         {
                             if (NVG.NodeList.ContainsKey(entry.Key))
                             {
-                                if (NVR.ReadyMessageFromNode.ContainsKey(NVG.NodeList[entry.Key].IP.Wallet))
+                                if (NVR.ReadyMessageFromNode.ContainsKey(NVG.NodeList[entry.Key].IP.Wallet) == false)
                                 {
                                     NVR.ReadyMessageFromNode.Add(NVG.NodeList[entry.Key].IP.Wallet, NVG.NOW.Int);
                                 }
@@ -1060,7 +1060,7 @@ namespace Notus.Validator
                         {
                             long minValue = long.MaxValue;
                             long maxValue = 0;
-                            
+
                             // yerel node'un max ve min değerleri kontrol ediliyor
                             if (minValue > NVG.Settings.LastBlock.info.rowNo)
                             {
