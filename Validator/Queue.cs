@@ -1,5 +1,4 @@
-﻿using Notus.Network;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Numerics;
 using System.Text.Json;
 using NCH = Notus.Communication.Helper;
@@ -1035,7 +1034,7 @@ namespace Notus.Validator
                                         {
                                             minValue = tmpBlockData.info.rowNo;
                                         }
-                                        if(tmpBlockData.info.rowNo> maxValue)
+                                        if (tmpBlockData.info.rowNo > maxValue)
                                         {
                                             maxValue = tmpBlockData.info.rowNo;
                                         }
@@ -1043,12 +1042,10 @@ namespace Notus.Validator
                                     }
                                 }
                             }
-                            long difference = maxValue - minValue;
-                            extraSeconds = (ulong)(difference * 10);
+                            extraSeconds = (ulong)((maxValue - minValue) * 10);
                             Console.WriteLine("maxValue : " + maxValue.ToString());
                             Console.WriteLine("minValue : " + maxValue.ToString());
                             Console.WriteLine(JsonSerializer.Serialize(lastBlockNoList, NVC.JsonSetting));
-                            NP.ReadLine();
                         }
                     }
                     /*
