@@ -805,7 +805,10 @@ namespace Notus.Validator
                 {
                     if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
-                        NCH.SendMessageED(iE.Key, iE.Value.IP.IpAddress, iE.Value.IP.Port,
+                        string resultStr = NCH.SendMessageED(
+                            iE.Key,
+                            iE.Value.IP.IpAddress,
+                            iE.Value.IP.Port,
                             "<waitingRoomNodeReady>" +
                                 NVG.Settings.Nodes.My.IP.Wallet +
                                 NVC.CommonDelimeterChar +
@@ -814,6 +817,7 @@ namespace Notus.Validator
                                 controlSignForReadyMsg +
                             "</waitingRoomNodeReady>"
                         );
+                        Console.WriteLine("waitingRoomNodeReady : " + resultStr);
                     }
                 }
 
