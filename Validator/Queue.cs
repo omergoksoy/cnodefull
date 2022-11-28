@@ -7,6 +7,7 @@ using NGF = Notus.Variable.Globals.Functions;
 using NH = Notus.Hash;
 using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
+using NVClass = Notus.Variable.Class;
 using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVR = Notus.Validator.Register;
@@ -967,7 +968,7 @@ namespace Notus.Validator
             AskInfoFromNode();
 
             // önce node'ların içerisinde senkronizasyon bekleyen olmadığına emin ol
-            bool firstHandShake=WaitUntilAvailable();
+            bool firstHandShake = WaitUntilAvailable();
 
             // node-order-exception
 
@@ -1010,7 +1011,24 @@ namespace Notus.Validator
                     {
                         if (NVG.Settings.GenesisCreated == false)
                         {
+                            // diğer node'un blok sayısını al
+                            Dictionary<string, long> lastBlockNoList = new Dictionary<string, long>();
+                            lastBlockNoList.Add(NVG.Settings.Nodes.My.IP.Wallet, NVG.Settings.LastBlock.info.rowNo);
 
+                            foreach (var iE in NVG.NodeList)
+                            {
+                                if (string.Equals(iE.Value.IP.Wallet, NVG.Settings.Nodes.My.IP.Wallet) == false)
+                                {
+                                    lastBlockNoList.Add(iE.Value.IP.Wallet, 0);
+                                    NVClass.BlockData? tmpBlockData = Notus.Toolbox.Network.GetLastBlock(iE.Value.IP.IpAddress, NVG.Settings);
+                                    if (tmpBlockData != null)
+                                    {
+                                        lastBlockNoList[iE.Value.IP.Wallet] = tmpBlockData.info.rowNo;
+                                    }
+                                }
+                            }
+                            Console.WriteLine(JsonSerializer.Serialize(lastBlockNoList, NVC.JsonSetting));
+                            NP.ReadLine();
                         }
                     }
                     /*
