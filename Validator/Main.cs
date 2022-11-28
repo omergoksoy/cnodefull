@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Net;
 using System.Numerics;
 using System.Text.Json;
+using NCH = Notus.Communication.Helper;
 using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NH = Notus.Hash;
@@ -12,8 +13,8 @@ using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
-using NVR = Notus.Validator.Register;
 using NVH = Notus.Validator.Helper;
+using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
 
 namespace Notus.Validator
@@ -787,11 +788,35 @@ namespace Notus.Validator
             bool notMyTurnPrinted = false;
 
             bool showWhoseTurnOrNot = false;
-            //Console.WriteLine("Main.cs->Line 770");
-            //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList,NVC.JsonSetting));
+
             if (NVG.OtherValidatorSelectedMe == true)
             {
                 Console.WriteLine("I'm Waiting In The Waiting Room -> Main.cs");
+
+                ulong nowUtcValue = NVG.NOW.Int;
+                string controlSignForReadyMsg = Notus.Wallet.ID.Sign(
+                    nowUtcValue.ToString() +
+                        NVC.CommonDelimeterChar +
+                    NVG.Settings.Nodes.My.IP.Wallet,
+                    NVG.SessionPrivateKey
+                );
+
+                foreach (var iE in NVG.NodeList)
+                {
+                    if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
+                    {
+                        NCH.SendMessageED(iE.Key, iE.Value.IP.IpAddress, iE.Value.IP.Port,
+                            "<waitingRoomNodeReady>" +
+                                NVG.Settings.Nodes.My.IP.Wallet +
+                                NVC.CommonDelimeterChar +
+                                nowUtcValue.ToString() +
+                                NVC.CommonDelimeterChar +
+                                controlSignForReadyMsg +
+                            "</waitingRoomNodeReady>"
+                        );
+                    }
+                }
+
             }
 
             while (tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false)

@@ -409,6 +409,43 @@ namespace Notus.Validator
                     }
                 }
                 return "0";
+            }            
+            
+            if (CheckXmlTag(incomeData, "waitingRoomNodeReady"))
+            {
+                incomeData = GetPureText(incomeData, "waitingRoomNodeReady");
+                string[] tmpHashPart = incomeData.Split(NVC.CommonDelimeterChar);
+                ulong incomeUtc = ulong.Parse(tmpHashPart[1]);
+                ulong incomeDiff = (ulong)Math.Abs((decimal)NVG.NOW.Int - incomeUtc);
+
+                //100 saniyeden eski ise göz ardı edilecek
+                if (incomeDiff > 100000)
+                {
+                    return "0";
+                }
+                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
+                {
+                    if (string.Equals(tmpHashPart[0], entry.Value.IP.Wallet) == true)
+                    {
+                        if (
+                            Notus.Wallet.ID.Verify(
+                                tmpHashPart[1] +
+                                    Notus.Variable.Constant.CommonDelimeterChar +
+                                tmpHashPart[0],
+                                tmpHashPart[2],
+                                entry.Value.PublicKey
+                            ) == true
+                        )
+                        {
+                            if (NVG.NodeList.ContainsKey(entry.Key))
+                            {
+                                Console.WriteLine("Message Came From Waiting Room : " + incomeData);
+                                return "1";
+                            }
+                        }
+                    }
+                }
+                return "0";
             }
             if (CheckXmlTag(incomeData, "syncNo"))
             {
@@ -1254,10 +1291,12 @@ namespace Notus.Validator
                 Console.WriteLine("Queue.cs -> Line 1241");
                 Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
             }
+            /*
             if (NVG.OtherValidatorSelectedMe == true)
             {
                 Console.WriteLine("I'm Waiting In The Waiting Room -> Queue.cs");
             }
+            */
 
             if (firstHandShake == true)
             {

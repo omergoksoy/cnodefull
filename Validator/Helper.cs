@@ -61,7 +61,7 @@ namespace Notus.Validator
             }
             else
             {
-                if (NVG.OtherValidatorSelectedMe == true)
+                if (NVG.OtherValidatorSelectedMe == false)
                 {
                     Console.WriteLine("Queue Time Does Not Exist : " + blockGenarationTime.ToString());
                     Console.WriteLine("Queue Time Does Not Exist : " + blockGenarationTime.ToString());
