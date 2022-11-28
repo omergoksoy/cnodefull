@@ -59,6 +59,10 @@ namespace Notus.Validator
                     return true;
                 }
             }
+            else
+            {
+                Console.WriteLine("Queue Time Does Not Exist : " + blockGenarationTime.ToString());
+            }
             return false;
         }
         public static void PreStartValidatorList()

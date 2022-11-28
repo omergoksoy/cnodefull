@@ -784,6 +784,8 @@ namespace Notus.Validator
             ulong CurrentQueueTime = NVG.NodeQueue.Starting;
             bool myTurnPrinted = false;
             bool notMyTurnPrinted = false;
+
+            bool showWhoseTurnOrNot = false;
             //Console.WriteLine("Main.cs->Line 770");
             //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList,NVC.JsonSetting));
 
@@ -864,7 +866,10 @@ namespace Notus.Validator
                             if (myTurnPrinted == false)
                             {
                                 myTurnPrinted = true;
-                                NP.Info("My Turn : " + CurrentQueueTime.ToString() + " -> " + endingTime.ToString());
+                                if (showWhoseTurnOrNot == true)
+                                {
+                                    NP.Info("My Turn : " + CurrentQueueTime.ToString() + " -> " + endingTime.ToString());
+                                }
                             }
 
                             while (endingTime > NGF.NowInt())
@@ -938,7 +943,10 @@ namespace Notus.Validator
                             if (notMyTurnPrinted == false)
                             {
                                 notMyTurnPrinted = true;
-                                NP.Info("Not My Turn : " + CurrentQueueTime.ToString());
+                                if (showWhoseTurnOrNot == true)
+                                {
+                                    NP.Info("Not My Turn : " + CurrentQueueTime.ToString());
+                                }
                             }
 
                             if (NGF.BlockQueue.CheckPoolDb == true)
