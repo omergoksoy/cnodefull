@@ -982,6 +982,7 @@ namespace Notus.Validator
             ulong biggestSyncNo = FindBiggestSyncNo();
             //if(biggestSyncNo)
             NP.Info("Biggest Sync No : " + biggestSyncNo.ToString());
+
             /*
             if (NVG.OtherValidatorSelectedMe == true)
             {
