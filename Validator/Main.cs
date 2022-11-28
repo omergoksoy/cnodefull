@@ -1006,12 +1006,22 @@ namespace Notus.Validator
                                 if (NVR.NetworkSelectorList.Count > 0)
                                 {
                                     KeyValuePair<string, string> firstNode =NVR.NetworkSelectorList.First();
-                                    Console.WriteLine("Some Node Wait In The Waiting Room");
-                                    Console.WriteLine("This Node Wait : " + firstNode.Key);
-                                    Console.WriteLine("This Node Allow : " + firstNode.Value);
                                     if (NVR.ReadyMessageFromNode.ContainsKey(firstNode.Key))
                                     {
                                         Console.WriteLine("Node Ready For Join The Network");
+                                        Console.WriteLine("This Node Wait : " + firstNode.Key);
+                                        if(string.Equals(NVG.Settings.Nodes.My.IP.Wallet, firstNode.Value))
+                                        {
+                                            Console.WriteLine("I Will Allow The Node");
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("I Will Not Allow The Node");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Some Node Wait In The Waiting Room");
                                     }
                                 } // if (NVR.NetworkSelectorList.Count > 0)
                                 //NVR.NetworkSelectorList.Add(selectedEarliestWalletId, whoWillSayToEarlistNode);
