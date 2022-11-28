@@ -791,7 +791,7 @@ namespace Notus.Validator
             //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList,NVC.JsonSetting));
             if (NVG.OtherValidatorSelectedMe == true)
             {
-                Console.WriteLine("I'm Waiting In The Waiting Room");
+                Console.WriteLine("I'm Waiting In The Waiting Room -> Main.cs");
             }
 
             while (tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false)

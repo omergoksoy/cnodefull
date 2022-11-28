@@ -1254,6 +1254,10 @@ namespace Notus.Validator
                 Console.WriteLine("Queue.cs -> Line 1241");
                 Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
             }
+            if (NVG.OtherValidatorSelectedMe == true)
+            {
+                Console.WriteLine("I'm Waiting In The Waiting Room -> Queue.cs");
+            }
 
             if (firstHandShake == true)
             {
