@@ -989,7 +989,10 @@ namespace Notus.Validator
                 }
             }
             Console.WriteLine("Node-Siralama-Fonksiyon-222");
-            Console.WriteLine(JsonSerializer.Serialize(resultList));
+            foreach(var iE in resultList)
+            {
+                Console.WriteLine(iE.Key.ToString() + " - " + iE.Value);
+            }
             Console.WriteLine("---------------------------------------");
             return resultList;
         }
