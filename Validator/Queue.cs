@@ -988,8 +988,9 @@ namespace Notus.Validator
                     }
                 }
             }
-            //Console.WriteLine("Node-Siralama-Fonksiyon-222");
-            //Console.WriteLine("---------------------------------------");
+            Console.WriteLine("Node-Siralama-Fonksiyon-222");
+            Console.WriteLine(JsonSerializer.Serialize(resultList));
+            Console.WriteLine("---------------------------------------");
             return resultList;
         }
         public void PreStart()
@@ -1350,8 +1351,8 @@ namespace Notus.Validator
             }
             if (firstHandShake == false)
             {
-                Console.WriteLine("Queue.cs -> Line 1241");
-                Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
+                //Console.WriteLine("Queue.cs -> Line 1241");
+                //Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
             }
             /*
             if (NVG.OtherValidatorSelectedMe == true)
