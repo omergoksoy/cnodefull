@@ -989,8 +989,6 @@ namespace Notus.Validator
                             // zamanları hazırlasın ancak node verileri boş oluşturulsun
                             if (NVC.MinimumNodeCount > NVG.OnlineNodeCount)
                             {
-                                Console.WriteLine("NVC.OnlineNodeCount  : " + NVG.OnlineNodeCount.ToString());
-                                Console.WriteLine("NVC.MinimumNodeCount : " + NVC.MinimumNodeCount.ToString());
                                 NP.Warning("Closing The Node Because There Are Not Enough Nodes");
                                 NGF.CloseMyNode();
                             }
@@ -1011,10 +1009,28 @@ namespace Notus.Validator
                                         NP.Info("This Node Ready For Join The Network : " + firstNode.Key);
                                         if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, firstNode.Value))
                                         {
+                                            NP.Info("I Will Allow The Node");
+                                            Console.WriteLine("nodeOrderCount       : " + nodeOrderCount.ToString());
+                                            Console.WriteLine("NVG.GroupNo : " + NVG.GroupNo.ToString());
+                                            Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
+
+                                            /*
+                                            foreach (var iE in NVG.NodeList)
+                                            {
+                                                if(string.Equals(iE.Value.IP.Wallet, firstNode.Key))
+                                                {
+                                                    Console.WriteLine(
+                                                }
+                                            }
+
+                                            katılacak kullanıcının katılma zamanı ve 
+                                            group numarası gibi bilgileri API ile diğer nodelara görünür hale getirecek.
+
+
                                             burada group no ve başlangıç zamanı bildirilecek
                                             burada group no ve başlangıç zamanı bildirilecek
                                             burada group no ve başlangıç zamanı bildirilecek
-                                            //NP.Info("I Will Allow The Node");
+                                            */
                                         }
                                         else
                                         {
