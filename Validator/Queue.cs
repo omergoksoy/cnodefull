@@ -988,12 +988,15 @@ namespace Notus.Validator
                     }
                 }
             }
+
             Console.WriteLine("Node-Siralama-Fonksiyon-222");
             foreach(var iE in resultList)
             {
-                Console.WriteLine(iE.Key.ToString() + " - " + iE.Value);
+                Console.WriteLine(iE.Key.ToString().Substring(0,15) + " - " + iE.Value.Substring(0,15));
             }
             Console.WriteLine("---------------------------------------");
+            /*
+            */
             return resultList;
         }
         public void PreStart()

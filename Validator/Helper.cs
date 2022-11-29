@@ -324,6 +324,7 @@ namespace Notus.Validator
             NVG.NodeList[earlistNodeHexKeyStr].JoinTime = ND.ToLong(
                 ND.ToDateTime(joinTime).Subtract(new TimeSpan(0, 0, 0, 0, 50))
             );
+            NVG.NodeList[earlistNodeHexKeyStr].SyncNo = NVG.CurrentSyncNo;
             Console.WriteLine("---------------------");
             Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
             Console.WriteLine("---------------------");
