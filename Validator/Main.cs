@@ -846,14 +846,21 @@ namespace Notus.Validator
                     if (prepareNextQueue == false)
                     {
                         prepareNextQueue = true;
-                        selectedWalletId = NVG.Settings.Nodes.Queue[CurrentQueueTime].Wallet;
-                        if (selectedWalletId.Length == 0)
+                        if (NVG.Settings.Nodes.Queue.ContainsKey(CurrentQueueTime))
                         {
-                            if (NVG.Settings.NodeClosing == true)
+                            selectedWalletId = NVG.Settings.Nodes.Queue[CurrentQueueTime].Wallet;
+                            if (selectedWalletId.Length == 0)
                             {
-                                tmpExitMainLoop = true;
-                                NVG.Settings.ClosingCompleted = true;
+                                if (NVG.Settings.NodeClosing == true)
+                                {
+                                    tmpExitMainLoop = true;
+                                    NVG.Settings.ClosingCompleted = true;
+                                }
                             }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Queue Time Info Does Not In The List");
                         }
                     }
 
