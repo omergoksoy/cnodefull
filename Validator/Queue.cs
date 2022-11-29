@@ -544,6 +544,7 @@ namespace Notus.Validator
                         if (Notus.Wallet.ID.Verify(controlText, chooserSignStr, chooserPublicKeyStr) == true)
                         {
                             NVR.ReadyMessageFromNode.Remove(selectedEarliestWalletId);
+                            NVG.NodeList[earlistNodeKeyStr].SyncNo = NVG.CurrentSyncNo;
                             NVG.NodeList[earlistNodeKeyStr].JoinTime = ND.ToLong(
                                 ND.ToDateTime(joinTime).Subtract(new TimeSpan(0, 0, 0, 0, 50))
                             );
