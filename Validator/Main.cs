@@ -1073,10 +1073,12 @@ namespace Notus.Validator
                         {
                             nodeOrderCount = 0;
                             start_FirstQueueGroupTime = true;
+                            /*
                             if (NVR.NetworkSelectorList.Count > 0)
                             {
-                                Console.WriteLine("ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod) : " + ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod).ToString());
+                                //Console.WriteLine("ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod) : " + ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod).ToString());
                             }
+                            */
                         } //if (nodeOrderCount == 6)
 
                         prepareNextQueue = false;

@@ -554,6 +554,10 @@ namespace Notus.Validator
                                     NVG.OtherValidatorSelectedMe = false;
                                 }
                             }
+                            Console.WriteLine("---------------------");
+                            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+                            Console.WriteLine("---------------------");
+
                             return "1";
                         }
                     }

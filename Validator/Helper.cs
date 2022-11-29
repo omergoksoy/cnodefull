@@ -1,12 +1,12 @@
 ﻿using System.Globalization;
 using System.Text.Json;
+using NCH = Notus.Communication.Helper;
 using ND = Notus.Date;
-using NP = Notus.Print;
 using NGF = Notus.Variable.Globals.Functions;
+using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
-using NCH = Notus.Communication.Helper;
 
 namespace Notus.Validator
 {
@@ -260,7 +260,7 @@ namespace Notus.Validator
                 }
             }
         }
-        public static void SetJoinTimeToNode(string nodeKey,ulong startingTime)
+        public static void SetJoinTimeToNode(string nodeKey, ulong startingTime)
         {
             NVG.NodeList[nodeKey].JoinTime = ND.ToLong(
                 ND.ToDateTime(startingTime).Subtract(
@@ -268,7 +268,7 @@ namespace Notus.Validator
                 )
             );
         }
-        public static void TellToNetworkNewNodeJoinTime(string selectedEarliestWalletId,ulong joinTime)
+        public static void TellToNetworkNewNodeJoinTime(string selectedEarliestWalletId, ulong joinTime)
         {
             string tmpSyncNoStr = "<joinTime>" +
                 selectedEarliestWalletId + NVC.CommonDelimeterChar +
@@ -284,10 +284,12 @@ namespace Notus.Validator
                 ) +
                 "</joinTime>";
             List<string> tmpNodeList = new List<string>();
+            string earlistNodeHexKeyStr = string.Empty;
             foreach (var iEntry in NVG.NodeList)
             {
                 if (string.Equals(iEntry.Value.IP.Wallet, selectedEarliestWalletId) == true)
                 {
+                    earlistNodeHexKeyStr = iEntry.Key;
                     tmpNodeList.Add(iEntry.Key);
                 }
                 else
@@ -319,6 +321,12 @@ namespace Notus.Validator
                     Console.WriteLine("JoinTime Sending Error -> " + NVG.NodeList[nodeKey].IP.Wallet);
                 }
             }
+            NVG.NodeList[earlistNodeHexKeyStr].JoinTime = ND.ToLong(
+                ND.ToDateTime(joinTime).Subtract(new TimeSpan(0, 0, 0, 0, 50))
+            );
+            Console.WriteLine("---------------------");
+            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+            Console.WriteLine("---------------------");
         }
         public static void TellSyncNoToEarlistNode(string selectedEarliestWalletId)
         {
