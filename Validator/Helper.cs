@@ -268,6 +268,58 @@ namespace Notus.Validator
                 )
             );
         }
+        public static void TellToNetworkNewNodeJoinTime(string selectedEarliestWalletId,ulong joinTime)
+        {
+            string tmpSyncNoStr = "<joinTime>" +
+                selectedEarliestWalletId + NVC.CommonDelimeterChar +
+                joinTime.ToString() + NVC.CommonDelimeterChar +
+                NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
+                Notus.Wallet.ID.Sign(
+                    selectedEarliestWalletId +
+                        NVC.CommonDelimeterChar +
+                    joinTime.ToString() +
+                        NVC.CommonDelimeterChar +
+                    NVG.Settings.Nodes.My.IP.Wallet,
+                    NVG.SessionPrivateKey
+                ) +
+                "</joinTime>";
+            List<string> tmpNodeList = new List<string>();
+            foreach (var iEntry in NVG.NodeList)
+            {
+                if (string.Equals(iEntry.Value.IP.Wallet, selectedEarliestWalletId) == true)
+                {
+                    tmpNodeList.Add(iEntry.Key);
+                }
+                else
+                {
+                    if (string.Equals(iEntry.Value.IP.Wallet, NVG.Settings.Nodes.My.IP.Wallet) == false)
+                    {
+                        if (iEntry.Value.SyncNo == NVG.CurrentSyncNo)
+                        {
+                            tmpNodeList.Add(iEntry.Key);
+                        }
+                    }
+                }
+            }
+
+            foreach (var nodeKey in tmpNodeList)
+            {
+                string resultStr = NCH.SendMessageED(
+                    nodeKey,
+                    NVG.NodeList[nodeKey].IP.IpAddress,
+                    NVG.NodeList[nodeKey].IP.Port,
+                    tmpSyncNoStr
+                );
+                if (resultStr == "1")
+                {
+                    Console.WriteLine("We Sended JoinTime -> " + NVG.NodeList[nodeKey].IP.Wallet);
+                }
+                else
+                {
+                    Console.WriteLine("JoinTime Sending Error -> " + NVG.NodeList[nodeKey].IP.Wallet);
+                }
+            }
+        }
         public static void TellSyncNoToEarlistNode(string selectedEarliestWalletId)
         {
             string tmpSyncNoStr = "<syncNo>" +

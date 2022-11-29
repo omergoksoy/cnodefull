@@ -506,6 +506,60 @@ namespace Notus.Validator
                 }
                 return "0";
             }
+            
+            if (CheckXmlTag(incomeData, "joinTime"))
+            {
+                incomeData = GetPureText(incomeData, "joinTime");
+                string[] tmpArr = incomeData.Split(":");
+                if (tmpArr.Length > 3)
+                {
+                    string selectedEarliestWalletId = tmpArr[0];
+                    ulong joinTime = ulong.Parse(tmpArr[1]);
+                    string chooserWalletId = tmpArr[2];
+                    string chooserSignStr = tmpArr[3];
+
+                    string controlText =
+                        selectedEarliestWalletId +
+                            NVC.CommonDelimeterChar +
+                        joinTime.ToString() +
+                            NVC.CommonDelimeterChar +
+                        chooserWalletId;
+                    string chooserPublicKeyStr = string.Empty;
+                    string earlistNodeKeyStr = string.Empty;
+                    foreach (var iEntry in NVG.NodeList)
+                    {
+                        if (string.Equals(iEntry.Value.IP.Wallet, chooserWalletId) == true)
+                        {
+                            chooserPublicKeyStr = iEntry.Value.PublicKey;
+                        }
+                        if (string.Equals(iEntry.Value.IP.Wallet, selectedEarliestWalletId) == true)
+                        {
+                            earlistNodeKeyStr = iEntry.Key;
+                        }
+
+                    }
+
+                    if (chooserPublicKeyStr.Length > 0 && earlistNodeKeyStr.Length > 0)
+                    {
+                        if (Notus.Wallet.ID.Verify(controlText, chooserSignStr, chooserPublicKeyStr) == true)
+                        {
+                            NVR.ReadyMessageFromNode.Remove(selectedEarliestWalletId);
+                            NVG.NodeList[earlistNodeKeyStr].JoinTime = ND.ToLong(
+                                ND.ToDateTime(joinTime).Subtract(new TimeSpan(0, 0, 0, 0, 50))
+                            );
+                            if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedEarliestWalletId))
+                            {
+                                if (NVG.OtherValidatorSelectedMe == true)
+                                {
+                                    NVG.OtherValidatorSelectedMe = false;
+                                }
+                            }
+                            return "1";
+                        }
+                    }
+                }
+                return "0";
+            }
 
             //bu komut ile bekleme odasındaki node ağa dahil ediliyor
             if (CheckXmlTag(incomeData, "yourTurn"))

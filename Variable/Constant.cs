@@ -22,6 +22,7 @@ namespace Notus.Variable
         // node çalışma süresi sonunda kaç mili saniye dağıtmaya geçecek
         public static readonly ulong BlockDistributingTime = 200;
 
+        public static readonly byte NodeOrderGroupSize = 6;
         public static readonly byte RegenerateNodeQueueCount = 4;
 
 

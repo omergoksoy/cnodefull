@@ -1009,17 +1009,32 @@ namespace Notus.Validator
                                         NP.Info("This Node Ready For Join The Network : " + firstNode.Key);
                                         if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, firstNode.Value))
                                         {
+                                            /*
                                             int tmpGroupNo = NVG.GroupNo + 1;
-                                            ulong tmpQueueTime= ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod * 2);
+                                            */
+                                            ulong tmpQueueTime = ND.AddMiliseconds(
+                                                CurrentQueueTime,
+                                                queueTimePeriod * 3
+                                            );
+
+                                            ulong tmpJoinTime = ND.AddMiliseconds(
+                                                tmpQueueTime,
+                                                queueTimePeriod * (ulong)(NVC.NodeOrderGroupSize * 10)
+                                            );
+
                                             NP.Info("I Will Allow The Node");
+                                            Task.Run(() =>
+                                            {
+                                                NVH.TellToNetworkNewNodeJoinTime(firstNode.Key, tmpJoinTime);
+                                            });
+                                            NVR.ReadyMessageFromNode.Remove(firstNode.Key);
+                                            /*
                                             Console.WriteLine("nodeOrderCount       : " + nodeOrderCount.ToString());
                                             Console.WriteLine("NVG.GroupNo : " + NVG.GroupNo.ToString());
-                                            Console.WriteLine("CurrentQueueTime : " + CurrentQueueTime.ToString());
 
                                             Console.WriteLine("tmpQueueTime     : " + tmpQueueTime.ToString());
                                             Console.WriteLine("tmpGroupNo       : " + tmpGroupNo.ToString());
 
-                                            /*
                                             foreach (var iE in NVG.NodeList)
                                             {
                                                 if(string.Equals(iE.Value.IP.Wallet, firstNode.Key))
@@ -1047,7 +1062,7 @@ namespace Notus.Validator
                             }
                         } //if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
 
-                        if (nodeOrderCount == 6)
+                        if (nodeOrderCount == NVC.NodeOrderGroupSize)
                         {
                             nodeOrderCount = 0;
                             start_FirstQueueGroupTime = true;
