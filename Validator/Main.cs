@@ -1028,6 +1028,14 @@ namespace Notus.Validator
                                                 tmpQueueTime,
                                                 queueTimePeriod * (ulong)(NVC.NodeOrderGroupSize * 10)
                                             );
+                                            
+                                            hatanın olduğu nokta
+                                            üçüncü node ağa dahil olduğu anda kendisine blok iletilemiyor
+                                            oluşturulan blok iletilemeyince 
+                                                hatalı blok numarası ile kendisi başka bir blok üretiyor.
+
+                                            üçüncü node oluşturduğu bloğu diğer nodelara iletemiyor...
+
 
                                             NP.Info("I Will Allow The Node");
                                             Task.Run(() =>
