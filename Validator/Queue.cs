@@ -557,7 +557,7 @@ namespace Notus.Validator
                             Console.WriteLine("---------------------");
                             Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
                             Console.WriteLine("---------------------");
-
+                            NVG.ShowWhoseTurnOrNot = true;
                             return "1";
                         }
                     }

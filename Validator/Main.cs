@@ -787,7 +787,7 @@ namespace Notus.Validator
             bool myTurnPrinted = false;
             bool notMyTurnPrinted = false;
 
-            bool showWhoseTurnOrNot = false;
+            NVG.ShowWhoseTurnOrNot = false;
 
             if (NVG.OtherValidatorSelectedMe == true)
             {
@@ -901,7 +901,7 @@ namespace Notus.Validator
                             if (myTurnPrinted == false)
                             {
                                 myTurnPrinted = true;
-                                if (showWhoseTurnOrNot == true)
+                                if (NVG.ShowWhoseTurnOrNot == true)
                                 {
                                     NP.Info("My Turn : " + CurrentQueueTime.ToString() + " -> " + endingTime.ToString());
                                 }
@@ -978,7 +978,7 @@ namespace Notus.Validator
                             if (notMyTurnPrinted == false)
                             {
                                 notMyTurnPrinted = true;
-                                if (showWhoseTurnOrNot == true)
+                                if (NVG.ShowWhoseTurnOrNot == true)
                                 {
                                     NP.Info("Not My Turn : " + CurrentQueueTime.ToString());
                                 }
