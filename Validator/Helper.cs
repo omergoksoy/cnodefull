@@ -189,8 +189,8 @@ namespace Notus.Validator
                 }
                 if (canBePrint == true)
                 {
-                    Console.WriteLine("Queue Time Does Not Exist : " + blockGenarationTime.ToString());
-                    Console.WriteLine("Queue Time Does Not Exist : " + blockGenarationTime.ToString());
+                    //Console.WriteLine("Queue Time Does Not Exist : " + blockGenarationTime.ToString());
+                    //Console.WriteLine("Queue Time Does Not Exist : " + blockGenarationTime.ToString());
                 }
             }
             return false;
@@ -399,9 +399,11 @@ namespace Notus.Validator
                 ND.ToDateTime(joinTime).Subtract(new TimeSpan(0, 0, 0, 0, 50))
             );
             NVG.NodeList[earlistNodeHexKeyStr].SyncNo = NVG.CurrentSyncNo;
+            /*
             Console.WriteLine("---------------------");
             Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
             Console.WriteLine("---------------------");
+            */
             NVG.ShowWhoseTurnOrNot = false;
         }
         public static void TellSyncNoToEarlistNode(string selectedEarliestWalletId)
