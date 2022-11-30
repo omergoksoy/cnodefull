@@ -330,7 +330,6 @@ namespace Notus.Variable
                 */
                 Console.WriteLine("Kontrol-Noktası -1");
                 NP.ReadLine();
-                Notus.Validator.Helper.PreStartValidatorList();
             }
             public static void CloseMessageSockets(string walletId = "")
             {
