@@ -7,7 +7,7 @@ using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
-
+using NVH = Notus.Validator.Helper;
 namespace Notus.Validator
 {
     public static class Helper
