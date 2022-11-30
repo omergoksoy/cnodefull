@@ -55,12 +55,12 @@ namespace Notus.Message
                     pubObj.Start();
                 });
 
-                //pingTimerIsRunning = true;
+                NP.Warning("Ping Timer Temporarly Disabled");
+                pingTimerIsRunning = true;
                 pingTimer.Start(() =>
                 {
                     if (pingTimerIsRunning == false)
                     {
-                        Console.WriteLine("pingTimer Is Working");
                         pingTimerIsRunning = true;
 
                         List<string> tmpRemoveFromList = new List<string>();
@@ -138,7 +138,6 @@ namespace Notus.Message
                         KeyValuePair<string, Variable.Struct.NodeQueueInfo>[]? tList = NVG.NodeList.ToArray();
                         if (tList != null)
                         {
-                            Console.WriteLine("subTimer Is Working");
                             //eklenmeyenler eklensin
                             for (int i = 0; i < tList.Length; i++)
                             {
@@ -156,8 +155,16 @@ namespace Notus.Message
                                                 );
                                                 if (socketconnected == false)
                                                 {
-                                                    //Console.WriteLine("Baglanti Hatasi");
+                                                    Console.WriteLine("Baglanti-Hatasi -> " + tList[i].Value.IP.IpAddress);
+                                                    Console.WriteLine("Baglanti-Hatasi -> " + tList[i].Value.IP.IpAddress);
+                                                    Console.WriteLine("Baglanti-Hatasi -> " + tList[i].Value.IP.IpAddress);
                                                     subListObj.TryRemove(tList[i].Value.IP.Wallet, out _);
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("Baglanti-Saglandi -> " + tList[i].Value.IP.IpAddress);
+                                                    Console.WriteLine("Baglanti-Saglandi -> " + tList[i].Value.IP.IpAddress);
+                                                    Console.WriteLine("Baglanti-Saglandi -> " + tList[i].Value.IP.IpAddress);
                                                 }
                                             }
                                         }
