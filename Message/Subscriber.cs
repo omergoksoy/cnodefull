@@ -25,9 +25,9 @@ namespace Notus.Message
                 NP.Info("Message Node connected to "+ sender.RemoteEndPoint.ToString());
                 return true;
             }
-            catch (Exception e)
+            catch (Exception err)
             {
-                //Console.WriteLine("Exception: {0}", e.ToString());
+                NP.Danger("Message Node Connecting Error :  " + sender.RemoteEndPoint.ToString());
             }
             return false;
         }
@@ -63,12 +63,8 @@ namespace Notus.Message
             }
             return string.Empty;
         }
-        public Subscriber(string ipAddress = "")
+        public Subscriber()
         {
-            if (ipAddress.Length > 0)
-            {
-                Start(ipAddress);
-            }
         }
         ~Subscriber()
         {
