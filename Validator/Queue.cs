@@ -126,7 +126,6 @@ namespace Notus.Validator
         {
             // listesinde eğer 1 adet çevrim içi node varsa döngüden çıkış yapacak
             bool exitInnerWhile = false;
-            Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
             NP.Info("Finding Online Nodes");
 
             while (exitInnerWhile == false)
@@ -135,16 +134,11 @@ namespace Notus.Validator
                 {
                     if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
-                        Console.WriteLine("Control Hex :  "+ iE.Key);
                         if (Notus.Toolbox.Network.PingToNode(iE.Value) == NVS.NodeStatus.Online)
                         {
                             NGF.ValidatorList[iE.Key].Status = NVS.NodeStatus.Online;
                             exitInnerWhile = true;
                             break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Unknown");
                         }
                     }
                 }

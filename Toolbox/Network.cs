@@ -2,8 +2,16 @@
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text.Json;
+using NGV = Notus.Globals.Variable;
 using NVG = Notus.Variable.Globals;
+using NVC = Notus.Variable.Constant;
 using NVS = Notus.Variable.Struct;
+using NVClass = Notus.Variable.Class;
+using NNN = Notus.Network.Node;
+using NCR = Notus.Communication.Request;
+using NP = Notus.Print;
+using NVE = Notus.Variable.Enum;
+using NTN = Notus.Toolbox.Network;
 namespace Notus.Toolbox
 {
     public class Network
@@ -11,30 +19,28 @@ namespace Notus.Toolbox
         private static bool Error_TestIpAddress = true;
         private static readonly string DefaultControlTestData = "notus-network-test-result-data";
 
-        public static Notus.Variable.Class.BlockData? GetBlockFromNode(
+        public static NVClass.BlockData? GetBlockFromNode(
             Variable.Struct.IpInfo? ipNode,
-            long blockNo, Notus.Globals.Variable.Settings? objSettings = null
+            long blockNo, NGV.Settings? objSettings = null
         )
         {
             return GetBlockFromNode(ipNode.IpAddress, ipNode.Port, blockNo, objSettings);
         }
-        public static NVS.NodeStatus PingToNode(Notus.Variable.Struct.IpInfo NodeIp)
+        public static NVS.NodeStatus PingToNode(NVS.IpInfo NodeIp)
         {
             return PingToNode(NodeIp.IpAddress, NodeIp.Port);
         }
         public static NVS.NodeStatus PingToNode(string ipAddress, int portNo)
         {
-            string urlStr = Notus.Network.Node.MakeHttpListenerPath(ipAddress, portNo) + "ping/";
-            string tmpResult = Notus.Communication.Request.GetSync(urlStr,1, true, false);
-            Console.WriteLine("tmpResult : " + tmpResult);
-            Console.WriteLine("urlStr    : " + urlStr);
-            return string.Equals(tmpResult,"pong")==true ? NVS.NodeStatus.Online : NVS.NodeStatus.Offline;
+            string requestUrl = NNN.MakeHttpListenerPath(ipAddress, portNo) + "ping/";
+            string serverResponse = NCR.GetSync(requestUrl, 1, true, false);
+            return string.Equals(serverResponse, "pong")==true ? NVS.NodeStatus.Online : NVS.NodeStatus.Offline;
         }
-        public static string IpAndPortToHex(Notus.Variable.Struct.NodeInfo NodeIp)
+        public static string IpAndPortToHex(NVS.NodeInfo NodeIp)
         {
             return IpAndPortToHex(NodeIp.IpAddress, NodeIp.Port);
         }
-        public static string IpAndPortToHex(Notus.Variable.Struct.IpInfo NodeIp)
+        public static string IpAndPortToHex(NVS.IpInfo NodeIp)
         {
             return IpAndPortToHex(NodeIp.IpAddress, NodeIp.Port);
         }
@@ -48,21 +54,21 @@ namespace Notus.Toolbox
             return resultStr.ToLower() + portNo.ToString("x").PadLeft(5, '0').ToLower();
         }
 
-        public static Notus.Variable.Class.BlockData? GetBlockFromNode(
+        public static NVClass.BlockData? GetBlockFromNode(
             string ipAddress, int portNo,
-            long blockNo, Notus.Globals.Variable.Settings? objSettings = null
+            long blockNo, NGV.Settings? objSettings = null
         )
         {
-            string urlPath = Notus.Network.Node.MakeHttpListenerPath(ipAddress, portNo) + "block/" + blockNo.ToString() + "/raw";
-            string incodeResponse = Notus.Communication.Request.GetSync(
+            string urlPath = NNN.MakeHttpListenerPath(ipAddress, portNo) + "block/" + blockNo.ToString() + "/raw";
+            string incodeResponse = NCR.GetSync(
                 urlPath, 2, true, false, objSettings
             );
             try
             {
                 if (incodeResponse != null && incodeResponse != string.Empty && incodeResponse.Length > 0)
                 {
-                    Notus.Variable.Class.BlockData? tmpResultBlock =
-                        JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(incodeResponse);
+                    NVClass.BlockData? tmpResultBlock =
+                        JsonSerializer.Deserialize<NVClass.BlockData>(incodeResponse);
                     if (tmpResultBlock != null)
                     {
                         return tmpResultBlock;
@@ -73,28 +79,28 @@ namespace Notus.Toolbox
             {
                 if (objSettings != null)
                 {
-                    Notus.Print.Danger(objSettings, err.Message);
+                    NP.Danger(objSettings, err.Message);
                 }
             }
             return null;
         }
-        public static Notus.Variable.Class.BlockData? GetLastBlock(Notus.Variable.Struct.IpInfo NodeIp, Notus.Globals.Variable.Settings? objSettings = null)
+        public static NVClass.BlockData? GetLastBlock(NVS.IpInfo NodeIp, NGV.Settings? objSettings = null)
         {
-            return GetLastBlock(Notus.Network.Node.MakeHttpListenerPath(NodeIp.IpAddress, NodeIp.Port), objSettings);
+            return GetLastBlock(NNN.MakeHttpListenerPath(NodeIp.IpAddress, NodeIp.Port), objSettings);
         }
-        public static Notus.Variable.Class.BlockData? GetLastBlock(string NodeAddress, Notus.Globals.Variable.Settings? objSettings = null)
+        public static NVClass.BlockData? GetLastBlock(string NodeAddress, NGV.Settings? objSettings = null)
         {
             try
             {
-                string MainResultStr = Notus.Communication.Request.GetSync(
+                string MainResultStr = NCR.GetSync(
                     NodeAddress + "block/last/raw",
                     10,
                     true,
                     true,
                     objSettings
                 );
-                Notus.Variable.Class.BlockData? PreBlockData =
-                    JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(MainResultStr);
+                NVClass.BlockData? PreBlockData =
+                    JsonSerializer.Deserialize<NVClass.BlockData>(MainResultStr);
                 //Console.WriteLine(JsonSerializer.Serialize(PreBlockData));
                 if (PreBlockData != null)
                 {
@@ -109,7 +115,7 @@ namespace Notus.Toolbox
                 }
                 else
                 {
-                    Notus.Print.Danger(objSettings, "Error Point (GetLastBlock) : " + err.Message);
+                    NP.Danger(objSettings, "Error Point (GetLastBlock) : " + err.Message);
                 }
             }
             return null;
@@ -127,46 +133,46 @@ namespace Notus.Toolbox
         }
         public static void IdentifyNodeType(int Timeout = 5)
         {
-            NVG.Settings.IpInfo = Notus.Toolbox.Network.GetNodeIP();
+            NVG.Settings.IpInfo = NTN.GetNodeIP();
             if (NVG.Settings.LocalNode == true)
             {
-                Notus.Print.Basic(NVG.Settings, "Starting As Main Node");
-                NVG.Settings.NodeType = Notus.Variable.Enum.NetworkNodeType.Main;
+                NP.Basic(NVG.Settings, "Starting As Main Node");
+                NVG.Settings.NodeType = NVE.NetworkNodeType.Main;
                 NVG.Settings.Nodes.My.IP.IpAddress = NVG.Settings.IpInfo.Local;
             }
             else
             {
                 NVG.Settings.Nodes.My.IP.IpAddress = NVG.Settings.IpInfo.Public;
             }
-            NVG.Settings.Nodes.My.HexKey = Notus.Toolbox.Network.IpAndPortToHex(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
-            if (Notus.Variable.Constant.ListMainNodeIp.IndexOf(NVG.Settings.IpInfo.Public) >= 0)
+            NVG.Settings.Nodes.My.HexKey = NTN.IpAndPortToHex(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
+            if (NVC.ListMainNodeIp.IndexOf(NVG.Settings.IpInfo.Public) >= 0)
             {
                 //NVG.Settings.Nodes.My.InTheCode = true;
-                Notus.Print.Basic(NVG.Settings, "Starting As Main Node");
+                NP.Basic(NVG.Settings, "Starting As Main Node");
                 if (PublicIpIsConnectable(Timeout))
                 {
-                    NVG.Settings.NodeType = Notus.Variable.Enum.NetworkNodeType.Main;
+                    NVG.Settings.NodeType = NVE.NetworkNodeType.Main;
                 }
                 else
                 {
-                    Notus.Print.Basic(NVG.Settings, "Main Node Port Error");
+                    NP.Basic(NVG.Settings, "Main Node Port Error");
                 }
             }
             else
             {
                 //NVG.Settings.Nodes.My.InTheCode = false;
-                Notus.Print.Basic(NVG.Settings, "Not Main Node");
+                NP.Basic(NVG.Settings, "Not Main Node");
 
                 if (PublicIpIsConnectable(Timeout))
                 {
-                    Notus.Print.Basic(NVG.Settings, "Starting As Master Node");
-                    NVG.Settings.NodeType = Notus.Variable.Enum.NetworkNodeType.Master;
+                    NP.Basic(NVG.Settings, "Starting As Master Node");
+                    NVG.Settings.NodeType = NVE.NetworkNodeType.Master;
                 }
                 else
                 {
-                    Notus.Print.Basic(NVG.Settings, "Not Master Node");
-                    Notus.Print.Basic(NVG.Settings, "Starting As Replicant Node");
-                    NVG.Settings.NodeType = Notus.Variable.Enum.NetworkNodeType.Replicant;
+                    NP.Basic(NVG.Settings, "Not Master Node");
+                    NP.Basic(NVG.Settings, "Starting As Replicant Node");
+                    NVG.Settings.NodeType = NVE.NetworkNodeType.Replicant;
                 }
             }
         }
@@ -206,9 +212,9 @@ namespace Notus.Toolbox
             return isAvailable;
         }
 
-        public static Notus.Variable.Struct.NodeIpInfo GetNodeIP()
+        public static NVS.NodeIpInfo GetNodeIP()
         {
-            return new Notus.Variable.Struct.NodeIpInfo()
+            return new NVS.NodeIpInfo()
             {
                 Local = GetLocalIPAddress(false),
                 Public = GetPublicIPAddress()
@@ -285,8 +291,8 @@ namespace Notus.Toolbox
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
+                NP.Log(
+                    NVE.LogLevel.Info,
                     98798700,
                     err.Message,
                     "BlockRowNo",
@@ -302,7 +308,7 @@ namespace Notus.Toolbox
             Error_TestIpAddress = false;
             try
             {
-                int ControlPortNo = Notus.Toolbox.Network.FindFreeTcpPort();
+                int ControlPortNo = NTN.FindFreeTcpPort();
                 using (Notus.Communication.Http tmp_HttpObj = new Notus.Communication.Http())
                 {
                     tmp_HttpObj.ResponseType = "text/html";
@@ -318,23 +324,23 @@ namespace Notus.Toolbox
                     {
                         try
                         {
-                            string MainResultStr = Notus.Communication.Request.Get(
-                                Notus.Network.Node.MakeHttpListenerPath(NVG.Settings.IpInfo.Public, ControlPortNo) + "block/hash/1",
+                            string MainResultStr = NCR.Get(
+                                NNN.MakeHttpListenerPath(NVG.Settings.IpInfo.Public, ControlPortNo) + "block/hash/1",
                                 5,
                                 true
                             ).GetAwaiter().GetResult();
                         }
                         catch (Exception errInner)
                         {
-                            Notus.Print.Log(
-                                Notus.Variable.Enum.LogLevel.Info,
+                            NP.Log(
+                                NVE.LogLevel.Info,
                                 50000005,
                                 errInner.Message,
                                 "BlockRowNo",
                                 NVG.Settings,
                                 errInner
                             );
-                            Notus.Print.Basic(NVG.Settings, "Error [75fde6374]: " + errInner.Message);
+                            NP.Basic(NVG.Settings, "Error [75fde6374]: " + errInner.Message);
                         }
                     }
                     if (tmp_HttpObj.Started == false)
@@ -346,15 +352,15 @@ namespace Notus.Toolbox
             }
             catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
+                NP.Log(
+                    NVE.LogLevel.Info,
                     88800880,
                     err.Message,
                     "BlockRowNo",
                     NVG.Settings,
                     err
                 );
-                Notus.Print.Danger(NVG.Settings, "Error [065]: " + err.Message);
+                NP.Danger(NVG.Settings, "Error [065]: " + err.Message);
                 Error_TestIpAddress = true;
             }
             if (Error_TestIpAddress == true)
@@ -363,7 +369,7 @@ namespace Notus.Toolbox
             }
             return true;
         }
-        private static string Fnc_TestLinkData(Notus.Variable.Struct.HttpRequestDetails IncomeData)
+        private static string Fnc_TestLinkData(NVS.HttpRequestDetails IncomeData)
         {
             return DefaultControlTestData;
         }
