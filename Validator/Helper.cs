@@ -15,6 +15,8 @@ namespace Notus.Validator
         public static void PrepareValidatorList()
         {
             NVG.NodeList.Clear();
+            NGF.ValidatorList.Clear();
+
             NVH.AddValidatorInfo(new NVS.NodeQueueInfo()
             {
                 Status = NVS.NodeStatus.Online,
@@ -53,6 +55,47 @@ namespace Notus.Validator
                         JoinTime = 0,
                         PublicKey = ""
                     }, false);
+                }
+            }
+
+            string tmpOfflineNodeListStr = string.Empty;
+            string tmpNodeListStr = string.Empty;
+            using (Notus.Mempool objMpNodeList = new Notus.Mempool("validator_list"))
+            {
+                tmpOfflineNodeListStr = objMpNodeList.Get("offline_list", "");
+                tmpNodeListStr = objMpNodeList.Get("address_list", "");
+            }
+
+            if (tmpOfflineNodeListStr.Length == 0 && tmpNodeListStr.Length == 0)
+            {
+                foreach (NVS.IpInfo defaultNodeInfo in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
+                {
+                    AddToValidatorList(defaultNodeInfo.IpAddress, defaultNodeInfo.Port);
+                }
+            }
+            else
+            {
+                if (tmpOfflineNodeListStr.Length > 0)
+                {
+                    SortedDictionary<string, NVS.IpInfo>? tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(tmpOfflineNodeListStr);
+                    if (tmpDbNodeList != null)
+                    {
+                        foreach (var iE in tmpDbNodeList)
+                        {
+                            AddToValidatorList(iE.Value.IpAddress, iE.Value.Port);
+                        }
+                    }
+                }
+                if (tmpNodeListStr.Length > 0)
+                {
+                    SortedDictionary<string, NVS.IpInfo>? tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(tmpNodeListStr);
+                    if (tmpDbNodeList != null)
+                    {
+                        foreach (var iE in tmpDbNodeList)
+                        {
+                            AddToValidatorList(iE.Value.IpAddress, iE.Value.Port);
+                        }
+                    }
                 }
             }
 
@@ -126,50 +169,6 @@ namespace Notus.Validator
                 }
             }
             return false;
-        }
-        public static void PreStartValidatorList()
-        {
-            NGF.ValidatorList.Clear();
-            string tmpOfflineNodeListStr = string.Empty;
-            string tmpNodeListStr = string.Empty;
-            using (Notus.Mempool objMpNodeList = new Notus.Mempool("validator_list"))
-            {
-                tmpOfflineNodeListStr = objMpNodeList.Get("offline_list", "");
-                tmpNodeListStr = objMpNodeList.Get("address_list", "");
-            }
-
-            if (tmpOfflineNodeListStr.Length == 0 && tmpNodeListStr.Length == 0)
-            {
-                foreach (NVS.IpInfo defaultNodeInfo in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
-                {
-                    AddToValidatorList(defaultNodeInfo.IpAddress, defaultNodeInfo.Port);
-                }
-            }
-            else
-            {
-                if (tmpOfflineNodeListStr.Length > 0)
-                {
-                    SortedDictionary<string, NVS.IpInfo>? tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(tmpOfflineNodeListStr);
-                    if (tmpDbNodeList != null)
-                    {
-                        foreach (var iE in tmpDbNodeList)
-                        {
-                            AddToValidatorList(iE.Value.IpAddress, iE.Value.Port);
-                        }
-                    }
-                }
-                if (tmpNodeListStr.Length > 0)
-                {
-                    SortedDictionary<string, NVS.IpInfo>? tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(tmpNodeListStr);
-                    if (tmpDbNodeList != null)
-                    {
-                        foreach (var iE in tmpDbNodeList)
-                        {
-                            AddToValidatorList(iE.Value.IpAddress, iE.Value.Port);
-                        }
-                    }
-                }
-            }
         }
         public static void SetNodeOnline(string nodeHexKey)
         {
