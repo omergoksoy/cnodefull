@@ -24,11 +24,10 @@ namespace Notus.Toolbox
         }
         public static NVS.NodeStatus PingToNode(string ipAddress, int portNo)
         {
-            string tmpResult = Notus.Communication.Request.GetSync(
-                Notus.Network.Node.MakeHttpListenerPath(ipAddress, portNo) + "ping/",
-                1, true, false
-            );
+            string urlStr = Notus.Network.Node.MakeHttpListenerPath(ipAddress, portNo) + "ping/";
+            string tmpResult = Notus.Communication.Request.GetSync(urlStr,1, true, false);
             Console.WriteLine("tmpResult : " + tmpResult);
+            Console.WriteLine("urlStr    : " + urlStr);
             return string.Equals(tmpResult,"pong")==true ? NVS.NodeStatus.Online : NVS.NodeStatus.Offline;
         }
         public static string IpAndPortToHex(Notus.Variable.Struct.NodeInfo NodeIp)
