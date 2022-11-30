@@ -327,9 +327,9 @@ namespace Notus.Variable
                 BlockOrder = new Notus.Mempool(tmpFolderName +"block_order_list");
                 BlockOrder.AsyncActive = false;
                 BlockOrder.Clear();
-                */
                 Console.WriteLine("Kontrol-Noktası -1");
                 NP.ReadLine();
+                */
             }
             public static void CloseMessageSockets(string walletId = "")
             {
