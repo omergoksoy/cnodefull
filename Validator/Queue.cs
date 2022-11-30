@@ -1007,54 +1007,6 @@ namespace Notus.Validator
             if (NVG.Settings.GenesisCreated == true)
                 return;
 
-            NVG.NodeList.Clear();
-            NVH.AddValidatorInfo(new NVS.NodeQueueInfo()
-            {
-                Status = NVS.NodeStatus.Online,
-                HexKey = NVG.Settings.Nodes.My.HexKey,
-                Begin = NVG.Settings.Nodes.My.Begin,
-                SyncNo = 0,
-                Tick = NVG.NOW.Int,
-                IP = new NVS.NodeInfo()
-                {
-                    IpAddress = NVG.Settings.Nodes.My.IP.IpAddress,
-                    Port = NVG.Settings.Nodes.My.IP.Port,
-                    Wallet = NVG.Settings.NodeWallet.WalletKey
-                },
-                JoinTime = 0,
-                PublicKey = NVG.Settings.Nodes.My.PublicKey,
-            }, true);
-            NVH.AddToValidatorList(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
-
-            foreach (KeyValuePair<string, NVS.IpInfo> entry in NGF.ValidatorList)
-            {
-                if (string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false)
-                {
-                    NVH.AddValidatorInfo(new NVS.NodeQueueInfo()
-                    {
-                        Status = NVS.NodeStatus.Unknown,
-                        Begin = 0,
-                        Tick = 0,
-                        SyncNo = 0,
-                        HexKey = Notus.Toolbox.Network.IpAndPortToHex(entry.Value.IpAddress, entry.Value.Port),
-                        IP = new NVS.NodeInfo()
-                        {
-                            IpAddress = entry.Value.IpAddress,
-                            Port = entry.Value.Port,
-                            Wallet = "#"
-                        },
-                        JoinTime = 0,
-                        PublicKey = ""
-                    }, false);
-                }
-            }
-
-            foreach (KeyValuePair<string, NVS.IpInfo> entry in NGF.ValidatorList)
-            {
-                NGF.ValidatorList[entry.Key].Status = NVS.NodeStatus.Unknown;
-            }
-            NGF.ValidatorList[NVG.Settings.Nodes.My.HexKey].Status = NVS.NodeStatus.Online;
-
             NP.Info("Node Sync Starting", false);
 
             // eğer sadece 2 adet node var ise, node selector timer devreye girmeyecek

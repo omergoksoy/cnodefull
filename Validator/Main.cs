@@ -540,6 +540,8 @@ namespace Notus.Validator
         {
             NVR.NetworkSelectorList.Clear();
 
+            NVH.PrepareValidatorList();
+
             NGF.GetUtcTimeFromNode(20, true);
             TimeBaseBlockUidList.Clear();
 
