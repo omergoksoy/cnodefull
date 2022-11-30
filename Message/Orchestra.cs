@@ -158,12 +158,6 @@ namespace Notus.Message
                                                     NP.Danger("Message Node Connecting Error [l2]:  " + tList[i].Value.IP.IpAddress);
                                                     subListObj.TryRemove(tList[i].Value.IP.Wallet, out _);
                                                 }
-                                                else
-                                                {
-                                                    Console.WriteLine("Baglanti-Saglandi -> " + tList[i].Value.IP.IpAddress);
-                                                    Console.WriteLine("Baglanti-Saglandi -> " + tList[i].Value.IP.IpAddress);
-                                                    Console.WriteLine("Baglanti-Saglandi -> " + tList[i].Value.IP.IpAddress);
-                                                }
                                             }
                                         }
                                     }
