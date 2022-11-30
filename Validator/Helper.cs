@@ -16,6 +16,24 @@ namespace Notus.Validator
         {
             NVG.NodeList.Clear();
             NGF.ValidatorList.Clear();
+            bool generateBaseValidatorList = false;
+
+            using (Notus.Mempool objMpNodeList = new Notus.Mempool(NVC.MemoryPoolName["ValidatorList"]))
+            {
+                objMpNodeList.AsyncActive = false;
+                string addressListStr = objMpNodeList.Get("address_list", string.Empty);
+                if (addressListStr.Length == 0)
+                {
+                    generateBaseValidatorList = true;
+                }
+            }
+            if (generateBaseValidatorList == true)
+            {
+                foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
+                {
+                    NVH.AddToValidatorList(item.IpAddress, item.Port, true);
+                }
+            }
 
             NVH.AddValidatorInfo(new NVS.NodeQueueInfo()
             {
@@ -60,7 +78,7 @@ namespace Notus.Validator
 
             string tmpOfflineNodeListStr = string.Empty;
             string tmpNodeListStr = string.Empty;
-            using (Notus.Mempool objMpNodeList = new Notus.Mempool("validator_list"))
+            using (Notus.Mempool objMpNodeList = new Notus.Mempool(NVC.MemoryPoolName["ValidatorList"]))
             {
                 tmpOfflineNodeListStr = objMpNodeList.Get("offline_list", "");
                 tmpNodeListStr = objMpNodeList.Get("address_list", "");
@@ -105,6 +123,7 @@ namespace Notus.Validator
             }
             NGF.ValidatorList[NVG.Settings.Nodes.My.HexKey].Status = NVS.NodeStatus.Online;
         }
+
         public static List<NVS.IpInfo> GiveMeNodeList()
         {
             List<NVS.IpInfo> tmpNodeList = new List<NVS.IpInfo>();
@@ -188,7 +207,7 @@ namespace Notus.Validator
             }
             if (NGF.ValidatorList.ContainsKey(nodeHexKey) == true)
             {
-                using (Notus.Mempool objMpNodeList = new Notus.Mempool("validator_list"))
+                using (Notus.Mempool objMpNodeList = new Notus.Mempool(NVC.MemoryPoolName["ValidatorList"]))
                 {
                     objMpNodeList.AsyncActive = false;
                     SortedDictionary<string, NVS.IpInfo>? tmpDbNodeList = new SortedDictionary<string, NVS.IpInfo>();
@@ -253,7 +272,7 @@ namespace Notus.Validator
                 });
                 if (storeToTable == true)
                 {
-                    using (Notus.Mempool objMpNodeList = new Notus.Mempool("validator_list"))
+                    using (Notus.Mempool objMpNodeList = new Notus.Mempool(NVC.MemoryPoolName["ValidatorList"]))
                     {
                         objMpNodeList.AsyncActive = false;
                         objMpNodeList.Set("address_list", JsonSerializer.Serialize(NGF.ValidatorList), true);

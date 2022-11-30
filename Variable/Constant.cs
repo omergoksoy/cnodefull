@@ -28,7 +28,7 @@ namespace Notus.Variable
 
         public static readonly string NetworkProgramWallet = "111111111111111111111111111111111111111";
         public static readonly int BlockTransactionLimit = 1000;
-        
+
         //node'ların sıralama frekansları - saniye cinsinden
         public static readonly ulong NodeStartingSync = 20;
         public static readonly ulong NodeSortFrequency = 2;
@@ -44,7 +44,7 @@ namespace Notus.Variable
         public static readonly string MultiWalletPrefix_MainNetwork = "NMR";
         public static readonly string MultiWalletPrefix_TestNetwork = "NMT";
         public static readonly string MultiWalletPrefix_DevelopmentNetwork = "NMD";
-        public static readonly int MultiWalletTransactionTimeout= 604800;
+        public static readonly int MultiWalletTransactionTimeout = 604800;
 
         //notus coin
         public static readonly string MainCoinTagName = "NOTUS";
@@ -79,7 +79,7 @@ namespace Notus.Variable
 
         //socket-exception
         //public static readonly int DefaultMessagePortNo = 5100;
-        
+
         private static readonly int DefaultPortNo = 5000;
         public static readonly int DefaultChunkSize = 2048;
 
@@ -190,7 +190,7 @@ namespace Notus.Variable
             { NetworkType.TestNet,"testnet.notus.network" },
             { NetworkType.DevNet,"devnet.notus.network" }
         };
-        
+
         /*
         standart bizim sunucularımız
         public static readonly List<string> ListMainNodeIp = new List<string> {
@@ -247,6 +247,7 @@ namespace Notus.Variable
             { "MempoolListBeforeBlockStorage", "block_file" },
 
             { "NetworkNodeList", "node_list" },
+            {"ValidatorList","validator_list" },
             { "TransactionList", "tx_list_" }
         };
 
