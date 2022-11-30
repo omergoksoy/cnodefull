@@ -988,7 +988,7 @@ namespace Notus.Validator
                     }
                 }
             }
-
+            /*
             if (resultList.Count > 2)
             {
                 Console.WriteLine("Node-Siralama-Fonksiyon-222");
@@ -998,6 +998,7 @@ namespace Notus.Validator
                 }
                 Console.WriteLine("---------------------------------------");
             }
+            */
             return resultList;
         }
         public void PreStart()
