@@ -28,6 +28,7 @@ namespace Notus.Toolbox
                 Notus.Network.Node.MakeHttpListenerPath(ipAddress, portNo) + "ping/",
                 1, true, false
             );
+            Console.WriteLine("tmpResult : " + tmpResult);
             return string.Equals(tmpResult,"pong")==true ? NVS.NodeStatus.Online : NVS.NodeStatus.Offline;
         }
         public static string IpAndPortToHex(Notus.Variable.Struct.NodeInfo NodeIp)

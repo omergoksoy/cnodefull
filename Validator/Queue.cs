@@ -126,6 +126,7 @@ namespace Notus.Validator
         {
             // listesinde eğer 1 adet çevrim içi node varsa döngüden çıkış yapacak
             bool exitInnerWhile = false;
+            Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
             NP.Info("Finding Online Nodes");
 
             while (exitInnerWhile == false)
