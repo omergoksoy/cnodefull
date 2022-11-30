@@ -22,7 +22,6 @@ namespace Notus.Message
                     portNo = Notus.Network.Node.GetNetworkPort() + 10;
                 }
                 sender.Connect(new IPEndPoint(IPAddress.Parse(ipAddress), portNo));
-                //control-POİNT
                 NP.Info("Message Node connected to "+ sender.RemoteEndPoint.ToString());
                 return true;
             }

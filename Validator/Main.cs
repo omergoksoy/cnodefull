@@ -663,11 +663,6 @@ namespace Notus.Validator
 
             ValidatorRegisterObj.Start();
 
-            // bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.
-            // bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.
-
-            //ValidatorQueueObj.Start();
-
             if (NVG.Settings.LocalNode == false)
             {
                 // kontrol noktası
@@ -697,7 +692,6 @@ namespace Notus.Validator
                     {
                         FirstSyncIsDone = true;
                         MyReadyMessageSended = true;
-                        //NVG.NodeList[NVG.Settings.Nodes.My.HexKey].Ready = true;
                     }
                     else
                     {
@@ -707,26 +701,14 @@ namespace Notus.Validator
                             {
                                 FirstSyncIsDone = true;
                                 MyReadyMessageSended = true;
-                                //NVG.NodeList[NVG.Settings.Nodes.My.HexKey].Ready = true;
                             }
                         }
                     }
                 }
             }
 
-            /*
-            if (NVG.OtherValidatorSelectedMe == true)
-            {
-                Console.WriteLine("Main.cs -> Line 742");
-                Console.WriteLine("NVG.CurrentSyncNo : " + NVG.CurrentSyncNo.ToString());
-                // Console.WriteLine("bu değişken true ise diğer node tarafından katılma zamanı bildirilecek demektir.");
-            }
-            */
-
             if (NVG.Settings.GenesisCreated == false)
             {
-                //Console.WriteLine("Control-Point-4-4564654");
-                //private Queue<KeyValuePair<string, string>> BlockRewardList = new Queue<KeyValuePair<string, string>>();
                 /*
                 RewardBlockObj.Execute(NVG.Settings);
                 */

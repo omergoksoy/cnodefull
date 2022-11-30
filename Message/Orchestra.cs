@@ -55,15 +55,11 @@ namespace Notus.Message
                 {
                     if (pingTimerIsRunning == false)
                     {
-                        List<string> tmpRemoveFromList = new List<string>();
                         pingTimerIsRunning = true;
+
+                        List<string> tmpRemoveFromList = new List<string>();
                         foreach (KeyValuePair<string, NM.Subscriber> entry in subListObj)
                         {
-                            /*
-                            Task.Run(() =>
-                            {
-                            });
-                            */
                             string selectedKey = string.Empty;
                             foreach (var iEntry in NVG.NodeList)
                             {
@@ -164,13 +160,10 @@ namespace Notus.Message
                                 //çevrimdışı olanlar kapatılsın
                                 if (tList[i].Value.Status == Variable.Struct.NodeStatus.Offline)
                                 {
-                                    //Console.WriteLine("tList[i].Value.IP.IpAddress : " + tList[i].Value.IP.IpAddress);
                                     if (subListObj.ContainsKey(tList[i].Value.IP.Wallet) == true)
                                     {
                                         Console.WriteLine(JsonSerializer.Serialize(tList[i].Value, NVC.JsonSetting));
                                         NP.Info("Offline Node Remove From List");
-                                        //Console.WriteLine("cevrim-disi-olanlar-siliniyor");
-                                        //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
                                         subListObj.TryRemove(tList[i].Value.IP.Wallet, out _);
                                     }
                                 }
