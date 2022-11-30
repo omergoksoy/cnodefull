@@ -39,7 +39,8 @@ namespace Notus.Message
                 bytesSent = sender.Send(Encoding.ASCII.GetBytes(messageText));
             }
             catch (Exception err){
-                //Console.WriteLine("Message Sending Error : " + err.Message);
+                Console.WriteLine("Subscriber.cs -> Line 42");
+                Console.WriteLine("Message Sending Error : " + err.Message);
             }
             if (bytesSent > 0)
             {
@@ -53,7 +54,10 @@ namespace Notus.Message
                 {
                     bytesArrLen = sender.Receive(byteArr);
                 }
-                catch { }
+                catch (Exception err2){
+                    Console.WriteLine("Subscriber.cs -> Line 58");
+                    Console.WriteLine("Message Receivin Error : " + err2.Message);
+                }
 
                 if (bytesArrLen == 0)
                 {

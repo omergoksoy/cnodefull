@@ -37,6 +37,11 @@ namespace Notus.Message
             {
                 return subListObj[walletId].Send(messageText);
             }
+            else
+            {
+                Console.WriteLine("Orchestra.cs -> Line 42");
+                Console.WriteLine("WalletId Does Not Exist");
+            }
             return string.Empty;
         }
         public void Start()
