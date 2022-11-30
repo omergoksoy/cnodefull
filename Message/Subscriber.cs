@@ -15,13 +15,13 @@ namespace Notus.Message
         System.Net.Sockets.Socket sender = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         public bool Start(string ipAddress, int portNo = 0)
         {
+            if (portNo == 0)
+            {
+                portNo = Notus.Network.Node.GetNetworkPort() + 10;
+            }
             IPEndPoint connnectionPoint = new IPEndPoint(IPAddress.Parse(ipAddress), portNo);
             try
             {
-                if (portNo == 0)
-                {
-                    portNo = Notus.Network.Node.GetNetworkPort() + 10;
-                }
                 sender.Connect(connnectionPoint);
                 NP.Info("Message Node connected to "+ connnectionPoint.ToString());
                 return true;
