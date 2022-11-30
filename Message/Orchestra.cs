@@ -60,6 +60,7 @@ namespace Notus.Message
                 {
                     if (pingTimerIsRunning == false)
                     {
+                        Console.WriteLine("pingTimer Is Working");
                         pingTimerIsRunning = true;
 
                         List<string> tmpRemoveFromList = new List<string>();
@@ -137,6 +138,7 @@ namespace Notus.Message
                         KeyValuePair<string, Variable.Struct.NodeQueueInfo>[]? tList = NVG.NodeList.ToArray();
                         if (tList != null)
                         {
+                            Console.WriteLine("subTimer Is Working");
                             //eklenmeyenler eklensin
                             for (int i = 0; i < tList.Length; i++)
                             {
