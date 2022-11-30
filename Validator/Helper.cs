@@ -122,6 +122,11 @@ namespace Notus.Validator
                 NGF.ValidatorList[entry.Key].Status = NVS.NodeStatus.Unknown;
             }
             NGF.ValidatorList[NVG.Settings.Nodes.My.HexKey].Status = NVS.NodeStatus.Online;
+
+            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+            Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
+            Console.WriteLine(NVG.Settings.Nodes.My.HexKey);
+            NP.ReadLine();
         }
 
         public static List<NVS.IpInfo> GiveMeNodeList()
