@@ -155,9 +155,7 @@ namespace Notus.Message
                                                 );
                                                 if (socketconnected == false)
                                                 {
-                                                    Console.WriteLine("Baglanti-Hatasi -> " + tList[i].Value.IP.IpAddress);
-                                                    Console.WriteLine("Baglanti-Hatasi -> " + tList[i].Value.IP.IpAddress);
-                                                    Console.WriteLine("Baglanti-Hatasi -> " + tList[i].Value.IP.IpAddress);
+                                                    NP.Danger("Message Node Connecting Error [l2]:  " + tList[i].Value.IP.IpAddress);
                                                     subListObj.TryRemove(tList[i].Value.IP.Wallet, out _);
                                                 }
                                                 else

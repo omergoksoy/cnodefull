@@ -15,19 +15,20 @@ namespace Notus.Message
         System.Net.Sockets.Socket sender = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         public bool Start(string ipAddress, int portNo = 0)
         {
+            IPEndPoint connnectionPoint = new IPEndPoint(IPAddress.Parse(ipAddress), portNo);
             try
             {
                 if (portNo == 0)
                 {
                     portNo = Notus.Network.Node.GetNetworkPort() + 10;
                 }
-                sender.Connect(new IPEndPoint(IPAddress.Parse(ipAddress), portNo));
-                NP.Info("Message Node connected to "+ sender.RemoteEndPoint.ToString());
+                sender.Connect(connnectionPoint);
+                NP.Info("Message Node connected to "+ connnectionPoint.ToString());
                 return true;
             }
             catch (Exception err)
             {
-                NP.Danger("Message Node Connecting Error :  " + sender.RemoteEndPoint.ToString());
+                NP.Danger("Message Node Connecting Error [l1]:  " + connnectionPoint.ToString() + " -> " + err.Message);
             }
             return false;
         }
