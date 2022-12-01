@@ -1,13 +1,10 @@
-﻿using Notus.Variable.Genesis;
-using System.Collections.Concurrent;
-using System.Globalization;
+﻿using System.Collections.Concurrent;
 using System.Net;
 using System.Numerics;
 using System.Text.Json;
 using NCH = Notus.Communication.Helper;
 using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
-using NH = Notus.Hash;
 using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
@@ -771,7 +768,7 @@ namespace Notus.Validator
             bool myTurnPrinted = false;
             bool notMyTurnPrinted = false;
 
-            NVG.ShowWhoseTurnOrNot = false;
+            NVG.ShowWhoseTurnOrNot = true;
 
             if (NVG.OtherValidatorSelectedMe == true)
             {
@@ -805,7 +802,11 @@ namespace Notus.Validator
                 }
             }
 
-            while (tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false)
+            while (
+                tmpExitMainLoop == false && 
+                NVG.Settings.NodeClosing == false && 
+                NVG.Settings.GenesisCreated == false
+            )
             {
                 if (NVG.OtherValidatorSelectedMe == true)
                 {
@@ -1080,6 +1081,7 @@ namespace Notus.Validator
                     }  // if (NGF.NowInt() >= currentQueueTime)
                 }
             } // while ( tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false )
+
 
             if (NVG.Settings.NodeClosing == false)
             {

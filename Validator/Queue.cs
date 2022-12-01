@@ -589,7 +589,11 @@ namespace Notus.Validator
                                 string controlText =
                                     NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
                                     selectedSyncNo.ToString() + NVC.CommonDelimeterChar + chooserWalletId;
-                                if (Notus.Wallet.ID.Verify(controlText, chooserSignStr, iEntry.Value.PublicKey) == true)
+                                if (Notus.Wallet.ID.Verify(
+                                    controlText, 
+                                    chooserSignStr, 
+                                    iEntry.Value.PublicKey
+                                ) == true)
                                 {
                                     NVG.OtherValidatorSelectedMe = true;
                                     return "1";
@@ -1157,8 +1161,6 @@ namespace Notus.Validator
                             NVH.SetJoinTimeToNode(entry.Key, ND.ToLong(calculatedStartingTime));
                         }
                     }
-                    /*
-                    */
                     SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, "");
 
                     //birinci sırada ki cüzdan seçiliyor...
@@ -1170,10 +1172,8 @@ namespace Notus.Validator
                         ulong syncStaringTime = ND.ToLong(StartingTimeAfterEnoughNode);
                         GenerateNodeQueue(biggestSyncNo, syncStaringTime, tmpWalletList);
 
-                        NP.Info(
-                            "I'm Sending Starting (When) Time / Current : " +
-                            StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
-                            " / " + NVG.NOW.Obj.ToString("HH:mm:ss.fff")
+                        NP.Info("I'm Sending Starting (When) Time / Current : " +
+                            ND.ShortTime(StartingTimeAfterEnoughNode) + " / " + ND.ShortTime(NVG.NOW.Obj)
                         );
                         NVG.CurrentSyncNo = syncStaringTime;
                         NVG.NodeQueue.Starting = syncStaringTime;
@@ -1192,7 +1192,6 @@ namespace Notus.Validator
                                 {
                                     if (entry.Value.SyncNo == syncStaringTime)
                                     {
-                                        //NVH.SetJoinTimeToNode(entry.Key, syncStaringTime);
                                         bool sendedToNode = false;
                                         while (sendedToNode == false)
                                         {
@@ -1219,11 +1218,8 @@ namespace Notus.Validator
                         }
 
                         GenerateNodeQueue(biggestSyncNo, NVG.NodeQueue.Starting, tmpWalletList);
-                        NP.Info(
-                            "I'm Waiting Starting (When) Time / Current : " +
-                            StartingTimeAfterEnoughNode.ToString("HH:mm:ss.fff") +
-                            " /  " +
-                            NVG.NOW.Obj.ToString("HH:mm:ss.fff")
+                        NP.Info("I'm Waiting Starting (When) Time / Current : " +
+                            ND.ShortTime(StartingTimeAfterEnoughNode) + " /  " + ND.ShortTime(NVG.NOW.Obj)
                         );
                         // eğer false ise senkronizasyon başlamamış demektir...
                         NVG.Settings.SyncStarted = false;

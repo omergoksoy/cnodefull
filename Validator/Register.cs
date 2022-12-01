@@ -23,10 +23,7 @@ namespace Notus.Validator
         public static Dictionary<string, string> NetworkSelectorList = new Dictionary<string, string>();
         private bool TimerFunc()
         {
-            //string tmpNodeHexStr = string.Empty;
             Dictionary<ulong, string> earliestNode = new();
-            //Console.WriteLine("NVG.NodeList.Count : " + NVG.NodeList.Count.ToString());
-
             KeyValuePair<string, NVS.NodeQueueInfo>[]? nList = NVG.NodeList.ToArray();
             if (nList == null)
                 return false;
@@ -76,11 +73,6 @@ namespace Notus.Validator
 
             if (earliestNode.Count > 0 && syncNodeList.Count > 0)
             {
-                // Console.WriteLine("-----------------------------------");
-                // Console.WriteLine("syncNodeList : " + JsonSerializer.Serialize(syncNodeList));
-                // Console.WriteLine("earliestNode : " + JsonSerializer.Serialize(earliestNode));
-                // Console.WriteLine("-----------------------------------");
-
                 KeyValuePair<ulong, string> firstNodeForWaitingList = earliestNode.First();
                 string selectedEarliestWalletId = firstNodeForWaitingList.Value;
                 SortedDictionary<BigInteger, string> earlistNodeChoosing = new();
@@ -102,15 +94,12 @@ namespace Notus.Validator
                     NVR.NetworkSelectorList.Add(selectedEarliestWalletId, whoWillSayToEarlistNode);
 
                     NP.Info("The Node Will Join The Network : " + selectedEarliestWalletId);
-                    // Console.WriteLine("selectedEarliestWalletId : " + selectedEarliestWalletId);
                     if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, whoWillSayToEarlistNode))
                     {
                         NP.Info("I Will Tell The Node");
                         NVH.TellTheNodeWhoWaitingRoom(selectedEarliestWalletId);
                         NVH.TellSyncNoToEarlistNode(selectedEarliestWalletId);
                     }
-
-                    // sıradaki cüzdan, sıradaki node'a haber verecek node
                 }
                 else
                 {

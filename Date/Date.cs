@@ -50,6 +50,10 @@ namespace Notus
                 return "19810125020000000";
             }
         }
+        public static string ShortTime(DateTime time)
+        {
+            return time.ToString("HH:mm:ss.fff");
+        }
         public static DateTime ToDateTime(ulong ConverTime)
         {
             return ToDateTime(ConverTime.ToString().PadRight(17, '0'));
