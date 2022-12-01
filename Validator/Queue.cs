@@ -12,6 +12,7 @@ using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
+using NVD = Notus.Validator.Date;
 namespace Notus.Validator
 {
     public class Queue : IDisposable
@@ -50,7 +51,7 @@ namespace Notus.Validator
         }
         public void Distrubute(long blockRowNo, int blockType, ulong currentNodeStartingTime)
         {
-            ulong totalQueuePeriod = NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime;
+            ulong totalQueuePeriod = NVD.Calculate();
             ulong nextValidatorNodeTime = ND.AddMiliseconds(currentNodeStartingTime, totalQueuePeriod);
 
 
@@ -838,7 +839,7 @@ namespace Notus.Validator
             int firstListcount = 0;
 
             // her node için ayrılan süre
-            ulong queueTimePeriod = NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime;
+            ulong queueTimePeriod = NVD.Calculate();
 
             Dictionary<int, ulong> tmpTimeList = new Dictionary<int, ulong>();
             Dictionary<int, NVS.NodeInfo> tmpNodeList = new Dictionary<int, NVS.NodeInfo>();
@@ -1024,16 +1025,20 @@ namespace Notus.Validator
             }
             if (resultList.Count > 2)
             {
-                NP.Info("Node-Siralama-Fonksiyon-222");
+                NP.Info("Node-Queue-Order");
                 foreach (var iE in resultList)
                 {
+                    string numberText = iE.Key.ToString();
+                    numberText = numberText.Substring(0, 5) + "..." + numberText.Substring(numberText.Length - 6);
+
+                    string walletText = iE.Value.Substring(0, 6) + "..." + iE.Value.Substring(iE.Value.Length - 7);
                     if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, iE.Value))
                     {
-                        NP.Success("My Turn     -> " + iE.Value + " -> " + iE.Key.ToString().Substring(0, 15));
+                        NP.Success("My Turn     -> " + walletText + " -> " + numberText);
                     }
                     else
                     {
-                        NP.Basic("Others Turn -> " + iE.Value + " -> " + iE.Key.ToString().Substring(0, 15));
+                        NP.Basic("Others Turn -> " + walletText + " -> " + numberText);
                     }
                 }
                 NP.Danger("---------------------------------------");

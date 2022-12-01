@@ -13,7 +13,7 @@ using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
-
+using NVD = Notus.Validator.Date;
 namespace Notus.Validator
 {
     public class Main : IDisposable
@@ -759,7 +759,7 @@ namespace Notus.Validator
             NVG.LocalBlockLoaded = true;
 
             // her node için ayrılan süre
-            ulong queueTimePeriod = (ulong)(NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime);
+            ulong queueTimePeriod = NVD.Calculate();
 
             bool start_FirstQueueGroupTime = false;
             bool prepareNextQueue = false;
@@ -852,7 +852,7 @@ namespace Notus.Validator
                         }
                         else
                         {
-                            Console.WriteLine("Queue Time Info Does Not In The List");
+                            NP.Danger("Queue Time Info Does Not In The List");
                         }
                     }
 

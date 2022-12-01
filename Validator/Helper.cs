@@ -8,6 +8,7 @@ using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
 using NVH = Notus.Validator.Helper;
+using NVD = Notus.Validator.Date;
 namespace Notus.Validator
 {
     public static class Helper
@@ -159,7 +160,8 @@ namespace Notus.Validator
         }
         public static bool RightBlockValidator(Notus.Variable.Class.BlockData incomeBlock)
         {
-            ulong queueTimePeriod = NVC.BlockListeningForPoolTime + NVC.BlockGeneratingTime + NVC.BlockDistributingTime;
+            
+            ulong queueTimePeriod = NVD.Calculate();
             ulong blockTimeVal = ND.ToLong(incomeBlock.info.time);
             ulong blockGenarationTime = blockTimeVal - (blockTimeVal % queueTimePeriod);
 
