@@ -988,7 +988,6 @@ namespace Notus.Validator
                 }
                 if (nodeIsAvailable == true)
                 {
-                    Console.WriteLine("Inner-Loop");
                     bool exitInnerWhileLoop = false;
                     int innerCount = 1;
                     while (exitInnerWhileLoop == false)
@@ -1015,10 +1014,6 @@ namespace Notus.Validator
                         {
                             innerCount++;
                         }
-                        Console.WriteLine("**************************************");
-                        Console.WriteLine(intWalletNo.ToString());
-                        Console.WriteLine(JsonSerializer.Serialize(resultList, NVC.JsonSetting));
-                        Console.WriteLine("**************************************");
                     }
                 }
             }
