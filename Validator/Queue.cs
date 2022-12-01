@@ -591,8 +591,8 @@ namespace Notus.Validator
                                     NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
                                     selectedSyncNo.ToString() + NVC.CommonDelimeterChar + chooserWalletId;
                                 if (Notus.Wallet.ID.Verify(
-                                    controlText, 
-                                    chooserSignStr, 
+                                    controlText,
+                                    chooserSignStr,
                                     iEntry.Value.PublicKey
                                 ) == true)
                                 {
@@ -1024,15 +1024,20 @@ namespace Notus.Validator
             }
             if (resultList.Count > 2)
             {
-                Console.WriteLine("Node-Siralama-Fonksiyon-222");
-                foreach(var iE in resultList)
+                NP.Info("Node-Siralama-Fonksiyon-222");
+                foreach (var iE in resultList)
                 {
-                    Console.WriteLine(iE.Key.ToString().Substring(0,15) + " - " + iE.Value.Substring(0,15));
+                    if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, iE.Value))
+                    {
+                        NP.Success("My Turn     -> " + iE.Value + " -> " + iE.Key.ToString().Substring(0, 15));
+                    }
+                    else
+                    {
+                        NP.Basic("Others Turn -> " + iE.Value + " -> " + iE.Key.ToString().Substring(0, 15));
+                    }
                 }
-                Console.WriteLine("---------------------------------------");
+                NP.Danger("---------------------------------------");
             }
-            /*
-            */
             return resultList;
         }
         public void PreStart()
