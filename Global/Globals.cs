@@ -56,15 +56,15 @@ namespace Notus.Variable
         */
         //başka bir node tarafından devam edilmesi söylendiğinde true olarak işaretlenecek
         public static bool OtherValidatorSelectedMe = false;
-        public static bool ShowWhoseTurnOrNot { get; set; }
-        public static ulong CurrentSyncNo { get; set; }
-        public static bool LocalBlockLoaded { get; set; }
-        public static int GroupNo { get; set; }
-        public static string SessionPrivateKey { get; set; }
-        public static bool NodeListPrinted { get; set; }
+        public static bool ShowWhoseTurnOrNot = false;
+        public static ulong CurrentSyncNo = 0;
+        public static bool LocalBlockLoaded = false;
+        public static int GroupNo = 0;
+        public static string SessionPrivateKey = "";
+        public static bool NodeListPrinted = false;
+        public static int OnlineNodeCount = 0;
         public static TimeStruct NOW { get; set; }
         public static Notus.Globals.Variable.NodeQueueList NodeQueue { get; set; }
-        public static int OnlineNodeCount { get; set; }
         public static ConcurrentDictionary<string, NVS.NodeQueueInfo> NodeList { get; set; }
         public static Notus.Globals.Variable.CacheClass Cache { get; set; }
         public static Notus.Globals.Variable.Settings Settings { get; set; }
@@ -306,7 +306,6 @@ namespace Notus.Variable
                     Balance.Start();
                 }
 
-                Globals.NodeListPrinted = false;
                 //Globals.MsgSocketList = new ConcurrentDictionary<string, Notus.Communication.Sync.Socket.Server>();
                 Globals.NodeList = new ConcurrentDictionary<string, NVS.NodeQueueInfo>();
                 Globals.NodeQueue = new Notus.Globals.Variable.NodeQueueList();

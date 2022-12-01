@@ -338,7 +338,6 @@ namespace Notus.Validator
         }
         public static void TellToNetworkNewNodeJoinTime(string selectedEarliestWalletId, ulong joinTime)
         {
-            Console.WriteLine("Node JoinTime : " + joinTime.ToString());
             string tmpSyncNoStr = "<joinTime>" +
                 selectedEarliestWalletId + NVC.CommonDelimeterChar +
                 joinTime.ToString() + NVC.CommonDelimeterChar +
