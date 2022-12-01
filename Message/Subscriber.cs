@@ -23,6 +23,7 @@ namespace Notus.Message
             try
             {
                 sender.Connect(connnectionPoint);
+                sender.ReceiveTimeout = 2000;
                 NP.Info("Message Node connected to "+ connnectionPoint.ToString());
                 return true;
             }
