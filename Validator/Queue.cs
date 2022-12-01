@@ -30,18 +30,8 @@ namespace Notus.Validator
 
         public bool NotEnoughNode_Printed = false;
         public bool NotEnoughNode_Val = true;
-        public bool NotEnoughNode
-        {
-            get { return NotEnoughNode_Val; }
-        }
 
-        private bool SyncReady = true;
-
-        private bool ExitFromLoop = false;
-        private string LastHashForStoreList = "#####";
         private string NodeListHash = "#";
-
-        private DateTime LastPingTime;
 
         public System.Func<Notus.Variable.Class.BlockData, bool>? Func_NewBlockIncome = null;
 
@@ -672,161 +662,7 @@ namespace Notus.Validator
                 NVG.NodeList[nodeHexText].Status = NVS.NodeStatus.Online;
             }
         }
-
-        private string Message_Hash_ViaSocket(string _ipAddress, int _portNo)
-        {
-            return NGF.SendMessage(
-                _ipAddress,
-                _portNo,
-                "<hash>" +
-                    NGF.ValidatorListHash.Substring(0, 20) + ":" + NodeListHash.Substring(0, 20) +
-                "</hash>"
-            );
-        }
-        private void Message_Node_ViaSocket(string _ipAddress, int _portNo, string _nodeHex = "")
-        {
-            Console.WriteLine("Sending Node Info");
-            string responseStr = NGF.SendMessage(_ipAddress, _portNo,
-                "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>"
-            );
-            if (string.Equals("err", responseStr) == false)
-            {
-                ProcessIncomeData(responseStr);
-            }
-        }
-        private void Message_List_ViaSocket(string _ipAddress, int _portNo, string _nodeHex = "")
-        {
-            if (_nodeHex == "")
-            {
-                _nodeHex = Notus.Toolbox.Network.IpAndPortToHex(_ipAddress, _portNo);
-            }
-            string _nodeKeyText = _nodeHex + "list";
-            string tmpReturnStr = NGF.SendMessage(_ipAddress, _portNo, "<list>" + JsonSerializer.Serialize(NGF.ValidatorList) + "</list>", _nodeHex);
-            if (string.Equals("err", tmpReturnStr) == false)
-            {
-                ProcessIncomeData(tmpReturnStr);
-            }
-        }
-        private void MainLoop()
-        {
-            while (ExitFromLoop == false)
-            {
-                //burası belirli periyotlarda hash gönderiminin yapıldığı kod grubu
-                if ((NVG.NOW.Obj - LastPingTime).TotalSeconds > 20 || SyncReady == false)
-                {
-                    bool innerControlLoop = false;
-                    string tmpData = string.Empty;
-                    while (innerControlLoop == false)
-                    {
-                        try
-                        {
-                            tmpData = JsonSerializer.Serialize(NGF.ValidatorList);
-                            innerControlLoop = true;
-                        }
-                        catch { }
-                    }
-                    SortedDictionary<string, NVS.IpInfo>? tmpMainAddressList =
-                        JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(tmpData);
-                    bool tmpRefreshNodeDetails = false;
-                    if (tmpMainAddressList != null)
-                    {
-                        foreach (KeyValuePair<string, NVS.IpInfo> entry in tmpMainAddressList)
-                        {
-                            string tmpNodeHexStr = Notus.Toolbox.Network.IpAndPortToHex(entry.Value);
-                            if (string.Equals(NVG.Settings.Nodes.My.HexKey, tmpNodeHexStr) == false)
-                            {
-                                string tmpReturnStr = Message_Hash_ViaSocket(entry.Value.IpAddress, entry.Value.Port);
-                                if (tmpReturnStr == "1") // list not equal
-                                {
-                                    Message_List_ViaSocket(entry.Value.IpAddress, entry.Value.Port, tmpNodeHexStr);
-                                }
-
-                                if (tmpReturnStr == "2") // list equal but node hash different
-                                {
-                                    tmpRefreshNodeDetails = true;
-                                }
-
-                                if (tmpReturnStr == "0") // list and node hash are equal
-                                {
-                                }
-
-                                if (tmpReturnStr == "err") // socket comm error
-                                {
-                                    tmpRefreshNodeDetails = true;
-                                }
-                            }
-                        }
-                    }
-                    if (tmpRefreshNodeDetails == true)
-                    {
-                        foreach (KeyValuePair<string, NVS.IpInfo> entry in tmpMainAddressList)
-                        {
-                            string tmpNodeHexStr = Notus.Toolbox.Network.IpAndPortToHex(entry.Value);
-                            if (string.Equals(NVG.Settings.Nodes.My.HexKey, tmpNodeHexStr) == false)
-                            {
-                                Message_Node_ViaSocket(entry.Value.IpAddress, entry.Value.Port, tmpNodeHexStr);
-                            }
-                        }
-                    }
-                    LastPingTime = NVG.NOW.Obj;
-                }
-
-                // burada durumu bilinmeyen nodeların bilgilerinin sorgulandığı kısım
-                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
-                {
-                    bool tmpRefreshNodeDetails = false;
-                    string tmpCheckHex = Notus.Toolbox.Network.IpAndPortToHex(entry.Value.IP);
-                    if (entry.Value.Status == NVS.NodeStatus.Unknown)
-                    {
-                        tmpRefreshNodeDetails = true;
-                    }
-                    if (tmpRefreshNodeDetails == true)
-                    {
-                        Message_Node_ViaSocket(entry.Value.IP.IpAddress, entry.Value.IP.Port, tmpCheckHex);
-                    }
-                }
-
-                //NodeList[NVG.Settings.Nodes.My.HexKey].NodeHash = CalculateMyNodeListHash();
-                int nodeCount = 0;
-                SyncReady = true;
-                //burada eğer nodeların hashleri farklı ise senkron olacağı kısım
-                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
-                {
-                    if (entry.Value.Status == NVS.NodeStatus.Online /* && entry.Value.ErrorCount == 0 */)
-                    {
-                        nodeCount++;
-                        string tmpCheckHex = Notus.Toolbox.Network.IpAndPortToHex(entry.Value.IP);
-                        if (string.Equals(NVG.Settings.Nodes.My.HexKey, tmpCheckHex) == false)
-                        {
-
-                            //burası beklemeye alındı
-                            /*
-                            if (NodeListHash != entry.Value.NodeHash)
-                            {
-                                SyncReady = false;
-                                Message_Node_ViaSocket(entry.Value.IP.IpAddress, entry.Value.IP.Port, tmpCheckHex);
-                            }
-                            */
-                        }
-                    }
-                }
-                //Console.WriteLine("nodeCount : " + nodeCount.ToString());
-                if (nodeCount == 0)
-                {
-                    SyncReady = false;
-                }
-            }
-        }
-        public void Start()
-        {
-            if (NVG.Settings.LocalNode == false)
-            {
-                Task.Run(() =>
-                {
-                    MainLoop();
-                });
-            }
-        }
+        
         public void GenerateNodeQueue(
             ulong biggestSyncNo,
             ulong syncStaringTime,
@@ -1489,8 +1325,6 @@ namespace Notus.Validator
         }
         public Queue()
         {
-            NVG.NodeList.Clear();
-            LastPingTime = NVC.DefaultTime;
         }
         ~Queue()
         {
@@ -1498,7 +1332,6 @@ namespace Notus.Validator
         }
         public void Dispose()
         {
-            ExitFromLoop = true;
         }
     }
 }
