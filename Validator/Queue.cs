@@ -975,6 +975,10 @@ namespace Notus.Validator
                 {
                     Console.WriteLine("JoinTime uygun");
                 }
+                else
+                {
+                    Console.WriteLine("JoinTime uygun değil");
+                }
                 Console.WriteLine(entry.Value.JoinTime.ToString() + " - " + NVG.NOW.Int.ToString());
                 Console.WriteLine(entry.Value.SyncNo.ToString() + " - " + biggestSyncNo.ToString());
                 if (
@@ -983,6 +987,7 @@ namespace Notus.Validator
                     NVG.NOW.Int > entry.Value.JoinTime
                 )
                 {
+                    Console.WriteLine("Inner-Loop");
                     bool exitInnerWhileLoop = false;
                     int innerCount = 1;
                     while (exitInnerWhileLoop == false)
@@ -1009,6 +1014,10 @@ namespace Notus.Validator
                         {
                             innerCount++;
                         }
+                        Console.WriteLine("**************************************");
+                        Console.WriteLine(intWalletNo.ToString());
+                        Console.WriteLine(JsonSerializer.Serialize(resultList, NVC.JsonSetting));
+                        Console.WriteLine("**************************************");
                     }
                 }
             }
@@ -1152,7 +1161,8 @@ namespace Notus.Validator
                             NVH.SetJoinTimeToNode(entry.Key, ND.ToLong(calculatedStartingTime));
                         }
                     }
-
+                    /*
+                    */
                     SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, "beginning");
 
                     //birinci sırada ki cüzdan seçiliyor...
