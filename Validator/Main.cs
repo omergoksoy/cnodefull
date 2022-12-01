@@ -637,12 +637,6 @@ namespace Notus.Validator
                 NP.Basic(NVG.Settings, "Main Validator Started");
             }
             //BlockStatObj = Obj_BlockQueue.CurrentBlockStatus();
-            Start_HttpListener();
-            if (NVG.Settings.GenesisCreated == false)
-            {
-                NVG.Settings.CommEstablished = true;
-            }
-
             if (NVG.Settings.LocalNode == false)
             {
                 // her gelen blok bir listeye eklenmeli ve o liste ile sıra ile eklenmeli
@@ -657,6 +651,20 @@ namespace Notus.Validator
                     return true;
                 };
             }
+
+            Start_HttpListener();
+            NVG.Settings.MsgOrch.OnReceive((string IncomeText) =>
+            {
+                //sync-control
+                string innerResultStr = ValidatorQueueObj.ProcessIncomeData(IncomeText);
+            });
+            NVG.Settings.MsgOrch.Start();
+
+            if (NVG.Settings.GenesisCreated == false)
+            {
+                NVG.Settings.CommEstablished = true;
+            }
+
 
             //omergoksoy
             ValidatorQueueObj.PreStart();
@@ -750,13 +758,6 @@ namespace Notus.Validator
             {
                 ValidatorQueueObj.WaitForEnoughNode = false;
             }
-
-            NVG.Settings.MsgOrch.OnReceive((string IncomeText) =>
-            {
-                //sync-control
-                string innerResultStr = ValidatorQueueObj.ProcessIncomeData(IncomeText);
-            });
-            NVG.Settings.MsgOrch.Start();
 
             NVG.LocalBlockLoaded = true;
 
