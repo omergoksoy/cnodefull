@@ -122,12 +122,6 @@ namespace Notus.Validator
                 NGF.ValidatorList[entry.Key].Status = NVS.NodeStatus.Unknown;
             }
             NGF.ValidatorList[NVG.Settings.Nodes.My.HexKey].Status = NVS.NodeStatus.Online;
-            /*
-            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
-            Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
-            Console.WriteLine(NVG.Settings.Nodes.My.HexKey);
-            NP.ReadLine();
-            */
         }
 
         public static List<NVS.IpInfo> GiveMeNodeList()
@@ -388,22 +382,17 @@ namespace Notus.Validator
                 );
                 if (resultStr == "1")
                 {
-                    Console.WriteLine("We Sended JoinTime -> " + NVG.NodeList[nodeKey].IP.Wallet);
+                    Console.WriteLine("We Sended JoinTime -> " + NVG.NodeList[nodeKey].IP.Wallet + " -> " + joinTime.ToString());
                 }
                 else
                 {
-                    Console.WriteLine("JoinTime Sending Error -> " + NVG.NodeList[nodeKey].IP.Wallet);
+                    Console.WriteLine("JoinTime Sending Error -> " + NVG.NodeList[nodeKey].IP.Wallet + " -> " + joinTime.ToString());
                 }
             }
             NVG.NodeList[earlistNodeHexKeyStr].JoinTime = ND.ToLong(
                 ND.ToDateTime(joinTime).Subtract(new TimeSpan(0, 0, 0, 0, 50))
             );
             NVG.NodeList[earlistNodeHexKeyStr].SyncNo = NVG.CurrentSyncNo;
-            /*
-            Console.WriteLine("---------------------");
-            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
-            Console.WriteLine("---------------------");
-            */
             NVG.ShowWhoseTurnOrNot = false;
         }
         public static void TellSyncNoToEarlistNode(string selectedEarliestWalletId)

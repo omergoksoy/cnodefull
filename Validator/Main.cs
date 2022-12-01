@@ -665,7 +665,6 @@ namespace Notus.Validator
                 NVG.Settings.CommEstablished = true;
             }
 
-
             //omergoksoy
             ValidatorQueueObj.PreStart();
 

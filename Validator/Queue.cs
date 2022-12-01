@@ -555,9 +555,12 @@ namespace Notus.Validator
                                     NVG.OtherValidatorSelectedMe = false;
                                 }
                             }
+                            /*
                             Console.WriteLine("---------------------");
+                            Console.WriteLine("Queue.cs -> Line 560");
                             Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
                             Console.WriteLine("---------------------");
+                            */
                             NVG.ShowWhoseTurnOrNot = false;
                             return "1";
                         }
