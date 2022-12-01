@@ -338,6 +338,7 @@ namespace Notus.Validator
         }
         public static void TellToNetworkNewNodeJoinTime(string selectedEarliestWalletId, ulong joinTime)
         {
+            Console.WriteLine("Node JoinTime : " + joinTime.ToString());
             string tmpSyncNoStr = "<joinTime>" +
                 selectedEarliestWalletId + NVC.CommonDelimeterChar +
                 joinTime.ToString() + NVC.CommonDelimeterChar +
@@ -392,6 +393,7 @@ namespace Notus.Validator
             NVG.NodeList[earlistNodeHexKeyStr].JoinTime = ND.ToLong(
                 ND.ToDateTime(joinTime).Subtract(new TimeSpan(0, 0, 0, 0, 50))
             );
+            Console.WriteLine("Node Join Time : " + NVG.NodeList[earlistNodeHexKeyStr].JoinTime.ToString());
             NVG.NodeList[earlistNodeHexKeyStr].SyncNo = NVG.CurrentSyncNo;
             NVG.ShowWhoseTurnOrNot = false;
         }
