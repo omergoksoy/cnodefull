@@ -955,6 +955,26 @@ namespace Notus.Validator
                 //burada hangi nodeların devreye gireceğini seçelim
                 //burada hangi nodeların devreye gireceğini seçelim
                 //burada hangi nodeların devreye gireceğini seçelim
+                if (entry.Value.Status == NVS.NodeStatus.Online)
+                {
+                    Console.WriteLine("Online");
+                }
+                if (entry.Value.Status == NVS.NodeStatus.Offline)
+                {
+                    Console.WriteLine("Offline");
+                }
+                if (entry.Value.Status == NVS.NodeStatus.Error)
+                {
+                    Console.WriteLine("Error");
+                }
+                if (entry.Value.Status == NVS.NodeStatus.Unknown)
+                {
+                    Console.WriteLine("Unknown");
+                }
+                if(NVG.NOW.Int > entry.Value.JoinTime)
+                {
+                    Console.WriteLine("JoinTime uygun");
+                }
                 Console.WriteLine(entry.Value.JoinTime.ToString() + " - " + NVG.NOW.Int.ToString());
                 Console.WriteLine(entry.Value.SyncNo.ToString() + " - " + biggestSyncNo.ToString());
                 if (
