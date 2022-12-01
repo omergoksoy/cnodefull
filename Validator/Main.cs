@@ -653,6 +653,7 @@ namespace Notus.Validator
             NVG.Settings.MsgOrch.OnReceive((string IncomeText) =>
             {
                 //sync-control
+                Console.WriteLine("IncomeText : " + IncomeText);
                 string innerResultStr = ValidatorQueueObj.ProcessIncomeData(IncomeText);
             });
             NVG.Settings.MsgOrch.Start();
@@ -768,7 +769,7 @@ namespace Notus.Validator
             bool myTurnPrinted = false;
             bool notMyTurnPrinted = false;
 
-            NVG.ShowWhoseTurnOrNot = true;
+            NVG.ShowWhoseTurnOrNot = false;
 
             if (NVG.OtherValidatorSelectedMe == true)
             {
@@ -808,6 +809,12 @@ namespace Notus.Validator
                 NVG.Settings.GenesisCreated == false
             )
             {
+                /*
+                if (NVG.OtherValidatorSelectedMe == false)
+                {
+                    Console.Write(".");
+                }
+                */
                 if (NVG.OtherValidatorSelectedMe == true)
                 {
                     // diğer validatörler tarafından ağa dahil edilecek olan node

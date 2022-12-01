@@ -393,7 +393,7 @@ namespace Notus.Validator
                 ND.ToDateTime(joinTime).Subtract(new TimeSpan(0, 0, 0, 0, 50))
             );
             NVG.NodeList[earlistNodeHexKeyStr].SyncNo = NVG.CurrentSyncNo;
-            NVG.ShowWhoseTurnOrNot = true;
+            NVG.ShowWhoseTurnOrNot = false;
         }
         public static void TellSyncNoToEarlistNode(string selectedEarliestWalletId)
         {
