@@ -955,7 +955,7 @@ namespace Notus.Validator
                 //burada hangi nodeların devreye gireceğini seçelim
                 //burada hangi nodeların devreye gireceğini seçelim
                 //burada hangi nodeların devreye gireceğini seçelim
-                //Console.WriteLine(entry.Value.JoinTime.ToString() + " - " + NVG.NOW.Int.ToString());
+                Console.WriteLine(entry.Value.JoinTime.ToString() + " - " + NVG.NOW.Int.ToString());
                 if (
                     entry.Value.Status == NVS.NodeStatus.Online &&
                     entry.Value.SyncNo == biggestSyncNo &&
