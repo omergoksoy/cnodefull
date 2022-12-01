@@ -506,7 +506,7 @@ namespace Notus.Validator
                 }
                 return "0";
             }
-            
+
             if (CheckXmlTag(incomeData, "joinTime"))
             {
                 incomeData = GetPureText(incomeData, "joinTime");
@@ -947,6 +947,12 @@ namespace Notus.Validator
         }
         public SortedDictionary<BigInteger, string> MakeOrderToNode(ulong biggestSyncNo, string seedForQueue)
         {
+            bool atTheBeginnig = false;
+            if (seedForQueue.Length == 0)
+            {
+                seedForQueue = "beginning";
+                atTheBeginnig = true;
+            }
             SortedDictionary<BigInteger, string> resultList = new SortedDictionary<BigInteger, string>();
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
@@ -955,37 +961,32 @@ namespace Notus.Validator
                 //burada hangi nodeların devreye gireceğini seçelim
                 //burada hangi nodeların devreye gireceğini seçelim
                 //burada hangi nodeların devreye gireceğini seçelim
-                if (entry.Value.Status == NVS.NodeStatus.Online)
+                bool nodeIsAvailable = false;
+                if (atTheBeginnig == true)
                 {
-                    Console.WriteLine("Online");
-                }
-                if (entry.Value.Status == NVS.NodeStatus.Offline)
-                {
-                    Console.WriteLine("Offline");
-                }
-                if (entry.Value.Status == NVS.NodeStatus.Error)
-                {
-                    Console.WriteLine("Error");
-                }
-                if (entry.Value.Status == NVS.NodeStatus.Unknown)
-                {
-                    Console.WriteLine("Unknown");
-                }
-                if(NVG.NOW.Int > entry.Value.JoinTime)
-                {
-                    Console.WriteLine("JoinTime uygun");
+                    if (
+                        entry.Value.Status == NVS.NodeStatus.Online
+                            &&
+                        entry.Value.SyncNo == biggestSyncNo
+                    )
+                    {
+                        nodeIsAvailable = true;
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("JoinTime uygun değil");
+                    if (
+                        entry.Value.Status == NVS.NodeStatus.Online
+                            &&
+                        entry.Value.SyncNo == biggestSyncNo
+                            &&
+                        NVG.NOW.Int > entry.Value.JoinTime
+                    )
+                    {
+                        nodeIsAvailable = true;
+                    }
                 }
-                Console.WriteLine(entry.Value.JoinTime.ToString() + " - " + NVG.NOW.Int.ToString());
-                Console.WriteLine(entry.Value.SyncNo.ToString() + " - " + biggestSyncNo.ToString());
-                if (
-                    entry.Value.Status == NVS.NodeStatus.Online &&
-                    entry.Value.SyncNo == biggestSyncNo &&
-                    NVG.NOW.Int > entry.Value.JoinTime
-                )
+                if (nodeIsAvailable == true)
                 {
                     Console.WriteLine("Inner-Loop");
                     bool exitInnerWhileLoop = false;
@@ -1163,7 +1164,7 @@ namespace Notus.Validator
                     }
                     /*
                     */
-                    SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, "beginning");
+                    SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, "");
 
                     //birinci sırada ki cüzdan seçiliyor...
                     string tmpFirstWalletId = tmpWalletList.First().Value;
@@ -1273,7 +1274,7 @@ namespace Notus.Validator
             }
             return string.Empty;
         }
-        public void ReOrderNodeQueue(ulong currentQueueTime, string queueSeedStr = "")
+        public void ReOrderNodeQueue(ulong currentQueueTime, string queueSeedStr)
         {
             ulong biggestSyncNo = FindBiggestSyncNo();
             SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, queueSeedStr);
