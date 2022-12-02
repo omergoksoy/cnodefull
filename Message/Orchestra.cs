@@ -31,6 +31,9 @@ namespace Notus.Message
         {
             Console.WriteLine(messageText + " Sending To : " + walletId);
             Console.WriteLine(messageText + " Sending To : " + walletId);
+            P2PManager.Send(walletId, messageText);
+            return "ok";
+            /*
             if (subListObj.ContainsKey(walletId))
             {
                 return subListObj[walletId].Send(messageText);
@@ -38,6 +41,7 @@ namespace Notus.Message
 
             Console.WriteLine("Orchestra.cs -> Line 42");
             Console.WriteLine("WalletId Does Not Exist");
+            */
             return string.Empty;
         }
         // public void Start()
