@@ -649,27 +649,14 @@ namespace Notus.Validator
                 };
             }
 
-            int portVal = NVG.Settings.Nodes.My.IP.Port + 8;
-            System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(
-                IPAddress.Parse(NVG.Settings.Nodes.My.IP.IpAddress), portVal
-            );
-            Console.WriteLine(localEndPoint.ToString());
-            NP.ReadLine();
-            NP.ReadLine();
-            
-            Notus.P2P.Manager P2PManager = new Notus.P2P.Manager(localEndPoint, portVal, (string IncomeText) =>
-            {
-                Console.WriteLine("Notus.P2P.Manager P2PManager - Before");
-                Console.WriteLine("IncomeText : "  + IncomeText);
-                Console.WriteLine("Notus.P2P.Manager P2PManager - After");
-            });
-
-            while (true)
-            {
-
-            }
             //omergoksoy
             Start_HttpListener();
+
+            /*
+            // TEST AMAÇLI OLARAK KAPATILDI
+            // TEST AMAÇLI OLARAK KAPATILDI
+            // TEST AMAÇLI OLARAK KAPATILDI
+            // TEST AMAÇLI OLARAK KAPATILDI
             NVG.Settings.MsgOrch.OnReceive((string IncomeText) =>
             {
                 //sync-control
@@ -677,7 +664,14 @@ namespace Notus.Validator
                 string innerResultStr = ValidatorQueueObj.ProcessIncomeData(IncomeText);
 
             });
-            NVG.Settings.MsgOrch.Start();
+            */
+
+            NVG.Settings.MsgOrch.Start((string IncomeText) =>
+            {
+                Console.WriteLine("Notus.P2P.Manager P2PManager - Before");
+                Console.WriteLine("IncomeText : " + IncomeText);
+                Console.WriteLine("Notus.P2P.Manager P2PManager - After");
+            });
 
             if (NVG.Settings.GenesisCreated == false)
             {

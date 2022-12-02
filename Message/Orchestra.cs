@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Net;
 using System.Text.Json;
 using NM = Notus.Message;
 using NP = Notus.Print;
@@ -39,12 +40,27 @@ namespace Notus.Message
             Console.WriteLine("WalletId Does Not Exist");
             return string.Empty;
         }
-        public void Start()
+        // public void Start()
+        // YUKARISI TEST AMAÇLI OLARAK KAPATILDI
+        public void Start(System.Action<string> incomeTextFunc)
         {
+            int portVal = NVG.Settings.Nodes.My.IP.Port + 8;
+            System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(
+                IPAddress.Parse(NVG.Settings.Nodes.My.IP.IpAddress), portVal
+            );
+            Notus.P2P.Manager P2PManager = new Notus.P2P.Manager(localEndPoint, portVal, incomeTextFunc); 
+
+            started = true;
+
+            // YUKARISI TEST AMAÇLI EKLENDİ
+            // YUKARISI TEST AMAÇLI EKLENDİ
+            // YUKARISI TEST AMAÇLI EKLENDİ
+            // YUKARISI TEST AMAÇLI EKLENDİ
+            // YUKARISI TEST AMAÇLI EKLENDİ
+
             if (started == false)
             {
                 started = true;
-
                 Task.Run(() =>
                 {
                     pubObj.Start();
