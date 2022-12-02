@@ -43,7 +43,11 @@ namespace Notus.Message
             {
                 portNo = Notus.Network.Node.GetNetworkPort() + 10;
             }
-            listener = new System.Net.Sockets.Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            listener = new System.Net.Sockets.Socket(
+                AddressFamily.InterNetwork, 
+                SocketType.Stream, 
+                ProtocolType.Tcp
+            );
             byte[] byteArr = new byte[8192];
 
             IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, portNo);

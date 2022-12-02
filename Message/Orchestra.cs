@@ -6,8 +6,6 @@ using NT = Notus.Threads;
 using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
-using NGF = Notus.Variable.Globals.Functions;
-using NVS = Notus.Variable.Struct;
 namespace Notus.Message
 {
     //socket-exception
@@ -28,10 +26,7 @@ namespace Notus.Message
         {
             pubObj.OnReceive(incomeTextFunc);
         }
-        public string SendMsg(
-            string walletId,
-            string messageText
-        )
+        public string SendMsg(string walletId, string messageText)
         {
             Console.WriteLine(messageText + " Sending To : " + walletId);
             Console.WriteLine(messageText + " Sending To : " + walletId);
@@ -39,11 +34,9 @@ namespace Notus.Message
             {
                 return subListObj[walletId].Send(messageText);
             }
-            else
-            {
-                Console.WriteLine("Orchestra.cs -> Line 42");
-                Console.WriteLine("WalletId Does Not Exist");
-            }
+
+            Console.WriteLine("Orchestra.cs -> Line 42");
+            Console.WriteLine("WalletId Does Not Exist");
             return string.Empty;
         }
         public void Start()
@@ -125,7 +118,7 @@ namespace Notus.Message
                         // bu listeyi bizim sahip olduğumuz yerel listeden çıkartıyor...
                         for (int i = 0; i < tmpRemoveFromList.Count; i++)
                         {
-                            NVG.NodeList.TryRemove(tmpRemoveFromList[i],out _);
+                            NVG.NodeList.TryRemove(tmpRemoveFromList[i], out _);
                         }
                         pingTimerIsRunning = false;
                     }
@@ -159,6 +152,10 @@ namespace Notus.Message
                                                 {
                                                     NP.Danger("Message Node Connecting Error [l2]:  " + tList[i].Value.IP.IpAddress);
                                                     subListObj.TryRemove(tList[i].Value.IP.Wallet, out _);
+                                                }
+                                                else
+                                                {
+                                                    SendMsg(tList[i].Value.IP.Wallet, "ping");
                                                 }
                                             }
                                         }
