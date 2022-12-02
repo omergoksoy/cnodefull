@@ -668,9 +668,9 @@ namespace Notus.Validator
 
             NVG.Settings.MsgOrch.Start((string IncomeText) =>
             {
-                Console.WriteLine("Notus.P2P.Manager P2PManager - Before");
-                Console.WriteLine("IncomeText : " + IncomeText);
-                Console.WriteLine("Notus.P2P.Manager P2PManager - After");
+                Console.WriteLine("IncomeText [control-point] : " + IncomeText);
+                string innerResultStr = ValidatorQueueObj.ProcessIncomeData(IncomeText);
+                Console.WriteLine("innerResultStr : " + innerResultStr);
             });
 
             if (NVG.Settings.GenesisCreated == false)
