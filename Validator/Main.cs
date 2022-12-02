@@ -648,7 +648,27 @@ namespace Notus.Validator
                     return true;
                 };
             }
+            kontrol noktası
+            int portVal = NVG.Settings.Nodes.My.IP.Port + 8;
+            System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(
+                IPAddress.Parse(
+                    NVG.Settings.Nodes.My.IP.IpAddress
+                ),8
+            );
+            
+            
+            Notus.P2P.Manager P2PManager = new Notus.P2P.Manager(localEndPoint, portVal, (string IncomeText) =>
+            {
+                Console.WriteLine("Notus.P2P.Manager P2PManager - Before");
+                Console.WriteLine("IncomeText : "  + IncomeText);
+                Console.WriteLine("Notus.P2P.Manager P2PManager - After");
+            });
 
+            while (true)
+            {
+
+            }
+            //omergoksoy
             Start_HttpListener();
             NVG.Settings.MsgOrch.OnReceive((string IncomeText) =>
             {
