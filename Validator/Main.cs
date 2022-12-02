@@ -655,6 +655,7 @@ namespace Notus.Validator
                 //sync-control
                 Console.WriteLine("IncomeText : " + IncomeText);
                 string innerResultStr = ValidatorQueueObj.ProcessIncomeData(IncomeText);
+
             });
             NVG.Settings.MsgOrch.Start();
 

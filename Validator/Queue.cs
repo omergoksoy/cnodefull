@@ -201,6 +201,11 @@ namespace Notus.Validator
 
                 string[] tmpArr = incomeDataStr.Split(":");
                 NP.Info("Income Block Row No -> " + tmpArr[0] + ", Validator => " + tmpArr[1]);
+                if(string.Equals(tmpArr[1], "NODD5JuN455ApvunCh3HrLpxEEYWRC6eDHuFcFa"))
+                {
+                    Console.WriteLine("Other Node- Check From Here");
+                    Console.WriteLine("Other Node- Check From Here");
+                }
                 long tmpBlockNo = long.Parse(tmpArr[0]);
                 string tmpNodeWalletKey = tmpArr[1];
                 string tmpIpAddress = string.Empty;
