@@ -45,6 +45,8 @@ namespace Notus.Message
         public void Start(System.Action<string> incomeTextFunc)
         {
             int portVal = NVG.Settings.Nodes.My.IP.Port + 8;
+            Console.WriteLine(portVal.ToString());
+            Console.WriteLine(portVal.ToString());
             System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(
                 IPAddress.Parse(NVG.Settings.Nodes.My.IP.IpAddress), portVal
             );
