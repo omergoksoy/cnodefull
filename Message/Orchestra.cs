@@ -32,7 +32,7 @@ namespace Notus.Message
             Console.WriteLine(messageText + " Sending To : " + walletId);
             Console.WriteLine(messageText + " Sending To : " + walletId);
             P2PManager.Send(walletId, messageText);
-            return "ok";
+            return "done";
             /*
             if (subListObj.ContainsKey(walletId))
             {
