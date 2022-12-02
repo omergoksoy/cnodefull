@@ -13,7 +13,7 @@ namespace Notus.Message
     public class Orchestra : IDisposable
     {
         private bool started = false;
-
+        private Notus.P2P.Manager P2PManager;
         private ConcurrentDictionary<string, int> errorCountList = new ConcurrentDictionary<string, int>();
         private bool pingTimerIsRunning = false;
         private NT.Timer pingTimer = new NT.Timer(5000);
@@ -44,13 +44,50 @@ namespace Notus.Message
         // YUKARISI TEST AMAÇLI OLARAK KAPATILDI
         public void Start(System.Action<string> incomeTextFunc)
         {
-            int portVal = NVG.Settings.Nodes.My.IP.Port + 8;
-            Console.WriteLine(portVal.ToString());
-            Console.WriteLine(portVal.ToString());
-            System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(
-                IPAddress.Any, portVal
-            );
-            Notus.P2P.Manager P2PManager = new Notus.P2P.Manager(localEndPoint, portVal, incomeTextFunc); 
+            int portVal = NVG.Settings.Nodes.My.IP.Port + 10;
+            System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(IPAddress.Any, portVal);
+            P2PManager = new Notus.P2P.Manager(localEndPoint, portVal, incomeTextFunc);
+
+            subTimer.Start(() =>
+            {
+                if (subTimerIsRunning == false)
+                {
+                    subTimerIsRunning = true;
+                    KeyValuePair<string, Variable.Struct.NodeQueueInfo>[]? tList = NVG.NodeList.ToArray();
+                    if (tList != null)
+                    {
+                        //eklenmeyenler eklensin
+                        for (int i = 0; i < tList.Length; i++)
+                        {
+                            if (string.Equals(tList[i].Value.IP.Wallet, NVG.Settings.NodeWallet.WalletKey) == false)
+                            {
+                                if (tList[i].Value.Status == Variable.Struct.NodeStatus.Online)
+                                {
+                                    IPEndPoint remoteEndPoint = new IPEndPoint(
+                                        IPAddress.Parse(tList[i].Value.IP.IpAddress),
+                                        portVal
+                                    );
+                                    P2PManager.AddPeer(tList[i].Value.IP.Wallet,remoteEndPoint);
+                                }
+                            }
+
+                            if (tList[i].Value.Status == Variable.Struct.NodeStatus.Offline)
+                            {
+                                if (subListObj.ContainsKey(tList[i].Value.IP.Wallet) == true)
+                                {
+                                    NP.Info("Offline Node Remove From List");
+                                    P2PManager.RemovePeer(tList[i].Value.IP.Wallet);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("list-value-is-null");
+                    }
+                    subTimerIsRunning = false;
+                }
+            });
 
             started = true;
 
