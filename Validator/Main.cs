@@ -648,14 +648,14 @@ namespace Notus.Validator
                     return true;
                 };
             }
-            kontrol noktası
+
             int portVal = NVG.Settings.Nodes.My.IP.Port + 8;
             System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(
-                IPAddress.Parse(
-                    NVG.Settings.Nodes.My.IP.IpAddress
-                ),8
+                IPAddress.Parse(NVG.Settings.Nodes.My.IP.IpAddress), portVal
             );
-            
+            Console.WriteLine(localEndPoint.ToString());
+            NP.ReadLine();
+            NP.ReadLine();
             
             Notus.P2P.Manager P2PManager = new Notus.P2P.Manager(localEndPoint, portVal, (string IncomeText) =>
             {
