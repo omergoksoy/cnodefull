@@ -48,7 +48,7 @@ namespace Notus.Message
             Console.WriteLine(portVal.ToString());
             Console.WriteLine(portVal.ToString());
             System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(
-                IPAddress.Parse(NVG.Settings.Nodes.My.IP.IpAddress), portVal
+                IPAddress.Any, portVal
             );
             Notus.P2P.Manager P2PManager = new Notus.P2P.Manager(localEndPoint, portVal, incomeTextFunc); 
 
