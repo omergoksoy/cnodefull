@@ -81,14 +81,16 @@ namespace Notus.Message
                         if (Func_IncomeText != null)
                         {
                             //kontrol-noktasi
-                            //NP.Info("Publisher.Cs -> Before Func_IncomeText");
+                            NP.Info("Publisher.Cs -> Before Func_IncomeText");
                             Func_IncomeText(contentText);
                             handler.Send(System.Text.Encoding.ASCII.GetBytes("done"));
-                            //NP.Info("Publisher.Cs -> After Func_IncomeText");
+                            NP.Info("Publisher.Cs -> After Func_IncomeText");
                         }
                         else
                         {
+                            NP.Info("Publisher.Cs -> Func_IncomeText -> NULL");
                             handler.Send(System.Text.Encoding.ASCII.GetBytes("ok"));
+                            NP.Info("Publisher.Cs -> Func_IncomeText -> NULL -> AFTER");
                         }
                     }
                     //handler.Shutdown(SocketShutdown.Send);
