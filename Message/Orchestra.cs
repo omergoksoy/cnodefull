@@ -33,6 +33,8 @@ namespace Notus.Message
             string messageText
         )
         {
+            Console.WriteLine(messageText + " Sending To : " + walletId);
+            Console.WriteLine(messageText + " Sending To : " + walletId);
             if (subListObj.ContainsKey(walletId))
             {
                 return subListObj[walletId].Send(messageText);
