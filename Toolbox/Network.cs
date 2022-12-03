@@ -7,7 +7,6 @@ using NGV = Notus.Globals.Variable;
 using NNN = Notus.Network.Node;
 using NP = Notus.Print;
 using NTN = Notus.Toolbox.Network;
-using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
@@ -47,6 +46,10 @@ namespace Notus.Toolbox
         }
         public static string IpAndPortToHex(string ipAddress, int portNo)
         {
+            if (ipAddress.Length == 0 && portNo == 0)
+            {
+                return "";
+            }
             string resultStr = "";
             foreach (string byteStr in ipAddress.Split("."))
             {
