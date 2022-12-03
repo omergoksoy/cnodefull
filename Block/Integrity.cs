@@ -561,7 +561,7 @@ namespace Notus.Block
         }
         public bool ControlGenesisBlock()
         {
-            burada liste alınsın
+            //burada liste alınsın
             //string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
             string ZipFileName = Notus.IO.GetFolderName(
                 NVG.Settings.Network, 
@@ -623,13 +623,14 @@ namespace Notus.Block
                 Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
                 // Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
                 NP.ReadLine();
-                foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
+                foreach (var item in NGF.ValidatorList)
+                //foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
                 {
-                    if (string.Equals(NVG.Settings.IpInfo.Public, item.IpAddress) == false)
+                    if (string.Equals(NVG.Settings.IpInfo.Public, item.Value.IpAddress) == false)
                     {
-                        NP.Info("Checking From -> " + item.IpAddress);
+                        NP.Info("Checking From -> " + item.Value.IpAddress);
                         Notus.Variable.Class.BlockData? tmpInnerBlockData =
-                        Notus.Toolbox.Network.GetBlockFromNode(item.IpAddress, item.Port, 1, NVG.Settings);
+                        Notus.Toolbox.Network.GetBlockFromNode(item.Value.IpAddress, item.Value.Port, 1, NVG.Settings);
                         if (tmpInnerBlockData != null)
                         {
                             if (signCount.ContainsKey(tmpInnerBlockData.sign) == false)
@@ -641,8 +642,8 @@ namespace Notus.Block
                             signNode[tmpInnerBlockData.sign].Add(
                                 new Notus.Variable.Struct.IpInfo()
                                 {
-                                    IpAddress = item.IpAddress,
-                                    Port = item.Port
+                                    IpAddress = item.Value.IpAddress,
+                                    Port = item.Value.Port
                                 }
                             );
                             signCount[tmpInnerBlockData.sign] = signCount[tmpInnerBlockData.sign] + 1;
