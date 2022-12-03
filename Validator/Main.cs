@@ -540,19 +540,6 @@ namespace Notus.Validator
 
             NGF.GetUtcTimeFromNode(20, true);
             TimeBaseBlockUidList.Clear();
-            if (NVG.Settings.GenesisCreated == false && NVG.Settings.Genesis != null)
-            {
-                SelectedPortVal = NVG.Settings.Nodes.My.IP.Port;
-            }
-            else
-            {
-                SelectedPortVal = Notus.Toolbox.Network.FindFreeTcpPort();
-            }
-            Console.WriteLine(SelectedPortVal);
-            NP.ReadLine();
-            HttpObj.DefaultResult_OK = "null";
-            HttpObj.DefaultResult_ERR = "null";
-            Start_HttpListener();
 
             if (NVG.Settings.GenesisCreated == false)
             {
@@ -631,11 +618,16 @@ namespace Notus.Validator
                     NP.Info(NVG.Settings, "All Blocks Loaded");
                 }
                 */
+                SelectedPortVal = NVG.Settings.Nodes.My.IP.Port;
             }
+            else
+            {
+                SelectedPortVal = Notus.Toolbox.Network.FindFreeTcpPort();
+            }
+            Console.WriteLine("SelectedPortVal : " + SelectedPortVal.ToString());
 
-            // HttpObj.DefaultResult_OK = "null";
-            // HttpObj.DefaultResult_ERR = "null";
-            // Start_HttpListener();
+            HttpObj.DefaultResult_OK = "null";
+            HttpObj.DefaultResult_ERR = "null";
 
             if (NVG.Settings.GenesisCreated == false)
             {
@@ -657,6 +649,8 @@ namespace Notus.Validator
                 };
             }
 
+            //omergoksoy
+            Start_HttpListener();
 
             /*
             // TEST AMAÇLI OLARAK KAPATILDI
@@ -1461,11 +1455,7 @@ namespace Notus.Validator
                 NVG.Settings.LocalNode == false ? NVG.Settings.IpInfo.Public : NVG.Settings.IpInfo.Local
             );
 
-            NP.Basic("Listining : " + 
-                Notus.Network.Node.MakeHttpListenerPath(
-                    NodeIpAddress.ToString(), SelectedPortVal
-                )
-            );
+            NP.Basic("Listining : " + Notus.Network.Node.MakeHttpListenerPath(NodeIpAddress.ToString(), SelectedPortVal));
             HttpObj.OnReceive(Fnc_OnReceiveData);
             HttpObj.ResponseType = "application/json";
             HttpObj.StoreUrl = false;
