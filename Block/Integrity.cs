@@ -561,6 +561,7 @@ namespace Notus.Block
         }
         public bool ControlGenesisBlock()
         {
+            burada liste alınsın
             //string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
             string ZipFileName = Notus.IO.GetFolderName(
                 NVG.Settings.Network, 
@@ -619,7 +620,8 @@ namespace Notus.Block
 
                 Dictionary<string, List<Notus.Variable.Struct.IpInfo>> signNode = new Dictionary<string, List<Notus.Variable.Struct.IpInfo>>();
                 signNode.Clear();
-
+                Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+                NP.ReadLine();
                 foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
                 {
                     if (string.Equals(NVG.Settings.IpInfo.Public, item.IpAddress) == false)
