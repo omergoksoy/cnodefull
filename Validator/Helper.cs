@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Concurrent;
+using System.Globalization;
 using System.Text.Json;
 using NCH = Notus.Communication.Helper;
 using ND = Notus.Date;
@@ -16,13 +17,18 @@ namespace Notus.Validator
     {
         public static bool PrepareValidatorList()
         {
-            if (NGF.ValidatorList.Count > 0) {
-                return true;
+            if (NGF.ValidatorList == null)
+            {
+                NGF.ValidatorList = new SortedDictionary<string, NVS.IpInfo>();
+            }
+
+            if (NVG.NodeList == null)
+            {
+                NVG.NodeList = new ConcurrentDictionary<string, NVS.NodeQueueInfo>();
             }
 
             NVG.NodeList.Clear();
             NGF.ValidatorList.Clear();
-            NVR.NetworkSelectorList.Clear();
 
             bool generateBaseValidatorList = false;
 

@@ -293,7 +293,6 @@ namespace Notus.Variable
             public static void Start()
             {
                 ValidatorListHash = "";
-                ValidatorList = new SortedDictionary<string, NVS.IpInfo>();
                 WalletUsageList = new ConcurrentDictionary<string, byte>();
                 LockWalletList = new ConcurrentDictionary<string, string>();
                 //BlockOrder = new ConcurrentDictionary<long, string>();
@@ -307,7 +306,6 @@ namespace Notus.Variable
                 }
 
                 //Globals.MsgSocketList = new ConcurrentDictionary<string, Notus.Communication.Sync.Socket.Server>();
-                Globals.NodeList = new ConcurrentDictionary<string, NVS.NodeQueueInfo>();
                 Globals.NodeQueue = new Notus.Globals.Variable.NodeQueueList();
 
                 Globals.NodeQueue.Begin = false;
