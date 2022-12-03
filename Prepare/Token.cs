@@ -4,6 +4,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using ND = Notus.Date;
 using NVG = Notus.Variable.Globals;
+using NGF = Notus.Variable.Globals.Functions;
+using NVR = Notus.Validator.Register;
+using NVH = Notus.Validator.Helper;
 namespace Notus.Prepare
 {
     public class Token
@@ -17,6 +20,7 @@ namespace Notus.Prepare
             string whichNodeIpAddress = ""
         )
         {
+            NVH.PrepareValidatorList();
             //Notus.Wallet.ID.GetAddressWithPublicKey(PublicKeyHex, currentNetwork)
             Notus.Variable.Struct.BlockStruct_160 Obj_Token = new Notus.Variable.Struct.BlockStruct_160()
             {
@@ -51,9 +55,9 @@ namespace Notus.Prepare
             string WalletKeyStr = Notus.Wallet.ID.GetAddressWithPublicKey(PublicKeyHex, currentNetwork);
             while (exitInnerLoop == false)
             {
-                for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
+                foreach (var item in NGF.ValidatorList)
                 {
-                    string nodeIpAddress = Notus.Variable.Constant.ListMainNodeIp[a];
+                    string nodeIpAddress = item.Value.IpAddress;
                     if (whichNodeIpAddress != "")
                     {
                         nodeIpAddress = whichNodeIpAddress;

@@ -16,6 +16,8 @@ namespace Notus.Validator
     {
         public static void PrepareValidatorList()
         {
+            Console.WriteLine("NGF.ValidatorList.Count : " + NGF.ValidatorList.Count.ToString());
+
             NVG.NodeList.Clear();
             NGF.ValidatorList.Clear();
             NVR.NetworkSelectorList.Clear();
