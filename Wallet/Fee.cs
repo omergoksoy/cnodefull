@@ -35,9 +35,10 @@ namespace Notus.Wallet
             bool exitInnerLoop = false;
             while (exitInnerLoop == false)
             {
-                for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
+                List<string> ListMainNodeIp = Notus.Validator.List.Get(Variable.Enum.NetworkLayer.Layer1, currentNetwork);
+                for (int a = 0; a < ListMainNodeIp.Count && exitInnerLoop == false; a++)
                 {
-                    string nodeIpAddress = Notus.Variable.Constant.ListMainNodeIp[a];
+                    string nodeIpAddress = ListMainNodeIp[a];
                     try
                     {
                         string fullUrlAddress =

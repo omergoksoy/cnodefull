@@ -11,7 +11,6 @@ namespace Notus.P2P
 
         public Manager(IPEndPoint localEndPoint, int port, Action<string> onReceive)
         {
-            this.listener.Bind(
             this.listener.Bind(localEndPoint);
             this.listener.Listen(port);
             this.listener.BeginAccept(new AsyncCallback(this.AcceptCallback), this.listener);

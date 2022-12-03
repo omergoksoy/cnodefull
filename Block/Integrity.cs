@@ -355,6 +355,7 @@ namespace Notus.Block
             string tmpBlockKeyStr = string.Empty;
             string tmpBlockSignStr = string.Empty;
             bool exitInnerLoop = false;
+            /*
             while (exitInnerLoop == false)
             {
                 for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
@@ -390,8 +391,8 @@ namespace Notus.Block
                     }
                 }
             }
+            */
             return (tmpBlockKeyStr, tmpBlockSignStr);
-
         }
         
         //control-local-block
@@ -434,10 +435,13 @@ namespace Notus.Block
                 bool exitInnerLoop = false;
                 while (exitInnerLoop == false)
                 {
-                    for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
+                    
+                    List<string> ListMainNodeIp = Notus.Validator.List.Get(NVG.Settings.Layer, NVG.Settings.Network);
+
+                    for (int a = 0; a < ListMainNodeIp.Count && exitInnerLoop == false; a++)
                     {
                         string myIpAddress = (NVG.Settings.LocalNode == true ? NVG.Settings.IpInfo.Local : NVG.Settings.IpInfo.Public);
-                        string nodeIpAddress = Notus.Variable.Constant.ListMainNodeIp[a];
+                        string nodeIpAddress = ListMainNodeIp[a];
                         if (string.Equals(myIpAddress, nodeIpAddress) == false)
                         {
                             string MainResultStr = string.Empty;

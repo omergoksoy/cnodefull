@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using NVG = Notus.Variable.Globals;
 namespace Notus.Validator
 {
     public class Query
@@ -77,7 +78,8 @@ namespace Notus.Validator
             {
                 int nodeCount = 0;
                 int errorCount= 0;
-                foreach (string nodeIpAddress in Notus.Variable.Constant.ListMainNodeIp)
+                List<string> ListMainNodeIp = Notus.Validator.List.Get(NVG.Settings.Layer, NVG.Settings.Network);
+                foreach (string nodeIpAddress in ListMainNodeIp)
                 {
                     nodeCount++;
                     string mainAddressStr = Notus.Network.Node.MakeHttpListenerPath(nodeIpAddress, Notus.Network.Node.GetNetworkPort(currentNetwork, currentLayer));

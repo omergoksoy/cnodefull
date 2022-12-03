@@ -114,9 +114,11 @@ namespace Notus.Wallet
             bool exitInnerLoop = false;
             while (exitInnerLoop == false)
             {
-                for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
+                List<string> ListMainNodeIp = Notus.Validator.List.Get(NVG.Settings.Layer, NVG.Settings.Network);
+
+                for (int a = 0; a < ListMainNodeIp.Count && exitInnerLoop == false; a++)
                 {
-                    string nodeIpAddress = Notus.Variable.Constant.ListMainNodeIp[a];
+                    string nodeIpAddress = ListMainNodeIp[a];
                     try
                     {
                         //bool RealNetwork = PreTransfer.Network == Notus.Variable.Enum.NetworkType.Const_MainNetwork;

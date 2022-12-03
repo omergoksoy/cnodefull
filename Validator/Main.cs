@@ -648,7 +648,7 @@ namespace Notus.Validator
                     return true;
                 };
             }
-            kontrol noktası
+            //kontrol noktası
             int portVal = NVG.Settings.Nodes.My.IP.Port + 8;
             System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(
                 IPAddress.Parse(

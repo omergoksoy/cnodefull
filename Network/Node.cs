@@ -19,12 +19,14 @@ namespace Notus.Network
                 bool exitInnerLoop = false;
                 while (exitInnerLoop == false)
                 {
-                    for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
+                    List<string> ListMainNodeIp = Notus.Validator.List.Get(networkLayer, currentNetwork);
+
+                    for (int a = 0; a < ListMainNodeIp.Count && exitInnerLoop == false; a++)
                     {
                         try
                         {
                             MainResultStr = await Notus.Communication.Request.Get(MakeHttpListenerPath(
-                                Notus.Variable.Constant.ListMainNodeIp[a],
+                                ListMainNodeIp[a],
                                 GetNetworkPort(currentNetwork, networkLayer)) + UrlText, 10, true);
                         }
                         catch (Exception err)
@@ -78,12 +80,13 @@ namespace Notus.Network
                 bool exitInnerLoop = false;
                 while (exitInnerLoop == false)
                 {
-                    for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
+                    List<string> ListMainNodeIp = Notus.Validator.List.Get(networkLayer, currentNetwork);
+                    for (int a = 0; a < ListMainNodeIp.Count && exitInnerLoop == false; a++)
                     {
                         try
                         {
                             MainResultStr = await Notus.Communication.Request.Post(
-                                MakeHttpListenerPath(Notus.Variable.Constant.ListMainNodeIp[a],
+                                MakeHttpListenerPath(ListMainNodeIp[a],
                                 GetNetworkPort(currentNetwork, networkLayer)) + UrlText,
                                 PostData
                             );
@@ -146,12 +149,14 @@ namespace Notus.Network
             bool exitInnerLoop = false;
             while (exitInnerLoop == false)
             {
-                for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
+                List<string> ListMainNodeIp = Notus.Validator.List.Get(networkLayer, currentNetwork);
+
+                for (int a = 0; a < ListMainNodeIp.Count && exitInnerLoop == false; a++)
                 {
                     try
                     {
                         MainResultStr = Notus.Communication.Request.GetSync(
-                            MakeHttpListenerPath(Notus.Variable.Constant.ListMainNodeIp[a],
+                            MakeHttpListenerPath(ListMainNodeIp[a],
                             GetNetworkPort(currentNetwork, networkLayer)) + UrlText,
                             10,
                             true,
@@ -190,12 +195,14 @@ namespace Notus.Network
             bool exitInnerLoop = false;
             while (exitInnerLoop == false)
             {
-                for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
+                List<string> ListMainNodeIp = Notus.Validator.List.Get(networkLayer, currentNetwork);
+
+                for (int a = 0; a < ListMainNodeIp.Count && exitInnerLoop == false; a++)
                 {
                     try
                     {
                         (bool worksCorrent, string tmpMainResultStr) = Notus.Communication.Request.PostSync(
-                            MakeHttpListenerPath(Notus.Variable.Constant.ListMainNodeIp[a],
+                            MakeHttpListenerPath(ListMainNodeIp[a],
                             GetNetworkPort(currentNetwork, networkLayer)) + UrlText,
                             PostData
                         );

@@ -145,7 +145,9 @@ namespace Notus.Toolbox
                 NVG.Settings.Nodes.My.IP.IpAddress = NVG.Settings.IpInfo.Public;
             }
             NVG.Settings.Nodes.My.HexKey = NTN.IpAndPortToHex(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
-            if (NVC.ListMainNodeIp.IndexOf(NVG.Settings.IpInfo.Public) >= 0)
+            
+            List<string> ListMainNodeIp = Notus.Validator.List.Get(NVG.Settings.Layer, NVG.Settings.Network);
+            if (ListMainNodeIp.IndexOf(NVG.Settings.IpInfo.Public) >= 0)
             {
                 //NVG.Settings.Nodes.My.InTheCode = true;
                 NP.Basic(NVG.Settings, "Starting As Main Node");

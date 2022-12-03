@@ -42,7 +42,8 @@ namespace Notus.Wallet
                 bool exitInnerLoop = false;
                 while (exitInnerLoop == false)
                 {
-                    for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
+                    List<string> ListMainNodeIp = Notus.Validator.List.Get(Variable.Enum.NetworkLayer.Layer1, currentNetwork);
+                    for (int a = 0; a < ListMainNodeIp.Count && exitInnerLoop == false; a++)
                     {
                         try
                         {
@@ -51,7 +52,7 @@ namespace Notus.Wallet
                                     (
                                         whichNodeIpAddress == ""
                                             ?
-                                        Notus.Variable.Constant.ListMainNodeIp[a]
+                                        ListMainNodeIp[a]
                                             :
                                         whichNodeIpAddress
                                     ),
@@ -234,7 +235,8 @@ namespace Notus.Wallet
                 bool exitInnerLoop = false;
                 while (exitInnerLoop == false)
                 {
-                    for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
+                    List<string> ListMainNodeIp = Notus.Validator.List.Get(Variable.Enum.NetworkLayer.Layer1, currentNetwork);
+                    for (int a = 0; a < ListMainNodeIp.Count && exitInnerLoop == false; a++)
                     {
                         try
                         {
@@ -244,7 +246,7 @@ namespace Notus.Wallet
                                     (
                                         whichNodeIpAddress == ""
                                             ?
-                                        Notus.Variable.Constant.ListMainNodeIp[a]
+                                        ListMainNodeIp[a]
                                             :
                                         whichNodeIpAddress
                                     ),

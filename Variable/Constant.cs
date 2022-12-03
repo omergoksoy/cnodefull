@@ -191,22 +191,6 @@ namespace Notus.Variable
             { NetworkType.DevNet,"devnet.notus.network" }
         };
 
-        /*
-        standart bizim sunucularımız
-        public static readonly List<string> ListMainNodeIp = new List<string> {
-            "89.252.134.91",
-            "89.252.184.151"
-        };
-        */
-
-        /*
-        aws üzerindeki sunucular
-        */
-        public static readonly List<string> ListMainNodeIp = new List<string> {
-            "3.75.110.186",
-            "13.229.56.127"
-        };
-
         public const string Default_EccCurveName = "prime256v1";
         public const int Default_WordListArrayCount = 16;
 
