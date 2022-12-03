@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Json;
+﻿using System.Text.Json;
+using NGF = Notus.Variable.Globals.Functions;
+using NVH = Notus.Validator.Helper;
 namespace Notus.Validator
 {
     public class Query
     {
         public static (bool, Notus.Variable.Class.BlockData?) GetBlock(
-            string nodeAdress, 
+            string nodeAdress,
             Int64 BlockRowNo,
-            bool showOnError=true,
+            bool showOnError = true,
             Notus.Globals.Variable.Settings? objSettings = null
         )
         {
             try
             {
                 string MainResultStr = Notus.Communication.Request.GetSync(
-                    nodeAdress + "block/" + BlockRowNo.ToString(), 
-                    10, 
+                    nodeAdress + "block/" + BlockRowNo.ToString(),
+                    10,
                     true,
                     showOnError,
                     objSettings
@@ -24,27 +24,19 @@ namespace Notus.Validator
                 Notus.Variable.Class.BlockData? PreBlockData = JsonSerializer.Deserialize<Notus.Variable.Class.BlockData>(MainResultStr);
                 return (true, PreBlockData);
             }
-            catch(Exception err)
+            catch (Exception err)
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    3020101,
-                    err.Message,
-                    "BlockRowNo",
-                    objSettings,
-                    err
-                );
             }
             return (false, null);
         }
-        public static Notus.Variable.Struct.LastBlockInfo? GetLastBlockInfo(string NodeAddress, Notus.Globals.Variable.Settings? Obj_Settings=null)
+        public static Notus.Variable.Struct.LastBlockInfo? GetLastBlockInfo(string NodeAddress, Notus.Globals.Variable.Settings? Obj_Settings = null)
         {
             try
             {
                 //string mainAddressStr = Notus.Core.Function.MakeHttpListenerPath(NodeAddress, Notus.Variable.Struct.PortNo_HttpListener);
                 string MainResultStr = Notus.Communication.Request.GetSync(
-                    NodeAddress + "block/summary", 
-                    10, 
+                    NodeAddress + "block/summary",
+                    10,
                     true,
                     true,
                     Obj_Settings
@@ -52,7 +44,7 @@ namespace Notus.Validator
                 Notus.Variable.Struct.LastBlockInfo PreBlockData = JsonSerializer.Deserialize<Notus.Variable.Struct.LastBlockInfo>(MainResultStr);
                 return PreBlockData;
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 Notus.Print.Log(
                     Notus.Variable.Enum.LogLevel.Info,
@@ -66,21 +58,22 @@ namespace Notus.Validator
             return null;
         }
         public static (bool, Dictionary<string, Notus.Variable.Class.BlockData>) LastBlockList(
-            Notus.Variable.Enum.NetworkNodeType nodeType, 
-            Notus.Variable.Enum.NetworkType currentNetwork, 
-            Notus.Variable.Enum.NetworkLayer currentLayer, 
+            Notus.Variable.Enum.NetworkNodeType nodeType,
+            Notus.Variable.Enum.NetworkType currentNetwork,
+            Notus.Variable.Enum.NetworkLayer currentLayer,
             bool DebugModeActive = false
         )
         {
+            NVH.PrepareValidatorList();
             Dictionary<string, Notus.Variable.Class.BlockData> ResultList = new Dictionary<string, Notus.Variable.Class.BlockData>();
             if (nodeType == Notus.Variable.Enum.NetworkNodeType.Master)
             {
                 int nodeCount = 0;
-                int errorCount= 0;
-                foreach (string nodeIpAddress in Notus.Variable.Constant.ListMainNodeIp)
+                int errorCount = 0;
+                foreach (var item in NGF.ValidatorList)
                 {
                     nodeCount++;
-                    string mainAddressStr = Notus.Network.Node.MakeHttpListenerPath(nodeIpAddress, Notus.Network.Node.GetNetworkPort(currentNetwork, currentLayer));
+                    string mainAddressStr = Notus.Network.Node.MakeHttpListenerPath(item.Value.IpAddress, Notus.Network.Node.GetNetworkPort(currentNetwork, currentLayer));
                     string MainResultStr = Notus.Communication.Request.Get(mainAddressStr + "block/last", 10, true).GetAwaiter().GetResult();
 
                     //boş değer dönüyor,

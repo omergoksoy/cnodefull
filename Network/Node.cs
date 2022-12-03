@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using NGF = Notus.Variable.Globals.Functions;
 using NVG = Notus.Variable.Globals;
-using NGF = Notus.Variable.Globals.Functions;
 using NVH = Notus.Validator.Helper;
 namespace Notus.Network
 {
@@ -29,7 +26,7 @@ namespace Notus.Network
                             MainResultStr = await Notus.Communication.Request.Get(MakeHttpListenerPath(
                                 item.Value.IpAddress,
                                 GetNetworkPort(currentNetwork, networkLayer)) + UrlText, 10, true);
-                            if(MainResultStr.Length > 0)
+                            if (MainResultStr.Length > 0)
                             {
                                 exitInnerLoop = true;
                                 break;
@@ -246,7 +243,7 @@ namespace Notus.Network
             return MainResultStr;
         }
 
-        public static int GetNetworkPort(Notus.Globals.Variable.Settings? objSetting=null)
+        public static int GetNetworkPort(Notus.Globals.Variable.Settings? objSetting = null)
         {
             if (objSetting == null)
             {

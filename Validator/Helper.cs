@@ -14,9 +14,11 @@ namespace Notus.Validator
 {
     public static class Helper
     {
-        public static void PrepareValidatorList()
+        public static bool PrepareValidatorList()
         {
-            Console.WriteLine("NGF.ValidatorList.Count : " + NGF.ValidatorList.Count.ToString());
+            if (NGF.ValidatorList.Count > 0) {
+                return true;
+            }
 
             NVG.NodeList.Clear();
             NGF.ValidatorList.Clear();
@@ -128,6 +130,7 @@ namespace Notus.Validator
                 NGF.ValidatorList[entry.Key].Status = NVS.NodeStatus.Unknown;
             }
             NGF.ValidatorList[NVG.Settings.Nodes.My.HexKey].Status = NVS.NodeStatus.Online;
+            return true;
         }
 
         public static List<NVS.IpInfo> GiveMeNodeList()
