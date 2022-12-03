@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using NVG = Notus.Variable.Globals;
+using NGF = Notus.Variable.Globals.Functions;
+using NVH = Notus.Validator.Helper;
 namespace Notus.Network
 {
     public static class Node
@@ -13,26 +15,31 @@ namespace Notus.Network
             bool sslActive = false
         )
         {
+            NVH.PrepareValidatorList();
             string MainResultStr = string.Empty;
             if (sslActive == false)
             {
                 bool exitInnerLoop = false;
                 while (exitInnerLoop == false)
                 {
-                    for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
+                    foreach (var item in NGF.ValidatorList)
                     {
                         try
                         {
                             MainResultStr = await Notus.Communication.Request.Get(MakeHttpListenerPath(
-                                Notus.Variable.Constant.ListMainNodeIp[a],
+                                item.Value.IpAddress,
                                 GetNetworkPort(currentNetwork, networkLayer)) + UrlText, 10, true);
+                            if(MainResultStr.Length > 0)
+                            {
+                                exitInnerLoop = true;
+                                break;
+                            }
                         }
                         catch (Exception err)
                         {
                             Console.WriteLine(err.Message);
                             Notus.Date.SleepWithoutBlocking(5, true);
                         }
-                        exitInnerLoop = (MainResultStr.Length > 0);
                     }
                 }
             }
@@ -72,21 +79,27 @@ namespace Notus.Network
             bool sslActive = false
         )
         {
+            NVH.PrepareValidatorList();
             string MainResultStr = string.Empty;
             if (sslActive == false)
             {
                 bool exitInnerLoop = false;
                 while (exitInnerLoop == false)
                 {
-                    for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
+                    foreach (var item in NGF.ValidatorList)
                     {
                         try
                         {
                             MainResultStr = await Notus.Communication.Request.Post(
-                                MakeHttpListenerPath(Notus.Variable.Constant.ListMainNodeIp[a],
+                                MakeHttpListenerPath(item.Value.IpAddress,
                                 GetNetworkPort(currentNetwork, networkLayer)) + UrlText,
                                 PostData
                             );
+                            if (MainResultStr.Length > 0)
+                            {
+                                exitInnerLoop = true;
+                                break;
+                            }
                         }
                         catch (Exception err)
                         {
@@ -102,7 +115,6 @@ namespace Notus.Network
                             Console.WriteLine(err.Message);
                             Notus.Date.SleepWithoutBlocking(5, true);
                         }
-                        exitInnerLoop = (MainResultStr.Length > 0);
                     }
                 }
             }
@@ -142,22 +154,28 @@ namespace Notus.Network
             Notus.Globals.Variable.Settings objSettings = null
         )
         {
+            NVH.PrepareValidatorList();
             string MainResultStr = string.Empty;
             bool exitInnerLoop = false;
             while (exitInnerLoop == false)
             {
-                for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
+                foreach (var item in NGF.ValidatorList)
                 {
                     try
                     {
                         MainResultStr = Notus.Communication.Request.GetSync(
-                            MakeHttpListenerPath(Notus.Variable.Constant.ListMainNodeIp[a],
+                            MakeHttpListenerPath(item.Value.IpAddress,
                             GetNetworkPort(currentNetwork, networkLayer)) + UrlText,
                             10,
                             true,
                             showError,
                             objSettings
                         );
+                        if (MainResultStr.Length > 0)
+                        {
+                            exitInnerLoop = true;
+                            break;
+                        }
                     }
                     catch (Exception err)
                     {
@@ -173,7 +191,6 @@ namespace Notus.Network
                         Notus.Print.Danger(objSettings, "Notus.Network.Node.FindAvailableSync -> Line 92 -> " + err.Message);
                         Notus.Date.SleepWithoutBlocking(5, true);
                     }
-                    exitInnerLoop = (MainResultStr.Length > 0);
                 }
             }
             return MainResultStr;
@@ -186,22 +203,28 @@ namespace Notus.Network
             Notus.Globals.Variable.Settings objSettings = null
         )
         {
+            NVH.PrepareValidatorList();
             string MainResultStr = string.Empty;
             bool exitInnerLoop = false;
             while (exitInnerLoop == false)
             {
-                for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
+                foreach (var item in NGF.ValidatorList)
                 {
                     try
                     {
                         (bool worksCorrent, string tmpMainResultStr) = Notus.Communication.Request.PostSync(
-                            MakeHttpListenerPath(Notus.Variable.Constant.ListMainNodeIp[a],
+                            MakeHttpListenerPath(item.Value.IpAddress,
                             GetNetworkPort(currentNetwork, networkLayer)) + UrlText,
                             PostData
                         );
                         if (worksCorrent == true)
                         {
                             MainResultStr = tmpMainResultStr;
+                            if (MainResultStr.Length > 0)
+                            {
+                                exitInnerLoop = true;
+                                break;
+                            }
                         }
                     }
                     catch (Exception err)
@@ -218,7 +241,6 @@ namespace Notus.Network
                         Console.WriteLine(err.Message);
                         Notus.Date.SleepWithoutBlocking(5, true);
                     }
-                    exitInnerLoop = (MainResultStr.Length > 0);
                 }
             }
             return MainResultStr;
@@ -242,7 +264,7 @@ namespace Notus.Network
             {
                 return "http" + (UseSSL == true ? "s" : "") + "://" + IpAddress + "/";
             }
-            return "http" + (UseSSL == true ? "s" : "") + "://" + IpAddress + ":" + PortNo + "/";
+            return "http" + (UseSSL == true ? "s" : "") + "://" + IpAddress + ":" + PortNo.ToString() + "/";
         }
     }
 }

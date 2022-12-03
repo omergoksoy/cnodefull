@@ -357,9 +357,11 @@ namespace Notus.Block
             bool exitInnerLoop = false;
             while (exitInnerLoop == false)
             {
-                for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
+                //for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
+                foreach(var item in NGF.ValidatorList)
                 {
-                    string nodeIpAddress = Notus.Variable.Constant.ListMainNodeIp[a];
+                    //string nodeIpAddress = Notus.Variable.Constant.ListMainNodeIp[a];
+                    string nodeIpAddress = item.Value.IpAddress;
                     try
                     {
                         string MainResultStr = Notus.Communication.Request.GetSync(
@@ -377,6 +379,7 @@ namespace Notus.Block
                             exitInnerLoop = true;
                             tmpBlockKeyStr = MainResultStr.Substring(0, 90);
                             tmpBlockSignStr = MainResultStr.Substring(90);
+                            break;
                         }
                         else
                         {
@@ -434,12 +437,9 @@ namespace Notus.Block
                 bool exitInnerLoop = false;
                 while (exitInnerLoop == false)
                 {
-                    //for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
                     foreach (var item in NGF.ValidatorList)
-                    //for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
                     {
                         string myIpAddress = (NVG.Settings.LocalNode == true ? NVG.Settings.IpInfo.Local : NVG.Settings.IpInfo.Public);
-                        //string nodeIpAddress = Notus.Variable.Constant.ListMainNodeIp[a];
                         string nodeIpAddress = item.Value.IpAddress;
                         if (string.Equals(myIpAddress, nodeIpAddress) == false)
                         {
@@ -465,7 +465,7 @@ namespace Notus.Block
                                     {
                                         BS_Storage.AddSync(tmpEmptyBlock, true);
                                     }
-                                    //exitInnerLoop = true;
+                                    exitInnerLoop = true;
                                     break;
                                 }
                             }
@@ -624,9 +624,6 @@ namespace Notus.Block
 
                 Dictionary<string, List<Notus.Variable.Struct.IpInfo>> signNode = new Dictionary<string, List<Notus.Variable.Struct.IpInfo>>();
                 signNode.Clear();
-                // Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
-                // Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
-                // NP.ReadLine();
                 foreach (var item in NGF.ValidatorList)
                 //foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
                 {

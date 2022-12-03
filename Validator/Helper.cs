@@ -5,10 +5,11 @@ using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
-using NVG = Notus.Variable.Globals;
-using NVS = Notus.Variable.Struct;
-using NVH = Notus.Validator.Helper;
 using NVD = Notus.Validator.Date;
+using NVG = Notus.Variable.Globals;
+using NVH = Notus.Validator.Helper;
+using NVR = Notus.Validator.Register;
+using NVS = Notus.Variable.Struct;
 namespace Notus.Validator
 {
     public static class Helper
@@ -17,6 +18,8 @@ namespace Notus.Validator
         {
             NVG.NodeList.Clear();
             NGF.ValidatorList.Clear();
+            NVR.NetworkSelectorList.Clear();
+
             bool generateBaseValidatorList = false;
 
             using (Notus.Mempool objMpNodeList = new Notus.Mempool(NVC.MemoryPoolName["ValidatorList"]))
@@ -160,7 +163,7 @@ namespace Notus.Validator
         }
         public static bool RightBlockValidator(Notus.Variable.Class.BlockData incomeBlock)
         {
-            
+
             ulong queueTimePeriod = NVD.Calculate();
             ulong blockTimeVal = ND.ToLong(incomeBlock.info.time);
             ulong blockGenarationTime = blockTimeVal - (blockTimeVal % queueTimePeriod);
