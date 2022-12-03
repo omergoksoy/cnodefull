@@ -434,10 +434,13 @@ namespace Notus.Block
                 bool exitInnerLoop = false;
                 while (exitInnerLoop == false)
                 {
-                    for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
+                    //for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
+                    foreach (var item in NGF.ValidatorList)
+                    //for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
                     {
                         string myIpAddress = (NVG.Settings.LocalNode == true ? NVG.Settings.IpInfo.Local : NVG.Settings.IpInfo.Public);
-                        string nodeIpAddress = Notus.Variable.Constant.ListMainNodeIp[a];
+                        //string nodeIpAddress = Notus.Variable.Constant.ListMainNodeIp[a];
+                        string nodeIpAddress = item.Value.IpAddress;
                         if (string.Equals(myIpAddress, nodeIpAddress) == false)
                         {
                             string MainResultStr = string.Empty;
@@ -462,7 +465,8 @@ namespace Notus.Block
                                     {
                                         BS_Storage.AddSync(tmpEmptyBlock, true);
                                     }
-                                    exitInnerLoop = true;
+                                    //exitInnerLoop = true;
+                                    break;
                                 }
                             }
                             catch (Exception err)
