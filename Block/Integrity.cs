@@ -620,7 +620,8 @@ namespace Notus.Block
 
                 Dictionary<string, List<Notus.Variable.Struct.IpInfo>> signNode = new Dictionary<string, List<Notus.Variable.Struct.IpInfo>>();
                 signNode.Clear();
-                Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+                Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
+                // Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
                 NP.ReadLine();
                 foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
                 {
