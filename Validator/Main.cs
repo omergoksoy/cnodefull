@@ -541,6 +541,11 @@ namespace Notus.Validator
             NGF.GetUtcTimeFromNode(20, true);
             TimeBaseBlockUidList.Clear();
 
+
+            HttpObj.DefaultResult_OK = "null";
+            HttpObj.DefaultResult_ERR = "null";
+            Start_HttpListener();
+
             if (NVG.Settings.GenesisCreated == false)
             {
                 TimeSyncObj.Start();
@@ -625,8 +630,9 @@ namespace Notus.Validator
                 SelectedPortVal = Notus.Toolbox.Network.FindFreeTcpPort();
             }
 
-            HttpObj.DefaultResult_OK = "null";
-            HttpObj.DefaultResult_ERR = "null";
+            // HttpObj.DefaultResult_OK = "null";
+            // HttpObj.DefaultResult_ERR = "null";
+            // Start_HttpListener();
 
             if (NVG.Settings.GenesisCreated == false)
             {
@@ -648,8 +654,6 @@ namespace Notus.Validator
                 };
             }
 
-            //omergoksoy
-            Start_HttpListener();
 
             /*
             // TEST AMAÇLI OLARAK KAPATILDI
