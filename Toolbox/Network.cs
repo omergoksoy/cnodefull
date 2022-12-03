@@ -134,7 +134,6 @@ namespace Notus.Toolbox
         }
         public static void IdentifyNodeType(int Timeout = 5)
         {
-            NVH.PrepareValidatorList();
             NVG.Settings.IpInfo = NTN.GetNodeIP();
             if (NVG.Settings.LocalNode == true)
             {
@@ -197,6 +196,7 @@ namespace Notus.Toolbox
                 }
             }
             */
+            NVH.PrepareValidatorList();
         }
 
         public static int FindFreeTcpPort()
