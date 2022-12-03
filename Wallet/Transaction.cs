@@ -12,8 +12,7 @@ using System;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using NGF = Notus.Variable.Globals.Functions;
-using NVH = Notus.Validator.Helper;
+
 namespace Notus.Wallet
 {
     /// <summary>
@@ -28,7 +27,6 @@ namespace Notus.Wallet
             bool useSSL = false
         )
         {
-            NVH.PrepareValidatorList();
             try
             {
                 if (Notus.Wallet.ID.CheckAddress(walletKey, currentNetwork) == false)
@@ -44,7 +42,7 @@ namespace Notus.Wallet
                 bool exitInnerLoop = false;
                 while (exitInnerLoop == false)
                 {
-                    foreach (var item in NGF.ValidatorList)
+                    for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
                     {
                         try
                         {
@@ -53,7 +51,7 @@ namespace Notus.Wallet
                                     (
                                         whichNodeIpAddress == ""
                                             ?
-                                        item.Value.IpAddress
+                                        Notus.Variable.Constant.ListMainNodeIp[a]
                                             :
                                         whichNodeIpAddress
                                     ),
@@ -85,6 +83,15 @@ namespace Notus.Wallet
                         }
                         catch (Exception err)
                         {
+                            Notus.Print.Log(
+                                Notus.Variable.Enum.LogLevel.Info,
+                                8797987,
+                                err.Message,
+                                "BlockRowNo",
+                                null,
+                                err
+                            );
+                            //Notus.Print.Basic(true, "Error Text [8ae5cf]: " + err.Message);
                             Thread.Sleep(2000);
                         }
                         if (whichNodeIpAddress != "")
@@ -101,6 +108,15 @@ namespace Notus.Wallet
             }
             catch (Exception err)
             {
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    6587562,
+                    err.Message,
+                    "BlockRowNo",
+                    null,
+                    err
+                );
+                //Notus.Print.Basic(true, "Error Text [3aebc9]: " + err.Message);
             }
             return new Notus.Variable.Struct.CryptoTransactionResult()
             {
@@ -135,6 +151,15 @@ namespace Notus.Wallet
             }
             catch (Exception err)
             {
+                Notus.Print.Log(
+                    Notus.Variable.Enum.LogLevel.Info,
+                    7712365,
+                    err.Message,
+                    "BlockRowNo",
+                    null,
+                    err
+                );
+
                 return Notus.Variable.Enum.BlockStatusCode.AnErrorOccurred;
             }
 
@@ -209,7 +234,7 @@ namespace Notus.Wallet
                 bool exitInnerLoop = false;
                 while (exitInnerLoop == false)
                 {
-                    foreach (var item in NGF.ValidatorList)
+                    for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
                     {
                         try
                         {
@@ -219,7 +244,7 @@ namespace Notus.Wallet
                                     (
                                         whichNodeIpAddress == ""
                                             ?
-                                        item.Value.IpAddress
+                                        Notus.Variable.Constant.ListMainNodeIp[a]
                                             :
                                         whichNodeIpAddress
                                     ),

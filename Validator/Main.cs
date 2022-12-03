@@ -535,8 +535,9 @@ namespace Notus.Validator
         }
         public void Start()
         {
-            NVH.PrepareValidatorList();
             NVR.NetworkSelectorList.Clear();
+
+            NVH.PrepareValidatorList();
 
             NGF.GetUtcTimeFromNode(20, true);
             TimeBaseBlockUidList.Clear();
@@ -624,7 +625,6 @@ namespace Notus.Validator
             {
                 SelectedPortVal = Notus.Toolbox.Network.FindFreeTcpPort();
             }
-            Console.WriteLine("SelectedPortVal : " + SelectedPortVal.ToString());
 
             HttpObj.DefaultResult_OK = "null";
             HttpObj.DefaultResult_ERR = "null";
@@ -648,15 +648,28 @@ namespace Notus.Validator
                     return true;
                 };
             }
+            kontrol noktası
+            int portVal = NVG.Settings.Nodes.My.IP.Port + 8;
+            System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(
+                IPAddress.Parse(
+                    NVG.Settings.Nodes.My.IP.IpAddress
+                ),8
+            );
+            
+            
+            Notus.P2P.Manager P2PManager = new Notus.P2P.Manager(localEndPoint, portVal, (string IncomeText) =>
+            {
+                Console.WriteLine("Notus.P2P.Manager P2PManager - Before");
+                Console.WriteLine("IncomeText : "  + IncomeText);
+                Console.WriteLine("Notus.P2P.Manager P2PManager - After");
+            });
 
+            while (true)
+            {
+
+            }
             //omergoksoy
             Start_HttpListener();
-
-            /*
-            // TEST AMAÇLI OLARAK KAPATILDI
-            // TEST AMAÇLI OLARAK KAPATILDI
-            // TEST AMAÇLI OLARAK KAPATILDI
-            // TEST AMAÇLI OLARAK KAPATILDI
             NVG.Settings.MsgOrch.OnReceive((string IncomeText) =>
             {
                 //sync-control
@@ -664,14 +677,7 @@ namespace Notus.Validator
                 string innerResultStr = ValidatorQueueObj.ProcessIncomeData(IncomeText);
 
             });
-            */
-
-            NVG.Settings.MsgOrch.Start((string IncomeText) =>
-            {
-                Console.WriteLine("IncomeText [control-point] : " + IncomeText);
-                string innerResultStr = ValidatorQueueObj.ProcessIncomeData(IncomeText);
-                Console.WriteLine("innerResultStr : " + innerResultStr);
-            });
+            NVG.Settings.MsgOrch.Start();
 
             if (NVG.Settings.GenesisCreated == false)
             {

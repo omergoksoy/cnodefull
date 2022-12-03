@@ -11,8 +11,7 @@ namespace Notus.P2P
 
         public void Send(string message)
         {
-            int sendedSize = this.socket.Send(System.Text.Encoding.UTF8.GetBytes(message));
-            Console.WriteLine("sendedSize : " + sendedSize.ToString());
+            this.socket.Send(System.Text.Encoding.UTF8.GetBytes(message));
         }
 
         private void Receive()

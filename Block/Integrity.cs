@@ -357,11 +357,9 @@ namespace Notus.Block
             bool exitInnerLoop = false;
             while (exitInnerLoop == false)
             {
-                //for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
-                foreach(var item in NGF.ValidatorList)
+                for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
                 {
-                    //string nodeIpAddress = Notus.Variable.Constant.ListMainNodeIp[a];
-                    string nodeIpAddress = item.Value.IpAddress;
+                    string nodeIpAddress = Notus.Variable.Constant.ListMainNodeIp[a];
                     try
                     {
                         string MainResultStr = Notus.Communication.Request.GetSync(
@@ -379,7 +377,6 @@ namespace Notus.Block
                             exitInnerLoop = true;
                             tmpBlockKeyStr = MainResultStr.Substring(0, 90);
                             tmpBlockSignStr = MainResultStr.Substring(90);
-                            break;
                         }
                         else
                         {
@@ -437,10 +434,10 @@ namespace Notus.Block
                 bool exitInnerLoop = false;
                 while (exitInnerLoop == false)
                 {
-                    foreach (var item in NGF.ValidatorList)
+                    for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
                     {
                         string myIpAddress = (NVG.Settings.LocalNode == true ? NVG.Settings.IpInfo.Local : NVG.Settings.IpInfo.Public);
-                        string nodeIpAddress = item.Value.IpAddress;
+                        string nodeIpAddress = Notus.Variable.Constant.ListMainNodeIp[a];
                         if (string.Equals(myIpAddress, nodeIpAddress) == false)
                         {
                             string MainResultStr = string.Empty;
@@ -466,7 +463,6 @@ namespace Notus.Block
                                         BS_Storage.AddSync(tmpEmptyBlock, true);
                                     }
                                     exitInnerLoop = true;
-                                    break;
                                 }
                             }
                             catch (Exception err)
@@ -565,7 +561,6 @@ namespace Notus.Block
         }
         public bool ControlGenesisBlock()
         {
-            //burada liste alınsın
             //string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
             string ZipFileName = Notus.IO.GetFolderName(
                 NVG.Settings.Network, 
@@ -624,14 +619,14 @@ namespace Notus.Block
 
                 Dictionary<string, List<Notus.Variable.Struct.IpInfo>> signNode = new Dictionary<string, List<Notus.Variable.Struct.IpInfo>>();
                 signNode.Clear();
-                foreach (var item in NGF.ValidatorList)
-                //foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
+
+                foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
                 {
-                    if (string.Equals(NVG.Settings.IpInfo.Public, item.Value.IpAddress) == false)
+                    if (string.Equals(NVG.Settings.IpInfo.Public, item.IpAddress) == false)
                     {
-                        NP.Info("Checking From -> " + item.Value.IpAddress);
+                        NP.Info("Checking From -> " + item.IpAddress);
                         Notus.Variable.Class.BlockData? tmpInnerBlockData =
-                        Notus.Toolbox.Network.GetBlockFromNode(item.Value.IpAddress, item.Value.Port, 1, NVG.Settings);
+                        Notus.Toolbox.Network.GetBlockFromNode(item.IpAddress, item.Port, 1, NVG.Settings);
                         if (tmpInnerBlockData != null)
                         {
                             if (signCount.ContainsKey(tmpInnerBlockData.sign) == false)
@@ -643,8 +638,8 @@ namespace Notus.Block
                             signNode[tmpInnerBlockData.sign].Add(
                                 new Notus.Variable.Struct.IpInfo()
                                 {
-                                    IpAddress = item.Value.IpAddress,
-                                    Port = item.Value.Port
+                                    IpAddress = item.IpAddress,
+                                    Port = item.Port
                                 }
                             );
                             signCount[tmpInnerBlockData.sign] = signCount[tmpInnerBlockData.sign] + 1;

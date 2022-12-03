@@ -10,10 +10,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.10" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="File\FileDb.cs" />
-  </ItemGroup>
   <ItemGroup>
     <None Remove="Global\" />
     <None Remove="Message\" />

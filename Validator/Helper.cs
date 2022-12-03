@@ -1,35 +1,22 @@
-﻿using System.Collections.Concurrent;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text.Json;
 using NCH = Notus.Communication.Helper;
 using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
-using NVD = Notus.Validator.Date;
 using NVG = Notus.Variable.Globals;
-using NVH = Notus.Validator.Helper;
-using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
+using NVH = Notus.Validator.Helper;
+using NVD = Notus.Validator.Date;
 namespace Notus.Validator
 {
     public static class Helper
     {
-        public static bool PrepareValidatorList()
+        public static void PrepareValidatorList()
         {
-            if (NGF.ValidatorList == null)
-            {
-                NGF.ValidatorList = new SortedDictionary<string, NVS.IpInfo>();
-            }
-
-            if (NVG.NodeList == null)
-            {
-                NVG.NodeList = new ConcurrentDictionary<string, NVS.NodeQueueInfo>();
-            }
-
             NVG.NodeList.Clear();
             NGF.ValidatorList.Clear();
-
             bool generateBaseValidatorList = false;
 
             using (Notus.Mempool objMpNodeList = new Notus.Mempool(NVC.MemoryPoolName["ValidatorList"]))
@@ -136,7 +123,6 @@ namespace Notus.Validator
                 NGF.ValidatorList[entry.Key].Status = NVS.NodeStatus.Unknown;
             }
             NGF.ValidatorList[NVG.Settings.Nodes.My.HexKey].Status = NVS.NodeStatus.Online;
-            return true;
         }
 
         public static List<NVS.IpInfo> GiveMeNodeList()
@@ -174,7 +160,7 @@ namespace Notus.Validator
         }
         public static bool RightBlockValidator(Notus.Variable.Class.BlockData incomeBlock)
         {
-
+            
             ulong queueTimePeriod = NVD.Calculate();
             ulong blockTimeVal = ND.ToLong(incomeBlock.info.time);
             ulong blockGenarationTime = blockTimeVal - (blockTimeVal % queueTimePeriod);

@@ -1,5 +1,6 @@
-﻿using System.Text.Json;
-using NGF = Notus.Variable.Globals.Functions;
+﻿using System;
+using System.Collections.Generic;
+using System.Text.Json;
 using NP = Notus.Print;
 namespace Notus.Wallet
 {
@@ -9,19 +10,19 @@ namespace Notus.Wallet
     */
     public static class Fee
     {
-        public static Int64 Calculate(Notus.Variable.Struct.BlockStruct_160 RawObj, Notus.Variable.Enum.NetworkType networkType = Notus.Variable.Enum.NetworkType.MainNet, Notus.Variable.Enum.NetworkLayer networkLayer = Notus.Variable.Enum.NetworkLayer.Layer1)
+        public static Int64 Calculate(Notus.Variable.Struct.BlockStruct_160 RawObj, Notus.Variable.Enum.NetworkType networkType = Notus.Variable.Enum.NetworkType.MainNet,Notus.Variable.Enum.NetworkLayer networkLayer = Notus.Variable.Enum.NetworkLayer.Layer1)
         {
             return
                 ReadFeeData(Notus.Variable.Enum.Fee.TokenGeneration, networkType, networkLayer) +
                 (
                     ReadFeeData(Notus.Variable.Enum.Fee.DataStorage, networkType, networkLayer)
                         *
-                    (RawObj.Info.Logo.Base64.Length == 0 ? 1 : RawObj.Info.Logo.Base64.Length)
+                    (RawObj.Info.Logo.Base64.Length==0 ? 1 : RawObj.Info.Logo.Base64.Length)
                 );
         }
         public static Int64 Calculate(
-            Notus.Variable.Enum.Fee FeeType,
-            Notus.Variable.Enum.NetworkType networkType,
+            Notus.Variable.Enum.Fee FeeType, 
+            Notus.Variable.Enum.NetworkType networkType, 
             Notus.Variable.Enum.NetworkLayer networkLayer
         )
         {
@@ -34,9 +35,9 @@ namespace Notus.Wallet
             bool exitInnerLoop = false;
             while (exitInnerLoop == false)
             {
-                foreach (var item in NGF.ValidatorList)
+                for (int a = 0; a < Notus.Variable.Constant.ListMainNodeIp.Count && exitInnerLoop == false; a++)
                 {
-                    string nodeIpAddress = item.Value.IpAddress;
+                    string nodeIpAddress = Notus.Variable.Constant.ListMainNodeIp[a];
                     try
                     {
                         string fullUrlAddress =
@@ -74,7 +75,7 @@ namespace Notus.Wallet
             };
         }
 
-        private static string FeeDataStorageDbName(Notus.Variable.Enum.NetworkType networkType, Notus.Variable.Enum.NetworkLayer networkLayer)
+        private static string FeeDataStorageDbName(Notus.Variable.Enum.NetworkType networkType,Notus.Variable.Enum.NetworkLayer networkLayer)
         {
             string tmpFolderName = Notus.IO.GetFolderName(
                 networkType,
@@ -86,7 +87,7 @@ namespace Notus.Wallet
             return tmpFolderName + "price_data";
         }
         public static Int64 ReadFeeData(
-            Notus.Variable.Enum.Fee FeeConstant,
+            Notus.Variable.Enum.Fee FeeConstant, 
             Notus.Variable.Enum.NetworkType networkType,
             Notus.Variable.Enum.NetworkLayer networkLayer
         )
@@ -147,7 +148,7 @@ namespace Notus.Wallet
             }
             return 0;
         }
-        public static void ClearFeeData(Notus.Variable.Enum.NetworkType networkType, Notus.Variable.Enum.NetworkLayer networkLayer)
+        public static void ClearFeeData(Notus.Variable.Enum.NetworkType networkType , Notus.Variable.Enum.NetworkLayer networkLayer)
         {
             try
             {
@@ -157,14 +158,14 @@ namespace Notus.Wallet
                     ObjMp_FeeData.Clear();
                 }
             }
-            catch (Exception err)
+            catch(Exception err)
             {
                 Console.WriteLine("Fee.Cs -> Line 172");
                 Console.WriteLine(err.Message);
                 Console.WriteLine(err.Message);
             }
         }
-        public static void StoreFeeData(string KeyName, string RawData, Notus.Variable.Enum.NetworkType networkType, Notus.Variable.Enum.NetworkLayer networkLayer, bool ClearTable = false)
+        public static void StoreFeeData(string KeyName, string RawData, Notus.Variable.Enum.NetworkType networkType , Notus.Variable.Enum.NetworkLayer networkLayer , bool ClearTable = false)
         {
             if (ClearTable == true)
             {

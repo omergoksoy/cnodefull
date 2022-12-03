@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Net;
 using System.Text.Json;
 using NM = Notus.Message;
 using NP = Notus.Print;
@@ -13,7 +12,7 @@ namespace Notus.Message
     public class Orchestra : IDisposable
     {
         private bool started = false;
-        private Notus.P2P.Manager P2PManager;
+
         private ConcurrentDictionary<string, int> errorCountList = new ConcurrentDictionary<string, int>();
         private bool pingTimerIsRunning = false;
         private NT.Timer pingTimer = new NT.Timer(5000);
@@ -31,9 +30,6 @@ namespace Notus.Message
         {
             Console.WriteLine(messageText + " Sending To : " + walletId);
             Console.WriteLine(messageText + " Sending To : " + walletId);
-            P2PManager.Send(walletId, messageText);
-            return "done";
-            /*
             if (subListObj.ContainsKey(walletId))
             {
                 return subListObj[walletId].Send(messageText);
@@ -41,69 +37,14 @@ namespace Notus.Message
 
             Console.WriteLine("Orchestra.cs -> Line 42");
             Console.WriteLine("WalletId Does Not Exist");
-            */
             return string.Empty;
         }
-        // public void Start()
-        // YUKARISI TEST AMAÇLI OLARAK KAPATILDI
-        public void Start(System.Action<string> incomeTextFunc)
+        public void Start()
         {
-            int portVal = NVG.Settings.Nodes.My.IP.Port + 10;
-            System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(IPAddress.Any, portVal);
-            P2PManager = new Notus.P2P.Manager(localEndPoint, portVal, incomeTextFunc);
-
-            subTimer.Start(() =>
-            {
-                if (subTimerIsRunning == false)
-                {
-                    subTimerIsRunning = true;
-                    KeyValuePair<string, Variable.Struct.NodeQueueInfo>[]? tList = NVG.NodeList.ToArray();
-                    if (tList != null)
-                    {
-                        //eklenmeyenler eklensin
-                        for (int i = 0; i < tList.Length; i++)
-                        {
-                            if (string.Equals(tList[i].Value.IP.Wallet, NVG.Settings.NodeWallet.WalletKey) == false)
-                            {
-                                if (tList[i].Value.Status == Variable.Struct.NodeStatus.Online)
-                                {
-                                    IPEndPoint remoteEndPoint = new IPEndPoint(
-                                        IPAddress.Parse(tList[i].Value.IP.IpAddress),
-                                        portVal
-                                    );
-                                    P2PManager.AddPeer(tList[i].Value.IP.Wallet,remoteEndPoint);
-                                }
-                            }
-
-                            if (tList[i].Value.Status == Variable.Struct.NodeStatus.Offline)
-                            {
-                                if (subListObj.ContainsKey(tList[i].Value.IP.Wallet) == true)
-                                {
-                                    NP.Info("Offline Node Remove From List");
-                                    P2PManager.RemovePeer(tList[i].Value.IP.Wallet);
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("list-value-is-null");
-                    }
-                    subTimerIsRunning = false;
-                }
-            });
-
-            started = true;
-
-            // YUKARISI TEST AMAÇLI EKLENDİ
-            // YUKARISI TEST AMAÇLI EKLENDİ
-            // YUKARISI TEST AMAÇLI EKLENDİ
-            // YUKARISI TEST AMAÇLI EKLENDİ
-            // YUKARISI TEST AMAÇLI EKLENDİ
-
             if (started == false)
             {
                 started = true;
+
                 Task.Run(() =>
                 {
                     pubObj.Start();

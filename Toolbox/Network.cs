@@ -2,16 +2,16 @@
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text.Json;
-using NCR = Notus.Communication.Request;
 using NGV = Notus.Globals.Variable;
-using NNN = Notus.Network.Node;
-using NP = Notus.Print;
-using NTN = Notus.Toolbox.Network;
-using NVClass = Notus.Variable.Class;
-using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
-using NVH = Notus.Validator.Helper;
+using NVC = Notus.Variable.Constant;
 using NVS = Notus.Variable.Struct;
+using NVClass = Notus.Variable.Class;
+using NNN = Notus.Network.Node;
+using NCR = Notus.Communication.Request;
+using NP = Notus.Print;
+using NVE = Notus.Variable.Enum;
+using NTN = Notus.Toolbox.Network;
 namespace Notus.Toolbox
 {
     public class Network
@@ -34,7 +34,7 @@ namespace Notus.Toolbox
         {
             string requestUrl = NNN.MakeHttpListenerPath(ipAddress, portNo) + "ping/";
             string serverResponse = NCR.GetSync(requestUrl, 1, true, false);
-            return string.Equals(serverResponse, "pong") == true ? NVS.NodeStatus.Online : NVS.NodeStatus.Offline;
+            return string.Equals(serverResponse, "pong")==true ? NVS.NodeStatus.Online : NVS.NodeStatus.Offline;
         }
         public static string IpAndPortToHex(NVS.NodeInfo NodeIp)
         {
@@ -46,10 +46,6 @@ namespace Notus.Toolbox
         }
         public static string IpAndPortToHex(string ipAddress, int portNo)
         {
-            if (ipAddress.Length == 0 && portNo == 0)
-            {
-                return "";
-            }
             string resultStr = "";
             foreach (string byteStr in ipAddress.Split("."))
             {
@@ -149,25 +145,6 @@ namespace Notus.Toolbox
                 NVG.Settings.Nodes.My.IP.IpAddress = NVG.Settings.IpInfo.Public;
             }
             NVG.Settings.Nodes.My.HexKey = NTN.IpAndPortToHex(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
-            /*
-            foreach (var item in NGF.ValidatorList)
-            {
-
-            }
-            */
-            if (PublicIpIsConnectable(Timeout))
-            {
-                NP.Basic(NVG.Settings, "Starting As Master Node");
-                NVG.Settings.NodeType = NVE.NetworkNodeType.Master;
-            }
-            else
-            {
-                NP.Basic(NVG.Settings, "Not Master Node");
-                NP.Basic(NVG.Settings, "Starting As Replicant Node");
-                NVG.Settings.NodeType = NVE.NetworkNodeType.Replicant;
-            }
-
-            /*
             if (NVC.ListMainNodeIp.IndexOf(NVG.Settings.IpInfo.Public) >= 0)
             {
                 //NVG.Settings.Nodes.My.InTheCode = true;
@@ -198,8 +175,6 @@ namespace Notus.Toolbox
                     NVG.Settings.NodeType = NVE.NetworkNodeType.Replicant;
                 }
             }
-            */
-            NVH.PrepareValidatorList();
         }
 
         public static int FindFreeTcpPort()
