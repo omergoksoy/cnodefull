@@ -69,12 +69,16 @@ namespace Notus.Validator
                             Console.WriteLine(JsonSerializer.Serialize(wList));
                         }
                     }
+                    Console.WriteLine("Distribute fonksiyonunda - > dagitma islemi devre disi birakildi");
+                    string incomeResult = "";
+                    /*
                     string incomeResult = NVG.Settings.MsgOrch.SendMsg(
                         entry.Value.IP.Wallet,
                         "<block>" +
                             blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey +
                         "</block>"
                     );
+                    */
                     if (string.Equals(incomeResult.ToLower(), "done"))
                     {
                         NP.Info(
@@ -1076,6 +1080,10 @@ namespace Notus.Validator
                         // eğer false ise senkronizasyon başlamamış demektir...
                         NVG.Settings.SyncStarted = false;
                     }
+
+                    Console.WriteLine("Queue.cs -> Line 1081");
+                    Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue));
+                    NP.ReadLine();
                 }
                 else
                 {
