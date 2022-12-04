@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
-using NPM = Notus.P2P.Manager;
+using System.Text;
+using NP2P = Notus.P2P;
 namespace Notus.P2P
 {
     internal class Connection : IDisposable
@@ -9,17 +10,46 @@ namespace Notus.P2P
         private Socket socket;
         private Action<string> messageReceivedCallback;
 
-        public void Send(string message)
+        public bool Send(string message)
         {
-            this.socket.Send(System.Text.Encoding.UTF8.GetBytes(message));
+            if (message.Length == 0)
+            {
+                return false;
+            }
+
+            try
+            {
+                int bytesSent = this.socket.Send(Encoding.ASCII.GetBytes(message));
+                if (bytesSent > 0)
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+            }
+            return false;
         }
 
         private void Receive()
         {
-            var buffer = new byte[1024];
-            var bytesReceived = this.socket.Receive(buffer);
-            var message = System.Text.Encoding.UTF8.GetString(buffer, 0, bytesReceived);
-            this.messageReceivedCallback(message);
+            while (true)
+            {
+                try
+                {
+                    byte[] bytes = new byte[1024];
+                    int bytesRec = this.socket.Receive(bytes);
+                    if (bytesRec > 0)
+                    {
+                        string message = Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                        this.messageReceivedCallback(message);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            }
         }
 
         public Connection(string peerId, Socket handler, Action<string> messageReceivedCallback)

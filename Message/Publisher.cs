@@ -1,4 +1,5 @@
-﻿using System;
+﻿/*
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -70,13 +71,11 @@ namespace Notus.Message
                     string contentText = Encoding.ASCII.GetString(byteArr, 0, byteArraySize);
                     if (string.Equals(contentText, "ping"))
                     {
-                        /*
-                        if (pingPrintedOneTime == false)
-                        {
-                            pingPrintedOneTime = true;
-                            Console.WriteLine("Publisher.Cs -> contentText for ping [ " + contentText.Length + " ] : " + contentText);
-                        }
-                        */
+                        //if (pingPrintedOneTime == false)
+                        //{
+                            //pingPrintedOneTime = true;
+                            //Console.WriteLine("Publisher.Cs -> contentText for ping [ " + contentText.Length + " ] : " + contentText);
+                        //}
                         handler.Send(System.Text.Encoding.ASCII.GetBytes("pong"));
                     }
                     else
@@ -148,3 +147,4 @@ namespace Notus.Message
 
     }
 }
+*/

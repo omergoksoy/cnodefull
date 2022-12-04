@@ -106,7 +106,7 @@ namespace Notus.Variable
                 Layer = NVE.NetworkLayer.Layer1,
                 Network = NVE.NetworkType.MainNet,
                 NodeType = NVE.NetworkNodeType.Suitable,
-                MsgOrch = new Notus.Message.Orchestra(),
+                //MsgOrch = new Notus.Message.Orchestra(),
                 Nodes = new NVS.NodeQueueList()
                 {
                     My = new Struct.NodeQueueInfo()

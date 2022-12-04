@@ -14,6 +14,7 @@ using NVH = Notus.Validator.Helper;
 using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
 using NVD = Notus.Validator.Date;
+using NP2P = Notus.P2P;
 namespace Notus.Validator
 {
     public class Main : IDisposable
@@ -551,6 +552,42 @@ namespace Notus.Validator
             Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with onther node
             Obj_Integrity.GetLastBlock();        // get last block from current node
 
+
+            //NVG.Settings.PeerManager=
+            int p2pPortNo = Notus.Network.Node.GetNetworkPort() + 10;
+            NVG.Settings.PeerManager = new NP2P.Manager(
+                new IPEndPoint(IPAddress.Any, p2pPortNo),
+                p2pPortNo, 
+                (string message) =>{
+                    Console.WriteLine(message);
+                }
+            );
+            /*
+            PeerManager
+            //kontrol noktası
+            int portVal = NVG.Settings.Nodes.My.IP.Port + 8;
+            System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(
+                IPAddress.Parse(
+                    NVG.Settings.Nodes.My.IP.IpAddress
+                ),8
+            );
+            
+            Notus.P2P.Manager P2PManager = new Notus.P2P.Manager(localEndPoint, portVal, (string IncomeText) =>
+            {
+                Console.WriteLine("Notus.P2P.Manager P2PManager - Before");
+                Console.WriteLine("IncomeText : "  + IncomeText);
+                Console.WriteLine("Notus.P2P.Manager P2PManager - After");
+            });
+
+            NVG.Settings.MsgOrch.OnReceive((string IncomeText) =>
+            {
+                //sync-control
+                Console.WriteLine("IncomeText : " + IncomeText);
+                string innerResultStr = ValidatorQueueObj.ProcessIncomeData(IncomeText);
+
+            });
+            NVG.Settings.MsgOrch.Start();
+            */
             if (NVG.Settings.Genesis == null)
             {
                 NP.Basic(NVG.Settings, "Notus.Validator.Main -> Genesis Is NULL");
@@ -648,37 +685,9 @@ namespace Notus.Validator
                     return true;
                 };
             }
-            //kontrol noktası
-            int portVal = NVG.Settings.Nodes.My.IP.Port + 8;
-            System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(
-                IPAddress.Parse(
-                    NVG.Settings.Nodes.My.IP.IpAddress
-                ),8
-            );
-            
-            
-            Notus.P2P.Manager P2PManager = new Notus.P2P.Manager(localEndPoint, portVal, (string IncomeText) =>
-            {
-                Console.WriteLine("Notus.P2P.Manager P2PManager - Before");
-                Console.WriteLine("IncomeText : "  + IncomeText);
-                Console.WriteLine("Notus.P2P.Manager P2PManager - After");
-            });
 
-            while (true)
-            {
-
-            }
             //omergoksoy
             Start_HttpListener();
-            NVG.Settings.MsgOrch.OnReceive((string IncomeText) =>
-            {
-                //sync-control
-                Console.WriteLine("IncomeText : " + IncomeText);
-                string innerResultStr = ValidatorQueueObj.ProcessIncomeData(IncomeText);
-
-            });
-            NVG.Settings.MsgOrch.Start();
-
             if (NVG.Settings.GenesisCreated == false)
             {
                 NVG.Settings.CommEstablished = true;
