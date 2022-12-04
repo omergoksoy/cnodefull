@@ -1086,7 +1086,10 @@ namespace Notus.Validator
 
                     foreach (var item in NVG.Settings.Nodes.Queue)
                     {
-                        NVG.Settings.PeerManager.AddPeer(item.Value.Wallet, item.Value.IpAddress);
+                        if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, item.Value.Wallet) == false)
+                        {
+                            NVG.Settings.PeerManager.AddPeer(item.Value.Wallet, item.Value.IpAddress);
+                        }
                     }
                 }
                 else

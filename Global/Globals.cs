@@ -260,6 +260,7 @@ namespace Notus.Variable
                         }
                     }
                 }
+                NVG.Settings.PeerManager.RemoveAll();
                 Settings.ClosingCompleted = true;
             }
             public static string GenerateTxUid()
