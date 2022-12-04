@@ -553,6 +553,9 @@ namespace Notus.Validator
             Obj_Integrity.GetLastBlock();        // get last block from current node
 
 
+            burada port ile soket başlatacak ve kontrollü bir şekilde 
+            başlangıçlarını ayarla
+
             //NVG.Settings.PeerManager=
             int p2pPortNo = Notus.Network.Node.GetNetworkPort() + 10;
             NVG.Settings.PeerManager = new NP2P.Manager(
