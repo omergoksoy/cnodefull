@@ -72,15 +72,14 @@ namespace Notus.Validator
                     }
                     Console.WriteLine("Distribute fonksiyonunda - > dagitma islemi devre disi birakildi");
                     string incomeResult = "";
-                    /*
-                    string incomeResult = NVG.Settings.MsgOrch.SendMsg(
+                    //NVG.Settings.PeerManager.Send(entry.Value.IP.Wallet)
+                    bool messageSended = NVG.Settings.PeerManager.Send(
                         entry.Value.IP.Wallet,
                         "<block>" +
                             blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey +
                         "</block>"
                     );
-                    */
-                    if (string.Equals(incomeResult.ToLower(), "done"))
+                    if (messageSended == true)
                     {
                         NP.Info(
                         "Distributed [ " + fixedRowNoLength(blockRowNo) + " : " + blockType.ToString() + " ] To " +
@@ -1087,14 +1086,13 @@ namespace Notus.Validator
 
                     foreach (var item in NVG.Settings.Nodes.Queue)
                     {
-                        
                         int p2pPortNo = Notus.Network.Node.GetP2PPort();
                         NVG.Settings.PeerManager.AddPeer(
-                            item.Value.Wallet, 
+                            item.Value.Wallet,
                             new IPEndPoint(
                                 IPAddress.Parse(
                                     item.Value.IpAddress
-                                ), 
+                                ),
                                 p2pPortNo
                             )
                         );

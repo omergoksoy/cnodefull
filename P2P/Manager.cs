@@ -57,21 +57,23 @@ namespace Notus.P2P
             }
         }
 
-        public void Send(string peerId, string message)
+        public bool Send(string peerId, string message)
         {
             if (this.Peers.ContainsKey(peerId))
             {
-                if (this.Peers[peerId].Send(message) == false)
+                if (this.Peers[peerId].Send(message) == true)
                 {
-                    Console.WriteLine("Error : " + peerId);
-                    this.RemovePeer(peerId);
+                    return true;
+                    //Console.WriteLine("Success from " + peerId);
                 }
                 else
                 {
-                    Console.WriteLine("Success from " + peerId);
+                    //Console.WriteLine("Error : " + peerId);
+                    this.RemovePeer(peerId);
                 }
 
             }
+            return false;
         }
 
         public void SendAll(string message)
