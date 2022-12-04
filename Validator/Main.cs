@@ -559,7 +559,7 @@ namespace Notus.Validator
 
             //NVG.Settings.PeerManager =
             int p2pPortNo = Notus.Network.Node.GetP2PPort();
-            Console.WriteLine("p2pPortNo : " + p2pPortNo.ToString());
+            NP.Info("Node P2P Port No : " + p2pPortNo.ToString());
             NVG.Settings.PeerManager = new NP2P.Manager(
                 new IPEndPoint(IPAddress.Any, p2pPortNo),
                 p2pPortNo,

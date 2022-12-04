@@ -13,7 +13,15 @@ using NVG = Notus.Variable.Globals;
 
 static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 {
-    string fatalErrorText = (e.ExceptionObject as Exception).Message + "Unhandled UnhandledExceptionEventArgs Exception -> Sender(" + sender.ToString() + ")";
+    string fatalErrorText = "";
+    if (e!=null)
+    {
+        fatalErrorText = (e.ExceptionObject as Exception).Message + "Unhandled UnhandledExceptionEventArgs Exception";
+    }
+    if (sender != null)
+    {
+        fatalErrorText = fatalErrorText + " -> Sender(" + sender.ToString() + ")";
+    }
     const string directoryName = "log_list";
     if (Directory.Exists(directoryName) == false)
     {
