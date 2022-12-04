@@ -1081,7 +1081,7 @@ namespace Notus.Validator
                         NVG.Settings.SyncStarted = false;
                     }
 
-                    Console.WriteLine("NVG.GroupNo : " + NVG.GroupNo.ToString());
+                    //Console.WriteLine("NVG.GroupNo : " + NVG.GroupNo.ToString());
                     NVG.Settings.PeerManager.RemoveAll();
 
                     foreach (var item in NVG.Settings.Nodes.Queue)

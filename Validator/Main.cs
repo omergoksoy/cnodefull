@@ -557,7 +557,6 @@ namespace Notus.Validator
             başlangıçlarını ayarla
             */
 
-            //NVG.Settings.PeerManager =
             int p2pPortNo = Notus.Network.Node.GetP2PPort();
             NP.Info("Node P2P Port No : " + p2pPortNo.ToString());
             NVG.Settings.PeerManager = new NP2P.Manager(
