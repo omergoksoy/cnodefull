@@ -70,9 +70,6 @@ namespace Notus.Validator
                             Console.WriteLine(JsonSerializer.Serialize(wList));
                         }
                     }
-                    Console.WriteLine("Distribute fonksiyonunda - > dagitma islemi devre disi birakildi");
-                    string incomeResult = "";
-                    //NVG.Settings.PeerManager.Send(entry.Value.IP.Wallet)
                     bool messageSended = NVG.Settings.PeerManager.Send(
                         entry.Value.IP.Wallet,
                         "<block>" +
@@ -90,8 +87,7 @@ namespace Notus.Validator
                     {
                         NP.Warning(
                         "Distribution Error [ " + fixedRowNoLength(blockRowNo) + " : " + blockType.ToString() + " ] " +
-                            entry.Value.IP.IpAddress + ":" + entry.Value.IP.Port.ToString() +
-                            " -> " + incomeResult
+                            entry.Value.IP.IpAddress + ":" + entry.Value.IP.Port.ToString()
                         );
                     }
                 }
@@ -192,14 +188,13 @@ namespace Notus.Validator
                 blok alma işi bitince yeni blok oluşturulsun
                 */
                 NVG.Settings.WaitForGeneratedBlock = true;
-                NP.Info("NVG.Settings.WaitForGeneratedBlock = TRUE;");
+                NP.Warning("Wait To Get New Block");
 
                 string incomeDataStr = GetPureText(incomeData, "block");
-                NP.Info("Income Block Row No -> " + incomeDataStr);
                 if (incomeDataStr.IndexOf(":") < 0)
                 {
                     NVG.Settings.WaitForGeneratedBlock = false;
-                    NP.Warning("NVG.Settings.WaitForGeneratedBlock = FALSE;");
+                    NP.Danger("Error Occurred While Getting New Block");
                     return "error-msg";
                 }
 
@@ -226,8 +221,7 @@ namespace Notus.Validator
                 if (tmpPortNo == 0)
                 {
                     NVG.Settings.WaitForGeneratedBlock = false;
-                    NP.Warning("NVG.Settings.WaitForGeneratedBlock = FALSE;");
-                    Console.WriteLine("Queue.cs -> tmpPortNo Is Zero");
+                    NP.Danger("Error Occurred While Getting New Block");
                     return "fncResult-port-zero";
                 }
                 Variable.Class.BlockData? tmpBlockData =
@@ -235,8 +229,7 @@ namespace Notus.Validator
                 if (tmpBlockData == null)
                 {
                     NVG.Settings.WaitForGeneratedBlock = false;
-                    NP.Warning("NVG.Settings.WaitForGeneratedBlock = FALSE;");
-                    Console.WriteLine("Queue.cs -> Block Is NULL");
+                    NP.Danger("Error Occurred While Getting New Block");
                     return "tmpError-true";
                 }
                 //NP.Info("<block> Downloaded from other validator");
@@ -245,12 +238,12 @@ namespace Notus.Validator
                     if (Func_NewBlockIncome(tmpBlockData) == true)
                     {
                         NVG.Settings.WaitForGeneratedBlock = false;
-                        NP.Warning("NVG.Settings.WaitForGeneratedBlock = FALSE;");
+                        NP.Success("New Block Downloaded From Node");
                         return "done";
                     }
                 }
                 NVG.Settings.WaitForGeneratedBlock = false;
-                NP.Warning("NVG.Settings.WaitForGeneratedBlock = FALSE;");
+                NP.Danger("Error Occurred While Getting New Block");
                 return "fncResult-false";
             }
             if (CheckXmlTag(incomeData, "kill"))
