@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using NVG = Notus.Variable.Globals;
+using NVC = Notus.Variable.Constant;
+using NVE = Notus.Variable.Enum;
+using NGV = Notus.Globals.Variable;
 namespace Notus.Network
 {
     public static class Node
     {
         public static async Task<string> FindAvailable(
             string UrlText,
-            Notus.Variable.Enum.NetworkType currentNetwork,
-            Notus.Variable.Enum.NetworkLayer networkLayer,
+            NVE.NetworkType currentNetwork,
+            NVE.NetworkLayer networkLayer,
             bool sslActive = false
         )
         {
@@ -44,7 +47,7 @@ namespace Notus.Network
                 {
                     MainResultStr = await Notus.Communication.Request.Get(
                         MakeHttpListenerPath(
-                            Notus.Variable.Constant.DefaultNetworkUrl[currentNetwork],
+                            NVC.DefaultNetworkUrl[currentNetwork],
                             0,
                             true
                         ) +
@@ -53,7 +56,7 @@ namespace Notus.Network
                 catch (Exception err)
                 {
                     Notus.Print.Log(
-                        Notus.Variable.Enum.LogLevel.Info,
+                        NVE.LogLevel.Info,
                         77007700,
                         err.Message,
                         "BlockRowNo",
@@ -69,8 +72,8 @@ namespace Notus.Network
         public static async Task<string> FindAvailable(
             string UrlText,
             Dictionary<string, string> PostData,
-            Notus.Variable.Enum.NetworkType currentNetwork,
-            Notus.Variable.Enum.NetworkLayer networkLayer,
+            NVE.NetworkType currentNetwork,
+            NVE.NetworkLayer networkLayer,
             bool sslActive = false
         )
         {
@@ -94,7 +97,7 @@ namespace Notus.Network
                         catch (Exception err)
                         {
                             Notus.Print.Log(
-                                Notus.Variable.Enum.LogLevel.Info,
+                                NVE.LogLevel.Info,
                                 9000877,
                                 err.Message,
                                 "BlockRowNo",
@@ -115,7 +118,7 @@ namespace Notus.Network
                 {
                     MainResultStr = await Notus.Communication.Request.Post(
                         MakeHttpListenerPath(
-                            Notus.Variable.Constant.DefaultNetworkUrl[currentNetwork],
+                            NVC.DefaultNetworkUrl[currentNetwork],
                             0, true
                         ) +
                         UrlText, PostData);
@@ -123,7 +126,7 @@ namespace Notus.Network
                 catch (Exception err)
                 {
                     Notus.Print.Log(
-                        Notus.Variable.Enum.LogLevel.Info,
+                        NVE.LogLevel.Info,
                         90778400,
                         err.Message,
                         "BlockRowNo",
@@ -139,10 +142,10 @@ namespace Notus.Network
 
         public static string FindAvailableSync(
             string UrlText,
-            Notus.Variable.Enum.NetworkType currentNetwork,
-            Notus.Variable.Enum.NetworkLayer networkLayer,
+            NVE.NetworkType currentNetwork,
+            NVE.NetworkLayer networkLayer,
             bool showError = true,
-            Notus.Globals.Variable.Settings objSettings = null
+            NGV.Settings objSettings = null
         )
         {
             string MainResultStr = string.Empty;
@@ -167,7 +170,7 @@ namespace Notus.Network
                     catch (Exception err)
                     {
                         Notus.Print.Log(
-                            Notus.Variable.Enum.LogLevel.Info,
+                            NVE.LogLevel.Info,
                             77700000,
                             err.Message,
                             "BlockRowNo",
@@ -186,9 +189,9 @@ namespace Notus.Network
         public static string FindAvailableSync(
             string UrlText,
             Dictionary<string, string> PostData,
-            Notus.Variable.Enum.NetworkType currentNetwork,
-            Notus.Variable.Enum.NetworkLayer networkLayer,
-            Notus.Globals.Variable.Settings objSettings = null
+            NVE.NetworkType currentNetwork,
+            NVE.NetworkLayer networkLayer,
+            NGV.Settings objSettings = null
         )
         {
             string MainResultStr = string.Empty;
@@ -214,7 +217,7 @@ namespace Notus.Network
                     catch (Exception err)
                     {
                         Notus.Print.Log(
-                            Notus.Variable.Enum.LogLevel.Info,
+                            NVE.LogLevel.Info,
                             80000888,
                             err.Message,
                             "BlockRowNo",
@@ -231,7 +234,11 @@ namespace Notus.Network
             return MainResultStr;
         }
 
-        public static int GetNetworkPort(Notus.Globals.Variable.Settings? objSetting=null)
+        public static int GetP2PPort(NGV.Settings? objSetting = null)
+        {
+            return GetNetworkPort(objSetting) + 10;
+        }
+        public static int GetNetworkPort(NGV.Settings? objSetting=null)
         {
             if (objSetting == null)
             {
@@ -239,9 +246,9 @@ namespace Notus.Network
             }
             return GetNetworkPort(objSetting.Network, objSetting.Layer);
         }
-        public static int GetNetworkPort(Notus.Variable.Enum.NetworkType currentNetwork, Notus.Variable.Enum.NetworkLayer currentLayer)
+        public static int GetNetworkPort(NVE.NetworkType currentNetwork, NVE.NetworkLayer currentLayer)
         {
-            return Notus.Variable.Constant.PortNo[currentLayer][currentNetwork];
+            return NVC.PortNo[currentLayer][currentNetwork];
         }
         public static string MakeHttpListenerPath(string IpAddress, int PortNo = 0, bool UseSSL = false)
         {

@@ -6,15 +6,15 @@ using NCH = Notus.Communication.Helper;
 using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
+using NP2P = Notus.P2P;
 using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
+using NVD = Notus.Validator.Date;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
-using NVD = Notus.Validator.Date;
-using NP2P = Notus.P2P;
 namespace Notus.Validator
 {
     public class Main : IDisposable
@@ -552,19 +552,23 @@ namespace Notus.Validator
             Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with onther node
             Obj_Integrity.GetLastBlock();        // get last block from current node
 
-
+            /*
             burada port ile soket başlatacak ve kontrollü bir şekilde 
             başlangıçlarını ayarla
+            */
 
             //NVG.Settings.PeerManager=
-            int p2pPortNo = Notus.Network.Node.GetNetworkPort() + 10;
+            int p2pPortNo = Notus.Network.Node.GetP2PPort();
+            Console.WriteLine("p2pPortNo : " + p2pPortNo.ToString());
             NVG.Settings.PeerManager = new NP2P.Manager(
                 new IPEndPoint(IPAddress.Any, p2pPortNo),
-                p2pPortNo, 
-                (string message) =>{
-                    Console.WriteLine(message);
+                p2pPortNo,
+                (string message) =>
+                {
+                    Console.WriteLine("NVG.Settings.PeerManager : " + message);
                 }
             );
+
             /*
             PeerManager
             //kontrol noktası
@@ -837,8 +841,8 @@ namespace Notus.Validator
             }
 
             while (
-                tmpExitMainLoop == false && 
-                NVG.Settings.NodeClosing == false && 
+                tmpExitMainLoop == false &&
+                NVG.Settings.NodeClosing == false &&
                 NVG.Settings.GenesisCreated == false
             )
             {
