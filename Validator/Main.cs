@@ -563,9 +563,11 @@ namespace Notus.Validator
             NVG.Settings.PeerManager = new NP2P.Manager(
                 new IPEndPoint(IPAddress.Any, p2pPortNo),
                 p2pPortNo,
-                (string message) =>
+                (string incomeMessage) =>
                 {
-                    Console.WriteLine("NVG.Settings.PeerManager : " + message);
+                    Console.WriteLine("NVG.Settings.PeerManager : " + incomeMessage);
+                    Console.WriteLine("IncomeText : " + incomeMessage);
+                    //string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
                 }
             );
 
