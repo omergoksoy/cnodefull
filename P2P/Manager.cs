@@ -27,7 +27,7 @@ namespace Notus.P2P
             var peerId = peerEndPoint.ToString();
             var peer = new NP2P.Connection(peerId, handler, this.onReceive);
             this.Peers.TryAdd(peerId, peer);
-            Console.WriteLine("Peer connected: " + peerId);
+            NP.Info("Connected To Peer : " + peerId);
             this.listener.BeginAccept(new AsyncCallback(this.AcceptCallback), this.listener);
         }
 

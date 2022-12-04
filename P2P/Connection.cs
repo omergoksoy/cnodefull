@@ -8,6 +8,7 @@ namespace Notus.P2P
     {
         private string peerId;
         private Socket socket;
+        private bool exitLoop;
         private Action<string> messageReceivedCallback;
 
         public bool Send(string message)
@@ -33,7 +34,7 @@ namespace Notus.P2P
 
         private void Receive()
         {
-            while (true)
+            while (this.exitLoop == false)
             {
                 try
                 {
@@ -47,13 +48,14 @@ namespace Notus.P2P
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.ToString());
+                    //Console.WriteLine(e.ToString());
                 }
             }
         }
 
         public Connection(string peerId, Socket handler, Action<string> messageReceivedCallback)
         {
+            this.exitLoop = false;
             this.peerId = peerId;
             this.messageReceivedCallback = messageReceivedCallback;
             this.socket = handler;
@@ -64,6 +66,7 @@ namespace Notus.P2P
 
         public Connection(string peerId, IPEndPoint peerEndPoint, Action<string> messageReceivedCallback)
         {
+            this.exitLoop = false;
             this.peerId = peerId;
             this.messageReceivedCallback = messageReceivedCallback;
             this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -75,6 +78,7 @@ namespace Notus.P2P
 
         public void Dispose()
         {
+            this.exitLoop = true;
             this.socket.Dispose();
         }
     }
