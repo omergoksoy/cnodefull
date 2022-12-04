@@ -1087,8 +1087,17 @@ namespace Notus.Validator
 
                     foreach (var item in NVG.Settings.Nodes.Queue)
                     {
+                        
                         int p2pPortNo = Notus.Network.Node.GetP2PPort();
-                        NVG.Settings.PeerManager.AddPeer(item.Value.Wallet, new IPEndPoint(IPAddress.Any, p2pPortNo));
+                        NVG.Settings.PeerManager.AddPeer(
+                            item.Value.Wallet, 
+                            new IPEndPoint(
+                                IPAddress.Parse(
+                                    item.Value.IpAddress
+                                ), 
+                                p2pPortNo
+                            )
+                        );
                     }
                     //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue));
                     //NP.ReadLine();
