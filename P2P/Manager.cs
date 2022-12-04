@@ -1,8 +1,8 @@
 using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
-using NP2P = Notus.P2P;
 using NP = Notus.Print;
+using NP2P = Notus.P2P;
 namespace Notus.P2P
 {
     public class Manager : IDisposable
@@ -31,13 +31,21 @@ namespace Notus.P2P
             this.listener.BeginAccept(new AsyncCallback(this.AcceptCallback), this.listener);
         }
 
-        public void AddPeer(string peerId, IPEndPoint peerEndPoint)
+        public void AddPeer(string peerId, string ipAddress)
         {
             if (this.Peers.ContainsKey(peerId))
                 return;
 
-            var peer = new NP2P.Connection(peerId, peerEndPoint, this.onReceive);
-            this.Peers.TryAdd(peerId, peer);
+            this.Peers.TryAdd(peerId,
+                new NP2P.Connection(
+                    peerId,
+                    new IPEndPoint(
+                        IPAddress.Parse(ipAddress),
+                        Notus.Network.Node.GetP2PPort()
+                    ),
+                    this.onReceive
+                )
+            );
         }
 
         public void RemoveAll()
@@ -64,14 +72,8 @@ namespace Notus.P2P
                 if (this.Peers[peerId].Send(message) == true)
                 {
                     return true;
-                    //Console.WriteLine("Success from " + peerId);
                 }
-                else
-                {
-                    //Console.WriteLine("Error : " + peerId);
-                    this.RemovePeer(peerId);
-                }
-
+                this.RemovePeer(peerId);
             }
             return false;
         }

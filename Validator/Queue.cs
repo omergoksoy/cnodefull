@@ -1081,24 +1081,13 @@ namespace Notus.Validator
                         NVG.Settings.SyncStarted = false;
                     }
 
-                    Console.WriteLine("Queue.cs -> Line 1081");
+                    Console.WriteLine("NVG.GroupNo : " + NVG.GroupNo.ToString());
                     NVG.Settings.PeerManager.RemoveAll();
 
                     foreach (var item in NVG.Settings.Nodes.Queue)
                     {
-                        int p2pPortNo = Notus.Network.Node.GetP2PPort();
-                        NVG.Settings.PeerManager.AddPeer(
-                            item.Value.Wallet,
-                            new IPEndPoint(
-                                IPAddress.Parse(
-                                    item.Value.IpAddress
-                                ),
-                                p2pPortNo
-                            )
-                        );
+                        NVG.Settings.PeerManager.AddPeer(item.Value.Wallet, item.Value.IpAddress);
                     }
-                    //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue));
-                    //NP.ReadLine();
                 }
                 else
                 {
