@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Net;
 using System.Numerics;
 using System.Text.Json;
 using NCH = Notus.Communication.Helper;
@@ -8,11 +9,11 @@ using NH = Notus.Hash;
 using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
+using NVD = Notus.Validator.Date;
 using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
-using NVD = Notus.Validator.Date;
 namespace Notus.Validator
 {
     public class Queue : IDisposable
@@ -205,7 +206,7 @@ namespace Notus.Validator
 
                 string[] tmpArr = incomeDataStr.Split(":");
                 NP.Info("Income Block Row No -> " + tmpArr[0] + ", Validator => " + tmpArr[1]);
-                if(string.Equals(tmpArr[1], "NODD5JuN455ApvunCh3HrLpxEEYWRC6eDHuFcFa"))
+                if (string.Equals(tmpArr[1], "NODD5JuN455ApvunCh3HrLpxEEYWRC6eDHuFcFa"))
                 {
                     Console.WriteLine("Other Node- Check From Here");
                     Console.WriteLine("Other Node- Check From Here");
@@ -671,7 +672,7 @@ namespace Notus.Validator
                 NVG.NodeList[nodeHexText].Status = NVS.NodeStatus.Online;
             }
         }
-        
+
         public void GenerateNodeQueue(
             ulong biggestSyncNo,
             ulong syncStaringTime,
@@ -1082,8 +1083,15 @@ namespace Notus.Validator
                     }
 
                     Console.WriteLine("Queue.cs -> Line 1081");
-                    Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue));
-                    NP.ReadLine();
+                    NVG.Settings.PeerManager.RemoveAll();
+
+                    foreach (var item in NVG.Settings.Nodes.Queue)
+                    {
+                        int p2pPortNo = Notus.Network.Node.GetP2PPort();
+                        NVG.Settings.PeerManager.AddPeer(item.Value.Wallet, new IPEndPoint(IPAddress.Any, p2pPortNo));
+                    }
+                    //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue));
+                    //NP.ReadLine();
                 }
                 else
                 {

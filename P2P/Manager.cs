@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using NP2P = Notus.P2P;
+using NP = Notus.Print;
 namespace Notus.P2P
 {
     public class Manager : IDisposable
@@ -39,8 +40,17 @@ namespace Notus.P2P
             this.Peers.TryAdd(peerId, peer);
         }
 
+        public void RemoveAll()
+        {
+            NP.Basic("All P2P Connection Cleared");
+            foreach (var item in this.Peers)
+            {
+                this.RemovePeer(item.Key);
+            }
+        }
         public void RemovePeer(string peerId)
         {
+            NP.Warning(peerId + " -> P2P Connection Closed");
             if (this.Peers.ContainsKey(peerId))
             {
                 this.Peers.TryRemove(peerId, out _);
