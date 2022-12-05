@@ -536,6 +536,8 @@ namespace Notus.Validator
         }
         public void Start()
         {
+            NP.ExecuteTime();
+
             NVR.NetworkSelectorList.Clear();
 
             NVH.PrepareValidatorList();

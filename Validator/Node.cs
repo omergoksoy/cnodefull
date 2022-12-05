@@ -32,6 +32,8 @@ namespace Notus.Validator
         }
         public static void Start()
         {
+            NP.ExecuteTime();
+
             if (NVG.Settings.LocalNode == true)
             {
                 NP.Info(NVG.Settings, "LocalNode Activated");
