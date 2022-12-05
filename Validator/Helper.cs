@@ -384,11 +384,23 @@ namespace Notus.Validator
                 );
                 if (resultStr == "1")
                 {
-                    Console.WriteLine("We Sended JoinTime -> " + NVG.NodeList[nodeKey].IP.Wallet + " -> " + joinTime.ToString());
+                    NP.Basic("We Sended JoinTime -> " + 
+                        NVG.NodeList[nodeKey].IP.Wallet.Substring(0, 7) + 
+                        "..." + 
+                        NVG.NodeList[nodeKey].IP.Wallet.Substring(NVG.NodeList[nodeKey].IP.Wallet.Length - 7) + 
+                        " -> " + 
+                        joinTime.ToString()
+                    );
                 }
                 else
                 {
-                    Console.WriteLine("JoinTime Sending Error -> " + NVG.NodeList[nodeKey].IP.Wallet + " -> " + joinTime.ToString());
+                    NP.Basic("JoinTime Sending Error -> " +
+                        NVG.NodeList[nodeKey].IP.Wallet.Substring(0, 7) +
+                        "..." +
+                        NVG.NodeList[nodeKey].IP.Wallet.Substring(NVG.NodeList[nodeKey].IP.Wallet.Length - 7) +
+                        " -> " +
+                        joinTime.ToString()
+                    );
                 }
             }
             NVG.NodeList[earlistNodeHexKeyStr].JoinTime = ND.ToLong(
@@ -442,11 +454,19 @@ namespace Notus.Validator
                 );
                 if (resultStr == "1")
                 {
-                    Console.WriteLine("We Sended SyncNo To -> " + NVG.NodeList[nodeKey].IP.Wallet);
+                    NP.Basic("We Sended SyncNo To -> " +
+                        NVG.NodeList[nodeKey].IP.Wallet.Substring(0, 7) +
+                        "..." +
+                        NVG.NodeList[nodeKey].IP.Wallet.Substring(NVG.NodeList[nodeKey].IP.Wallet.Length - 7)
+                    );
                 }
                 else
                 {
-                    Console.WriteLine("SyncNo Sending Error -> " + NVG.NodeList[nodeKey].IP.Wallet);
+                    NP.Basic("SyncNo Sending Error -> " +
+                        NVG.NodeList[nodeKey].IP.Wallet.Substring(0, 7) +
+                        "..." +
+                        NVG.NodeList[nodeKey].IP.Wallet.Substring(NVG.NodeList[nodeKey].IP.Wallet.Length - 7)
+                    );
                 }
             }
         }
