@@ -91,11 +91,11 @@ namespace Notus.P2P
                     NVG.Settings.PeerManager.RemovePeer(outerItem.Value.WalletId);
                 }
             }
-            */
             Console.WriteLine("Location-02");
             Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Old));
             Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Now));
             Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Next));
+            */
 
             NVG.Settings.PeerManager.Old.Clear();
             foreach (var item in NVG.Settings.PeerManager.Now)
@@ -109,7 +109,7 @@ namespace Notus.P2P
                 NVG.Settings.PeerManager.Now.TryAdd(item.Key, item.Value);
             }
             NVG.Settings.PeerManager.Next.Clear();
-            Console.WriteLine("Location-03");
+            Console.WriteLine("Location-02");
             Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Old));
             Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Now));
             Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Next));

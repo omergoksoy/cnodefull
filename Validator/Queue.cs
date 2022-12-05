@@ -1168,6 +1168,12 @@ namespace Notus.Validator
                 });
                 peerStartingTime = ND.AddMiliseconds(currentQueueTime, NVD.Calculate());
             }
+
+            Console.WriteLine("Location-03");
+            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Old));
+            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Now));
+            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Next));
+
             NVG.Settings.PeerManager.StartAllPeers();
             NVG.Settings.PeerManager.StopOldPeers();
         }
