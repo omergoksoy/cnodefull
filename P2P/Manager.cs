@@ -1,9 +1,11 @@
+using System.Text.Json;
 using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using NP = Notus.Print;
-using NVS = Notus.Variable.Struct;
 using NP2P = Notus.P2P;
+using NVG = Notus.Variable.Globals;
+using NVS = Notus.Variable.Struct;
 namespace Notus.P2P
 {
     public class Manager : IDisposable
@@ -36,21 +38,84 @@ namespace Notus.P2P
             this.listener.BeginAccept(new AsyncCallback(this.AcceptCallback), this.listener);
         }
 
-        public void AddPeer()
+        public void StopAllPeers()
         {
 
         }
-        public void AddPeer(string peerId, string ipAddress)
+        public void MovePeerList()
         {
-            if (this.Peers.ContainsKey(peerId))
+            /*
+            foreach (var outerItem in NVG.Settings.PeerManager.Old)
             {
-                Console.WriteLine("Peer Exist -> "+ peerId);
-                Console.WriteLine("Peer Exist -> "+ peerId);
-                Console.WriteLine("Peer Exist -> "+ peerId);
-                return;
+                bool closePeer = true;
+                foreach (var innerItem in NVG.Settings.PeerManager.Now)
+                {
+                    if (string.Equals(outerItem.Value.WalletId, innerItem.Value.WalletId))
+                    {
+                        closePeer = false;
+                    }
+                }
+                if (closePeer == true)
+                {
+                    NVG.Settings.PeerManager.RemovePeer(outerItem.Value.WalletId);
+                }
             }
 
-            bool result=this.Peers.TryAdd(peerId,
+            foreach (var outerItem in NVG.Settings.PeerManager.Old)
+            {
+                bool closePeer = true;
+                foreach (var innerItem in NVG.Settings.PeerManager.Next)
+                {
+                    if (string.Equals(outerItem.Value.WalletId, innerItem.Value.WalletId))
+                    {
+                        closePeer = false;
+                    }
+                }
+                if (closePeer == true)
+                {
+                    NVG.Settings.PeerManager.RemovePeer(outerItem.Value.WalletId);
+                }
+            }
+            */
+            
+            NVG.Settings.PeerManager.Old.Clear();
+            foreach (var item in NVG.Settings.PeerManager.Now)
+            {
+                NVG.Settings.PeerManager.Old.TryAdd(item.Key, item.Value);
+            }
+            NVG.Settings.PeerManager.Now.Clear();
+
+            foreach (var item in NVG.Settings.PeerManager.Next)
+            {
+                NVG.Settings.PeerManager.Now.TryAdd(item.Key, item.Value);
+            }
+            NVG.Settings.PeerManager.Next.Clear();
+
+            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Old));
+            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Now));
+            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Next));
+        }
+
+        public void StartAllPeers()
+        {
+            foreach (var item in NVG.Settings.PeerManager.Now)
+            {
+                NVG.Settings.PeerManager.AddPeer(item.Value.WalletId, item.Value.IpAddress);
+            }
+            foreach (var item in NVG.Settings.PeerManager.Next)
+            {
+                NVG.Settings.PeerManager.AddPeer(item.Value.WalletId, item.Value.IpAddress);
+            }
+        }
+        public void AddPeer(string peerId, string ipAddress)
+        {
+            if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, peerId) == true)
+                return;
+
+            if (this.Peers.ContainsKey(peerId))
+                return;
+
+            bool result = this.Peers.TryAdd(peerId,
                 new NP2P.Connection(
                     peerId,
                     new IPEndPoint(
@@ -60,16 +125,8 @@ namespace Notus.P2P
                     this.onReceive
                 )
             );
-            if (result == false)
-            {
-                Console.WriteLine("Peer Did Not Added");
-                Console.WriteLine("Peer Did Not Added");
-            }
-            else
-            {
-                Console.WriteLine("Peer Added -> " + peerId);
-                Console.WriteLine("Peer Added -> " + peerId);
-            }
+            if (result == true)
+                NP.Success("Peer Startted -> " + peerId);
         }
 
         public void RemoveAll()

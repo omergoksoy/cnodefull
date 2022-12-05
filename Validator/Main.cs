@@ -1115,11 +1115,12 @@ namespace Notus.Validator
                             start_FirstQueueGroupTime = true;
 
                             // control-point-1453
-                            /*
-                            old listeyi temizle
-                            now listesini old'a taşı
-                            next listesini now'a taşı
-                            */
+                            // old listeyi temizle
+                            // now listesini old'a taşı
+                            // next listesini now'a taşı
+
+                            NVG.Settings.PeerManager.MovePeerList();
+
                             /*
                             if (NVR.NetworkSelectorList.Count > 0)
                             {

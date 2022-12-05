@@ -1077,7 +1077,8 @@ namespace Notus.Validator
                     //Console.WriteLine("NVG.GroupNo : " + NVG.GroupNo.ToString());
                     NVG.Settings.PeerManager.RemoveAll();
 
-
+                    
+                    // control-point-1453
                     // burada ilk yükleme işlemi yapılacak
                     ulong peerStaringTime = ND.ToLong(StartingTimeAfterEnoughNode);
                     for (int i = 0; i < 6; i++)
@@ -1094,15 +1095,12 @@ namespace Notus.Validator
                             peerStaringTime, NVD.Calculate()
                         );
                     }
+                    NVG.Settings.PeerManager.StartAllPeers();
+                    
+                    /*
                     Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Now, NVC.JsonSetting));
                     NP.ReadLine();
-                    foreach (var item in NVG.Settings.Nodes.Queue)
-                    {
-                        if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, item.Value.Wallet) == false)
-                        {
-                            NVG.Settings.PeerManager.AddPeer(item.Value.Wallet, item.Value.IpAddress);
-                        }
-                    }
+                    */
                 }
                 else
                 {
