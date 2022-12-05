@@ -1120,7 +1120,6 @@ namespace Notus.Validator
                             now listesini old'a taşı
                             next listesini now'a taşı
                             */
-
                             /*
                             if (NVR.NetworkSelectorList.Count > 0)
                             {
