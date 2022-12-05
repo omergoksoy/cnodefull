@@ -160,10 +160,10 @@ namespace Notus.P2P
         }
         public void RemovePeer(string peerId)
         {
-            NP.Warning(peerId + " -> P2P Connection Closed");
             if (this.Peers.ContainsKey(peerId))
             {
                 this.Peers.TryRemove(peerId, out _);
+                NP.Warning(peerId + " -> P2P Connection Closed");
             }
         }
 
