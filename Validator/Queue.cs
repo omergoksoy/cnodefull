@@ -538,7 +538,7 @@ namespace Notus.Validator
                     {
                         if (Notus.Wallet.ID.Verify(controlText, chooserSignStr, chooserPublicKeyStr) == true)
                         {
-                            Console.WriteLine("Node JoinTime : " + joinTime.ToString());
+                            //Console.WriteLine("Node JoinTime : " + joinTime.ToString());
                             NVR.ReadyMessageFromNode.Remove(selectedEarliestWalletId);
                             NVG.NodeList[earlistNodeKeyStr].SyncNo = NVG.CurrentSyncNo;
                             NVG.NodeList[earlistNodeKeyStr].JoinTime = ND.ToLong(
