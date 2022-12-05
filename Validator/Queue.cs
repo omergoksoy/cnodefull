@@ -951,6 +951,10 @@ namespace Notus.Validator
                 StartingTimeAfterEnoughNode_Arrived = false;
                 if (biggestSyncNo == 0)
                 {
+                    burada ilk yükleme işlemi yapılacak
+                    burada ilk yükleme işlemi yapılacak
+                    burada ilk yükleme işlemi yapılacak
+
                     ulong extraSeconds = 0;
                     NP.NodeCount();
 
@@ -1131,6 +1135,11 @@ namespace Notus.Validator
             SortedDictionary<BigInteger, string> tmpWalletList = MakeOrderToNode(biggestSyncNo, queueSeedStr);
             GenerateNodeQueue(currentQueueTime, ND.AddMiliseconds(currentQueueTime, 1500), tmpWalletList);
             NVG.NodeQueue.OrderCount++;
+
+
+            * yeni listeyi next'e eşitle
+            * next içindeki açıklacak soketleri aç
+            * old içindeki eski bağlantıları kapat
         }
         private bool WaitUntilAvailable()
         {

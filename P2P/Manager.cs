@@ -7,6 +7,10 @@ namespace Notus.P2P
 {
     public class Manager : IDisposable
     {
+        public ConcurrentDictionary<ulong, string> Old = new();
+        public ConcurrentDictionary<ulong, string> Now = new();
+        public ConcurrentDictionary<ulong, string> Next = new();
+
         private ConcurrentDictionary<string, NP2P.Connection> Peers = new();
         private Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         private Action<string> onReceive;

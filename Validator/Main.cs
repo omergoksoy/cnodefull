@@ -1113,6 +1113,11 @@ namespace Notus.Validator
                         {
                             nodeOrderCount = 0;
                             start_FirstQueueGroupTime = true;
+
+                            old listeyi temizle
+                            now listesini old'a taşı
+                            next listesini now'a taşı
+
                             /*
                             if (NVR.NetworkSelectorList.Count > 0)
                             {
@@ -1246,6 +1251,7 @@ namespace Notus.Validator
                 bool innerSendToMyChain = false;
                 if (NVG.OtherValidatorSelectedMe == false)
                 {
+
                     try
                     {
                         innerSendToMyChain = NVH.RightBlockValidator(blockData);
