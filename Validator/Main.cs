@@ -566,6 +566,7 @@ namespace Notus.Validator
                 {
                     Console.WriteLine("IncomeText : " + incomeMessage);
                     string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
+                    Console.WriteLine("Function Response : " + innerResultStr);
                 }
             );
 
