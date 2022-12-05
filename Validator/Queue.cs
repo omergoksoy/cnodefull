@@ -890,7 +890,7 @@ namespace Notus.Validator
             if (NVG.Settings.GenesisCreated == true)
                 return;
 
-            NP.Info("Node Sync Starting", false);
+            NP.Info("Node Sync Starting");
 
             // eğer sadece 2 adet node var ise, node selector timer devreye girmeyecek
             // ilk 2 node'un devreye girişinden sonra selector timer çalışmaya başlayacak ve
