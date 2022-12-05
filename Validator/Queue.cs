@@ -1077,7 +1077,7 @@ namespace Notus.Validator
                     //Console.WriteLine("NVG.GroupNo : " + NVG.GroupNo.ToString());
                     NVG.Settings.PeerManager.RemoveAll();
 
-                    
+
                     // control-point-1453
                     // burada ilk yükleme işlemi yapılacak
                     ulong peerStaringTime = ND.ToLong(StartingTimeAfterEnoughNode);
@@ -1153,31 +1153,23 @@ namespace Notus.Validator
             GenerateNodeQueue(currentQueueTime, ND.AddMiliseconds(currentQueueTime, 1500), tmpWalletList);
             NVG.NodeQueue.OrderCount++;
 
-            ulong peerStartingTime = ND.AddMiliseconds(currentQueueTime, 1500);
-            Console.WriteLine("Starting Time : " + Notus.Date.SubtractMiliseconds(currentQueueTime, 1500).ToString());
-            Console.WriteLine("peerStartingTime : " + peerStartingTime.ToString());
-            /*
-
-  NVG.Settings.Nodes.Queue.Add(tmpSyncNo, new NVS.NodeInfo()
-                                {
-                                    IpAddress = entry.Value.IP.IpAddress,
-                                    Port = entry.Value.IP.Port,
-                                    Wallet = entry.Value.IP.Wallet,
-                                    GroupNo = NVG.GroupNo,
-                                    //Client = new Dictionary<string, Communication.Sync.Socket.Client>()
-                                });
-            */
-
-
             // control-point-1453
+            // yeni listeyi next'e eşitle
+            // next içindeki açıklacak soketleri aç
+            // old içindeki eski bağlantıları kapat
 
-            /*
-             
-            yeni listeyi next'e eşitle
-            next içindeki açıklacak soketleri aç
-            old içindeki eski bağlantıları kapat
-            
-            */
+            ulong peerStartingTime = ND.AddMiliseconds(currentQueueTime, 1500);
+            for (int i = 0; i < 6; i++)
+            {
+                NVG.Settings.PeerManager.Next.TryAdd(peerStartingTime, new NVS.PeerDetailStruct()
+                {
+                    IpAddress = NVG.Settings.Nodes.Queue[peerStartingTime].IpAddress,
+                    WalletId = NVG.Settings.Nodes.Queue[peerStartingTime].Wallet
+                });
+                peerStartingTime = ND.AddMiliseconds(currentQueueTime, NVD.Calculate());
+            }
+            NVG.Settings.PeerManager.StartAllPeers();
+            NVG.Settings.PeerManager.StopOldPeers();
         }
         private bool WaitUntilAvailable()
         {

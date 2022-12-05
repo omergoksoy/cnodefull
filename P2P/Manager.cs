@@ -38,13 +38,8 @@ namespace Notus.P2P
             this.listener.BeginAccept(new AsyncCallback(this.AcceptCallback), this.listener);
         }
 
-        public void StopAllPeers()
+        public void StopOldPeers()
         {
-
-        }
-        public void MovePeerList()
-        {
-            /*
             foreach (var outerItem in NVG.Settings.PeerManager.Old)
             {
                 bool closePeer = true;
@@ -60,6 +55,26 @@ namespace Notus.P2P
                     NVG.Settings.PeerManager.RemovePeer(outerItem.Value.WalletId);
                 }
             }
+            foreach (var outerItem in NVG.Settings.PeerManager.Old)
+            {
+                bool closePeer = true;
+                foreach (var innerItem in NVG.Settings.PeerManager.Next)
+                {
+                    if (string.Equals(outerItem.Value.WalletId, innerItem.Value.WalletId))
+                    {
+                        closePeer = false;
+                    }
+                }
+                if (closePeer == true)
+                {
+                    NVG.Settings.PeerManager.RemovePeer(outerItem.Value.WalletId);
+                }
+            }
+        }
+        public void MovePeerList()
+        {
+            /*
+           
 
             foreach (var outerItem in NVG.Settings.PeerManager.Old)
             {
