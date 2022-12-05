@@ -73,30 +73,6 @@ namespace Notus.P2P
         }
         public void MovePeerList()
         {
-            /*
-           
-
-            foreach (var outerItem in NVG.Settings.PeerManager.Old)
-            {
-                bool closePeer = true;
-                foreach (var innerItem in NVG.Settings.PeerManager.Next)
-                {
-                    if (string.Equals(outerItem.Value.WalletId, innerItem.Value.WalletId))
-                    {
-                        closePeer = false;
-                    }
-                }
-                if (closePeer == true)
-                {
-                    NVG.Settings.PeerManager.RemovePeer(outerItem.Value.WalletId);
-                }
-            }
-            Console.WriteLine("Location-02");
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Old));
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Now));
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Next));
-            */
-
             NVG.Settings.PeerManager.Old.Clear();
             foreach (var item in NVG.Settings.PeerManager.Now)
             {
@@ -109,12 +85,6 @@ namespace Notus.P2P
                 NVG.Settings.PeerManager.Now.TryAdd(item.Key, item.Value);
             }
             NVG.Settings.PeerManager.Next.Clear();
-            /*
-            Console.WriteLine("Location-02");
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Old));
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Now));
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Next));
-            */
         }
 
         public void StartAllPeers()

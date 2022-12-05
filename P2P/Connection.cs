@@ -14,17 +14,13 @@ namespace Notus.P2P
         public bool Send(string message)
         {
             if (message.Length == 0)
-            {
                 return false;
-            }
 
             try
             {
                 int bytesSent = this.socket.Send(Encoding.ASCII.GetBytes(message));
                 if (bytesSent > 0)
-                {
                     return true;
-                }
             }
             catch
             {
