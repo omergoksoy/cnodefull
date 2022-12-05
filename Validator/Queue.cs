@@ -1166,7 +1166,7 @@ namespace Notus.Validator
                     IpAddress = NVG.Settings.Nodes.Queue[peerStartingTime].IpAddress,
                     WalletId = NVG.Settings.Nodes.Queue[peerStartingTime].Wallet
                 });
-                peerStartingTime = ND.AddMiliseconds(currentQueueTime, NVD.Calculate());
+                peerStartingTime = ND.AddMiliseconds(peerStartingTime, NVD.Calculate());
             }
 
             Console.WriteLine("Location-03");
