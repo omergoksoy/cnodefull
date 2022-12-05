@@ -48,11 +48,6 @@ AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
 
 // control-point-1453
-
-
-//Console.WriteLine(Notus.Date.ToLong(DateTime.Now));
-//Console.WriteLine(Notus.Date.SubtractMiliseconds(20221205210421500,1250));
-//NP.ReadLine();
 /*
 
 

@@ -2,14 +2,15 @@ using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using NP = Notus.Print;
+using NVS = Notus.Variable.Struct;
 using NP2P = Notus.P2P;
 namespace Notus.P2P
 {
     public class Manager : IDisposable
     {
-        public ConcurrentDictionary<ulong, string> Old = new();
-        public ConcurrentDictionary<ulong, string> Now = new();
-        public ConcurrentDictionary<ulong, string> Next = new();
+        public ConcurrentDictionary<ulong, NVS.PeerDetailStruct> Old = new();
+        public ConcurrentDictionary<ulong, NVS.PeerDetailStruct> Now = new();
+        public ConcurrentDictionary<ulong, NVS.PeerDetailStruct> Next = new();
 
         private ConcurrentDictionary<string, NP2P.Connection> Peers = new();
         private Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -35,6 +36,10 @@ namespace Notus.P2P
             this.listener.BeginAccept(new AsyncCallback(this.AcceptCallback), this.listener);
         }
 
+        public void AddPeer()
+        {
+
+        }
         public void AddPeer(string peerId, string ipAddress)
         {
             if (this.Peers.ContainsKey(peerId))

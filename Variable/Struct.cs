@@ -283,11 +283,10 @@ namespace Notus.Variable.Struct
         public StorageHash_BlockStatus Hash { get; set; }
     }
 
-    public class TmpNodeListStruct
+    public class PeerDetailStruct
     {
         public string IpAddress { get; set; }
-        public string PortNo { get; set; }
-        public string WalletKey { get; set; }
+        public string WalletId { get; set; }
     }
     public class NodeListStruct
     {

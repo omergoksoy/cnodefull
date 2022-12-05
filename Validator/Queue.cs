@@ -1083,23 +1083,19 @@ namespace Notus.Validator
                     for (int i = 0; i < 6; i++)
                     {
                         NVG.Settings.PeerManager.Now.TryAdd(
-                            peerStaringTime, 
-                            NVG.Settings.Nodes.Queue[peerStaringTime].Wallet
+                            peerStaringTime,
+                            new NVS.PeerDetailStruct()
+                            {
+                                IpAddress = NVG.Settings.Nodes.Queue[peerStaringTime].IpAddress,
+                                WalletId = NVG.Settings.Nodes.Queue[peerStaringTime].Wallet
+                            }
                         );
                         peerStaringTime = ND.AddMiliseconds(
                             peerStaringTime, NVD.Calculate()
                         );
                     }
-                    Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Now,NVC.JsonSetting));
+                    Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Now, NVC.JsonSetting));
                     NP.ReadLine();
-                    // control-point-1453
-                    /*
-                    burada ilk yükleme işlemi yapılacak
-                    burada ilk yükleme işlemi yapılacak
-                    */
-                    //Console.WriteLine("Starting Time : " + Notus.Date.SubtractMiliseconds(currentQueueTime, 1500).ToString());
-                    // StartingTimeAfterEnoughNode
-
                     foreach (var item in NVG.Settings.Nodes.Queue)
                     {
                         if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, item.Value.Wallet) == false)
