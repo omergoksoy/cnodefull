@@ -35,9 +35,9 @@ namespace Notus.P2P
         {
             if (this.Peers.ContainsKey(peerId))
             {
-                Console.WriteLine(peerId + " Peer Exist");
-                Console.WriteLine(peerId + " Peer Exist");
-                Console.WriteLine(peerId + " Peer Exist");
+                Console.WriteLine("Peer Exist -> "+ peerId);
+                Console.WriteLine("Peer Exist -> "+ peerId);
+                Console.WriteLine("Peer Exist -> "+ peerId);
                 return;
             }
 
