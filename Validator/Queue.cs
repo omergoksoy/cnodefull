@@ -1096,12 +1096,13 @@ namespace Notus.Validator
                         );
                     }
                     NVG.Settings.PeerManager.StartAllPeers();
+
+                    /*
                     Console.WriteLine("Location-01");
                     Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Old));
                     Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Now));
                     Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Next));
 
-                    /*
                     Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Now, NVC.JsonSetting));
                     NP.ReadLine();
                     */

@@ -109,10 +109,12 @@ namespace Notus.P2P
                 NVG.Settings.PeerManager.Now.TryAdd(item.Key, item.Value);
             }
             NVG.Settings.PeerManager.Next.Clear();
+            /*
             Console.WriteLine("Location-02");
             Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Old));
             Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Now));
             Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Next));
+            */
         }
 
         public void StartAllPeers()
