@@ -172,9 +172,10 @@ namespace Notus
                     SubTimerIsRunning = true;
                     if (TextList.Count > 0)
                     {
-                        if (TextList[0].Dot == false)
+                        var item = TextList.First();
+
+                        if (item.Value.Dot == false)
                         {
-                            var item = TextList.First();
                             PrintFunction(item.Value.Layer, item.Value.Type, item.Value.Color, item.Value.Text);
                             TextList.TryRemove(item.Key, out _);
                         }
