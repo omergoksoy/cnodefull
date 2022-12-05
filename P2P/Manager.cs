@@ -34,7 +34,7 @@ namespace Notus.P2P
             var peerId = peerEndPoint.ToString();
             var peer = new NP2P.Connection(peerId, handler, this.onReceive);
             this.Peers.TryAdd(peerId, peer);
-            NP.Info("Connected To Peer : " + peerId);
+            NP.Info("Connected To Peer : " + peerId.Substring(0, 7) + "..." + peerId.Substring(peerId.Length - 7));
             this.listener.BeginAccept(new AsyncCallback(this.AcceptCallback), this.listener);
         }
 
@@ -147,7 +147,7 @@ namespace Notus.P2P
                 )
             );
             if (result == true)
-                NP.Success("Peer Startted -> " + peerId);
+                NP.Success("Peer Started -> " + peerId.Substring(0,7)+"..."+ peerId.Substring(peerId.Length-7));
         }
 
         public void RemoveAll()
@@ -163,7 +163,7 @@ namespace Notus.P2P
             if (this.Peers.ContainsKey(peerId))
             {
                 this.Peers.TryRemove(peerId, out _);
-                NP.Warning(peerId + " -> P2P Connection Closed");
+                NP.Warning("P2P Connection Closed ->" + peerId.Substring(0, 7) + "..." + peerId.Substring(peerId.Length - 7));
             }
         }
 
