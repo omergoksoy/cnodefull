@@ -1,6 +1,8 @@
 ﻿using Notus.Memory;
+using Notus.Variable.Enum;
 using System;
 using System.Collections.Generic;
+using NVE = Notus.Variable.Enum;
 
 namespace Notus.Globals.Variable
 {
@@ -67,6 +69,14 @@ namespace Notus.Globals.Variable
         public TimeSpan Diff { get; set; }
         public DateTime Obj { get; set; }
         public ulong Int { get; set; }
+    }
+    public class PrintQueueList
+    {
+        public bool Dot { get; set; }
+        public NVE.NetworkLayer Layer { get; set; }
+        public NVE.NetworkType Type { get; set; }
+        public ConsoleColor Color { get; set; }
+        public string Text { get; set; }
     }
     public class NodeQueueList
     {

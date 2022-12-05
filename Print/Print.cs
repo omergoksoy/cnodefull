@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
+﻿using System.Collections.Concurrent;
 using System.Text.Json;
-using System.Threading.Tasks;
 using ND = Notus.Date;
-using NGF = Notus.Variable.Globals.Functions;
-using NVC = Notus.Variable.Constant;
+using NGV = Notus.Globals.Variable;
+using NT = Notus.Threads;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
@@ -16,6 +11,10 @@ namespace Notus
 {
     public static class Print
     {
+        private static bool SubTimerIsRunning = false;
+        private static int Counter = 0;
+        private static NT.Timer SubTimer = new NT.Timer(100);
+        public static ConcurrentDictionary<int, NGV.PrintQueueList> TextList = new ConcurrentDictionary<int, NGV.PrintQueueList>();
         public static void Log(
             NVE.LogLevel logType,
             int logNo,
@@ -71,61 +70,61 @@ namespace Notus
             Info(NodeSettings, "Press Enter To Continue");
             Console.ReadLine();
         }
-        public static void Info(string DetailsStr = "", bool PrintAsync = true)
+        public static void Info(string DetailsStr = "")
         {
-            Info(NVG.Settings, DetailsStr, PrintAsync);
+            Info(NVG.Settings, DetailsStr);
         }
-        public static void Info(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "", bool PrintAsync = true)
+        public static void Info(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "")
         {
-            subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.InfoMode, ConsoleColor.Cyan, DetailsStr, PrintAsync);
+            subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.InfoMode, ConsoleColor.Cyan, DetailsStr);
         }
-        public static void Danger(string DetailsStr = "", bool PrintAsync = true)
+        public static void Danger(string DetailsStr = "")
         {
-            Danger(NVG.Settings, DetailsStr, PrintAsync);
+            Danger(NVG.Settings, DetailsStr);
         }
-        public static void Danger(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "", bool PrintAsync = true)
+        public static void Danger(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "")
         {
-            subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.DebugMode, ConsoleColor.Red, DetailsStr, PrintAsync);
+            subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.DebugMode, ConsoleColor.Red, DetailsStr);
         }
-        public static void Warning(string DetailsStr = "", bool PrintAsync = true)
+        public static void Warning(string DetailsStr = "")
         {
-            Warning(NVG.Settings, DetailsStr, PrintAsync);
+            Warning(NVG.Settings, DetailsStr);
         }
-        public static void Warning(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "", bool PrintAsync = true)
+        public static void Warning(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "")
         {
-            subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.InfoMode, ConsoleColor.Yellow, DetailsStr, PrintAsync);
+            subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.InfoMode, ConsoleColor.Yellow, DetailsStr);
         }
-        public static void Status(string DetailsStr = "", bool PrintAsync = true)
+        public static void Status(string DetailsStr = "")
         {
-            Status(NVG.Settings, DetailsStr, PrintAsync);
+            Status(NVG.Settings, DetailsStr);
         }
-        public static void Status(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "", bool PrintAsync = true)
+        public static void Status(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "")
         {
-            subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.InfoMode, ConsoleColor.White, DetailsStr, PrintAsync);
+            subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.InfoMode, ConsoleColor.White, DetailsStr);
         }
-        public static void Basic(string DetailsStr = "", bool PrintAsync = true)
+        public static void Basic(string DetailsStr = "")
         {
-            Basic(NVG.Settings, DetailsStr, PrintAsync);
+            Basic(NVG.Settings, DetailsStr);
         }
-        public static void Basic(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "", bool PrintAsync = true)
+        public static void Basic(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "")
         {
-            subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.InfoMode, ConsoleColor.Gray, DetailsStr, PrintAsync);
+            subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.InfoMode, ConsoleColor.Gray, DetailsStr);
         }
-        public static void Success(string DetailsStr = "", bool PrintAsync = true)
+        public static void Success(string DetailsStr = "")
         {
-            Success(NVG.Settings, DetailsStr, PrintAsync);
+            Success(NVG.Settings, DetailsStr);
         }
-        public static void Success(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "", bool PrintAsync = true)
+        public static void Success(Notus.Globals.Variable.Settings NodeSettings, string DetailsStr = "")
         {
-            subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.InfoMode, ConsoleColor.DarkGreen, DetailsStr, PrintAsync);
+            subPrint(NodeSettings.Layer, NodeSettings.Network, NodeSettings.InfoMode, ConsoleColor.DarkGreen, DetailsStr);
         }
-        public static void Danger(bool ShowOnScreen, string DetailsStr = "", bool PrintAsync = true)
+        public static void Danger(bool ShowOnScreen, string DetailsStr = "")
         {
-            subPrint(NVE.NetworkLayer.Unknown, NVE.NetworkType.Unknown, ShowOnScreen, ConsoleColor.Red, DetailsStr, PrintAsync);
+            subPrint(NVE.NetworkLayer.Unknown, NVE.NetworkType.Unknown, ShowOnScreen, ConsoleColor.Red, DetailsStr);
         }
-        public static void Basic(bool ShowOnScreen, string DetailsStr = "", bool PrintAsync = true)
+        public static void Basic(bool ShowOnScreen, string DetailsStr = "")
         {
-            subPrint(NVE.NetworkLayer.Unknown, NVE.NetworkType.Unknown, ShowOnScreen, ConsoleColor.Gray, DetailsStr, PrintAsync);
+            subPrint(NVE.NetworkLayer.Unknown, NVE.NetworkType.Unknown, ShowOnScreen, ConsoleColor.Gray, DetailsStr);
         }
 
         private static void PrintFunction(
@@ -164,15 +163,50 @@ namespace Notus
             Console.ForegroundColor = TextColor;
             Console.WriteLine(DetailsStr);
         }
+        public static void ExecuteTime()
+        {
+            SubTimer.Start(() =>
+            {
+                if (SubTimerIsRunning == false)
+                {
+                    SubTimerIsRunning = true;
+                    if (TextList.Count > 0)
+                    {
+                        if (TextList[0].Dot == false)
+                        {
+                            var item = TextList.First();
+                            PrintFunction(item.Value.Layer, item.Value.Type, item.Value.Color, item.Value.Text);
+                            TextList.TryRemove(item.Key, out _);
+                        }
+                    }
+                    SubTimerIsRunning = false;
+                }
+            });
+        }
         private static void subPrint(
             NVE.NetworkLayer tmpLayer,
             NVE.NetworkType tmpType,
             bool ShowOnScreen,
             ConsoleColor TextColor,
-            string DetailsStr,
-            bool PrintAsync
+            string DetailsStr
         )
         {
+            if (ShowOnScreen == false)
+                return;
+
+            if (DetailsStr.Length == 0)
+                return;
+
+            TextList.TryAdd(Counter, new NGV.PrintQueueList()
+            {
+                Dot = false,
+                Text = DetailsStr,
+                Color = TextColor,
+                Layer = tmpLayer,
+                Type = tmpType
+            });
+            Counter++;
+            /*
             PrintAsync = false;
             if (ShowOnScreen == true)
             {
@@ -205,6 +239,7 @@ namespace Notus
                     }
                 }
             }
+            */
         }
     }
 }
