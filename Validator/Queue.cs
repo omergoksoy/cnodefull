@@ -1153,7 +1153,9 @@ namespace Notus.Validator
             GenerateNodeQueue(currentQueueTime, ND.AddMiliseconds(currentQueueTime, 1500), tmpWalletList);
             NVG.NodeQueue.OrderCount++;
 
+            ulong peerStartingTime = ND.AddMiliseconds(currentQueueTime, 1500);
             Console.WriteLine("Starting Time : " + Notus.Date.SubtractMiliseconds(currentQueueTime, 1500).ToString());
+            Console.WriteLine("peerStartingTime : " + peerStartingTime.ToString());
             /*
 
   NVG.Settings.Nodes.Queue.Add(tmpSyncNo, new NVS.NodeInfo()
