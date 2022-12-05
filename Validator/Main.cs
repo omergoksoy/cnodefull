@@ -1114,9 +1114,12 @@ namespace Notus.Validator
                             nodeOrderCount = 0;
                             start_FirstQueueGroupTime = true;
 
+                            // control-point-1453
+                            /*
                             old listeyi temizle
                             now listesini old'a taşı
                             next listesini now'a taşı
+                            */
 
                             /*
                             if (NVR.NetworkSelectorList.Count > 0)

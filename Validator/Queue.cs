@@ -951,9 +951,12 @@ namespace Notus.Validator
                 StartingTimeAfterEnoughNode_Arrived = false;
                 if (biggestSyncNo == 0)
                 {
+                    // control-point-1453
+                    /*
                     burada ilk yükleme işlemi yapılacak
                     burada ilk yükleme işlemi yapılacak
                     burada ilk yükleme işlemi yapılacak
+                    */
 
                     ulong extraSeconds = 0;
                     NP.NodeCount();
@@ -1136,10 +1139,29 @@ namespace Notus.Validator
             GenerateNodeQueue(currentQueueTime, ND.AddMiliseconds(currentQueueTime, 1500), tmpWalletList);
             NVG.NodeQueue.OrderCount++;
 
+            Console.WriteLine("Starting Time : " + Notus.Date.SubtractMiliseconds(currentQueueTime, 1500).ToString());
+            /*
 
-            * yeni listeyi next'e eşitle
-            * next içindeki açıklacak soketleri aç
-            * old içindeki eski bağlantıları kapat
+  NVG.Settings.Nodes.Queue.Add(tmpSyncNo, new NVS.NodeInfo()
+                                {
+                                    IpAddress = entry.Value.IP.IpAddress,
+                                    Port = entry.Value.IP.Port,
+                                    Wallet = entry.Value.IP.Wallet,
+                                    GroupNo = NVG.GroupNo,
+                                    //Client = new Dictionary<string, Communication.Sync.Socket.Client>()
+                                });
+            */
+
+
+            // control-point-1453
+
+            /*
+             
+            yeni listeyi next'e eşitle
+            next içindeki açıklacak soketleri aç
+            old içindeki eski bağlantıları kapat
+            
+            */
         }
         private bool WaitUntilAvailable()
         {

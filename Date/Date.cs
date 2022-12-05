@@ -30,6 +30,11 @@ namespace Notus
         {
             return Notus.Date.ToLong(Notus.Date.ToDateTime(convertTime).AddMilliseconds(miliseconds));
         }
+        public static ulong SubtractMiliseconds(ulong convertTime, ulong miliseconds)
+        {
+            return Notus.Date.ToLong(Notus.Date.ToDateTime(convertTime).Subtract(new TimeSpan(0, 0, 0, 0, (int)miliseconds)));
+            //return Notus.Date.ToLong(Notus.Date.ToDateTime(convertTime).AddMilliseconds(miliseconds));
+        }
         public static ulong ToLong(string convertTime)
         {
             return ulong.Parse(convertTime.PadRight(17, '0').Substring(0, 17));
