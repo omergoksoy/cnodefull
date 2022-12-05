@@ -34,9 +34,14 @@ namespace Notus.P2P
         public void AddPeer(string peerId, string ipAddress)
         {
             if (this.Peers.ContainsKey(peerId))
+            {
+                Console.WriteLine(peerId + " Peer Exist");
+                Console.WriteLine(peerId + " Peer Exist");
+                Console.WriteLine(peerId + " Peer Exist");
                 return;
+            }
 
-            this.Peers.TryAdd(peerId,
+            bool result=this.Peers.TryAdd(peerId,
                 new NP2P.Connection(
                     peerId,
                     new IPEndPoint(
@@ -46,6 +51,16 @@ namespace Notus.P2P
                     this.onReceive
                 )
             );
+            if (result == false)
+            {
+                Console.WriteLine("Peer Did Not Added");
+                Console.WriteLine("Peer Did Not Added");
+            }
+            else
+            {
+                Console.WriteLine("Peer Added -> " + peerId);
+                Console.WriteLine("Peer Added -> " + peerId);
+            }
         }
 
         public void RemoveAll()
