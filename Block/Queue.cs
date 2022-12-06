@@ -728,6 +728,11 @@ namespace Notus.Block
         }
         public void LoadFromPoolDb()
         {
+            if (NGF.BlockQueue.CheckPoolDb == false)
+            {
+                return;
+            }
+
             MP_BlockPoolList.Each((string blockTransactionKey, string TextBlockDataString) =>
             {
                 Notus.Variable.Struct.PoolBlockRecordStruct? PreBlockData =

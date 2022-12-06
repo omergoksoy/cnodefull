@@ -57,6 +57,21 @@ namespace Notus
                 }, 0, true, true
             );
         }
+        public static void MainClassClosingControl()
+        {
+            if (NVG.Settings.NodeClosing == true)
+            {
+                return;
+            }
+            if (NVG.Settings.GenesisCreated == true)
+            {
+                Warning("Main Class Temporary Ended");
+            }
+            else
+            {
+                Warning("Main Class Ended");
+            }
+        }
         public static void NodeCount()
         {
             Info("Node Count : " + NVG.OnlineNodeCount.ToString() + " / " + NVG.NodeList.Count.ToString());

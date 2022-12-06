@@ -15,6 +15,7 @@ using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
+using NVJ=Notus.Validator.Join;
 namespace Notus.Validator
 {
     public class Main : IDisposable
@@ -53,7 +54,7 @@ namespace Notus.Validator
         {
 
             NP.Basic("Garbage Collector starting");
-            NP.Warning("Garbage Collector Disabled");
+            //NP.Warning("Garbage Collector Disabled");
             /*
             Notus.Threads.Timer TimerObj = new Notus.Threads.Timer(250);
             TimerObj.Start(250, () =>
@@ -476,42 +477,8 @@ namespace Notus.Validator
                 }  //if (CryptoTransferTimerIsRunning == false)
             }, true);  //TimerObj.Start(() =>
         }
-        private void SetTimeStatusForBeginSync(bool status)
+        private void ControlEmptyBlockGenerationTime()
         {
-            if (NVG.Settings.GenesisCreated == false)
-            {
-                if (NVG.Settings.Layer == NVE.NetworkLayer.Layer1)
-                {
-                    CryptoTransferTimerIsRunning = status;
-                }
-                if (NVG.Settings.Layer == NVE.NetworkLayer.Layer2)
-                {
-                }
-                if (NVG.Settings.Layer == NVE.NetworkLayer.Layer3)
-                {
-                }
-            }
-        }
-        private void WaitUntilEnoughNode()
-        {
-            if (NVG.Settings.GenesisCreated == false)
-            {
-                SetTimeStatusForBeginSync(true);        // stop timer
-                while (ValidatorQueueObj.WaitForEnoughNode == true)
-                {
-                    Thread.Sleep(1);
-                }
-                SetTimeStatusForBeginSync(false);       // release timer
-            }
-        }
-        public bool EmptyBlockGenerationTime()
-        {
-            /*
-            şu andaki blok çakışmaları empty bloktan dolayı gerçekleşiyor
-            bunu önlemenin yolu son bloğu referans alarak empty bloğun oluşturulmasında geçiyor
-            ayrıca node sayısının kontrolünü farklı bir yöntem ile gerçekleştirmek gerekiyor
-            burayı kontrol et
-            */
             int howManySeconds = NVG.Settings.Genesis.Empty.Interval.Time;
             if (NVG.Settings.Genesis.Empty.SlowBlock.Count >= NVG.Settings.EmptyBlockCount)
             {
@@ -523,16 +490,21 @@ namespace Notus.Validator
             }
             //howManySeconds = 15;
             ulong earliestTime = ND.ToLong(ND.ToDateTime(NVG.Settings.LastBlock.info.time).AddSeconds(howManySeconds));
-
+            bool executeEmptyBlock = false;
             if (NVG.NOW.Int > earliestTime)
             {
-                return true;
+                executeEmptyBlock = true;
             }
             if (NVG.Settings.OtherBlockCount > NVG.Settings.Genesis.Empty.Interval.Block)
             {
-                return true;
+                executeEmptyBlock = true;
             }
-            return false;
+            if(executeEmptyBlock == true)
+            {
+                NP.Success("Empty Block Executed");
+                Notus.Validator.Helper.CheckBlockAndEmptyCounter(300);
+                NGF.BlockQueue.AddEmptyBlock();
+            }
         }
         public void Start()
         {
@@ -821,12 +793,6 @@ namespace Notus.Validator
                 NVG.Settings.GenesisCreated == false
             )
             {
-                /*
-                if (NVG.OtherValidatorSelectedMe == false)
-                {
-                    Console.Write(".");
-                }
-                */
                 if (NVG.OtherValidatorSelectedMe == true)
                 {
                     // diğer validatörler tarafından ağa dahil edilecek olan node
@@ -917,14 +883,9 @@ namespace Notus.Validator
                                 {
                                     if (emptyBlockChecked == false)
                                     {
-                                        if (EmptyBlockGenerationTime() == true)
-                                        {
-                                            NP.Success("Empty Block Executed");
-                                            Notus.Validator.Helper.CheckBlockAndEmptyCounter(300);
-                                            NGF.BlockQueue.AddEmptyBlock();
-                                        } // if (EmptyBlockGenerationTime() == true)
+                                        ControlEmptyBlockGenerationTime();
                                         emptyBlockChecked = true;
-                                    } // if (EmptyBlockGenerationTime() == true)
+                                    } // if (emptyBlockChecked == false)
 
                                     NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
                                         ND.AddMiliseconds(CurrentQueueTime, NVC.BlockListeningForPoolTime)
@@ -970,7 +931,6 @@ namespace Notus.Validator
                                             {
                                                 Console.ForegroundColor = ConsoleColor.DarkGreen;
                                                 Console.Write("+");
-                                                //Console.WriteLine("NVG.Settings.BlockOrder.Count() : " + NVG.Settings.BlockOrder.Count().ToString());
                                             }
                                         }
                                     } // if (TmpBlockStruct != null) ELSE 
@@ -988,10 +948,7 @@ namespace Notus.Validator
                                 }
                             }
 
-                            if (NGF.BlockQueue.CheckPoolDb == true)
-                            {
-                                NGF.BlockQueue.LoadFromPoolDb();
-                            }
+                            NGF.BlockQueue.LoadFromPoolDb();
                         }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId)) ELSE 
 
                         if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
@@ -1005,79 +962,17 @@ namespace Notus.Validator
                             }
                             else
                             {
-                                string queueSeedStr = "";
-                                if (start_FirstQueueGroupTime == true)
-                                {
-                                    queueSeedStr = TimeBaseBlockUidList[FirstQueueGroupTime];
-                                }
-                                ValidatorQueueObj.ReOrderNodeQueue(CurrentQueueTime, queueSeedStr);
-
-                                if (NVR.NetworkSelectorList.Count > 0)
-                                {
-                                    KeyValuePair<string, string> firstNode = NVR.NetworkSelectorList.First();
-                                    if (NVR.ReadyMessageFromNode.ContainsKey(firstNode.Key))
-                                    {
-                                        NP.Info("This Node Ready For Join The Network : " + firstNode.Key);
-                                        if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, firstNode.Value))
-                                        {
-                                            /*
-                                            int tmpGroupNo = NVG.GroupNo + 1;
-                                            */
-                                            ulong tmpQueueTime = ND.AddMiliseconds(
-                                                CurrentQueueTime,
-                                                queueTimePeriod * 3
-                                            );
-
-                                            ulong tmpJoinTime = ND.AddMiliseconds(
-                                                tmpQueueTime,
-                                                queueTimePeriod * (ulong)(NVC.NodeOrderGroupSize * 10)
-                                            );
-                                            /*
-                                            hatanın olduğu nokta
-                                            üçüncü node ağa dahil olduğu anda kendisine blok iletilemiyor
-                                            oluşturulan blok iletilemeyince 
-                                                hatalı blok numarası ile kendisi başka bir blok üretiyor.
-
-                                            üçüncü node oluşturduğu bloğu diğer nodelara iletemiyor...
-                                            */
-
-                                            NP.Info("I Will Allow The Node");
-                                            Task.Run(() =>
-                                            {
-                                                NVH.TellToNetworkNewNodeJoinTime(firstNode.Key, tmpJoinTime);
-                                            });
-                                            NVR.ReadyMessageFromNode.Remove(firstNode.Key);
-                                            /*
-                                            Console.WriteLine("nodeOrderCount       : " + nodeOrderCount.ToString());
-                                            Console.WriteLine("NVG.GroupNo : " + NVG.GroupNo.ToString());
-
-                                            Console.WriteLine("tmpQueueTime     : " + tmpQueueTime.ToString());
-                                            Console.WriteLine("tmpGroupNo       : " + tmpGroupNo.ToString());
-
-                                            foreach (var iE in NVG.NodeList)
-                                            {
-                                                if(string.Equals(iE.Value.IP.Wallet, firstNode.Key))
-                                                {
-                                                    Console.WriteLine(
-                                                }
-                                            }
-
-                                            katılacak kullanıcının katılma zamanı ve 
-                                            group numarası gibi bilgileri API ile diğer nodelara görünür hale getirecek.
-
-
-                                            burada group no ve başlangıç zamanı bildirilecek
-                                            burada group no ve başlangıç zamanı bildirilecek
-                                            burada group no ve başlangıç zamanı bildirilecek
-                                            */
-                                        }
-                                        else
-                                        {
-                                            //Console.WriteLine("I Will Not Allow The Node");
-                                        }
-                                    }
-                                } // if (NVR.NetworkSelectorList.Count > 0)
-                                //NVR.NetworkSelectorList.Add(selectedEarliestWalletId, whoWillSayToEarlistNode);
+                                ValidatorQueueObj.ReOrderNodeQueue(
+                                    CurrentQueueTime, 
+                                    (
+                                        start_FirstQueueGroupTime == true 
+                                            ? 
+                                        TimeBaseBlockUidList[FirstQueueGroupTime] 
+                                            : 
+                                        ""
+                                    )
+                                );
+                                NVJ.TellTheNodeToJoinTime(CurrentQueueTime);
                             }
                         } //if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
 
@@ -1085,20 +980,7 @@ namespace Notus.Validator
                         {
                             nodeOrderCount = 0;
                             start_FirstQueueGroupTime = true;
-
-                            // control-point-1453
-                            // old listeyi temizle
-                            // now listesini old'a taşı
-                            // next listesini now'a taşı
-
                             NVG.Settings.PeerManager.MovePeerList();
-
-                            /*
-                            if (NVR.NetworkSelectorList.Count > 0)
-                            {
-                                //Console.WriteLine("ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod) : " + ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod).ToString());
-                            }
-                            */
                         } //if (nodeOrderCount == 6)
 
                         prepareNextQueue = false;
@@ -1108,19 +990,7 @@ namespace Notus.Validator
                     }  // if (NGF.NowInt() >= currentQueueTime)
                 }
             } // while ( tmpExitMainLoop == false && NVG.Settings.NodeClosing == false && NVG.Settings.GenesisCreated == false )
-
-
-            if (NVG.Settings.NodeClosing == false)
-            {
-                if (NVG.Settings.GenesisCreated == true)
-                {
-                    NP.Warning(NVG.Settings, "Main Class Temporary Ended");
-                }
-                else
-                {
-                    NP.Warning(NVG.Settings, "Main Class Ended");
-                }
-            }
+            NP.MainClassClosingControl();
         }
 
         private string fixedRowNoLength(NVClass.BlockData blockData)
@@ -1532,7 +1402,6 @@ namespace Notus.Validator
                 {
                 }
             }
-
         }
     }
 }
