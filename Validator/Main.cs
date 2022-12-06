@@ -802,14 +802,12 @@ namespace Notus.Validator
                     if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
                         string resultStr = NCH.SendMessageED(
-                            iE.Key,
-                            iE.Value.IP.IpAddress,
-                            iE.Value.IP.Port,
+                            iE.Key,iE.Value.IP,
                             "<waitingRoomNodeReady>" +
                                 NVG.Settings.Nodes.My.IP.Wallet +
-                                NVC.CommonDelimeterChar +
+                                    NVC.CommonDelimeterChar +
                                 nowUtcValue.ToString() +
-                                NVC.CommonDelimeterChar +
+                                    NVC.CommonDelimeterChar +
                                 controlSignForReadyMsg +
                             "</waitingRoomNodeReady>"
                         );

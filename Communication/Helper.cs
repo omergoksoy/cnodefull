@@ -11,6 +11,10 @@ namespace Notus.Communication
 {
     public static class Helper
     {
+        public static string SendMessageED(string nodeHex, NVS.NodeInfo ipInfo, string messageText)
+        {
+            return SendMessageED(nodeHex, ipInfo.IpAddress, ipInfo.Port, messageText);
+        }
         public static string SendMessageED(string nodeHex, string ipAddress, int portNo, string messageText)
         {
             (bool worksCorrent, string incodeResponse) = Notus.Communication.Request.PostSync(
