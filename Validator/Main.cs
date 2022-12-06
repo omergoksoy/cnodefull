@@ -572,32 +572,6 @@ namespace Notus.Validator
                 }
             );
 
-            /*
-            PeerManager
-            //kontrol noktası
-            int portVal = NVG.Settings.Nodes.My.IP.Port + 8;
-            System.Net.IPEndPoint localEndPoint = new System.Net.IPEndPoint(
-                IPAddress.Parse(
-                    NVG.Settings.Nodes.My.IP.IpAddress
-                ),8
-            );
-            
-            Notus.P2P.Manager P2PManager = new Notus.P2P.Manager(localEndPoint, portVal, (string IncomeText) =>
-            {
-                Console.WriteLine("Notus.P2P.Manager P2PManager - Before");
-                Console.WriteLine("IncomeText : "  + IncomeText);
-                Console.WriteLine("Notus.P2P.Manager P2PManager - After");
-            });
-
-            NVG.Settings.MsgOrch.OnReceive((string IncomeText) =>
-            {
-                //sync-control
-                Console.WriteLine("IncomeText : " + IncomeText);
-                string innerResultStr = ValidatorQueueObj.ProcessIncomeData(IncomeText);
-
-            });
-            NVG.Settings.MsgOrch.Start();
-            */
             if (NVG.Settings.Genesis == null)
             {
                 NP.Basic(NVG.Settings, "Notus.Validator.Main -> Genesis Is NULL");
@@ -628,13 +602,13 @@ namespace Notus.Validator
                         }
                         else
                         {
-                            NP.Danger(NVG.Settings, "Notus.Block.Integrity -> Block Does Not Exist");
-                            NP.Danger(NVG.Settings, "Reset Block");
-                            NP.ReadLine(NVG.Settings);
+                            NP.Danger("Notus.Block.Integrity -> Block Does Not Exist");
+                            NP.Danger("Reset Block");
+                            NP.ReadLine();
                         }
                     }
                 }
-                NP.Info(NVG.Settings, "All Blocks Loaded");
+                NP.Info("All Blocks Loaded");
 
                 /*
                 using (Notus.Mempool ObjMp_BlockOrder =
@@ -678,7 +652,7 @@ namespace Notus.Validator
 
             if (NVG.Settings.GenesisCreated == false)
             {
-                NP.Basic(NVG.Settings, "Main Validator Started");
+                NP.Basic("Main Validator Started");
             }
             //BlockStatObj = Obj_BlockQueue.CurrentBlockStatus();
             if (NVG.Settings.LocalNode == false)
@@ -1431,23 +1405,6 @@ namespace Notus.Validator
                 ProcessBlock_PrintSection(blockData, blockSource);
             }
 
-            /*
-            if (NVG.Settings.LastBlock.prev.Length < 20)
-            {
-                NP.Info("Settings -> Last Block -> " +
-                    NVG.Settings.LastBlock.info.rowNo.ToString() + " -> " +
-                    "Prev is Empty [ " + NVG.Settings.LastBlock.prev + " ]"
-                );
-            }
-            else
-            {
-                NP.Info("Settings -> Last Block -> " +
-                    NVG.Settings.LastBlock.info.rowNo.ToString() + " -> " +
-                    NVG.Settings.LastBlock.prev.Substring(0, 20)
-                );
-            }
-            */
-
             if (addBlockToChain == true)
             {
                 NGF.BlockQueue.AddToChain(blockData);
@@ -1463,6 +1420,7 @@ namespace Notus.Validator
             }
 
             CurrentBlockRowNo++;
+
             // eğer sonraki bloklardan listede olan varsa o da işlenir
             if (IncomeBlockList.ContainsKey(CurrentBlockRowNo))
             {
@@ -1486,7 +1444,11 @@ namespace Notus.Validator
         private void Start_HttpListener()
         {
             IPAddress NodeIpAddress = IPAddress.Parse(
-                NVG.Settings.LocalNode == false ? NVG.Settings.IpInfo.Public : NVG.Settings.IpInfo.Local
+                NVG.Settings.LocalNode == false 
+                    ? 
+                NVG.Settings.IpInfo.Public 
+                    : 
+                NVG.Settings.IpInfo.Local
             );
 
             NP.Basic("Listining : " + Notus.Network.Node.MakeHttpListenerPath(NodeIpAddress.ToString(), SelectedPortVal));

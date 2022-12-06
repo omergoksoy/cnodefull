@@ -12,7 +12,7 @@ namespace Notus.Sync
     {
         public Balance()
         {
-            NP.Success(NVG.Settings, "Time Synchronizer Has Started");
+            //NP.Success("aciklama-yazisi");
         }
         ~Balance()
         {

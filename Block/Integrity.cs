@@ -126,7 +126,6 @@ namespace Notus.Block
             {
                 return (NVE.BlockIntegrityStatus.CheckAgain, null);
             }
-            NVG.Settings.BlockOrder.Clear();
 
             SortedDictionary<long, string> BlockOrderList = new SortedDictionary<long, string>();
             Dictionary<string, int> BlockTypeList = new Dictionary<string, int>();
@@ -342,17 +341,12 @@ namespace Notus.Block
                 return (NVE.BlockIntegrityStatus.CheckAgain, null);
             }
             NP.Success(NVG.Settings, "Block Integrity Valid");
-            /*
-            NVG.Settings.BlockOrder.Add();
+
+            NVG.Settings.BlockOrder.Clear();
             foreach (KeyValuePair<long, string> item in BlockOrderList)
             {
-                if (NGF.BlockOrder.ContainsKey(item.Key) == false)
-                {
-                    NGF.BlockOrder.TryAdd(item.Key, item.Value);
-                }
-                //NGF.BlockOrder.Add(item.Key.ToString(), item.Value);
+                NVG.Settings.BlockOrder.Add(item.Key, item.Value);
             }
-            */
             return (NVE.BlockIntegrityStatus.Valid, LastBlock);
         }
 

@@ -225,13 +225,14 @@ namespace Notus.Variable
 
             { "MainNodeWalletConfig", "node_config" },
             { "BlockPoolList", "pool_list" },
+            { "BlockOrderList", "pool_list" },
             { "PreviousBlockList", "prev_list" },
 
             //{ "BlockStorageList", "block_list" },
             { "MempoolListBeforeBlockStorage", "block_file" },
 
             { "NetworkNodeList", "node_list" },
-            {"ValidatorList","validator_list" },
+            { "ValidatorList" ,"validator_list" },
             { "TransactionList", "tx_list_" }
         };
 

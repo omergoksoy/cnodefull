@@ -111,13 +111,10 @@ namespace Notus.Validator
                 {
                     Environment.Exit(0);
                 }
-                else
+                if (NVG.Settings.NodeClosing == false)
                 {
-                    if (NVG.Settings.NodeClosing == false)
-                    {
-                        NP.Basic(NVG.Settings, "Sleep For 0.5 Seconds");
-                        Thread.Sleep(500);
-                    }
+                    NP.Basic(NVG.Settings, "Sleep For 0.5 Seconds");
+                    Thread.Sleep(500);
                 }
             }
         }

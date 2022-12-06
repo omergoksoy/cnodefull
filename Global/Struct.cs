@@ -31,7 +31,6 @@ namespace Notus.Globals.Variable
         //public Notus.Variable.Struct.UTCTimeStruct? UTCTime { get; set; }
         public bool GenesisCreated { get; set; }
         public bool GenesisAssigned { get; set; }
-        //public Notus.Message.Orchestra? MsgOrch { get; set; }
         public Notus.P2P.Manager? PeerManager { get; set; }
         public Notus.Variable.Genesis.GenesisBlockData? Genesis { get; set; }
         public Notus.Variable.Struct.NodeQueueList? Nodes { get; set; }
@@ -42,7 +41,8 @@ namespace Notus.Globals.Variable
         public Notus.Variable.Enum.NetworkType Network { get; set; }
         public Notus.Variable.Enum.NetworkLayer Layer { get; set; }
         public Notus.Variable.Struct.CommunicationPorts? Port { get; set; }
-        public BlockOrder BlockOrder { get; set; }
+        public Notus.Block.Order BlockOrder { get; set; }
+        //public BlockOrder BlockOrder { get; set; }
         //public Dictionary<long, string> BlockOrder { get; set; }
 
         //public ulong PacketSend { get; set; }
