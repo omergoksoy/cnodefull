@@ -33,9 +33,16 @@ namespace Notus.P2P
             var peerEndPoint = (IPEndPoint)handler.RemoteEndPoint;
             var peerId = peerEndPoint.ToString();
             var peer = new NP2P.Connection(peerId, handler, this.onReceive);
-            this.Peers.TryAdd(peerId, peer);
-            NP.Info("Connected To Peer : " + peerId);
-            this.listener.BeginAccept(new AsyncCallback(this.AcceptCallback), this.listener);
+            if (peer.connected == true)
+            {
+                this.Peers.TryAdd(peerId, peer);
+                NP.Info("Connected To Peer : " + peerId);
+                this.listener.BeginAccept(new AsyncCallback(this.AcceptCallback), this.listener);
+            }
+            else
+            {
+                NP.Danger("Connection Error -> " + peerId);
+            }
         }
 
         public void StopOldPeers()

@@ -1,13 +1,13 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using NP2P = Notus.P2P;
 namespace Notus.P2P
 {
     internal class Connection : IDisposable
     {
         private string peerId;
         private Socket socket;
+        public bool connected;
         private bool exitLoop;
         private Action<string> messageReceivedCallback;
 
@@ -51,6 +51,7 @@ namespace Notus.P2P
 
         public Connection(string peerId, Socket handler, Action<string> messageReceivedCallback)
         {
+            this.connected = false;
             this.exitLoop = false;
             this.peerId = peerId;
             this.messageReceivedCallback = messageReceivedCallback;
@@ -62,14 +63,23 @@ namespace Notus.P2P
 
         public Connection(string peerId, IPEndPoint peerEndPoint, Action<string> messageReceivedCallback)
         {
+            this.connected = false;
             this.exitLoop = false;
-            this.peerId = peerId;
-            this.messageReceivedCallback = messageReceivedCallback;
-            this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            this.socket.Connect(peerEndPoint);
+            try
+            {
+                this.peerId = peerId;
+                this.messageReceivedCallback = messageReceivedCallback;
+                this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                this.socket.Connect(peerEndPoint);
+                this.connected = true;
+            }
+            catch { }
+            if (this.connected == true)
+            {
 
-            var thread = new Thread(this.Receive);
-            thread.Start();
+                var thread = new Thread(this.Receive);
+                thread.Start();
+            }
         }
 
         public void Dispose()
