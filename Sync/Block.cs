@@ -17,6 +17,9 @@ namespace Notus.Sync
             System.Action<Notus.Variable.Class.BlockData>? Func_NewBlockIncome = null
         )
         {
+            if (nodeList == null)
+                return false;
+
             bool waitForOtherNodes = false;
             long smallestBlockRow = long.MaxValue;
             foreach (Variable.Struct.IpInfo? tmpEntry in nodeList)

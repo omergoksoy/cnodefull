@@ -1,7 +1,7 @@
-using System.Text.Json;
 using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
+using System.Text.Json;
 using NP = Notus.Print;
 using NP2P = Notus.P2P;
 using NVG = Notus.Variable.Globals;
@@ -113,18 +113,11 @@ namespace Notus.P2P
             if (this.Peers.ContainsKey(peerId))
                 return;
 
-            bool result = this.Peers.TryAdd(peerId,
-                new NP2P.Connection(
-                    peerId,
-                    new IPEndPoint(
-                        IPAddress.Parse(ipAddress),
-                        Notus.Network.Node.GetP2PPort()
-                    ),
-                    this.onReceive
-                )
-            );
+            IPAddress ipObj = IPAddress.Parse(ipAddress);
+            IPEndPoint localEndPoint = new IPEndPoint(ipObj, Notus.Network.Node.GetP2PPort());
+            bool result = this.Peers.TryAdd(peerId, new NP2P.Connection(peerId, localEndPoint, this.onReceive));
             if (result == true)
-                NP.Success("Peer Started -> " + peerId.Substring(0,7)+"..."+ peerId.Substring(peerId.Length-7));
+                NP.Success("Peer Started -> " + peerId.Substring(0, 7) + "..." + peerId.Substring(peerId.Length - 7));
         }
 
         public void RemoveAll()
