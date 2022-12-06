@@ -27,6 +27,14 @@ namespace Notus.Block
             MP_OrderList.Clear();
             blockList.Clear();
         }
+        public string Get(long blockRowNo)
+        {
+            if (blockList.ContainsKey(blockRowNo) == false)
+            {
+                return string.Empty;
+            }
+            return blockList[blockRowNo];
+        }
         public string Add(long rowNo)
         {
             return string.Empty;

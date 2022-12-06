@@ -144,7 +144,7 @@ namespace Notus.Variable
                     TestNet = 0,
                     DevNet = 0
                 },
-                BlockOrder = new Notus.Memory.BlockOrder()
+                BlockOrder = new Notus.Block.Order()
             };
         }
 

@@ -52,23 +52,7 @@ namespace Notus.Validator
 
         public void GarbageCollector()
         {
-
-            NP.Basic("Garbage Collector starting");
-            //NP.Warning("Garbage Collector Disabled");
-            /*
-            Notus.Threads.Timer TimerObj = new Notus.Threads.Timer(250);
-            TimerObj.Start(250, () =>
-            {
-                if (TimeBaseBlockUidList.Count > 20000)
-                {
-                    TimeBaseBlockUidList.Remove(TimeBaseBlockUidList.First().Key);
-                }
-                if (NVG.Settings.Nodes.Queue.Count > 20000)
-                {
-                    NVG.Settings.Nodes.Queue.Remove(NVG.Settings.Nodes.Queue.First().Key);
-                }
-            });
-            */
+            buradan kaldırılacak ve timer kitaplığı oluşturulup onun içie eklenecek
         }
         public void FileStorageTimer()
         {
