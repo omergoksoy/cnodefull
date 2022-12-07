@@ -146,6 +146,7 @@ namespace Notus.Variable
                 },
                 BlockOrder = new Notus.Block.Order()
             };
+            Settings.BlockOrder.Start();
         }
 
         public static class Functions

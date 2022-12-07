@@ -56,13 +56,16 @@ namespace Notus.Block
 
             MP_OrderList.Set(blockRowNo.ToString(), blockUid, true);
         }
-        public Order()
+        public void Start()
         {
             MP_OrderList = new Notus.Mempool(
                 Notus.IO.GetFolderName(NVG.Settings, Notus.Variable.Constant.StorageFolderName.Common) +
                 Notus.Variable.Constant.MemoryPoolName["BlockOrderList"]
             );
             MP_OrderList.AsyncActive = false;
+        }
+        public Order()
+        {
         }
         ~Order()
         {
