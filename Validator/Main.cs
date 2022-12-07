@@ -885,9 +885,6 @@ namespace Notus.Validator
                                             bool processResult = ProcessBlock(PreparedBlockData, 4);
                                             if (processResult == true)
                                             {
-                                                // sonraki sırada olan validatör'e direkt gönder
-                                                // 2 sonraki validatöre task ile gönder
-                                                //socket-exception
                                                 ValidatorQueueObj.Distrubute(
                                                     PreBlockData.info.rowNo,
                                                     PreBlockData.info.type,

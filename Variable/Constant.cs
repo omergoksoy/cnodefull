@@ -77,9 +77,6 @@ namespace Notus.Variable
 
         public static readonly string GenesisBlockUid = "100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
 
-        //socket-exception
-        //public static readonly int DefaultMessagePortNo = 5100;
-
         private static readonly int DefaultPortNo = 5000;
         public static readonly int DefaultChunkSize = 2048;
 

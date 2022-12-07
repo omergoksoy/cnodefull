@@ -127,14 +127,9 @@ node-2 UTC saatinin alındığı zaman : 14:46:28.873 ise
 bu iki node arasındaki süre 
 
 */
-//OMERGOKSOY
-// kontrol edilecek alanlar
 
 //sync-control
 //node'ların blok senkronizasyonu kontrol ediliyor
-
-//socket-exception
-//soket ile ilgili yapılan işlemler için oluşturulan istisna durumu
 
 //tgz-exception
 // TGZ ile ilgili eklenen kontrol noktaları
@@ -142,13 +137,6 @@ bu iki node arasındaki süre
 //block-order-exception
 // blok sırasını yapan kontrol noktaları
 
-//sync-disable-exception
-// senkronizasyon düzeltmesi için yapılan devre dışı bırakma işlemleri
-
-//tgz-exception
-
-//node-order-exception
-//Node sıralama istisnası
 Notus.Validator.Node.Start(args);
 
 

@@ -802,11 +802,6 @@ namespace Notus.Validator
             SortedDictionary<BigInteger, string> resultList = new SortedDictionary<BigInteger, string>();
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
-                //node-order-exception
-                //burada hangi nodeların devreye gireceğini seçelim
-                //burada hangi nodeların devreye gireceğini seçelim
-                //burada hangi nodeların devreye gireceğini seçelim
-                //burada hangi nodeların devreye gireceğini seçelim
                 bool nodeIsAvailable = false;
                 if (atTheBeginnig == true)
                 {
@@ -918,37 +913,8 @@ namespace Notus.Validator
             // önce node'ların içerisinde senkronizasyon bekleyen olmadığına emin ol
             bool firstHandShake = WaitUntilAvailable();
 
-            // node-order-exception
-
-            /*
-            bu değişken true ise sync_no diğer validator tarafından gönderilecek demektir
-            node'un önce kendi bloklarını eşitlemesi gerekir
-            sonrasıda ise izin verilen zamana kadar beklemesi gerekir.
-            */
-
             ulong biggestSyncNo = FindBiggestSyncNo();
-            //if(biggestSyncNo)
             NP.Info("Biggest Sync No : " + biggestSyncNo.ToString());
-
-            /*
-            if (NVG.OtherValidatorSelectedMe == true)
-            {
-                // NVG.CurrentSyncNo = biggestSyncNo;
-                // NVG.NodeQueue.Starting = biggestSyncNo;
-                //NVG.NodeQueue.OrderCount = 1;
-
-                // NVG.NodeQueue.Begin = false;
-                // NVG.Settings.Nodes.My.JoinTime = ND.GetJoinTime(biggestSyncNo);
-                // NVG.NodeQueue.
-                // NVG.NodeList[NVG.Settings.Nodes.My.HexKey].
-                // eğer false ise senkronizasyon başlamamış demektir...
-                //NVG.Settings.SyncStarted = false;
-
-                //Console.WriteLine("Queue.cs -> Line 1035");
-                //Console.WriteLine("biggestSyncNo : " + biggestSyncNo.ToString());
-                //Console.WriteLine("if (NVG.OtherValidatorSelectedMe == true)");
-            }
-            */
 
             if (NVG.OtherValidatorSelectedMe == false)
             {

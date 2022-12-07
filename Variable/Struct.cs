@@ -502,20 +502,6 @@ namespace Notus.Variable.Struct
         public ulong Begin { get; set; }             // node'un son hata verme zamanı
         public ulong SyncNo { get; set; }             // node'ların senkronizasyon için kullandıkları numara
         public ulong JoinTime { get; set; }             // node'ların senkronizasyon için kullandıkları numara
-
-        //public bool InTheCode { get; set; }                 // eğer IP adresi kodun içine gömülü ise, tru değeri olacak, gömülü olanlar önemli
-        //public string NodeHash { get; set; }                // nodu'un elindeki listenin özeti
-        //public DateTime Nodes { get; set; }             // node'un son hata verme zamanı
-        //public ulong ErrorTime { get; set; }             // node'un son hata verme zamanı
-        //public NodeQueueInfo_Time Time { get; set; }             // node'un son hata verme zamanı
-        //public int ErrorCount { get; set; }                 // node'un verdiği error sayısı peşpeşe 10 olursa, kontrol sıklığı azalacak
-
-        //sync-disable-exception
-        //geçici olarak devre dışı bırakıldı
-        //public long LastRowNo { get; set; }                 // node'un sahip olduğu son blok numarası
-        //public string LastPrev { get; set; }                 // node'un sahip olduğu son blok numarası
-        //public string LastUid { get; set; }                 // node'un sahip olduğu son blok numarası
-        //public string LastSign { get; set; }                 // node'un sahip olduğu son blok numarası
     }
 
     public class UTCTimeStruct
