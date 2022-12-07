@@ -52,7 +52,7 @@ namespace Notus.Validator
 
         public void GarbageCollector()
         {
-            buradan kaldırılacak ve timer kitaplığı oluşturulup onun içie eklenecek
+            //buradan kaldırılacak ve timer kitaplığı oluşturulup onun içie eklenecek
         }
         public void FileStorageTimer()
         {
