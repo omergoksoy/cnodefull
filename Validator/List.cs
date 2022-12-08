@@ -2,13 +2,11 @@
 
 namespace Notus.Validator
 {
-    /*
     public static class List
     {
-        // omergoksoy
-        // burada liste constant.ListMainNodeIp sabitinden alınıp List içeriğine eklenecek.
+        // güzelhosting için oluşturulmuş liste
         public static readonly Dictionary<Variable.Enum.NetworkLayer,
-                Dictionary<Variable.Enum.NetworkType, List<Variable.Struct.IpInfo>>> Main
+                Dictionary<Variable.Enum.NetworkType, List<Variable.Struct.IpInfo>>> Main_GuzelHosting
             =
             new Dictionary<Variable.Enum.NetworkLayer,
             Dictionary<Variable.Enum.NetworkType, List<Variable.Struct.IpInfo>>>()
@@ -80,17 +78,8 @@ namespace Notus.Validator
                     }
                 }
             };
-    }
 
-*/
-
-    /*
-    aws üzerindeki sunucuların bilgileri
-    */
-    public static class List
-    {
-        // omergoksoy
-        // burada liste constant.ListMainNodeIp sabitinden alınıp List içeriğine eklenecek.
+        // aws için oluşturulmuş liste
         public static readonly Dictionary<Variable.Enum.NetworkLayer,
                 Dictionary<Variable.Enum.NetworkType, List<Variable.Struct.IpInfo>>> Main
         =
@@ -165,9 +154,10 @@ namespace Notus.Validator
             }
         };
 
-        public static List<string> Get(Variable.Enum.NetworkLayer networkLayer, Variable.Enum.NetworkType networkType) {
+        public static List<string> Get(Variable.Enum.NetworkLayer networkLayer, Variable.Enum.NetworkType networkType)
+        {
             System.Collections.Generic.List<string> returnList = new();
-            for (int i=0;i<Notus.Validator.List.Main[networkLayer][networkType].Count;i++)
+            for (int i = 0; i < Notus.Validator.List.Main[networkLayer][networkType].Count; i++)
             {
                 returnList.Add(Notus.Validator.List.Main[networkLayer][networkType][i].IpAddress);
             }

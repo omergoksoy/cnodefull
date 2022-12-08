@@ -32,6 +32,8 @@ namespace Notus.Validator
         }
         public static void Start()
         {
+            NVG.Settings.BlockOrder.Start();
+
             NP.ExecuteTime();
 
             if (NVG.Settings.LocalNode == true)
