@@ -175,6 +175,10 @@ namespace Notus.Validator
             }
             else
             {
+                Console.WriteLine();
+                Console.WriteLine("Control-Point-001");
+                Console.WriteLine(blockGenarationTime);
+                NVG.Settings.Nodes.Queue
                 bool canBePrint = false;
                 if (NVG.LocalBlockLoaded == true)
                 {

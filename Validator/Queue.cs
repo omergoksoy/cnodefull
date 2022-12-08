@@ -695,7 +695,7 @@ namespace Notus.Validator
                             if (exitFromInnerWhile == false)
                             {
                                 //Console.WriteLine(firstListcount);
-                                NVG.Settings.Nodes.Queue.Add(tmpSyncNo, new NVS.NodeInfo()
+                                bool addingResult=NVG.Settings.Nodes.Queue.TryAdd(tmpSyncNo, new NVS.NodeInfo()
                                 {
                                     IpAddress = entry.Value.IP.IpAddress,
                                     Port = entry.Value.IP.Port,
@@ -703,7 +703,10 @@ namespace Notus.Validator
                                     GroupNo = NVG.GroupNo,
                                     //Client = new Dictionary<string, Communication.Sync.Socket.Client>()
                                 });
-
+                                if (addingResult == false)
+                                {
+                                    Console.WriteLine("addingResult : " + tmpSyncNo.ToString());
+                                }
 
                                 // her node için sunucu listesi oluşturulacak ve
                                 // bunun için geçici liste oluşturuluyor...
