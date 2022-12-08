@@ -222,7 +222,7 @@ namespace Notus.Variable
 
             { "MainNodeWalletConfig", "node_config" },
             { "BlockPoolList", "pool_list" },
-            { "BlockOrderList", "pool_list" },
+            { "BlockOrderList", "block_order" },
             { "PreviousBlockList", "prev_list" },
 
             //{ "BlockStorageList", "block_list" },
