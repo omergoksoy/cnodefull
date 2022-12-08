@@ -175,7 +175,7 @@ namespace Notus.Validator
             }
             else
             {
-                ekleme noktası burası buradan kontrol edilecek
+                //ekleme noktası burası buradan kontrol edilecek
                 Console.WriteLine();
                 Console.WriteLine("Control-Point-001");
                 Console.WriteLine(blockGenarationTime);
