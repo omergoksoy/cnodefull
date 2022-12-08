@@ -458,23 +458,24 @@ namespace Notus.Block
                                     true,
                                     NVG.Settings
                                 );
-                                NVClass.BlockData? tmpEmptyBlock = JsonSerializer.Deserialize<NVClass.BlockData>(MainResultStr);
-                                if (tmpEmptyBlock != null)
+                                if (MainResultStr.Length > 0)
                                 {
-                                    NP.Info(NVG.Settings, "Getting Block Row No [ " + nodeUrl + " ]: " + BlockRowNo.ToString());
-                                    using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
+                                    NVClass.BlockData? tmpEmptyBlock = JsonSerializer.Deserialize<NVClass.BlockData>(MainResultStr);
+                                    if (tmpEmptyBlock != null)
                                     {
-                                        BS_Storage.AddSync(tmpEmptyBlock, true);
+                                        NP.Info(NVG.Settings, "Getting Block Row No [ " + nodeUrl + " ]: " + BlockRowNo.ToString());
+                                        using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
+                                        {
+                                            BS_Storage.AddSync(tmpEmptyBlock, true);
+                                        }
+                                        exitInnerLoop = true;
                                     }
-                                    exitInnerLoop = true;
                                 }
                             }
                             catch (Exception err)
                             {
                                 if (debugPrinted == false)
                                 {
-                                    Console.WriteLine("MainResultStr : " + MainResultStr);
-                                    Console.WriteLine("MainResultStr.Length : " + MainResultStr.Length.ToString());
                                     NP.Basic(NVG.Settings.DebugMode, "Error Text [5a6e84]: " + err.Message);
                                     NP.Basic(NVG.Settings.DebugMode, "Income Text [5a6e84]: " + MainResultStr);
                                     debugPrinted = true;
