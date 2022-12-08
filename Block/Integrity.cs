@@ -473,6 +473,8 @@ namespace Notus.Block
                             {
                                 if (debugPrinted == false)
                                 {
+                                    Console.WriteLine("MainResultStr : " + MainResultStr);
+                                    Console.WriteLine("MainResultStr.Length : " + MainResultStr.Length.ToString());
                                     NP.Basic(NVG.Settings.DebugMode, "Error Text [5a6e84]: " + err.Message);
                                     NP.Basic(NVG.Settings.DebugMode, "Income Text [5a6e84]: " + MainResultStr);
                                     debugPrinted = true;
