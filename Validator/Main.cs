@@ -506,10 +506,6 @@ namespace Notus.Validator
                 TimeSyncObj.Start();
                 NtpDateSyncObj.Start();
             }
-            Obj_Integrity = new Notus.Block.Integrity();
-            Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with onther node
-            Obj_Integrity.GetLastBlock();        // get last block from current node
-
             /*
             burada port ile soket başlatacak ve kontrollü bir şekilde 
             başlangıçlarını ayarla
@@ -529,6 +525,10 @@ namespace Notus.Validator
                     }
                 }
             );
+
+            Obj_Integrity = new Notus.Block.Integrity();
+            Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with onther node
+            Obj_Integrity.GetLastBlock();        // get last block from current node
 
             if (NVG.Settings.Genesis == null)
             {
