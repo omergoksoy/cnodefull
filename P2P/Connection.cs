@@ -51,7 +51,7 @@ namespace Notus.P2P
 
         public Connection(string peerId, Socket handler, Action<string> messageReceivedCallback)
         {
-            this.connected = false;
+            this.connected = true;
             this.exitLoop = false;
             this.peerId = peerId;
             this.messageReceivedCallback = messageReceivedCallback;
