@@ -6,7 +6,7 @@ namespace Notus.Validator
     {
         // güzelhosting için oluşturulmuş liste
         public static readonly Dictionary<Variable.Enum.NetworkLayer,
-                Dictionary<Variable.Enum.NetworkType, List<Variable.Struct.IpInfo>>> Main_GuzelHosting
+                Dictionary<Variable.Enum.NetworkType, List<Variable.Struct.IpInfo>>> Main_GuzelHosting  //Main_GuzelHosting
             =
             new Dictionary<Variable.Enum.NetworkLayer,
             Dictionary<Variable.Enum.NetworkType, List<Variable.Struct.IpInfo>>>()
@@ -81,7 +81,7 @@ namespace Notus.Validator
 
         // aws için oluşturulmuş liste
         public static readonly Dictionary<Variable.Enum.NetworkLayer,
-                Dictionary<Variable.Enum.NetworkType, List<Variable.Struct.IpInfo>>> Main
+                Dictionary<Variable.Enum.NetworkType, List<Variable.Struct.IpInfo>>> Main //Main_AWS
         =
         new Dictionary<Variable.Enum.NetworkLayer,
         Dictionary<Variable.Enum.NetworkType, List<Variable.Struct.IpInfo>>>()
