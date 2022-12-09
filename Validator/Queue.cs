@@ -1082,17 +1082,7 @@ namespace Notus.Validator
                             peerStaringTime, NVD.Calculate()
                         );
                     }
-                    NVG.Settings.PeerManager.StartAllPeers();
-
-                    /*
-                    Console.WriteLine("Location-01");
-                    Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Old));
-                    Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Now));
-                    Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Next));
-
-                    Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Now, NVC.JsonSetting));
-                    NP.ReadLine();
-                    */
+                    NVG.Settings.PeerManager.StartAllPeers(true);
                 }
                 else
                 {
@@ -1157,12 +1147,6 @@ namespace Notus.Validator
                 peerStartingTime = ND.AddMiliseconds(peerStartingTime, NVD.Calculate());
             }
 
-            /*
-            Console.WriteLine("Location-03");
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Old));
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Now));
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Next));
-            */
             NVG.Settings.PeerManager.StartAllPeers();
             NVG.Settings.PeerManager.StopOldPeers();
         }

@@ -29,7 +29,10 @@ namespace Notus.Validator
             NP.Info("This Node Ready For Join The Network : " + firstNode.Key);
 
             if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, firstNode.Value) == false)
+            {
+                NP.Info("Node Will Allow The Node -> " + firstNode.Value);
                 return;
+            }
 
             ulong tmpQueueTime = ND.AddMiliseconds(CurrentQueueTime, queueTimePeriod * 3);
 
