@@ -526,6 +526,7 @@ namespace Notus.Block
             if (NVG.Settings.Layer == NVE.NetworkLayer.Layer1)
             {
                 NVG.Settings.Genesis = Notus.Block.Genesis.Generate(NVG.Settings.NodeWallet.WalletKey, NVG.Settings.Network, NVG.Settings.Layer);
+                //NVG.Settings.Genesis.Info.Creation
             }
             else
             {
@@ -739,8 +740,12 @@ namespace Notus.Block
 
             if (Val_Status == NVE.BlockIntegrityStatus.GenesisNeed)
             {
-                //burada genesisi oluşturulurken ilk oluşturan kişi
-                //grup numarası oluşturulacak
+                //group-no-exception
+                /*
+                burada genesisi oluşturulurken ilk oluşturan kişi
+                grup numarası oluşturulacak ve gup numarası buraya yazılarak
+                sürekli olarak buradaki grup numarası devam edecek
+                */
                 NVClass.BlockData tmpGenesisBlock = GiveMeGenesisBlock(
                     NVClass.Block.GetEmpty()
                 );

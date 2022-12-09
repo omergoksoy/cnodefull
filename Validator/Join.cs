@@ -26,11 +26,11 @@ namespace Notus.Validator
                 return;
 
             ulong queueTimePeriod = NVD.Calculate();
-            NP.Info("This Node Ready For Join The Network : " + firstNode.Key);
+            //NP.Info("This Node Ready For Join The Network : " + firstNode.Key);
 
             if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, firstNode.Value) == false)
             {
-                NP.Info("Node Will Allow The Node -> " + firstNode.Value);
+                //NP.Info("Node Will Allow The Node -> " + firstNode.Value);
                 return;
             }
 

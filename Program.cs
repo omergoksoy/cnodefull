@@ -128,6 +128,9 @@ bu iki node arasındaki süre
 
 */
 
+//group-no-exception
+// bu istisna blok içine eklenecek gup numaralarını bulmak için eklendi
+
 //sync-control
 //node'ların blok senkronizasyonu kontrol ediliyor
 

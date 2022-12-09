@@ -11,6 +11,7 @@ namespace Notus
 {
     public static class Print
     {
+        private static bool WaitDotUsed = false;
         private static bool SubTimerIsRunning = false;
         private static int Counter = 0;
         private static NT.Timer SubTimer = new NT.Timer(100);
@@ -84,6 +85,12 @@ namespace Notus
         {
             Info(NodeSettings, "Press Enter To Continue");
             Console.ReadLine();
+        }
+        public static void WaitDot()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write("+");
+            WaitDotUsed = true;
         }
         public static void Info(string DetailsStr = "")
         {
@@ -191,6 +198,11 @@ namespace Notus
 
                         if (item.Value.Dot == false)
                         {
+                            if (WaitDotUsed == true)
+                            {
+                                Console.WriteLine();
+                                WaitDotUsed = false;
+                            }
                             PrintFunction(item.Value.Layer, item.Value.Type, item.Value.Color, item.Value.Text);
                             TextList.TryRemove(item.Key, out _);
                         }

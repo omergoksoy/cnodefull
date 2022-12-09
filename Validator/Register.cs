@@ -93,10 +93,10 @@ namespace Notus.Validator
                     string whoWillSayToEarlistNode = earliestNodeSelector.Value;
                     NVR.NetworkSelectorList.Add(selectedEarliestWalletId, whoWillSayToEarlistNode);
 
-                    NP.Info("The Node Will Join The Network : " + selectedEarliestWalletId);
+                    NP.Success("The Node Will Join The Network : " + selectedEarliestWalletId);
                     if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, whoWillSayToEarlistNode))
                     {
-                        NP.Info("I Will Tell The Node");
+                        //NP.Info("I Will Tell The Node");
                         NVH.TellTheNodeWhoWaitingRoom(selectedEarliestWalletId);
                         NVH.TellSyncNoToEarlistNode(selectedEarliestWalletId);
                     }

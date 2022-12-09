@@ -85,8 +85,12 @@ namespace Notus.Variable.Class
         public HashType hash { get; set; }
         public ValidatorMainType validator { get; set; }
 
-        //public ValidatorGroupType group { get; set; }
-
+        //group-no-exception
+        /*
+        burada grup numarası yazılacak ve bu numara sürekli olarak güncellenecek 
+        ve burada oluşturan kişilerin numaraları yazılacak
+        public ValidatorGroupType group { get; set; }
+        */
         public NonceType nonce { get; set; }
         public string prev { get; set; }
         public string sign { get; set; }
@@ -109,7 +113,10 @@ namespace Notus.Variable.Class
     }
     public class ValidatorGroupType
     {
-        public Dictionary<string, int> count { get; set; }
+        public ulong count { get; set; }
+
+        // gup zaman bilgisi, işlemi yapan public key
+        public Dictionary<ulong, string> queue { get; set; }
     }
     public class ValidatorMainType
     {

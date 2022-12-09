@@ -2,6 +2,8 @@
 using System;
 using System.Text.Json;
 using NVG = Notus.Variable.Globals;
+using NVD = Notus.Validator.Date;
+using ND = Notus.Date;
 namespace Notus.Block
 {
     public class Genesis
@@ -26,13 +28,13 @@ namespace Notus.Block
 
         public static GenesisBlockData GetGenesis_SubFunction(string CreatorWalletKey, bool EncryptKeyPair, Notus.Variable.Enum.NetworkType NetworkType, Notus.Variable.Enum.NetworkLayer NetworkLayer)
         {
-            DateTime generationTime = NVG.NOW.Obj;
+            
+            DateTime generationTime = ND.ToDateTime(NVG.NOW.Int - (NVG.NOW.Int % NVD.Calculate()));
+            
             string EncKey = generationTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText);
             Notus.Variable.Struct.EccKeyPair KeyPair_PreSeed = Notus.Wallet.ID.GenerateKeyPair(SelectedCurveName, NetworkType);
             Notus.Variable.Struct.EccKeyPair KeyPair_Private = Notus.Wallet.ID.GenerateKeyPair(SelectedCurveName, NetworkType);
             Notus.Variable.Struct.EccKeyPair KeyPair_Public = Notus.Wallet.ID.GenerateKeyPair(SelectedCurveName, NetworkType);
-
-
 
             using (Notus.Mempool ObjMp_Genesis =
                 new Notus.Mempool(

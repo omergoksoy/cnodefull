@@ -289,6 +289,12 @@ namespace Notus.Variable
                 NOW.Diff = new TimeSpan(0);
                 NOW.DiffUpdated = false;
                 NOW.LastDiffUpdate = DateTime.UtcNow;
+
+                //NOW.Int = 20221209222547000;
+                //Console.WriteLine(NOW.Int);
+                //Console.WriteLine(NOW.Int % 500);
+                //Console.WriteLine(NOW.Int - (NOW.Int % 500));
+                //NP.ReadLine();
             }
             public static void Start()
             {
