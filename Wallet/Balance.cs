@@ -95,7 +95,6 @@ namespace Notus.Wallet
             NGF.WalletUsageList.TryRemove(walletKey, out _);
         }
 
-        // omergoksoy
         private void StoreToDb(NVS.WalletBalanceStruct BalanceObj)
         {
             if (SummaryList.ContainsKey(BalanceObj.Wallet) == false)

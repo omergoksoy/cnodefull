@@ -628,14 +628,12 @@ namespace Notus.Validator
                 };
             }
 
-            //omergoksoy
             Start_HttpListener();
             if (NVG.Settings.GenesisCreated == false)
             {
                 NVG.Settings.CommEstablished = true;
             }
 
-            //omergoksoy
             ValidatorQueueObj.PreStart();
 
             ValidatorRegisterObj.Start();
