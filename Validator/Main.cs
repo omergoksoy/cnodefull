@@ -1094,13 +1094,16 @@ namespace Notus.Validator
                     }
                     else
                     {
-                        if (blockSource == 2)
+                        if (Notus.Sync.Block.downloadDone == true)
                         {
-                            NP.Warning("That block came from validator and wrong block");
-                        }
-                        if (blockSource == 4)
-                        {
-                            NP.Warning("That block came my validator but wrong queue order");
+                            if (blockSource == 2)
+                            {
+                                NP.Warning("That block came from validator and wrong block");
+                            }
+                            if (blockSource == 4)
+                            {
+                                NP.Warning("That block came my validator but wrong queue order");
+                            }
                         }
                         return false;
                     }

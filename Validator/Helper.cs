@@ -175,10 +175,13 @@ namespace Notus.Validator
             }
             else
             {
-                ekleme noktası burası buradan kontrol edilecek
-                Console.WriteLine();
-                Console.WriteLine("Control-Point-001");
-                Console.WriteLine(blockGenarationTime);
+                //ekleme noktası burası buradan kontrol edilecek
+                if (Notus.Sync.Block.downloadDone == true)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Control-Point-001");
+                    Console.WriteLine(blockGenarationTime);
+                }
                 //NVG.Settings.Nodes.Queue
                 bool canBePrint = false;
                 if (NVG.LocalBlockLoaded == true)
