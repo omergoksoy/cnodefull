@@ -158,6 +158,10 @@ namespace Notus.Validator
                 NVG.Settings.EmptyBlockCount = 0;
             }
         }
+        public static string BlockValidator(Notus.Variable.Class.BlockData incomeBlock)
+        {
+            return incomeBlock.validator.count.First().Key;
+        }
         public static bool RightBlockValidator(Notus.Variable.Class.BlockData incomeBlock)
         {
             
@@ -167,8 +171,7 @@ namespace Notus.Validator
 
             if (NVG.Settings.Nodes.Queue.ContainsKey(blockGenarationTime) == true)
             {
-                string blockValidator = incomeBlock.validator.count.First().Key;
-                if (string.Equals(blockValidator, NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet))
+                if (string.Equals(BlockValidator(incomeBlock), NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet))
                 {
                     return true;
                 }

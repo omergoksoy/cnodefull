@@ -13,9 +13,9 @@ using NVD = Notus.Validator.Date;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
+using NVJ = Notus.Validator.Join;
 using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
-using NVJ = Notus.Validator.Join;
 namespace Notus.Validator
 {
     public class Main : IDisposable
@@ -1092,7 +1092,10 @@ namespace Notus.Validator
                     if (innerSendToMyChain == true)
                     {
                         NVG.Settings.BlockOrder.Add(blockData.info.rowNo, blockData.info.uID);
-                        NP.Info("New Block Arrived : " + blockData.info.uID.Substring(0, 15));
+                        if (string.Equals(NVH.BlockValidator(blockData), NVG.Settings.Nodes.My.IP.Wallet) == false)
+                        {
+                            NP.Info("New Block Arrived : " + blockData.info.uID.Substring(0, 15));
+                        }
                     }
                     else
                     {
@@ -1122,7 +1125,10 @@ namespace Notus.Validator
                     */
                     innerSendToMyChain = true;
                     NVG.Settings.BlockOrder.Add(blockData.info.rowNo, blockData.info.uID);
-                    NP.Info("New Block Arrived : " + blockData.info.uID.Substring(0, 15));
+                    if (string.Equals(NVH.BlockValidator(blockData), NVG.Settings.Nodes.My.IP.Wallet) == false)
+                    {
+                        NP.Info("New Block Arrived : " + blockData.info.uID.Substring(0, 15));
+                    }
                 }
             }
             //gelen blok datası
