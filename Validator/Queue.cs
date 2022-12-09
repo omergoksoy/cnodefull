@@ -181,7 +181,10 @@ namespace Notus.Validator
         {
             if (CheckXmlTag(incomeData, "block"))
             {
-                NP.Basic("IncomeText : " + incomeData);
+                if(Notus.Toolbox.Text.CountChar(incomeData, '/') > 1)
+                {
+                    NP.Basic("IncomeText : " + incomeData);
+                }
                 //sync-control
                 /*
                 bu değişken true olunca, öncelikle diğer node'dan 

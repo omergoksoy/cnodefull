@@ -101,6 +101,13 @@ namespace Notus.Toolbox
             return tmpResult;
         }
 
+        public static int CountChar(string rawText,char countText)
+        {
+            int count = 0;
+            for (int i = 0; i < rawText.Length; i++)
+                if (rawText[i] == countText) count++;
+            return count;
+        }
         public static string AddRightPad(string inputText, int StrLength, string PadString)
         {
             if (inputText.Length >= StrLength)
