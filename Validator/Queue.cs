@@ -179,10 +179,9 @@ namespace Notus.Validator
         }
         public string ProcessIncomeData(string incomeData)
         {
-            NP.Basic("IncomeText : " + incomeData);
-
             if (CheckXmlTag(incomeData, "block"))
             {
+                NP.Basic("IncomeText : " + incomeData);
                 //sync-control
                 /*
                 bu değişken true olunca, öncelikle diğer node'dan 
@@ -410,6 +409,7 @@ namespace Notus.Validator
 
             if (CheckXmlTag(incomeData, "waitingRoomNodeReady"))
             {
+                NP.Basic("IncomeText : " + incomeData);
                 incomeData = GetPureText(incomeData, "waitingRoomNodeReady");
                 string[] tmpHashPart = incomeData.Split(NVC.CommonDelimeterChar);
                 ulong incomeUtc = ulong.Parse(tmpHashPart[1]);
@@ -449,6 +449,8 @@ namespace Notus.Validator
             }
             if (CheckXmlTag(incomeData, "syncNo"))
             {
+                NP.Basic("IncomeText : " + incomeData);
+
                 incomeData = GetPureText(incomeData, "syncNo");
                 string[] tmpArr = incomeData.Split(":");
                 if (tmpArr.Length > 3)
@@ -506,6 +508,8 @@ namespace Notus.Validator
 
             if (CheckXmlTag(incomeData, "joinTime"))
             {
+                NP.Basic("IncomeText : " + incomeData);
+
                 incomeData = GetPureText(incomeData, "joinTime");
                 string[] tmpArr = incomeData.Split(":");
                 if (tmpArr.Length > 3)
@@ -570,6 +574,8 @@ namespace Notus.Validator
             //bu komut ile bekleme odasındaki node ağa dahil ediliyor
             if (CheckXmlTag(incomeData, "yourTurn"))
             {
+                NP.Basic("IncomeText : " + incomeData);
+
                 incomeData = GetPureText(incomeData, "yourTurn");
                 if (incomeData.IndexOf(':') >= 0)
                 {
@@ -659,6 +665,8 @@ namespace Notus.Validator
                 }
                 return "<list>" + JsonSerializer.Serialize(NGF.ValidatorList) + "</list>";
             }
+
+            NP.Basic("Unknown IncomeText : " + incomeData);
             return "<err>1</err>";
         }
         private void NodeIsOnline(string nodeHexText)
