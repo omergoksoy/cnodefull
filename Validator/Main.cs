@@ -15,7 +15,7 @@ using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
-using NVJ=Notus.Validator.Join;
+using NVJ = Notus.Validator.Join;
 namespace Notus.Validator
 {
     public class Main : IDisposable
@@ -483,7 +483,7 @@ namespace Notus.Validator
             {
                 executeEmptyBlock = true;
             }
-            if(executeEmptyBlock == true)
+            if (executeEmptyBlock == true)
             {
                 NP.Success("Empty Block Executed");
                 Notus.Validator.Helper.CheckBlockAndEmptyCounter(300);
@@ -522,9 +522,12 @@ namespace Notus.Validator
                 p2pPortNo,
                 (string incomeMessage) =>
                 {
-                    Console.WriteLine("IncomeText : " + incomeMessage);
+                    NP.Basic("IncomeText : " + incomeMessage);
                     string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
-                    Console.WriteLine("Function Response : " + innerResultStr);
+                    if (string.Equals(innerResultStr, "done") == false)
+                    {
+                        NP.Basic("Function Response : " + innerResultStr);
+                    }
                 }
             );
 
@@ -758,7 +761,7 @@ namespace Notus.Validator
                     if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
                         string resultStr = NCH.SendMessageED(
-                            iE.Key,iE.Value.IP,
+                            iE.Key, iE.Value.IP,
                             "<waitingRoomNodeReady>" +
                                 NVG.Settings.Nodes.My.IP.Wallet +
                                     NVC.CommonDelimeterChar +
@@ -944,12 +947,12 @@ namespace Notus.Validator
                             else
                             {
                                 ValidatorQueueObj.ReOrderNodeQueue(
-                                    CurrentQueueTime, 
+                                    CurrentQueueTime,
                                     (
-                                        start_FirstQueueGroupTime == true 
-                                            ? 
-                                        TimeBaseBlockUidList[FirstQueueGroupTime] 
-                                            : 
+                                        start_FirstQueueGroupTime == true
+                                            ?
+                                        TimeBaseBlockUidList[FirstQueueGroupTime]
+                                            :
                                         ""
                                     )
                                 );
@@ -1296,10 +1299,10 @@ namespace Notus.Validator
         private void Start_HttpListener()
         {
             IPAddress NodeIpAddress = IPAddress.Parse(
-                NVG.Settings.LocalNode == false 
-                    ? 
-                NVG.Settings.IpInfo.Public 
-                    : 
+                NVG.Settings.LocalNode == false
+                    ?
+                NVG.Settings.IpInfo.Public
+                    :
                 NVG.Settings.IpInfo.Local
             );
 
