@@ -790,8 +790,7 @@ namespace Notus.Validator
                         }
                         else
                         {
-                            Console.ForegroundColor = ConsoleColor.DarkGreen;
-                            Console.Write("+");
+                            NP.WaitDot();
                         }
                     }
                 }
