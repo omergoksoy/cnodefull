@@ -84,6 +84,9 @@ namespace Notus.Variable.Class
         public CipherType cipher { get; set; }
         public HashType hash { get; set; }
         public ValidatorMainType validator { get; set; }
+
+        //public ValidatorGroupType group { get; set; }
+
         public NonceType nonce { get; set; }
         public string prev { get; set; }
         public string sign { get; set; }
@@ -103,6 +106,10 @@ namespace Notus.Variable.Class
         public Dictionary<int, string> block { get; set; }
         public Dictionary<int, string> data { get; set; }
         public Dictionary<int, string> info { get; set; }
+    }
+    public class ValidatorGroupType
+    {
+        public Dictionary<string, int> count { get; set; }
     }
     public class ValidatorMainType
     {

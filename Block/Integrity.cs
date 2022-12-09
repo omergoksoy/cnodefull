@@ -739,6 +739,8 @@ namespace Notus.Block
 
             if (Val_Status == NVE.BlockIntegrityStatus.GenesisNeed)
             {
+                //burada genesisi oluşturulurken ilk oluşturan kişi
+                //grup numarası oluşturulacak
                 NVClass.BlockData tmpGenesisBlock = GiveMeGenesisBlock(
                     NVClass.Block.GetEmpty()
                 );
