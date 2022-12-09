@@ -412,7 +412,7 @@ namespace Notus.Validator
 
             if (CheckXmlTag(incomeData, "waitingRoomNodeReady"))
             {
-                NP.Basic("IncomeText : " + incomeData);
+                //NP.Basic("IncomeText : " + incomeData);
                 incomeData = GetPureText(incomeData, "waitingRoomNodeReady");
                 string[] tmpHashPart = incomeData.Split(NVC.CommonDelimeterChar);
                 ulong incomeUtc = ulong.Parse(tmpHashPart[1]);
@@ -452,7 +452,7 @@ namespace Notus.Validator
             }
             if (CheckXmlTag(incomeData, "syncNo"))
             {
-                NP.Basic("IncomeText : " + incomeData);
+                //NP.Basic("IncomeText : " + incomeData);
 
                 incomeData = GetPureText(incomeData, "syncNo");
                 string[] tmpArr = incomeData.Split(":");
@@ -511,7 +511,7 @@ namespace Notus.Validator
 
             if (CheckXmlTag(incomeData, "joinTime"))
             {
-                NP.Basic("IncomeText : " + incomeData);
+                //NP.Basic("IncomeText : " + incomeData);
 
                 incomeData = GetPureText(incomeData, "joinTime");
                 string[] tmpArr = incomeData.Split(":");

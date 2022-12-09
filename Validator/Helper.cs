@@ -417,7 +417,7 @@ namespace Notus.Validator
             NVG.NodeList[earlistNodeHexKeyStr].JoinTime = ND.ToLong(
                 ND.ToDateTime(joinTime).Subtract(new TimeSpan(0, 0, 0, 0, 50))
             );
-            Console.WriteLine("Node Join Time : " + NVG.NodeList[earlistNodeHexKeyStr].JoinTime.ToString());
+            //Console.WriteLine("Node Join Time : " + NVG.NodeList[earlistNodeHexKeyStr].JoinTime.ToString());
             NVG.NodeList[earlistNodeHexKeyStr].SyncNo = NVG.CurrentSyncNo;
             NVG.ShowWhoseTurnOrNot = false;
         }

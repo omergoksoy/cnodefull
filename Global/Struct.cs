@@ -27,26 +27,23 @@ namespace Notus.Globals.Variable
         public bool SyncStarted { get; set; }
         public bool LocalNode { get; set; }
         public bool DevelopmentNode { get; set; }
-        //public ulong NodeStartingTime { get; set; }
-        //public Notus.Variable.Struct.UTCTimeStruct? UTCTime { get; set; }
+
         public bool GenesisCreated { get; set; }
         public bool GenesisAssigned { get; set; }
-        public Notus.P2P.Manager? PeerManager { get; set; }
         public Notus.Variable.Genesis.GenesisBlockData? Genesis { get; set; }
+
+        public Notus.P2P.Manager? PeerManager { get; set; }
         public Notus.Variable.Struct.NodeQueueList? Nodes { get; set; }
 
         public Notus.Variable.Struct.NodeIpInfo? IpInfo { get; set; }
         public Notus.Variable.Struct.EccKeyPair? NodeWallet { get; set; }
+
         public Notus.Variable.Enum.NetworkNodeType NodeType { get; set; }
         public Notus.Variable.Enum.NetworkType Network { get; set; }
         public Notus.Variable.Enum.NetworkLayer Layer { get; set; }
         public Notus.Variable.Struct.CommunicationPorts? Port { get; set; }
         public Notus.Block.Order BlockOrder { get; set; }
-        //public BlockOrder BlockOrder { get; set; }
-        //public Dictionary<long, string> BlockOrder { get; set; }
 
-        //public ulong PacketSend { get; set; }
-        //public ulong PacketReceive { get; set; }
         public bool DebugMode { get; set; }
         public bool InfoMode { get; set; }
         public bool PrettyJson { get; set; }
