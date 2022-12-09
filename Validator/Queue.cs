@@ -1082,7 +1082,7 @@ namespace Notus.Validator
                             peerStaringTime, NVD.Calculate()
                         );
                     }
-                    NVG.Settings.PeerManager.StartAllPeers(true);
+                    NVG.Settings.PeerManager.StartAllPeers();
                 }
                 else
                 {
