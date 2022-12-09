@@ -79,6 +79,7 @@ namespace Notus.Validator
                 }
             };
 
+
         // aws için oluşturulmuş liste
         public static readonly Dictionary<Variable.Enum.NetworkLayer,
                 Dictionary<Variable.Enum.NetworkType, List<Variable.Struct.IpInfo>>> Main //Main_AWS
