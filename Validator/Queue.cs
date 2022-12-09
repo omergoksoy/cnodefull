@@ -179,6 +179,8 @@ namespace Notus.Validator
         }
         public string ProcessIncomeData(string incomeData)
         {
+            NP.Basic("IncomeText : " + incomeData);
+
             if (CheckXmlTag(incomeData, "block"))
             {
                 //sync-control
