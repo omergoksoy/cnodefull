@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Text.Json;
 using System.Threading;
-using NVG = Notus.Variable.Globals;
 using NGF = Notus.Variable.Globals.Functions;
+using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVE = Notus.Variable.Enum;
+using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
-using NP = Notus.Print;
 namespace Notus.Validator
 {
     public static class Node
@@ -20,14 +20,7 @@ namespace Notus.Validator
                 menuObj.Start();
                 menuObj.DefineMySetting();
             }
-            if (NVG.Settings.DevelopmentNode == true)
-            {
-                NVG.Settings.Network = NVE.NetworkType.DevNet;
-            }
-            else
-            {
-                NVG.Settings.Network = NVE.NetworkType.MainNet;
-            }
+            NVG.Settings.Network = (NVG.Settings.DevelopmentNode == true ? NVE.NetworkType.DevNet : NVE.NetworkType.MainNet);
             Notus.Validator.Node.Start();
         }
         public static void Start()
@@ -76,7 +69,7 @@ namespace Notus.Validator
                 default:
                     break;
             }
-            if(NVG.Settings.NodeClosing == false)
+            if (NVG.Settings.NodeClosing == false)
             {
                 NP.Warning(NVG.Settings, "Task Ended");
             }
@@ -102,7 +95,7 @@ namespace Notus.Validator
         private static void StartAsMain()
         {
             bool exitOuterLoop = false;
-            while (exitOuterLoop == false && NVG.Settings.NodeClosing==false)
+            while (exitOuterLoop == false && NVG.Settings.NodeClosing == false)
             {
                 using (Notus.Validator.Main MainObj = new Notus.Validator.Main())
                 {

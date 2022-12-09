@@ -111,13 +111,20 @@ namespace Notus.Variable.Class
         public Dictionary<int, string> data { get; set; }
         public Dictionary<int, string> info { get; set; }
     }
+    
+    //group-no-exception
     public class ValidatorGroupType
     {
         public ulong count { get; set; }
+        burada işlem yapmayan node'ların göndereceği işlem yapmadım imzası ve zamanı olacak
 
-        // gup zaman bilgisi, işlemi yapan public key
+        // grup zaman bilgisi, işlemi yapan public key
         public Dictionary<ulong, string> queue { get; set; }
+        
+        bu değişken ile belirlenen zamanda işlem yapmayan validator'un göndereceği zaman ve imza değeri burada olacak
+        public Dictionary<ulong, string> notWorkList { get; set; }
     }
+
     public class ValidatorMainType
     {
         public Dictionary<string, int> count { get; set; }
