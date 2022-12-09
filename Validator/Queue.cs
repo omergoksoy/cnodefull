@@ -577,7 +577,7 @@ namespace Notus.Validator
             //bu komut ile bekleme odasındaki node ağa dahil ediliyor
             if (CheckXmlTag(incomeData, "yourTurn"))
             {
-                NP.Basic("IncomeText : " + incomeData);
+                //NP.Basic("IncomeText : " + incomeData);
 
                 incomeData = GetPureText(incomeData, "yourTurn");
                 if (incomeData.IndexOf(':') >= 0)

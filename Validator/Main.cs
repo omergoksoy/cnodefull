@@ -743,7 +743,7 @@ namespace Notus.Validator
 
             if (NVG.OtherValidatorSelectedMe == true)
             {
-                Console.WriteLine("I'm Waiting In The Waiting Room -> Main.cs");
+                NP.Basic("Node Is Waiting In The Waiting Room");
 
                 ulong nowUtcValue = NVG.NOW.Int;
                 string controlSignForReadyMsg = Notus.Wallet.ID.Sign(
