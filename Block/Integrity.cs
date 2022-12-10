@@ -424,6 +424,8 @@ namespace Notus.Block
         {
             /*
             Console.WriteLine("BlockRowNo Does Not Exist : " + BlockRowNo.ToString());
+
+            eğer diğer node'un blok yükekliği daha düşük ise, kendisinden yüksek validatör gelene kadar bekliyor
             */
             //control-local-block
             //bool localFound=AddFromLocalTemp(BlockRowNo);
@@ -435,9 +437,7 @@ namespace Notus.Block
                 bool exitInnerLoop = false;
                 while (exitInnerLoop == false)
                 {
-
                     List<string> ListMainNodeIp = Notus.Validator.List.Get(NVG.Settings.Layer, NVG.Settings.Network);
-
                     for (int a = 0; a < ListMainNodeIp.Count && exitInnerLoop == false; a++)
                     {
                         string myIpAddress = (NVG.Settings.LocalNode == true ? NVG.Settings.IpInfo.Local : NVG.Settings.IpInfo.Public);
