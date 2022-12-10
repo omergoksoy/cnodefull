@@ -1114,6 +1114,8 @@ namespace Notus.Validator
                             {
                                 NP.Warning("That block came my validator but wrong queue order");
                             }
+                            Console.WriteLine("Environment.Exit(0);");
+                            Environment.Exit(0);
                         }
                         return false;
                     }
