@@ -1097,7 +1097,9 @@ namespace Notus.Validator
                     {
                         if (Notus.Sync.Block.downloadDone == true)
                         {
+
                             NP.PrintQueue();
+                            Console.WriteLine(blockData.info.time);
                             NP.TellQueue();
                             if (blockSource == 2)
                             {
