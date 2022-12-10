@@ -98,9 +98,10 @@ namespace Notus
                 Warning("Main Class Ended");
             }
         }
-        public static void NodeCount()
+        public static void NodeCount(string functionClassName)
         {
             Info("Node Count : " + NVG.OnlineNodeCount.ToString() + " / " + NVG.NodeList.Count.ToString());
+            Info(functionClassName);
         }
         public static void ReadLine()
         {

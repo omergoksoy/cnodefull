@@ -945,7 +945,7 @@ namespace Notus.Validator
                 if (biggestSyncNo == 0)
                 {
                     ulong extraSeconds = 0;
-                    NP.NodeCount();
+                    NP.NodeCount("if (biggestSyncNo == 0)");
 
                     // diğer node'un blok sayısını al
                     // alınan blok sayısına göre bekleme süresi ayarlanıyor

@@ -259,7 +259,7 @@ namespace Notus.Validator
                 NGF.ValidatorList.Remove(nodeHexKey);
             }
             NVG.OnlineNodeCount = NVG.NodeList.Count;
-            NP.NodeCount();
+            NP.NodeCount("NVG.OnlineNodeCount = NVG.NodeList.Count;");
         }
         public static void AddValidatorInfo(NVS.NodeQueueInfo nodeQueueInfo, bool structCameFromOwner)
         {
