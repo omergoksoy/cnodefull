@@ -1103,7 +1103,8 @@ namespace Notus.Validator
                         {
 
                             NP.PrintQueue();
-                            Console.WriteLine(blockData.info.time);
+                            Console.Write("ND.ToLong(blockData.info.time) : ");
+                            Console.WriteLine(ND.ToLong(blockData.info.time));
                             NP.TellQueue();
                             if (blockSource == 2)
                             {
