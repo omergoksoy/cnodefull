@@ -714,8 +714,9 @@ namespace Notus.Validator
                 {
                     FileStorageTimer();
                 }
-                NP.Success(NVG.Settings, "First Synchronization Is Done");
 
+                NVG.Settings.SyncBlockIsDone = true;
+                NP.Success("First Synchronization Is Done");
                 GarbageCollector();
             }
             DateTime LastPrintTime = NVG.NOW.Obj;
@@ -813,6 +814,8 @@ namespace Notus.Validator
                         }
                         else
                         {
+                            Console.Write("NVG.OtherValidatorSelectedMe : ");
+                            Console.WriteLine(NVG.OtherValidatorSelectedMe);
                             NP.Danger("Queue Time Info Does Not In The List");
                         }
                     }
@@ -1181,6 +1184,9 @@ namespace Notus.Validator
             {
                 if (blockSource != 1)
                 {
+                    if (NVG.Settings.SyncBlockIsDone == true)
+                    {
+                    }
                     bool innerSendToMyChain = Notus.Validator.Helper.RightBlockValidator(blockData);
                     if (innerSendToMyChain == true)
                     {

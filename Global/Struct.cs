@@ -19,6 +19,7 @@ namespace Notus.Globals.Variable
     }
     public class Settings
     {
+        public bool SyncBlockIsDone { get; set; }
         public bool WaitForGeneratedBlock { get; set; }
         public bool NodeClosing { get; set; }
         public bool ClosingCompleted { get; set; }

@@ -82,6 +82,7 @@ namespace Notus.Variable
 
             Settings = new Notus.Globals.Variable.Settings()
             {
+                SyncBlockIsDone = false,
                 SyncStarted = true,
                 WaitForGeneratedBlock = false,
                 NodeClosing = false,
