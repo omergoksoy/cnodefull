@@ -419,6 +419,7 @@ namespace Notus.Validator
             );
             //Console.WriteLine("Node Join Time : " + NVG.NodeList[earlistNodeHexKeyStr].JoinTime.ToString());
             NVG.NodeList[earlistNodeHexKeyStr].SyncNo = NVG.CurrentSyncNo;
+            NP.Basic("Node Received Join Time : " + NVG.NodeList[earlistNodeHexKeyStr].JoinTime.ToString());
             NVG.ShowWhoseTurnOrNot = false;
         }
         public static void TellSyncNoToEarlistNode(string selectedEarliestWalletId)
