@@ -936,7 +936,14 @@ namespace Notus.Validator
             bool firstHandShake = WaitUntilAvailable();
 
             ulong biggestSyncNo = FindBiggestSyncNo();
-            NP.Info("Biggest Sync No : " + biggestSyncNo.ToString());
+            if (biggestSyncNo > 0)
+            {
+                NP.Info("Sync No : " + biggestSyncNo.ToString());
+            }
+            else
+            {
+                NP.Info("First Synchronisation");
+            }
 
             if (NVG.OtherValidatorSelectedMe == false)
             {
