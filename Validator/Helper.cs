@@ -168,7 +168,7 @@ namespace Notus.Validator
             ulong queueTimePeriod = NVD.Calculate();
             ulong blockTimeVal = ND.ToLong(incomeBlock.info.time);
             ulong blockGenarationTime = blockTimeVal - (blockTimeVal % queueTimePeriod);
-            Console.Write("blockTimeVal : ");
+            Console.Write("blockTimeVal        : ");
             Console.WriteLine(blockTimeVal);
             Console.Write("blockGenarationTime : ");
             Console.WriteLine(blockGenarationTime);
