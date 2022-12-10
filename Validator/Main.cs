@@ -817,8 +817,8 @@ namespace Notus.Validator
                             
                             Console.Write("NVG.NodeList[NVG.Settings.Nodes.My.HexKey].JoinTime : ");
                             Console.WriteLine(NVG.NodeList[NVG.Settings.Nodes.My.HexKey].JoinTime.ToString());
-                            Console.Write("NVG.NodeList[NVG.Settings.Nodes.My.HexKey].JoinTime : ");
-                            Console.WriteLine(NVG.NodeList[NVG.Settings.Nodes.My.HexKey].JoinTime.ToString());
+                            Console.Write("NVG.NOW.Int : ");
+                            Console.WriteLine(NVG.NOW.Int.ToString());
                             // Console.Write("NVG.OtherValidatorSelectedMe : ");
                             // Console.WriteLine(NVG.OtherValidatorSelectedMe);
                             NP.Danger("Queue Time Info Does Not In The List");
