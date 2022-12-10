@@ -365,6 +365,14 @@ namespace Notus.Variable
                 }
                 */
             }
+            public static void ControlForShutDownNode()
+            {
+                if (NVG.OnlineNodeCount > 1)
+                    return;
+                if (NVG.Settings.SyncBlockIsDone == false)
+                    return;
+                CloseMyNode();
+            }
             public static void CloseMyNode()
             {
                 NP.Warning(NVG.Settings, "Please Wait While Node Terminating");

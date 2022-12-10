@@ -814,8 +814,8 @@ namespace Notus.Validator
                         }
                         else
                         {
-                            Console.Write("NVG.OtherValidatorSelectedMe : ");
-                            Console.WriteLine(NVG.OtherValidatorSelectedMe);
+                            // Console.Write("NVG.OtherValidatorSelectedMe : ");
+                            // Console.WriteLine(NVG.OtherValidatorSelectedMe);
                             NP.Danger("Queue Time Info Does Not In The List");
                         }
                     }
