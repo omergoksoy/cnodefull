@@ -517,8 +517,6 @@ namespace Notus.Validator
 
             if (CheckXmlTag(incomeData, "joinTime"))
             {
-                //NP.Basic("IncomeText : " + incomeData);
-
                 incomeData = GetPureText(incomeData, "joinTime");
                 string[] tmpArr = incomeData.Split(":");
                 if (tmpArr.Length > 3)
@@ -566,12 +564,7 @@ namespace Notus.Validator
                                     NVG.OtherValidatorSelectedMe = false;
                                 }
                             }
-                            /*
-                            Console.WriteLine("---------------------");
-                            Console.WriteLine("Queue.cs -> Line 560");
-                            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
-                            Console.WriteLine("---------------------");
-                            */
+                            NP.Basic("Node Received Join Time : " + NVG.NodeList[earlistNodeKeyStr].JoinTime.ToString());
                             NVG.ShowWhoseTurnOrNot = false;
                             return "1";
                         }
