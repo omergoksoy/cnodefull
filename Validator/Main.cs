@@ -1098,7 +1098,7 @@ namespace Notus.Validator
                         if (Notus.Sync.Block.downloadDone == true)
                         {
                             NP.PrintQueue();
-                            
+                            NP.TellQueue();
                             if (blockSource == 2)
                             {
                                 NP.Warning("That block came from validator and wrong block");
