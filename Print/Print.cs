@@ -67,7 +67,7 @@ namespace Notus
             {
                 if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
                 {
-                    string innerResponseStr = NCH.SendMessageED(iE.Key, iE.Value,"<pQueue>1</pQueue>");
+                    string innerResponseStr = NCH.SendMessageED(iE.Key, iE.Value, "<pQueue>1</pQueue>");
                     Console.WriteLine("innerResponseStr  : " + innerResponseStr);
                 }
             }
@@ -111,10 +111,10 @@ namespace Notus
             Info(NodeSettings, "Press Enter To Continue");
             Console.ReadLine();
         }
-        public static void WaitDot()
+        public static void WaitDot(string waitText = "+")
         {
             Console.ForegroundColor = ConsoleColor.DarkGreen;
-            Console.Write("+");
+            Console.Write(waitText);
             WaitDotUsed = true;
         }
         public static void Info(string DetailsStr = "")

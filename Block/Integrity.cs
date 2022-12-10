@@ -463,7 +463,7 @@ namespace Notus.Block
                                     NVClass.BlockData? tmpEmptyBlock = JsonSerializer.Deserialize<NVClass.BlockData>(MainResultStr);
                                     if (tmpEmptyBlock != null)
                                     {
-                                        NP.Info(NVG.Settings, "Getting Block Row No [ " + nodeUrl + " ]: " + BlockRowNo.ToString());
+                                        NP.Info("Getting Block Row No [ " + nodeUrl + " ]: " + BlockRowNo.ToString());
                                         using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
                                         {
                                             BS_Storage.AddSync(tmpEmptyBlock, true);
@@ -476,13 +476,13 @@ namespace Notus.Block
                             {
                                 if (debugPrinted == false)
                                 {
-                                    NP.Basic(NVG.Settings.DebugMode, "Error Text [5a6e84]: " + err.Message);
-                                    NP.Basic(NVG.Settings.DebugMode, "Income Text [5a6e84]: " + MainResultStr);
+                                    NP.Basic("Error Text [5a6e84]: " + err.Message);
+                                    NP.Basic("Income Text [5a6e84]: " + MainResultStr);
                                     debugPrinted = true;
                                 }
                                 else
                                 {
-                                    Console.Write(".");
+                                    NP.WaitDot(".");
                                 }
                             }
                             if (exitInnerLoop == true)
@@ -654,7 +654,7 @@ namespace Notus.Block
                         }
                         else
                         {
-                            NP.Danger(NVG.Settings, "Error Happened While Trying To Get Genesis From Other Node");
+                            NP.Danger("Error Happened While Trying To Get Genesis From Other Node");
                             ND.SleepWithoutBlocking(100);
                         }
                     }

@@ -55,8 +55,10 @@ namespace Notus.Toolbox
         }
 
         public static NVClass.BlockData? GetBlockFromNode(
-            string ipAddress, int portNo,
-            long blockNo, NGV.Settings? objSettings = null
+            string ipAddress,
+            int portNo,
+            long blockNo,
+            NGV.Settings? objSettings = null
         )
         {
             string urlPath = NNN.MakeHttpListenerPath(ipAddress, portNo) + "block/" + blockNo.ToString() + "/raw";
