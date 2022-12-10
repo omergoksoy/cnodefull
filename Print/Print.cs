@@ -6,6 +6,9 @@ using NT = Notus.Threads;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
+using NVC = Notus.Variable.Constant;
+using NGF = Notus.Variable.Globals.Functions;
+using NCH = Notus.Communication.Helper;
 
 namespace Notus
 {
@@ -57,6 +60,28 @@ namespace Notus
                     { "data", JsonSerializer.Serialize(logObject) }
                 }, 0, true, true
             );
+        }
+        public static void TellQueue()
+        {
+            foreach (var iE in NGF.ValidatorList)
+            {
+                if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
+                {
+                    string innerResponseStr = NCH.SendMessageED(iE.Key, iE.Value,"<pQueue>1</pQueue>");
+                    Console.WriteLine("innerResponseStr  : " + innerResponseStr);
+                }
+            }
+        }
+        public static void PrintQueue()
+        {
+            Console.WriteLine("NVG.Settings.PeerManager.Old");
+            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Old, NVC.JsonSetting));
+
+            Console.WriteLine("NVG.Settings.PeerManager.Now");
+            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Now, NVC.JsonSetting));
+
+            Console.WriteLine("NVG.Settings.PeerManager.Next");
+            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Next, NVC.JsonSetting));
         }
         public static void MainClassClosingControl()
         {

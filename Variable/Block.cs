@@ -116,12 +116,12 @@ namespace Notus.Variable.Class
     public class ValidatorGroupType
     {
         public ulong count { get; set; }
-        burada işlem yapmayan node'ların göndereceği işlem yapmadım imzası ve zamanı olacak
+        //burada işlem yapmayan node'ların göndereceği işlem yapmadım imzası ve zamanı olacak
 
         // grup zaman bilgisi, işlemi yapan public key
         public Dictionary<ulong, string> queue { get; set; }
         
-        bu değişken ile belirlenen zamanda işlem yapmayan validator'un göndereceği zaman ve imza değeri burada olacak
+        //bu değişken ile belirlenen zamanda işlem yapmayan validator'un göndereceği zaman ve imza değeri burada olacak
         public Dictionary<ulong, string> notWorkList { get; set; }
     }
 

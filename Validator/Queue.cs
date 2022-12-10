@@ -179,9 +179,15 @@ namespace Notus.Validator
         }
         public string ProcessIncomeData(string incomeData)
         {
+            if (CheckXmlTag(incomeData, "pQueue"))
+            {
+                NP.PrintQueue();
+                return "ok";
+            }
+
             if (CheckXmlTag(incomeData, "block"))
             {
-                if(Notus.Toolbox.Text.CountChar(incomeData, '/') > 1)
+                if (Notus.Toolbox.Text.CountChar(incomeData, '/') > 1)
                 {
                     NP.Basic("IncomeText : " + incomeData);
                 }
@@ -708,7 +714,7 @@ namespace Notus.Validator
                             if (exitFromInnerWhile == false)
                             {
                                 //Console.WriteLine(firstListcount);
-                                bool addingResult=NVG.Settings.Nodes.Queue.TryAdd(tmpSyncNo, new NVS.NodeInfo()
+                                bool addingResult = NVG.Settings.Nodes.Queue.TryAdd(tmpSyncNo, new NVS.NodeInfo()
                                 {
                                     IpAddress = entry.Value.IP.IpAddress,
                                     Port = entry.Value.IP.Port,
