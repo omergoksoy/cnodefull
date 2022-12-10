@@ -814,6 +814,9 @@ namespace Notus.Validator
                         }
                         else
                         {
+                            
+                            Console.Write("NVG.NodeList[NVG.Settings.Nodes.My.HexKey].SyncNo : ");
+                            Console.WriteLine(NVG.NodeList[NVG.Settings.Nodes.My.HexKey].SyncNo.ToString());
                             // Console.Write("NVG.OtherValidatorSelectedMe : ");
                             // Console.WriteLine(NVG.OtherValidatorSelectedMe);
                             NP.Danger("Queue Time Info Does Not In The List");
