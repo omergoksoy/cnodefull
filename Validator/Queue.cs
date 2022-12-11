@@ -1382,15 +1382,19 @@ namespace Notus.Validator
         }
         public void DistributionErrorChecker()
         {
+            //if(NVG.NOW.Int
+            //NVG.NodeList[NVG.Settings.Nodes.My.IP.Wallet].JoinTime
             NP.Basic("Distribution Control Timer Has started");
             DistributeTimerObj.Start(100, () =>
             {
+                omergoksoy
                 if (DistributeTimerIsRunning == false)
                 {
                     DistributeTimerIsRunning = true;
                     if (DistributeErrorList.TryDequeue(out NVS.BlockDistributeListStruct? testResult))
                     {
-                        TimeSpan timeDiff = DateTime.UtcNow - testResult.sended;
+                        DateTime localTime = DateTime.UtcNow;
+                        TimeSpan timeDiff = localTime - testResult.sended;
                         if (timeDiff.TotalSeconds > 1)
                         {
                             bool messageSended = NVG.Settings.PeerManager.Send(testResult.peerId, testResult.message);
@@ -1403,6 +1407,7 @@ namespace Notus.Validator
                             }
                             else
                             {
+                                testResult.sended = localTime;
                                 testResult.tryCount = testResult.tryCount + 1;
                                 NP.Info(
                                 "Distribution Error [ " + fixedRowNoLength(testResult.rowNo) + " ] To " +
