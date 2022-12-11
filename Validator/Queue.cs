@@ -1382,7 +1382,7 @@ namespace Notus.Validator
         {
             //if(NVG.NOW.Int
             //NVG.NodeList[NVG.Settings.Nodes.My.IP.Wallet].JoinTime
-            NP.Basic("Distribution Control Timer Has started");
+            NP.Info("Distribution Control Timer Has started");
             DistributeTimerObj.Start(100, () =>
             {
                 if (DistributeTimerIsRunning == false)
