@@ -1089,9 +1089,7 @@ namespace Notus.Validator
                             if (blockSource == 2)
                             {
                                 NP.Warning("That block came from validator and wrong block");
-                                Console.WriteLine("RightValidatorControl-Point-001");
-                                NP.TellQueue();
-                                NP.PrintQueue("Main.cs -> Line 1099");
+                                NP.PrintQueue(true,"Main.cs -> Line 1099");
                             }
                             if (blockSource == 4)
                             {

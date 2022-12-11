@@ -61,19 +61,18 @@ namespace Notus
                 }, 0, true, true
             );
         }
-        public static void TellQueue()
+        public static void PrintQueue(bool tellTheOtherNode, string printLoc)
         {
-            foreach (var iE in NGF.ValidatorList)
+            if (tellTheOtherNode == true)
             {
-                if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
+                foreach (var iE in NGF.ValidatorList)
                 {
-                    string innerResponseStr = NCH.SendMessageED(iE.Key, iE.Value, "<pQueue>1</pQueue>");
-                    Console.WriteLine("innerResponseStr  : " + innerResponseStr);
+                    if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
+                    {
+                        NCH.SendMessageED(iE.Key, iE.Value, "<pQueue>1</pQueue>");
+                    }
                 }
             }
-        }
-        public static void PrintQueue(string printLoc)
-        {
             Console.WriteLine("******************************************");
             Console.WriteLine(printLoc);
             /*

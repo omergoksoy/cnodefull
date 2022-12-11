@@ -175,49 +175,12 @@ namespace Notus.Validator
                 {
                     return true;
                 }
-
-                Console.WriteLine("RightBlockValidator - Control-Point-001");
-                Console.WriteLine("-----------------------------------------");
-                Console.WriteLine("sendingLocation : " + sendingLocation);
-                Console.WriteLine("blockValidatorWalletId : " + blockValidatorWalletId);
-                Console.WriteLine("NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : " + NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet);
-                Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue[blockGenarationTime], NVC.JsonSetting));
-
-                Console.Write("blockGenarationTime : ");
-                Console.WriteLine(blockGenarationTime);
-
-                Console.Write("BlockValidator(incomeBlock) : ");
-                Console.WriteLine(BlockValidator(incomeBlock));
             }
             else
             {
                 //ekleme noktası burası buradan kontrol edilecek
                 if (Notus.Sync.Block.downloadDone == true)
                 {
-                    Console.WriteLine("Queue Does Not Exist - Control-Point-002");
-                    Console.WriteLine("-----------------------------------------");
-                    Console.Write("blockTimeVal        : ");
-                    Console.WriteLine(blockTimeVal);
-
-                    Console.Write("blockGenarationTime : ");
-                    Console.WriteLine(blockGenarationTime);
-
-                    Console.Write("BlockValidator(incomeBlock) : ");
-                    Console.WriteLine(BlockValidator(incomeBlock));
-                }
-                //NVG.Settings.Nodes.Queue
-                bool canBePrint = false;
-                if (NVG.LocalBlockLoaded == true)
-                {
-                    if (NVG.OtherValidatorSelectedMe == false)
-                    {
-                        canBePrint = true;
-                    }
-                }
-                if (canBePrint == true)
-                {
-                    //Console.WriteLine("Queue Time Does Not Exist : " + blockGenarationTime.ToString());
-                    //Console.WriteLine("Queue Time Does Not Exist : " + blockGenarationTime.ToString());
                 }
             }
             return false;
