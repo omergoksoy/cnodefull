@@ -164,19 +164,9 @@ namespace Notus.Validator
         }
         public static bool RightBlockValidator(Notus.Variable.Class.BlockData incomeBlock)
         {
-            
             ulong queueTimePeriod = NVD.Calculate();
             ulong blockTimeVal = ND.ToLong(incomeBlock.info.time);
             ulong blockGenarationTime = blockTimeVal - (blockTimeVal % queueTimePeriod);
-            
-            Console.Write("blockTimeVal        : ");
-            Console.WriteLine(blockTimeVal);
-
-            Console.Write("blockGenarationTime : ");
-            Console.WriteLine(blockGenarationTime);
-
-            Console.Write("BlockValidator(incomeBlock) : ");
-            Console.WriteLine(BlockValidator(incomeBlock));
 
             if (NVG.Settings.Nodes.Queue.ContainsKey(blockGenarationTime) == true)
             {
@@ -188,6 +178,16 @@ namespace Notus.Validator
             }
             else
             {
+
+                Console.Write("blockTimeVal        : ");
+                Console.WriteLine(blockTimeVal);
+
+                Console.Write("blockGenarationTime : ");
+                Console.WriteLine(blockGenarationTime);
+
+                Console.Write("BlockValidator(incomeBlock) : ");
+                Console.WriteLine(BlockValidator(incomeBlock));
+
                 //ekleme noktası burası buradan kontrol edilecek
                 if (Notus.Sync.Block.downloadDone == true)
                 {

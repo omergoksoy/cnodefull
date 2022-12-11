@@ -1081,7 +1081,6 @@ namespace Notus.Validator
                 bool innerSendToMyChain = false;
                 if (NVG.OtherValidatorSelectedMe == false)
                 {
-
                     try
                     {
                         innerSendToMyChain = NVH.RightBlockValidator(blockData);
@@ -1103,6 +1102,7 @@ namespace Notus.Validator
                     {
                         if (Notus.Sync.Block.downloadDone == true)
                         {
+                            Console.WriteLine("RightValidatorControl-Point-001");
                             NP.PrintQueue();
                             NP.TellQueue();
                             if (blockSource == 2)
@@ -1198,6 +1198,7 @@ namespace Notus.Validator
                     }
                     else
                     {
+                        Console.WriteLine("RightValidatorControl-Point-002");
                         ProcessBlock_PrintSection(blockData, blockSource);
                         NP.Warning(NVG.Settings, "We Already Processed The Block -> [ " + blockData.info.rowNo.ToString() + " ]");
                         return false;
