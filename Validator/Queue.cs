@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Concurrent;
+using System.Globalization;
 using System.Net;
 using System.Numerics;
 using System.Text.Json;
@@ -18,7 +19,12 @@ namespace Notus.Validator
 {
     public class Queue : IDisposable
     {
+        private Notus.Threads.Timer DistributeTimerObj = new Notus.Threads.Timer();
+        private bool DistributeTimerIsRunning = false;
+        private ConcurrentQueue<NVS.BlockDistributeListStruct> DistributeErrorList = new();
+
         private Dictionary<string, bool> ReadyMessageIncomeList = new Dictionary<string, bool>();
+
         private bool StartingTimeAfterEnoughNode_Arrived = false;
         private DateTime StartingTimeAfterEnoughNode;
 
@@ -70,12 +76,12 @@ namespace Notus.Validator
                             Console.WriteLine(JsonSerializer.Serialize(wList));
                         }
                     }
-                    bool messageSended = NVG.Settings.PeerManager.Send(
-                        entry.Value.IP.Wallet,
-                        "<block>" +
+
+                    //omergoksoy
+                    string messageText = "<block>" +
                             blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey +
-                        "</block>"
-                    );
+                        "</block>";
+                    bool messageSended = NVG.Settings.PeerManager.Send(entry.Value.IP.Wallet, messageText);
                     if (messageSended == true)
                     {
                         NP.Info(
@@ -89,6 +95,14 @@ namespace Notus.Validator
                         "Distribution Error [ " + fixedRowNoLength(blockRowNo) + " : " + blockType.ToString() + " ] " +
                             entry.Value.IP.IpAddress + ":" + entry.Value.IP.Port.ToString()
                         );
+                        DistributeErrorList.Enqueue(new NVS.BlockDistributeListStruct()
+                        {
+                            rowNo = blockRowNo,
+                            peerId = entry.Value.IP.Wallet,
+                            tryCount = 1,
+                            message = messageText,
+                            sended = DateTime.UtcNow
+                        });
                     }
                 }
             }
@@ -928,6 +942,9 @@ namespace Notus.Validator
             // eğer bende bilgisi olmayan node varsa bilgisini istiyor
             AskInfoFromNode();
 
+            //burada hatalı blokların tekar gönderilmesi için oluşturulan timer aktive ediliyor
+            DistributionErrorChecker();
+
             // önce node'ların içerisinde senkronizasyon bekleyen olmadığına emin ol
             bool firstHandShake = WaitUntilAvailable();
 
@@ -1363,6 +1380,43 @@ namespace Notus.Validator
                 NVH.RemoveFromValidatorList(tmpRemoveKeyList[i]);
             }
         }
+        public void DistributionErrorChecker()
+        {
+            DistributeTimerObj.Start(100, () =>
+            {
+                if (DistributeTimerIsRunning == false)
+                {
+                    DistributeTimerIsRunning = true;
+                    if (DistributeErrorList.TryDequeue(out NVS.BlockDistributeListStruct? testResult))
+                    {
+                        TimeSpan timeDiff = DateTime.UtcNow - testResult.sended;
+                        if (timeDiff.TotalSeconds > 1)
+                        {
+                            bool messageSended = NVG.Settings.PeerManager.Send(testResult.peerId, testResult.message);
+                            if (messageSended == true)
+                            {
+                                NP.Info(
+                                "Distributed [ " + fixedRowNoLength(testResult.rowNo) + " ] To " +
+                                    testResult.peerId
+                                );
+                            }
+                            else
+                            {
+                                DistributeErrorList.Enqueue(testResult);
+                            }
+
+                        }
+                        else
+                        {
+                            DistributeErrorList.Enqueue(testResult);
+                        }
+                    }
+                    DistributeTimerIsRunning = false;
+
+                }  //if (DistributeTimerIsRunning == false)
+            }, true);  //TimerObj.Start(() =>
+        }
+
         public Queue()
         {
         }
@@ -1372,6 +1426,14 @@ namespace Notus.Validator
         }
         public void Dispose()
         {
+            if (DistributeTimerObj != null)
+            {
+                try
+                {
+                    DistributeTimerObj.Dispose();
+                }
+                catch { }
+            }
         }
     }
 }

@@ -612,6 +612,14 @@ namespace Notus.Variable.Struct
         public Notus.Variable.Enum.MultiWalletType VoteType { get; set; }
     }
 
+    public class BlockDistributeListStruct
+    {
+        public long rowNo{ get; set; }
+        public int tryCount{ get; set; }
+        public string peerId{ get; set; }
+        public string message { get; set; }
+        public DateTime sended { get; set; }
+    }
 
     /*
     public class MultiWalletTransactionVoteStruct
