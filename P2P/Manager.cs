@@ -137,6 +137,10 @@ namespace Notus.P2P
             }
         }
 
+        public bool IsStarted(string peerId)
+        {
+            return this.Peers.ContainsKey(peerId);
+        }
         public bool Send(string peerId, string message)
         {
             if (this.Peers.ContainsKey(peerId))

@@ -617,6 +617,7 @@ namespace Notus.Variable.Struct
         public long rowNo{ get; set; }
         public int tryCount{ get; set; }
         public string peerId{ get; set; }
+        public string ipAddress { get; set; }
         public string message { get; set; }
         public DateTime sended { get; set; }
     }

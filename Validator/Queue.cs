@@ -99,6 +99,7 @@ namespace Notus.Validator
                         {
                             rowNo = blockRowNo,
                             peerId = entry.Value.IP.Wallet,
+                            ipAddress = entry.Value.IP.IpAddress,
                             tryCount = 1,
                             message = messageText,
                             sended = DateTime.UtcNow
@@ -1387,7 +1388,6 @@ namespace Notus.Validator
             NP.Basic("Distribution Control Timer Has started");
             DistributeTimerObj.Start(100, () =>
             {
-                //omergoksoy
                 if (DistributeTimerIsRunning == false)
                 {
                     DistributeTimerIsRunning = true;
@@ -1397,8 +1397,12 @@ namespace Notus.Validator
                         TimeSpan timeDiff = localTime - testResult.sended;
                         if (timeDiff.TotalSeconds > 1)
                         {
-                            bool messageSended = NVG.Settings.PeerManager.Send(testResult.peerId, testResult.message);
-                            if (messageSended == true)
+                            if (NVG.Settings.PeerManager.IsStarted(testResult.peerId) == false)
+                            {
+                                NVG.Settings.PeerManager.AddPeer(testResult.peerId, testResult.ipAddress);
+                            }
+
+                            if (NVG.Settings.PeerManager.Send(testResult.peerId, testResult.message) == true)
                             {
                                 NP.Info(
                                 "Distributed [ " + fixedRowNoLength(testResult.rowNo) + " ] To " +
