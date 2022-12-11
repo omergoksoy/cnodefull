@@ -140,6 +140,10 @@ bu iki node arasındaki süre
 //block-order-exception
 // blok sırasını yapan kontrol noktaları
 
+//fast-empty-block-generation
+// deneme amaçlı 15 saniyede bir empty blok oluşturuluyor
+// böylece wrong validator sorununu çözmeyi hedefliyoruz.
+
 Notus.Validator.Node.Start(args);
 
 
