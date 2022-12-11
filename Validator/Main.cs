@@ -1092,7 +1092,7 @@ namespace Notus.Validator
                 {
                     try
                     {
-                        innerSendToMyChain = NVH.RightBlockValidator(blockData);
+                        innerSendToMyChain = NVH.RightBlockValidator(blockData,"Process Block - Main.cs Line 1095");
                     }
                     catch (Exception innerErr)
                     {
@@ -1197,7 +1197,7 @@ namespace Notus.Validator
                     if (NVG.Settings.SyncBlockIsDone == true)
                     {
                     }
-                    bool innerSendToMyChain = Notus.Validator.Helper.RightBlockValidator(blockData);
+                    bool innerSendToMyChain = Notus.Validator.Helper.RightBlockValidator(blockData,"Process Block -> Zaten işlenmiş blok -> Line 1200");
                     if (innerSendToMyChain == true)
                     {
                         NP.Success("This Is Correct Block - Store Your Local Data");

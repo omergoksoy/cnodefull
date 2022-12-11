@@ -5,10 +5,10 @@ using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
-using NVG = Notus.Variable.Globals;
-using NVS = Notus.Variable.Struct;
-using NVH = Notus.Validator.Helper;
 using NVD = Notus.Validator.Date;
+using NVG = Notus.Variable.Globals;
+using NVH = Notus.Validator.Helper;
+using NVS = Notus.Variable.Struct;
 namespace Notus.Validator
 {
     public static class Helper
@@ -162,7 +162,7 @@ namespace Notus.Validator
         {
             return incomeBlock.validator.count.First().Key;
         }
-        public static bool RightBlockValidator(Notus.Variable.Class.BlockData incomeBlock)
+        public static bool RightBlockValidator(Notus.Variable.Class.BlockData incomeBlock, string sendingLocation)
         {
             ulong queueTimePeriod = NVD.Calculate();
             ulong blockTimeVal = ND.ToLong(incomeBlock.info.time);
@@ -170,17 +170,18 @@ namespace Notus.Validator
 
             if (NVG.Settings.Nodes.Queue.ContainsKey(blockGenarationTime) == true)
             {
-                if (string.Equals(BlockValidator(incomeBlock), NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet))
+                string blockValidatorWalletId = BlockValidator(incomeBlock);
+                if (string.Equals(blockValidatorWalletId, NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet))
                 {
                     return true;
                 }
 
                 Console.WriteLine("RightBlockValidator - Control-Point-001");
                 Console.WriteLine("-----------------------------------------");
+                Console.WriteLine("sendingLocation : " + sendingLocation);
+                Console.WriteLine("blockValidatorWalletId : " + blockValidatorWalletId);
+                Console.WriteLine("NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : " + NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet);
                 Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue[blockGenarationTime], NVC.JsonSetting));
-                
-                Console.Write("blockTimeVal        : ");
-                Console.WriteLine(blockTimeVal);
 
                 Console.Write("blockGenarationTime : ");
                 Console.WriteLine(blockGenarationTime);
@@ -414,11 +415,11 @@ namespace Notus.Validator
                 );
                 if (resultStr == "1")
                 {
-                    NP.Basic("We Sended JoinTime -> " + 
-                        NVG.NodeList[nodeKey].IP.Wallet.Substring(0, 7) + 
-                        "..." + 
-                        NVG.NodeList[nodeKey].IP.Wallet.Substring(NVG.NodeList[nodeKey].IP.Wallet.Length - 7) + 
-                        " -> " + 
+                    NP.Basic("We Sended JoinTime -> " +
+                        NVG.NodeList[nodeKey].IP.Wallet.Substring(0, 7) +
+                        "..." +
+                        NVG.NodeList[nodeKey].IP.Wallet.Substring(NVG.NodeList[nodeKey].IP.Wallet.Length - 7) +
+                        " -> " +
                         joinTime.ToString()
                     );
                 }
