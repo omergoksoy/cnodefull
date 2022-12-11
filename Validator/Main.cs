@@ -1121,7 +1121,7 @@ namespace Notus.Validator
                             }
                             Console.WriteLine("RightValidatorControl-Point-001");
                             NP.TellQueue();
-                            NP.PrintQueue();
+                            NP.PrintQueue("if (Notus.Sync.Block.downloadDone == true)");
                         }
                         return false;
                     }

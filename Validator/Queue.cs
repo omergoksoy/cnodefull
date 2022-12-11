@@ -196,7 +196,7 @@ namespace Notus.Validator
         {
             if (CheckXmlTag(incomeData, "pQueue"))
             {
-                NP.PrintQueue();
+                NP.PrintQueue("if (CheckXmlTag(incomeData,pQueue))");
                 return "ok";
             }
 

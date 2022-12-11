@@ -72,8 +72,10 @@ namespace Notus
                 }
             }
         }
-        public static void PrintQueue()
+        public static void PrintQueue(string printLoc)
         {
+            Console.WriteLine("******************************************");
+            Console.WriteLine(printLoc);
             Console.WriteLine("NVG.Settings.PeerManager.Old");
             Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Old, NVC.JsonSetting));
 
