@@ -1062,37 +1062,12 @@ namespace Notus.Validator
         {
             if (blockSource == 2 || blockSource == 4)
             {
-                /*
-                
-                * bloğu oluşturan validatör bir imza ila kendisinin oluşturduğunu ispatlamalı
-                  eğer hatalı işlem yaparsa bu işlem diğer validatörler tarafından validatörün imzası 
-                  ile doğrulanacağı için bu çok önemli
-
-                * gereksiz debug noktalarını kapatabiliriz.
-
-                * ayrıca bir node devre dışı kalıp yeniden ağa bağlanınca oluşan durumu gözlemle ve düzelt
-                
-                * bir validatör son oluşturduğu bloktan daha eski bir tarihli blok gönderemez.
-                
-                * bir validatör kendisine ait olmayan bir zaman dilimine ait blok gönderemez
-                
-                * her validatör 
-                
-                * 
-                
-                * 
-                
-                * 
-                
-                */
-
-
                 bool innerSendToMyChain = false;
                 if (NVG.OtherValidatorSelectedMe == false)
                 {
                     try
                     {
-                        innerSendToMyChain = NVH.RightBlockValidator(blockData,"Process Block - Main.cs Line 1095");
+                        innerSendToMyChain = NVH.RightBlockValidator(blockData, "Process Block - Main.cs Line 1095 -> blockSource => " + blockSource.ToString());
                     }
                     catch (Exception innerErr)
                     {
@@ -1114,14 +1089,14 @@ namespace Notus.Validator
                             if (blockSource == 2)
                             {
                                 NP.Warning("That block came from validator and wrong block");
+                                Console.WriteLine("RightValidatorControl-Point-001");
+                                NP.TellQueue();
+                                NP.PrintQueue("Main.cs -> Line 1099");
                             }
                             if (blockSource == 4)
                             {
                                 NP.Warning("That block came my validator but wrong queue order");
                             }
-                            Console.WriteLine("RightValidatorControl-Point-001");
-                            NP.TellQueue();
-                            NP.PrintQueue("if (Notus.Sync.Block.downloadDone == true)");
                         }
                         return false;
                     }
@@ -1197,7 +1172,7 @@ namespace Notus.Validator
                     if (NVG.Settings.SyncBlockIsDone == true)
                     {
                     }
-                    bool innerSendToMyChain = Notus.Validator.Helper.RightBlockValidator(blockData,"Process Block -> Zaten işlenmiş blok -> Line 1200");
+                    bool innerSendToMyChain = NVH.RightBlockValidator(blockData, "Process Block -> Zaten işlenmiş blok -> Line 1200 -> blockSource => " + blockSource.ToString());
                     if (innerSendToMyChain == true)
                     {
                         NP.Success("This Is Correct Block - Store Your Local Data");
