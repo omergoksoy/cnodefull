@@ -472,7 +472,7 @@ namespace Notus.Validator
                     NVG.Settings.Genesis.Empty.SlowBlock.Multiply
                 );
             }
-
+            //fast-empty-block-generation
             howManySeconds = 15;
             ulong earliestTime = ND.ToLong(ND.ToDateTime(NVG.Settings.LastBlock.info.time).AddSeconds(howManySeconds));
             bool executeEmptyBlock = false;
