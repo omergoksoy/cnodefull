@@ -190,21 +190,19 @@ namespace Notus.Validator
             }
             else
             {
-                Console.Write("blockTimeVal        : ");
-                Console.WriteLine(blockTimeVal);
-
-                Console.Write("blockGenarationTime : ");
-                Console.WriteLine(blockGenarationTime);
-
-                Console.Write("BlockValidator(incomeBlock) : ");
-                Console.WriteLine(BlockValidator(incomeBlock));
-
                 //ekleme noktası burası buradan kontrol edilecek
                 if (Notus.Sync.Block.downloadDone == true)
                 {
-                    Console.WriteLine();
-                    Console.WriteLine("Control-Point-001");
+                    Console.WriteLine("Queue Does Not Exist - Control-Point-002");
+                    Console.WriteLine("-----------------------------------------");
+                    Console.Write("blockTimeVal        : ");
+                    Console.WriteLine(blockTimeVal);
+
+                    Console.Write("blockGenarationTime : ");
                     Console.WriteLine(blockGenarationTime);
+
+                    Console.Write("BlockValidator(incomeBlock) : ");
+                    Console.WriteLine(BlockValidator(incomeBlock));
                 }
                 //NVG.Settings.Nodes.Queue
                 bool canBePrint = false;

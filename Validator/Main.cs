@@ -1111,9 +1111,6 @@ namespace Notus.Validator
                     {
                         if (Notus.Sync.Block.downloadDone == true)
                         {
-                            Console.WriteLine("RightValidatorControl-Point-001");
-                            NP.PrintQueue();
-                            NP.TellQueue();
                             if (blockSource == 2)
                             {
                                 NP.Warning("That block came from validator and wrong block");
@@ -1122,9 +1119,9 @@ namespace Notus.Validator
                             {
                                 NP.Warning("That block came my validator but wrong queue order");
                             }
-                            //Console.WriteLine("Environment.Exit(0);");
-                            //Thread.Sleep(1000);
-                            //Environment.Exit(0);
+                            Console.WriteLine("RightValidatorControl-Point-001");
+                            NP.TellQueue();
+                            NP.PrintQueue();
                         }
                         return false;
                     }
@@ -1207,7 +1204,6 @@ namespace Notus.Validator
                     }
                     else
                     {
-                        Console.WriteLine("RightValidatorControl-Point-002");
                         ProcessBlock_PrintSection(blockData, blockSource);
                         NP.Warning(NVG.Settings, "We Already Processed The Block -> [ " + blockData.info.rowNo.ToString() + " ]");
                         return false;
