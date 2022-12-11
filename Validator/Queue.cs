@@ -1382,6 +1382,7 @@ namespace Notus.Validator
         }
         public void DistributionErrorChecker()
         {
+            NP.Basic("Distribution Control Timer Has started");
             DistributeTimerObj.Start(100, () =>
             {
                 if (DistributeTimerIsRunning == false)
@@ -1402,9 +1403,14 @@ namespace Notus.Validator
                             }
                             else
                             {
+                                testResult.tryCount = testResult.tryCount + 1;
+                                NP.Info(
+                                "Distribution Error [ " + fixedRowNoLength(testResult.rowNo) + " ] To " +
+                                    testResult.peerId + " -> " + testResult.tryCount.ToString()
+
+                                );
                                 DistributeErrorList.Enqueue(testResult);
                             }
-
                         }
                         else
                         {
