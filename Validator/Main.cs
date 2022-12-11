@@ -1095,7 +1095,7 @@ namespace Notus.Validator
                             {
                                 NP.Warning("That Block Came My Validator But Wrong Queue Order");
                                 // Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
-                                NP.Danger("We Ignored This Block");
+                                NP.Danger("We Ignored This Block [ " + fixedRowNoLength(blockData) + " ]");
                                 return false;
                             }
                         }
