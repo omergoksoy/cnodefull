@@ -197,9 +197,9 @@ namespace Notus.Validator
             if (CheckXmlTag(incomeData, "pQueue"))
             {
                 NP.PrintQueue();
-                Console.WriteLine("Environment.Exit(0);");
-                Thread.Sleep(1000);
-                Environment.Exit(0);
+                //Console.WriteLine("Environment.Exit(0);");
+                //Thread.Sleep(1000);
+                //Environment.Exit(0);
                 return "ok";
             }
 
