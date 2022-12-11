@@ -1387,7 +1387,7 @@ namespace Notus.Validator
             NP.Basic("Distribution Control Timer Has started");
             DistributeTimerObj.Start(100, () =>
             {
-                omergoksoy
+                //omergoksoy
                 if (DistributeTimerIsRunning == false)
                 {
                     DistributeTimerIsRunning = true;
