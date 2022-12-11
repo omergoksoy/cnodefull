@@ -1095,7 +1095,9 @@ namespace Notus.Validator
                             }
                             if (blockSource == 4)
                             {
-                                NP.Warning("That block came my validator but wrong queue order");
+                                NP.Warning("That Block Came My Validator But Wrong Queue Order");
+                                NP.Warning("We Ignored This Block");
+                                return false;
                             }
                         }
                         return false;
