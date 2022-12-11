@@ -174,11 +174,22 @@ namespace Notus.Validator
                 {
                     return true;
                 }
+
                 Console.WriteLine("RightBlockValidator - Control-Point-001");
+                Console.WriteLine("-----------------------------------------");
+                Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue[blockGenarationTime], NVC.JsonSetting));
+                
+                Console.Write("blockTimeVal        : ");
+                Console.WriteLine(blockTimeVal);
+
+                Console.Write("blockGenarationTime : ");
+                Console.WriteLine(blockGenarationTime);
+
+                Console.Write("BlockValidator(incomeBlock) : ");
+                Console.WriteLine(BlockValidator(incomeBlock));
             }
             else
             {
-
                 Console.Write("blockTimeVal        : ");
                 Console.WriteLine(blockTimeVal);
 
