@@ -861,7 +861,7 @@ namespace Notus.Block
             }
             Console.WriteLine("ControlBlockIntegrity");
             Console.WriteLine(DateTime.Now - baslangic);
-            NP.ReadLine()
+            NP.ReadLine();
 
             if (Val_Status == NVE.BlockIntegrityStatus.GenesisNeed)
             {
