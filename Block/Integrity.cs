@@ -117,6 +117,7 @@ namespace Notus.Block
 
                             if (added == true)
                             {
+                                Console.Write(blockRowNo.ToString() + " - ");
                                 if (CurrentBlockOrder.ContainsKey(blockRowNo) == false)
                                 {
                                     added = CurrentBlockOrder.TryAdd(blockRowNo, new NVS.BlockOrderIntegrityStruct()
