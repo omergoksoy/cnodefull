@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -54,6 +55,113 @@ namespace Notus.Block
             }
             return null;
         }
+
+        private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity_FastTry()
+        {
+
+            Notus.Wallet.Fee.ClearFeeData(NVG.Settings.Network, NVG.Settings.Layer);
+            NVClass.BlockData LastBlock = NVClass.Block.GetEmpty();
+            string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
+
+            if (ZipFileList.Length == 0)
+            {
+                NP.Success(NVG.Settings, "Genesis Block Needs");
+                return (NVE.BlockIntegrityStatus.GenesisNeed, null);
+            }
+
+            bool tmpGetListAgain = false;
+            /*
+            foreach (string fileName in ZipFileList)
+            {
+                int fileCountInZip = 0;
+                using (ZipArchive archive = ZipFile.OpenRead(fileName))
+                {
+                    fileCountInZip = archive.Entries.Count;
+                }
+                if (fileCountInZip == 0)
+                {
+                    tmpGetListAgain = true;
+                    Thread.Sleep(1);
+                    File.Delete(fileName);
+                }
+            }
+            if (tmpGetListAgain == true)
+            {
+                return (NVE.BlockIntegrityStatus.CheckAgain, null);
+            }
+
+            bool multiBlockFound = false;
+            foreach (string fileName in ZipFileList)
+            {
+                List<string> deleteInnerFileList = new List<string>();
+                using (ZipArchive archive = ZipFile.OpenRead(fileName))
+                {
+                    List<string> fileNameList = new List<string>();
+                    foreach (ZipArchiveEntry entry in archive.Entries)
+                    {
+                        if (fileNameList.IndexOf(entry.FullName) == -1)
+                        {
+                            fileNameList.Add(entry.FullName);
+                        }
+                        else
+                        {
+                            deleteInnerFileList.Add(entry.FullName);
+                        }
+                    }
+                }
+                if (deleteInnerFileList.Count > 0)
+                {
+                    Notus.Archive.DeleteFromInside(fileName, deleteInnerFileList, true);
+                    multiBlockFound = true;
+                }
+            }
+            if (multiBlockFound == true)
+            {
+                return (NVE.BlockIntegrityStatus.CheckAgain, null);
+            }
+            */
+            ConcurrentDictionary<long, string> allBlock = new ConcurrentDictionary<long, string>();
+
+            foreach (string fileName in ZipFileList)
+            {
+                using (ZipArchive archive = ZipFile.OpenRead(fileName))
+                {
+                    foreach (ZipArchiveEntry entry in archive.Entries)
+                    {
+                        if (entry.FullName.EndsWith(".json", StringComparison.OrdinalIgnoreCase) == true)
+                        {
+                            ZipArchiveEntry? zipEntry = archive.GetEntry(entry.FullName);
+                            if (zipEntry != null)
+                            {
+                                using (StreamReader zipEntryStream = new StreamReader(zipEntry.Open()))
+                                {
+                                    try
+                                    {
+                                        NVClass.BlockData? ControlBlock = JsonSerializer.Deserialize<NVClass.BlockData>(zipEntryStream.ReadToEnd());
+                                        if (ControlBlock != null)
+                                        {
+                                            if (new Notus.Block.Generate().Verify(ControlBlock))
+                                            {
+                                                if (allBlock.ContainsKey(ControlBlock.info.rowNo) == false)
+                                                {
+                                                    allBlock.TryAdd(ControlBlock.info.rowNo, ControlBlock.info.uID);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    catch { }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            NP.ReadLine();
+            //StoreBlockWithRowNo(SmallestBlockHeight);
+            return (NVE.BlockIntegrityStatus.Valid, LastBlock);
+        }
+
         private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity()
         {
             try

@@ -181,6 +181,7 @@ namespace Notus.Validator
                 //ekleme noktası burası buradan kontrol edilecek
                 if (Notus.Sync.Block.downloadDone == true)
                 {
+
                 }
             }
             return false;
