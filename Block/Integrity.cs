@@ -60,9 +60,9 @@ namespace Notus.Block
         private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity_FastTry()
         {
             string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
+            NVClass.BlockData LastBlock = NVClass.Block.GetEmpty();
             /*
             Notus.Wallet.Fee.ClearFeeData(NVG.Settings.Network, NVG.Settings.Layer);
-            NVClass.BlockData LastBlock = NVClass.Block.GetEmpty();
             if (ZipFileList.Length == 0)
             {
                 NP.Success(NVG.Settings, "Genesis Block Needs");
