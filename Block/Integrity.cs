@@ -69,53 +69,101 @@ namespace Notus.Block
                 return (NVE.BlockIntegrityStatus.GenesisNeed, null);
             }
             */
+            long biggestBlockRownNo = 0;
+            List<string> deleteZipFile = new();
             foreach (string fileName in ZipFileList)
             {
+                List<string> tmpDeleteFileInzipZip = new List<string>();
                 using (ZipArchive archive = ZipFile.OpenRead(fileName))
                 {
-                    foreach (ZipArchiveEntry entry in archive.Entries)
+                    int zipInsideFileCount = archive.Entries.Count;
+
+                    if (zipInsideFileCount == 0)
                     {
-                        if (entry.FullName.EndsWith(".json", StringComparison.OrdinalIgnoreCase) == true)
+                        deleteZipFile.Add(fileName);
+                    }
+
+                    if (zipInsideFileCount > 0)
+                    {
+                        foreach (ZipArchiveEntry entry in archive.Entries)
                         {
                             bool added = false;
                             long blockRowNo = 0;
                             string blockUid = string.Empty;
-                            ZipArchiveEntry? zipEntry = archive.GetEntry(entry.FullName);
-                            if (zipEntry != null)
+                            if (entry.FullName.EndsWith(".json", StringComparison.OrdinalIgnoreCase) == true)
                             {
-                                using (StreamReader zipEntryStream = new StreamReader(zipEntry.Open()))
+                                ZipArchiveEntry? zipEntry = archive.GetEntry(entry.FullName);
+                                if (zipEntry != null)
                                 {
-                                    try
+                                    using (StreamReader zipEntryStream = new StreamReader(zipEntry.Open()))
                                     {
-                                        NVClass.BlockData? ControlBlock = JsonSerializer.Deserialize<NVClass.BlockData>(zipEntryStream.ReadToEnd());
-                                        if (ControlBlock != null)
+                                        try
                                         {
-                                            if (new Notus.Block.Generate().Verify(ControlBlock))
+                                            NVClass.BlockData? ControlBlock = JsonSerializer.Deserialize<NVClass.BlockData>(zipEntryStream.ReadToEnd());
+                                            if (ControlBlock != null)
                                             {
-                                                added = true;
-                                                blockRowNo = ControlBlock.info.rowNo;
-                                                blockUid = ControlBlock.info.uID;
+                                                if (new Notus.Block.Generate().Verify(ControlBlock))
+                                                {
+                                                    added = true;
+                                                    blockRowNo = ControlBlock.info.rowNo;
+                                                    blockUid = ControlBlock.info.uID;
+                                                }
                                             }
                                         }
+                                        catch { }
                                     }
-                                    catch { }
                                 }
                             }
+
                             if (added == true)
                             {
                                 if (CurrentBlockOrder.ContainsKey(blockRowNo) == false)
                                 {
-                                    CurrentBlockOrder.TryAdd(blockRowNo, new NVS.BlockOrderIntegrityStruct()
+                                    added = CurrentBlockOrder.TryAdd(blockRowNo, new NVS.BlockOrderIntegrityStruct()
                                     {
                                         Uid = blockUid
                                     });
                                 }
+                                else
+                                {
+                                    added = true;
+                                }
                             }
+
+                            if (added == false)
+                            {
+                                tmpDeleteFileInzipZip.Add(entry.FullName);
+                            }
+                            if (added == true && blockRowNo > biggestBlockRownNo)
+                            {
+                                biggestBlockRownNo = blockRowNo;
+                            }
+                        }
+
+                        if (tmpDeleteFileInzipZip.Count > 0)
+                        {
+                            Thread.Sleep(1);
+                            Notus.Archive.DeleteFromInside(fileName, tmpDeleteFileInzipZip, true);
                         }
                     }
                 }
             }
-            Console.WriteLine(JsonSerializer.Serialize(CurrentBlockOrder));
+
+            // boş zip dosyaları siliniyor...
+            for (int count = 0; count < deleteZipFile.Count; count++)
+            {
+                File.Delete(deleteZipFile[count]);
+            }
+            Console.WriteLine("biggestBlockRownNo : " + biggestBlockRownNo.ToString());
+
+            for (int rowNo = 0; rowNo < biggestBlockRownNo; rowNo++)
+            {
+                if (CurrentBlockOrder.ContainsKey(rowNo) == false)
+                {
+                    Console.WriteLine("Missing Block Row No : " + rowNo.ToString());
+                }
+            }
+            //Console.WriteLine(JsonSerializer.Serialize(CurrentBlockOrder));
             NP.ReadLine();
             //StoreBlockWithRowNo(SmallestBlockHeight);
             return (NVE.BlockIntegrityStatus.Valid, LastBlock);
