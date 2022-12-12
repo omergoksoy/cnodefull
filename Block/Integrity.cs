@@ -18,6 +18,7 @@ namespace Notus.Block
 {
     public class Integrity : IDisposable
     {
+        public ConcurrentDictionary<long, NVS.BlockOrderIntegrityStruct> CurrentBlockOrder = new();
         public NVClass.BlockData? GetSatus(bool ResetBlocksIfNonValid = false)
         {
             NVE.BlockIntegrityStatus Val_Status = NVE.BlockIntegrityStatus.CheckAgain;
@@ -58,70 +59,16 @@ namespace Notus.Block
 
         private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity_FastTry()
         {
-
+            string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
+            /*
             Notus.Wallet.Fee.ClearFeeData(NVG.Settings.Network, NVG.Settings.Layer);
             NVClass.BlockData LastBlock = NVClass.Block.GetEmpty();
-            string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
-
             if (ZipFileList.Length == 0)
             {
                 NP.Success(NVG.Settings, "Genesis Block Needs");
                 return (NVE.BlockIntegrityStatus.GenesisNeed, null);
             }
-
-            bool tmpGetListAgain = false;
-            /*
-            foreach (string fileName in ZipFileList)
-            {
-                int fileCountInZip = 0;
-                using (ZipArchive archive = ZipFile.OpenRead(fileName))
-                {
-                    fileCountInZip = archive.Entries.Count;
-                }
-                if (fileCountInZip == 0)
-                {
-                    tmpGetListAgain = true;
-                    Thread.Sleep(1);
-                    File.Delete(fileName);
-                }
-            }
-            if (tmpGetListAgain == true)
-            {
-                return (NVE.BlockIntegrityStatus.CheckAgain, null);
-            }
-
-            bool multiBlockFound = false;
-            foreach (string fileName in ZipFileList)
-            {
-                List<string> deleteInnerFileList = new List<string>();
-                using (ZipArchive archive = ZipFile.OpenRead(fileName))
-                {
-                    List<string> fileNameList = new List<string>();
-                    foreach (ZipArchiveEntry entry in archive.Entries)
-                    {
-                        if (fileNameList.IndexOf(entry.FullName) == -1)
-                        {
-                            fileNameList.Add(entry.FullName);
-                        }
-                        else
-                        {
-                            deleteInnerFileList.Add(entry.FullName);
-                        }
-                    }
-                }
-                if (deleteInnerFileList.Count > 0)
-                {
-                    Notus.Archive.DeleteFromInside(fileName, deleteInnerFileList, true);
-                    multiBlockFound = true;
-                }
-            }
-            if (multiBlockFound == true)
-            {
-                return (NVE.BlockIntegrityStatus.CheckAgain, null);
-            }
             */
-            ConcurrentDictionary<long, string> allBlock = new ConcurrentDictionary<long, string>();
-
             foreach (string fileName in ZipFileList)
             {
                 using (ZipArchive archive = ZipFile.OpenRead(fileName))
@@ -130,6 +77,9 @@ namespace Notus.Block
                     {
                         if (entry.FullName.EndsWith(".json", StringComparison.OrdinalIgnoreCase) == true)
                         {
+                            bool added = false;
+                            long blockRowNo = 0;
+                            string blockUid = string.Empty;
                             ZipArchiveEntry? zipEntry = archive.GetEntry(entry.FullName);
                             if (zipEntry != null)
                             {
@@ -142,21 +92,30 @@ namespace Notus.Block
                                         {
                                             if (new Notus.Block.Generate().Verify(ControlBlock))
                                             {
-                                                if (allBlock.ContainsKey(ControlBlock.info.rowNo) == false)
-                                                {
-                                                    allBlock.TryAdd(ControlBlock.info.rowNo, ControlBlock.info.uID);
-                                                }
+                                                added = true;
+                                                blockRowNo = ControlBlock.info.rowNo;
+                                                blockUid = ControlBlock.info.uID;
                                             }
                                         }
                                     }
                                     catch { }
                                 }
                             }
+                            if (added == true)
+                            {
+                                if (CurrentBlockOrder.ContainsKey(blockRowNo) == false)
+                                {
+                                    CurrentBlockOrder.TryAdd(blockRowNo, new NVS.BlockOrderIntegrityStruct()
+                                    {
+                                        Uid = blockUid
+                                    });
+                                }
+                            }
                         }
                     }
                 }
             }
-
+            Console.WriteLine(JsonSerializer.Serialize(CurrentBlockOrder));
             NP.ReadLine();
             //StoreBlockWithRowNo(SmallestBlockHeight);
             return (NVE.BlockIntegrityStatus.Valid, LastBlock);
@@ -828,6 +787,8 @@ namespace Notus.Block
         }
         public void GetLastBlock()
         {
+            ControlBlockIntegrity_FastTry();
+
             NVE.BlockIntegrityStatus Val_Status = NVE.BlockIntegrityStatus.CheckAgain;
             NVClass.BlockData LastBlock = new NVClass.BlockData();
             bool exitInnerLoop = false;

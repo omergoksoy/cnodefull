@@ -622,6 +622,13 @@ namespace Notus.Variable.Struct
         public DateTime sended { get; set; }
     }
 
+    public class BlockOrderIntegrityStruct
+    {
+        public string Uid { get; set; }
+        //public string Uid { get; set; }
+        //public string Uid { get; set; }
+    }
+
     /*
     public class MultiWalletTransactionVoteStruct
     {
