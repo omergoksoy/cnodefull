@@ -25,6 +25,7 @@ namespace Notus.Validator
         //this variable hold current processing block number
         private long CurrentBlockRowNo = 1;
         private int SelectedPortVal = 0;
+        private int WrongBlockCount = 0;
 
         private Notus.Validator.Register ValidatorRegisterObj = new Notus.Validator.Register();
         private Notus.Sync.Validator ValidatorCountObj = new Notus.Sync.Validator();
@@ -1094,8 +1095,8 @@ namespace Notus.Validator
                             if (blockSource == 4)
                             {
                                 NP.Warning("That Block Came My Validator But Wrong Queue Order");
-                                // Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
-                                NP.Danger("We Ignored This Block [ " + fixedRowNoLength(blockData) + " ]");
+                                WrongBlockCount++;
+                                NP.Danger("We Ignored This Block [ " + fixedRowNoLength(blockData) + " ] -> " + WrongBlockCount.ToString());
                                 return false;
                             }
                         }
