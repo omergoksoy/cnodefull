@@ -60,8 +60,8 @@ namespace Notus.Block
         private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity_FastTry()
         {
             string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
-            NVClass.BlockData LastBlock = NVClass.Block.GetEmpty();
             /*
+            NVClass.BlockData LastBlock = NVClass.Block.GetEmpty();
             Notus.Wallet.Fee.ClearFeeData(NVG.Settings.Network, NVG.Settings.Layer);
             if (ZipFileList.Length == 0)
             {
@@ -117,7 +117,6 @@ namespace Notus.Block
 
                             if (added == true)
                             {
-                                Console.Write(blockRowNo.ToString() + " - ");
                                 if (CurrentBlockOrder.ContainsKey(blockRowNo) == false)
                                 {
                                     added = CurrentBlockOrder.TryAdd(blockRowNo, new NVS.BlockOrderIntegrityStruct()
@@ -155,19 +154,20 @@ namespace Notus.Block
             {
                 File.Delete(deleteZipFile[count]);
             }
-            Console.WriteLine("biggestBlockRownNo : " + biggestBlockRownNo.ToString());
 
-            for (int rowNo = 0; rowNo < biggestBlockRownNo; rowNo++)
+            Console.WriteLine("biggestBlockRownNo : " + biggestBlockRownNo.ToString());
+            for (int rowNo = 1; rowNo < biggestBlockRownNo; rowNo++)
             {
                 if (CurrentBlockOrder.ContainsKey(rowNo) == false)
                 {
                     Console.WriteLine("Missing Block Row No : " + rowNo.ToString());
                 }
             }
-            //Console.WriteLine(JsonSerializer.Serialize(CurrentBlockOrder));
-            NP.ReadLine();
-            //StoreBlockWithRowNo(SmallestBlockHeight);
-            return (NVE.BlockIntegrityStatus.Valid, LastBlock);
+            using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
+            {
+                return (NVE.BlockIntegrityStatus.Valid, BS_Storage.ReadBlock(CurrentBlockOrder[biggestBlockRownNo].Uid));
+            }
+            return (NVE.BlockIntegrityStatus.UndefinedError, null);
         }
 
         private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity()
@@ -836,11 +836,15 @@ namespace Notus.Block
         }
         public void GetLastBlock()
         {
+            DateTime baslangic = DateTime.Now;
             ControlBlockIntegrity_FastTry();
+            Console.WriteLine("ControlBlockIntegrity_FastTry");
+            Console.WriteLine(DateTime.Now - baslangic);
 
             NVE.BlockIntegrityStatus Val_Status = NVE.BlockIntegrityStatus.CheckAgain;
             NVClass.BlockData LastBlock = new NVClass.BlockData();
             bool exitInnerLoop = false;
+            baslangic = DateTime.Now;
             while (exitInnerLoop == false)
             {
                 (
@@ -855,6 +859,9 @@ namespace Notus.Block
                     exitInnerLoop = true;
                 }
             }
+            Console.WriteLine("ControlBlockIntegrity");
+            Console.WriteLine(DateTime.Now - baslangic);
+            NP.ReadLine()
 
             if (Val_Status == NVE.BlockIntegrityStatus.GenesisNeed)
             {
