@@ -158,24 +158,35 @@ namespace Notus.Block
             }
 
             //Console.WriteLine("biggestBlockRownNo : " + biggestBlockRownNo.ToString());
-            for (int rowNo = 1; rowNo < (biggestBlockRownNo+1); rowNo++)
+            for (int currentRowNo = 1; currentRowNo < (biggestBlockRownNo+1); currentRowNo++)
             {
-                if (CurrentBlockOrder.ContainsKey(rowNo) == false)
+                bool missingBlock = false;
+                if (CurrentBlockOrder.ContainsKey(currentRowNo) == false)
                 {
-                    Console.WriteLine("Missing Block Row No : " + rowNo.ToString());
-                    NP.ReadLine();
+                    missingBlock = true;
                 }
                 else
                 {
-                    if (rowNo == biggestBlockRownNo)
+                    if (currentRowNo == biggestBlockRownNo)
                     {
                         Console.WriteLine("Son Blok");
                     }
                     else
                     {
-
+                        if (CurrentBlockOrder.ContainsKey(currentRowNo + 1) == true)
+                        {
+                            int nextRowNo = currentRowNo + 1;
+                            Console.WriteLine(CurrentBlockOrder[currentRowNo].Uid);
+                            Console.WriteLine(CurrentBlockOrder[currentRowNo].Prev);
+                            Console.WriteLine(CurrentBlockOrder[currentRowNo].Sign);
+                        }
                     }
-                    Console.WriteLine(biggestBlockRownNo.ToString() + " => "  +rowNo.ToString() + " - " + (rowNo+1).ToString());
+                    //Console.WriteLine(biggestBlockRownNo.ToString() + " => "  + currentRowNo.ToString() + " - " + (currentRowNo + 1).ToString());
+                }
+                if(missingBlock == true)
+                {
+                    Console.WriteLine("Missing Block Row No : " + rowNo.ToString());
+                    NP.ReadLine();
                 }
             }
             using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
