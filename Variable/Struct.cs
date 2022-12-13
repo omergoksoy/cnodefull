@@ -625,6 +625,8 @@ namespace Notus.Variable.Struct
     public class BlockOrderIntegrityStruct
     {
         public string Uid { get; set; }
+        public string Sign { get; set; }
+        public string Prev { get; set; }
         //public string Uid { get; set; }
         //public string Uid { get; set; }
     }

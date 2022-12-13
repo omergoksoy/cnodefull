@@ -90,6 +90,8 @@ namespace Notus.Block
                             bool added = false;
                             long blockRowNo = 0;
                             string blockUid = string.Empty;
+                            string blockSign = string.Empty;
+                            string blockPrev = string.Empty;
                             if (entry.FullName.EndsWith(".json", StringComparison.OrdinalIgnoreCase) == true)
                             {
                                 ZipArchiveEntry? zipEntry = archive.GetEntry(entry.FullName);
@@ -107,6 +109,8 @@ namespace Notus.Block
                                                     added = true;
                                                     blockRowNo = ControlBlock.info.rowNo;
                                                     blockUid = ControlBlock.info.uID;
+                                                    blockSign = ControlBlock.sign;
+                                                    blockPrev = ControlBlock.prev;
                                                 }
                                             }
                                         }
@@ -121,12 +125,10 @@ namespace Notus.Block
                                 {
                                     added = CurrentBlockOrder.TryAdd(blockRowNo, new NVS.BlockOrderIntegrityStruct()
                                     {
-                                        Uid = blockUid
+                                        Uid = blockUid,
+                                        Sign = blockSign,
+                                        Prev = blockPrev
                                     });
-                                }
-                                else
-                                {
-                                    added = true;
                                 }
                             }
 
@@ -844,7 +846,7 @@ namespace Notus.Block
 
 
             // aşağıdaki işlem ise 1 dakika 5 saniye sürüyor...
-            aşağıdaki işlem ise 1 dakika 5 saniye sürüyor...
+            // aşağıdaki işlem ise 1 dakika 5 saniye sürüyor...
             // aşağıdaki işlem ise 1 dakika 5 saniye sürüyor...
 
             NVE.BlockIntegrityStatus Val_Status = NVE.BlockIntegrityStatus.CheckAgain;
