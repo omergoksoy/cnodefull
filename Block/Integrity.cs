@@ -59,6 +59,10 @@ namespace Notus.Block
 
         private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity()
         {
+            BinaryReader bloğu sil ve dene
+                sonra da
+            bi kaç bloğun prev değerlerini boz ve dene
+
             string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
             Notus.Wallet.Fee.ClearFeeData(NVG.Settings.Network, NVG.Settings.Layer);
             if (ZipFileList.Length == 0)
