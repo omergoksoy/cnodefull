@@ -57,20 +57,18 @@ namespace Notus.Block
             return null;
         }
 
-        private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity_FastTry()
+        private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity()
         {
             string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
-            /*
-            NVClass.BlockData LastBlock = NVClass.Block.GetEmpty();
             Notus.Wallet.Fee.ClearFeeData(NVG.Settings.Network, NVG.Settings.Layer);
             if (ZipFileList.Length == 0)
             {
                 NP.Success(NVG.Settings, "Genesis Block Needs");
                 return (NVE.BlockIntegrityStatus.GenesisNeed, null);
             }
-            */
             long biggestBlockRownNo = 0;
             List<string> deleteZipFile = new();
+
             foreach (string fileName in ZipFileList)
             {
                 List<string> tmpDeleteFileInzipZip = new List<string>();
@@ -136,6 +134,7 @@ namespace Notus.Block
                             {
                                 tmpDeleteFileInzipZip.Add(entry.FullName);
                             }
+
                             if (added == true && blockRowNo > biggestBlockRownNo)
                             {
                                 biggestBlockRownNo = blockRowNo;
@@ -163,6 +162,7 @@ namespace Notus.Block
                 Console.WriteLine("Genesis Block Does Not Exist");
                 NP.ReadLine();
             }
+
             for (int currentRowNo = 2; currentRowNo < (biggestBlockRownNo+1); currentRowNo++)
             {
                 bool missingBlock = false;
@@ -187,10 +187,13 @@ namespace Notus.Block
                         Console.WriteLine(CurrentBlockOrder[prevRowNo].Sign);
                         Console.WriteLine("------------------------------------");
                         Console.WriteLine(biggestBlockRownNo.ToString() + " => "  + currentRowNo.ToString() + " - " + (currentRowNo + 1).ToString());
+                        NP.ReadLine();
                     }
                     if (currentRowNo == biggestBlockRownNo)
                     {
+                        Console.WriteLine("------------------------------------");
                         Console.WriteLine("Son Blok");
+                        NP.ReadLine();
                     }
                 }
                 if (missingBlock == true)
@@ -199,14 +202,16 @@ namespace Notus.Block
                     NP.ReadLine();
                 }
             }
+            
             using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
             {
                 return (NVE.BlockIntegrityStatus.Valid, BS_Storage.ReadBlock(CurrentBlockOrder[biggestBlockRownNo].Uid));
             }
+            
             return (NVE.BlockIntegrityStatus.UndefinedError, null);
         }
 
-        private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity()
+        private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity_SlowOne()
         {
             try
             {
@@ -873,10 +878,10 @@ namespace Notus.Block
         public void GetLastBlock()
         {
             DateTime baslangic = DateTime.Now;
-            ControlBlockIntegrity_FastTry();
+            //ControlBlockIntegrity_FastTry();
             // yaklaşık 8 saniye sürüyor
-            Console.WriteLine("ControlBlockIntegrity_FastTry");
-            Console.WriteLine(DateTime.Now - baslangic);
+            //Console.WriteLine("ControlBlockIntegrity_FastTry");
+            //Console.WriteLine(DateTime.Now - baslangic);
 
 
             // aşağıdaki işlem ise 1 dakika 5 saniye sürüyor...

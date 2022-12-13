@@ -159,12 +159,7 @@ namespace Notus.Wallet
                     ObjMp_FeeData.Clear();
                 }
             }
-            catch(Exception err)
-            {
-                Console.WriteLine("Fee.Cs -> Line 172");
-                Console.WriteLine(err.Message);
-                Console.WriteLine(err.Message);
-            }
+            catch{}
         }
         public static void StoreFeeData(string KeyName, string RawData, Notus.Variable.Enum.NetworkType networkType , Notus.Variable.Enum.NetworkLayer networkLayer , bool ClearTable = false)
         {
