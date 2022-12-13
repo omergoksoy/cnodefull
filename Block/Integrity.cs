@@ -166,7 +166,7 @@ namespace Notus.Block
             {
                 using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
                 {
-                    var genesisBlock=BS_Storage.ReadBlock(CurrentBlockOrder[biggestBlockRownNo].Uid);
+                    var genesisBlock=BS_Storage.ReadBlock(CurrentBlockOrder[1].Uid);
                     if (genesisBlock == null)
                     {
                         return (NVE.BlockIntegrityStatus.GenesisNeed, null);
