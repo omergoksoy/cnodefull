@@ -158,7 +158,7 @@ namespace Notus.Block
             }
 
             //Console.WriteLine("biggestBlockRownNo : " + biggestBlockRownNo.ToString());
-            if (CurrentBlockOrder.ContainsKey(1) == true)
+            if (CurrentBlockOrder.ContainsKey(1) == false)
             {
                 Console.WriteLine("Genesis Block Does Not Exist");
                 NP.ReadLine();
@@ -173,10 +173,6 @@ namespace Notus.Block
                 else
                 {
                     int prevRowNo = currentRowNo - 1;
-                    if (currentRowNo == biggestBlockRownNo)
-                    {
-                        Console.WriteLine("Son Blok");
-                    }
                     string prevBlockUid = CurrentBlockOrder[prevRowNo].Uid + CurrentBlockOrder[prevRowNo].Sign;
                     if(string.Equals(CurrentBlockOrder[currentRowNo].Prev, prevBlockUid) == false)
                     {
@@ -191,6 +187,10 @@ namespace Notus.Block
                         Console.WriteLine(CurrentBlockOrder[prevRowNo].Sign);
                         Console.WriteLine("------------------------------------");
                         Console.WriteLine(biggestBlockRownNo.ToString() + " => "  + currentRowNo.ToString() + " - " + (currentRowNo + 1).ToString());
+                    }
+                    if (currentRowNo == biggestBlockRownNo)
+                    {
+                        Console.WriteLine("Son Blok");
                     }
                 }
                 if (missingBlock == true)
