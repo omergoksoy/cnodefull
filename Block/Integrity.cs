@@ -162,6 +162,24 @@ namespace Notus.Block
                 Console.WriteLine("Genesis Block Does Not Exist");
                 NP.ReadLine();
             }
+            else
+            {
+                using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
+                {
+                    var genesisBlock=BS_Storage.ReadBlock(CurrentBlockOrder[biggestBlockRownNo].Uid);
+                    if (genesisBlock == null)
+                    {
+                        return (NVE.BlockIntegrityStatus.GenesisNeed, null);
+                    }
+                    NVG.Settings.Genesis = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(
+                        System.Convert.FromBase64String(
+                            genesisBlock.cipher.data
+                        )
+                    );
+                }
+                Notus.Wallet.Fee.StoreFeeData("genesis_block", JsonSerializer.Serialize(NVG.Settings.Genesis), NVG.Settings.Network, NVG.Settings.Layer, true);
+                NVG.Settings.BlockOrder.Add(1, CurrentBlockOrder[1].Uid);
+            }
 
             for (int currentRowNo = 2; currentRowNo < (biggestBlockRownNo+1); currentRowNo++)
             {
@@ -172,6 +190,7 @@ namespace Notus.Block
                 }
                 else
                 {
+                    NVG.Settings.BlockOrder.Add(currentRowNo, CurrentBlockOrder[currentRowNo].Uid);
                     int prevRowNo = currentRowNo - 1;
                     string prevBlockUid = CurrentBlockOrder[prevRowNo].Uid + CurrentBlockOrder[prevRowNo].Sign;
                     if(string.Equals(CurrentBlockOrder[currentRowNo].Prev, prevBlockUid) == false)
@@ -367,6 +386,7 @@ namespace Notus.Block
                                                         BlockOrderList.Add(ControlBlock.info.rowNo, ControlBlock.info.uID);
                                                         BlockPreviousList.Add(ControlBlock.info.uID, ControlBlock.prev);
                                                         BlockTypeList.Add(ControlBlock.info.uID, ControlBlock.info.type);
+
 
                                                         NVG.Settings.BlockOrder.Add(ControlBlock.info.rowNo, ControlBlock.info.uID);
                                                     }
@@ -906,9 +926,10 @@ namespace Notus.Block
                     exitInnerLoop = true;
                 }
             }
-            Console.WriteLine("ControlBlockIntegrity");
-            Console.WriteLine(DateTime.Now - baslangic);
-            NP.ReadLine();
+
+            //Console.WriteLine("ControlBlockIntegrity");
+            //Console.WriteLine(DateTime.Now - baslangic);
+            //NP.ReadLine();
 
             if (Val_Status == NVE.BlockIntegrityStatus.GenesisNeed)
             {
