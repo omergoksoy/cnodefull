@@ -63,6 +63,7 @@ namespace Notus.Block
                 Notus.Variable.Constant.MemoryPoolName["BlockOrderList"]
             );
             MP_OrderList.AsyncActive = false;
+            MP_OrderList.AsyncActive = true;
         }
         public Order()
         {
