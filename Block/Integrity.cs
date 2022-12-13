@@ -158,6 +158,11 @@ namespace Notus.Block
             }
 
             //Console.WriteLine("biggestBlockRownNo : " + biggestBlockRownNo.ToString());
+            if (CurrentBlockOrder.ContainsKey(1) == true)
+            {
+                Console.WriteLine("Genesis Block Does Not Exist");
+                NP.ReadLine();
+            }
             for (int currentRowNo = 2; currentRowNo < (biggestBlockRownNo+1); currentRowNo++)
             {
                 bool missingBlock = false;
@@ -171,22 +176,24 @@ namespace Notus.Block
                     if (currentRowNo == biggestBlockRownNo)
                     {
                         Console.WriteLine("Son Blok");
+                    }
+                    string prevBlockUid = CurrentBlockOrder[prevRowNo].Uid + CurrentBlockOrder[prevRowNo].Sign;
+                    if(string.Equals(CurrentBlockOrder[currentRowNo].Prev, prevBlockUid) == false)
+                    {
+                        Console.WriteLine("CurrentBlockOrder[currentRowNo].Uid");
                         Console.WriteLine(CurrentBlockOrder[currentRowNo].Uid);
                         Console.WriteLine(CurrentBlockOrder[currentRowNo].Prev);
                         Console.WriteLine(CurrentBlockOrder[currentRowNo].Sign);
+                        Console.WriteLine("------------------------------------");
+                        Console.WriteLine("CurrentBlockOrder[prevRowNo].Uid");
+                        Console.WriteLine(CurrentBlockOrder[prevRowNo].Uid);
+                        Console.WriteLine(CurrentBlockOrder[prevRowNo].Prev);
+                        Console.WriteLine(CurrentBlockOrder[prevRowNo].Sign);
+                        Console.WriteLine("------------------------------------");
+                        Console.WriteLine(biggestBlockRownNo.ToString() + " => "  + currentRowNo.ToString() + " - " + (currentRowNo + 1).ToString());
                     }
-                    else
-                    {
-                        if (CurrentBlockOrder.ContainsKey(prevRowNo) == true)
-                        {
-                            Console.WriteLine(CurrentBlockOrder[currentRowNo].Uid);
-                            Console.WriteLine(CurrentBlockOrder[currentRowNo].Prev);
-                            Console.WriteLine(CurrentBlockOrder[currentRowNo].Sign);
-                        }
-                    }
-                    //Console.WriteLine(biggestBlockRownNo.ToString() + " => "  + currentRowNo.ToString() + " - " + (currentRowNo + 1).ToString());
                 }
-                if(missingBlock == true)
+                if (missingBlock == true)
                 {
                     Console.WriteLine("Missing Block Row No : " + currentRowNo.ToString());
                     NP.ReadLine();
