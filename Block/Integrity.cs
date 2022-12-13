@@ -166,7 +166,7 @@ namespace Notus.Block
             {
                 using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
                 {
-                    var genesisBlock = BS_Storage.ReadBlock(CurrentBlockOrder[1].Uid);
+                    NVClass.BlockData? genesisBlock = BS_Storage.ReadBlock(CurrentBlockOrder[1].Uid);
                     if (genesisBlock == null)
                     {
                         return (NVE.BlockIntegrityStatus.GenesisNeed, null);
@@ -200,6 +200,7 @@ namespace Notus.Block
                         Console.WriteLine(CurrentBlockOrder[currentRowNo].Prev);
                         Console.WriteLine(CurrentBlockOrder[currentRowNo].Sign);
                         Console.WriteLine("------------------------------------");
+                        Console.WriteLine("");
                         Console.WriteLine("CurrentBlockOrder[prevRowNo].Uid");
                         Console.WriteLine(CurrentBlockOrder[prevRowNo].Uid);
                         Console.WriteLine(CurrentBlockOrder[prevRowNo].Prev);
@@ -208,12 +209,14 @@ namespace Notus.Block
                         Console.WriteLine(biggestBlockRownNo.ToString() + " => " + currentRowNo.ToString() + " - " + (currentRowNo + 1).ToString());
                         NP.ReadLine();
                     }
+                    /*
                     if (currentRowNo == biggestBlockRownNo)
                     {
                         Console.WriteLine("------------------------------------");
                         Console.WriteLine("Son Blok");
                         NP.ReadLine();
                     }
+                    */
                 }
                 if (missingBlock == true)
                 {
