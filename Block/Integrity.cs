@@ -158,11 +158,24 @@ namespace Notus.Block
             }
 
             //Console.WriteLine("biggestBlockRownNo : " + biggestBlockRownNo.ToString());
-            for (int rowNo = 1; rowNo < biggestBlockRownNo; rowNo++)
+            for (int rowNo = 1; rowNo < (biggestBlockRownNo+1); rowNo++)
             {
                 if (CurrentBlockOrder.ContainsKey(rowNo) == false)
                 {
                     Console.WriteLine("Missing Block Row No : " + rowNo.ToString());
+                    NP.ReadLine();
+                }
+                else
+                {
+                    if (rowNo == biggestBlockRownNo)
+                    {
+                        Console.WriteLine("Son Blok");
+                    }
+                    else
+                    {
+
+                    }
+                    Console.WriteLine(biggestBlockRownNo.ToString() + " => "  +rowNo.ToString() + " - " + (rowNo+1).ToString());
                 }
             }
             using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
