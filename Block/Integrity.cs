@@ -158,7 +158,7 @@ namespace Notus.Block
             }
 
             //Console.WriteLine("biggestBlockRownNo : " + biggestBlockRownNo.ToString());
-            for (int currentRowNo = 1; currentRowNo < (biggestBlockRownNo+1); currentRowNo++)
+            for (int currentRowNo = 2; currentRowNo < (biggestBlockRownNo+1); currentRowNo++)
             {
                 bool missingBlock = false;
                 if (CurrentBlockOrder.ContainsKey(currentRowNo) == false)
@@ -167,15 +167,18 @@ namespace Notus.Block
                 }
                 else
                 {
+                    int prevRowNo = currentRowNo - 1;
                     if (currentRowNo == biggestBlockRownNo)
                     {
                         Console.WriteLine("Son Blok");
+                        Console.WriteLine(CurrentBlockOrder[currentRowNo].Uid);
+                        Console.WriteLine(CurrentBlockOrder[currentRowNo].Prev);
+                        Console.WriteLine(CurrentBlockOrder[currentRowNo].Sign);
                     }
                     else
                     {
-                        if (CurrentBlockOrder.ContainsKey(currentRowNo + 1) == true)
+                        if (CurrentBlockOrder.ContainsKey(prevRowNo) == true)
                         {
-                            int nextRowNo = currentRowNo + 1;
                             Console.WriteLine(CurrentBlockOrder[currentRowNo].Uid);
                             Console.WriteLine(CurrentBlockOrder[currentRowNo].Prev);
                             Console.WriteLine(CurrentBlockOrder[currentRowNo].Sign);
