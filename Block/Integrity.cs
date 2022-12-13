@@ -185,7 +185,7 @@ namespace Notus.Block
                 }
                 if(missingBlock == true)
                 {
-                    Console.WriteLine("Missing Block Row No : " + rowNo.ToString());
+                    Console.WriteLine("Missing Block Row No : " + currentRowNo.ToString());
                     NP.ReadLine();
                 }
             }
