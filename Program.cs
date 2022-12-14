@@ -144,6 +144,12 @@ bu iki node arasındaki süre
 // deneme amaçlı 15 saniyede bir empty blok oluşturuluyor
 // böylece wrong validator sorununu çözmeyi hedefliyoruz.
 
+// distrubute-node-control
+// eğer node kontrolsüz bir şekilde kapatılırsa,
+// burası ve empty blok oluşturma ile ilgili kontrol yapılırken hata olmadığı için
+// empty blok oluşturulmaya devam ediyor
+
+
 Notus.Validator.Node.Start(args);
 
 

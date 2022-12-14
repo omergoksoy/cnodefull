@@ -532,10 +532,12 @@ namespace Notus.Validator
             bool controlStatus=Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with another node
             if (controlStatus == true)
             {
+                // eğer diğer node'lardan Genesis alındı ise TRUE
                 Console.WriteLine("Obj_Integrity.ControlGenesisBlock : TRUE");
             }
             else
             {
+                // eğer diğer node'lardan Genesis alınmadıysa FALSE
                 Console.WriteLine("Obj_Integrity.ControlGenesisBlock : FALSE");
             }
 

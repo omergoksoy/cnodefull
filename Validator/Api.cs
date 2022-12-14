@@ -693,6 +693,11 @@ namespace Notus.Validator
 
         private string AirDropRequest(NVS.HttpRequestDetails IncomeData)
         {
+            AirDrop işlemi ayrı bir class içine 
+            alınacak burada yapılan istekler
+            class' ile kontrol edilecek
+
+
             if (NVG.Settings.Network == Variable.Enum.NetworkType.MainNet)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()

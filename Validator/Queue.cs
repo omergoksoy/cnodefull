@@ -51,6 +51,7 @@ namespace Notus.Validator
             ulong totalQueuePeriod = NVD.Calculate();
             ulong nextValidatorNodeTime = ND.AddMiliseconds(currentNodeStartingTime, totalQueuePeriod);
 
+            // distrubute-node-control
 
             // sonraki node'a doğrudan gönder,
             // 2 sonraki node task ile gönderebilirsin.
