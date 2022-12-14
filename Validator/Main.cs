@@ -529,9 +529,16 @@ namespace Notus.Validator
             );
 
             Obj_Integrity = new Notus.Block.Integrity();
-            var controlStatus=Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with onther node
-            Console.Write("controlStatus : ");
-            Console.WriteLine(controlStatus);
+            bool controlStatus=Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with another node
+            if (controlStatus == true)
+            {
+                Console.WriteLine("Obj_Integrity.ControlGenesisBlock : TRUE");
+            }
+            else
+            {
+                Console.WriteLine("Obj_Integrity.ControlGenesisBlock : FALSE");
+            }
+
             Obj_Integrity.GetLastBlock();        // get last block from current node
 
             if (NVG.Settings.Genesis == null)
