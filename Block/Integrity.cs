@@ -57,17 +57,27 @@ namespace Notus.Block
             return null;
         }
 
+        // burası merkezi kontrol noktası
         private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity()
         {
-            BinaryReader bloğu sil ve dene
-                sonra da
-            bi kaç bloğun prev değerlerini boz ve dene
+            (NVE.BlockIntegrityStatus tmpStatus, NVClass.BlockData? tmpLastBlock) = ControlBlockIntegrity_FastCheck();
 
+            if (tmpStatus == NVE.BlockIntegrityStatus.Valid)
+                return (tmpStatus, tmpLastBlock);
+
+            if (tmpStatus == NVE.BlockIntegrityStatus.GenesisNeed)
+                return (tmpStatus, null);
+
+            return ControlBlockIntegrity_FullCheck();
+        }
+
+        // burası hızlı kontrol yapılan bölüm, eğer hata oluşursa tam kontrol bölümüne girecek
+        private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity_FastCheck()
+        {
             string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
             Notus.Wallet.Fee.ClearFeeData(NVG.Settings.Network, NVG.Settings.Layer);
             if (ZipFileList.Length == 0)
             {
-                NP.Success(NVG.Settings, "Genesis Block Needs");
                 return (NVE.BlockIntegrityStatus.GenesisNeed, null);
             }
             long biggestBlockRownNo = 0;
@@ -160,73 +170,38 @@ namespace Notus.Block
                 File.Delete(deleteZipFile[count]);
             }
 
-            //Console.WriteLine("biggestBlockRownNo : " + biggestBlockRownNo.ToString());
+            
             if (CurrentBlockOrder.ContainsKey(1) == false)
+                return (NVE.BlockIntegrityStatus.GenesisNeed, null);
+
+            using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
             {
-                Console.WriteLine("Genesis Block Does Not Exist");
-                NP.ReadLine();
-            }
-            else
-            {
-                using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
+                NVClass.BlockData? genesisBlock = BS_Storage.ReadBlock(CurrentBlockOrder[1].Uid);
+                if (genesisBlock == null)
                 {
-                    NVClass.BlockData? genesisBlock = BS_Storage.ReadBlock(CurrentBlockOrder[1].Uid);
-                    if (genesisBlock == null)
-                    {
-                        return (NVE.BlockIntegrityStatus.GenesisNeed, null);
-                    }
-                    NVG.Settings.Genesis = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(
-                        System.Convert.FromBase64String(
-                            genesisBlock.cipher.data
-                        )
-                    );
+                    return (NVE.BlockIntegrityStatus.GenesisNeed, null);
                 }
-                Notus.Wallet.Fee.StoreFeeData("genesis_block", JsonSerializer.Serialize(NVG.Settings.Genesis), NVG.Settings.Network, NVG.Settings.Layer, true);
-                NVG.Settings.BlockOrder.Add(1, CurrentBlockOrder[1].Uid);
+                NVG.Settings.Genesis = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(
+                    System.Convert.FromBase64String(
+                        genesisBlock.cipher.data
+                    )
+                );
             }
+            Notus.Wallet.Fee.StoreFeeData("genesis_block", JsonSerializer.Serialize(NVG.Settings.Genesis), NVG.Settings.Network, NVG.Settings.Layer, true);
+            NVG.Settings.BlockOrder.Add(1, CurrentBlockOrder[1].Uid);
 
             for (int currentRowNo = 2; currentRowNo < (biggestBlockRownNo + 1); currentRowNo++)
             {
-                bool missingBlock = false;
                 if (CurrentBlockOrder.ContainsKey(currentRowNo) == false)
-                {
-                    missingBlock = true;
-                }
-                else
-                {
-                    NVG.Settings.BlockOrder.Add(currentRowNo, CurrentBlockOrder[currentRowNo].Uid);
-                    int prevRowNo = currentRowNo - 1;
-                    string prevBlockUid = CurrentBlockOrder[prevRowNo].Uid + CurrentBlockOrder[prevRowNo].Sign;
-                    if (string.Equals(CurrentBlockOrder[currentRowNo].Prev, prevBlockUid) == false)
-                    {
-                        Console.WriteLine("CurrentBlockOrder[currentRowNo].Uid");
-                        Console.WriteLine(CurrentBlockOrder[currentRowNo].Uid);
-                        Console.WriteLine(CurrentBlockOrder[currentRowNo].Prev);
-                        Console.WriteLine(CurrentBlockOrder[currentRowNo].Sign);
-                        Console.WriteLine("------------------------------------");
-                        Console.WriteLine("");
-                        Console.WriteLine("CurrentBlockOrder[prevRowNo].Uid");
-                        Console.WriteLine(CurrentBlockOrder[prevRowNo].Uid);
-                        Console.WriteLine(CurrentBlockOrder[prevRowNo].Prev);
-                        Console.WriteLine(CurrentBlockOrder[prevRowNo].Sign);
-                        Console.WriteLine("------------------------------------");
-                        Console.WriteLine(biggestBlockRownNo.ToString() + " => " + currentRowNo.ToString() + " - " + (currentRowNo + 1).ToString());
-                        NP.ReadLine();
-                    }
-                    /*
-                    if (currentRowNo == biggestBlockRownNo)
-                    {
-                        Console.WriteLine("------------------------------------");
-                        Console.WriteLine("Son Blok");
-                        NP.ReadLine();
-                    }
-                    */
-                }
-                if (missingBlock == true)
-                {
-                    Console.WriteLine("Missing Block Row No : " + currentRowNo.ToString());
-                    NP.ReadLine();
-                }
+                    return (NVE.BlockIntegrityStatus.CheckAgain, null);
+
+                int prevRowNo = currentRowNo - 1;
+                string prevBlockUid = CurrentBlockOrder[prevRowNo].Uid + CurrentBlockOrder[prevRowNo].Sign;
+
+                if (string.Equals(CurrentBlockOrder[currentRowNo].Prev, prevBlockUid) == false)
+                    return (NVE.BlockIntegrityStatus.CheckAgain, null);
+
+                NVG.Settings.BlockOrder.Add(currentRowNo, CurrentBlockOrder[currentRowNo].Uid);
             }
 
             using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
@@ -234,10 +209,11 @@ namespace Notus.Block
                 return (NVE.BlockIntegrityStatus.Valid, BS_Storage.ReadBlock(CurrentBlockOrder[biggestBlockRownNo].Uid));
             }
 
-            return (NVE.BlockIntegrityStatus.UndefinedError, null);
+            return (NVE.BlockIntegrityStatus.CheckAgain, null);
         }
 
-        private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity_SlowOne()
+        // tam kontrolün yapıldığı bölüm
+        private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity_FullCheck()
         {
             try
             {
