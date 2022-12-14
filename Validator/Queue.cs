@@ -1415,7 +1415,9 @@ namespace Notus.Validator
                                     testResult.peerId + " -> " + testResult.tryCount.ToString()
 
                                 );
-                                DistributeErrorList.Enqueue(testResult);
+                                if (testResult.tryCount < 20) { 
+                                    DistributeErrorList.Enqueue(testResult);
+                                }
                             }
                         }
                         else
