@@ -7,11 +7,12 @@ using System.Numerics;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
+using NVC = Notus.Variable.Constant;
+using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
-using NVE = Notus.Variable.Enum;
-using NGF = Notus.Variable.Globals.Functions;
 namespace Notus.Coin
 {
     public class AirDrop : IDisposable
@@ -31,12 +32,12 @@ namespace Notus.Coin
                 });
             }
 
-            string airdropStr = "2000000000";
-            if (Notus.Variable.Constant.AirDropVolume.ContainsKey(NVG.Settings.Layer))
+            string airdropStr = NVC.AirDropVolume_Default;
+            if (NVC.AirDropVolume.ContainsKey(NVG.Settings.Layer))
             {
-                if (Notus.Variable.Constant.AirDropVolume[NVG.Settings.Layer].ContainsKey(NVG.Settings.Network))
+                if (NVC.AirDropVolume[NVG.Settings.Layer].ContainsKey(NVG.Settings.Network))
                 {
-                    airdropStr = Notus.Variable.Constant.AirDropVolume[NVG.Settings.Layer][NVG.Settings.Network];
+                    airdropStr = NVC.AirDropVolume[NVG.Settings.Layer][NVG.Settings.Network];
                 }
             }
 
@@ -93,7 +94,7 @@ namespace Notus.Coin
 
             NVS.WalletBalanceStruct tmpBalanceBefore = NGF.Balance.Get(ReceiverWalletKey, 0);
             NVS.WalletBalanceStruct tmpBalanceAfter = NGF.Balance.Get(ReceiverWalletKey, 0);
-            //Console.WriteLine(JsonSerializer.Serialize(tmpBalanceAfter, Notus.Variable.Constant.JsonSetting));
+            //Console.WriteLine(JsonSerializer.Serialize(tmpBalanceAfter, NVC.JsonSetting));
 
             ulong tmpCoinKeyVal = NVG.NOW.Int;
             if (tmpBalanceAfter.Balance[tmpCoinCurrency].ContainsKey(tmpCoinKeyVal) == false)
@@ -107,11 +108,11 @@ namespace Notus.Coin
                     BigInteger.Parse(airdropStr);
                 tmpBalanceAfter.Balance[tmpCoinCurrency][tmpCoinKeyVal] = tmpResult.ToString();
             }
-            //Console.WriteLine(JsonSerializer.Serialize(tmpBalanceAfter, Notus.Variable.Constant.JsonSetting));
+            //Console.WriteLine(JsonSerializer.Serialize(tmpBalanceAfter, NVC.JsonSetting));
 
             string tmpChunkIdKey = NGF.GenerateTxUid();
 
-            Notus.Variable.Class.BlockStruct_125 airDrop = new Variable.Class.BlockStruct_125()
+            Notus.Variable.Class.BlockStruct_125 airDrop = new Notus.Variable.Class.BlockStruct_125()
             {
                 In = new Dictionary<string, NVS.WalletBalanceStruct>(),
                 Out = new Dictionary<string, Dictionary<string, Dictionary<ulong, string>>>(),
@@ -151,15 +152,10 @@ namespace Notus.Coin
         {
             ObjMp_AirdropLimit = new Notus.Mempool(
                 Notus.IO.GetFolderName(
-                    NVG.Settings, Notus.Variable.Constant.StorageFolderName.Pool
+                    NVG.Settings, NVC.StorageFolderName.Pool
                 ) + "airdrop_request");
 
             ObjMp_AirdropLimit.AsyncActive = false;
-        }
-
-        public Notus.Variable.Struct.WalletBalanceStruct? Get(string WalletId)
-        {
-            return null;
         }
         ~AirDrop()
         {

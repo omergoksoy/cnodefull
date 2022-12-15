@@ -80,6 +80,9 @@ namespace Notus.Variable
         private static readonly int DefaultPortNo = 5000;
         public static readonly int DefaultChunkSize = 2048;
 
+        // hiç bir tanımlamanın olmadığı yerde kullanılacak olan airdrop miktarı
+        public static readonly string AirDropVolume_Default ="2000000000";
+
         public static readonly Dictionary<NetworkLayer, Dictionary<NetworkType, string>> AirDropVolume =
             new Dictionary<NetworkLayer, Dictionary<NetworkType, string>>()
         {
