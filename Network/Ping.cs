@@ -6,9 +6,9 @@ using System.Linq;
 using System.Numerics;
 using System.Text.Json;
 using NTN = Notus.Toolbox.Network;
+using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
-using NVC = Notus.Variable.Constant;
 
 namespace Notus.Network
 {
@@ -55,7 +55,9 @@ namespace Notus.Network
 
                         for (int count = 0; count < removeList.Count; count++)
                         {
-                            NVG.NodeList.TryRemove(removeList[count], out _);
+                            bool removed = NVG.NodeList.TryRemove(removeList[count], out _);
+                            Console.WriteLine(removed);
+                            Console.WriteLine(removed);
                             ErrorCount.TryRemove(removeList[count], out _);
                         }
                     }
