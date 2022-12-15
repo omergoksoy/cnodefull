@@ -783,6 +783,7 @@ namespace Notus.Validator
                         );
                     }
                 }
+                ValidatorQueueObj.StartingPing();
             }
 
             while (

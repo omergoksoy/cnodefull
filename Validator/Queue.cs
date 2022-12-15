@@ -21,6 +21,7 @@ namespace Notus.Validator
     public class Queue : IDisposable
     {
         private Notus.Threads.Timer DistributeTimerObj = new Notus.Threads.Timer();
+        private Notus.Network.Ping PingObj = new();
         private bool DistributeTimerIsRunning = false;
         private ConcurrentQueue<NVS.BlockDistributeListStruct> DistributeErrorList = new();
 
@@ -1109,6 +1110,7 @@ namespace Notus.Validator
                         );
                     }
                     NVG.Settings.PeerManager.StartAllPeers();
+                    StartingPing();
                 }
                 else
                 {
@@ -1130,6 +1132,11 @@ namespace Notus.Validator
                     NP.ReadLine();
                 }
             }
+        }
+        public void StartingPing()
+        {
+            NP.Success("Ping Started");
+            PingObj.Start();
         }
         public string NewNodeJoinToGroup(ulong biggestSyncNo)
         {
@@ -1447,6 +1454,14 @@ namespace Notus.Validator
                 try
                 {
                     DistributeTimerObj.Dispose();
+                }
+                catch { }
+            }
+            if (PingObj != null)
+            {
+                try
+                {
+                    PingObj.Dispose();
                 }
                 catch { }
             }
