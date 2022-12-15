@@ -8,6 +8,7 @@ using System.Text.Json;
 using NTN = Notus.Toolbox.Network;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
+using NVC = Notus.Variable.Constant;
 
 namespace Notus.Network
 {
@@ -26,11 +27,6 @@ namespace Notus.Network
                     KeyValuePair<string, NVS.NodeQueueInfo>[]? nList = NVG.NodeList.ToArray();
                     if (nList != null)
                     {
-                        /*
-                        ping cevabı almadığında offline olarak işaretleniyor
-                        ancak diziden silinmediği için
-                        blok oluşturmaya devam ediyor.
-                        */
                         List<string> removeList = new();
                         for (int count = 0; count < nList.Length; count++)
                         {
@@ -42,7 +38,7 @@ namespace Notus.Network
                                     if (ErrorCount.ContainsKey(nList[count].Key))
                                     {
                                         ErrorCount[nList[count].Key]++;
-                                        if (ErrorCount[nList[count].Key] > 1)
+                                        if (ErrorCount[nList[count].Key] >= NVC.NodePingErrorLimit)
                                         {
                                             Console.WriteLine("Offline : " + nList[count].Value.IP.IpAddress + ":" + nList[count].Value.IP.Port);
                                             NVG.NodeList[nList[count].Key].Status = NVS.NodeStatus.Offline;
