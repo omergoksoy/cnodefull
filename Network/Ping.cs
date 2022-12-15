@@ -12,7 +12,7 @@ namespace Notus.Network
     public class Ping : IDisposable
     {
         private bool TimerRunning;
-        private Notus.Threads.Timer TimerObj;
+        private Notus.Threads.Timer TimerObj=new();
         public void Start()
         {
             TimerObj.Start(2000, () =>
