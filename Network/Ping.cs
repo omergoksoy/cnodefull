@@ -23,6 +23,10 @@ namespace Notus.Network
                     KeyValuePair<string, NVS.NodeQueueInfo>[]? nList = NVG.NodeList.ToArray();
                     if (nList != null)
                     {
+                        ping cevabı almadığında offline olarak işaretleniyor
+                        ancak diziden silinmediği için
+                        blok oluşturmaya devam ediyor.
+
                         for (int count = 0; count < nList.Length; count++)
                         {
                             if (string.Equals(nList[count].Value.IP.Wallet, NVG.Settings.Nodes.My.IP.Wallet) == false)
