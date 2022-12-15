@@ -195,6 +195,7 @@ namespace Notus.Validator
         {
             NVG.NodeList[nodeHexKey].Status = NVS.NodeStatus.Offline;
             NGF.ValidatorList[nodeHexKey].Status = NVS.NodeStatus.Offline;
+            NP.Danger("Lost Connection With " + nList[count].Value.IP.IpAddress + ":" + nList[count].Value.IP.Port);
         }
         public static void RemoveFromValidatorList(string nodeHexKey)
         {

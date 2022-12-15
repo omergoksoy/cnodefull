@@ -6,6 +6,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text.Json;
 using NTN = Notus.Toolbox.Network;
+using NVH = Notus.Validator.Helper;
 using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
@@ -41,8 +42,7 @@ namespace Notus.Network
                                         ErrorCount[nList[count].Key]++;
                                         if (ErrorCount[nList[count].Key] >= NVC.NodePingErrorLimit)
                                         {
-                                            NP.Danger("Lost Connection With " + nList[count].Value.IP.IpAddress + ":" + nList[count].Value.IP.Port);
-                                            NVG.NodeList[nList[count].Key].Status = NVS.NodeStatus.Offline;
+                                            NVH.SetNodeOffline(nList[count].Key);
                                             removeList.Add(nList[count].Key);
                                         }
                                     }
@@ -56,10 +56,8 @@ namespace Notus.Network
 
                         for (int count = 0; count < removeList.Count; count++)
                         {
-                            if (NVG.NodeList.TryRemove(removeList[count], out _) == true)
-                            {
-                                ErrorCount.TryRemove(removeList[count], out _);
-                            }
+                            NVH.RemoveFromValidatorList(removeList[count]);
+                            ErrorCount.TryRemove(removeList[count], out _);
                         }
                     }
                     TimerRunning = false;

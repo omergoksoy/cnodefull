@@ -816,7 +816,6 @@ namespace Notus.Validator
                         NP.Warning("Closing The Node Because There Are Not Enough Nodes");
                         NGF.CloseMyNode();
                     }
-
                     if (prepareNextQueue == false)
                     {
                         prepareNextQueue = true;
