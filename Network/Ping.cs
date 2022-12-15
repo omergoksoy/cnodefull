@@ -9,6 +9,7 @@ using NTN = Notus.Toolbox.Network;
 using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
+using NP = Notus.Print;
 
 namespace Notus.Network
 {
@@ -40,7 +41,7 @@ namespace Notus.Network
                                         ErrorCount[nList[count].Key]++;
                                         if (ErrorCount[nList[count].Key] >= NVC.NodePingErrorLimit)
                                         {
-                                            Console.WriteLine("Offline : " + nList[count].Value.IP.IpAddress + ":" + nList[count].Value.IP.Port);
+                                            NP.Danger("Lost Connection With " + nList[count].Value.IP.IpAddress + ":" + nList[count].Value.IP.Port);
                                             NVG.NodeList[nList[count].Key].Status = NVS.NodeStatus.Offline;
                                             removeList.Add(nList[count].Key);
                                         }
@@ -55,10 +56,10 @@ namespace Notus.Network
 
                         for (int count = 0; count < removeList.Count; count++)
                         {
-                            bool removed = NVG.NodeList.TryRemove(removeList[count], out _);
-                            Console.WriteLine(removed);
-                            Console.WriteLine(removed);
-                            ErrorCount.TryRemove(removeList[count], out _);
+                            if (NVG.NodeList.TryRemove(removeList[count], out _) == true)
+                            {
+                                ErrorCount.TryRemove(removeList[count], out _);
+                            }
                         }
                     }
                     TimerRunning = false;
