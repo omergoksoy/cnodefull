@@ -15,6 +15,7 @@ using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
+using NTN = Notus.Toolbox.Network;
 namespace Notus.Validator
 {
     public class Queue : IDisposable
@@ -141,7 +142,7 @@ namespace Notus.Validator
                 {
                     if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
-                        if (Notus.Toolbox.Network.PingToNode(iE.Value) == NVS.NodeStatus.Online)
+                        if (NTN.PingToNode(iE.Value) == NVS.NodeStatus.Online)
                         {
                             NGF.ValidatorList[iE.Key].Status = NVS.NodeStatus.Online;
                             exitInnerWhile = true;
@@ -163,7 +164,7 @@ namespace Notus.Validator
             {
                 if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
                 {
-                    if (Notus.Toolbox.Network.PingToNode(iE.Value) == NVS.NodeStatus.Online)
+                    if (NTN.PingToNode(iE.Value) == NVS.NodeStatus.Online)
                     {
                         NGF.ValidatorList[iE.Key].Status = NVS.NodeStatus.Online;
                     }
@@ -253,7 +254,7 @@ namespace Notus.Validator
                     return "fncResult-port-zero";
                 }
                 Variable.Class.BlockData? tmpBlockData =
-                    Notus.Toolbox.Network.GetBlockFromNode(tmpIpAddress, tmpPortNo, tmpBlockNo, NVG.Settings);
+                    NTN.GetBlockFromNode(tmpIpAddress, tmpPortNo, tmpBlockNo, NVG.Settings);
                 if (tmpBlockData == null)
                 {
                     NVG.Settings.WaitForGeneratedBlock = false;
@@ -989,7 +990,7 @@ namespace Notus.Validator
                             {
                                 if (string.Equals(iE.Value.IP.Wallet, NVG.Settings.Nodes.My.IP.Wallet) == false)
                                 {
-                                    NVClass.BlockData? tmpBlockData = Notus.Toolbox.Network.GetLastBlock(
+                                    NVClass.BlockData? tmpBlockData = NTN.GetLastBlock(
                                         Notus.Network.Node.MakeHttpListenerPath(
                                             iE.Value.IP.IpAddress,
                                             iE.Value.IP.Port
@@ -1333,7 +1334,7 @@ namespace Notus.Validator
                     {
                         if (NVG.NodeList.ContainsKey(tmpMainList[i].Key))
                         {
-                            string tmpNodeHex = Notus.Toolbox.Network.IpAndPortToHex(tmpMainList[i].Value);
+                            string tmpNodeHex = NTN.IpAndPortToHex(tmpMainList[i].Value);
                             if (NVG.NodeList.ContainsKey(tmpNodeHex))
                             {
                                 if (NVG.NodeList[tmpNodeHex].Begin > 0)
