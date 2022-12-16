@@ -2,10 +2,6 @@
 
 2- cüzdan bakiyeleri için bir memory sınıfı oluşturulmalı ve tüm bakiyeler hafızada bu değişkende tutulmalı
 
-3- bir node kapatılıp açıldığında mutlaka senkronizasyon da yapılmalı
-
-4- node sayısı gerekli miktarın altına düşünce, çalışmaya devam etmesin
-
 5- yapılan işlemlerin listesi bir veri tabanı listesinde olsun
 
 6- 
@@ -17,3 +13,10 @@
 9-
 
 10-
+
+
+YAPILDI
+
+3- bir node kapatılıp açıldığında mutlaka senkronizasyon da yapılmalı
+
+4- node sayısı gerekli miktarın altına düşünce, çalışmaya devam etmesin
