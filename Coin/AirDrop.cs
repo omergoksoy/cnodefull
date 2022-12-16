@@ -158,6 +158,17 @@ namespace Notus.Coin
 
         public AirDrop()
         {
+            her node bloğu işlerken gelen airdrop isteklerini kendi
+            key-value DB'sine yazsın
+            çünkü farklı nodelar üzerinden de istek yaparak günlük limit aşılabiliyor
+
+            airdrop listesi tutulurken 
+            işlem id'si ve her id'nin zaman bilgiside tutulsun
+            
+            birde hala prof of randomness devam ediyor
+            bu duruma bir önlem alınmalı
+
+
             ObjMp_AirdropLimit = new Notus.Mempool(
                 Notus.IO.GetFolderName(
                     NVG.Settings, NVC.StorageFolderName.Pool

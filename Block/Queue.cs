@@ -69,14 +69,10 @@ namespace Notus.Block
         //bu fonksiyon ile işlem yapılacak aynı türden bloklar sırası ile listeden çekilip geri gönderilecek
         public Notus.Variable.Struct.PoolBlockRecordStruct? Get(
             ulong WaitingForPool
-            //, 
-            //DateTime BlockGenerationTime
         )
         {
             if (Queue_PoolTransaction.Count == 0)
             {
-                //Console.WriteLine("sifir");
-                //PoolIdList.Clear();
                 return null;
             }
 
@@ -84,11 +80,9 @@ namespace Notus.Block
             if (diffBetween > 10)
             {
                 CheckPoolDb = true;
-                //Console.WriteLine("CheckPoolDb = true;");
             }
             else
             {
-                //Console.WriteLine("CheckPoolDb = false;");
                 if (MP_BlockPoolList.Count() < 10)
                 {
                     CheckPoolDb = true;
