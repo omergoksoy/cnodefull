@@ -42,8 +42,16 @@ namespace Notus.Coin
             }
 
             string ReceiverWalletKey = IncomeData.UrlList[1];
-            string controlStr = ObjMp_AirdropLimit.Get(ReceiverWalletKey, "");
-            int.TryParse(controlStr, out int requestCount);
+            int requestCount = 0;
+            string controlStr = ObjMp_AirdropLimit.Get(ReceiverWalletKey, "0");
+            if (controlStr.Length > 0)
+            {
+                if(int.TryParse(controlStr, out int tmpRequestCount))
+                {
+                    requestCount = tmpRequestCount;
+                }
+            }
+
             if (requestCount > 1)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
@@ -56,7 +64,7 @@ namespace Notus.Coin
             }
 
             requestCount++;
-            ObjMp_AirdropLimit.Set(ReceiverWalletKey, requestCount.ToString(), 4320, true);
+            ObjMp_AirdropLimit.Set(ReceiverWalletKey, requestCount, 4320, true);
 
             string tmpCoinCurrency = NVG.Settings.Genesis.CoinInfo.Tag;
             if (NGF.Balance.AccountIsLock(ReceiverWalletKey) == true)
@@ -94,7 +102,6 @@ namespace Notus.Coin
 
             NVS.WalletBalanceStruct tmpBalanceBefore = NGF.Balance.Get(ReceiverWalletKey, 0);
             NVS.WalletBalanceStruct tmpBalanceAfter = NGF.Balance.Get(ReceiverWalletKey, 0);
-            //Console.WriteLine(JsonSerializer.Serialize(tmpBalanceAfter, NVC.JsonSetting));
 
             ulong tmpCoinKeyVal = NVG.NOW.Int;
             if (tmpBalanceAfter.Balance[tmpCoinCurrency].ContainsKey(tmpCoinKeyVal) == false)
@@ -108,7 +115,6 @@ namespace Notus.Coin
                     BigInteger.Parse(airdropStr);
                 tmpBalanceAfter.Balance[tmpCoinCurrency][tmpCoinKeyVal] = tmpResult.ToString();
             }
-            //Console.WriteLine(JsonSerializer.Serialize(tmpBalanceAfter, NVC.JsonSetting));
 
             string tmpChunkIdKey = NGF.GenerateTxUid();
 
@@ -148,6 +154,7 @@ namespace Notus.Coin
                 Result = NVE.BlockStatusCode.Unknown
             });
         }
+
         public AirDrop()
         {
             ObjMp_AirdropLimit = new Notus.Mempool(
@@ -157,6 +164,7 @@ namespace Notus.Coin
 
             ObjMp_AirdropLimit.AsyncActive = false;
         }
+
         ~AirDrop()
         {
             Dispose();

@@ -364,6 +364,18 @@ namespace Notus
                 }
             }
         }
+        public void Set(string KeyName, int intNumber, int Expire, bool AddIfDoesntExist = false)
+        {
+            Set(KeyName, intNumber.ToString(), Expire, AddIfDoesntExist);
+        }
+        public void Set(string KeyName, long longNumber, int Expire, bool AddIfDoesntExist = false)
+        {
+            Set(KeyName, longNumber.ToString(), Expire, AddIfDoesntExist);
+        }
+        public void Set(string KeyName, ulong ulongNumber, int Expire, bool AddIfDoesntExist = false)
+        {
+            Set(KeyName, ulongNumber.ToString(), Expire, AddIfDoesntExist);
+        }
         public void Set(string KeyName, string Data, int Expire, bool AddIfDoesntExist = false)
         {
             if (Obj_DataList.ContainsKey(KeyName))
