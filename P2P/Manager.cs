@@ -122,7 +122,7 @@ namespace Notus.P2P
 
         public void RemoveAll()
         {
-            NP.Basic("All P2P Connection Cleared");
+            NP.Info("All P2P Connection Is Closing");
             List<string> tmpRemoveList = new();
             foreach (var item in this.Peers)
             {
@@ -131,15 +131,19 @@ namespace Notus.P2P
             }
             for (int i = 0; i < tmpRemoveList.Count; i++)
             {
-                this.RemovePeer(tmpRemoveList[i]);
+                this.RemovePeer(tmpRemoveList[i], false);
             }
+            NP.Success("All P2P Connection Cleared");
         }
-        public void RemovePeer(string peerId)
+        public void RemovePeer(string peerId, bool showMoreDetails = true)
         {
             if (this.Peers.ContainsKey(peerId))
             {
                 this.Peers.TryRemove(peerId, out _);
-                NP.Warning("P2P Connection Closed ->" + peerId.Substring(0, 7) + "..." + peerId.Substring(peerId.Length - 7));
+                if (showMoreDetails == true)
+                {
+                    NP.Warning("P2P Connection Closed ->" + peerId.Substring(0, 7) + "..." + peerId.Substring(peerId.Length - 7));
+                }
             }
         }
 
