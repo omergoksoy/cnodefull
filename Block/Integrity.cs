@@ -63,11 +63,18 @@ namespace Notus.Block
             (NVE.BlockIntegrityStatus tmpStatus, NVClass.BlockData? tmpLastBlock) = ControlBlockIntegrity_FastCheck();
 
             if (tmpStatus == NVE.BlockIntegrityStatus.Valid)
+            {
+                NP.Info("All Blocks Checked With Quick Method");
                 return (tmpStatus, tmpLastBlock);
+            }
 
             if (tmpStatus == NVE.BlockIntegrityStatus.GenesisNeed)
+            {
+                NP.Info("All Blocks Checked With Quick Method");
                 return (tmpStatus, null);
+            }
 
+            NP.Info("All Blocks Checked With Full Method");
             return ControlBlockIntegrity_FullCheck();
         }
 
@@ -881,15 +888,6 @@ namespace Notus.Block
         public void GetLastBlock()
         {
             DateTime baslangic = DateTime.Now;
-            //ControlBlockIntegrity_FastTry();
-            // yaklaşık 8 saniye sürüyor
-            //Console.WriteLine("ControlBlockIntegrity_FastTry");
-            //Console.WriteLine(DateTime.Now - baslangic);
-
-
-            // aşağıdaki işlem ise 1 dakika 5 saniye sürüyor...
-            // aşağıdaki işlem ise 1 dakika 5 saniye sürüyor...
-            // aşağıdaki işlem ise 1 dakika 5 saniye sürüyor...
 
             NVE.BlockIntegrityStatus Val_Status = NVE.BlockIntegrityStatus.CheckAgain;
             NVClass.BlockData LastBlock = new NVClass.BlockData();
@@ -909,10 +907,6 @@ namespace Notus.Block
                     exitInnerLoop = true;
                 }
             }
-
-            //Console.WriteLine("ControlBlockIntegrity");
-            //Console.WriteLine(DateTime.Now - baslangic);
-            //NP.ReadLine();
 
             if (Val_Status == NVE.BlockIntegrityStatus.GenesisNeed)
             {

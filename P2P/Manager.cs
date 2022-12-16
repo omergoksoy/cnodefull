@@ -123,9 +123,15 @@ namespace Notus.P2P
         public void RemoveAll()
         {
             NP.Basic("All P2P Connection Cleared");
+            List<string> tmpRemoveList = new();
             foreach (var item in this.Peers)
             {
-                this.RemovePeer(item.Key);
+                tmpRemoveList.Add(item.Key);
+
+            }
+            for (int i = 0; i < tmpRemoveList.Count; i++)
+            {
+                this.RemovePeer(tmpRemoveList[i]);
             }
         }
         public void RemovePeer(string peerId)
