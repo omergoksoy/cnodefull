@@ -135,6 +135,7 @@ namespace Notus.Coin
             });
             if (tmpAddResult == true)
             {
+                //burada transactionları belleğe alıyor böyle hızlı ulaşım sağlanıyor...
                 NVG.Cache.Transaction.Add(tmpChunkIdKey, NVE.BlockStatusCode.AddedToQueue);
 
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
