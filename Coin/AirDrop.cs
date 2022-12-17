@@ -39,6 +39,7 @@ namespace Notus.Coin
             }
 
             string ReceiverWalletKey = IncomeData.UrlList[1];
+            Console.WriteLine("AirDrop ReceiverWalletKey : " + ReceiverWalletKey);
             List<string> innerRequestList = LoadFromDb(ReceiverWalletKey);
 
             for (int count = 0; count < innerRequestList.Count; count++)

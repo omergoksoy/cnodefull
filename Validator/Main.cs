@@ -474,7 +474,7 @@ namespace Notus.Validator
                 );
             }
             //fast-empty-block-generation
-            howManySeconds = 15;
+            //howManySeconds = 15;
             ulong earliestTime = ND.ToLong(ND.ToDateTime(NVG.Settings.LastBlock.info.time).AddSeconds(howManySeconds));
             bool executeEmptyBlock = false;
             if (NVG.NOW.Int > earliestTime)
@@ -529,7 +529,7 @@ namespace Notus.Validator
             );
 
             Obj_Integrity = new Notus.Block.Integrity();
-            bool controlStatus=Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with another node
+            bool controlStatus = Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with another node
             if (controlStatus == true)
             {
                 // eğer diğer node'lardan Genesis alındı ise TRUE
@@ -893,7 +893,7 @@ namespace Notus.Validator
                                         emptyBlockChecked = true;
                                     } // if (emptyBlockChecked == false)
 
-                                    NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
+                                    (List<string>? poolList, NVS.PoolBlockRecordStruct? TmpBlockStruct) = NGF.BlockQueue.Get(
                                         ND.AddMiliseconds(CurrentQueueTime, NVC.BlockListeningForPoolTime)
                                     );
                                     if (TmpBlockStruct != null)
@@ -912,8 +912,15 @@ namespace Notus.Validator
                                                     PreBlockData.info.type,
                                                     CurrentQueueTime
                                                 );
+                                                NGF.BlockQueue.RemovePoolIdList(poolList);
                                             }
-
+                                            else
+                                            {
+                                                if (PreBlockData.info.type != 300)
+                                                {
+                                                    NGF.BlockQueue.ReloadPoolList(poolList);
+                                                }
+                                            }
                                             NGF.WalletUsageList.Clear();
                                         } // if (PreBlockData != null)
                                         else
@@ -1107,7 +1114,7 @@ namespace Notus.Validator
                             if (blockSource == 2)
                             {
                                 NP.Warning("That block came from validator and wrong block");
-                                NP.PrintQueue(true,"Main.cs -> Line 1099");
+                                NP.PrintQueue(true, "Main.cs -> Line 1099");
                             }
                             if (blockSource == 4)
                             {

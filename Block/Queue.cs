@@ -6,8 +6,8 @@ using System.IO;
 using System.Numerics;
 using System.Text.Json;
 using NGF = Notus.Variable.Globals.Functions;
-using NVG = Notus.Variable.Globals;
 using NP = Notus.Print;
+using NVG = Notus.Variable.Globals;
 
 namespace Notus.Block
 {
@@ -67,13 +67,13 @@ namespace Notus.Block
 
 
         //bu fonksiyon ile işlem yapılacak aynı türden bloklar sırası ile listeden çekilip geri gönderilecek
-        public Notus.Variable.Struct.PoolBlockRecordStruct? Get(
+        public (List<string>?, Notus.Variable.Struct.PoolBlockRecordStruct?) Get(
             ulong WaitingForPool
         )
         {
             if (Queue_PoolTransaction.Count == 0)
             {
-                return null;
+                return (null, null);
             }
 
             int diffBetween = System.Convert.ToInt32(MP_BlockPoolList.Count() / Queue_PoolTransaction.Count);
@@ -239,7 +239,7 @@ namespace Notus.Block
             }
             if (TempPoolTransactionList.Count == 0)
             {
-                return null;
+                return (null, null);
             }
 
             Notus.Variable.Class.BlockData BlockStruct = Notus.Variable.Class.Block.GetEmpty();
@@ -522,22 +522,21 @@ namespace Notus.Block
                 )
             );
 
-            //burası pooldaki kayıtların fazla birikmesi ve para transferi işlemlerinin key'lerinin örtüşmemesinden
-            //dolayı eklendi
+            List<string> removeRoolList = new();
             for (int i = 0; i < TempPoolTransactionList.Count; i++)
             {
-                //Console.WriteLine("Control-Point-a001");
-                //Console.WriteLine("Remove Key : " + TempPoolTransactionList[i].key);
-                MP_BlockPoolList.Remove(TempPoolTransactionList[i].key,true);
-                PoolIdList.TryRemove(TempPoolTransactionList[i].key, out _);
+                removeRoolList.Add(TempPoolTransactionList[i].key);
             }
-
-            return
+            //burası pooldaki kayıtların fazla birikmesi ve para transferi işlemlerinin key'lerinin örtüşmemesinden
+            //dolayı eklendi
+            return (
+                removeRoolList,
                 new Notus.Variable.Struct.PoolBlockRecordStruct()
                 {
                     type = CurrentBlockType,
                     data = JsonSerializer.Serialize(BlockStruct)
-                };
+                }
+            );
         }
 
 
@@ -573,6 +572,31 @@ namespace Notus.Block
             }
         }
         */
+
+        public void ReloadPoolList(List<string>? poolList)
+        {
+            if (poolList == null)
+                return;
+
+            if (poolList.Count == 0)
+                return;
+
+            LoadFromPoolDb();
+        }
+
+        public void RemovePoolIdList(List<string>? poolList)
+        {
+            if (poolList != null)
+            {
+                for (int i = 0; i < poolList.Count; i++)
+                {
+                    // Console.WriteLine("Control-Point-a001");
+                    // Console.WriteLine("Remove Key : " + poolList[i]);
+                    MP_BlockPoolList.Remove(poolList[i], true);
+                    PoolIdList.TryRemove(poolList[i], out _);
+                }
+            }
+        }
 
         public Notus.Variable.Class.BlockData? ReadFromChain(string BlockId)
         {
@@ -621,7 +645,7 @@ namespace Notus.Block
             }
             //Console.WriteLine("Control-Point-a055");
             //Console.WriteLine("Remove Key From Pool : " + RemoveKeyStr);
-            MP_BlockPoolList.Remove(RemoveKeyStr,true);
+            MP_BlockPoolList.Remove(RemoveKeyStr, true);
         }
 
         public void Reset()
@@ -631,7 +655,7 @@ namespace Notus.Block
             Queue_PoolTransaction.Clear();
             Obj_PoolTransactionList.Clear();
         }
-        public bool Add(Notus.Variable.Struct.PoolBlockRecordStruct? PreBlockData,bool addedToPoolDb=true)
+        public bool Add(Notus.Variable.Struct.PoolBlockRecordStruct? PreBlockData, bool addedToPoolDb = true)
         {
             if (PreBlockData == null)
             {
@@ -654,6 +678,8 @@ namespace Notus.Block
             {
                 PreBlockData.uid = NGF.GenerateTxUid();
             }
+
+            //Console.WriteLine(PreBlockDataStr);
 
             Add2Queue(PreBlockData, PreBlockData.uid);
             string keyStr = PreBlockData.uid;
@@ -687,7 +713,7 @@ namespace Notus.Block
                 uid = NGF.GenerateTxUid(),
                 type = Notus.Variable.Enum.BlockTypeList.EmptyBlock,
                 data = JsonSerializer.Serialize(NVG.Settings.LastBlock.info.rowNo)
-            },false);
+            }, false);
         }
 
         private void Add2Queue(Notus.Variable.Struct.PoolBlockRecordStruct PreBlockData, string BlockKeyStr)
