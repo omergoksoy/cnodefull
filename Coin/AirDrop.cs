@@ -7,20 +7,26 @@ using System.Numerics;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using NBK = Notus.Block.Key;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
+using NVClass = Notus.Variable.Class;
+using NBD = Notus.Block.Decrypt;
 namespace Notus.Coin
 {
     public class AirDrop : IDisposable
     {
+        private ConcurrentDictionary<string, List<string>> RequestList = new ConcurrentDictionary<string, List<string>>();
+        private readonly string CurrentVersion = "1.0.0.0";
         private Notus.Mempool ObjMp_AirdropLimit;
 
         public string Request(NVS.HttpRequestDetails IncomeData)
         {
+            // mainnet ise hata gönderecek
             if (NVG.Settings.Network == Variable.Enum.NetworkType.MainNet)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
@@ -32,27 +38,19 @@ namespace Notus.Coin
                 });
             }
 
-            string airdropStr = NVC.AirDropVolume_Default;
-            if (NVC.AirDropVolume.ContainsKey(NVG.Settings.Layer))
-            {
-                if (NVC.AirDropVolume[NVG.Settings.Layer].ContainsKey(NVG.Settings.Network))
-                {
-                    airdropStr = NVC.AirDropVolume[NVG.Settings.Layer][NVG.Settings.Network];
-                }
-            }
-
             string ReceiverWalletKey = IncomeData.UrlList[1];
-            int requestCount = 0;
-            string controlStr = ObjMp_AirdropLimit.Get(ReceiverWalletKey, "0");
-            if (controlStr.Length > 0)
+            List<string> innerRequestList = LoadFromDb(ReceiverWalletKey);
+
+            for (int count = 0; count < innerRequestList.Count; count++)
             {
-                if(int.TryParse(controlStr, out int tmpRequestCount))
+                TimeSpan diff = (NVG.NOW.Obj - NBK.BlockIdToTime(innerRequestList[count])).Duration();
+                if (NVC.AirDropTimeLimit > diff.TotalMinutes)
                 {
-                    requestCount = tmpRequestCount;
+                    RequestList[ReceiverWalletKey].Add(innerRequestList[count]);
                 }
             }
 
-            if (requestCount > 1)
+            if (RequestList[ReceiverWalletKey].Count >= NVC.AirDropVolumeCount)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
                 {
@@ -63,10 +61,7 @@ namespace Notus.Coin
                 });
             }
 
-            requestCount++;
-            ObjMp_AirdropLimit.Set(ReceiverWalletKey, requestCount, 4320, true);
-
-            string tmpCoinCurrency = NVG.Settings.Genesis.CoinInfo.Tag;
+            // eğer cüzdan kilitli ise hata gönderecek
             if (NGF.Balance.AccountIsLock(ReceiverWalletKey) == true)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
@@ -77,7 +72,8 @@ namespace Notus.Coin
                     Result = NVE.BlockStatusCode.WalletNotAllowed
                 });
             }
-
+            
+            // eğer cüzdan başka bir işlem tarafından kilitli ise hata gönderecek
             if (NGF.Balance.WalletUsageAvailable(ReceiverWalletKey) == false)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
@@ -89,6 +85,7 @@ namespace Notus.Coin
                 });
             }
 
+            // eğer cüzdanı kilitleyemezse hata gönderecek
             if (NGF.Balance.StartWalletUsage(ReceiverWalletKey) == false)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
@@ -100,9 +97,13 @@ namespace Notus.Coin
                 });
             }
 
+            string tmpCoinCurrency = NVG.Settings.Genesis.CoinInfo.Tag;
+            string tmpChunkIdKey = NGF.GenerateTxUid();
+
             NVS.WalletBalanceStruct tmpBalanceBefore = NGF.Balance.Get(ReceiverWalletKey, 0);
             NVS.WalletBalanceStruct tmpBalanceAfter = NGF.Balance.Get(ReceiverWalletKey, 0);
 
+            string airdropStr = GetAirDropVolume();
             ulong tmpCoinKeyVal = NVG.NOW.Int;
             if (tmpBalanceAfter.Balance[tmpCoinCurrency].ContainsKey(tmpCoinKeyVal) == false)
             {
@@ -116,9 +117,8 @@ namespace Notus.Coin
                 tmpBalanceAfter.Balance[tmpCoinCurrency][tmpCoinKeyVal] = tmpResult.ToString();
             }
 
-            string tmpChunkIdKey = NGF.GenerateTxUid();
 
-            Notus.Variable.Class.BlockStruct_125 airDrop = new Notus.Variable.Class.BlockStruct_125()
+            NVClass.BlockStruct_125 airDrop = new NVClass.BlockStruct_125()
             {
                 In = new Dictionary<string, NVS.WalletBalanceStruct>(),
                 Out = new Dictionary<string, Dictionary<string, Dictionary<ulong, string>>>(),
@@ -135,7 +135,10 @@ namespace Notus.Coin
             });
             if (tmpAddResult == true)
             {
-                //burada transactionları belleğe alıyor böyle hızlı ulaşım sağlanıyor...
+                RequestList[ReceiverWalletKey].Add(tmpChunkIdKey);
+                ObjMp_AirdropLimit.Set(ReceiverWalletKey, JsonSerializer.Serialize(RequestList[ReceiverWalletKey]), true);
+
+                // burada transactionları belleğe alıyor böyle hızlı ulaşım sağlanıyor...
                 NVG.Cache.Transaction.Add(tmpChunkIdKey, NVE.BlockStatusCode.AddedToQueue);
 
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
@@ -156,30 +159,97 @@ namespace Notus.Coin
             });
         }
 
+        public void Process(NVClass.BlockData blockData)
+        {
+            if (blockData.info.type != NVE.BlockTypeList.AirDrop)
+                return;
+            NVClass.BlockStruct_125? tmpLockBalance = NBD.Convert_125(blockData.cipher.data);
+            if (tmpLockBalance != null)
+            {
+                foreach (var entry in tmpLockBalance.In)
+                {
+                    if (RequestList.ContainsKey(entry.Value.Wallet)==false)
+                    {
+                        RequestList.TryAdd(entry.Value.Wallet, new List<string>());
+                    }
+                    RequestList[entry.Value.Wallet].Add(entry.Key);
+                    ObjMp_AirdropLimit.Set(
+                        entry.Value.Wallet, 
+                        JsonSerializer.Serialize(RequestList[entry.Value.Wallet]), 
+                        true
+                    );
+                }
+            }
+        }
+        public void Process(string walletId, string blockUid)
+        {
+        }
         public AirDrop()
         {
-            her node bloğu işlerken gelen airdrop isteklerini kendi
-            key-value DB'sine yazsın
-            çünkü farklı nodelar üzerinden de istek yaparak günlük limit aşılabiliyor
+            /*
 
-            airdrop listesi tutulurken 
-            işlem id'si ve her id'nin zaman bilgiside tutulsun
-            
             birde hala prof of randomness devam ediyor
             bu duruma bir önlem alınmalı
 
+            */
 
             ObjMp_AirdropLimit = new Notus.Mempool(
                 Notus.IO.GetFolderName(
                     NVG.Settings, NVC.StorageFolderName.Pool
                 ) + "airdrop_request");
 
-            ObjMp_AirdropLimit.AsyncActive = false;
+            ObjMp_AirdropLimit.AsyncActive = true;
+            // veri tabanındaki versiyon mevcut versiyon ile farklı ise
+            // tabloda bulunan kayıtları temizle
+            if (string.Equals(ObjMp_AirdropLimit.Get("CurrentVersion", ""), CurrentVersion) == false)
+            {
+                ObjMp_AirdropLimit.Clear();
+                ObjMp_AirdropLimit.Set("CurrentVersion", CurrentVersion, true);
+            }
         }
 
         ~AirDrop()
         {
             Dispose();
+        }
+        private string GetAirDropVolume()
+        {
+            string airdropStr = NVC.AirDropVolume_Default;
+            if (NVC.AirDropVolume.ContainsKey(NVG.Settings.Layer))
+            {
+                if (NVC.AirDropVolume[NVG.Settings.Layer].ContainsKey(NVG.Settings.Network))
+                {
+                    airdropStr = NVC.AirDropVolume[NVG.Settings.Layer][NVG.Settings.Network];
+                }
+            }
+            return airdropStr;
+        }
+        private List<string> LoadFromDb(string walletId)
+        {
+            List<string>? innerRequestList = new();
+            string controlStr = ObjMp_AirdropLimit.Get(walletId, JsonSerializer.Serialize(new List<string>()));
+            if (controlStr.Length > 0)
+            {
+                try
+                {
+                    innerRequestList = JsonSerializer.Deserialize<List<string>>(controlStr);
+                }
+                catch { }
+            }
+
+            if (innerRequestList == null)
+            {
+                innerRequestList = new List<string>();
+            }
+            if (RequestList.ContainsKey(walletId) == false)
+            {
+                RequestList.TryAdd(walletId, new List<string>());
+            }
+            else
+            {
+                RequestList[walletId].Clear();
+            }
+            return innerRequestList;
         }
         public void Dispose()
         {

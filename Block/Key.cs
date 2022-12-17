@@ -46,6 +46,10 @@ namespace Notus.Block
         {
             return SubGenerateBlockKey(currentUtcTime, nodeWalletKey, "");
         }
+        public static DateTime BlockIdToTime(string blockUid)
+        {
+            return Notus.Date.ToDateTime(BlockIdToUlong(blockUid));
+        }
         public static ulong BlockIdToUlong(string blockUid)
         {
             return ulong.Parse(Notus.Block.Key.GetTimeFromKey(blockUid).Substring(0, 17));

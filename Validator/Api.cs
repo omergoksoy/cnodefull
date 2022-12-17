@@ -7,6 +7,8 @@ using NP = Notus.Print;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
+using NBD = Notus.Block.Decrypt;
+using NVClass = Notus.Variable.Class;
 namespace Notus.Validator
 {
     public class Api : IDisposable
@@ -21,7 +23,6 @@ namespace Notus.Validator
         private List<string> AllReplicantList = new List<string>();
 
         private Notus.Coin.AirDrop airdropObj = new Notus.Coin.AirDrop();
-        //private Notus.Mempool ObjMp_AirdropLimit;
         private Notus.Mempool ObjMp_MultiSignPool;
         public Notus.Mempool Obj_MultiSignPool
         {
@@ -40,7 +41,7 @@ namespace Notus.Validator
 
         //public System.Func<int, List<NVS.List_PoolBlockRecordStruct>?>? Func_GetPoolList = null;
         //public System.Func<Dictionary<int, int>?>? Func_GetPoolCount = null;
-        //public System.Func<string, Notus.Variable.Class.BlockData?>? Func_OnReadFromChain = null;
+        //public System.Func<string, NVClass.BlockData?>? Func_OnReadFromChain = null;
         //public System.Func<NVS.PoolBlockRecordStruct, bool>? Func_AddToChainPool = null;
 
         private bool PrepareExecuted = false;
@@ -128,7 +129,7 @@ namespace Notus.Validator
             PrepareExecuted = true;
         }
 
-        public void AddForCache(Notus.Variable.Class.BlockData Obj_BlockData, int blockSource = 0)
+        public void AddForCache(NVClass.BlockData Obj_BlockData, int blockSource = 0)
         {
             if (blockSource == 2 || blockSource == 4)
             {
@@ -153,17 +154,16 @@ namespace Notus.Validator
             NVG.Settings.BlockOrder.Add(Obj_BlockData.info.rowNo, Obj_BlockData.info.uID);
 
             NGF.Balance.Control(Obj_BlockData);
+
+            // airdrop ise burada yapılan istekler veri tabanına kaydedilecek
+            airdropObj.Process(Obj_BlockData);
+
             if (Obj_BlockData.info.type == NVE.BlockTypeList.CryptoTransfer)
             {
-                Notus.Variable.Class.BlockStruct_120? tmpBalanceVal = JsonSerializer.Deserialize<Notus.Variable.Class.BlockStruct_120>(System.Text.Encoding.UTF8.GetString(
-                    System.Convert.FromBase64String(
-                        Obj_BlockData.cipher.data
-                    )
-                ));
+                NVClass.BlockStruct_120? tmpBalanceVal = NBD.Convert_120(Obj_BlockData.cipher.data);
                 if (tmpBalanceVal != null)
                 {
-                    //Console.WriteLine("Node.Api.AddToBalanceDB [cba09834] : " + Obj_BlockData.info.type);
-                    foreach (KeyValuePair<string, Notus.Variable.Class.BlockStruct_120_In_Struct> entry in tmpBalanceVal.In)
+                    foreach (KeyValuePair<string, NVClass.BlockStruct_120_In_Struct> entry in tmpBalanceVal.In)
                     {
                         RequestSend_Done(entry.Key, Obj_BlockData.info.rowNo, Obj_BlockData.info.uID);
                     }
@@ -173,7 +173,7 @@ namespace Notus.Validator
             {
                 /*
                  
-                Notus.Variable.Class.BlockStruct_120? tmpBalanceVal = JsonSerializer.Deserialize<Notus.Variable.Class.BlockStruct_120>(System.Text.Encoding.UTF8.GetString(
+                NVClass.BlockStruct_120? tmpBalanceVal = JsonSerializer.Deserialize<NVClass.BlockStruct_120>(System.Text.Encoding.UTF8.GetString(
                     System.Convert.FromBase64String(
                         Obj_BlockData.cipher.data
                     )
@@ -181,7 +181,7 @@ namespace Notus.Validator
                 if (tmpBalanceVal != null)
                 {
                     Console.WriteLine("Node.Api.AddToBalanceDB [cba09834] : " + Obj_BlockData.info.type);
-                    foreach (KeyValuePair<string, Notus.Variable.Class.BlockStruct_120_In_Struct> entry in tmpBalanceVal.In)
+                    foreach (KeyValuePair<string, NVClass.BlockStruct_120_In_Struct> entry in tmpBalanceVal.In)
                     {
                         RequestSend_Done(entry.Key, Obj_BlockData.info.rowNo, Obj_BlockData.info.uID);
                     }
@@ -682,7 +682,7 @@ namespace Notus.Validator
             return JsonSerializer.Serialize(false);
         }
 
-        private Notus.Variable.Class.BlockData? GetBlockWithRowNo(Int64 BlockRowNo)
+        private NVClass.BlockData? GetBlockWithRowNo(Int64 BlockRowNo)
         {
             /*
             if (Func_OnReadFromChain == null)
@@ -721,7 +721,7 @@ namespace Notus.Validator
                 string tmpBlockKey = NVG.Settings.BlockOrder.Get(BlockRowNo);
                 if (tmpBlockKey.Length > 0)
                 {
-                    Notus.Variable.Class.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(tmpBlockKey);
+                    NVClass.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(tmpBlockKey);
                     if (tmpStoredBlock != null)
                     {
                         return tmpStoredBlock;
@@ -732,7 +732,7 @@ namespace Notus.Validator
                 string PrevBlockIdStr = NVG.Settings.LastBlock.prev;
                 while (exitPrevWhile == false)
                 {
-                    Notus.Variable.Class.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(PrevBlockIdStr.Substring(0, 90));
+                    NVClass.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(PrevBlockIdStr.Substring(0, 90));
                     if (tmpStoredBlock != null)
                     {
                         if (tmpStoredBlock.info.rowNo == BlockRowNo)
@@ -1729,7 +1729,7 @@ namespace Notus.Validator
             {
                 try
                 {
-                    Notus.Variable.Class.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(IncomeData.UrlList[1]);
+                    NVClass.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(IncomeData.UrlList[1]);
                     if (tmpStoredBlock != null)
                     {
                         if (prettyJson == true)
@@ -1749,7 +1749,7 @@ namespace Notus.Validator
             bool isNumeric = Int64.TryParse(IncomeData.UrlList[1], out Int64 BlockNumber);
             if (isNumeric == true)
             {
-                Notus.Variable.Class.BlockData? tmpResultBlock = GetBlockWithRowNo(BlockNumber);
+                NVClass.BlockData? tmpResultBlock = GetBlockWithRowNo(BlockNumber);
                 if (tmpResultBlock != null)
                 {
                     if (prettyJson == true)
@@ -1767,7 +1767,7 @@ namespace Notus.Validator
             {
                 try
                 {
-                    Notus.Variable.Class.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(IncomeData.UrlList[2]);
+                    NVClass.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(IncomeData.UrlList[2]);
                     if (tmpStoredBlock != null)
                     {
                         return tmpStoredBlock.info.uID + tmpStoredBlock.sign;
@@ -1783,7 +1783,7 @@ namespace Notus.Validator
             bool isNumeric2 = Int64.TryParse(IncomeData.UrlList[2], out Int64 BlockNumber2);
             if (isNumeric2 == true)
             {
-                Notus.Variable.Class.BlockData? tmpResultBlock = GetBlockWithRowNo(BlockNumber2);
+                NVClass.BlockData? tmpResultBlock = GetBlockWithRowNo(BlockNumber2);
                 if (tmpResultBlock != null)
                 {
                     return tmpResultBlock.info.uID + tmpResultBlock.sign;
@@ -1959,7 +1959,7 @@ namespace Notus.Validator
                     // burada out ile nihai bakiyede belirtilecek
                     // tmpTokenObj.Validator = NVG.Settings.NodeWallet.WalletKey;
                     // tmpTokenObj.Balance
-                    tmpTokenObj.Balance = new Notus.Variable.Class.WalletBalanceStructForTransaction()
+                    tmpTokenObj.Balance = new NVClass.WalletBalanceStructForTransaction()
                     {
                         Wallet = tmpGeneratorBalanceObj.Wallet,
                         WitnessBlockUid = tmpGeneratorBalanceObj.UID,

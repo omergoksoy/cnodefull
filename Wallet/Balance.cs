@@ -653,6 +653,7 @@ namespace Notus.Wallet
                     }
                 }
             }
+            
             //CryptoTransfer
             if (tmpBlockForBalance.info.type == Notus.Variable.Enum.BlockTypeList.CryptoTransfer)
             {

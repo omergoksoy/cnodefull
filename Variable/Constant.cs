@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Notus.Variable.Enum;
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
-using Notus.Variable.Enum;
 
 namespace Notus.Variable
 {
@@ -82,7 +82,14 @@ namespace Notus.Variable
         public static readonly int DefaultChunkSize = 2048;
 
         // hiç bir tanımlamanın olmadığı yerde kullanılacak olan airdrop miktarı
-        public static readonly string AirDropVolume_Default ="2000000000";
+        public static readonly string AirDropVolume_Default = "2000000000";
+
+        // peşpeşe alınabilecek airdrop sınırı
+        public static readonly int AirDropVolumeCount = 3;
+
+        // alınan airdrop ne zaman silinecek
+        public static readonly int AirDropTimeLimit = 72;
+        
 
         public static readonly Dictionary<NetworkLayer, Dictionary<NetworkType, string>> AirDropVolume =
             new Dictionary<NetworkLayer, Dictionary<NetworkType, string>>()
