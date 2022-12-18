@@ -890,7 +890,7 @@ namespace Notus.Block
             DateTime baslangic = DateTime.Now;
 
             NVE.BlockIntegrityStatus Val_Status = NVE.BlockIntegrityStatus.CheckAgain;
-            NVClass.BlockData LastBlock = new NVClass.BlockData();
+            NVClass.BlockData? LastBlock = new NVClass.BlockData();
             bool exitInnerLoop = false;
             baslangic = DateTime.Now;
             while (exitInnerLoop == false)

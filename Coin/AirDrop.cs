@@ -186,19 +186,13 @@ namespace Notus.Coin
         }
         public AirDrop()
         {
-            /*
-
-            birde hala prof of randomness devam ediyor
-            bu duruma bir önlem alınmalı
-
-            */
-
             ObjMp_AirdropLimit = new Notus.Mempool(
                 Notus.IO.GetFolderName(
                     NVG.Settings, NVC.StorageFolderName.Pool
                 ) + "airdrop_request");
 
             ObjMp_AirdropLimit.AsyncActive = true;
+
             // veri tabanındaki versiyon mevcut versiyon ile farklı ise
             // tabloda bulunan kayıtları temizle
             if (string.Equals(ObjMp_AirdropLimit.Get("CurrentVersion", ""), CurrentVersion) == false)
