@@ -127,7 +127,6 @@ namespace Notus.P2P
             foreach (var item in this.Peers)
             {
                 tmpRemoveList.Add(item.Key);
-
             }
             for (int i = 0; i < tmpRemoveList.Count; i++)
             {

@@ -917,7 +917,7 @@ namespace Notus.Validator
                                             }
                                             else
                                             {
-                                                if(PreparedBlockData.info.type== NVE.BlockTypeList.AirDrop)
+                                                if (PreparedBlockData.info.type == NVE.BlockTypeList.AirDrop)
                                                 {
                                                     Console.WriteLine("if(PreparedBlockData.info.type== NVE.BlockTypeList.AirDrop)");
                                                 }
