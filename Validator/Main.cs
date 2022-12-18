@@ -912,14 +912,13 @@ namespace Notus.Validator
                                                     PreBlockData.info.type,
                                                     CurrentQueueTime
                                                 );
+                                                NGF.BlockQueue.RemovePermanentlyFromDb(poolList);
                                                 NGF.BlockQueue.RemovePoolIdList(poolList);
                                             }
                                             else
                                             {
-                                                if (PreBlockData.info.type != 300)
-                                                {
-                                                    NGF.BlockQueue.ReloadPoolList(poolList);
-                                                }
+                                                Console.WriteLine("NGF.BlockQueue.ReloadPoolList(poolList);");
+                                                NGF.BlockQueue.ReloadPoolList(poolList);
                                             }
                                             NGF.WalletUsageList.Clear();
                                         } // if (PreBlockData != null)
@@ -957,7 +956,7 @@ namespace Notus.Validator
                                 }
                             }
 
-                            NGF.BlockQueue.LoadFromPoolDb();
+                            NGF.BlockQueue.LoadFromPoolDb(false);
                         }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId)) ELSE 
 
                         if (NVC.RegenerateNodeQueueCount == nodeOrderCount)

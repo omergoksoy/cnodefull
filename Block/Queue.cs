@@ -73,6 +73,7 @@ namespace Notus.Block
         {
             if (Queue_PoolTransaction.Count == 0)
             {
+                //Console.WriteLine("Queue_PoolTransaction.Count.ToString() : " + Queue_PoolTransaction.Count.ToString());
                 return (null, null);
             }
 
@@ -239,6 +240,7 @@ namespace Notus.Block
             }
             if (TempPoolTransactionList.Count == 0)
             {
+                Console.WriteLine("TempPoolTransactionList.Count : " + TempPoolTransactionList.Count.ToString());
                 return (null, null);
             }
 
@@ -529,6 +531,7 @@ namespace Notus.Block
             }
             //burası pooldaki kayıtların fazla birikmesi ve para transferi işlemlerinin key'lerinin örtüşmemesinden
             //dolayı eklendi
+            //Console.WriteLine("removeRoolList.Count : " + removeRoolList.Count.ToString());
             return (
                 removeRoolList,
                 new Notus.Variable.Struct.PoolBlockRecordStruct()
@@ -575,23 +578,33 @@ namespace Notus.Block
 
         public void ReloadPoolList(List<string>? poolList)
         {
-            if (poolList == null)
-                return;
-
-            if (poolList.Count == 0)
-                return;
-
-            NGF.BlockQueue.CheckPoolDb = true;
-            LoadFromPoolDb();
+            if (poolList != null)
+            {
+                if (poolList.Count > 0)
+                {
+                    RemovePoolIdList(poolList);
+                }
+            }
+            LoadFromPoolDb(true);
         }
-
+        public void RemovePermanentlyFromDb(List<string>? poolList)
+        {
+            if (poolList != null)
+            {
+                for (int i = 0; i < poolList.Count; i++)
+                {
+                    Console.WriteLine("Remove Key From DB : " + poolList[i]);
+                    MP_BlockPoolList.Remove(poolList[i], true);
+                }
+            }
+        }
         public void RemovePoolIdList(List<string>? poolList)
         {
             if (poolList != null)
             {
                 for (int i = 0; i < poolList.Count; i++)
                 {
-                    MP_BlockPoolList.Remove(poolList[i], true);
+                    Console.WriteLine("Remove Key From List : " + poolList[i]);
                     PoolIdList.TryRemove(poolList[i], out _);
                 }
             }
@@ -737,7 +750,6 @@ namespace Notus.Block
                         data = PreBlockData.data
                     }
                 );
-                //Console.WriteLine("BlockKeyStr : " + BlockKeyStr);
                 Queue_PoolTransaction.Enqueue(new Notus.Variable.Struct.List_PoolBlockRecordStruct()
                 {
                     key = BlockKeyStr,
@@ -746,32 +758,45 @@ namespace Notus.Block
                 });
             }
         }
-        public void LoadFromPoolDb()
+        public void LoadFromPoolDb(bool forceToRun)
         {
-            if (NGF.BlockQueue.CheckPoolDb == false)
+            bool executeEach = false;
+            if (NGF.BlockQueue.CheckPoolDb == true)
             {
-                return;
+                executeEach = true;
             }
-            
-            MP_BlockPoolList.Each((string blockTransactionKey, string TextBlockDataString) =>
+            if (forceToRun == true)
             {
-                Notus.Variable.Struct.PoolBlockRecordStruct? PreBlockData =
-                JsonSerializer.Deserialize<Notus.Variable.Struct.PoolBlockRecordStruct>(TextBlockDataString);
-                if (PreBlockData != null)
+                executeEach = true;
+            }
+            if (executeEach == true)
+            {
+                NGF.BlockQueue.CheckPoolDb = false;
+                MP_BlockPoolList.Each((string blockTransactionKey, string TextBlockDataString) =>
                 {
-                    Add2Queue(PreBlockData, blockTransactionKey);
-                }
-                else
-                {
-                    Console.WriteLine("Queue -> Line 687");
-                    Console.WriteLine("Queue -> Line 687");
-                    Console.WriteLine(blockTransactionKey);
-                    Console.WriteLine(TextBlockDataString);
-                }
-            }, 3000);
+                    if (PoolIdList.ContainsKey(blockTransactionKey) == false)
+                    {
+                        Console.WriteLine("Load : " + blockTransactionKey);
+                        Notus.Variable.Struct.PoolBlockRecordStruct? PreBlockData =
+                        JsonSerializer.Deserialize<Notus.Variable.Struct.PoolBlockRecordStruct>(TextBlockDataString);
+                        if (PreBlockData != null)
+                        {
+                            Add2Queue(PreBlockData, blockTransactionKey);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Queue -> Line 687");
+                            Console.WriteLine("Queue -> Line 687");
+                            Console.WriteLine(blockTransactionKey);
+                            Console.WriteLine(TextBlockDataString);
+                        }
+                    }
+                }, 3000);
+            }
         }
         public void Start()
         {
+            NP.Info("Pool Loaded From Local DB");
             BS_Storage = new Notus.Block.Storage(false);
             BS_Storage.Start();
 
@@ -780,7 +805,7 @@ namespace Notus.Block
                 Notus.Variable.Constant.MemoryPoolName["BlockPoolList"]
             );
             MP_BlockPoolList.AsyncActive = false;
-            LoadFromPoolDb();
+            LoadFromPoolDb(true);
             CheckPoolDb = false;
         }
         public Queue()
