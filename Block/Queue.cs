@@ -590,8 +590,6 @@ namespace Notus.Block
             {
                 for (int i = 0; i < poolList.Count; i++)
                 {
-                    // Console.WriteLine("Control-Point-a001");
-                    // Console.WriteLine("Remove Key : " + poolList[i]);
                     MP_BlockPoolList.Remove(poolList[i], true);
                     PoolIdList.TryRemove(poolList[i], out _);
                 }
@@ -679,8 +677,6 @@ namespace Notus.Block
                 PreBlockData.uid = NGF.GenerateTxUid();
             }
 
-            //Console.WriteLine(PreBlockDataStr);
-
             Add2Queue(PreBlockData, PreBlockData.uid);
             string keyStr = PreBlockData.uid;
             if (PreBlockData.type == 40)
@@ -695,7 +691,6 @@ namespace Notus.Block
                     keyStr = "";
                 }
             }
-            //Console.WriteLine("keyStr : " + keyStr);
             if (keyStr.Length > 0)
             {
                 if (addedToPoolDb == true)
