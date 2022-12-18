@@ -581,6 +581,7 @@ namespace Notus.Block
             if (poolList.Count == 0)
                 return;
 
+            NGF.BlockQueue.CheckPoolDb = true;
             LoadFromPoolDb();
         }
 
@@ -655,8 +656,8 @@ namespace Notus.Block
         }
         public bool Add(Notus.Variable.Struct.PoolBlockRecordStruct? PreBlockData, bool addedToPoolDb = true)
         {
-            burada kuyruğa eklenen her iş
-            diğer nodelara da dağıtılacak
+            // burada kuyruğa eklenen her iş
+            // diğer nodelara da dağıtılacak
 
             if (PreBlockData == null)
             {
@@ -694,6 +695,7 @@ namespace Notus.Block
                     keyStr = "";
                 }
             }
+            Console.WriteLine("keyStr : " + keyStr);
             if (keyStr.Length > 0)
             {
                 if (addedToPoolDb == true)
@@ -750,7 +752,7 @@ namespace Notus.Block
             {
                 return;
             }
-
+            
             MP_BlockPoolList.Each((string blockTransactionKey, string TextBlockDataString) =>
             {
                 Notus.Variable.Struct.PoolBlockRecordStruct? PreBlockData =

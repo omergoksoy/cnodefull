@@ -164,9 +164,11 @@ namespace Notus.Coin
         {
             if (blockData.info.type != NVE.BlockTypeList.AirDrop)
                 return;
+
             NVClass.BlockStruct_125? tmpLockBalance = NBD.Convert_125(blockData.cipher.data);
             if (tmpLockBalance != null)
             {
+                //Console.WriteLine("Process AirDrop Block");
                 foreach (var entry in tmpLockBalance.In)
                 {
                     if (RequestList.ContainsKey(entry.Value.Wallet)==false)
@@ -181,9 +183,6 @@ namespace Notus.Coin
                     );
                 }
             }
-        }
-        public void Process(string walletId, string blockUid)
-        {
         }
         public AirDrop()
         {
