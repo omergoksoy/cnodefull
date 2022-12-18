@@ -655,6 +655,9 @@ namespace Notus.Block
         }
         public bool Add(Notus.Variable.Struct.PoolBlockRecordStruct? PreBlockData, bool addedToPoolDb = true)
         {
+            burada kuyruğa eklenen her iş
+            diğer nodelara da dağıtılacak
+
             if (PreBlockData == null)
             {
                 Console.WriteLine("Block.Queue.Cs -> Line 668 -> PreBlockData = NULL");
