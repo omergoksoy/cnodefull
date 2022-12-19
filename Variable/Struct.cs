@@ -425,6 +425,12 @@ namespace Notus.Variable.Struct
         public DateTime added { get; set; }
         public DateTime remove { get; set; }
     }
+    public class KeyValueDataList
+    {
+        public string Key { get; set; }
+        public string Value { get; set; }
+        public DateTime Time { get; set; }
+    }
 
     public class MetricsResponseStruct
     {

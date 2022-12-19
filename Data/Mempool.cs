@@ -118,8 +118,6 @@ namespace Notus
                 new Dictionary<string, string>() { }
             );
 
-
-
             TimerObj = new Notus.Threads.Timer(2000);
             TimerObj.Start(() =>
             {

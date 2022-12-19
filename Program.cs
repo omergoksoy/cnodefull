@@ -14,7 +14,7 @@ using NVG = Notus.Variable.Globals;
 static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 {
     string fatalErrorText = "";
-    if (e!=null)
+    if (e != null)
     {
         fatalErrorText = (e.ExceptionObject as Exception).Message + "Unhandled UnhandledExceptionEventArgs Exception";
     }
@@ -42,6 +42,23 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     Console.WriteLine();
     NGF.CloseMyNode();
 }
+
+Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue("deneme");
+Console.WriteLine(DateTime.Now);
+//keyValue.Set("0123456789abcdea", "deger");
+for (int i = 0; i < 100000; i++)
+{
+    _ = keyValue.SetAsync("deneme-" + i.ToString(), "deger-" + i.ToString());
+}
+Console.WriteLine(DateTime.Now);
+string rrr = keyValue.Get("deneme-1000");
+Console.WriteLine(rrr);
+rrr = keyValue.Get("deneme-100");
+
+Console.WriteLine(rrr);
+Console.ReadLine();
+Console.ReadLine();
+Console.ReadLine();
 
 System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
