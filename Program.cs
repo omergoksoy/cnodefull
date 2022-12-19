@@ -44,13 +44,14 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 }
 
 Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue("deneme");
+
+/*
 Console.WriteLine(DateTime.Now);
 //keyValue.Set("0123456789abcdea", "deger");
 for (int i = 0; i < 10000; i++)
 {
     _ = keyValue.SetAsync("deneme-" + i.ToString(), "deger-" + i.ToString());
 }
-/*
 _ ile -> 32 saniye
 20.12.2022 01:25:10 ->
 20.12.2022 01:25:42 ->
@@ -73,13 +74,13 @@ await ile -> 38 saniye
 deger-100
 
 
-*/
 Console.WriteLine(DateTime.Now);
 string rrr = keyValue.Get("deneme-1000");
 Console.WriteLine(rrr);
 rrr = keyValue.Get("deneme-100");
 
 Console.WriteLine(rrr);
+*/
 Console.ReadLine();
 Console.ReadLine();
 Console.ReadLine();
