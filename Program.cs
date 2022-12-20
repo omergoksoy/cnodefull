@@ -43,6 +43,7 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     NGF.CloseMyNode();
 }
 
+/*
 Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue(new Notus.Data.KeyValueSettings()
 {
     Path = "wallet",
@@ -57,7 +58,6 @@ for (int i = 0; i < 5; i++)
 {
     _ = keyValue.SetAsync("deneme-" + i.ToString(), "deger-" + i.ToString());
 }
-/*
 _ ile -> 32 saniye
 20.12.2022 01:25:10 ->
 20.12.2022 01:25:42 ->
@@ -80,7 +80,6 @@ await ile -> 38 saniye
 deger-100
 
 
-*/
 Console.WriteLine(DateTime.Now);
 string rrr = keyValue.Get("deneme-1000");
 Console.WriteLine(rrr);
@@ -90,6 +89,7 @@ Console.WriteLine(rrr);
 Console.ReadLine();
 Console.ReadLine();
 Console.ReadLine();
+*/
 
 System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
