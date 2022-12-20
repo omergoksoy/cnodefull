@@ -44,7 +44,12 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 }
 
 /*
-Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue("deneme");
+Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue(new Notus.Data.KeyValueSettings()
+{
+    Path = "wallet",
+    Fragmentation = true,
+    Name = "balance"
+});
 
 Console.WriteLine(DateTime.Now);
 //keyValue.Set("0123456789abcdea", "deger");
@@ -74,8 +79,8 @@ await ile -> 38 saniye
 deger-100
 
 
-Console.WriteLine(DateTime.Now);
 string rrr = keyValue.Get("deneme-1000");
+Console.WriteLine(DateTime.Now);
 Console.WriteLine(rrr);
 rrr = keyValue.Get("deneme-100");
 
@@ -83,8 +88,8 @@ Console.WriteLine(rrr);
 Console.ReadLine();
 Console.ReadLine();
 Console.ReadLine();
-*/
 
+*/
 System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);

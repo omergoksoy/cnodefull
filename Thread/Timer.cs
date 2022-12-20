@@ -40,6 +40,16 @@ namespace Notus.Threads
             }
             DefinedFunctionObj = null;
         }
+        public void SetInterval(int newInterval)
+        {
+            if(IntervalTimeValue!= newInterval)
+            {
+                IntervalTimeValue = newInterval;
+                Console.WriteLine("before : " + InnerTimerObject.Interval.ToString());
+                InnerTimerObject.Interval = newInterval;
+                Console.WriteLine("after  : " + InnerTimerObject.Interval.ToString());
+            }
+        }
         private void SubStart(System.Action incomeAction)
         {
             DefinedFunctionObj = incomeAction;

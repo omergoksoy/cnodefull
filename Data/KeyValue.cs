@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Notus.Variable.Enum;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -6,40 +7,56 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Notus.Variable.Enum;
 using ND = Notus.Date;
+using NNT = Notus.Network.Text;
 using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
-using NVS = Notus.Variable.Struct;
 using NVG = Notus.Variable.Globals;
+using NVS = Notus.Variable.Struct;
 namespace Notus.Data
 {
+    public class KeyValueSettings
+    {
+        public bool Fragmentation { get; set; }
+        public string Path { get; set; }
+        public string Name { get; set; }
+    }
+
     public class KeyValue : IDisposable
     {
+        private KeyValueSettings ObjSettings = new KeyValueSettings();
         private bool TimerRunning = false;
-        private Notus.Threads.Timer TimerObj=new Notus.Threads.Timer();
-        private readonly string dirName = "keys";
-        private Notus.Data.Sql? SqlObj;
-        private ConcurrentQueue<NVS.KeyValueDataList> DeleteKeyList = new ConcurrentQueue<NVS.KeyValueDataList>();
-        private ConcurrentQueue<NVS.KeyValueDataList> SetValueList = new ConcurrentQueue<NVS.KeyValueDataList>();
+        private Notus.Threads.Timer TimerObj = new();
+        private Notus.Data.Sql SqlObj = new();
+        private ConcurrentDictionary<string, string> TempList = new();
+        private ConcurrentQueue<NVS.KeyValueDataList> DeleteKeyList = new();
+        private ConcurrentQueue<NVS.KeyValueDataList> SetValueList = new();
 
-        public KeyValue(string PoolName)
+        private string GetDirectory()
         {
-            string realDir =
-                Notus.Network.Text.NetworkTypeText(NVG.Settings.Network) +
-                Path.DirectorySeparatorChar +
-                Notus.Network.Text.NetworkLayerText(NVG.Settings.Layer) +
-                Path.DirectorySeparatorChar +
-                dirName +
-                Path.DirectorySeparatorChar;
+            return
+                NNT.NetworkTypeText(NVG.Settings.Network) +
+                    System.IO.Path.DirectorySeparatorChar +
+                NNT.NetworkLayerText(NVG.Settings.Layer) +
+                    System.IO.Path.DirectorySeparatorChar +
+                ObjSettings.Path +
+                    System.IO.Path.DirectorySeparatorChar;
+        }
+        public KeyValue(KeyValueSettings settings)
+        {
+            ObjSettings.Path = settings.Path;
+            ObjSettings.Name = settings.Name;
 
-            PoolName = realDir + "/" + PoolName;
-            
+            string realDir = GetDirectory();
+            Notus.IO.CreateDirectory(realDir);
+
+            string PoolName = realDir + ObjSettings.Name + ".db";
+            Console.WriteLine("PoolName : " + PoolName);
             DeleteKeyList.Clear();
             SetValueList.Clear();
 
             SqlObj = new Notus.Data.Sql();
-            SqlObj.Open(PoolName + ".db");
+            SqlObj.Open(PoolName);
             try
             {
                 SqlObj.TableExist(
@@ -54,12 +71,13 @@ namespace Notus.Data
                 SetValueToDbFunction();
             }, true);
         }
-
         private void SetValueToDbFunction()
         {
             if (TimerRunning == false)
             {
                 TimerRunning = true;
+
+                TimerObj.SetInterval(DeleteKeyList.Count > 10 || SetValueList.Count > 10 ? 5 : 100);
 
                 // burada silinecek kayıtlar kontrol ediliyor...
                 if (DeleteKeyList.TryDequeue(out NVS.KeyValueDataList? deleteResult))
@@ -73,6 +91,7 @@ namespace Notus.Data
                             });
                             if (deleteResultVal == true)
                             {
+                                RemoveFromTempList(deleteResult.Key);
                                 File.Delete(FileName(deleteResult.Key, deleteResult.Time, false));
                             }
                             else
@@ -123,6 +142,7 @@ namespace Notus.Data
                             if (deletFile == true)
                             {
                                 File.Delete(FileName(setResult.Key, setResult.Time, true));
+                                RemoveFromTempList(setResult.Key);
                             }
                         }
                     }
@@ -137,9 +157,9 @@ namespace Notus.Data
             {
                 hexKey = hexKey.Substring(0, 30);
             }
+            string dirName = GetDirectory();
             string dataLockFileName =
                 dirName +
-                "/" +
                 exactTime.ToString(NVC.DefaultDateTimeFormatText) +
                 "_" +
                 hexKey +
@@ -148,6 +168,9 @@ namespace Notus.Data
         }
         public string Get(string key)
         {
+            if (TempList.ContainsKey(key) == true)
+                return TempList[key];
+
             string resultText = string.Empty;
             if (SqlObj == null)
             {
@@ -172,6 +195,8 @@ namespace Notus.Data
         }
         public bool Delete(string key)
         {
+            if (TempList.ContainsKey(key) == true)
+                TempList.TryRemove(key, out _);
             NVS.KeyValueDataList storeObj = new NVS.KeyValueDataList()
             {
                 Key = key,
@@ -185,8 +210,22 @@ namespace Notus.Data
             DeleteKeyList.Enqueue(storeObj);
             return true;
         }
+        private void RemoveFromTempList(string key)
+        {
+            if (TempList.ContainsKey(key) == true)
+                TempList.TryRemove(key, out _);
+        }
+        private void AddToTempList(string key, string value)
+        {
+            if (TempList.ContainsKey(key) == false)
+                TempList.TryAdd(key, value);
+            else
+                TempList[key] = value;
+        }
         public async Task SetAsync(string key, string value)
         {
+            AddToTempList(key, value);
+
             NVS.KeyValueDataList storeObj = new NVS.KeyValueDataList()
             {
                 Key = key,
@@ -198,10 +237,11 @@ namespace Notus.Data
                 JsonSerializer.Serialize(storeObj)
             );
             SetValueList.Enqueue(storeObj);
-            //return true;
         }
         public bool Set(string key, string value)
         {
+            AddToTempList(key, value);
+
             NVS.KeyValueDataList storeObj = new NVS.KeyValueDataList()
             {
                 Key = key,
@@ -241,3 +281,4 @@ namespace Notus.Data
         }
     }
 }
+
