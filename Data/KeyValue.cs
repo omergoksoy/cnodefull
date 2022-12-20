@@ -15,9 +15,15 @@ using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
 namespace Notus.Data
 {
+    public class ValueTimeStruct
+    {
+        public string Value { get; set; }
+        public ulong Time { get; set; }
+    }
     public class KeyValueSettings
     {
-        public bool Fragmentation { get; set; }
+        public int MemoryLimitCount { get; set; }
+        public bool UseMemory { get; set; }
         public string Path { get; set; }
         public string Name { get; set; }
     }
@@ -28,22 +34,59 @@ namespace Notus.Data
         private bool TimerRunning = false;
         private Notus.Threads.Timer TimerObj = new();
         private Notus.Data.Sql SqlObj = new();
+        private Dictionary<string, ValueTimeStruct> ValueList = new();
+        private SortedDictionary<ulong, string> KeyTimeList = new();
         private ConcurrentDictionary<string, string> TempList = new();
         private ConcurrentQueue<NVS.KeyValueDataList> DeleteKeyList = new();
         private ConcurrentQueue<NVS.KeyValueDataList> SetValueList = new();
-
-        private string GetDirectory()
+        public void Print()
         {
-            return
-                NNT.NetworkTypeText(NVG.Settings.Network) +
-                    System.IO.Path.DirectorySeparatorChar +
-                NNT.NetworkLayerText(NVG.Settings.Layer) +
-                    System.IO.Path.DirectorySeparatorChar +
-                ObjSettings.Path +
-                    System.IO.Path.DirectorySeparatorChar;
+            Console.WriteLine(JsonSerializer.Serialize(ValueList));
+            Console.WriteLine(JsonSerializer.Serialize(KeyTimeList));
         }
+        private void AddToMemoryList(string key, string value)
+        {
+            //public int MemoryLimitCount { get; set; }
+            if (ObjSettings.UseMemory == false)
+                return;
+
+            ulong beforeTime = 0;
+            //ulong exactTime = NVG.NOW.Int;
+            ulong exactTime = ND.ToLong(DateTime.UtcNow);
+            if (ValueList.ContainsKey(key) == false)
+            {
+                ValueList.TryAdd(key, new ValueTimeStruct()
+                {
+                    Value = value,
+                    Time = exactTime
+                });
+            }
+            else
+            {
+                beforeTime = ValueList[key].Time;
+                ValueList[key].Value = value;
+                ValueList[key].Time = exactTime;
+            }
+
+            KeyTimeList.Add(exactTime, key);
+            if (beforeTime > 0)
+            {
+                KeyTimeList.Remove(beforeTime);
+            }
+        }
+
         public KeyValue(KeyValueSettings settings)
         {
+            ObjSettings.UseMemory = settings.UseMemory;
+            ObjSettings.MemoryLimitCount = settings.MemoryLimitCount;
+            if (ObjSettings.UseMemory == true)
+            {
+                if (ObjSettings.MemoryLimitCount > 10000)
+                {
+                    ObjSettings.MemoryLimitCount = 10000;
+                }
+            }
+
             ObjSettings.Path = settings.Path;
             ObjSettings.Name = settings.Name;
 
@@ -71,11 +114,122 @@ namespace Notus.Data
                 SetValueToDbFunction();
             }, true);
         }
+        public string Get(string key)
+        {
+            if (TempList.ContainsKey(key) == true)
+                return TempList[key];
+
+            if (ValueList.ContainsKey(key) == true)
+                return ValueList[key].Value;
+
+            string resultText = string.Empty;
+            if (SqlObj == null)
+                return resultText;
+
+            SqlObj.Select("key_value",
+                (Dictionary<string, string> rList) =>
+                {
+                    foreach (KeyValuePair<string, string> entry in rList)
+                    {
+                        if (entry.Key == "value")
+                        {
+                            resultText = entry.Value;
+                        }
+                    }
+                },
+                new List<string>() { "key", "value" },
+                new Dictionary<string, string>() { { "key", key } }
+            );
+
+            AddToMemoryList(key, resultText);
+            return resultText;
+        }
+        public bool Delete(string key)
+        {
+            if (ValueList.ContainsKey(key) == true)
+                ValueList.Remove(key);
+
+            if (TempList.ContainsKey(key) == true)
+                TempList.TryRemove(key, out _);
+
+            NVS.KeyValueDataList storeObj = new NVS.KeyValueDataList()
+            {
+                Key = key,
+                Value = "",
+                Time = DateTime.UtcNow
+            };
+
+            File.WriteAllTextAsync(
+                FileName(key, storeObj.Time, false),
+                JsonSerializer.Serialize(storeObj)
+            ).GetAwaiter().GetResult();
+
+            DeleteKeyList.Enqueue(storeObj);
+            return true;
+        }
+        public async Task SetAsync(string key, string value)
+        {
+            AddToMemoryList(key, value);
+            AddToTempList(key, value);
+
+            NVS.KeyValueDataList storeObj = new NVS.KeyValueDataList()
+            {
+                Key = key,
+                Value = value,
+                Time = DateTime.UtcNow
+            };
+            await File.WriteAllTextAsync(
+                FileName(key, storeObj.Time, true),
+                JsonSerializer.Serialize(storeObj)
+            );
+            SetValueList.Enqueue(storeObj);
+        }
+        public bool Set(string key, string value)
+        {
+            AddToMemoryList(key, value);
+            AddToTempList(key, value);
+
+            NVS.KeyValueDataList storeObj = new NVS.KeyValueDataList()
+            {
+                Key = key,
+                Value = value,
+                Time = DateTime.UtcNow
+            };
+            File.WriteAllTextAsync(
+                FileName(key, storeObj.Time, true),
+                JsonSerializer.Serialize(storeObj)
+            ).GetAwaiter().GetResult();
+            SetValueList.Enqueue(storeObj);
+            return true;
+        }
+        private void RemoveFromTempList(string key)
+        {
+            if (TempList.ContainsKey(key) == true)
+                TempList.TryRemove(key, out _);
+        }
+        private void AddToTempList(string key, string value)
+        {
+            if (TempList.ContainsKey(key) == false)
+                TempList.TryAdd(key, value);
+            else
+                TempList[key] = value;
+        }
         private void SetValueToDbFunction()
         {
             if (TimerRunning == false)
             {
                 TimerRunning = true;
+                /*
+                şimdilik bu kısım devre dışı bırakıldı
+
+                if (ObjSettings.UseMemory == true)
+                {
+                    if (ValueList.Count > ObjSettings.MemoryLimitCount)
+                    {
+                        KeyValuePair<ulong, string> firstVal = KeyTimeList.First();
+                    }
+                }
+                */
 
                 TimerObj.SetInterval(DeleteKeyList.Count > 10 || SetValueList.Count > 10 ? 5 : 100);
 
@@ -166,94 +320,15 @@ namespace Notus.Data
                 "." + (setFile == true ? "set" : "del");
             return dataLockFileName;
         }
-        public string Get(string key)
+        private string GetDirectory()
         {
-            if (TempList.ContainsKey(key) == true)
-                return TempList[key];
-
-            string resultText = string.Empty;
-            if (SqlObj == null)
-            {
-                return resultText;
-            }
-
-            SqlObj.Select("key_value",
-                (Dictionary<string, string> rList) =>
-                {
-                    foreach (KeyValuePair<string, string> entry in rList)
-                    {
-                        if (entry.Key == "value")
-                        {
-                            resultText = entry.Value;
-                        }
-                    }
-                },
-                new List<string>() { "key", "value" },
-                new Dictionary<string, string>() { { "key", key } }
-            );
-            return resultText;
-        }
-        public bool Delete(string key)
-        {
-            if (TempList.ContainsKey(key) == true)
-                TempList.TryRemove(key, out _);
-            NVS.KeyValueDataList storeObj = new NVS.KeyValueDataList()
-            {
-                Key = key,
-                Value = "",
-                Time = DateTime.UtcNow
-            };
-            File.WriteAllTextAsync(
-                FileName(key, storeObj.Time, false),
-                JsonSerializer.Serialize(storeObj)
-            ).GetAwaiter().GetResult();
-            DeleteKeyList.Enqueue(storeObj);
-            return true;
-        }
-        private void RemoveFromTempList(string key)
-        {
-            if (TempList.ContainsKey(key) == true)
-                TempList.TryRemove(key, out _);
-        }
-        private void AddToTempList(string key, string value)
-        {
-            if (TempList.ContainsKey(key) == false)
-                TempList.TryAdd(key, value);
-            else
-                TempList[key] = value;
-        }
-        public async Task SetAsync(string key, string value)
-        {
-            AddToTempList(key, value);
-
-            NVS.KeyValueDataList storeObj = new NVS.KeyValueDataList()
-            {
-                Key = key,
-                Value = value,
-                Time = DateTime.UtcNow
-            };
-            await File.WriteAllTextAsync(
-                FileName(key, storeObj.Time, true),
-                JsonSerializer.Serialize(storeObj)
-            );
-            SetValueList.Enqueue(storeObj);
-        }
-        public bool Set(string key, string value)
-        {
-            AddToTempList(key, value);
-
-            NVS.KeyValueDataList storeObj = new NVS.KeyValueDataList()
-            {
-                Key = key,
-                Value = value,
-                Time = DateTime.UtcNow
-            };
-            File.WriteAllTextAsync(
-                FileName(key, storeObj.Time, true),
-                JsonSerializer.Serialize(storeObj)
-            ).GetAwaiter().GetResult();
-            SetValueList.Enqueue(storeObj);
-            return true;
+            return
+                NNT.NetworkTypeText(NVG.Settings.Network) +
+                    System.IO.Path.DirectorySeparatorChar +
+                NNT.NetworkLayerText(NVG.Settings.Layer) +
+                    System.IO.Path.DirectorySeparatorChar +
+                ObjSettings.Path +
+                    System.IO.Path.DirectorySeparatorChar;
         }
         ~KeyValue()
         {
