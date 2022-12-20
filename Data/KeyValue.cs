@@ -6,27 +6,34 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Notus.Variable.Enum;
 using ND = Notus.Date;
 using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVS = Notus.Variable.Struct;
+using NVG = Notus.Variable.Globals;
 namespace Notus.Data
 {
     public class KeyValue : IDisposable
     {
         private bool TimerRunning = false;
-        private Notus.Threads.Timer TimerObj;
-        private readonly string dirName = "test";
+        private Notus.Threads.Timer TimerObj=new Notus.Threads.Timer();
+        private readonly string dirName = "keys";
         private Notus.Data.Sql? SqlObj;
         private ConcurrentQueue<NVS.KeyValueDataList> DeleteKeyList = new ConcurrentQueue<NVS.KeyValueDataList>();
         private ConcurrentQueue<NVS.KeyValueDataList> SetValueList = new ConcurrentQueue<NVS.KeyValueDataList>();
+
         public KeyValue(string PoolName)
         {
-            if (Directory.Exists(dirName) == false)
-            {
-                Directory.CreateDirectory(dirName);
-            }
-            PoolName = dirName + "/" + PoolName;
+            string realDir =
+                Notus.Network.Text.NetworkTypeText(NVG.Settings.Network) +
+                Path.DirectorySeparatorChar +
+                Notus.Network.Text.NetworkLayerText(NVG.Settings.Layer) +
+                Path.DirectorySeparatorChar +
+                dirName +
+                Path.DirectorySeparatorChar;
+
+            PoolName = realDir + "/" + PoolName;
             
             DeleteKeyList.Clear();
             SetValueList.Clear();
@@ -41,12 +48,13 @@ namespace Notus.Data
                 );
             }
             catch { }
-            TimerObj = new Notus.Threads.Timer(100);
+            TimerObj.Interval = 100;
             TimerObj.Start(() =>
             {
                 SetValueToDbFunction();
             }, true);
         }
+
         private void SetValueToDbFunction()
         {
             if (TimerRunning == false)

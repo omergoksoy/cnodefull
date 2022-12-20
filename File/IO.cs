@@ -44,7 +44,10 @@ namespace Notus
         {
             return GetZipFiles(objSettings.Network, objSettings.Layer);
         }
-
+        public static string GetFolderName(string folderName)
+        {
+            return GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, folderName);
+        }
         public static string GetFolderName(Notus.Globals.Variable.Settings objSettings, string folderName)
         {
             return GetFolderName(objSettings.Network, objSettings.Layer, folderName);
@@ -66,16 +69,17 @@ namespace Notus
         }
         public static void NodeFolderControl()
         {
-            CreateDirectory(GetFolderName(NVG.Settings, DirListConst.BlockInfo));
-            CreateDirectory(GetFolderName(NVG.Settings, DirListConst.TxList));
-            CreateDirectory(GetFolderName(NVG.Settings, DirListConst.BlockForTgz));
-            CreateDirectory(GetFolderName(NVG.Settings, DirListConst.TempBlock));
-            CreateDirectory(GetFolderName(NVG.Settings, DirListConst.Balance));
-            CreateDirectory(GetFolderName(NVG.Settings, DirListConst.Block));
-            CreateDirectory(GetFolderName(NVG.Settings, DirListConst.Common));
-            CreateDirectory(GetFolderName(NVG.Settings, DirListConst.File));
-            CreateDirectory(GetFolderName(NVG.Settings, DirListConst.Node));
-            CreateDirectory(GetFolderName(NVG.Settings, DirListConst.Pool));
+            CreateDirectory(GetFolderName(DirListConst.BlockInfo));
+            CreateDirectory(GetFolderName(DirListConst.Wallet));
+            CreateDirectory(GetFolderName(DirListConst.TxList));
+            CreateDirectory(GetFolderName(DirListConst.BlockForTgz));
+            CreateDirectory(GetFolderName(DirListConst.TempBlock));
+            CreateDirectory(GetFolderName(DirListConst.Balance));
+            CreateDirectory(GetFolderName(DirListConst.Block));
+            CreateDirectory(GetFolderName(DirListConst.Common));
+            CreateDirectory(GetFolderName(DirListConst.File));
+            CreateDirectory(GetFolderName(DirListConst.Node));
+            CreateDirectory(GetFolderName(DirListConst.Pool));
         }
     }
 }

@@ -43,9 +43,9 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     NGF.CloseMyNode();
 }
 
+/*
 Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue("deneme");
 
-/*
 Console.WriteLine(DateTime.Now);
 //keyValue.Set("0123456789abcdea", "deger");
 for (int i = 0; i < 10000; i++)
@@ -80,10 +80,10 @@ Console.WriteLine(rrr);
 rrr = keyValue.Get("deneme-100");
 
 Console.WriteLine(rrr);
+Console.ReadLine();
+Console.ReadLine();
+Console.ReadLine();
 */
-Console.ReadLine();
-Console.ReadLine();
-Console.ReadLine();
 
 System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
