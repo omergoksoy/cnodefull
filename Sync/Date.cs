@@ -19,6 +19,10 @@ namespace Notus.Sync
         private Notus.Threads.Timer? UtcTimerObj;
         public void Start()
         {
+            if (NVG.Settings.LocalNode == true)
+            {
+                return;
+            }
             NP.Success(NVG.Settings, "NTP Time Synchronizer Has Started");
             UtcTimerObj = new Notus.Threads.Timer(5000);
             UtcTimerObj.Start(() =>

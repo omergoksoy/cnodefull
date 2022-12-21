@@ -15,18 +15,20 @@ namespace Notus.Sync
 {
     public class Time : IDisposable
     {
-        private Notus.Threads.Timer? UtcTimerObj;
+        private Notus.Threads.Timer UtcTimerObj= new Notus.Threads.Timer();
         public void Start()
         {
-            NP.Success(NVG.Settings, "Time Synchronizer Has Started");
-            UtcTimerObj = new Notus.Threads.Timer(1);
-            UtcTimerObj.Start(() =>
+            if (NVG.Settings.LocalNode == false)
             {
-                if (NVG.NOW.DiffUpdated == true)
+                NP.Success(NVG.Settings, "Time Synchronizer Has Started");
+                UtcTimerObj.Start(1,() =>
                 {
-                    NGF.UpdateTime();
-                }
-            }, true);  //TimerObj.Start(() =>            
+                    if (NVG.NOW.DiffUpdated == true)
+                    {
+                        NGF.UpdateTime();
+                    }
+                }, true);  //TimerObj.Start(() =>            
+            }
         }
         public Time()
         {
@@ -39,7 +41,11 @@ namespace Notus.Sync
         {
             if (UtcTimerObj != null)
             {
-                UtcTimerObj.Dispose();
+                try
+                {
+                    UtcTimerObj.Dispose();
+                }
+                catch { }
             }
         }
 

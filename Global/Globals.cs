@@ -404,17 +404,26 @@ namespace Notus.Variable
                 {
                     NP.Info("Waiting For Time Sync");
                 }
-                DateTime timerExecutedTime = DateTime.Now.Subtract(new TimeSpan(1, 0, 0));
-                while (NOW.DiffUpdated == false)
+                if (NVG.Settings.LocalNode == false)
                 {
-                    TimeSpan ts = DateTime.Now - timerExecutedTime;
-                    if (ts.TotalSeconds > howManySeconds)
+                    DateTime timerExecutedTime = DateTime.Now.Subtract(new TimeSpan(1, 0, 0));
+                    while (NOW.DiffUpdated == false)
                     {
-                        KillTimeSync(beginingRoutine);
-                        Thread.Sleep(150);
-                        StartTimeSync();
-                        timerExecutedTime = DateTime.Now;
+                        TimeSpan ts = DateTime.Now - timerExecutedTime;
+                        if (ts.TotalSeconds > howManySeconds)
+                        {
+                            KillTimeSync(beginingRoutine);
+                            Thread.Sleep(150);
+                            StartTimeSync();
+                            timerExecutedTime = DateTime.Now;
+                        }
                     }
+                }
+                else
+                {
+                    NOW.LastDiffUpdate = DateTime.UtcNow;
+                    NOW.Diff = NOW.LastDiffUpdate - NOW.LastDiffUpdate;
+                    NOW.DiffUpdated = true;
                 }
                 if (beginingRoutine == true)
                 {

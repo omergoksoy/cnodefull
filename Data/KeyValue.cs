@@ -21,6 +21,7 @@ namespace Notus.Data
 
     public class KeyValue : IDisposable
     {
+        private string TempPath = string.Empty;
         private string DirPath = string.Empty;
         private KeyValueSettings ObjSettings = new KeyValueSettings();
         private bool TimerRunning = false;
@@ -69,10 +70,13 @@ namespace Notus.Data
                 System.IO.Path.DirectorySeparatorChar +
             ObjSettings.Path +
                 System.IO.Path.DirectorySeparatorChar;
+
+            TempPath = DirPath + "temp"+ System.IO.Path.DirectorySeparatorChar;
+
             Notus.IO.CreateDirectory(DirPath);
+            Notus.IO.CreateDirectory(TempPath);
 
             string PoolName = DirPath + ObjSettings.Name + ".db";
-            Console.WriteLine("PoolName : " + PoolName);
             DeleteKeyList.Clear();
             SetValueList.Clear();
 
@@ -242,7 +246,7 @@ namespace Notus.Data
                 hexKey = hexKey.Substring(0, 30);
             }
             string dataLockFileName =
-                DirPath +
+                TempPath +
                 exactTime.ToString(NVC.DefaultDateTimeFormatText) +
                 "_" +
                 hexKey +

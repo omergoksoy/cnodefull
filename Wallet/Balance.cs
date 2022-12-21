@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
 using System.Text.Json;
+using NP = Notus.Print;
 using NGF = Notus.Variable.Globals.Functions;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
@@ -905,6 +906,15 @@ namespace Notus.Wallet
         }
         public Balance()
         {
+            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings));
+            NP.ReadLine();
+            NP.ReadLine();
+            Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue(new Notus.Data.KeyValueSettings()
+            {
+                Path = "wallet",
+                MemoryLimitCount = 1000,
+                Name = "balance"
+            });
         }
         ~Balance()
         {

@@ -138,9 +138,11 @@ namespace Notus.Toolbox
             NVG.Settings.IpInfo = NTN.GetNodeIP();
             if (NVG.Settings.LocalNode == true)
             {
-                NP.Basic(NVG.Settings, "Starting As Main Node");
+                //NP.Basic(NVG.Settings, "Starting As Main Node");
                 NVG.Settings.NodeType = NVE.NetworkNodeType.Main;
-                NVG.Settings.Nodes.My.IP.IpAddress = NVG.Settings.IpInfo.Local;
+                //NVG.Settings.Nodes.My.IP.IpAddress = NVG.Settings.IpInfo.Local;
+                NVG.Settings.Nodes.My.IP.IpAddress = "127.0.0.1";
+                NVG.Settings.IpInfo.Local = NVG.Settings.Nodes.My.IP.IpAddress;
             }
             else
             {
@@ -149,7 +151,7 @@ namespace Notus.Toolbox
             NVG.Settings.Nodes.My.HexKey = NTN.IpAndPortToHex(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
 
             List<string> ListMainNodeIp = Notus.Validator.List.Get(NVG.Settings.Layer, NVG.Settings.Network);
-            if (ListMainNodeIp.IndexOf(NVG.Settings.IpInfo.Public) >= 0)
+            if (ListMainNodeIp.IndexOf(NVG.Settings.IpInfo.Public) >= 0 || NVG.Settings.LocalNode == true)
             {
                 //NVG.Settings.Nodes.My.InTheCode = true;
                 NP.Basic(NVG.Settings, "Starting As Main Node");
@@ -321,7 +323,8 @@ namespace Notus.Toolbox
                     tmp_HttpObj.DefaultResult_OK = DefaultControlTestData;
                     tmp_HttpObj.DefaultResult_ERR = DefaultControlTestData;
                     tmp_HttpObj.OnReceive(Fnc_TestLinkData);
-                    IPAddress testAddress = IPAddress.Parse(NVG.Settings.IpInfo.Public);
+                    string testIpAddressText = NVG.Settings.LocalNode == true ? NVG.Settings.IpInfo.Local : NVG.Settings.IpInfo.Public;
+                    IPAddress testAddress = IPAddress.Parse(testIpAddressText);
                     tmp_HttpObj.Start(testAddress, ControlPortNo);
                     DateTime twoSecondsLater = NVG.NOW.Obj.AddSeconds(Timeout);
                     while (twoSecondsLater > NVG.NOW.Obj && tmp_HttpObj.Started == false)
@@ -329,7 +332,7 @@ namespace Notus.Toolbox
                         try
                         {
                             _ = NCR.Get(
-                                NNN.MakeHttpListenerPath(NVG.Settings.IpInfo.Public, ControlPortNo) + "block/hash/1",
+                                NNN.MakeHttpListenerPath(testIpAddressText, ControlPortNo) + "block/hash/1",
                                 5, true, false
                             ).GetAwaiter().GetResult();
                         }
@@ -346,15 +349,7 @@ namespace Notus.Toolbox
             }
             catch (Exception err)
             {
-                NP.Log(
-                    NVE.LogLevel.Info,
-                    88800880,
-                    err.Message,
-                    "BlockRowNo",
-                    NVG.Settings,
-                    err
-                );
-                NP.Danger(NVG.Settings, "Error [065]: " + err.Message);
+                //NP.Danger(NVG.Settings, "Error [065]: " + err.Message);
                 Error_TestIpAddress = true;
             }
             if (Error_TestIpAddress == true)
