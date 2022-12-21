@@ -68,11 +68,21 @@ namespace Notus.Data
                 ValueList[key].Time = exactTime;
             }
 
-            KeyTimeList.Add(exactTime, key);
+            /*
+            //key time kontrol edilerek siliniyor
+            if (KeyTimeList.ContainsKey(exactTime) == false)
+            {
+                KeyTimeList.Add(exactTime, key);
+            }
+            else
+            {
+                KeyTimeList[exactTime]= key;
+            }
             if (beforeTime > 0)
             {
                 KeyTimeList.Remove(beforeTime);
             }
+            */
         }
 
         public KeyValue(KeyValueSettings settings)

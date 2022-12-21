@@ -58,26 +58,6 @@ for (int i = 0; i < 5; i++)
 {
     _ = keyValue.SetAsync("deneme-" + i.ToString(), "deger-" + i.ToString());
 }
-_ ile -> 32 saniye
-20.12.2022 01:25:10 ->
-20.12.2022 01:25:42 ->
-
-deger-100
-
-
-
-await kullanmadan -> 39 saniye
-20.12.2022 01:25:46 -> 14
-20.12.2022 01:26:25 -> 25
-
-deger-100
-
-
-await ile -> 38 saniye
-20.12.2022 01:25:52 -> 8
-20.12.2022 01:26:30 -> 30
-
-deger-100
 
 
 Console.WriteLine(DateTime.Now);
@@ -90,6 +70,7 @@ Console.ReadLine();
 Console.ReadLine();
 Console.ReadLine();
 */
+
 
 System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -114,6 +95,30 @@ Console.WriteLine("{0}", System.Reflection.AssemblyName.GetAssemblyName("cnodefu
 Console.ReadLine();
 */
 
+/*
+
+_ ile -> 32 saniye
+20.12.2022 01:25:10 ->
+20.12.2022 01:25:42 ->
+
+deger-100
+
+
+
+await kullanmadan -> 39 saniye
+20.12.2022 01:25:46 -> 14
+20.12.2022 01:26:25 -> 25
+
+deger-100
+
+
+await ile -> 38 saniye
+20.12.2022 01:25:52 -> 8
+20.12.2022 01:26:30 -> 30
+
+deger-100
+
+*/
 
 
 /*
