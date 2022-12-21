@@ -34,7 +34,7 @@ namespace Notus.Toolbox
         {
             string requestUrl = NNN.MakeHttpListenerPath(ipAddress, portNo) + "ping/";
             string serverResponse = NCR.GetSync(requestUrl, 1, true, false);
-            return string.Equals(serverResponse, "pong")==true ? NVS.NodeStatus.Online : NVS.NodeStatus.Offline;
+            return string.Equals(serverResponse, "pong") == true ? NVS.NodeStatus.Online : NVS.NodeStatus.Offline;
         }
         public static string IpAndPortToHex(NVS.NodeInfo NodeIp)
         {
@@ -147,7 +147,7 @@ namespace Notus.Toolbox
                 NVG.Settings.Nodes.My.IP.IpAddress = NVG.Settings.IpInfo.Public;
             }
             NVG.Settings.Nodes.My.HexKey = NTN.IpAndPortToHex(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
-            
+
             List<string> ListMainNodeIp = Notus.Validator.List.Get(NVG.Settings.Layer, NVG.Settings.Network);
             if (ListMainNodeIp.IndexOf(NVG.Settings.IpInfo.Public) >= 0)
             {
@@ -328,23 +328,13 @@ namespace Notus.Toolbox
                     {
                         try
                         {
-                            string MainResultStr = NCR.Get(
+                            _ = NCR.Get(
                                 NNN.MakeHttpListenerPath(NVG.Settings.IpInfo.Public, ControlPortNo) + "block/hash/1",
-                                5,
-                                true
+                                5, true, false
                             ).GetAwaiter().GetResult();
                         }
-                        catch (Exception errInner)
+                        catch
                         {
-                            NP.Log(
-                                NVE.LogLevel.Info,
-                                50000005,
-                                errInner.Message,
-                                "BlockRowNo",
-                                NVG.Settings,
-                                errInner
-                            );
-                            NP.Basic(NVG.Settings, "Error [75fde6374]: " + errInner.Message);
                         }
                     }
                     if (tmp_HttpObj.Started == false)
