@@ -45,9 +45,9 @@ namespace Notus.Threads
             if(IntervalTimeValue!= newInterval)
             {
                 IntervalTimeValue = newInterval;
-                Console.WriteLine("before : " + InnerTimerObject.Interval.ToString());
+                //Console.WriteLine("before : " + InnerTimerObject.Interval.ToString());
                 InnerTimerObject.Interval = newInterval;
-                Console.WriteLine("after  : " + InnerTimerObject.Interval.ToString());
+                //Console.WriteLine("after  : " + InnerTimerObject.Interval.ToString());
             }
         }
         private void SubStart(System.Action incomeAction)

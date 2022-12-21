@@ -43,32 +43,33 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     NGF.CloseMyNode();
 }
 
-/*
 Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue(new Notus.Data.KeyValueSettings()
 {
     Path = "wallet",
-    UseMemory = true,
     MemoryLimitCount = 1000,
     Name = "balance"
 });
 
-Console.WriteLine(DateTime.Now);
+DateTime baslangic = DateTime.Now;
 //keyValue.Set("0123456789abcdea", "deger");
-for (int i = 0; i < 5; i++)
+
+for (int i = 0; i < 1000; i++)
 {
-    _ = keyValue.SetAsync("deneme-" + i.ToString(), "deger-" + i.ToString());
+    keyValue.Set("deneme-" + i.ToString(), "deger-" + i.ToString());
 }
+Console.WriteLine(DateTime.Now - baslangic);
 
 
 Console.WriteLine(DateTime.Now);
-string rrr = keyValue.Get("deneme-1000");
+string rrr = keyValue.Get("deneme-500");
 Console.WriteLine(rrr);
 rrr = keyValue.Get("deneme-100");
-
 Console.WriteLine(rrr);
+
 Console.ReadLine();
 Console.ReadLine();
 Console.ReadLine();
+/*
 */
 
 

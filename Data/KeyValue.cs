@@ -1,15 +1,7 @@
-﻿using Notus.Variable.Enum;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Collections.Concurrent;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using ND = Notus.Date;
 using NNT = Notus.Network.Text;
-using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
@@ -22,35 +14,27 @@ namespace Notus.Data
     }
     public class KeyValueSettings
     {
-        public int MemoryLimitCount { get; set; }
-        public bool UseMemory { get; set; }
+        public ulong MemoryLimitCount { get; set; }
         public string Path { get; set; }
         public string Name { get; set; }
     }
 
     public class KeyValue : IDisposable
     {
+        private string DirPath = string.Empty;
         private KeyValueSettings ObjSettings = new KeyValueSettings();
         private bool TimerRunning = false;
         private Notus.Threads.Timer TimerObj = new();
         private Notus.Data.Sql SqlObj = new();
-        private Dictionary<string, ValueTimeStruct> ValueList = new();
-        private SortedDictionary<ulong, string> KeyTimeList = new();
-        private ConcurrentDictionary<string, string> TempList = new();
+        private ConcurrentDictionary<string, ValueTimeStruct> ValueList = new();
         private ConcurrentQueue<NVS.KeyValueDataList> DeleteKeyList = new();
         private ConcurrentQueue<NVS.KeyValueDataList> SetValueList = new();
         public void Print()
         {
             Console.WriteLine(JsonSerializer.Serialize(ValueList));
-            Console.WriteLine(JsonSerializer.Serialize(KeyTimeList));
         }
         private void AddToMemoryList(string key, string value)
         {
-            //public int MemoryLimitCount { get; set; }
-            if (ObjSettings.UseMemory == false)
-                return;
-
-            ulong beforeTime = 0;
             //ulong exactTime = NVG.NOW.Int;
             ulong exactTime = ND.ToLong(DateTime.UtcNow);
             if (ValueList.ContainsKey(key) == false)
@@ -63,47 +47,31 @@ namespace Notus.Data
             }
             else
             {
-                beforeTime = ValueList[key].Time;
-                ValueList[key].Value = value;
                 ValueList[key].Time = exactTime;
+                ValueList[key].Value = value;
             }
-
-            /*
-            //key time kontrol edilerek siliniyor
-            if (KeyTimeList.ContainsKey(exactTime) == false)
-            {
-                KeyTimeList.Add(exactTime, key);
-            }
-            else
-            {
-                KeyTimeList[exactTime]= key;
-            }
-            if (beforeTime > 0)
-            {
-                KeyTimeList.Remove(beforeTime);
-            }
-            */
         }
 
         public KeyValue(KeyValueSettings settings)
         {
-            ObjSettings.UseMemory = settings.UseMemory;
             ObjSettings.MemoryLimitCount = settings.MemoryLimitCount;
-            if (ObjSettings.UseMemory == true)
+            if (ObjSettings.MemoryLimitCount > 10000)
             {
-                if (ObjSettings.MemoryLimitCount > 10000)
-                {
-                    ObjSettings.MemoryLimitCount = 10000;
-                }
+                ObjSettings.MemoryLimitCount = 10000;
             }
 
             ObjSettings.Path = settings.Path;
             ObjSettings.Name = settings.Name;
 
-            string realDir = GetDirectory();
-            Notus.IO.CreateDirectory(realDir);
+            DirPath = NNT.NetworkTypeText(NVG.Settings.Network) +
+                System.IO.Path.DirectorySeparatorChar +
+            NNT.NetworkLayerText(NVG.Settings.Layer) +
+                System.IO.Path.DirectorySeparatorChar +
+            ObjSettings.Path +
+                System.IO.Path.DirectorySeparatorChar;
+            Notus.IO.CreateDirectory(DirPath);
 
-            string PoolName = realDir + ObjSettings.Name + ".db";
+            string PoolName = DirPath + ObjSettings.Name + ".db";
             Console.WriteLine("PoolName : " + PoolName);
             DeleteKeyList.Clear();
             SetValueList.Clear();
@@ -126,16 +94,13 @@ namespace Notus.Data
         }
         public string Get(string key)
         {
-            if (TempList.ContainsKey(key) == true)
-                return TempList[key];
-
             if (ValueList.ContainsKey(key) == true)
                 return ValueList[key].Value;
 
-            string resultText = string.Empty;
             if (SqlObj == null)
-                return resultText;
+                return string.Empty;
 
+            string resultText = string.Empty;
             SqlObj.Select("key_value",
                 (Dictionary<string, string> rList) =>
                 {
@@ -154,93 +119,50 @@ namespace Notus.Data
             AddToMemoryList(key, resultText);
             return resultText;
         }
-        public bool Delete(string key)
+        public void Delete(string key)
         {
             if (ValueList.ContainsKey(key) == true)
-                ValueList.Remove(key);
-
-            if (TempList.ContainsKey(key) == true)
-                TempList.TryRemove(key, out _);
-
-            NVS.KeyValueDataList storeObj = new NVS.KeyValueDataList()
+                ValueList.TryRemove(key, out _);
+            Task.Run(() =>
             {
-                Key = key,
-                Value = "",
-                Time = DateTime.UtcNow
-            };
+                NVS.KeyValueDataList storeObj = new NVS.KeyValueDataList()
+                {
+                    Key = key,
+                    Value = "",
+                    Time = DateTime.UtcNow
+                };
 
-            File.WriteAllTextAsync(
-                FileName(key, storeObj.Time, false),
-                JsonSerializer.Serialize(storeObj)
-            ).GetAwaiter().GetResult();
+                File.WriteAllText(
+                    FileName(key, storeObj.Time, false),
+                    JsonSerializer.Serialize(storeObj)
+                );
 
-            DeleteKeyList.Enqueue(storeObj);
-            return true;
+                DeleteKeyList.Enqueue(storeObj);
+            });
         }
-        public async Task SetAsync(string key, string value)
+        public void Set(string key, string value)
         {
             AddToMemoryList(key, value);
-            AddToTempList(key, value);
-
-            NVS.KeyValueDataList storeObj = new NVS.KeyValueDataList()
+            Task.Run(() =>
             {
-                Key = key,
-                Value = value,
-                Time = DateTime.UtcNow
-            };
-            await File.WriteAllTextAsync(
-                FileName(key, storeObj.Time, true),
-                JsonSerializer.Serialize(storeObj)
-            );
-            SetValueList.Enqueue(storeObj);
-        }
-        public bool Set(string key, string value)
-        {
-            AddToMemoryList(key, value);
-            AddToTempList(key, value);
-
-            NVS.KeyValueDataList storeObj = new NVS.KeyValueDataList()
-            {
-                Key = key,
-                Value = value,
-                Time = DateTime.UtcNow
-            };
-            File.WriteAllTextAsync(
-                FileName(key, storeObj.Time, true),
-                JsonSerializer.Serialize(storeObj)
-            ).GetAwaiter().GetResult();
-            SetValueList.Enqueue(storeObj);
-            return true;
-        }
-        private void RemoveFromTempList(string key)
-        {
-            if (TempList.ContainsKey(key) == true)
-                TempList.TryRemove(key, out _);
-        }
-        private void AddToTempList(string key, string value)
-        {
-            if (TempList.ContainsKey(key) == false)
-                TempList.TryAdd(key, value);
-            else
-                TempList[key] = value;
+                NVS.KeyValueDataList storeObj = new NVS.KeyValueDataList()
+                {
+                    Key = key,
+                    Value = value,
+                    Time = DateTime.UtcNow
+                };
+                File.WriteAllText(
+                    FileName(key, storeObj.Time, true),
+                    JsonSerializer.Serialize(storeObj)
+                );
+                SetValueList.Enqueue(storeObj);
+            });
         }
         private void SetValueToDbFunction()
         {
             if (TimerRunning == false)
             {
                 TimerRunning = true;
-                /*
-                şimdilik bu kısım devre dışı bırakıldı
-
-                if (ObjSettings.UseMemory == true)
-                {
-                    if (ValueList.Count > ObjSettings.MemoryLimitCount)
-                    {
-                        KeyValuePair<ulong, string> firstVal = KeyTimeList.First();
-                    }
-                }
-                */
-
                 TimerObj.SetInterval(DeleteKeyList.Count > 10 || SetValueList.Count > 10 ? 5 : 100);
 
                 // burada silinecek kayıtlar kontrol ediliyor...
@@ -255,7 +177,6 @@ namespace Notus.Data
                             });
                             if (deleteResultVal == true)
                             {
-                                RemoveFromTempList(deleteResult.Key);
                                 File.Delete(FileName(deleteResult.Key, deleteResult.Time, false));
                             }
                             else
@@ -306,7 +227,6 @@ namespace Notus.Data
                             if (deletFile == true)
                             {
                                 File.Delete(FileName(setResult.Key, setResult.Time, true));
-                                RemoveFromTempList(setResult.Key);
                             }
                         }
                     }
@@ -321,24 +241,13 @@ namespace Notus.Data
             {
                 hexKey = hexKey.Substring(0, 30);
             }
-            string dirName = GetDirectory();
             string dataLockFileName =
-                dirName +
+                DirPath +
                 exactTime.ToString(NVC.DefaultDateTimeFormatText) +
                 "_" +
                 hexKey +
                 "." + (setFile == true ? "set" : "del");
             return dataLockFileName;
-        }
-        private string GetDirectory()
-        {
-            return
-                NNT.NetworkTypeText(NVG.Settings.Network) +
-                    System.IO.Path.DirectorySeparatorChar +
-                NNT.NetworkLayerText(NVG.Settings.Layer) +
-                    System.IO.Path.DirectorySeparatorChar +
-                ObjSettings.Path +
-                    System.IO.Path.DirectorySeparatorChar;
         }
         ~KeyValue()
         {
