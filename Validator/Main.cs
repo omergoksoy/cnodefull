@@ -563,6 +563,22 @@ namespace Notus.Validator
                 NP.Basic(NVG.Settings, "Last Block Row No : " + NVG.Settings.LastBlock.info.rowNo.ToString());
                 using (Notus.Block.Storage Obj_Storage = new Notus.Block.Storage(false))
                 {
+                    NVG.Settings.BlockOrder.Each((string BlockOrnderNo, string blockUid) =>
+                    {
+                        NVClass.BlockData? tmpBlockData = Obj_Storage.ReadBlock(blockUid);
+                        if (tmpBlockData != null)
+                        {
+                            ProcessBlock(tmpBlockData, 1);
+                        }
+                        else
+                        {
+                            NP.Danger("Notus.Block.Integrity -> Block Does Not Exist");
+                            NP.Danger("Reset Block");
+                            NP.ReadLine();
+                        }
+
+                    });
+                    /*
                     foreach (KeyValuePair<long, string> entry in NVG.Settings.BlockOrder.List)
                     {
                         //tgz-exception
@@ -578,6 +594,7 @@ namespace Notus.Validator
                             NP.ReadLine();
                         }
                     }
+                    */
                 }
                 NP.Info("All Blocks Loaded");
 

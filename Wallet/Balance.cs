@@ -14,8 +14,7 @@ namespace Notus.Wallet
     public class Balance : IDisposable
     {
         //this store balance to Dictionary list
-        private ConcurrentDictionary<string, NVS.WalletBalanceStruct> SummaryList =
-            new ConcurrentDictionary<string, NVS.WalletBalanceStruct>();
+        private Notus.Data.KeyValue Summary = new Notus.Data.KeyValue();
         //private Notus.Mempool ObjMp_Balance;
 
         //private Notus.Mempool ObjMp_WalletUsage;
@@ -98,15 +97,7 @@ namespace Notus.Wallet
 
         private void StoreToDb(NVS.WalletBalanceStruct BalanceObj)
         {
-            if (SummaryList.ContainsKey(BalanceObj.Wallet) == false)
-            {
-                SummaryList.TryAdd(BalanceObj.Wallet, BalanceObj);
-            }
-            else
-            {
-                SummaryList[BalanceObj.Wallet] = BalanceObj;
-            }
-            //ObjMp_Balance.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj), true);
+            Summary.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj));
             //burada cüzdan kilidi açılacak...
             StopWalletUsage(BalanceObj.Wallet);
         }
@@ -135,14 +126,6 @@ namespace Notus.Wallet
                     }
                     catch (Exception err)
                     {
-                        Notus.Print.Log(
-                            Notus.Variable.Enum.LogLevel.Info,
-                            2354874,
-                            err.Message,
-                            "BlockRowNo",
-                            null,
-                            err
-                        );
                         Notus.Print.Basic(true, "Error Text [8ahgd6s4d]: " + err.Message);
                     }
                 }
@@ -151,9 +134,14 @@ namespace Notus.Wallet
         }
         public NVS.WalletBalanceStruct Get(string WalletKey, ulong timeYouCanUse)
         {
-            if (SummaryList.ContainsKey(WalletKey) == true)
+            string returnText = Summary.Get(WalletKey);
+            if (returnText.Length > 0)
             {
-                return SummaryList[WalletKey];
+                try
+                {
+                    return JsonSerializer.Deserialize<NVS.WalletBalanceStruct>(returnText);
+                }
+                catch { }
             }
 
             string defaultCoinTag = Notus.Variable.Constant.MainCoinTagName;
@@ -906,10 +894,7 @@ namespace Notus.Wallet
         }
         public Balance()
         {
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings));
-            NP.ReadLine();
-            NP.ReadLine();
-            Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue(new Notus.Data.KeyValueSettings()
+            Summary.SetSettings(new Notus.Data.KeyValueSettings()
             {
                 Path = "wallet",
                 MemoryLimitCount = 1000,
@@ -980,7 +965,14 @@ namespace Notus.Wallet
                 );
             }
             */
-
+            try
+            {
+                if (Summary != null)
+                {
+                    Summary.Dispose();
+                }
+            }
+            catch { }
             try
             {
                 if (ObjMp_MultiWalletParticipant != null)
@@ -988,16 +980,8 @@ namespace Notus.Wallet
                     ObjMp_MultiWalletParticipant.Dispose();
                 }
             }
-            catch (Exception err)
+            catch
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    8754279,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
             }
             MultiWalletTypeList.Clear();
 
@@ -1008,16 +992,8 @@ namespace Notus.Wallet
                     ObjMp_WalletsICanApprove.Dispose();
                 }
             }
-            catch (Exception err)
+            catch 
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    8754290,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
             }
 
         }

@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+
+bu fonksiyon şimdilik devre dışı bırakıldı
+
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -80,3 +84,4 @@ namespace Notus.Memory
         }
     }
 }
+*/

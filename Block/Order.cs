@@ -13,6 +13,8 @@ namespace Notus.Block
 {
     public class Order : IDisposable
     {
+        private Notus.Data.KeyValue listObj = new Notus.Data.KeyValue();
+        /*
         private ConcurrentDictionary<long, string> blockList = new ConcurrentDictionary<long, string>();
         public ConcurrentDictionary<long, string> List
         { 
@@ -22,48 +24,53 @@ namespace Notus.Block
         }
 
         private Notus.Mempool? MP_OrderList;
+        */
+
         public void Clear()
         {
-            MP_OrderList.Clear();
-            blockList.Clear();
+            listObj.Clear();
+            //MP_OrderList.Clear();
+            //blockList.Clear();
         }
         public string Get(long blockRowNo)
         {
-            if (blockList.ContainsKey(blockRowNo) == false)
-            {
-                return string.Empty;
-            }
-            return blockList[blockRowNo];
+            return listObj.Get(blockRowNo.ToString());
         }
-        public string Add(long rowNo)
+        /*
+        public void Add(long rowNo)
         {
+            return listObj.Get(blockRowNo.ToString());
             return string.Empty;
         }
         public long Add(string blockUid)
         {
             return long.MinValue;
         }
+        */
+        public void Each(System.Action<string, string> incomeAction, int UseThisNumberAsCountOrMiliSeconds = 1000, Notus.Variable.Enum.MempoolEachRecordLimitType UseThisNumberType = Notus.Variable.Enum.MempoolEachRecordLimitType.Count)
+        {
+
+        }
         public void Add(long blockRowNo, string blockUid)
         {
-            if (blockList.ContainsKey(blockRowNo) == false)
-            {
-                blockList.TryAdd(blockRowNo, blockUid);
-            }
-            else
-            {
-                blockList[blockRowNo] = blockUid;
-            }
-
-            MP_OrderList.Set(blockRowNo.ToString(), blockUid, true);
+            listObj.Set(blockRowNo.ToString(), blockUid);
         }
         public void Start()
         {
+            listObj.SetSettings(new Notus.Data.KeyValueSettings()
+            {
+                Path = "block_meta",
+                MemoryLimitCount = 0,
+                Name = Notus.Variable.Constant.MemoryPoolName["BlockOrderList"]
+            });
+            /*
             MP_OrderList = new Notus.Mempool(
                 Notus.IO.GetFolderName(NVG.Settings, Notus.Variable.Constant.StorageFolderName.Common) +
                 Notus.Variable.Constant.MemoryPoolName["BlockOrderList"]
             );
             MP_OrderList.AsyncActive = false;
             MP_OrderList.AsyncActive = true;
+            */
         }
         public Order()
         {
@@ -76,11 +83,12 @@ namespace Notus.Block
         {
             try
             {
-                MP_OrderList.Dispose();
+                if (listObj != null)
+                {
+                    listObj.Dispose();
+                }
             }
-            catch
-            {
-            }
+            catch { }
         }
     }
 }

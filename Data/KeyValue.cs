@@ -52,13 +52,15 @@ namespace Notus.Data
                 ValueList[key].Value = value;
             }
         }
-
-        public KeyValue(KeyValueSettings settings)
+        public void SetSettings(KeyValueSettings settings)
         {
             ObjSettings.MemoryLimitCount = settings.MemoryLimitCount;
-            if (ObjSettings.MemoryLimitCount > 10000)
+            if (settings.MemoryLimitCount > 0)
             {
-                ObjSettings.MemoryLimitCount = 10000;
+                if (ObjSettings.MemoryLimitCount > 10000)
+                {
+                    ObjSettings.MemoryLimitCount = 10000;
+                }
             }
 
             ObjSettings.Path = settings.Path;
@@ -71,7 +73,7 @@ namespace Notus.Data
             ObjSettings.Path +
                 System.IO.Path.DirectorySeparatorChar;
 
-            TempPath = DirPath + "temp"+ System.IO.Path.DirectorySeparatorChar;
+            TempPath = DirPath + "temp" + System.IO.Path.DirectorySeparatorChar;
 
             Notus.IO.CreateDirectory(DirPath);
             Notus.IO.CreateDirectory(TempPath);
@@ -95,6 +97,49 @@ namespace Notus.Data
             {
                 SetValueToDbFunction();
             }, true);
+        }
+        public KeyValue()
+        {
+        }
+        public KeyValue(KeyValueSettings settings)
+        {
+            SetSettings(settings);
+        }
+        public void Clear()
+        {
+            Console.WriteLine("KeyValue-db Clear Function");
+        }
+        public void Each(System.Action<string, string> incomeAction, int UseThisNumberAsCountOrMiliSeconds = 1000, Notus.Variable.Enum.MempoolEachRecordLimitType UseThisNumberType = Notus.Variable.Enum.MempoolEachRecordLimitType.Count)
+        {
+            if (ValueList.Count == 0)
+            {
+                return;
+            }
+            var tmpObj_DataList = ValueList.ToArray();
+            DateTime startTime = DateTime.Now;
+            int recordCount = 0;
+            for (int i = 0; i < tmpObj_DataList.Count(); i++)
+            {
+                if (UseThisNumberAsCountOrMiliSeconds > 0)
+                {
+                    if (UseThisNumberType == Notus.Variable.Enum.MempoolEachRecordLimitType.Count)
+                    {
+                        recordCount++;
+                        if (recordCount > UseThisNumberAsCountOrMiliSeconds)
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if ((DateTime.Now - startTime).TotalMilliseconds > UseThisNumberAsCountOrMiliSeconds)
+                        {
+                            break;
+                        }
+                    }
+                }
+                incomeAction(tmpObj_DataList[i].Key, tmpObj_DataList[i].Value.Value);
+            }
         }
         public string Get(string key)
         {
