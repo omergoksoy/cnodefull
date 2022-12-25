@@ -203,6 +203,14 @@ bu iki node arasındaki süre
 // burası ve empty blok oluşturma ile ilgili kontrol yapılırken hata olmadığı için
 // empty blok oluşturulmaya devam ediyor
 
+/*
+
+ZK - konusu için incelenecek
+* reed solomon fingerprinting
+* freivalds algorithm
+* univariate lagrange interpolation
+
+*/ 
 
 Notus.Validator.Node.Start(args);
 

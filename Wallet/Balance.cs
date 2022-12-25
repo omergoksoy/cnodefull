@@ -910,39 +910,13 @@ namespace Notus.Wallet
             /*
             try
             {
-                if (ObjMp_Balance != null)
-                {
-                    ObjMp_Balance.Dispose();
-                }
-            }
-            catch (Exception err)
-            {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    897989784,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
-            }
-            try
-            {
                 if (ObjMp_LockWallet != null)
                 {
                     ObjMp_LockWallet.Dispose();
                 }
             }
-            catch (Exception err)
+            catch
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    8754213,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
             }
             */
             /*
@@ -953,16 +927,8 @@ namespace Notus.Wallet
                     ObjMp_WalletUsage.Dispose();
                 }
             }
-            catch (Exception err)
+            catch
             {
-                Notus.Print.Log(
-                    Notus.Variable.Enum.LogLevel.Info,
-                    8754293,
-                    err.Message,
-                    "BlockRowNo",
-                    null,
-                    err
-                );
             }
             */
             try
