@@ -19,13 +19,13 @@ namespace Notus.Wallet
 
         //private Notus.Mempool ObjMp_WalletUsage;
         //private Notus.Mempool ObjMp_LockWallet;
-        private Notus.Mempool ObjMp_MultiWalletParticipant;
-        private Notus.Mempool ObjMp_WalletsICanApprove;
+        private Notus.Data.KeyValue ObjMp_MultiWalletParticipant = new Notus.Data.KeyValue();
+        private Notus.Data.KeyValue ObjMp_WalletsICanApprove = new Notus.Data.KeyValue();
         private ConcurrentDictionary<string, Notus.Variable.Enum.MultiWalletType> MultiWalletTypeList = new ConcurrentDictionary<string, Variable.Enum.MultiWalletType>();
 
         public List<string> WalletsICanApprove(string WalletId)
         {
-            string multiParticipantStr = ObjMp_WalletsICanApprove.Get(WalletId, "");
+            string multiParticipantStr = ObjMp_WalletsICanApprove.Get(WalletId);
             if (multiParticipantStr == "")
             {
                 return new List<string>();
@@ -54,7 +54,7 @@ namespace Notus.Wallet
         }
         public List<string> GetParticipant(string MultiSignatureWalletId)
         {
-            string multiParticipantStr = ObjMp_MultiWalletParticipant.Get(MultiSignatureWalletId, "");
+            string multiParticipantStr = ObjMp_MultiWalletParticipant.Get(MultiSignatureWalletId);
             if (multiParticipantStr == "")
             {
                 return new List<string>();
@@ -435,13 +435,7 @@ namespace Notus.Wallet
 
                 //ObjMp_Balance.Clear();
                 //ObjMp_LockWallet.Clear();
-                NGF.LockWalletList.Clear();
-                NGF.WalletUsageList.Clear();
-                //ObjMp_WalletUsage.Clear();
-                //Console.WriteLine("kontrol-2");
-                ObjMp_MultiWalletParticipant.Clear();
-                ObjMp_WalletsICanApprove.Clear();
-                MultiWalletTypeList.Clear();
+                ClearAllData();
                 string tmpBalanceStr = NVG.Settings.Genesis.Premining.PreSeed.Volume.ToString();
                 if (NVG.Settings.Genesis.Premining.PreSeed.DecimalContains == false)
                 {
@@ -683,7 +677,6 @@ namespace Notus.Wallet
                 }
                 else
                 {
-
                     //string multiParticipantStr = ObjMp_MultiWalletParticipant.Get(tmpBalanceVal.MultiWalletKey, "");
 
                     //multi wallet cüzdanın katılımcılarını tutan mempool listesi
@@ -701,8 +694,7 @@ namespace Notus.Wallet
                             walletIcanApprove.Add(tmpBalanceVal.MultiWalletKey);
                             ObjMp_WalletsICanApprove.Set(
                                 tmpBalanceVal.WalletList[i],
-                                JsonSerializer.Serialize(walletIcanApprove),
-                                true
+                                JsonSerializer.Serialize(walletIcanApprove)
                             );
                         }
 
@@ -720,8 +712,7 @@ namespace Notus.Wallet
                     }
                     ObjMp_MultiWalletParticipant.Set(
                         tmpBalanceVal.MultiWalletKey,
-                        JsonSerializer.Serialize(participantList),
-                        true
+                        JsonSerializer.Serialize(participantList)
                     );
 
 
@@ -872,24 +863,6 @@ namespace Notus.Wallet
             ObjMp_WalletUsage.AsyncActive = false;
             ObjMp_WalletUsage.Clear();
             */
-            //Console.WriteLine("kontrol-1");
-            ObjMp_MultiWalletParticipant = new Notus.Mempool(
-                Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Balance) +
-                "multi_wallet_participant"
-            );
-
-            ObjMp_MultiWalletParticipant.AsyncActive = false;
-            //Console.WriteLine("kontrol-4");
-            ObjMp_MultiWalletParticipant.Clear();
-            //Console.WriteLine("kontrol-3");
-
-            ObjMp_WalletsICanApprove = new Notus.Mempool(
-                Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Balance) +
-                "wallet_i_can_approve"
-            );
-
-            ObjMp_WalletsICanApprove.AsyncActive = false;
-            ObjMp_WalletsICanApprove.Clear();
             MultiWalletTypeList.Clear();
         }
         public Balance()
@@ -900,10 +873,32 @@ namespace Notus.Wallet
                 MemoryLimitCount = 1000,
                 Name = "balance"
             });
+            ObjMp_MultiWalletParticipant.SetSettings(new Notus.Data.KeyValueSettings()
+            {
+                Path = "wallet",
+                MemoryLimitCount = 1000,
+                Name = "multi_wallet_participant"
+            });
+            ObjMp_WalletsICanApprove.SetSettings(new Notus.Data.KeyValueSettings()
+            {
+                Path = "wallet",
+                MemoryLimitCount = 1000,
+                Name = "wallet_i_can_approve"
+            });
         }
         ~Balance()
         {
             Dispose();
+        }
+        private void ClearAllData()
+        {
+            Summary.Clear();
+            NGF.LockWalletList.Clear();
+            NGF.WalletUsageList.Clear();
+            //ObjMp_WalletUsage.Clear();
+            ObjMp_MultiWalletParticipant.Clear();
+            ObjMp_WalletsICanApprove.Clear();
+            MultiWalletTypeList.Clear();
         }
         public void Dispose()
         {
@@ -933,18 +928,12 @@ namespace Notus.Wallet
             */
             try
             {
-                if (Summary != null)
-                {
-                    Summary.Dispose();
-                }
+                Summary.Dispose();
             }
             catch { }
             try
             {
-                if (ObjMp_MultiWalletParticipant != null)
-                {
-                    ObjMp_MultiWalletParticipant.Dispose();
-                }
+                ObjMp_MultiWalletParticipant.Dispose();
             }
             catch
             {
@@ -953,10 +942,7 @@ namespace Notus.Wallet
 
             try
             {
-                if (ObjMp_WalletsICanApprove != null)
-                {
-                    ObjMp_WalletsICanApprove.Dispose();
-                }
+                ObjMp_WalletsICanApprove.Dispose();
             }
             catch 
             {
