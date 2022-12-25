@@ -563,8 +563,8 @@ namespace Notus.Validator
                 NP.Basic(NVG.Settings, "Last Block Row No : " + NVG.Settings.LastBlock.info.rowNo.ToString());
                 using (Notus.Block.Storage Obj_Storage = new Notus.Block.Storage(false))
                 {
-                    //KeyValuePair<string, NVS.ValueTimeStruct>[]? tmpObj_DataList = NVG.Settings.BlockOrder.List().ToArray();
-                    foreach(var item in NVG.Settings.BlockOrder.List())
+                    Dictionary<long, string> orderListResult = NVG.Settings.BlockOrder.List();
+                    foreach (KeyValuePair<long, string> item in orderListResult)
                     {
                         NVClass.BlockData? tmpBlockData = Obj_Storage.ReadBlock(item.Value);
                         if (tmpBlockData != null)
@@ -578,62 +578,8 @@ namespace Notus.Validator
                             NP.ReadLine();
                         }
                     }
-
-                    /*
-                    NVG.Settings.BlockOrder.List((string BlockOrderNo, string blockUid) =>
-                    {
-                    });
-                    */
-                    /*
-                    foreach (KeyValuePair<long, string> entry in NVG.Settings.BlockOrder.List)
-                    {
-                        //tgz-exception
-                        NVClass.BlockData? tmpBlockData = Obj_Storage.ReadBlock(entry.Value);
-                        if (tmpBlockData != null)
-                        {
-                            ProcessBlock(tmpBlockData, 1);
-                        }
-                        else
-                        {
-                            NP.Danger("Notus.Block.Integrity -> Block Does Not Exist");
-                            NP.Danger("Reset Block");
-                            NP.ReadLine();
-                        }
-                    }
-                    */
                 }
                 NP.Info("All Blocks Loaded");
-
-                /*
-                using (Notus.Mempool ObjMp_BlockOrder =
-                    new Notus.Mempool(
-                        Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, NVC.StorageFolderName.Common) +
-                        "block_order_list"
-                    )
-                )
-                {
-                    ObjMp_BlockOrder.Each((string blockOrderNo, string blockUniqueId) =>
-                    {
-                        using (Notus.Block.Storage Obj_Storage = new Notus.Block.Storage(false))
-                        {
-                            //tgz-exception
-                            NVClass.BlockData? tmpBlockData = Obj_Storage.ReadBlock(blockUniqueId);
-                            if (tmpBlockData != null)
-                            {
-                                ProcessBlock(tmpBlockData, 1);
-                            }
-                            else
-                            {
-                                NP.Danger(NVG.Settings, "Notus.Block.Integrity -> Block Does Not Exist");
-                                NP.Danger(NVG.Settings, "Reset Block");
-                                NP.ReadLine(NVG.Settings);
-                            }
-                        }
-                    }, 0
-                    );
-                    NP.Info(NVG.Settings, "All Blocks Loaded");
-                }
-                */
                 SelectedPortVal = NVG.Settings.Nodes.My.IP.Port;
             }
             else

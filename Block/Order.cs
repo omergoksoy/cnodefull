@@ -36,23 +36,10 @@ namespace Notus.Block
             Dictionary<long, string> resultList = new();
             for (long count = 0; count < tmpObj_DataList.Count(); count++)
             {
-                //Console.WriteLine(count.ToString());
-                //Console.WriteLine(listObj.List[count.ToString()].Value);
-                //Console.ReadLine();
                 long nextCount = count + 1;
                 resultList.Add(nextCount, listObj.List[nextCount.ToString()].Value);
             }
             return resultList;
-            /*
-            foreach (var item in tmpObj_DataList)
-            {
-
-            }
-            var tmpObj_DataList = listObj.List.ToArray();
-
-            listObj.List
-            return listObj.List;
-            */
         }
         /*
         public void Each(System.Action<string, string> incomeAction, int UseThisNumberAsCountOrMiliSeconds = 1000, Notus.Variable.Enum.MempoolEachRecordLimitType UseThisNumberType = Notus.Variable.Enum.MempoolEachRecordLimitType.Count)
