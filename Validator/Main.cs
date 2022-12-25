@@ -563,9 +563,10 @@ namespace Notus.Validator
                 NP.Basic(NVG.Settings, "Last Block Row No : " + NVG.Settings.LastBlock.info.rowNo.ToString());
                 using (Notus.Block.Storage Obj_Storage = new Notus.Block.Storage(false))
                 {
-                    NVG.Settings.BlockOrder.Each((string BlockOrnderNo, string blockUid) =>
+                    //KeyValuePair<string, NVS.ValueTimeStruct>[]? tmpObj_DataList = NVG.Settings.BlockOrder.List().ToArray();
+                    foreach(var item in NVG.Settings.BlockOrder.List())
                     {
-                        NVClass.BlockData? tmpBlockData = Obj_Storage.ReadBlock(blockUid);
+                        NVClass.BlockData? tmpBlockData = Obj_Storage.ReadBlock(item.Value);
                         if (tmpBlockData != null)
                         {
                             ProcessBlock(tmpBlockData, 1);
@@ -576,8 +577,13 @@ namespace Notus.Validator
                             NP.Danger("Reset Block");
                             NP.ReadLine();
                         }
+                    }
 
+                    /*
+                    NVG.Settings.BlockOrder.List((string BlockOrderNo, string blockUid) =>
+                    {
                     });
+                    */
                     /*
                     foreach (KeyValuePair<long, string> entry in NVG.Settings.BlockOrder.List)
                     {
@@ -1203,7 +1209,10 @@ namespace Notus.Validator
                     {
                         IncomeBlockList.Add(blockData.info.rowNo, tmpBlockData);
                         ProcessBlock_PrintSection(blockData, blockSource);
-                        NP.Status(NVG.Settings, "Insert Block To Temporary Block List");
+                        if (blockSource != 1)
+                        {
+                            NP.Status(NVG.Settings, "Insert Block To Temporary Block List");
+                        }
                     }
                 }
                 else

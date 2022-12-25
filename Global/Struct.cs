@@ -92,6 +92,7 @@ namespace Notus.Globals.Variable
         public Dictionary<int, string>? NodeOrder { get; set; }
     }
 
+
     /*
     public class NodeOrderStruct
     {

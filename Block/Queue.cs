@@ -679,7 +679,7 @@ namespace Notus.Block
         public void Reset()
         {
             Notus.Archive.ClearBlocks(NVG.Settings);
-            MP_BlockPoolList.Clear();
+            MP_BlockPoolList.Clear("MP_BlockPoolList");
             Queue_PoolTransaction.Clear();
             Obj_PoolTransactionList.Clear();
         }

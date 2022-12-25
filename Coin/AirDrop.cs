@@ -197,7 +197,7 @@ namespace Notus.Coin
             // tabloda bulunan kayıtları temizle
             if (string.Equals(ObjMp_AirdropLimit.Get("CurrentVersion", ""), CurrentVersion) == false)
             {
-                ObjMp_AirdropLimit.Clear();
+                ObjMp_AirdropLimit.Clear("ObjMp_AirdropLimit");
                 ObjMp_AirdropLimit.Set("CurrentVersion", CurrentVersion, true);
             }
         }

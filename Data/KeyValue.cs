@@ -7,32 +7,26 @@ using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
 namespace Notus.Data
 {
-    public class ValueTimeStruct
-    {
-        public string Value { get; set; }
-        public ulong Time { get; set; }
-    }
-    public class KeyValueSettings
-    {
-        public ulong MemoryLimitCount { get; set; }
-        public string Path { get; set; }
-        public string Name { get; set; }
-    }
-
     public class KeyValue : IDisposable
     {
         private string TempPath = string.Empty;
         private string DirPath = string.Empty;
-        private KeyValueSettings ObjSettings = new KeyValueSettings();
+        private NVS.KeyValueSettings ObjSettings = new();
         private bool TimerRunning = false;
         private Notus.Threads.Timer TimerObj = new();
         private Notus.Data.Sql SqlObj = new();
-        private ConcurrentDictionary<string, ValueTimeStruct> ValueList = new();
+        private ConcurrentDictionary<string, NVS.ValueTimeStruct> ValueList = new();
         private ConcurrentQueue<NVS.KeyValueDataList> DeleteKeyList = new();
         private ConcurrentQueue<NVS.KeyValueDataList> SetValueList = new();
+        public ConcurrentDictionary<string, NVS.ValueTimeStruct> List
+        {
+            get { return ValueList; }
+        }
+
         public void Print()
         {
-            Console.WriteLine(JsonSerializer.Serialize(ValueList));
+            //Console.WriteLine(JsonSerializer.Serialize(ValueList));
+            File.WriteAllText("deneme.cache",JsonSerializer.Serialize(ValueList));
         }
         private void AddToMemoryList(string key, string value)
         {
@@ -40,7 +34,7 @@ namespace Notus.Data
             ulong exactTime = ND.ToLong(DateTime.UtcNow);
             if (ValueList.ContainsKey(key) == false)
             {
-                ValueList.TryAdd(key, new ValueTimeStruct()
+                ValueList.TryAdd(key, new NVS.ValueTimeStruct()
                 {
                     Value = value,
                     Time = exactTime
@@ -52,7 +46,7 @@ namespace Notus.Data
                 ValueList[key].Value = value;
             }
         }
-        public void SetSettings(KeyValueSettings settings)
+        public void SetSettings(NVS.KeyValueSettings settings)
         {
             ObjSettings.MemoryLimitCount = settings.MemoryLimitCount;
             if (settings.MemoryLimitCount > 0)
@@ -73,7 +67,7 @@ namespace Notus.Data
             ObjSettings.Path +
                 System.IO.Path.DirectorySeparatorChar;
 
-            TempPath = DirPath + "temp" + System.IO.Path.DirectorySeparatorChar;
+            TempPath = DirPath + ObjSettings.Name + " _temp" + System.IO.Path.DirectorySeparatorChar;
 
             Notus.IO.CreateDirectory(DirPath);
             Notus.IO.CreateDirectory(TempPath);
@@ -82,7 +76,6 @@ namespace Notus.Data
             DeleteKeyList.Clear();
             SetValueList.Clear();
 
-            SqlObj = new Notus.Data.Sql();
             SqlObj.Open(PoolName);
             try
             {
@@ -101,7 +94,7 @@ namespace Notus.Data
         public KeyValue()
         {
         }
-        public KeyValue(KeyValueSettings settings)
+        public KeyValue(NVS.KeyValueSettings settings)
         {
             SetSettings(settings);
         }
@@ -109,13 +102,16 @@ namespace Notus.Data
         {
             Console.WriteLine("KeyValue-db Clear Function");
         }
-        public void Each(System.Action<string, string> incomeAction, int UseThisNumberAsCountOrMiliSeconds = 1000, Notus.Variable.Enum.MempoolEachRecordLimitType UseThisNumberType = Notus.Variable.Enum.MempoolEachRecordLimitType.Count)
+        public void Each(System.Action<string, string> incomeAction, 
+            int UseThisNumberAsCountOrMiliSeconds = 1000, 
+            Notus.Variable.Enum.MempoolEachRecordLimitType UseThisNumberType = Notus.Variable.Enum.MempoolEachRecordLimitType.Count
+        )
         {
             if (ValueList.Count == 0)
             {
                 return;
             }
-            var tmpObj_DataList = ValueList.ToArray();
+            KeyValuePair<string, NVS.ValueTimeStruct>[]? tmpObj_DataList = ValueList.ToArray();
             DateTime startTime = DateTime.Now;
             int recordCount = 0;
             for (int i = 0; i < tmpObj_DataList.Count(); i++)
@@ -168,6 +164,8 @@ namespace Notus.Data
             AddToMemoryList(key, resultText);
             return resultText;
         }
+        
+        /*
         public void Delete(string key)
         {
             if (ValueList.ContainsKey(key) == true)
@@ -189,6 +187,8 @@ namespace Notus.Data
                 DeleteKeyList.Enqueue(storeObj);
             });
         }
+        */
+
         public void Set(string key, string value)
         {
             AddToMemoryList(key, value);
@@ -200,6 +200,7 @@ namespace Notus.Data
                     Value = value,
                     Time = DateTime.UtcNow
                 };
+
                 File.WriteAllText(
                     FileName(key, storeObj.Time, true),
                     JsonSerializer.Serialize(storeObj)
@@ -292,7 +293,7 @@ namespace Notus.Data
             }
             string dataLockFileName =
                 TempPath +
-                exactTime.ToString(NVC.DefaultDateTimeFormatText) +
+                exactTime.ToString(NVC.DefaultDateTimeFormatText + "ff") +
                 "_" +
                 hexKey +
                 "." + (setFile == true ? "set" : "del");

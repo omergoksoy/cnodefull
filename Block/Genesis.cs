@@ -43,7 +43,7 @@ namespace Notus.Block
             )
             {
                 ObjMp_Genesis.AsyncActive = false;
-                ObjMp_Genesis.Clear();
+                ObjMp_Genesis.Clear("ObjMp_Genesis");
                 if (EncryptKeyPair == true)
                 {
                     using (Notus.Encryption.Cipher Obj_Cipher = new Notus.Encryption.Cipher())

@@ -635,6 +635,18 @@ namespace Notus.Variable.Struct
         public string Prev { get; set; }
     }
 
+    public class ValueTimeStruct
+    {
+        public string Value { get; set; }
+        public ulong Time { get; set; }
+    }
+    public class KeyValueSettings
+    {
+        public ulong MemoryLimitCount { get; set; }
+        public string Path { get; set; }
+        public string Name { get; set; }
+    }
+
     /*
     public class MultiWalletTransactionVoteStruct
     {

@@ -868,19 +868,19 @@ namespace Notus.Wallet
         }
         public Balance()
         {
-            Summary.SetSettings(new Notus.Data.KeyValueSettings()
+            Summary.SetSettings(new NVS.KeyValueSettings()
             {
                 Path = "wallet",
                 MemoryLimitCount = 1000,
                 Name = "balance"
             });
-            ObjMp_MultiWalletParticipant.SetSettings(new Notus.Data.KeyValueSettings()
+            ObjMp_MultiWalletParticipant.SetSettings(new NVS.KeyValueSettings()
             {
                 Path = "wallet",
                 MemoryLimitCount = 1000,
                 Name = "multi_wallet_participant"
             });
-            ObjMp_WalletsICanApprove.SetSettings(new Notus.Data.KeyValueSettings()
+            ObjMp_WalletsICanApprove.SetSettings(new NVS.KeyValueSettings()
             {
                 Path = "wallet",
                 MemoryLimitCount = 1000,
@@ -893,6 +893,7 @@ namespace Notus.Wallet
         }
         private void ClearAllData()
         {
+            Console.WriteLine("KeyValue-db Clear Function");
             Summary.Clear();
             NGF.LockWalletList.Clear();
             NGF.WalletUsageList.Clear();

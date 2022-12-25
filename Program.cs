@@ -43,10 +43,15 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     NGF.CloseMyNode();
 }
 
+
+
+
+
+
 /*
 Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue(new Notus.Data.KeyValueSettings()
 {
-    Path = "wallet",
+    Path = "test",
     MemoryLimitCount = 1000,
     Name = "balance"
 });
@@ -54,7 +59,7 @@ Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue(new Notus.Data.KeyValueSe
 DateTime baslangic = DateTime.Now;
 //keyValue.Set("0123456789abcdea", "deger");
 
-for (int i = 0; i < 1000; i++)
+for (int i = 0; i < 100000; i++)
 {
     keyValue.Set("deneme-" + i.ToString(), "deger-" + i.ToString());
 }

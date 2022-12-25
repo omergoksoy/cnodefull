@@ -706,18 +706,6 @@ namespace Notus.Validator
                     return NVG.Settings.LastBlock;
                 }
 
-                //string tmpBlockKey = ObjMp_BlockOrderList.Get(BlockRowNo.ToString(), string.Empty);
-                /*
-                if (NGF.BlockOrder.ContainsKey(BlockRowNo) == true)
-                {
-                    tmpBlockKey = NGF.BlockOrder[BlockRowNo];
-                }
-                else
-                {
-                    //Console.WriteLine("ContainsKey == false;");
-                }
-                */
-
                 string tmpBlockKey = NVG.Settings.BlockOrder.Get(BlockRowNo);
                 if (tmpBlockKey.Length > 0)
                 {
