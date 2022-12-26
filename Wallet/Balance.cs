@@ -897,7 +897,6 @@ namespace Notus.Wallet
         }
         private void ClearAllData()
         {
-            Console.WriteLine("KeyValue-db Clear Function");
             Summary.Clear();
             NGF.LockWalletList.Clear();
             NGF.WalletUsageList.Clear();
