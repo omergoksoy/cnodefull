@@ -28,7 +28,7 @@ namespace Notus.Data
         public void Print()
         {
             //Console.WriteLine(JsonSerializer.Serialize(ValueList));
-            File.WriteAllText("deneme.cache",JsonSerializer.Serialize(ValueList));
+            File.WriteAllText("deneme.cache", JsonSerializer.Serialize(ValueList));
         }
         private void AddToMemoryList(string key, string value)
         {
@@ -120,8 +120,8 @@ namespace Notus.Data
             Notus.IO.DeleteAllFileInsideDirectory(TempPath, "set");
             Notus.IO.DeleteAllFileInsideDirectory(TempPath, "del");
         }
-        public void Each(System.Action<string, string> incomeAction, 
-            int UseThisNumberAsCountOrMiliSeconds = 1000, 
+        public void Each(System.Action<string, string> incomeAction,
+            int UseThisNumberAsCountOrMiliSeconds = 1000,
             Notus.Variable.Enum.MempoolEachRecordLimitType UseThisNumberType = Notus.Variable.Enum.MempoolEachRecordLimitType.Count
         )
         {
@@ -182,7 +182,7 @@ namespace Notus.Data
             AddToMemoryList(key, resultText);
             return resultText;
         }
-        
+
         /*
         public void Delete(string key)
         {
@@ -218,11 +218,25 @@ namespace Notus.Data
                     Value = value,
                     Time = DateTime.UtcNow
                 };
+                bool fileWritten = false;
+                while (fileWritten == false)
+                {
 
-                File.WriteAllText(
-                    FileName(key, storeObj.Time, true),
-                    JsonSerializer.Serialize(storeObj)
-                );
+                    try
+                    {
+
+                        File.WriteAllText(
+                            FileName(key, storeObj.Time, true),
+                            JsonSerializer.Serialize(storeObj)
+                        );
+                        fileWritten = true;
+                    }
+                    catch { }
+                    if (fileWritten == false)
+                    {
+                        Thread.Sleep(10);
+                    }
+                }
                 SetValueList.Enqueue(storeObj);
             });
         }

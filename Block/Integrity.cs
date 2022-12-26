@@ -60,6 +60,11 @@ namespace Notus.Block
         // burası merkezi kontrol noktası
         private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity()
         {
+
+            NVG.Settings.BlockOrder.Clear();
+            NVG.Settings.BlockSign.Clear();
+            NVG.Settings.BlockPrev.Clear();
+
             (NVE.BlockIntegrityStatus tmpStatus, NVClass.BlockData? tmpLastBlock) = ControlBlockIntegrity_FastCheck();
 
             if (tmpStatus == NVE.BlockIntegrityStatus.Valid)
@@ -513,9 +518,11 @@ namespace Notus.Block
             }
             NP.Success(NVG.Settings, "Block Integrity Valid");
 
+            /*
             NVG.Settings.BlockOrder.Clear();
             NVG.Settings.BlockSign.Clear();
             NVG.Settings.BlockPrev.Clear();
+            */
             foreach (KeyValuePair<long, string> item in BlockOrderList)
             {
                 NVG.Settings.BlockOrder.Add(item.Key, item.Value);

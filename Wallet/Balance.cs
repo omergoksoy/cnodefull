@@ -886,6 +886,10 @@ namespace Notus.Wallet
                 MemoryLimitCount = 1000,
                 Name = "wallet_i_can_approve"
             });
+
+            Summary.Clear();
+            ObjMp_MultiWalletParticipant.Clear();
+            ObjMp_WalletsICanApprove.Clear();
         }
         ~Balance()
         {
