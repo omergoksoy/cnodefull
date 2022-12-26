@@ -9,6 +9,8 @@ namespace Notus.Data
 {
     public class KeyValue : IDisposable
     {
+        private bool SettingsDefined = false;
+        private string PoolName = string.Empty;
         private string TempPath = string.Empty;
         private string DirPath = string.Empty;
         private NVS.KeyValueSettings ObjSettings = new();
@@ -72,7 +74,7 @@ namespace Notus.Data
             Notus.IO.CreateDirectory(DirPath);
             Notus.IO.CreateDirectory(TempPath);
 
-            string PoolName = DirPath + ObjSettings.Name + ".db";
+            PoolName = DirPath + ObjSettings.Name + ".db";
             DeleteKeyList.Clear();
             SetValueList.Clear();
 
@@ -90,6 +92,7 @@ namespace Notus.Data
             {
                 SetValueToDbFunction();
             }, true);
+            SettingsDefined = true;
         }
         public KeyValue()
         {
@@ -100,6 +103,25 @@ namespace Notus.Data
         }
         public void Clear()
         {
+            if (SettingsDefined == false)
+                return;
+
+            DeleteKeyList.Clear();
+            SetValueList.Clear();
+            Thread.Sleep(100);
+
+            ValueList.Clear();
+            try
+            {
+                SqlObj.Clear(PoolName);
+            }
+            catch { }
+            
+            string[] setFileList = Directory.GetFiles(TempPath, "*.set",SearchOption.TopDirectoryOnly);
+            foreach(string fileName in setFileList)
+            {
+                Console.WriteLine(fileName);
+            }
             Console.WriteLine("KeyValue-db Clear Function");
         }
         public void Each(System.Action<string, string> incomeAction, 
