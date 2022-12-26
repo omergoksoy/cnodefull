@@ -210,6 +210,7 @@ namespace Notus.Block
 
                 NVG.Settings.BlockOrder.Add(currentRowNo, CurrentBlockOrder[currentRowNo].Uid);
                 NVG.Settings.BlockSign.Add(currentRowNo, CurrentBlockOrder[currentRowNo].Sign);
+                NVG.Settings.BlockPrev.Add(currentRowNo, CurrentBlockOrder[currentRowNo].Prev);
             }
 
             using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
@@ -381,6 +382,7 @@ namespace Notus.Block
 
                                                         NVG.Settings.BlockOrder.Add(ControlBlock.info.rowNo, ControlBlock.info.uID);
                                                         NVG.Settings.BlockSign.Add(ControlBlock.info.rowNo, ControlBlock.sign);
+                                                        NVG.Settings.BlockPrev.Add(ControlBlock.info.rowNo, ControlBlock.prev);
                                                     }
                                                 }
                                             }
@@ -513,6 +515,7 @@ namespace Notus.Block
 
             NVG.Settings.BlockOrder.Clear();
             NVG.Settings.BlockSign.Clear();
+            NVG.Settings.BlockPrev.Clear();
             foreach (KeyValuePair<long, string> item in BlockOrderList)
             {
                 NVG.Settings.BlockOrder.Add(item.Key, item.Value);

@@ -235,7 +235,7 @@ namespace Notus.Variable
             { "BlockPoolList", "pool_list" },
             { "BlockSignList", "block_sign" },
             { "BlockOrderList", "block_order" },
-            { "PreviousBlockList", "prev_list" },
+            { "BlockPrevList", "block_prev" },
 
             //{ "BlockStorageList", "block_list" },
             { "MempoolListBeforeBlockStorage", "block_file" },

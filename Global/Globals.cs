@@ -146,7 +146,8 @@ namespace Notus.Variable
                     DevNet = 0
                 },
                 BlockOrder = new Notus.Block.Order(),
-                BlockSign = new Notus.Block.Sign()
+                BlockSign = new Notus.Block.Sign(),
+                BlockPrev = new Notus.Block.Prev()
             };
         }
 

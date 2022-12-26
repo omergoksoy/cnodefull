@@ -1078,6 +1078,7 @@ namespace Notus.Validator
                     {
                         NVG.Settings.BlockOrder.Add(blockData.info.rowNo, blockData.info.uID);
                         NVG.Settings.BlockSign.Add(blockData.info.rowNo, blockData.sign);
+                        NVG.Settings.BlockPrev.Add(blockData.info.rowNo, blockData.prev);
                         if (string.Equals(NVH.BlockValidator(blockData), NVG.Settings.Nodes.My.IP.Wallet) == false)
                         {
                             NP.Info("New Block Arrived : " + blockData.info.uID.Substring(0, 15));

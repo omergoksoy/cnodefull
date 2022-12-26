@@ -45,6 +45,7 @@ namespace Notus.Globals.Variable
         public Notus.Variable.Struct.CommunicationPorts? Port { get; set; }
         public Notus.Block.Order BlockOrder { get; set; }
         public Notus.Block.Sign BlockSign { get; set; }
+        public Notus.Block.Prev BlockPrev { get; set; }
 
         public bool DebugMode { get; set; }
         public bool InfoMode { get; set; }

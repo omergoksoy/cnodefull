@@ -27,6 +27,7 @@ namespace Notus.Validator
         {
             NVG.Settings.BlockOrder.Start();
             NVG.Settings.BlockSign.Start();
+            NVG.Settings.BlockPrev.Start();
 
             NP.ExecuteTime();
 
