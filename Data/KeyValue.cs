@@ -116,15 +116,9 @@ namespace Notus.Data
                 SqlObj.Clear(PoolName);
             }
             catch { }
-            
-            string[] setFileList = Directory.GetFiles(TempPath, "*.set",SearchOption.TopDirectoryOnly);
-            foreach(string fileName in setFileList)
-            {
-                if (System.IO.File.Exists(fileName))
-                {
-                    System.IO.File.Delete(fileName);
-                }
-            }
+
+            Notus.IO.DeleteAllFileInsideDirectory(TempPath, "set");
+            Notus.IO.DeleteAllFileInsideDirectory(TempPath, "del");
         }
         public void Each(System.Action<string, string> incomeAction, 
             int UseThisNumberAsCountOrMiliSeconds = 1000, 

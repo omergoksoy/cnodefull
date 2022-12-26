@@ -5,6 +5,25 @@ namespace Notus
 {
     public static class IO
     {
+        public static void DeleteAllFileInsideDirectory(string directoryName,string extension)
+        {
+            foreach (string fileName in Notus.IO.GetFileList(directoryName, extension))
+            {
+                if (System.IO.File.Exists(fileName))
+                {
+                    System.IO.File.Delete(fileName);
+                }
+            }
+        }
+        public static string[] GetFileList(string directoryName,string extension)
+        {
+            if (Directory.Exists(directoryName) == false)
+            {
+                return new string[] { };
+            }
+            return Directory.GetFiles(directoryName, "*." + extension);
+        }
+
         public static string[] GetFileList(
             Notus.Variable.Enum.NetworkType networkType,
             Notus.Variable.Enum.NetworkLayer networkLayer,
