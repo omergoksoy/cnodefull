@@ -120,9 +120,11 @@ namespace Notus.Data
             string[] setFileList = Directory.GetFiles(TempPath, "*.set",SearchOption.TopDirectoryOnly);
             foreach(string fileName in setFileList)
             {
-                Console.WriteLine(fileName);
+                if (System.IO.File.Exists(fileName))
+                {
+                    System.IO.File.Delete(fileName);
+                }
             }
-            Console.WriteLine("KeyValue-db Clear Function");
         }
         public void Each(System.Action<string, string> incomeAction, 
             int UseThisNumberAsCountOrMiliSeconds = 1000, 
