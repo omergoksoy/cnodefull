@@ -44,6 +44,7 @@ namespace Notus.Globals.Variable
         public Notus.Variable.Enum.NetworkLayer Layer { get; set; }
         public Notus.Variable.Struct.CommunicationPorts? Port { get; set; }
         public Notus.Block.Order BlockOrder { get; set; }
+        public Notus.Block.Sign BlockSign { get; set; }
 
         public bool DebugMode { get; set; }
         public bool InfoMode { get; set; }

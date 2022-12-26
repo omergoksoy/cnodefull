@@ -11,7 +11,7 @@ using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
 namespace Notus.Block
 {
-    public class Order : IDisposable
+    public class Sign : IDisposable
     {
         private long BiggestCountNumber = 0;
         private Notus.Data.KeyValue listObj = new Notus.Data.KeyValue();
@@ -39,9 +39,9 @@ namespace Notus.Block
             }
             return resultList;
         }
-        public void Add(long blockRowNo, string blockUid)
+        public void Add(long blockRowNo, string blockSign)
         {
-            listObj.Set(blockRowNo.ToString(), blockUid);
+            listObj.Set(blockRowNo.ToString(), blockSign);
 
             if (blockRowNo > BiggestCountNumber)
                 BiggestCountNumber = blockRowNo;
@@ -52,13 +52,13 @@ namespace Notus.Block
             {
                 Path = "block_meta",
                 MemoryLimitCount = 0,
-                Name = Notus.Variable.Constant.MemoryPoolName["BlockOrderList"]
+                Name = Notus.Variable.Constant.MemoryPoolName["BlockSignList"]
             });
         }
-        public Order()
+        public Sign()
         {
         }
-        ~Order()
+        ~Sign()
         {
             Dispose();
         }

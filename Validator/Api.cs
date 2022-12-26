@@ -152,6 +152,7 @@ namespace Notus.Validator
             }
 
             NVG.Settings.BlockOrder.Add(Obj_BlockData.info.rowNo, Obj_BlockData.info.uID);
+            NVG.Settings.BlockSign.Add(Obj_BlockData.info.rowNo, Obj_BlockData.sign);
 
             NGF.Balance.Control(Obj_BlockData);
 

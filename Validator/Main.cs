@@ -1077,6 +1077,7 @@ namespace Notus.Validator
                     if (innerSendToMyChain == true)
                     {
                         NVG.Settings.BlockOrder.Add(blockData.info.rowNo, blockData.info.uID);
+                        NVG.Settings.BlockSign.Add(blockData.info.rowNo, blockData.sign);
                         if (string.Equals(NVH.BlockValidator(blockData), NVG.Settings.Nodes.My.IP.Wallet) == false)
                         {
                             NP.Info("New Block Arrived : " + blockData.info.uID.Substring(0, 15));
@@ -1113,6 +1114,7 @@ namespace Notus.Validator
 
                     */
                     innerSendToMyChain = true;
+                    NVG.Settings.BlockOrder.Add(blockData.info.rowNo, blockData.sign);
                     NVG.Settings.BlockOrder.Add(blockData.info.rowNo, blockData.info.uID);
                     if (string.Equals(NVH.BlockValidator(blockData), NVG.Settings.Nodes.My.IP.Wallet) == false)
                     {

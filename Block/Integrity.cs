@@ -209,6 +209,7 @@ namespace Notus.Block
                     return (NVE.BlockIntegrityStatus.CheckAgain, null);
 
                 NVG.Settings.BlockOrder.Add(currentRowNo, CurrentBlockOrder[currentRowNo].Uid);
+                NVG.Settings.BlockSign.Add(currentRowNo, CurrentBlockOrder[currentRowNo].Sign);
             }
 
             using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
@@ -379,6 +380,7 @@ namespace Notus.Block
 
 
                                                         NVG.Settings.BlockOrder.Add(ControlBlock.info.rowNo, ControlBlock.info.uID);
+                                                        NVG.Settings.BlockSign.Add(ControlBlock.info.rowNo, ControlBlock.sign);
                                                     }
                                                 }
                                             }
@@ -510,6 +512,7 @@ namespace Notus.Block
             NP.Success(NVG.Settings, "Block Integrity Valid");
 
             NVG.Settings.BlockOrder.Clear();
+            NVG.Settings.BlockSign.Clear();
             foreach (KeyValuePair<long, string> item in BlockOrderList)
             {
                 NVG.Settings.BlockOrder.Add(item.Key, item.Value);
