@@ -502,56 +502,8 @@ namespace Notus.Validator
             Obj_Integrity = new Notus.Block.Integrity();
             if (Obj_Integrity.IsGenesisNeed())
             {
-                NVH.PrepareValidatorList(true);
-                bool definedValidator = false;
-                foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
-                {
-                    if (string.Equals(NVG.Settings.Nodes.My.IP.IpAddress, item.IpAddress) == true)
-                    {
-                        definedValidator = true;
-                    }
-                }
-                if (definedValidator == false)
-                {
-                    NP.Danger("Diger nodelardan tanımlanmış Validatorlerden tarafından olusturulmus Genesis blogunu iste");
-                    NP.Danger("Diger nodelardan tanımlanmış Validatorlerden tarafından olusturulmus Genesis blogunu iste");
-                    NP.Danger("Diger nodelardan tanımlanmış Validatorlerden tarafından olusturulmus Genesis blogunu iste");
-                    NP.Danger("Genesis Ceremony Works With Only Defined Validators");
-                    Environment.Exit(0);
-                }
-
-                //ValidatorQueueObj.PreStart();
-                Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
-                NP.ReadLine();
-                NP.ReadLine();
-                NP.ReadLine();
-                bool exitFromWhileLoop = false;
-                while (exitFromWhileLoop == false)
-                {
-                    bool allValidatorIsOnline = true;
-                    foreach (var validatorItem in NGF.ValidatorList)
-                    {
-                        if (string.Equals(NVG.Settings.Nodes.My.HexKey, validatorItem.Key) == false)
-                        {
-                            if (NTN.PingToNode(validatorItem.Value) == NVS.NodeStatus.Online)
-                            {
-                                NGF.ValidatorList[validatorItem.Key].Status = NVS.NodeStatus.Online;
-                            }
-                            else
-                            {
-                                allValidatorIsOnline = false;
-                            }
-                        }
-                    }
-                    if (allValidatorIsOnline == true)
-                    {
-                        Console.WriteLine("allValidatorIsOnline = TRUE");
-                    }
-                    else
-                    {
-                        Console.WriteLine("allValidatorIsOnline = FALSE");
-                    }
-                }
+                Notus.Ceremony.Genesis genesisObj = new Notus.Ceremony.Genesis();
+                genesisObj.StartNodeSync();
             }
 
             NVH.PrepareValidatorList(false);
