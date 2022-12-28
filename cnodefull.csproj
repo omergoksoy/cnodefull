@@ -14,8 +14,12 @@
   <ItemGroup>
     <None Remove="Global\" />
     <None Remove="Message\" />
+    <None Remove="Ceremony\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Ceremony\" />
   </ItemGroup>
 </Project>

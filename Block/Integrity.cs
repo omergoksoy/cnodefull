@@ -56,15 +56,25 @@ namespace Notus.Block
             }
             return null;
         }
+        //genesis bloğu oluşturuldumu diye kontrol ediyor
+        public bool IsGenesisNeed()
+        {
+            string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
+            if (ZipFileList.Length == 0)
+                return true;
 
+            //burada genesis bloğunun geçerliliği kontrol edilecek
+            //burada genesis bloğunun geçerliliği kontrol edilecek
+            //burada genesis bloğunun geçerliliği kontrol edilecek
+
+            return false;
+        }
         // burası merkezi kontrol noktası
         private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity()
         {
-
             NVG.Settings.BlockOrder.Clear();
             NVG.Settings.BlockSign.Clear();
             NVG.Settings.BlockPrev.Clear();
-
             (NVE.BlockIntegrityStatus tmpStatus, NVClass.BlockData? tmpLastBlock) = ControlBlockIntegrity_FastCheck();
 
             if (tmpStatus == NVE.BlockIntegrityStatus.Valid)

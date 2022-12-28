@@ -162,7 +162,7 @@ namespace Notus.Variable
                   burada bulunan cüzdan listesi imzalanarak diğer node'lara iletilecek
                   böylece eğer oluşturulan blok içeriği iletilene kadar 
 
-                  */
+            */
             /*
             bu dictionary'ye işlenen bloğun içinde işlem yapan cüzdan adreslerinin listesi yazılacak
             bu liste <block> bilgisi ile sıradaki node'a iletilecek

@@ -541,6 +541,16 @@ namespace Notus.Validator
                 Console.WriteLine("Obj_Integrity.ControlGenesisBlock : FALSE");
             }
 
+            if (Obj_Integrity.IsGenesisNeed())
+            {
+                bool exitFromWhileLoop = false;
+                while(exitFromWhileLoop == false)
+                {
+                    //deneme();
+                }
+            }
+
+
             Obj_Integrity.GetLastBlock();        // get last block from current node
 
             if (NVG.Settings.Genesis == null)
