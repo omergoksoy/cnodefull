@@ -7,6 +7,7 @@ using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
 using NP2P = Notus.P2P;
+using NTN = Notus.Toolbox.Network;
 using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
 using NVD = Notus.Validator.Date;
@@ -527,7 +528,29 @@ namespace Notus.Validator
                 bool exitFromWhileLoop = false;
                 while (exitFromWhileLoop == false)
                 {
-                    //deneme();
+                    bool allValidatorIsOnline = true;
+                    foreach (var validatorItem in NGF.ValidatorList)
+                    {
+                        if (string.Equals(NVG.Settings.Nodes.My.HexKey, validatorItem.Key) == false)
+                        {
+                            if (NTN.PingToNode(validatorItem.Value) == NVS.NodeStatus.Online)
+                            {
+                                NGF.ValidatorList[validatorItem.Key].Status = NVS.NodeStatus.Online;
+                            }
+                            else
+                            {
+                                allValidatorIsOnline = false;
+                            }
+                        }
+                    }
+                    if (allValidatorIsOnline == true)
+                    {
+                        Console.WriteLine("allValidatorIsOnline = TRUE");
+                    }
+                    else
+                    {
+                        Console.WriteLine("allValidatorIsOnline = FALSE");
+                    }
                 }
             }
 
