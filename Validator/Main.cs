@@ -513,12 +513,13 @@ namespace Notus.Validator
                 if (definedValidator == false)
                 {
                     NP.Danger("Diger nodelardan tanımlanmış Validatorlerden tarafından olusturulmus Genesis blogunu iste");
+                    NP.Danger("Diger nodelardan tanımlanmış Validatorlerden tarafından olusturulmus Genesis blogunu iste");
+                    NP.Danger("Diger nodelardan tanımlanmış Validatorlerden tarafından olusturulmus Genesis blogunu iste");
                     NP.Danger("Genesis Ceremony Works With Only Defined Validators");
                     Environment.Exit(0);
                 }
 
                 //ValidatorQueueObj.PreStart();
-                Console.WriteLine("kaljshdkajhskda");
                 Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
                 NP.ReadLine();
                 NP.ReadLine();
