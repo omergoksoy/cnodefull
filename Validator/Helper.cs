@@ -13,20 +13,26 @@ namespace Notus.Validator
 {
     public static class Helper
     {
-        public static void PrepareValidatorList()
+        public static void PrepareValidatorList(bool OnlyDefinedNodes)
         {
             NVG.NodeList.Clear();
             NGF.ValidatorList.Clear();
             bool generateBaseValidatorList = false;
-
-            using (Notus.Mempool objMpNodeList = new Notus.Mempool(NVC.MemoryPoolName["ValidatorList"]))
+            if (OnlyDefinedNodes == false)
             {
-                objMpNodeList.AsyncActive = false;
-                string addressListStr = objMpNodeList.Get("address_list", string.Empty);
-                if (addressListStr.Length == 0)
+                using (Notus.Mempool objMpNodeList = new Notus.Mempool(NVC.MemoryPoolName["ValidatorList"]))
                 {
-                    generateBaseValidatorList = true;
+                    objMpNodeList.AsyncActive = false;
+                    string addressListStr = objMpNodeList.Get("address_list", string.Empty);
+                    if (addressListStr.Length == 0)
+                    {
+                        generateBaseValidatorList = true;
+                    }
                 }
+            }
+            else
+            {
+                generateBaseValidatorList = true;
             }
             if (generateBaseValidatorList == true)
             {

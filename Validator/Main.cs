@@ -498,7 +498,39 @@ namespace Notus.Validator
 
             NVR.NetworkSelectorList.Clear();
 
-            NVH.PrepareValidatorList();
+            Obj_Integrity = new Notus.Block.Integrity();
+            if (Obj_Integrity.IsGenesisNeed())
+            {
+                NVH.PrepareValidatorList(true);
+                bool definedValidator = false;
+                foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
+                {
+                    if (string.Equals(NVG.Settings.Nodes.My.IP.IpAddress, item.IpAddress) == true)
+                    {
+                        definedValidator = true;
+                    }
+                }
+                if (definedValidator == false)
+                {
+                    NP.Danger("Diger nodelardan tanımlanmış Validatorlerden tarafından olusturulmus Genesis blogunu iste");
+                    NP.Danger("Genesis Ceremony Works With Only Defined Validators");
+                    Environment.Exit(0);
+                }
+
+                //ValidatorQueueObj.PreStart();
+                Console.WriteLine("kaljshdkajhskda");
+                Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
+                NP.ReadLine();
+                NP.ReadLine();
+                NP.ReadLine();
+                bool exitFromWhileLoop = false;
+                while (exitFromWhileLoop == false)
+                {
+                    //deneme();
+                }
+            }
+
+            NVH.PrepareValidatorList(false);
 
             NGF.GetUtcTimeFromNode(20, true);
             TimeBaseBlockUidList.Clear();
@@ -529,7 +561,6 @@ namespace Notus.Validator
                 }
             );
 
-            Obj_Integrity = new Notus.Block.Integrity();
             bool controlStatus = Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with another node
             if (controlStatus == true)
             {
@@ -541,22 +572,6 @@ namespace Notus.Validator
                 // eğer diğer node'lardan Genesis alınmadıysa FALSE
                 Console.WriteLine("Obj_Integrity.ControlGenesisBlock : FALSE");
             }
-
-            if (Obj_Integrity.IsGenesisNeed())
-            {
-                ValidatorQueueObj.PreStart();
-                Console.WriteLine("kaljshdkajhskda");
-                Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
-                NP.ReadLine();
-                NP.ReadLine();
-                NP.ReadLine();
-                bool exitFromWhileLoop = false;
-                while(exitFromWhileLoop == false)
-                {
-                    //deneme();
-                }
-            }
-
 
             Obj_Integrity.GetLastBlock();        // get last block from current node
 
