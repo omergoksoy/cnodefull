@@ -544,6 +544,12 @@ namespace Notus.Validator
 
             if (Obj_Integrity.IsGenesisNeed())
             {
+                ValidatorQueueObj.PreStart();
+                Console.WriteLine("kaljshdkajhskda");
+                Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
+                NP.ReadLine();
+                NP.ReadLine();
+                NP.ReadLine();
                 bool exitFromWhileLoop = false;
                 while(exitFromWhileLoop == false)
                 {

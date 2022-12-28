@@ -916,6 +916,10 @@ namespace Notus.Validator
             */
             return resultList;
         }
+        public void PreStartForGenesisCeremony()
+        {
+
+        }
         public void PreStart()
         {
             if (NVG.Settings.LocalNode == true)
