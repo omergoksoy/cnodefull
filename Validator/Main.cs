@@ -508,6 +508,7 @@ namespace Notus.Validator
                 TimeSyncObj.Start();
                 NtpDateSyncObj.Start();
             }
+
             /*
             burada port ile soket başlatacak ve kontrollü bir şekilde 
             başlangıçlarını ayarla
