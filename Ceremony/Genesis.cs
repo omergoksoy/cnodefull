@@ -80,15 +80,21 @@ namespace Notus.Ceremony
             {
                 if (string.Equals(NVG.Settings.Nodes.My.HexKey, validatorItem.Key) == false)
                 {
-                    if (NVG.Settings.PeerManager.Send(validatorItem.Key, msgText, false) == false)
+                    bool sendedToValidator = false;
+                    while(sendedToValidator == false)
                     {
-                        NP.Info(validatorItem.Value.IpAddress + " -> " + validatorItem.Value.Port.ToString() + " - Sended");
-                        NGF.ValidatorList[validatorItem.Key].Status = NVS.NodeStatus.Offline;
-                    }
-                    else
-                    {
-                        NP.Danger(validatorItem.Value.IpAddress + " -> " + validatorItem.Value.Port.ToString() + " - Error");
-                        NGF.ValidatorList[validatorItem.Key].Status = NVS.NodeStatus.Online;
+                        if (NVG.Settings.PeerManager.Send(validatorItem.Key, msgText, false) == false)
+                        {
+                            NP.Danger(validatorItem.Value.IpAddress + " -> " + validatorItem.Value.Port.ToString() + " - Error");
+                            NGF.ValidatorList[validatorItem.Key].Status = NVS.NodeStatus.Offline;
+                            Thread.Sleep(100);
+                        }
+                        else
+                        {
+                            NP.Info(validatorItem.Value.IpAddress + " -> " + validatorItem.Value.Port.ToString() + " - Sended");
+                            NGF.ValidatorList[validatorItem.Key].Status = NVS.NodeStatus.Online;
+                            sendedToValidator = true;
+                        }
                     }
                 }
             }
