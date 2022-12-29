@@ -512,11 +512,13 @@ namespace Notus.Validator
                 p2pPortNo,
                 (string incomeMessage) =>
                 {
+                    string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
+                    /*
                     if (string.Equals(incomeMessage, "<ping>1</ping>") == false)
                     {
                         Console.WriteLine("incomeMessage : " + incomeMessage);
                     }
-                    string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
+
                     if (
                         string.Equals(innerResultStr, "done") == false
                         &&
@@ -525,6 +527,7 @@ namespace Notus.Validator
                     {
                         NP.Basic("Function Response : " + innerResultStr);
                     }
+                    */
                 }
             , false);
 
@@ -556,12 +559,13 @@ namespace Notus.Validator
                         Thread.Sleep(50);
                     }
                 }
+                
                 NP.Basic(JsonSerializer.Serialize(NGF.ValidatorList));
                 NP.Basic(JsonSerializer.Serialize(NVG.NodeList));
                 NP.Success("Tum Seremoni üyeleri çevrim içi");
 
                 int myOrderNo = genesisObj.MakeMembersOrders();
-                Console.WriteLine("myOrderNo : " + myOrderNo.ToString());
+                NP.Success("myOrderNo : " + myOrderNo.ToString());
                 NP.ReadLine();
             }
 
