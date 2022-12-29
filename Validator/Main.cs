@@ -499,23 +499,6 @@ namespace Notus.Validator
 
             NVR.NetworkSelectorList.Clear();
 
-            Obj_Integrity = new Notus.Block.Integrity();
-            if (Obj_Integrity.IsGenesisNeed())
-            {
-                Notus.Ceremony.Genesis genesisObj = new Notus.Ceremony.Genesis();
-                genesisObj.StartNodeSync();
-            }
-
-            NVH.PrepareValidatorList(false);
-
-            NGF.GetUtcTimeFromNode(20, true);
-            TimeBaseBlockUidList.Clear();
-
-            if (NVG.Settings.GenesisCreated == false)
-            {
-                TimeSyncObj.Start();
-                NtpDateSyncObj.Start();
-            }
 
             /*
             burada port ile soket başlatacak ve kontrollü bir şekilde 
@@ -536,6 +519,25 @@ namespace Notus.Validator
                     }
                 }
             );
+
+
+            Obj_Integrity = new Notus.Block.Integrity();
+            if (Obj_Integrity.IsGenesisNeed())
+            {
+                Notus.Ceremony.Genesis genesisObj = new Notus.Ceremony.Genesis();
+                genesisObj.StartNodeSync();
+            }
+
+            NVH.PrepareValidatorList(false);
+
+            NGF.GetUtcTimeFromNode(20, true);
+            TimeBaseBlockUidList.Clear();
+
+            if (NVG.Settings.GenesisCreated == false)
+            {
+                TimeSyncObj.Start();
+                NtpDateSyncObj.Start();
+            }
 
             bool controlStatus = Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with another node
             if (controlStatus == true)

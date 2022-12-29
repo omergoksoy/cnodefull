@@ -44,6 +44,11 @@ namespace Notus.Ceremony
             //ValidatorQueueObj.PreStart();
             Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
             bool exitFromWhileLoop = false;
+            NVG.Settings.PeerManager.RemoveAll();
+            foreach (var validatorItem in NGF.ValidatorList)
+            {
+                NVG.Settings.PeerManager.AddPeer(validatorItem.Key, validatorItem.Value.IpAddress);
+            }
             while (exitFromWhileLoop == false)
             {
                 bool allValidatorIsOnline = true;
@@ -51,9 +56,11 @@ namespace Notus.Ceremony
                 {
                     if (string.Equals(NVG.Settings.Nodes.My.HexKey, validatorItem.Key) == false)
                     {
+                        /*
                         Bu fonksiyon API ile çalışıyor
                         özel soket bağlantısını başlat ve o soket ile Ping fonksiyonunu çalıştır.
                         tüm nodelar online olunca sonraki sekansa geç
+                        */
 
                         if (NTN.PingToNode(validatorItem.Value) == NVS.NodeStatus.Online)
                         {
