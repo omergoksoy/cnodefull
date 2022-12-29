@@ -540,6 +540,7 @@ namespace Notus.Validator
                 NVH.DefineMyNodeInfo();
                 genesisObj.SendNodeInfoToToMembers();
                 bool waitAllNodeInfoArrived = false;
+                DateTime waitTimeDiff = DateTime.Now;
                 while (waitAllNodeInfoArrived == false)
                 {
                     bool weWaitResponseFromNode = false;
@@ -548,6 +549,11 @@ namespace Notus.Validator
                         if (validatorItem.Value.Begin == 0)
                         {
                             weWaitResponseFromNode = true;
+                            if ((DateTime.Now - waitTimeDiff).TotalSeconds > 5)
+                            {
+                                NVG.Settings.PeerManager.Send(validatorItem.Key, "<rNode>1</rNode>", false);
+                                waitTimeDiff = DateTime.Now;
+                            }
                         }
                     }
                     if (weWaitResponseFromNode == false)
@@ -559,7 +565,7 @@ namespace Notus.Validator
                         Thread.Sleep(50);
                     }
                 }
-                
+
                 NP.Basic(JsonSerializer.Serialize(NGF.ValidatorList));
                 NP.Basic(JsonSerializer.Serialize(NVG.NodeList));
                 NP.Success("Tum Seremoni üyeleri çevrim içi");
