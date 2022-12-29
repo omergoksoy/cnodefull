@@ -3,6 +3,7 @@ using System;
 using System.Text.Json;
 using ND = Notus.Date;
 using NVD = Notus.Validator.Date;
+using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 namespace Notus.Block
 {
@@ -15,6 +16,11 @@ namespace Notus.Block
 
         public static string CalculateRaw(GenesisBlockData genesisObj)
         {
+            burada genesis bloğunu tek string haline getirecek ve imzalayacak
+            string rawDataStr = 
+                genesisObj.Version.ToString()+
+                NVC.NonceDelimeterChar+
+                genesisObj.Empty.Active
             string tmpText = JsonSerializer.Serialize(genesisObj);
             GenesisBlockData? tmpGenesisObj = JsonSerializer.Deserialize<GenesisBlockData>(tmpText);
             if (tmpGenesisObj == null)
