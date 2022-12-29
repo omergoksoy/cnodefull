@@ -536,7 +536,26 @@ namespace Notus.Validator
                 genesisObj.StartNodeSync();
                 NVH.DefineMyNodeInfo();
                 genesisObj.SendNodeInfoToToMembers();
-                Thread.Sleep(150);
+                bool waitAllNodeInfoArrived = false;
+                while(waitAllNodeInfoArrived == false)
+                {
+                    bool weWaitResponseFromNode = false;
+                    foreach (var validatorItem in NVG.NodeList)
+                    {
+                        if (validatorItem.Value.Begin == 0)
+                        {
+                            weWaitResponseFromNode = true;
+                        }
+                    }
+                    if (weWaitResponseFromNode == false)
+                    {
+                        waitAllNodeInfoArrived = true;
+                    }
+                    else
+                    {
+                        Thread.Sleep(50);
+                    }
+                }
                 NP.Basic(JsonSerializer.Serialize(NGF.ValidatorList));
                 NP.Basic(JsonSerializer.Serialize(NVG.NodeList));
                 NP.Success("Tum Seremoni üyeleri çevrim içi");
