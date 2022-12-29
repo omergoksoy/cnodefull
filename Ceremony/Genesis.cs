@@ -73,6 +73,35 @@ namespace Notus.Ceremony
             }
             return myOrderNo;
         }
+        public void WaitForOtherNodeInfoDetails()
+        {
+            bool waitAllNodeInfoArrived = false;
+            DateTime waitTimeDiff = DateTime.Now;
+            while (waitAllNodeInfoArrived == false)
+            {
+                bool weWaitResponseFromNode = false;
+                foreach (var validatorItem in NVG.NodeList)
+                {
+                    if (validatorItem.Value.Begin == 0)
+                    {
+                        weWaitResponseFromNode = true;
+                        if ((DateTime.Now - waitTimeDiff).TotalSeconds > 5)
+                        {
+                            NVG.Settings.PeerManager.Send(validatorItem.Key, "<sNode>" + NVG.Settings.Nodes.My.IP.Wallet + "</sNode>", false);
+                            waitTimeDiff = DateTime.Now;
+                        }
+                    }
+                }
+                if (weWaitResponseFromNode == false)
+                {
+                    waitAllNodeInfoArrived = true;
+                }
+                else
+                {
+                    Thread.Sleep(50);
+                }
+            }
+        }
         public void SendNodeInfoToToMembers()
         {
             string msgText = "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
@@ -85,13 +114,13 @@ namespace Notus.Ceremony
                     {
                         if (NVG.Settings.PeerManager.Send(validatorItem.Key, msgText, false) == false)
                         {
-                            NP.Danger(validatorItem.Value.IpAddress + " -> " + validatorItem.Value.Port.ToString() + " - Error");
+                            //NP.Danger(validatorItem.Value.IpAddress + " -> " + validatorItem.Value.Port.ToString() + " - Error");
                             NGF.ValidatorList[validatorItem.Key].Status = NVS.NodeStatus.Offline;
                             Thread.Sleep(100);
                         }
                         else
                         {
-                            NP.Info(validatorItem.Value.IpAddress + " -> " + validatorItem.Value.Port.ToString() + " - Sended");
+                            //NP.Info(validatorItem.Value.IpAddress + " -> " + validatorItem.Value.Port.ToString() + " - Sended");
                             NGF.ValidatorList[validatorItem.Key].Status = NVS.NodeStatus.Online;
                             sendedToValidator = true;
                         }
@@ -119,7 +148,7 @@ namespace Notus.Ceremony
                 Environment.Exit(0);
             }
 
-            NP.Basic(JsonSerializer.Serialize(NGF.ValidatorList));
+            //NP.Basic(JsonSerializer.Serialize(NGF.ValidatorList));
             //ValidatorQueueObj.PreStart();
             bool exitFromWhileLoop = false;
             while (exitFromWhileLoop == false)

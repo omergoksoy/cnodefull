@@ -539,38 +539,10 @@ namespace Notus.Validator
                 genesisObj.StartNodeSync();
                 NVH.DefineMyNodeInfo();
                 genesisObj.SendNodeInfoToToMembers();
-                bool waitAllNodeInfoArrived = false;
-                DateTime waitTimeDiff = DateTime.Now;
-                while (waitAllNodeInfoArrived == false)
-                {
-                    bool weWaitResponseFromNode = false;
-                    foreach (var validatorItem in NVG.NodeList)
-                    {
-                        if (validatorItem.Value.Begin == 0)
-                        {
-                            weWaitResponseFromNode = true;
-                            if ((DateTime.Now - waitTimeDiff).TotalSeconds > 5)
-                            {
-                                NVG.Settings.PeerManager.Send(validatorItem.Key, "<sNode>"+ NVG.Settings.Nodes.My.IP.Wallet + "</sNode>", false);
-                                waitTimeDiff = DateTime.Now;
-                            }
-                        }
-                    }
-                    if (weWaitResponseFromNode == false)
-                    {
-                        waitAllNodeInfoArrived = true;
-                    }
-                    else
-                    {
-                        Thread.Sleep(50);
-                    }
-                }
-
-                NP.Basic(JsonSerializer.Serialize(NGF.ValidatorList));
-                NP.Basic(JsonSerializer.Serialize(NVG.NodeList));
-                NP.Success("Tum Seremoni üyeleri çevrim içi");
+                genesisObj.WaitForOtherNodeInfoDetails();
 
                 int myOrderNo = genesisObj.MakeMembersOrders();
+                NP.Success("Tum Seremoni üyeleri çevrim içi");
                 NP.Success("myOrderNo : " + myOrderNo.ToString());
 
                 if (myOrderNo == 1)
