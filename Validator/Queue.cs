@@ -393,6 +393,22 @@ namespace Notus.Validator
                 }
                 return "done";
             }
+            if (CheckXmlTag(incomeData, "sNode"))
+            {
+                incomeData = GetPureText(incomeData, "ready");
+                foreach (var validatorItem in NVG.NodeList)
+                {
+                    if (string.Equals(validatorItem.Value.IP.Wallet, incomeData) == false)
+                    {
+                        NVG.Settings.PeerManager.Send(
+                            validatorItem.Key,
+                            "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>", 
+                            false
+                        );
+                    }
+                }
+                return "done";
+            }
             if (CheckXmlTag(incomeData, "rNode"))
             {
                 return "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";

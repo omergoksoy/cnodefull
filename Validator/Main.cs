@@ -551,7 +551,7 @@ namespace Notus.Validator
                             weWaitResponseFromNode = true;
                             if ((DateTime.Now - waitTimeDiff).TotalSeconds > 5)
                             {
-                                NVG.Settings.PeerManager.Send(validatorItem.Key, "<rNode>1</rNode>", false);
+                                NVG.Settings.PeerManager.Send(validatorItem.Key, "<sNode>"+ NVG.Settings.Nodes.My.IP.Wallet + "</sNode>", false);
                                 waitTimeDiff = DateTime.Now;
                             }
                         }
