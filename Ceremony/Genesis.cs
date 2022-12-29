@@ -48,13 +48,13 @@ namespace Notus.Ceremony
             //ValidatorQueueObj.PreStart();
             Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
             bool exitFromWhileLoop = false;
-            NVG.Settings.PeerManager.RemoveAll();
-            foreach (var validatorItem in NGF.ValidatorList)
-            {
-                NVG.Settings.PeerManager.AddPeer(validatorItem.Key, validatorItem.Value.IpAddress);
-            }
             while (exitFromWhileLoop == false)
             {
+                NVG.Settings.PeerManager.RemoveAll();
+                foreach (var validatorItem in NGF.ValidatorList)
+                {
+                    NVG.Settings.PeerManager.AddPeer(validatorItem.Key, validatorItem.Value.IpAddress);
+                }
                 bool allValidatorIsOnline = true;
                 foreach (var validatorItem in NGF.ValidatorList)
                 {
@@ -70,6 +70,10 @@ namespace Notus.Ceremony
                 {
                     Console.WriteLine("allValidatorIsOnline = TRUE");
                     exitFromWhileLoop = true;
+                }
+                else
+                {
+                    Thread.Sleep(350);
                 }
             }
             NP.Success("Tum Seremoni üyeleri çevrim içi");
