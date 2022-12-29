@@ -13,8 +13,14 @@ namespace Notus.Variable.Genesis
         //public ContractFeeType Data { get; set; }
         public GenesisInfoType Info { get; set; }
         public PreminingType Premining { get; set; }
+        public Dictionary<int, GenesisCeremonyOrderType> Ceremony { get; set; }
     }
 
+    public class GenesisCeremonyOrderType
+    {
+        public string PublicKey { get; set; }
+        public string Sign { get; set; }           // daily lucky node reward
+    }
     public class EmptyBlockType
     {
         public bool Active { get; set; }

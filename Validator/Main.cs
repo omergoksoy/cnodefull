@@ -547,7 +547,22 @@ namespace Notus.Validator
 
                 if (myOrderNo == 1)
                 {
+                    Notus.Variable.Genesis.GenesisBlockData? newGenesisWithCeremony = Notus.Block.Genesis.Generate(
+                        //NVG.Settings.NodeWallet.WalletKey, 
+                        NVG.Settings.Nodes.My.IP.Wallet,
+                        NVG.Settings.Network,
+                        NVG.Settings.Layer
+                    );
                     NP.Success("I'm The First");
+
+
+                    //burada birinci sıradaki validatörün imzası eklenece
+                    newGenesisWithCeremony.Ceremony.Clear();
+                    newGenesisWithCeremony.Ceremony.Add(1, new Variable.Genesis.GenesisCeremonyOrderType()
+                    {
+                        PublicKey = "",
+                        Sign = ""
+                    });
                 }
                 NP.ReadLine();
             }

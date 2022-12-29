@@ -1,9 +1,9 @@
 ﻿using Notus.Variable.Genesis;
 using System;
 using System.Text.Json;
-using NVG = Notus.Variable.Globals;
-using NVD = Notus.Validator.Date;
 using ND = Notus.Date;
+using NVD = Notus.Validator.Date;
+using NVG = Notus.Variable.Globals;
 namespace Notus.Block
 {
     public class Genesis
@@ -13,6 +13,22 @@ namespace Notus.Block
         private const Notus.Variable.Enum.NetworkType Val_DefaultNetworkType = Notus.Variable.Enum.NetworkType.MainNet;
         private const Notus.Variable.Enum.NetworkLayer Val_DefaultNetworkLayer = Notus.Variable.Enum.NetworkLayer.Layer1;
 
+        public static string CalculateRaw(GenesisBlockData genesisObj)
+        {
+            string tmpText = JsonSerializer.Serialize(genesisObj);
+            GenesisBlockData? tmpGenesisObj = JsonSerializer.Deserialize<GenesisBlockData>(tmpText);
+            if (tmpGenesisObj == null)
+            {
+                return string.Empty;
+            }
+            tmpGenesisObj.Ceremony.Clear();
+            Console.WriteLine(
+                JsonSerializer.Serialize(tmpGenesisObj)
+            );
+            Notus.Print.ReadLine();
+            Notus.Print.ReadLine();
+            return string.Empty;
+        }
         public static GenesisBlockData Generate(string CreatorWalletKey, Notus.Variable.Enum.NetworkType NetworkType, Notus.Variable.Enum.NetworkLayer NetworkLayer)
         {
             return GetGenesis_SubFunction(CreatorWalletKey, Val_DefaultEncryptKeyPair, NetworkType, NetworkLayer);
@@ -28,9 +44,9 @@ namespace Notus.Block
 
         public static GenesisBlockData GetGenesis_SubFunction(string CreatorWalletKey, bool EncryptKeyPair, Notus.Variable.Enum.NetworkType NetworkType, Notus.Variable.Enum.NetworkLayer NetworkLayer)
         {
-            
+
             DateTime generationTime = ND.ToDateTime(NVG.NOW.Int - (NVG.NOW.Int % NVD.Calculate()));
-            
+
             string EncKey = generationTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText);
             Notus.Variable.Struct.EccKeyPair KeyPair_PreSeed = Notus.Wallet.ID.GenerateKeyPair(SelectedCurveName, NetworkType);
             Notus.Variable.Struct.EccKeyPair KeyPair_Private = Notus.Wallet.ID.GenerateKeyPair(SelectedCurveName, NetworkType);
@@ -91,7 +107,7 @@ namespace Notus.Block
                 {
                     TotalSupply = 550000000,
                     LuckyReward = 50,
-                    Reward =2,
+                    Reward = 2,
                     Active = true,
                     Interval = new IntervalType()
                     {
@@ -205,6 +221,10 @@ namespace Notus.Block
                         Wallet = KeyPair_Public.WalletKey,
                         PublicKey = KeyPair_Public.PublicKey
                     }
+                },
+                Ceremony = new Dictionary<int, GenesisCeremonyOrderType>()
+                {
+
                 }
             };
         }
