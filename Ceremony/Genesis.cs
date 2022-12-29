@@ -25,6 +25,7 @@ namespace Notus.Ceremony
         {
 
         }
+        private 
         public void StartNodeSync()
         {
             NVH.PrepareValidatorList(true);
