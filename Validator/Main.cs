@@ -535,6 +535,8 @@ namespace Notus.Validator
                 Notus.Ceremony.Genesis genesisObj = new Notus.Ceremony.Genesis();
                 genesisObj.StartNodeSync();
                 NVH.DefineMyNodeInfo();
+                genesisObj.SendNodeInfoToToMembers();
+                Thread.Sleep(150);
                 NP.Basic(JsonSerializer.Serialize(NGF.ValidatorList));
                 NP.Basic(JsonSerializer.Serialize(NVG.NodeList));
                 NP.Success("Tum Seremoni üyeleri çevrim içi");

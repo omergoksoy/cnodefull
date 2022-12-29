@@ -21,9 +21,23 @@ namespace Notus.Ceremony
         {
             get { return DefaultBlockGenerateInterval; }
         }
-        private void DefineCeremonyMembers()
+        public void SendNodeInfoToToMembers()
         {
-
+            string msgText = "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
+            foreach (var validatorItem in NGF.ValidatorList)
+            {
+                if (string.Equals(NVG.Settings.Nodes.My.HexKey, validatorItem.Key) == false)
+                {
+                    if (NVG.Settings.PeerManager.Send(validatorItem.Key, msgText, false) == false)
+                    {
+                        NGF.ValidatorList[validatorItem.Key].Status = NVS.NodeStatus.Offline;
+                    }
+                    else
+                    {
+                        NGF.ValidatorList[validatorItem.Key].Status = NVS.NodeStatus.Online;
+                    }
+                }
+            }
         }
         public void StartNodeSync()
         {
