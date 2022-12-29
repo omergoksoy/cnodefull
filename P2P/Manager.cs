@@ -150,7 +150,7 @@ namespace Notus.P2P
         {
             return this.Peers.ContainsKey(peerId);
         }
-        public bool Send(string peerId, string message)
+        public bool Send(string peerId, string message,bool removePeerIfOffline=true)
         {
             if (this.Peers.ContainsKey(peerId))
             {
@@ -158,18 +158,24 @@ namespace Notus.P2P
                 {
                     return true;
                 }
-                this.RemovePeer(peerId);
+                if (removePeerIfOffline == true)
+                {
+                    this.RemovePeer(peerId);
+                }
             }
             return false;
         }
 
-        public void SendAll(string message)
+        public void SendAll(string message, bool removePeerIfOffline = true)
         {
             foreach (var peer in this.Peers)
             {
                 if (peer.Value.Send(message) == false)
                 {
-                    this.RemovePeer(peer.Key);
+                    if (removePeerIfOffline == true)
+                    {
+                        this.RemovePeer(peer.Key);
+                    }
                     Console.WriteLine("Error : " + peer.Key);
                 }
                 else

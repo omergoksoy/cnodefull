@@ -197,6 +197,10 @@ namespace Notus.Validator
         }
         public string ProcessIncomeData(string incomeData)
         {
+            if (CheckXmlTag(incomeData, "ping"))
+            {
+                return "pong";
+            }
             if (CheckXmlTag(incomeData, "pQueue"))
             {
                 NP.PrintQueue(false, "Queue.cs -> Line 199");

@@ -21,6 +21,10 @@ namespace Notus.Ceremony
         {
             get { return DefaultBlockGenerateInterval; }
         }
+        private void DefineCeremonyMembers()
+        {
+
+        }
         public void StartNodeSync()
         {
             NVH.PrepareValidatorList(true);
@@ -56,52 +60,20 @@ namespace Notus.Ceremony
                 {
                     if (string.Equals(NVG.Settings.Nodes.My.HexKey, validatorItem.Key) == false)
                     {
-                        /*
-                        Bu fonksiyon API ile çalışıyor
-                        özel soket bağlantısını başlat ve o soket ile Ping fonksiyonunu çalıştır.
-                        tüm nodelar online olunca sonraki sekansa geç
-                        */
-                        if (NVG.Settings.PeerManager.Send(validatorItem.Key, "<ping>") == true)
-                        {
-
-                        }
-                        else
-                        {
-
-                        }
-                        /*
-                        if (NTN.PingToNode(validatorItem.Value) == NVS.NodeStatus.Online)
-                        {
-                            NGF.ValidatorList[validatorItem.Key].Status = NVS.NodeStatus.Online;
-                        }
-                        else
+                        if (NVG.Settings.PeerManager.Send(validatorItem.Key, "<ping>1</ping>",false) == false)
                         {
                             allValidatorIsOnline = false;
                         }
-                        */
                     }
                 }
                 if (allValidatorIsOnline == true)
                 {
                     Console.WriteLine("allValidatorIsOnline = TRUE");
-                }
-                else
-                {
-                    Console.WriteLine("allValidatorIsOnline = FALSE");
+                    exitFromWhileLoop = true;
                 }
             }
-        }
-        public void Start()
-        {
-
-
-        }
-        public Genesis(bool AutoStart = true)
-        {
-            if (AutoStart == true)
-            {
-                //Start();
-            }
+            NP.Success("Tum Seremoni üyeleri çevrim içi");
+            NP.ReadLine();
         }
         public void Dispose()
         {
