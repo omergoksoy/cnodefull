@@ -66,8 +66,9 @@ namespace Notus.Ceremony
             for (int i = 0; i < resultList.Count; i++)
             {
                 string? currentWalletId = resultList.Values.ElementAt(i);
-                if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, currentWalletId)){
-                    myOrderNo = i;
+                if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, currentWalletId))
+                {
+                    myOrderNo = i + 1;
                 }
             }
             return myOrderNo;
@@ -75,7 +76,6 @@ namespace Notus.Ceremony
         public void SendNodeInfoToToMembers()
         {
             string msgText = "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
-            Console.WriteLine(msgText);
             foreach (var validatorItem in NGF.ValidatorList)
             {
                 if (string.Equals(NVG.Settings.Nodes.My.HexKey, validatorItem.Key) == false)

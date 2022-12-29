@@ -566,6 +566,11 @@ namespace Notus.Validator
 
                 int myOrderNo = genesisObj.MakeMembersOrders();
                 NP.Success("myOrderNo : " + myOrderNo.ToString());
+
+                if (myOrderNo == 1)
+                {
+                    NP.Success("I'm The First");
+                }
                 NP.ReadLine();
             }
 
