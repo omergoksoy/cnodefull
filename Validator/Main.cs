@@ -512,9 +512,16 @@ namespace Notus.Validator
                 p2pPortNo,
                 (string incomeMessage) =>
                 {
-                    Console.WriteLine("incomeMessage : " + incomeMessage);
+                    if (string.Equals(incomeMessage, "<ping>1</ping>") == false)
+                    {
+                        Console.WriteLine("incomeMessage : " + incomeMessage);
+                    }
                     string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
-                    if (string.Equals(innerResultStr, "done") == false)
+                    if (
+                        string.Equals(innerResultStr, "done") == false
+                        &&
+                        string.Equals(innerResultStr, "pong") == false
+                    )
                     {
                         NP.Basic("Function Response : " + innerResultStr);
                     }
@@ -527,6 +534,10 @@ namespace Notus.Validator
             {
                 Notus.Ceremony.Genesis genesisObj = new Notus.Ceremony.Genesis();
                 genesisObj.StartNodeSync();
+                NP.Basic(JsonSerializer.Serialize(NGF.ValidatorList));
+                NP.Basic(JsonSerializer.Serialize(NVG.NodeList));
+                NP.Success("Tum Seremoni üyeleri çevrim içi");
+                NP.ReadLine();
             }
 
             NVH.PrepareValidatorList(false);

@@ -45,8 +45,8 @@ namespace Notus.Ceremony
                 Environment.Exit(0);
             }
 
-            //ValidatorQueueObj.PreStart();
             NP.Basic(JsonSerializer.Serialize(NGF.ValidatorList));
+            //ValidatorQueueObj.PreStart();
             bool exitFromWhileLoop = false;
             while (exitFromWhileLoop == false)
             {
@@ -92,10 +92,6 @@ namespace Notus.Ceremony
                     Thread.Sleep(350);
                 }
             }
-
-            NP.Basic(JsonSerializer.Serialize(NGF.ValidatorList));
-            NP.Success("Tum Seremoni üyeleri çevrim içi");
-            NP.ReadLine();
         }
         public void Dispose()
         {
