@@ -50,7 +50,7 @@ namespace Notus.Ceremony
             bool exitFromWhileLoop = false;
             while (exitFromWhileLoop == false)
             {
-                NVG.Settings.PeerManager.RemoveAll();
+                NVG.Settings.PeerManager.RemoveAll(false);
                 foreach (var validatorItem in NGF.ValidatorList)
                 {
                     if (string.Equals(NVG.Settings.Nodes.My.HexKey, validatorItem.Key) == false)
@@ -67,7 +67,7 @@ namespace Notus.Ceremony
                         {
                             allValidatorIsOnline = false;
                         }
-                    }
+                   }
                 }
                 if (allValidatorIsOnline == true)
                 {
