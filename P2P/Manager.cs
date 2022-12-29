@@ -105,7 +105,7 @@ namespace Notus.P2P
                 NVG.Settings.PeerManager.AddPeer(item.Value.WalletId, item.Value.IpAddress);
             }
         }
-        public void AddPeer(string peerId, string ipAddress,bool debugActivated=true)
+        public void AddPeer(string peerId, string ipAddress, bool debugActivated = true)
         {
             if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, peerId) == true)
                 return;
@@ -125,7 +125,7 @@ namespace Notus.P2P
             }
         }
 
-        public void RemoveAll(bool debugActivated=true)
+        public void RemoveAll(bool debugActivated = true)
         {
             if (debugActivated == true)
                 NP.Info("All P2P Connection Is Closing");
@@ -157,7 +157,7 @@ namespace Notus.P2P
         {
             return this.Peers.ContainsKey(peerId);
         }
-        public bool Send(string peerId, string message,bool removePeerIfOffline=true)
+        public bool Send(string peerId, string message, bool removePeerIfOffline = true)
         {
             if (this.Peers.ContainsKey(peerId))
             {

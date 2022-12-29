@@ -61,16 +61,27 @@ namespace Notus.Ceremony
                         );
                     }
                 }
-                bool allValidatorIsOnline = true;
                 foreach (var validatorItem in NGF.ValidatorList)
                 {
                     if (string.Equals(NVG.Settings.Nodes.My.HexKey, validatorItem.Key) == false)
                     {
-                        if (NVG.Settings.PeerManager.Send(validatorItem.Key, "<ping>1</ping>",false) == false)
+                        if (NVG.Settings.PeerManager.Send(validatorItem.Key, "<ping>1</ping>", false) == false)
                         {
-                            allValidatorIsOnline = false;
+                            NGF.ValidatorList[validatorItem.Key].Status = NVS.NodeStatus.Offline;
                         }
-                   }
+                        else
+                        {
+                            NGF.ValidatorList[validatorItem.Key].Status = NVS.NodeStatus.Online;
+                        }
+                    }
+                }
+                bool allValidatorIsOnline = true;
+                foreach (var validatorItem in NGF.ValidatorList)
+                {
+                    if(validatorItem.Value.Status == NVS.NodeStatus.Offline)
+                    {
+                        allValidatorIsOnline = false;
+                    }
                 }
                 if (allValidatorIsOnline == true)
                 {
