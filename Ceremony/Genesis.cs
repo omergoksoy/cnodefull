@@ -61,7 +61,15 @@ namespace Notus.Ceremony
                         özel soket bağlantısını başlat ve o soket ile Ping fonksiyonunu çalıştır.
                         tüm nodelar online olunca sonraki sekansa geç
                         */
+                        if (NVG.Settings.PeerManager.Send(validatorItem.Key, "<ping>") == true)
+                        {
 
+                        }
+                        else
+                        {
+
+                        }
+                        /*
                         if (NTN.PingToNode(validatorItem.Value) == NVS.NodeStatus.Online)
                         {
                             NGF.ValidatorList[validatorItem.Key].Status = NVS.NodeStatus.Online;
@@ -70,6 +78,7 @@ namespace Notus.Ceremony
                         {
                             allValidatorIsOnline = false;
                         }
+                        */
                     }
                 }
                 if (allValidatorIsOnline == true)
