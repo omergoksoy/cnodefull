@@ -53,7 +53,10 @@ namespace Notus.Ceremony
                 NVG.Settings.PeerManager.RemoveAll();
                 foreach (var validatorItem in NGF.ValidatorList)
                 {
-                    NVG.Settings.PeerManager.AddPeer(validatorItem.Key, validatorItem.Value.IpAddress);
+                    if (string.Equals(NVG.Settings.Nodes.My.HexKey, validatorItem.Key) == false)
+                    {
+                        NVG.Settings.PeerManager.AddPeer(validatorItem.Key, validatorItem.Value.IpAddress);
+                    }
                 }
                 bool allValidatorIsOnline = true;
                 foreach (var validatorItem in NGF.ValidatorList)
@@ -68,7 +71,6 @@ namespace Notus.Ceremony
                 }
                 if (allValidatorIsOnline == true)
                 {
-                    Console.WriteLine("allValidatorIsOnline = TRUE");
                     exitFromWhileLoop = true;
                 }
                 else
