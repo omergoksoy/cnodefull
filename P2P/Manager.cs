@@ -105,7 +105,7 @@ namespace Notus.P2P
                 NVG.Settings.PeerManager.AddPeer(item.Value.WalletId, item.Value.IpAddress);
             }
         }
-        public void AddPeer(string peerId, string ipAddress,bool debugActivated)
+        public void AddPeer(string peerId, string ipAddress,bool debugActivated=true)
         {
             if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, peerId) == true)
                 return;
