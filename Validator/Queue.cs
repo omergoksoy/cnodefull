@@ -395,7 +395,7 @@ namespace Notus.Validator
             }
             if (CheckXmlTag(incomeData, "sNode"))
             {
-                incomeData = GetPureText(incomeData, "ready");
+                incomeData = GetPureText(incomeData, "sNode");
                 foreach (var validatorItem in NVG.NodeList)
                 {
                     if (string.Equals(validatorItem.Value.IP.Wallet, incomeData) == false)
