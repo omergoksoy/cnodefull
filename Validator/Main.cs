@@ -563,6 +563,7 @@ namespace Notus.Validator
                         PublicKey = "",
                         Sign = ""
                     });
+                    Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony);
                 }
                 NP.ReadLine();
             }
