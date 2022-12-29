@@ -92,6 +92,8 @@ namespace Notus.Ceremony
                     Thread.Sleep(350);
                 }
             }
+
+            Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
             NP.Success("Tum Seremoni üyeleri çevrim içi");
             NP.ReadLine();
         }
