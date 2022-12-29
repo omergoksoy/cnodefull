@@ -13,6 +13,25 @@ namespace Notus.Validator
 {
     public static class Helper
     {
+        public static void DefineMyNodeInfo()
+        {
+            NVH.AddValidatorInfo(new NVS.NodeQueueInfo()
+            {
+                Status = NVS.NodeStatus.Online,
+                HexKey = NVG.Settings.Nodes.My.HexKey,
+                Begin = NVG.Settings.Nodes.My.Begin,
+                SyncNo = 0,
+                Tick = NVG.NOW.Int,
+                IP = new NVS.NodeInfo()
+                {
+                    IpAddress = NVG.Settings.Nodes.My.IP.IpAddress,
+                    Port = NVG.Settings.Nodes.My.IP.Port,
+                    Wallet = NVG.Settings.NodeWallet.WalletKey
+                },
+                JoinTime = 0,
+                PublicKey = NVG.Settings.Nodes.My.PublicKey,
+            }, true);
+        }
         public static void PrepareValidatorList(bool OnlyPredefinedNodes)
         {
             NVG.NodeList.Clear();
@@ -42,25 +61,9 @@ namespace Notus.Validator
                 }
             }
 
-            NVH.AddValidatorInfo(new NVS.NodeQueueInfo()
-            {
-                Status = NVS.NodeStatus.Online,
-                HexKey = NVG.Settings.Nodes.My.HexKey,
-                Begin = NVG.Settings.Nodes.My.Begin,
-                SyncNo = 0,
-                Tick = NVG.NOW.Int,
-                IP = new NVS.NodeInfo()
-                {
-                    IpAddress = NVG.Settings.Nodes.My.IP.IpAddress,
-                    Port = NVG.Settings.Nodes.My.IP.Port,
-                    Wallet = NVG.Settings.NodeWallet.WalletKey
-                },
-                JoinTime = 0,
-                PublicKey = NVG.Settings.Nodes.My.PublicKey,
-            }, true);
-
             if (OnlyPredefinedNodes == false)
             {
+                DefineMyNodeInfo();
                 NVH.AddToValidatorList(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
             }
 
