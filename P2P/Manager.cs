@@ -105,7 +105,7 @@ namespace Notus.P2P
                 NVG.Settings.PeerManager.AddPeer(item.Value.WalletId, item.Value.IpAddress);
             }
         }
-        public void AddPeer(string peerId, string ipAddress)
+        public void AddPeer(string peerId, string ipAddress,bool debugActivated)
         {
             if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, peerId) == true)
                 return;
@@ -117,7 +117,12 @@ namespace Notus.P2P
             IPEndPoint localEndPoint = new IPEndPoint(ipObj, Notus.Network.Node.GetP2PPort());
             bool result = this.Peers.TryAdd(peerId, new NP2P.Connection(peerId, localEndPoint, this.onReceive));
             if (result == true)
-                NP.Success("Peer Started -> " + peerId.Substring(0, 7) + "..." + peerId.Substring(peerId.Length - 7));
+            {
+                if (debugActivated == true)
+                {
+                    NP.Success("Peer Started -> " + peerId.Substring(0, 7) + "..." + peerId.Substring(peerId.Length - 7));
+                }
+            }
         }
 
         public void RemoveAll(bool debugActivated=true)

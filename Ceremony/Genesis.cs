@@ -55,7 +55,10 @@ namespace Notus.Ceremony
                 {
                     if (string.Equals(NVG.Settings.Nodes.My.HexKey, validatorItem.Key) == false)
                     {
-                        NVG.Settings.PeerManager.AddPeer(validatorItem.Key, validatorItem.Value.IpAddress);
+                        NVG.Settings.PeerManager.AddPeer(
+                            validatorItem.Key,
+                            validatorItem.Value.IpAddress
+                        );
                     }
                 }
                 bool allValidatorIsOnline = true;
