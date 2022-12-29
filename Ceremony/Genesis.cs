@@ -82,10 +82,12 @@ namespace Notus.Ceremony
                 {
                     if (NVG.Settings.PeerManager.Send(validatorItem.Key, msgText, false) == false)
                     {
+                        NP.Info(validatorItem.Value.IpAddress + " -> " + validatorItem.Value.Port.ToString() + " - Sended");
                         NGF.ValidatorList[validatorItem.Key].Status = NVS.NodeStatus.Offline;
                     }
                     else
                     {
+                        NP.Danger(validatorItem.Value.IpAddress + " -> " + validatorItem.Value.Port.ToString() + " - Error");
                         NGF.ValidatorList[validatorItem.Key].Status = NVS.NodeStatus.Online;
                     }
                 }
