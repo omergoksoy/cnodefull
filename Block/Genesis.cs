@@ -23,7 +23,12 @@ namespace Notus.Block
             }
             tmpGenesisObj.Ceremony.Clear();
             Console.WriteLine(
-                JsonSerializer.Serialize(tmpGenesisObj)
+                JsonSerializer.Serialize(
+                    tmpGenesisObj, 
+                    new JsonSerializerOptions() { 
+                        PropertyNameCaseInsensitive = true 
+                    }
+                )
             );
             Notus.Print.ReadLine();
             Notus.Print.ReadLine();
