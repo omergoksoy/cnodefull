@@ -66,7 +66,7 @@ namespace Notus.Ceremony
             for (int i = 0; i < resultList.Count; i++)
             {
                 string? currentWalletId = resultList.Values.ElementAt(i);
-                if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, currentWalletId){
+                if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, currentWalletId)){
                     myOrderNo = i;
                 }
             }
