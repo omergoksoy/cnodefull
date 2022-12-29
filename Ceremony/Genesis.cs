@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
+using System.Numerics;
 using System.Text;
 using System.Text.Json;
 using NGF = Notus.Variable.Globals.Functions;
+using NH = Notus.Hash;
 using NP = Notus.Print;
 using NTN = Notus.Toolbox.Network;
+using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVS = Notus.Variable.Struct;
@@ -20,6 +24,53 @@ namespace Notus.Ceremony
         public int PreviousId
         {
             get { return DefaultBlockGenerateInterval; }
+        }
+        public int MakeMembersOrders()
+        {
+            SortedDictionary<BigInteger, string> resultList = new SortedDictionary<BigInteger, string>();
+            foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
+            {
+                if (entry.Value.Status == NVS.NodeStatus.Online)
+                {
+                    bool exitInnerWhileLoop = false;
+                    int innerCount = 1;
+                    while (exitInnerWhileLoop == false)
+                    {
+                        BigInteger intWalletNo = BigInteger.Parse(
+                            "0" +
+                            new NH().CommonHash("sha1",
+                                entry.Value.IP.Wallet +
+                                NVC.CommonDelimeterChar +
+                                entry.Value.Begin.ToString() +
+                                NVC.CommonDelimeterChar +
+                                "executing_genesis_ceremony" +
+                                NVC.CommonDelimeterChar +
+                                innerCount.ToString()
+                            ),
+                            NumberStyles.AllowHexSpecifier
+                        );
+                        if (resultList.ContainsKey(intWalletNo) == false)
+                        {
+                            resultList.Add(intWalletNo, entry.Value.IP.Wallet);
+                            exitInnerWhileLoop = true;
+                        }
+                        else
+                        {
+                            innerCount++;
+                        }
+                    }
+                }
+            }
+
+            int myOrderNo = 0;
+            for (int i = 0; i < resultList.Count; i++)
+            {
+                string? currentWalletId = resultList.Values.ElementAt(i);
+                if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, currentWalletId){
+                    myOrderNo = i;
+                }
+            }
+            return myOrderNo;
         }
         public void SendNodeInfoToToMembers()
         {
@@ -92,7 +143,7 @@ namespace Notus.Ceremony
                 bool allValidatorIsOnline = true;
                 foreach (var validatorItem in NGF.ValidatorList)
                 {
-                    if(validatorItem.Value.Status == NVS.NodeStatus.Offline)
+                    if (validatorItem.Value.Status == NVS.NodeStatus.Offline)
                     {
                         allValidatorIsOnline = false;
                     }

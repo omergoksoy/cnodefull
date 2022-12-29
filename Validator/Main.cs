@@ -526,7 +526,7 @@ namespace Notus.Validator
                         NP.Basic("Function Response : " + innerResultStr);
                     }
                 }
-            ,false);
+            , false);
 
 
             Obj_Integrity = new Notus.Block.Integrity();
@@ -537,7 +537,7 @@ namespace Notus.Validator
                 NVH.DefineMyNodeInfo();
                 genesisObj.SendNodeInfoToToMembers();
                 bool waitAllNodeInfoArrived = false;
-                while(waitAllNodeInfoArrived == false)
+                while (waitAllNodeInfoArrived == false)
                 {
                     bool weWaitResponseFromNode = false;
                     foreach (var validatorItem in NVG.NodeList)
@@ -559,6 +559,9 @@ namespace Notus.Validator
                 NP.Basic(JsonSerializer.Serialize(NGF.ValidatorList));
                 NP.Basic(JsonSerializer.Serialize(NVG.NodeList));
                 NP.Success("Tum Seremoni üyeleri çevrim içi");
+
+                int myOrderNo = genesisObj.MakeMembersOrders();
+                Console.WriteLine("myOrderNo : " + myOrderNo.ToString());
                 NP.ReadLine();
             }
 
