@@ -17,9 +17,11 @@ namespace Notus.P2P
         private ConcurrentDictionary<string, NP2P.Connection> Peers = new();
         private Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         private Action<string> onReceive;
+        private bool DebugActivated = true;
 
-        public Manager(IPEndPoint localEndPoint, int port, Action<string> onReceive)
+        public Manager(IPEndPoint localEndPoint, int port, Action<string> onReceive, bool debugActivated = true)
         {
+            DebugActivated = debugActivated;
             this.listener.Bind(localEndPoint);
             this.listener.Listen(port);
             this.listener.BeginAccept(new AsyncCallback(this.AcceptCallback), this.listener);
@@ -36,12 +38,18 @@ namespace Notus.P2P
             if (peer.connected == true)
             {
                 this.Peers.TryAdd(peerId, peer);
-                NP.Info("Connected To Peer : " + peerId);
+                if (DebugActivated == true)
+                {
+                    NP.Info("Connected To Peer : " + peerId);
+                }
                 this.listener.BeginAccept(new AsyncCallback(this.AcceptCallback), this.listener);
             }
             else
             {
-                NP.Danger("Connection Error -> " + peerId);
+                if (DebugActivated == true)
+                {
+                    NP.Danger("Connection Error -> " + peerId);
+                }
             }
         }
 
@@ -105,7 +113,7 @@ namespace Notus.P2P
                 NVG.Settings.PeerManager.AddPeer(item.Value.WalletId, item.Value.IpAddress);
             }
         }
-        public void AddPeer(string peerId, string ipAddress, bool debugActivated = true)
+        public void AddPeer(string peerId, string ipAddress)
         {
             if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, peerId) == true)
                 return;
@@ -118,17 +126,19 @@ namespace Notus.P2P
             bool result = this.Peers.TryAdd(peerId, new NP2P.Connection(peerId, localEndPoint, this.onReceive));
             if (result == true)
             {
-                if (debugActivated == true)
+                if (DebugActivated == true)
                 {
                     NP.Success("Peer Started -> " + peerId.Substring(0, 7) + "..." + peerId.Substring(peerId.Length - 7));
                 }
             }
         }
 
-        public void RemoveAll(bool debugActivated = true)
+        public void RemoveAll()
         {
-            if (debugActivated == true)
+            if (DebugActivated == true)
+            {
                 NP.Info("All P2P Connection Is Closing");
+            }
             List<string> tmpRemoveList = new();
             foreach (var item in this.Peers)
             {
@@ -138,8 +148,10 @@ namespace Notus.P2P
             {
                 this.RemovePeer(tmpRemoveList[i], false);
             }
-            if (debugActivated == true)
+            if (DebugActivated == true)
+            {
                 NP.Success("All P2P Connection Cleared");
+            }
         }
         public void RemovePeer(string peerId, bool showMoreDetails = true)
         {
