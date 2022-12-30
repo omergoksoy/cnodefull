@@ -93,10 +93,11 @@ namespace Notus.Block
                 genesisObj.Premining.Public.Wallet + NVC.NonceDelimeterChar +
                 genesisObj.Premining.Public.PublicKey + NVC.NonceDelimeterChar;
             //Console.WriteLine(rawDataStr);
-
+            Console.WriteLine(JsonSerializer.Serialize(genesisObj.Ceremony));
             string signRawStr = string.Empty;
             for (int i = 1; i < 7; i++)
             {
+                Console.WriteLine(i);
                 if (signerOrderNo > i)
                 {
                     signRawStr =
