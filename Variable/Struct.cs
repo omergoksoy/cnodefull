@@ -502,6 +502,7 @@ namespace Notus.Variable.Struct
     public class NodeQueueInfo
     {
         public string PublicKey { get; set; }
+        public string PrivateKey { get; set; }
         public string HexKey { get; set; }
         //public bool Ready { get; set; }                 // eğer IP adresi kodun içine gömülü ise, tru değeri olacak, gömülü olanlar önemli
         public NodeInfo IP { get; set; }

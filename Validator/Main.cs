@@ -585,7 +585,12 @@ namespace Notus.Validator
                     newGenesisWithCeremony.Ceremony[6].Sign = "6-sig";
 
                     Console.WriteLine(JsonSerializer.Serialize(newGenesisWithCeremony.Ceremony));
-
+                    Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.My));
+                    /*
+                    NVG.Settings.Nodes.My.IP.Wallet = NVG.Settings.NodeWallet.WalletKey;
+                    NVG.Settings.Nodes.My.PrivateKey = NVG.Settings.NodeWallet.PrivateKey;
+                    NVG.Settings.Nodes.My.PublicKey = NVG.Settings.NodeWallet.PublicKey;
+                    */
                     Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, myOrderNo);
                 }
                 NP.ReadLine();

@@ -1114,10 +1114,11 @@ namespace Notus.Validator
             NVG.Settings.EncryptKey = new Notus.Hash().CommonHash("sha512", NVG.Settings.NodeWallet.WalletKey);
 
             NVG.Settings.Nodes.My.Status = NVS.NodeStatus.Online;
-            NVG.Settings.Nodes.My.IP.Wallet = NVG.Settings.NodeWallet.WalletKey;
             NVG.Settings.Nodes.My.IP.Port = Notus.Toolbox.Network.GetNetworkPort();
-            //Console.WriteLine(NVG.Settings.Nodes.My.IP.Port);
-            //Notus.Print.ReadLine();
+
+            NVG.Settings.Nodes.My.IP.Wallet = NVG.Settings.NodeWallet.WalletKey;
+            NVG.Settings.Nodes.My.PrivateKey = NVG.Settings.NodeWallet.PrivateKey;
+            NVG.Settings.Nodes.My.PublicKey = NVG.Settings.NodeWallet.PublicKey;
         }
         public void Start()
         {
@@ -1129,14 +1130,6 @@ namespace Notus.Validator
             string tmpPublicKeyStr = MP_NodeList.Get("Node_PublicKey", "");
             string tmpPrivateKeyStr = MP_NodeList.Get("Node_PrivateKey", "");
 
-
-            /*
-            Node_PublicKey = string.Empty;
-            Node_PrivateKey = string.Empty;
-
-            nodeObj.Wallet.PublicKey = string.Empty;
-            nodeObj.Wallet.PrivateKey = string.Empty;
-            */
             if (tmpWalletStr.Length > 0)
             {
                 Node_WalletKey = tmpWalletStr;
