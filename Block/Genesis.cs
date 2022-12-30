@@ -92,7 +92,7 @@ namespace Notus.Block
                 genesisObj.Premining.Public.PercentPerMonth.ToString() + NVC.NonceDelimeterChar +
                 genesisObj.Premining.Public.Wallet + NVC.NonceDelimeterChar +
                 genesisObj.Premining.Public.PublicKey + NVC.NonceDelimeterChar;
-            Console.WriteLine(rawDataStr);
+            //Console.WriteLine(rawDataStr);
             string signRawStr = string.Empty;
             for (int i = 1; i < 7; i++)
             {
@@ -112,7 +112,7 @@ namespace Notus.Block
             }
             Console.WriteLine("signerOrderNo : " + signerOrderNo.ToString());
             Console.WriteLine("signRawStr  : " + signRawStr);
-            Console.WriteLine("signRawStr  : " + signRawStr.Substring(signRawStr.Length-1));
+            Console.WriteLine("signRawStr  : " + signRawStr.Substring(0,signRawStr.Length-1));
             /*
             string tmpText = JsonSerializer.Serialize(genesisObj);
             GenesisBlockData? tmpGenesisObj = JsonSerializer.Deserialize<GenesisBlockData>(tmpText);
