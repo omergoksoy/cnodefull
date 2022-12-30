@@ -516,7 +516,8 @@ namespace Notus.Validator
                     string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
                     if (string.Equals(innerResultStr, "genesis"))
                     {
-                        Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Genesis, NVC.JsonSetting));
+                        Console.WriteLine("burada gelen genesis'i kontrol et");
+                        //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Genesis, NVC.JsonSetting));
                     }
 
                     /*
@@ -541,13 +542,13 @@ namespace Notus.Validator
             Obj_Integrity = new Notus.Block.Integrity();
             if (Obj_Integrity.IsGenesisNeed())
             {
-                NP.Success("Tum Seremoni üyeleri çevrim içi");
-
-                (int myOrderNo, string nextWalletId) = NCG.PreStart();
-                Console.WriteLine("myOrderNo: " + myOrderNo.ToString());
+                //NP.Success("Tum Seremoni üyeleri çevrim içi");
+                string nextWalletId = NCG.PreStart();
+                Console.WriteLine("myOrderNo: " + NCG.MyOrderNo.ToString());
                 Console.WriteLine("nextWalletId : " + nextWalletId);
-                NP.Success("myOrderNo : " + myOrderNo.ToString());
-                if (myOrderNo == 1)
+                NP.Success("myOrderNo : " + NCG.MyOrderNo.ToString());
+                diğer validatörden gelen işlemi sıradaki diğerlerine aktar
+                if (NCG.MyOrderNo == 1)
                 {
                     NP.Success("I'm The First");
                     Notus.Variable.Genesis.GenesisBlockData? newGenesisWithCeremony = NCG.Generate();

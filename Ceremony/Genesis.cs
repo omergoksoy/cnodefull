@@ -1,5 +1,4 @@
-﻿using NCG = Notus.Ceremony.Genesis;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -7,6 +6,7 @@ using System.IO.Compression;
 using System.Numerics;
 using System.Text;
 using System.Text.Json;
+using NCG = Notus.Ceremony.Genesis;
 using NGF = Notus.Variable.Globals.Functions;
 using NH = Notus.Hash;
 using NP = Notus.Print;
@@ -20,7 +20,8 @@ namespace Notus.Ceremony
 {
     public static class Genesis
     {
-        public static (int, string) PreStart()
+        public static int MyOrderNo = 0;
+        public static string PreStart()
         {
             NCG.StartNodeSync();
             NVH.DefineMyNodeInfo();
@@ -31,17 +32,25 @@ namespace Notus.Ceremony
         public static void DistributeTheNext(string walletId, string genesisText)
         {
             bool genesisSended = false;
-            while (genesisSended == false)
+            foreach (var validatorItem in NVG.NodeList)
             {
-                foreach (var validatorItem in NVG.NodeList)
+                while (genesisSended == false)
                 {
-                    if (string.Equals(walletId, validatorItem.Value.IP.Wallet))
+                    if (walletId.Length == 0 || string.Equals(walletId, validatorItem.Value.IP.Wallet))
                     {
                         genesisSended = NVG.Settings.PeerManager.Send(
                             validatorItem.Key,
                             "<genesis>" + genesisText + "</genesis>",
                             false
                         );
+                        if (genesisSended == false)
+                        {
+                            Thread.Sleep(100);
+                        }
+                    }
+                    else
+                    {
+                        genesisSended = true;
                     }
                 }
             }
@@ -78,7 +87,7 @@ namespace Notus.Ceremony
             }
             return newGenesisWithCeremony;
         }
-        public static (int, string) MakeMembersOrders()
+        public static string MakeMembersOrders()
         {
             string nextWalletId = string.Empty;
             SortedDictionary<BigInteger, string> resultList = new SortedDictionary<BigInteger, string>();
@@ -116,7 +125,7 @@ namespace Notus.Ceremony
                 }
             }
 
-            int myOrderNo = 0;
+            MyOrderNo =0;
             foreach (var item in resultList)
             {
                 Console.WriteLine(item.Key.ToString() + " - " + item.Value);
@@ -126,14 +135,14 @@ namespace Notus.Ceremony
                 string? currentWalletId = resultList.Values.ElementAt(i);
                 if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, currentWalletId))
                 {
-                    myOrderNo = i + 1;
+                    MyOrderNo = i + 1;
                 }
             }
-            if (6 > myOrderNo && resultList.Count > myOrderNo)
+            if (6 > MyOrderNo && resultList.Count > MyOrderNo)
             {
-                nextWalletId = resultList.Values.ElementAt(myOrderNo);
+                nextWalletId = resultList.Values.ElementAt(MyOrderNo);
             }
-            return (myOrderNo, nextWalletId);
+            return nextWalletId;
         }
         public static void WaitForOtherNodeInfoDetails()
         {
