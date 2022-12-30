@@ -106,6 +106,10 @@ namespace Notus.Block
                         genesisObj.Ceremony[i].Sign +
                             NVC.NonceDelimeterChar;
                 }
+                if (signerOrderNo == i)
+                {
+                    signRawStr = signRawStr + genesisObj.Ceremony[i].PublicKey + NVC.NonceDelimeterChar;
+                }
             }
             Console.WriteLine("signRawStr  : " + signRawStr);
             /*
