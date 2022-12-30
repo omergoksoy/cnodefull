@@ -8,6 +8,7 @@ using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NH = Notus.Hash;
 using NP = Notus.Print;
+using NTN = Notus.Toolbox.Network;
 using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
 using NVD = Notus.Validator.Date;
@@ -15,7 +16,6 @@ using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
-using NTN = Notus.Toolbox.Network;
 namespace Notus.Validator
 {
     public class Queue : IDisposable
@@ -197,6 +197,17 @@ namespace Notus.Validator
         }
         public string ProcessIncomeData(string incomeData)
         {
+            if (CheckXmlTag(incomeData, "genesis"))
+            {
+                if (NVG.Settings.GenesisCreated == true)
+                {
+                    return "error";
+                }
+                incomeData = GetPureText(incomeData, "genesis");
+                Console.WriteLine(incomeData);
+                return "genesis";
+            }
+
             if (CheckXmlTag(incomeData, "ping"))
             {
                 return "pong";
@@ -402,7 +413,7 @@ namespace Notus.Validator
                     {
                         NVG.Settings.PeerManager.Send(
                             validatorItem.Key,
-                            "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>", 
+                            "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>",
                             false
                         );
                     }
@@ -1448,7 +1459,8 @@ namespace Notus.Validator
                                     testResult.peerId + " -> " + testResult.tryCount.ToString()
 
                                 );
-                                if (testResult.tryCount < 20) { 
+                                if (testResult.tryCount < 20)
+                                {
                                     DistributeErrorList.Enqueue(testResult);
                                 }
                             }
