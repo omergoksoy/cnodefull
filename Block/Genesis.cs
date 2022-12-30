@@ -92,7 +92,7 @@ namespace Notus.Block
                 genesisObj.Premining.Public.PercentPerMonth.ToString() + NVC.NonceDelimeterChar +
                 genesisObj.Premining.Public.Wallet + NVC.NonceDelimeterChar +
                 genesisObj.Premining.Public.PublicKey + NVC.NonceDelimeterChar;
-            Console.WriteLine(rawDataStr);
+            //Console.WriteLine(rawDataStr);
 
             string signRawStr = string.Empty;
             for (int i = 1; i < 7; i++)

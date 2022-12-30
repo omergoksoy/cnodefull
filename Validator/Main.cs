@@ -566,8 +566,32 @@ namespace Notus.Validator
                             Sign = ""
                         });
                     }
-                    Console.WriteLine(JsonSerializer.Serialize(newGenesisWithCeremony.Ceremony));
-                    Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, myOrderNo);
+                    newGenesisWithCeremony.Ceremony[1].PublicKey = "1-pub";
+                    newGenesisWithCeremony.Ceremony[1].Sign = "1-sig";
+
+                    newGenesisWithCeremony.Ceremony[2].PublicKey = "2-pub";
+                    newGenesisWithCeremony.Ceremony[2].Sign = "2-sig";
+
+                    newGenesisWithCeremony.Ceremony[3].PublicKey = "3-pub";
+                    newGenesisWithCeremony.Ceremony[3].Sign = "3-sig";
+
+                    newGenesisWithCeremony.Ceremony[4].PublicKey = "4-pub";
+                    newGenesisWithCeremony.Ceremony[4].Sign = "4-sig";
+
+                    newGenesisWithCeremony.Ceremony[5].PublicKey = "5-pub";
+                    newGenesisWithCeremony.Ceremony[5].Sign = "5-sig";
+
+                    newGenesisWithCeremony.Ceremony[6].PublicKey = "6-pub";
+                    newGenesisWithCeremony.Ceremony[6].Sign = "6-sig";
+
+                    //Console.WriteLine(JsonSerializer.Serialize(newGenesisWithCeremony.Ceremony));
+                    Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, 1);
+                    Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, 2);
+                    Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, 3);
+                    Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, 4);
+                    Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, 5);
+                    Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, 6);
+                    //Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, myOrderNo);
                 }
                 NP.ReadLine();
             }
