@@ -110,28 +110,13 @@ namespace Notus.Block
                     signRawStr = signRawStr + genesisObj.Ceremony[i].PublicKey + NVC.NonceDelimeterChar;
                 }
             }
+            /*
             Console.WriteLine("signerOrderNo : " + signerOrderNo.ToString());
             Console.WriteLine("signRawStr  : " + signRawStr);
             Console.WriteLine("signRawStr  : " + signRawStr.Substring(0,signRawStr.Length-1));
-            /*
-            string tmpText = JsonSerializer.Serialize(genesisObj);
-            GenesisBlockData? tmpGenesisObj = JsonSerializer.Deserialize<GenesisBlockData>(tmpText);
-            if (tmpGenesisObj == null)
-            {
-                return string.Empty;
-            }
-
-            tmpGenesisObj.Ceremony.Clear();
-            Console.WriteLine(
-                JsonSerializer.Serialize(
-                    tmpGenesisObj, 
-                    new JsonSerializerOptions() { 
-                        PropertyNameCaseInsensitive = true 
-                    }
-                )
-            );
             */
-            return string.Empty;
+            rawDataStr = rawDataStr + signRawStr.Substring(0, signRawStr.Length - 1);
+            return rawDataStr;
         }
         public static GenesisBlockData Generate(string CreatorWalletKey, Notus.Variable.Enum.NetworkType NetworkType, Notus.Variable.Enum.NetworkLayer NetworkLayer)
         {

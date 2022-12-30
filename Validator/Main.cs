@@ -586,16 +586,7 @@ namespace Notus.Validator
 
                     Console.WriteLine(JsonSerializer.Serialize(newGenesisWithCeremony.Ceremony));
 
-                    Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, 1);
-                    Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, 2);
-                    Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, 3);
-                    Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, 4);
-                    Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, 5);
-                    Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, 6);
-                    Notus.Print.ReadLine();
-                    Notus.Print.ReadLine();
-
-                    //Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, myOrderNo);
+                    Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, myOrderNo);
                 }
                 NP.ReadLine();
             }
