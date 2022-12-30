@@ -260,7 +260,12 @@ namespace Notus.Communication
         public void Begin(bool WithNewThread = true)
         {
             System.Net.IPAddress ipAddress;
-            if(
+            if (
+                string.Equals(CommIpAddress, "3.68.233.67") ||
+                string.Equals(CommIpAddress, "3.75.243.44") ||
+                string.Equals(CommIpAddress, "3.125.159.102") ||
+                string.Equals(CommIpAddress, "18.156.37.61") ||
+
                 string.Equals(CommIpAddress, "3.75.110.186") ||
                 string.Equals(CommIpAddress, "3.70.179.101") ||
                 string.Equals(CommIpAddress, "13.229.61.209") ||
