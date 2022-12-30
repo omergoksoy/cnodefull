@@ -126,8 +126,11 @@ namespace Notus.Ceremony
                 }
             }
 
-            Console.WriteLine(JsonSerializer.Serialize(resultList, NVC.JsonSetting));
             int myOrderNo = 0;
+            foreach(var item in resultList)
+            {
+                Console.WriteLine(item.Key.ToString() + " - " + item.Value);
+            }
             for (int i = 0; i < resultList.Count; i++)
             {
                 string? currentWalletId = resultList.Values.ElementAt(i);
