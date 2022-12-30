@@ -547,40 +547,19 @@ namespace Notus.Validator
 
                 if (myOrderNo == 1)
                 {
-                    Notus.Variable.Genesis.GenesisBlockData? newGenesisWithCeremony = Notus.Block.Genesis.Generate(
-                        //NVG.Settings.NodeWallet.WalletKey, 
-                        NVG.Settings.Nodes.My.IP.Wallet,
-                        NVG.Settings.Network,
-                        NVG.Settings.Layer
-                    );
                     NP.Success("I'm The First");
-
-                    //burada birinci sıradaki validatörün imzası eklenece
-                    newGenesisWithCeremony.Ceremony.Clear();
-                    for (int i = 1; i < 7; i++)
-                    {
-                        newGenesisWithCeremony.Ceremony.Add(i, new Variable.Genesis.GenesisCeremonyOrderType()
-                        {
-                            PublicKey = "",
-                            Sign = ""
-                        });
-                    }
-
-                    newGenesisWithCeremony.Ceremony[myOrderNo].PublicKey = NVG.Settings.Nodes.My.PublicKey;
-                    newGenesisWithCeremony.Ceremony[myOrderNo].Sign = "";
-
-                    string rawGenesisDataStr=Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, myOrderNo);
-                    newGenesisWithCeremony.Ceremony[myOrderNo].Sign = Notus.Wallet.ID.Sign(rawGenesisDataStr, NVG.Settings.Nodes.My.PrivateKey);
-
-                    if( Notus.Block.Genesis.Verify(newGenesisWithCeremony, myOrderNo) == true)
-                    {
-                        Console.WriteLine("Verified");
-                    }
-                    else
+                    Notus.Variable.Genesis.GenesisBlockData? newGenesisWithCeremony = genesisObj.Generate();
+                    if (newGenesisWithCeremony == null)
                     {
                         Console.WriteLine("UN verified");
+                        NP.ReadLine();
                     }
-                    //Console.WriteLine(JsonSerializer.Serialize(newGenesisWithCeremony));
+                    Console.WriteLine("Verified");
+                    genesisObj.DistributeTheOthers(JsonSerializer.Serialize(newGenesisWithCeremony));
+                }
+                else
+                {
+                    Console.WriteLine("The Others");
                 }
                 NP.ReadLine();
             }

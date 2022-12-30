@@ -25,6 +25,69 @@ namespace Notus.Ceremony
         {
             get { return DefaultBlockGenerateInterval; }
         }
+        public void DistributeTheOthers(string genesisText)
+        {
+            Console.WriteLine(genesisText);
+            NP.ReadLine();
+            bool waitAllNodeInfoArrived = false;
+            DateTime waitTimeDiff = DateTime.Now;
+            while (waitAllNodeInfoArrived == false)
+            {
+                bool weWaitResponseFromNode = false;
+                foreach (var validatorItem in NVG.NodeList)
+                {
+                    if (validatorItem.Value.Begin == 0)
+                    {
+                        weWaitResponseFromNode = true;
+                        if ((DateTime.Now - waitTimeDiff).TotalSeconds > 5)
+                        {
+                            NVG.Settings.PeerManager.Send(validatorItem.Key, "<sNode>" + NVG.Settings.Nodes.My.IP.Wallet + "</sNode>", false);
+                            waitTimeDiff = DateTime.Now;
+                        }
+                    }
+                }
+                if (weWaitResponseFromNode == false)
+                {
+                    waitAllNodeInfoArrived = true;
+                }
+                else
+                {
+                    Thread.Sleep(50);
+                }
+            }
+        }
+        public Notus.Variable.Genesis.GenesisBlockData? Generate()
+        {
+            int myOrderNo = 1;
+            Notus.Variable.Genesis.GenesisBlockData? newGenesisWithCeremony = Notus.Block.Genesis.Generate(
+                //NVG.Settings.NodeWallet.WalletKey, 
+                NVG.Settings.Nodes.My.IP.Wallet,
+                NVG.Settings.Network,
+                NVG.Settings.Layer
+            );
+
+            //burada birinci sıradaki validatörün imzası eklenece
+            newGenesisWithCeremony.Ceremony.Clear();
+            for (int i = 1; i < 7; i++)
+            {
+                newGenesisWithCeremony.Ceremony.Add(i, new Variable.Genesis.GenesisCeremonyOrderType()
+                {
+                    PublicKey = "",
+                    Sign = ""
+                });
+            }
+            newGenesisWithCeremony.Ceremony[myOrderNo].PublicKey = NVG.Settings.Nodes.My.PublicKey;
+            newGenesisWithCeremony.Ceremony[myOrderNo].Sign = "";
+
+            string rawGenesisDataStr = Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, myOrderNo);
+            newGenesisWithCeremony.Ceremony[myOrderNo].Sign = Notus.Wallet.ID.Sign(rawGenesisDataStr, NVG.Settings.Nodes.My.PrivateKey);
+
+            if (Notus.Block.Genesis.Verify(newGenesisWithCeremony, myOrderNo) == false)
+            {
+                return null;
+            }
+            return newGenesisWithCeremony;
+        }
         public int MakeMembersOrders()
         {
             SortedDictionary<BigInteger, string> resultList = new SortedDictionary<BigInteger, string>();

@@ -2,10 +2,10 @@
 using System;
 using System.Text.Json;
 using ND = Notus.Date;
-using NVD = Notus.Validator.Date;
-using NVC = Notus.Variable.Constant;
-using NVG = Notus.Variable.Globals;
 using NTT = Notus.Toolbox.Text;
+using NVC = Notus.Variable.Constant;
+using NVD = Notus.Validator.Date;
+using NVG = Notus.Variable.Globals;
 namespace Notus.Block
 {
     public class Genesis
@@ -17,7 +17,7 @@ namespace Notus.Block
 
         public static bool Verify(GenesisBlockData genesisObj, int signerOrderNo)
         {
-            string rawDataStr=CalculateRaw(genesisObj, signerOrderNo);
+            string rawDataStr = CalculateRaw(genesisObj, signerOrderNo);
             return Notus.Wallet.ID.Verify(rawDataStr, genesisObj.Ceremony[signerOrderNo].Sign, genesisObj.Ceremony[signerOrderNo].PublicKey);
         }
         public static string CalculateRaw(GenesisBlockData genesisObj, int signerOrderNo)
