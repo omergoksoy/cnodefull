@@ -5,6 +5,7 @@ using ND = Notus.Date;
 using NVD = Notus.Validator.Date;
 using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
+using NTT = Notus.Toolbox.Text;
 namespace Notus.Block
 {
     public class Genesis
@@ -14,19 +15,99 @@ namespace Notus.Block
         private const Notus.Variable.Enum.NetworkType Val_DefaultNetworkType = Notus.Variable.Enum.NetworkType.MainNet;
         private const Notus.Variable.Enum.NetworkLayer Val_DefaultNetworkLayer = Notus.Variable.Enum.NetworkLayer.Layer1;
 
-        public static string CalculateRaw(GenesisBlockData genesisObj)
+        public static string CalculateRaw(GenesisBlockData genesisObj,int signerOrderNo)
         {
-            burada genesis bloğunu tek string haline getirecek ve imzalayacak
-            string rawDataStr = 
-                genesisObj.Version.ToString()+
-                NVC.NonceDelimeterChar+
-                genesisObj.Empty.Active
+            string rawDataStr =
+                genesisObj.Version.ToString() +
+                NVC.NonceDelimeterChar +
+                    NTT.BoolToStr(genesisObj.Empty.Active) +
+                    NVC.NonceDelimeterChar +
+
+                    genesisObj.Empty.LuckyReward.ToString() + NVC.NonceDelimeterChar +
+                    genesisObj.Empty.TotalSupply.ToString() + NVC.NonceDelimeterChar +
+                    genesisObj.Empty.Reward.ToString() + NVC.NonceDelimeterChar +
+
+                        genesisObj.Empty.Interval.Time.ToString() + NVC.NonceDelimeterChar +
+                        genesisObj.Empty.Interval.Block.ToString() + NVC.NonceDelimeterChar +
+
+                        NTT.BoolToStr(genesisObj.Empty.SlowBlock.Active) + NVC.NonceDelimeterChar +
+                        genesisObj.Empty.SlowBlock.Count.ToString() + NVC.NonceDelimeterChar +
+                        genesisObj.Empty.SlowBlock.Multiply.ToString() + NVC.NonceDelimeterChar +
+
+                        genesisObj.Empty.Nonce.Method.ToString() + NVC.NonceDelimeterChar +
+                        genesisObj.Empty.Nonce.Type.ToString() + NVC.NonceDelimeterChar +
+                        genesisObj.Empty.Nonce.Difficulty.ToString() + NVC.NonceDelimeterChar +
+
+                    genesisObj.Reserve.Value.ToString() + NVC.NonceDelimeterChar +
+                    genesisObj.Reserve.Total.ToString() + NVC.NonceDelimeterChar +
+                    genesisObj.Reserve.Digit.ToString() + NVC.NonceDelimeterChar +
+                    genesisObj.Reserve.Decimal.ToString() + NVC.NonceDelimeterChar +
+
+                    genesisObj.CoinInfo.Tag + NVC.NonceDelimeterChar +
+                    genesisObj.CoinInfo.Name + NVC.NonceDelimeterChar +
+                        NTT.BoolToStr(genesisObj.CoinInfo.Logo.Used) + NVC.NonceDelimeterChar +
+                        genesisObj.CoinInfo.Logo.Base64 + NVC.NonceDelimeterChar +
+                        genesisObj.CoinInfo.Logo.Url + NVC.NonceDelimeterChar +
+                        genesisObj.CoinInfo.Logo.Source + NVC.NonceDelimeterChar +
+
+                    genesisObj.Supply.Decrease.ToString() + NVC.NonceDelimeterChar +
+                    genesisObj.Supply.Type.ToString() + NVC.NonceDelimeterChar +
+                    genesisObj.Supply.Modular.ToString() + NVC.NonceDelimeterChar +
+
+                    genesisObj.Fee.BlockAccount.ToString() + NVC.NonceDelimeterChar +
+                        genesisObj.Fee.Transfer.Fast.ToString() + NVC.NonceDelimeterChar +
+                        genesisObj.Fee.Transfer.Common.ToString() + NVC.NonceDelimeterChar +
+                        genesisObj.Fee.Transfer.NoName.ToString() + NVC.NonceDelimeterChar +
+                        genesisObj.Fee.Transfer.ByPieces.ToString() + NVC.NonceDelimeterChar +
+
+                        genesisObj.Fee.Token.Generate.ToString() + NVC.NonceDelimeterChar +
+                        genesisObj.Fee.Token.Update.ToString() + NVC.NonceDelimeterChar +
+
+                        genesisObj.Fee.MultiWallet.Generate.ToString() + NVC.NonceDelimeterChar +
+                        genesisObj.Fee.MultiWallet.Addition.ToString() + NVC.NonceDelimeterChar +
+                    genesisObj.Fee.Data.ToString() + NVC.NonceDelimeterChar +
+
+                    genesisObj.Info.Creation.ToString(NVC.DefaultDateTimeFormatText) + NVC.NonceDelimeterChar +
+                    genesisObj.Info.Creator + NVC.NonceDelimeterChar +
+                    genesisObj.Info.CurveName + NVC.NonceDelimeterChar +
+                    NTT.BoolToStr(genesisObj.Info.EncryptKeyPair) + NVC.NonceDelimeterChar +
+
+                genesisObj.Premining.PreSeed.Volume.ToString() + NVC.NonceDelimeterChar +
+                NTT.BoolToStr(genesisObj.Premining.PreSeed.DecimalContains) + NVC.NonceDelimeterChar +
+                genesisObj.Premining.PreSeed.HowManyMonthsLater.ToString() + NVC.NonceDelimeterChar +
+                genesisObj.Premining.PreSeed.PercentPerMonth.ToString() + NVC.NonceDelimeterChar +
+                genesisObj.Premining.PreSeed.Wallet + NVC.NonceDelimeterChar +
+                genesisObj.Premining.PreSeed.PublicKey + NVC.NonceDelimeterChar +
+
+                genesisObj.Premining.Private.Volume.ToString() + NVC.NonceDelimeterChar +
+                NTT.BoolToStr(genesisObj.Premining.Private.DecimalContains) + NVC.NonceDelimeterChar +
+                genesisObj.Premining.Private.HowManyMonthsLater.ToString() + NVC.NonceDelimeterChar +
+                genesisObj.Premining.Private.PercentPerMonth.ToString() + NVC.NonceDelimeterChar +
+                genesisObj.Premining.Private.Wallet + NVC.NonceDelimeterChar +
+                genesisObj.Premining.Private.PublicKey + NVC.NonceDelimeterChar +
+
+                genesisObj.Premining.Public.Volume.ToString() + NVC.NonceDelimeterChar +
+                NTT.BoolToStr(genesisObj.Premining.Public.DecimalContains) + NVC.NonceDelimeterChar +
+                genesisObj.Premining.Public.HowManyMonthsLater.ToString() + NVC.NonceDelimeterChar +
+                genesisObj.Premining.Public.PercentPerMonth.ToString() + NVC.NonceDelimeterChar +
+                genesisObj.Premining.Public.Wallet + NVC.NonceDelimeterChar +
+                genesisObj.Premining.Public.PublicKey + NVC.NonceDelimeterChar;
+            Console.WriteLine(rawDataStr);
+
+            for (int i = 0; i < signerOrderNo; i++)
+            {
+                genesisObj.Ceremony[i].PublicKey
+                
+            }
+
+            /*
             string tmpText = JsonSerializer.Serialize(genesisObj);
             GenesisBlockData? tmpGenesisObj = JsonSerializer.Deserialize<GenesisBlockData>(tmpText);
             if (tmpGenesisObj == null)
             {
                 return string.Empty;
             }
+
             tmpGenesisObj.Ceremony.Clear();
             Console.WriteLine(
                 JsonSerializer.Serialize(
@@ -36,6 +117,7 @@ namespace Notus.Block
                     }
                 )
             );
+            */
             Notus.Print.ReadLine();
             Notus.Print.ReadLine();
             return string.Empty;

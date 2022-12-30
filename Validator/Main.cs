@@ -558,12 +558,16 @@ namespace Notus.Validator
 
                     //burada birinci sıradaki validatörün imzası eklenece
                     newGenesisWithCeremony.Ceremony.Clear();
-                    newGenesisWithCeremony.Ceremony.Add(1, new Variable.Genesis.GenesisCeremonyOrderType()
+                    for (int i = 1; i < 7; i++)
                     {
-                        PublicKey = "",
-                        Sign = ""
-                    });
-                    Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony);
+                        newGenesisWithCeremony.Ceremony.Add(i, new Variable.Genesis.GenesisCeremonyOrderType()
+                        {
+                            PublicKey = "",
+                            Sign = ""
+                        });
+                    }
+                    Console.WriteLine(JsonSerializer.Serialize(newGenesisWithCeremony.Ceremony));
+                    Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, myOrderNo);
                 }
                 NP.ReadLine();
             }
