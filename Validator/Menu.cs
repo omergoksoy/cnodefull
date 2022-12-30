@@ -17,6 +17,8 @@ namespace Notus.Validator
 
         private bool Node_WalletDefined = false;
         private string Node_WalletKey = string.Empty;
+        private string Node_PublicKey = string.Empty;
+        private string Node_PrivateKey = string.Empty;
 
         private int indexMainMenu = 0;
         private Notus.Mempool MP_NodeList;
@@ -107,9 +109,17 @@ namespace Notus.Validator
                         //store public key to DB for every Network
                         //store public key to DB for every Network
                         MP_NodeList.Set("Node_WalletKey", newWalletKey.WalletKey, true);
+                        MP_NodeList.Set("Node_PublicKey", newWalletKey.PublicKey, true);
+                        MP_NodeList.Set("Node_PrivateKey", newWalletKey.PrivateKey, true);
+
                         Node_WalletDefined = true;
                         Node_WalletKey = newWalletKey.WalletKey;
+                        Node_PublicKey = newWalletKey.PublicKey;
+                        Node_PrivateKey = newWalletKey.PrivateKey;
+
                         nodeObj.Wallet.Key = Node_WalletKey;
+                        nodeObj.Wallet.PublicKey = Node_PublicKey;
+                        nodeObj.Wallet.PrivateKey = Node_PrivateKey;
                         nodeObj.Wallet.Defined = true;
 
                         innerWalletLoop = true;
@@ -123,8 +133,16 @@ namespace Notus.Validator
         {
             Console.Clear();
             MP_NodeList.Set("Node_WalletKey", "", true);
+            MP_NodeList.Set("Node_PublicKey", "", true);
+            MP_NodeList.Set("Node_PrivateKey", "", true);
+
             Node_WalletDefined = false;
             Node_WalletKey = string.Empty;
+            Node_PublicKey = string.Empty;
+            Node_PrivateKey = string.Empty;
+
+            nodeObj.Wallet.PublicKey = string.Empty;
+            nodeObj.Wallet.PrivateKey = string.Empty;
             nodeObj.Wallet.Key = string.Empty;
             nodeObj.Wallet.Defined = false;
 
@@ -765,7 +783,7 @@ namespace Notus.Validator
                 Console.WriteLine("Please wait for auto-start");
                 bool keyExist = false;
                 byte iCounter = 0;
-                DateTime bitis = DateTime.Now.AddSeconds(2* multiply);
+                DateTime bitis = DateTime.Now.AddSeconds(2 * multiply);
                 while (bitis > DateTime.Now && keyExist == false)
                 {
                     if (Console.KeyAvailable == true)
@@ -801,7 +819,7 @@ namespace Notus.Validator
                     Console.ResetColor();
                     keyExist = false;
                     iCounter = 0;
-                    bitis = DateTime.Now.AddSeconds(1* multiply);
+                    bitis = DateTime.Now.AddSeconds(1 * multiply);
                     while (bitis > DateTime.Now && keyExist == false)
                     {
                         if (Console.KeyAvailable == true)
@@ -1108,10 +1126,28 @@ namespace Notus.Validator
             MP_NodeList.AsyncActive = false;
             //MP_NodeList.Clear();
             string tmpWalletStr = MP_NodeList.Get("Node_WalletKey", "");
+            string tmpPublicKeyStr = MP_NodeList.Get("Node_PublicKey", "");
+            string tmpPrivateKeyStr = MP_NodeList.Get("Node_PrivateKey", "");
+
+
+            /*
+            Node_PublicKey = string.Empty;
+            Node_PrivateKey = string.Empty;
+
+            nodeObj.Wallet.PublicKey = string.Empty;
+            nodeObj.Wallet.PrivateKey = string.Empty;
+            */
             if (tmpWalletStr.Length > 0)
             {
                 Node_WalletKey = tmpWalletStr;
                 nodeObj.Wallet.Key = Node_WalletKey;
+
+                Node_PublicKey = tmpPublicKeyStr;
+                nodeObj.Wallet.PublicKey = Node_PublicKey;
+
+                Node_PrivateKey = tmpWalletStr;
+                nodeObj.Wallet.PrivateKey = Node_PrivateKey;
+
                 nodeObj.Wallet.Defined = true;
                 Node_WalletDefined = true;
                 checkLayerStatus(NVE.NetworkLayer.Layer4);
