@@ -1097,8 +1097,6 @@ namespace Notus.Validator
         }
         public void DefineMySetting()
         {
-            Console.WriteLine(JsonSerializer.Serialize( nodeObj));
-            Console.ReadLine();
             NVG.Settings.Nodes.My.Begin = NVG.NOW.Int;
             NVG.Settings.Nodes.My.Tick = NVG.Settings.Nodes.My.Begin;
 
