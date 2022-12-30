@@ -139,7 +139,7 @@ namespace Notus.Ceremony
                     myOrderNo = i + 1;
                 }
             }
-            if (6 > myOrderNo || resultList.Count > myOrderNo)
+            if (6 > myOrderNo && resultList.Count > myOrderNo)
             {
                 nextWalletId = resultList.Values.ElementAt(myOrderNo);
             }
