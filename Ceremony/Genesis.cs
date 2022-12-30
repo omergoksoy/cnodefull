@@ -127,7 +127,7 @@ namespace Notus.Ceremony
             }
 
             int myOrderNo = 0;
-            foreach(var item in resultList)
+            foreach (var item in resultList)
             {
                 Console.WriteLine(item.Key.ToString() + " - " + item.Value);
             }
@@ -139,7 +139,7 @@ namespace Notus.Ceremony
                     myOrderNo = i + 1;
                 }
             }
-            if (6 > myOrderNo)
+            if (6 > myOrderNo || resultList.Count > myOrderNo)
             {
                 nextWalletId = resultList.Values.ElementAt(myOrderNo);
             }
