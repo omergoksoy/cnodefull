@@ -1138,7 +1138,7 @@ namespace Notus.Validator
                 Node_PublicKey = tmpPublicKeyStr;
                 nodeObj.Wallet.PublicKey = Node_PublicKey;
 
-                Node_PrivateKey = tmpWalletStr;
+                Node_PrivateKey = tmpPrivateKeyStr;
                 nodeObj.Wallet.PrivateKey = Node_PrivateKey;
 
                 nodeObj.Wallet.Defined = true;
