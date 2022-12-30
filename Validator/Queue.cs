@@ -204,7 +204,14 @@ namespace Notus.Validator
                     return "error";
                 }
                 incomeData = GetPureText(incomeData, "genesis");
-                Console.WriteLine(incomeData);
+                try
+                {
+                    NVG.Settings.Genesis = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(incomeData);
+                }
+                catch
+                {
+                    Console.WriteLine("Json  Convert Error : " + incomeData);
+                }
                 return "genesis";
             }
 

@@ -27,9 +27,6 @@ namespace Notus.Ceremony
         }
         public void DistributeTheNext(string walletId, string genesisText)
         {
-            //Console.WriteLine(genesisText);
-            //Console.WriteLine(genesisText);
-            //NP.ReadLine();
             bool genesisSended = false;
             while (genesisSended == false)
             {

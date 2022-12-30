@@ -513,6 +513,11 @@ namespace Notus.Validator
                 (string incomeMessage) =>
                 {
                     string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
+                    if (string.Equals(innerResultStr, "genesis"))
+                    {
+                        Console.WriteLine(NVG.Settings.Genesis);
+                    }
+
                     /*
                     if (string.Equals(incomeMessage, "<ping>1</ping>") == false)
                     {
@@ -557,7 +562,7 @@ namespace Notus.Validator
                         NP.ReadLine();
                     }
                     Console.WriteLine("Verified");
-                    genesisObj.DistributeTheNext(nextWalletId,JsonSerializer.Serialize(newGenesisWithCeremony));
+                    genesisObj.DistributeTheNext(nextWalletId, JsonSerializer.Serialize(newGenesisWithCeremony));
                 }
                 else
                 {
