@@ -15,6 +15,11 @@ namespace Notus.Block
         private const Notus.Variable.Enum.NetworkType Val_DefaultNetworkType = Notus.Variable.Enum.NetworkType.MainNet;
         private const Notus.Variable.Enum.NetworkLayer Val_DefaultNetworkLayer = Notus.Variable.Enum.NetworkLayer.Layer1;
 
+        public static bool Verify(GenesisBlockData genesisObj, int signerOrderNo)
+        {
+            string rawDataStr=CalculateRaw(genesisObj, signerOrderNo);
+            return Notus.Wallet.ID.Verify(rawDataStr, genesisObj.Ceremony[signerOrderNo].Sign, genesisObj.Ceremony[signerOrderNo].PublicKey);
+        }
         public static string CalculateRaw(GenesisBlockData genesisObj, int signerOrderNo)
         {
             string rawDataStr =
@@ -109,14 +114,7 @@ namespace Notus.Block
                     signRawStr = signRawStr + genesisObj.Ceremony[i].PublicKey + NVC.NonceDelimeterChar;
                 }
             }
-            Console.WriteLine(rawDataStr);
-            Console.WriteLine("signerOrderNo : " + signerOrderNo.ToString());
-            Console.WriteLine("signRawStr  : " + signRawStr.Substring(0,signRawStr.Length-1));
-            /*
-            Console.WriteLine("signRawStr  : " + signRawStr);
-            */
             rawDataStr = rawDataStr + signRawStr.Substring(0, signRawStr.Length - 1);
-            Console.WriteLine(rawDataStr);
             return rawDataStr;
         }
         public static GenesisBlockData Generate(string CreatorWalletKey, Notus.Variable.Enum.NetworkType NetworkType, Notus.Variable.Enum.NetworkLayer NetworkLayer)

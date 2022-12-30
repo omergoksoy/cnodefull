@@ -571,7 +571,16 @@ namespace Notus.Validator
 
                     string rawGenesisDataStr=Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, myOrderNo);
                     newGenesisWithCeremony.Ceremony[myOrderNo].Sign = Notus.Wallet.ID.Sign(rawGenesisDataStr, NVG.Settings.Nodes.My.PrivateKey);
-                    Console.WriteLine(JsonSerializer.Serialize(newGenesisWithCeremony));
+
+                    if( Notus.Block.Genesis.Verify(newGenesisWithCeremony, myOrderNo) == true)
+                    {
+                        Console.WriteLine("Verified");
+                    }
+                    else
+                    {
+                        Console.WriteLine("UN verified");
+                    }
+                    //Console.WriteLine(JsonSerializer.Serialize(newGenesisWithCeremony));
                 }
                 NP.ReadLine();
             }
