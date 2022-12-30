@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NCG = Notus.Ceremony.Genesis;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -17,15 +18,17 @@ using NVS = Notus.Variable.Struct;
 
 namespace Notus.Ceremony
 {
-    public class Genesis : IDisposable
+    public static class Genesis
     {
-        private int DefaultBlockGenerateInterval = 3000;
-
-        public int PreviousId
+        public static (int, string) PreStart()
         {
-            get { return DefaultBlockGenerateInterval; }
+            NCG.StartNodeSync();
+            NVH.DefineMyNodeInfo();
+            NCG.SendNodeInfoToToMembers();
+            NCG.WaitForOtherNodeInfoDetails();
+            return NCG.MakeMembersOrders();
         }
-        public void DistributeTheNext(string walletId, string genesisText)
+        public static void DistributeTheNext(string walletId, string genesisText)
         {
             bool genesisSended = false;
             while (genesisSended == false)
@@ -43,7 +46,7 @@ namespace Notus.Ceremony
                 }
             }
         }
-        public Notus.Variable.Genesis.GenesisBlockData? Generate()
+        public static Notus.Variable.Genesis.GenesisBlockData? Generate()
         {
             int myOrderNo = 1;
             Notus.Variable.Genesis.GenesisBlockData? newGenesisWithCeremony = Notus.Block.Genesis.Generate(
@@ -75,7 +78,7 @@ namespace Notus.Ceremony
             }
             return newGenesisWithCeremony;
         }
-        public (int, string) MakeMembersOrders()
+        public static (int, string) MakeMembersOrders()
         {
             string nextWalletId = string.Empty;
             SortedDictionary<BigInteger, string> resultList = new SortedDictionary<BigInteger, string>();
@@ -132,7 +135,7 @@ namespace Notus.Ceremony
             }
             return (myOrderNo, nextWalletId);
         }
-        public void WaitForOtherNodeInfoDetails()
+        public static void WaitForOtherNodeInfoDetails()
         {
             bool waitAllNodeInfoArrived = false;
             DateTime waitTimeDiff = DateTime.Now;
@@ -161,7 +164,7 @@ namespace Notus.Ceremony
                 }
             }
         }
-        public void SendNodeInfoToToMembers()
+        public static void SendNodeInfoToToMembers()
         {
             string msgText = "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
             foreach (var validatorItem in NGF.ValidatorList)
@@ -187,7 +190,7 @@ namespace Notus.Ceremony
                 }
             }
         }
-        public void StartNodeSync()
+        public static void StartNodeSync()
         {
             NVH.PrepareValidatorList(true);
             bool definedValidator = false;
@@ -254,14 +257,6 @@ namespace Notus.Ceremony
                     Thread.Sleep(350);
                 }
             }
-        }
-        public void Dispose()
-        {
-
-        }
-        ~Genesis()
-        {
-            Dispose();
         }
     }
 }

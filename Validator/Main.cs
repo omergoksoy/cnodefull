@@ -17,6 +17,7 @@ using NVH = Notus.Validator.Helper;
 using NVJ = Notus.Validator.Join;
 using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
+using NCG = Notus.Ceremony.Genesis;
 namespace Notus.Validator
 {
     public class Main : IDisposable
@@ -540,29 +541,23 @@ namespace Notus.Validator
             Obj_Integrity = new Notus.Block.Integrity();
             if (Obj_Integrity.IsGenesisNeed())
             {
-                Notus.Ceremony.Genesis genesisObj = new Notus.Ceremony.Genesis();
-                genesisObj.StartNodeSync();
-                NVH.DefineMyNodeInfo();
-                genesisObj.SendNodeInfoToToMembers();
-                genesisObj.WaitForOtherNodeInfoDetails();
+                NP.Success("Tum Seremoni üyeleri çevrim içi");
 
-                (int myOrderNo, string nextWalletId) = genesisObj.MakeMembersOrders();
+                (int myOrderNo, string nextWalletId) = NCG.PreStart();
                 Console.WriteLine("myOrderNo: " + myOrderNo.ToString());
                 Console.WriteLine("nextWalletId : " + nextWalletId);
-                NP.Success("Tum Seremoni üyeleri çevrim içi");
                 NP.Success("myOrderNo : " + myOrderNo.ToString());
-
                 if (myOrderNo == 1)
                 {
                     NP.Success("I'm The First");
-                    Notus.Variable.Genesis.GenesisBlockData? newGenesisWithCeremony = genesisObj.Generate();
+                    Notus.Variable.Genesis.GenesisBlockData? newGenesisWithCeremony = NCG.Generate();
                     if (newGenesisWithCeremony == null)
                     {
                         Console.WriteLine("UN verified");
                         NP.ReadLine();
                     }
                     Console.WriteLine("Verified");
-                    genesisObj.DistributeTheNext(nextWalletId, JsonSerializer.Serialize(newGenesisWithCeremony));
+                    NCG.DistributeTheNext(nextWalletId, JsonSerializer.Serialize(newGenesisWithCeremony));
                 }
                 else
                 {
