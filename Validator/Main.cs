@@ -547,7 +547,8 @@ namespace Notus.Validator
                 Console.WriteLine("myOrderNo: " + NCG.MyOrderNo.ToString());
                 Console.WriteLine("nextWalletId : " + nextWalletId);
                 NP.Success("myOrderNo : " + NCG.MyOrderNo.ToString());
-                diğer validatörden gelen işlemi sıradaki diğerlerine aktar
+                NP.ReadLine();
+                //diğer validatörden gelen işlemi sıradaki diğerlerine aktar
                 if (NCG.MyOrderNo == 1)
                 {
                     NP.Success("I'm The First");
