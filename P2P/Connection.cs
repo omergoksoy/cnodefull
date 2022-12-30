@@ -34,7 +34,7 @@ namespace Notus.P2P
             {
                 try
                 {
-                    byte[] bytes = new byte[1024];
+                    byte[] bytes = new byte[8192];
                     int bytesRec = this.socket.Receive(bytes);
                     if (bytesRec > 0)
                     {
