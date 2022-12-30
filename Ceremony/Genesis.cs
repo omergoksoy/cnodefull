@@ -25,7 +25,7 @@ namespace Notus.Ceremony
         {
             get { return DefaultBlockGenerateInterval; }
         }
-        public void DistributeTheOthers(string genesisText)
+        public void DistributeTheNext(string genesisText)
         {
             Console.WriteLine(genesisText);
             NP.ReadLine();
@@ -88,8 +88,9 @@ namespace Notus.Ceremony
             }
             return newGenesisWithCeremony;
         }
-        public int MakeMembersOrders()
+        public (int, string) MakeMembersOrders()
         {
+            string nextWalletId = string.Empty;
             SortedDictionary<BigInteger, string> resultList = new SortedDictionary<BigInteger, string>();
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
@@ -125,6 +126,7 @@ namespace Notus.Ceremony
                 }
             }
 
+            Console.WriteLine(JsonSerializer.Serialize(resultList, NVC.JsonSetting));
             int myOrderNo = 0;
             for (int i = 0; i < resultList.Count; i++)
             {
@@ -134,7 +136,11 @@ namespace Notus.Ceremony
                     myOrderNo = i + 1;
                 }
             }
-            return myOrderNo;
+            if (6 > myOrderNo)
+            {
+                nextWalletId = resultList.Values.ElementAt(myOrderNo + 1);
+            }
+            return (myOrderNo, nextWalletId);
         }
         public void WaitForOtherNodeInfoDetails()
         {
@@ -173,7 +179,7 @@ namespace Notus.Ceremony
                 if (string.Equals(NVG.Settings.Nodes.My.HexKey, validatorItem.Key) == false)
                 {
                     bool sendedToValidator = false;
-                    while(sendedToValidator == false)
+                    while (sendedToValidator == false)
                     {
                         if (NVG.Settings.PeerManager.Send(validatorItem.Key, msgText, false) == false)
                         {

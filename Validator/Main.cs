@@ -541,7 +541,9 @@ namespace Notus.Validator
                 genesisObj.SendNodeInfoToToMembers();
                 genesisObj.WaitForOtherNodeInfoDetails();
 
-                int myOrderNo = genesisObj.MakeMembersOrders();
+                (int myOrderNo, string nextWalletId) = genesisObj.MakeMembersOrders();
+                Console.WriteLine("myOrderNo: " + myOrderNo.ToString());
+                Console.WriteLine("nextWalletId : " + nextWalletId);
                 NP.Success("Tum Seremoni üyeleri çevrim içi");
                 NP.Success("myOrderNo : " + myOrderNo.ToString());
 
@@ -555,7 +557,7 @@ namespace Notus.Validator
                         NP.ReadLine();
                     }
                     Console.WriteLine("Verified");
-                    genesisObj.DistributeTheOthers(JsonSerializer.Serialize(newGenesisWithCeremony));
+                    genesisObj.DistributeTheNext(JsonSerializer.Serialize(newGenesisWithCeremony));
                 }
                 else
                 {
