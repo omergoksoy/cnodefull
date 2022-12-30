@@ -25,34 +25,23 @@ namespace Notus.Ceremony
         {
             get { return DefaultBlockGenerateInterval; }
         }
-        public void DistributeTheNext(string genesisText)
+        public void DistributeTheNext(string walletId, string genesisText)
         {
             Console.WriteLine(genesisText);
             NP.ReadLine();
-            bool waitAllNodeInfoArrived = false;
-            DateTime waitTimeDiff = DateTime.Now;
-            while (waitAllNodeInfoArrived == false)
+            bool genesisSended = false;
+            while (genesisSended == false)
             {
-                bool weWaitResponseFromNode = false;
                 foreach (var validatorItem in NVG.NodeList)
                 {
-                    if (validatorItem.Value.Begin == 0)
+                    if (string.Equals(walletId, validatorItem.Value.IP.Wallet))
                     {
-                        weWaitResponseFromNode = true;
-                        if ((DateTime.Now - waitTimeDiff).TotalSeconds > 5)
-                        {
-                            NVG.Settings.PeerManager.Send(validatorItem.Key, "<sNode>" + NVG.Settings.Nodes.My.IP.Wallet + "</sNode>", false);
-                            waitTimeDiff = DateTime.Now;
-                        }
+                        genesisSended = NVG.Settings.PeerManager.Send(
+                            validatorItem.Key,
+                            "<genesis>" + genesisText + "</genesis>",
+                            false
+                        );
                     }
-                }
-                if (weWaitResponseFromNode == false)
-                {
-                    waitAllNodeInfoArrived = true;
-                }
-                else
-                {
-                    Thread.Sleep(50);
                 }
             }
         }

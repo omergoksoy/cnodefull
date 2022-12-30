@@ -557,7 +557,7 @@ namespace Notus.Validator
                         NP.ReadLine();
                     }
                     Console.WriteLine("Verified");
-                    genesisObj.DistributeTheNext(JsonSerializer.Serialize(newGenesisWithCeremony));
+                    genesisObj.DistributeTheNext(nextWalletId,JsonSerializer.Serialize(newGenesisWithCeremony));
                 }
                 else
                 {
