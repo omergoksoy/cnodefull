@@ -555,7 +555,6 @@ namespace Notus.Validator
                     );
                     NP.Success("I'm The First");
 
-
                     //burada birinci sıradaki validatörün imzası eklenece
                     newGenesisWithCeremony.Ceremony.Clear();
                     for (int i = 1; i < 7; i++)
@@ -566,32 +565,12 @@ namespace Notus.Validator
                             Sign = ""
                         });
                     }
-                    newGenesisWithCeremony.Ceremony[1].PublicKey = "1-pub";
-                    newGenesisWithCeremony.Ceremony[1].Sign = "1-sig";
 
-                    newGenesisWithCeremony.Ceremony[2].PublicKey = "2-pub";
-                    newGenesisWithCeremony.Ceremony[2].Sign = "2-sig";
+                    newGenesisWithCeremony.Ceremony[myOrderNo].PublicKey = NVG.Settings.Nodes.My.PublicKey;
+                    newGenesisWithCeremony.Ceremony[myOrderNo].Sign = "";
 
-                    newGenesisWithCeremony.Ceremony[3].PublicKey = "3-pub";
-                    newGenesisWithCeremony.Ceremony[3].Sign = "3-sig";
-
-                    newGenesisWithCeremony.Ceremony[4].PublicKey = "4-pub";
-                    newGenesisWithCeremony.Ceremony[4].Sign = "4-sig";
-
-                    newGenesisWithCeremony.Ceremony[5].PublicKey = "5-pub";
-                    newGenesisWithCeremony.Ceremony[5].Sign = "5-sig";
-
-                    newGenesisWithCeremony.Ceremony[6].PublicKey = "6-pub";
-                    newGenesisWithCeremony.Ceremony[6].Sign = "6-sig";
-
-                    Console.WriteLine(JsonSerializer.Serialize(newGenesisWithCeremony.Ceremony));
-                    Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.My));
-                    /*
-                    NVG.Settings.Nodes.My.IP.Wallet = NVG.Settings.NodeWallet.WalletKey;
-                    NVG.Settings.Nodes.My.PrivateKey = NVG.Settings.NodeWallet.PrivateKey;
-                    NVG.Settings.Nodes.My.PublicKey = NVG.Settings.NodeWallet.PublicKey;
-                    */
-                    Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, myOrderNo);
+                    string rawGenesisDataStr=Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, myOrderNo);
+                    Console.WriteLine(rawGenesisDataStr);
                 }
                 NP.ReadLine();
             }
