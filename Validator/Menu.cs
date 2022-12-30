@@ -1119,8 +1119,8 @@ namespace Notus.Validator
             NVG.Settings.Nodes.My.IP.Port = Notus.Toolbox.Network.GetNetworkPort();
 
             NVG.Settings.Nodes.My.IP.Wallet = NVG.Settings.NodeWallet.WalletKey;
-            NVG.Settings.Nodes.My.PrivateKey = NVG.Settings.NodeWallet.PrivateKey;
-            NVG.Settings.Nodes.My.PublicKey = NVG.Settings.NodeWallet.PublicKey;
+            NVG.Settings.Nodes.My.PrivateKey = nodeObj.Wallet.PrivateKey;
+            NVG.Settings.Nodes.My.PublicKey = nodeObj.Wallet.PublicKey;
         }
         public void Start()
         {
