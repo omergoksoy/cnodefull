@@ -515,7 +515,7 @@ namespace Notus.Validator
                     string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
                     if (string.Equals(innerResultStr, "genesis"))
                     {
-                        Console.WriteLine(NVG.Settings.Genesis);
+                        Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Genesis, NVC.JsonSetting));
                     }
 
                     /*
