@@ -15,7 +15,7 @@ namespace Notus.Block
         private const Notus.Variable.Enum.NetworkType Val_DefaultNetworkType = Notus.Variable.Enum.NetworkType.MainNet;
         private const Notus.Variable.Enum.NetworkLayer Val_DefaultNetworkLayer = Notus.Variable.Enum.NetworkLayer.Layer1;
 
-        public static string CalculateRaw(GenesisBlockData genesisObj,int signerOrderNo)
+        public static string CalculateRaw(GenesisBlockData genesisObj, int signerOrderNo)
         {
             string rawDataStr =
                 genesisObj.Version.ToString() +
@@ -94,12 +94,20 @@ namespace Notus.Block
                 genesisObj.Premining.Public.PublicKey + NVC.NonceDelimeterChar;
             Console.WriteLine(rawDataStr);
 
-            for (int i = 0; i < signerOrderNo; i++)
+            string signRawStr = string.Empty;
+            for (int i = 1; i < 7; i++)
             {
-                genesisObj.Ceremony[i].PublicKey
-                
+                if (signerOrderNo > i)
+                {
+                    signRawStr =
+                        signRawStr +
+                        genesisObj.Ceremony[i].PublicKey +
+                            NVC.NonceDelimeterChar +
+                        genesisObj.Ceremony[i].Sign +
+                            NVC.NonceDelimeterChar;
+                }
             }
-
+            Console.WriteLine("signRawStr  : " + signRawStr);
             /*
             string tmpText = JsonSerializer.Serialize(genesisObj);
             GenesisBlockData? tmpGenesisObj = JsonSerializer.Deserialize<GenesisBlockData>(tmpText);
