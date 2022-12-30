@@ -584,13 +584,17 @@ namespace Notus.Validator
                     newGenesisWithCeremony.Ceremony[6].PublicKey = "6-pub";
                     newGenesisWithCeremony.Ceremony[6].Sign = "6-sig";
 
-                    Console.WriteLine(JsonSerializer.Serialize(newGenesisWithCeremony.Ceremony));
+                    Console.WriteLine(JsonSerializer.Serialize(genesisObj.Ceremony));
+
                     Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, 1);
                     Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, 2);
                     Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, 3);
                     Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, 4);
                     Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, 5);
                     Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, 6);
+                    Notus.Print.ReadLine();
+                    Notus.Print.ReadLine();
+
                     //Notus.Block.Genesis.CalculateRaw(newGenesisWithCeremony, myOrderNo);
                 }
                 NP.ReadLine();

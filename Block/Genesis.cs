@@ -93,11 +93,10 @@ namespace Notus.Block
                 genesisObj.Premining.Public.Wallet + NVC.NonceDelimeterChar +
                 genesisObj.Premining.Public.PublicKey + NVC.NonceDelimeterChar;
             //Console.WriteLine(rawDataStr);
-            Console.WriteLine(JsonSerializer.Serialize(genesisObj.Ceremony));
             string signRawStr = string.Empty;
             for (int i = 1; i < 7; i++)
             {
-                Console.WriteLine(i);
+                //Console.WriteLine(i);
                 if (signerOrderNo > i)
                 {
                     signRawStr =
@@ -112,6 +111,7 @@ namespace Notus.Block
                     signRawStr = signRawStr + genesisObj.Ceremony[i].PublicKey + NVC.NonceDelimeterChar;
                 }
             }
+            Console.WriteLine("signerOrderNo : " + signerOrderNo.ToString());
             Console.WriteLine("signRawStr  : " + signRawStr);
             /*
             string tmpText = JsonSerializer.Serialize(genesisObj);
@@ -131,8 +131,6 @@ namespace Notus.Block
                 )
             );
             */
-            Notus.Print.ReadLine();
-            Notus.Print.ReadLine();
             return string.Empty;
         }
         public static GenesisBlockData Generate(string CreatorWalletKey, Notus.Variable.Enum.NetworkType NetworkType, Notus.Variable.Enum.NetworkLayer NetworkLayer)
