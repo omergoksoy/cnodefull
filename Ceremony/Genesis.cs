@@ -70,29 +70,31 @@ namespace Notus.Ceremony
                             string MainResultStr = NCR.GetSync(requestUrl, 2, true, false);
                             if (MainResultStr.Length > 20)
                             {
+                                Notus.Variable.Genesis.GenesisBlockData? tmpGenObj = null;
                                 try
                                 {
-                                    Notus.Variable.Genesis.GenesisBlockData? tmpGenObj = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(MainResultStr);
-                                    if (tmpGenObj != null)
+                                    tmpGenObj = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(MainResultStr);
+                                catch
+                                {
+                                    Console.WriteLine("Genesis Text Convert Error : " + MainResultStr);
+                                }
+
+                                if (tmpGenObj == null)
+                                {
+                                    Console.WriteLine("Genesis Text Is NULL");
+                                }
+                                else
+                                {
+                                    if (Notus.Block.Genesis.Verify(tmpGenObj, controlOrderNo) == false)
                                     {
-                                        if (Notus.Block.Genesis.Verify(tmpGenObj, controlOrderNo) == false)
-                                        {
-                                            NP.Success("Verified");
-                                        }
-                                        else
-                                        {
-                                            NP.Danger("Un Verified");
-                                        }
-                                        NP.ReadLine();
-                                        SignedGenesis();
+                                        NP.Success("Verified");
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Genesis Text Is NULL");
+                                        NP.Danger("Un Verified");
                                     }
-                                }
-                                catch {
-                                    Console.WriteLine("Genesis Text Convert Error : " + MainResultStr);
+                                    NP.ReadLine();
+                                    SignedGenesis();
                                 }
                                 NP.ReadLine();
                             }
