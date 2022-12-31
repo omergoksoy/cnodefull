@@ -513,6 +513,7 @@ namespace Notus.Validator
                 p2pPortNo,
                 (string incomeMessage) =>
                 {
+                    Console.WriteLine("incomeMessage : " + incomeMessage);
                     string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
                     if (string.Equals(innerResultStr, "genesis"))
                     {
