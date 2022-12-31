@@ -55,7 +55,7 @@ namespace Notus.Ceremony
                 int controlOrderNo = NCG.MyOrderNo - 1;
                 string waitingWalletId = ValidatorOrder.Values.ElementAt(controlOrderNo);
                 NP.Basic("Control Wallet : " + waitingWalletId);
-                NP.Basic("ValidatorOrder.Values.ElementAt(NCG.MyOrderNo) : " + ValidatorOrder.Values.ElementAt(NCG.MyOrderNo));
+                NP.Basic("ValidatorOrder.Values.ElementAt(NCG.MyOrderNo-2) : " + ValidatorOrder.Values.ElementAt(NCG.MyOrderNo-2));
                 foreach (var validatorItem in NVG.NodeList)
                 {
                     if (string.Equals(waitingWalletId, validatorItem.Value.IP.Wallet))
