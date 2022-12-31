@@ -519,6 +519,7 @@ namespace Notus.Validator
 
                 if (NCG.MyOrderNo == 1)
                 {
+                    NP.Success("I Generate Genesis Block");
                     NCG.Generate();
                 }
                 NCG.WaitPrevSigner();

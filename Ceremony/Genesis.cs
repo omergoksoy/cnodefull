@@ -51,7 +51,8 @@ namespace Notus.Ceremony
             int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
             if (NCG.MyOrderNo > 1)
             {
-                string waitingWalletId = ValidatorOrder.Values.ElementAt(NCG.MyOrderNo - 1);
+                int controlOrderNo = NCG.MyOrderNo - 1;
+                string waitingWalletId = ValidatorOrder.Values.ElementAt(controlOrderNo);
                 foreach (var validatorItem in NVG.NodeList)
                 {
                     if (string.Equals(waitingWalletId, validatorItem.Value.IP.Wallet))
@@ -70,6 +71,15 @@ namespace Notus.Ceremony
                                     Notus.Variable.Genesis.GenesisBlockData? tmpGenObj = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(MainResultStr);
                                     if (tmpGenObj != null)
                                     {
+                                        if (Notus.Block.Genesis.Verify(tmpGenObj, controlOrderNo) == false)
+                                        {
+                                            NP.Success("Verified");
+                                        }
+                                        else
+                                        {
+                                            NP.Danger("Un Verified");
+                                        }
+                                        NP.ReadLine();
                                         SignedGenesis();
                                     }
                                 }
@@ -93,7 +103,6 @@ namespace Notus.Ceremony
         public static void Generate()
         {
             GenesisObj = Notus.Block.Genesis.Generate(
-                //NVG.Settings.NodeWallet.WalletKey, 
                 NVG.Settings.Nodes.My.IP.Wallet,
                 NVG.Settings.Network,
                 NVG.Settings.Layer
@@ -112,10 +121,6 @@ namespace Notus.Ceremony
             SignedGenesis();
             /*
             if (Notus.Block.Genesis.Verify(GenesisObj, myOrderNo) == false)
-            {
-                return false;
-            }
-            return true;
             */
         }
         public static void MakeMembersOrders()
