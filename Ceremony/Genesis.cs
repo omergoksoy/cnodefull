@@ -43,6 +43,7 @@ namespace Notus.Ceremony
             NVH.DefineMyNodeInfo();
             StartGenesisConnection();
             ControlOtherValidatorStatus();
+            Console.WriteLine("All-Node-Is-Active");
             NP.ReadLine();
 
             NCG.MakeMembersOrders();
@@ -262,34 +263,28 @@ namespace Notus.Ceremony
                     if (validatorItem.Value.Status != NVS.NodeStatus.Online)
                     {
                         allValidatorIsOnline = false;
-                        try
+                        string requestUrl = Notus.Network.Node.MakeHttpListenerPath(
+                                validatorItem.Value.IP.IpAddress, SelectedPortVal
+                            ) + "nodeinfo";
+                        string MainResultStr = NCR.GetSync(requestUrl, 2, true, false);
+                        if (MainResultStr.Length > 0)
                         {
-                            string requestUrl = Notus.Network.Node.MakeHttpListenerPath(
-                                    validatorItem.Value.IP.IpAddress, SelectedPortVal
-                                ) + "nodeinfo";
-                            Console.WriteLine(requestUrl);
-                            string MainResultStr = NCR.GetSync(requestUrl, 2, true, false);
-                            if (MainResultStr.Length > 0)
+                            try
                             {
+                                NVS.NodeQueueInfo? tmpNodeInfo = JsonSerializer.Deserialize<NVS.NodeQueueInfo>(MainResultStr);
+                                if (tmpNodeInfo != null)
+                                {
+                                    NVG.NodeList[validatorItem.Key] = tmpNodeInfo;
+                                    NVG.NodeList[validatorItem.Key].Status = NVS.NodeStatus.Online;
+                                }
                             }
-                            else
-                            {
-                                Thread.Sleep(1000);
-                            }
-                        }
-                        catch (Exception err)
-                        {
-                            Thread.Sleep(200);
+                            catch { }
                         }
                     }
                 }
                 if (allValidatorIsOnline == true)
                 {
                     exitFromWhileLoop = true;
-                }
-                else
-                {
-                    Thread.Sleep(350);
                 }
             }
         }
