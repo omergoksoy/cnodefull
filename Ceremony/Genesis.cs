@@ -74,6 +74,7 @@ namespace Notus.Ceremony
                                 try
                                 {
                                     tmpGenObj = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(MainResultStr);
+                                }
                                 catch
                                 {
                                     Console.WriteLine("Genesis Text Convert Error : " + MainResultStr);
