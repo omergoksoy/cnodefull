@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
+using System.Net;
 using System.Numerics;
 using System.Text;
 using System.Text.Json;
@@ -11,11 +12,12 @@ using NGF = Notus.Variable.Globals.Functions;
 using NH = Notus.Hash;
 using NP = Notus.Print;
 using NTN = Notus.Toolbox.Network;
+using NTT = Notus.Toolbox.Text;
 using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVS = Notus.Variable.Struct;
-using NTT = Notus.Toolbox.Text;
+
 namespace Notus.Ceremony
 {
     public static class Genesis
@@ -23,8 +25,14 @@ namespace Notus.Ceremony
         public static Notus.Variable.Genesis.GenesisBlockData GenesisObj = new();
         public static string NextWalletId = "";
         public static int MyOrderNo = 0;
+        public static Notus.Communication.Http HttpObj = new Notus.Communication.Http(true);
+        public static void PreStart2()
+        {
+        }
         public static void PreStart()
         {
+            StartGenesisConnection();
+            NP.ReadLine();
             NCG.StartNodeSync();
             NVH.DefineMyNodeInfo();
             NCG.SendNodeInfoToToMembers();
@@ -248,18 +256,58 @@ namespace Notus.Ceremony
                 }
             }
         }
+        private static string Fnc_OnReceiveData(NVS.HttpRequestDetails IncomeData)
+        {
+            if (IncomeData.UrlList.Length == 0)
+            {
+                return JsonSerializer.Serialize(false);
+            }
+            string incomeFullUrlPath = string.Join("/", IncomeData.UrlList).ToLower();
+            if (string.Equals(incomeFullUrlPath.Substring(incomeFullUrlPath.Length - 1), "/"))
+            {
+                incomeFullUrlPath = incomeFullUrlPath.Substring(0, incomeFullUrlPath.Length - 1);
+            }
+            Console.WriteLine(incomeFullUrlPath);
+
+            //string resultData = Obj_Api.Interpret(IncomeData);
+            string resultData = "deneme";
+
+            return resultData;
+        }
+
+        public static void StartGenesisConnection()
+        {
+            Console.WriteLine("NVG.Settings.Nodes.My.IP.Port : " + NVG.Settings.Nodes.My.IP.Port.ToString());
+            int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port;
+            IPAddress NodeIpAddress = IPAddress.Parse(
+                NVG.Settings.LocalNode == false
+                    ?
+                NVG.Settings.IpInfo.Public
+                    :
+                NVG.Settings.IpInfo.Local
+            );
+            HttpObj.DefaultResult_OK = "null";
+            HttpObj.DefaultResult_ERR = "null";
+
+            NP.Basic("Listining : " + Notus.Network.Node.MakeHttpListenerPath(NodeIpAddress.ToString(), SelectedPortVal));
+            HttpObj.OnReceive(Fnc_OnReceiveData);
+            HttpObj.ResponseType = "application/json";
+            HttpObj.StoreUrl = false;
+            HttpObj.Start(NodeIpAddress, SelectedPortVal);
+            NP.Success("Http Has Started");
+        }
         public static void StartNodeSync()
         {
             NVH.PrepareValidatorList(true);
-            bool definedValidator = false;
+            bool predefinedValidator = false;
             foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
             {
                 if (string.Equals(NVG.Settings.Nodes.My.IP.IpAddress, item.IpAddress) == true)
                 {
-                    definedValidator = true;
+                    predefinedValidator = true;
                 }
             }
-            if (definedValidator == false)
+            if (predefinedValidator == false)
             {
                 NP.Danger("Diger nodelardan tanımlanmış Validatorlerden tarafından olusturulmus Genesis blogunu iste");
                 NP.Danger("Diger nodelardan tanımlanmış Validatorlerden tarafından olusturulmus Genesis blogunu iste");
@@ -273,6 +321,7 @@ namespace Notus.Ceremony
             bool exitFromWhileLoop = false;
             while (exitFromWhileLoop == false)
             {
+                /*
                 NVG.Settings.PeerManager.RemoveAll();
                 foreach (var validatorItem in NGF.ValidatorList)
                 {
@@ -314,6 +363,7 @@ namespace Notus.Ceremony
                 {
                     Thread.Sleep(350);
                 }
+                */
             }
         }
     }

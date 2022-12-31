@@ -189,17 +189,6 @@ namespace Notus.Validator
         }
         public string ProcessIncomeData(string incomeData)
         {
-            if (NTT.CheckXmlTag(incomeData, "genesis"))
-            {
-                //Console.WriteLine("Genesis Data Arrived-1");
-                //Console.WriteLine(NVG.Settings.GenesisCreated);
-                if (NVG.Settings.GenesisCreated == true)
-                {
-                    return "error";
-                }
-                return "genesis";
-            }
-
             if (NTT.CheckXmlTag(incomeData, "ping"))
             {
                 return "pong";

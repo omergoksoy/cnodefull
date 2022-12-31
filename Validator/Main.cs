@@ -501,44 +501,6 @@ namespace Notus.Validator
 
             NVR.NetworkSelectorList.Clear();
 
-
-            /*
-            burada port ile soket başlatacak ve kontrollü bir şekilde 
-            başlangıçlarını ayarla
-            */
-
-            int p2pPortNo = Notus.Network.Node.GetP2PPort();
-            NP.Info("Node P2P Port No : " + p2pPortNo.ToString());
-            NVG.Settings.PeerManager = new NP2P.Manager(
-                new IPEndPoint(IPAddress.Any, p2pPortNo),
-                p2pPortNo,
-                (string incomeMessage) =>
-                {
-                    string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
-                    if (string.Equals(innerResultStr, "genesis"))
-                    {
-                        NCG.SocketDataControl(incomeMessage);
-                    }
-
-                    /*
-                    if (string.Equals(incomeMessage, "<ping>1</ping>") == false)
-                    {
-                        Console.WriteLine("incomeMessage : " + incomeMessage);
-                    }
-
-                    if (
-                        string.Equals(innerResultStr, "done") == false
-                        &&
-                        string.Equals(innerResultStr, "pong") == false
-                    )
-                    {
-                        NP.Basic("Function Response : " + innerResultStr);
-                    }
-                    */
-                }
-            , false);
-
-
             Obj_Integrity = new Notus.Block.Integrity();
             if (Obj_Integrity.IsGenesisNeed())
             {
@@ -577,6 +539,37 @@ namespace Notus.Validator
                 NP.ReadLine();
                 NP.ReadLine();
             }
+
+
+            /*
+            burada port ile soket başlatacak ve kontrollü bir şekilde 
+            başlangıçlarını ayarla
+            */
+
+            int p2pPortNo = Notus.Network.Node.GetP2PPort();
+            NP.Info("Node P2P Port No : " + p2pPortNo.ToString());
+            NVG.Settings.PeerManager = new NP2P.Manager(
+                new IPEndPoint(IPAddress.Any, p2pPortNo),
+                p2pPortNo,
+                (string incomeMessage) =>
+                {
+                    /*
+                    if (string.Equals(incomeMessage, "<ping>1</ping>") == false)
+                    {
+                        Console.WriteLine("incomeMessage : " + incomeMessage);
+                    }
+
+                    if (
+                        string.Equals(innerResultStr, "done") == false
+                        &&
+                        string.Equals(innerResultStr, "pong") == false
+                    )
+                    {
+                        NP.Basic("Function Response : " + innerResultStr);
+                    }
+                    */
+                }
+            , false);
 
             NVH.PrepareValidatorList(false);
 
