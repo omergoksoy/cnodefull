@@ -553,6 +553,8 @@ namespace Notus.Validator
                     NP.Basic("nextWalletId : " + NCG.NextWalletId);
                 }
                 NP.Success("myOrderNo : " + NCG.MyOrderNo.ToString());
+
+                NP.ReadLine();
                 if (NCG.MyOrderNo == 1)
                 {
                     NP.Success("I'm The First");
