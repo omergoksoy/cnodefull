@@ -45,7 +45,8 @@ namespace Notus.Ceremony
                         );
                         if (genesisSended == false)
                         {
-                            Thread.Sleep(100);
+                            Console.WriteLine("validatorItem.Key" + validatorItem.Key);
+                            Thread.Sleep(500);
                         }
                         else
                         {
