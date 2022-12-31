@@ -53,6 +53,7 @@ namespace Notus.Ceremony
             {
                 int controlOrderNo = NCG.MyOrderNo - 1;
                 string waitingWalletId = ValidatorOrder.Values.ElementAt(controlOrderNo);
+                NP.Basic("Control Wallet : " + waitingWalletId);
                 foreach (var validatorItem in NVG.NodeList)
                 {
                     if (string.Equals(waitingWalletId, validatorItem.Value.IP.Wallet))
@@ -82,11 +83,18 @@ namespace Notus.Ceremony
                                         NP.ReadLine();
                                         SignedGenesis();
                                     }
+                                    else
+                                    {
+                                        Console.WriteLine("Genesis Text Is NULL");
+                                    }
                                 }
-                                catch { }
+                                catch {
+                                    Console.WriteLine("Genesis Text Convert Error");
+                                }
                             }
                             else
                             {
+                                Console.WriteLine("Genesis Text Is Empty");
                                 Thread.Sleep(1000);
                             }
                         }
