@@ -86,7 +86,7 @@ namespace Notus.Ceremony
                                 }
                                 else
                                 {
-                                    if (Notus.Block.Genesis.Verify(tmpGenObj, controlOrderNo) == false)
+                                    if (Notus.Block.Genesis.Verify(tmpGenObj, NCG.MyOrderNo) == false)
                                     {
                                         NP.Success("Verified");
                                     }
@@ -102,7 +102,7 @@ namespace Notus.Ceremony
                             else
                             {
                                 Console.WriteLine("Genesis Text Is Empty : " + MainResultStr);
-                                Thread.Sleep(2500);
+                                Thread.Sleep(5000);
                             }
                         }
                     }
