@@ -543,15 +543,10 @@ namespace Notus.Validator
             Obj_Integrity = new Notus.Block.Integrity();
             if (Obj_Integrity.IsGenesisNeed())
             {
-                //NP.Success("Tum Seremoni üyeleri çevrim içi");
+                NP.Success("My Wallet : " + NVG.Settings.Nodes.My.IP.Wallet);
                 string nextWalletId = NCG.PreStart();
-                Console.WriteLine("myOrderNo: " + NCG.MyOrderNo.ToString());
-                Console.WriteLine("nextWalletId : " + nextWalletId);
+                NP.Basic("nextWalletId : " + nextWalletId);
                 NP.Success("myOrderNo : " + NCG.MyOrderNo.ToString());
-                //NP.ReadLine();
-                //Comparison çalışan validatör nedense işleme başlayamıyor
-                //burası düzeltilmeli
-                //diğer validatörden gelen işlemi sıradaki diğerlerine aktar
                 if (NCG.MyOrderNo == 1)
                 {
                     NP.Success("I'm The First");
@@ -568,6 +563,8 @@ namespace Notus.Validator
                 {
                     Console.WriteLine("The Others");
                 }
+                NP.ReadLine();
+                NP.ReadLine();
                 NP.ReadLine();
             }
 
