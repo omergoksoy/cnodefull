@@ -57,6 +57,10 @@ namespace Notus.Ceremony
                     }
                     else
                     {
+                        Console.WriteLine("walletId : " + walletId);
+                        Console.WriteLine("validatorItem.Value.IP.Wallet : " + validatorItem.Value.IP.Wallet);
+                        Console.WriteLine(walletId.Length);
+                        Console.WriteLine(string.Equals(walletId, validatorItem.Value.IP.Wallet));
                         genesisSended = true;
                     }
                 }
