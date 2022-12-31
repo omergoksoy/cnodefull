@@ -506,9 +506,6 @@ namespace Notus.Validator
             {
                 NP.Success("My Wallet : " + NVG.Settings.Nodes.My.IP.Wallet);
                 NCG.PreStart();
-                NP.ReadLine();
-                NP.ReadLine();
-                NP.ReadLine();
 
                 if (NCG.MyOrderNo > NVG.NodeList.Count)
                 {
@@ -520,6 +517,7 @@ namespace Notus.Validator
                 }
                 NP.Success("myOrderNo : " + NCG.MyOrderNo.ToString());
 
+                NP.ReadLine();
                 NP.ReadLine();
                 if (NCG.MyOrderNo == 1)
                 {
