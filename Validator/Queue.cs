@@ -429,11 +429,11 @@ namespace Notus.Validator
 
                         if (msgSended == true)
                         {
-                            NP.Info("<sNode> Message [Receiver] - Sended");
+                            NP.Info("( sNode ) Message [Receiver] - Sended");
                         }
                         else
                         {
-                            NP.Danger("<sNode> Message [Receiver] - Sending Error");
+                            NP.Danger("( sNode ) Message [Receiver] - Sending Error");
                         }
                     }
                 }

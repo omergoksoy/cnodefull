@@ -172,11 +172,11 @@ namespace Notus.Ceremony
                             bool msgSended=NVG.Settings.PeerManager.Send(validatorItem.Key, "<sNode>" + NVG.Settings.Nodes.My.IP.Wallet + "</sNode>", false);
                             if (msgSended == true)
                             {
-                                NP.Info("<sNode> Message [Sender] - Sended");
+                                NP.Info("( sNode ) Message [Sender] - Sended");
                             }
                             else
                             {
-                                NP.Danger("<sNode> Message [Sender] - Sending Error");
+                                NP.Danger("( sNode ) Message [Sender] - Sending Error");
                             }
                             waitTimeDiff = DateTime.Now;
                         }
