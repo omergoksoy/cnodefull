@@ -31,11 +31,11 @@ namespace Notus.Ceremony
         }
         public static void DistributeTheNext(string walletId, string genesisText)
         {
-            bool genesisSended = false;
             Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList,NVC.JsonSetting));
             NP.ReadLine();
             foreach (var validatorItem in NVG.NodeList)
             {
+                bool genesisSended = false;
                 while (genesisSended == false)
                 {
                     if (walletId.Length == 0 || string.Equals(walletId, validatorItem.Value.IP.Wallet))
