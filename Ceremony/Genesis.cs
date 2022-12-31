@@ -47,6 +47,10 @@ namespace Notus.Ceremony
                         {
                             Thread.Sleep(100);
                         }
+                        else
+                        {
+                            Console.WriteLine("Genesis Sended To ->" + walletId);
+                        }
                     }
                     else
                     {
