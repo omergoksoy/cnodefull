@@ -191,8 +191,8 @@ namespace Notus.Validator
         {
             if (NTT.CheckXmlTag(incomeData, "genesis"))
             {
-                Console.WriteLine("Genesis Data Arrived-1");
-                Console.WriteLine(NVG.Settings.GenesisCreated);
+                //Console.WriteLine("Genesis Data Arrived-1");
+                //Console.WriteLine(NVG.Settings.GenesisCreated);
                 if (NVG.Settings.GenesisCreated == true)
                 {
                     return "error";

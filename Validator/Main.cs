@@ -518,10 +518,18 @@ namespace Notus.Validator
                     if (string.Equals(innerResultStr, "genesis"))
                     {
                         incomeMessage = NTT.GetPureText(incomeMessage, "genesis");
-                        Console.WriteLine(incomeMessage);
+                        //Console.WriteLine(incomeMessage);
                         try
                         {
                             NCG.GenesisObj = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(incomeMessage);
+                            if (Notus.Block.Genesis.Verify(NCG.GenesisObj, (NCG.MyOrderNo-1)) == false)
+                            {
+                                Console.WriteLine("Gelen Blok Hatali");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Gelen Blok Uygun");
+                            }
                         }
                         catch
                         {
@@ -555,7 +563,14 @@ namespace Notus.Validator
             {
                 NP.Success("My Wallet : " + NVG.Settings.Nodes.My.IP.Wallet);
                 NCG.PreStart();
-                NP.Basic("nextWalletId : " + NCG.NextWalletId);
+                if (NCG.NextWalletId.Length == 0)
+                {
+                    NP.Basic("nextWalletId : ALL OF THEM");
+                }
+                else
+                {
+                    NP.Basic("nextWalletId : " + NCG.NextWalletId);
+                }
                 NP.Success("myOrderNo : " + NCG.MyOrderNo.ToString());
                 if (NCG.MyOrderNo == 1)
                 {
