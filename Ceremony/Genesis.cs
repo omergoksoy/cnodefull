@@ -191,6 +191,7 @@ namespace Notus.Ceremony
                 {
                     return JsonSerializer.Serialize(GenesisObj);
                 }
+                return "false";
             }
 
             if (string.Equals(incomeFullUrlPath, "infostatus"))
