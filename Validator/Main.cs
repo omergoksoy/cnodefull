@@ -2,12 +2,14 @@
 using System.Net;
 using System.Numerics;
 using System.Text.Json;
+using NCG = Notus.Ceremony.Genesis;
 using NCH = Notus.Communication.Helper;
 using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
 using NP2P = Notus.P2P;
 using NTN = Notus.Toolbox.Network;
+using NTT = Notus.Toolbox.Text;
 using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
 using NVD = Notus.Validator.Date;
@@ -17,8 +19,6 @@ using NVH = Notus.Validator.Helper;
 using NVJ = Notus.Validator.Join;
 using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
-using NCG = Notus.Ceremony.Genesis;
-using NTT = Notus.Toolbox.Text;
 namespace Notus.Validator
 {
     public class Main : IDisposable
@@ -506,13 +506,17 @@ namespace Notus.Validator
             {
                 NP.Success("My Wallet : " + NVG.Settings.Nodes.My.IP.Wallet);
                 NCG.PreStart();
-                if (NCG.NextWalletId.Length == 0)
+                NP.ReadLine();
+                NP.ReadLine();
+                NP.ReadLine();
+
+                if (NCG.MyOrderNo > NVG.NodeList.Count)
                 {
                     NP.Basic("nextWalletId : ALL OF THEM");
                 }
                 else
                 {
-                    NP.Basic("nextWalletId : " + NCG.NextWalletId);
+                    NP.Basic("nextWalletId : Just One");
                 }
                 NP.Success("myOrderNo : " + NCG.MyOrderNo.ToString());
 

@@ -17,7 +17,6 @@ namespace Notus.Ceremony
     public static class Genesis
     {
         public static Notus.Variable.Genesis.GenesisBlockData GenesisObj = new();
-        public static string NextWalletId = "";
         public static int MyOrderNo = 0;
         public static Notus.Communication.Http HttpObj = new Notus.Communication.Http(true);
         public static void PreStart()
@@ -44,12 +43,10 @@ namespace Notus.Ceremony
             StartGenesisConnection();
             ControlOtherValidatorStatus();
             NCG.MakeMembersOrders();
-            NP.ReadLine();
-            NP.ReadLine();
-            NP.ReadLine();
         }
         public static void DistributeTheNext()
         {
+            /*
             string genesisText = JsonSerializer.Serialize(GenesisObj);
             foreach (var validatorItem in NVG.NodeList)
             {
@@ -72,6 +69,7 @@ namespace Notus.Ceremony
                     }
                 }
             }
+            */
         }
         public static bool Generate()
         {
@@ -108,7 +106,6 @@ namespace Notus.Ceremony
         }
         public static void MakeMembersOrders()
         {
-            NextWalletId = string.Empty;
             SortedDictionary<BigInteger, string> resultList = new SortedDictionary<BigInteger, string>();
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
@@ -145,10 +142,6 @@ namespace Notus.Ceremony
             }
 
             MyOrderNo = 0;
-            foreach (var item in resultList)
-            {
-                Console.WriteLine(item.Key.ToString() + " - " + item.Value);
-            }
             for (int i = 0; i < resultList.Count; i++)
             {
                 string? currentWalletId = resultList.Values.ElementAt(i);
@@ -156,10 +149,6 @@ namespace Notus.Ceremony
                 {
                     MyOrderNo = i + 1;
                 }
-            }
-            if (6 > MyOrderNo && resultList.Count > MyOrderNo)
-            {
-                NextWalletId = resultList.Values.ElementAt(MyOrderNo);
             }
         }
         private static string Fnc_OnReceiveData(NVS.HttpRequestDetails IncomeData)
@@ -193,7 +182,7 @@ namespace Notus.Ceremony
         public static void StartGenesisConnection()
         {
             int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
-            Console.WriteLine("SelectedPortVal : " + SelectedPortVal.ToString());
+            // Console.WriteLine("SelectedPortVal : " + SelectedPortVal.ToString());
             IPAddress NodeIpAddress = IPAddress.Parse(
                 NVG.Settings.LocalNode == false
                     ?
