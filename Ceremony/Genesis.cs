@@ -43,10 +43,9 @@ namespace Notus.Ceremony
             NVH.DefineMyNodeInfo();
             StartGenesisConnection();
             ControlOtherValidatorStatus();
-            Console.WriteLine("All-Node-Is-Active");
-            NP.ReadLine();
-
             NCG.MakeMembersOrders();
+            NP.ReadLine();
+            NP.ReadLine();
             NP.ReadLine();
         }
         public static void DistributeTheNext()
@@ -71,44 +70,6 @@ namespace Notus.Ceremony
                             Thread.Sleep(50);
                         }
                     }
-                }
-            }
-        }
-        public static void SocketDataControl(string incomeText)
-        {
-            incomeText = NTT.GetPureText(incomeText, "genesis");
-            bool textConverted = false;
-            //Console.WriteLine(incomeMessage);
-            try
-            {
-                NCG.GenesisObj = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(incomeText);
-                textConverted = true;
-            }
-            catch
-            {
-                Console.WriteLine("Json  Convert Error : " + incomeText);
-            }
-            if (textConverted == true)
-            {
-                if (Notus.Block.Genesis.Verify(NCG.GenesisObj, (NCG.MyOrderNo - 1)) == false)
-                {
-                    Console.WriteLine("Gelen Blok Hatali");
-                }
-                else
-                {
-                    Console.WriteLine("Gelen Blok Uygun");
-                    NCG.GenesisObj.Ceremony[NCG.MyOrderNo].PublicKey = NVG.Settings.Nodes.My.PublicKey;
-                    string rawGenesisDataStr = Notus.Block.Genesis.CalculateRaw(
-                        NCG.GenesisObj,
-                        NCG.MyOrderNo
-                    );
-
-                    Console.WriteLine("Ozet : " + new Notus.Hash().CommonHash("sha1", rawGenesisDataStr));
-                    NCG.GenesisObj.Ceremony[NCG.MyOrderNo].Sign = Notus.Wallet.ID.Sign(rawGenesisDataStr, NVG.Settings.Nodes.My.PrivateKey);
-
-                    Console.WriteLine("JsonSerializer.Serialize(NCG.GenesisObj.Ceremony)");
-                    Console.WriteLine(JsonSerializer.Serialize(NCG.GenesisObj.Ceremony));
-                    DistributeTheNext();
                 }
             }
         }
@@ -212,8 +173,6 @@ namespace Notus.Ceremony
             {
                 incomeFullUrlPath = incomeFullUrlPath.Substring(0, incomeFullUrlPath.Length - 1);
             }
-            Console.WriteLine(incomeFullUrlPath);
-            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
             if (string.Equals(incomeFullUrlPath, "nodeinfo"))
             {
                 return JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]);
@@ -224,6 +183,8 @@ namespace Notus.Ceremony
                 return JsonSerializer.Serialize(NVG.NodeList);
             }
 
+            Console.WriteLine(incomeFullUrlPath);
+            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
             //string resultData = Obj_Api.Interpret(IncomeData);
 
             return "false";
