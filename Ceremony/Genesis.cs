@@ -32,6 +32,8 @@ namespace Notus.Ceremony
         public static void DistributeTheNext(string walletId, string genesisText)
         {
             bool genesisSended = false;
+            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList,NVC.JsonSetting));
+            NP.ReadLine();
             foreach (var validatorItem in NVG.NodeList)
             {
                 while (genesisSended == false)
