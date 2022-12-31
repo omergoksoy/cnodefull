@@ -159,6 +159,7 @@ namespace Notus.Ceremony
                         if ((DateTime.Now - waitTimeDiff).TotalSeconds > 5)
                         {
                             bool msgSended=NVG.Settings.PeerManager.Send(validatorItem.Key, "<sNode>" + NVG.Settings.Nodes.My.IP.Wallet + "</sNode>", false);
+                            /*
                             if (msgSended == true)
                             {
                                 NP.Info("( sNode ) Message [Sender] - Sended");
@@ -167,6 +168,7 @@ namespace Notus.Ceremony
                             {
                                 NP.Danger("( sNode ) Message [Sender] - Sending Error");
                             }
+                            */
                             waitTimeDiff = DateTime.Now;
                         }
                     }
@@ -177,7 +179,7 @@ namespace Notus.Ceremony
                 }
                 else
                 {
-                    Thread.Sleep(50);
+                    Thread.Sleep(150);
                 }
             }
         }
