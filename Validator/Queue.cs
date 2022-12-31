@@ -415,15 +415,18 @@ namespace Notus.Validator
             if (CheckXmlTag(incomeData, "sNode"))
             {
                 incomeData = GetPureText(incomeData, "sNode");
+                Console.WriteLine("Node Wants Our Info -> (" + incomeData + ")");
                 foreach (var validatorItem in NVG.NodeList)
                 {
                     if (string.Equals(validatorItem.Value.IP.Wallet, incomeData) == false)
                     {
-                        bool msgSended=NVG.Settings.PeerManager.Send(
+                        Console.WriteLine("sNode -> " + validatorItem.Key);
+                        bool msgSended = NVG.Settings.PeerManager.Send(
                             validatorItem.Key,
                             "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>",
                             false
                         );
+
                         if (msgSended == true)
                         {
                             NP.Info("<sNode> Message [Receiver] - Sended");
