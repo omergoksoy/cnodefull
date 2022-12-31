@@ -51,11 +51,11 @@ namespace Notus.Ceremony
             int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
             if (NCG.MyOrderNo > 1)
             {
-                Console.WriteLine("NCG.MyOrderNo : " + NCG.MyOrderNo.ToString());
-                int controlOrderNo = NCG.MyOrderNo - 1;
+                //Console.WriteLine("NCG.MyOrderNo : " + NCG.MyOrderNo.ToString());
+                int controlOrderNo = NCG.MyOrderNo - 2;
                 string waitingWalletId = ValidatorOrder.Values.ElementAt(controlOrderNo);
                 NP.Basic("Control Wallet : " + waitingWalletId);
-                NP.Basic("ValidatorOrder.Values.ElementAt(NCG.MyOrderNo-2) : " + ValidatorOrder.Values.ElementAt(NCG.MyOrderNo-2));
+                //NP.Basic("ValidatorOrder.Values.ElementAt(NCG.MyOrderNo-2) : " + ValidatorOrder.Values.ElementAt(NCG.MyOrderNo-2));
                 foreach (var validatorItem in NVG.NodeList)
                 {
                     if (string.Equals(waitingWalletId, validatorItem.Value.IP.Wallet))
