@@ -64,6 +64,7 @@ namespace Notus.Ceremony
                             string requestUrl = Notus.Network.Node.MakeHttpListenerPath(
                                     validatorItem.Value.IP.IpAddress, SelectedPortVal
                                 ) + "genesis";
+                            Console.WriteLine(requestUrl);
                             string MainResultStr = NCR.GetSync(requestUrl, 2, true, false);
                             if (MainResultStr.Length > 20)
                             {
@@ -95,8 +96,8 @@ namespace Notus.Ceremony
                             }
                             else
                             {
-                                Console.WriteLine("Genesis Text Is Empty");
-                                Thread.Sleep(1000);
+                                Console.WriteLine("Genesis Text Is Empty : " + MainResultStr);
+                                Thread.Sleep(2500);
                             }
                         }
                     }
@@ -132,9 +133,7 @@ namespace Notus.Ceremony
                 });
             }
             SignedGenesis();
-            /*
-            if (Notus.Block.Genesis.Verify(GenesisObj, myOrderNo) == false)
-            */
+            NP.Success("I Generate Genesis Block");
         }
         public static void MakeMembersOrders()
         {
