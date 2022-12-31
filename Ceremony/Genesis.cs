@@ -38,6 +38,7 @@ namespace Notus.Ceremony
                 bool genesisSended = false;
                 while (genesisSended == false)
                 {
+                    genesisSended = true;
                     if (walletId.Length == 0 || string.Equals(walletId, validatorItem.Value.IP.Wallet))
                     {
                         genesisSended = NVG.Settings.PeerManager.Send(
@@ -47,21 +48,9 @@ namespace Notus.Ceremony
                         );
                         if (genesisSended == false)
                         {
-                            Console.WriteLine("validatorItem.Key" + validatorItem.Key);
-                            Thread.Sleep(500);
+                            //Console.WriteLine("validatorItem.Key" + validatorItem.Key);
+                            Thread.Sleep(50);
                         }
-                        else
-                        {
-                            Console.WriteLine("Genesis Sended To ->" + walletId);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("walletId : " + walletId);
-                        Console.WriteLine("validatorItem.Value.IP.Wallet : " + validatorItem.Value.IP.Wallet);
-                        Console.WriteLine(walletId.Length);
-                        Console.WriteLine(string.Equals(walletId, validatorItem.Value.IP.Wallet));
-                        genesisSended = true;
                     }
                 }
             }

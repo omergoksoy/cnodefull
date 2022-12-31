@@ -420,21 +420,23 @@ namespace Notus.Validator
                 {
                     if (string.Equals(validatorItem.Value.IP.Wallet, incomeData) == false)
                     {
-                        Console.WriteLine("sNode -> " + validatorItem.Key);
                         bool msgSended = NVG.Settings.PeerManager.Send(
                             validatorItem.Key,
                             "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>",
                             false
                         );
 
+                        // Console.WriteLine("sNode -> " + validatorItem.Key);
+                        /*
                         if (msgSended == true)
                         {
-                            NP.Info("( sNode ) Message [Receiver] - Sended");
+                            // NP.Info("( sNode ) Message [Receiver] - Sended");
                         }
                         else
                         {
                             NP.Danger("( sNode ) Message [Receiver] - Sending Error");
                         }
+                        */
                     }
                 }
                 return "done";
