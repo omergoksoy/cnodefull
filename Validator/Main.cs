@@ -517,8 +517,6 @@ namespace Notus.Validator
                 }
                 NP.Success("myOrderNo : " + NCG.MyOrderNo.ToString());
 
-                NP.ReadLine();
-                NP.ReadLine();
                 if (NCG.MyOrderNo == 1)
                 {
                     NCG.Generate();
