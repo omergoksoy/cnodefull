@@ -85,6 +85,10 @@ namespace Notus.Ceremony
                                 }
                                 catch { }
                             }
+                            else
+                            {
+                                Thread.Sleep(1000);
+                            }
                         }
                     }
                 }
