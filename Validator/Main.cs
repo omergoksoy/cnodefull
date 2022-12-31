@@ -18,6 +18,7 @@ using NVJ = Notus.Validator.Join;
 using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
 using NCG = Notus.Ceremony.Genesis;
+using NTT = Notus.Toolbox.Text;
 namespace Notus.Validator
 {
     public class Main : IDisposable
@@ -516,7 +517,17 @@ namespace Notus.Validator
                     string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
                     if (string.Equals(innerResultStr, "genesis"))
                     {
-                        Console.WriteLine("burada gelen genesis'i kontrol et");
+                        incomeMessage = NTT.GetPureText(incomeMessage, "genesis");
+                        Console.WriteLine(incomeMessage);
+                        try
+                        {
+                            NCG.GenesisObj = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(incomeMessage);
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Json  Convert Error : " + incomeMessage);
+                        }
+
                         //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Genesis, NVC.JsonSetting));
                     }
 
@@ -543,20 +554,22 @@ namespace Notus.Validator
             if (Obj_Integrity.IsGenesisNeed())
             {
                 NP.Success("My Wallet : " + NVG.Settings.Nodes.My.IP.Wallet);
-                string nextWalletId = NCG.PreStart();
-                NP.Basic("nextWalletId : " + nextWalletId);
+                NCG.PreStart();
+                NP.Basic("nextWalletId : " + NCG.NextWalletId);
                 NP.Success("myOrderNo : " + NCG.MyOrderNo.ToString());
                 if (NCG.MyOrderNo == 1)
                 {
                     NP.Success("I'm The First");
-                    Notus.Variable.Genesis.GenesisBlockData? newGenesisWithCeremony = NCG.Generate();
-                    if (newGenesisWithCeremony == null)
+                    if (NCG.Generate())
+                    {
+                        Console.WriteLine("Verified");
+                        NCG.DistributeTheNext();
+                    }
+                    else
                     {
                         Console.WriteLine("UN verified");
                         NP.ReadLine();
                     }
-                    Console.WriteLine("Verified");
-                    NCG.DistributeTheNext(nextWalletId, JsonSerializer.Serialize(newGenesisWithCeremony));
                 }
                 else
                 {

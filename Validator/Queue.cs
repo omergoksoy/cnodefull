@@ -9,6 +9,7 @@ using NGF = Notus.Variable.Globals.Functions;
 using NH = Notus.Hash;
 using NP = Notus.Print;
 using NTN = Notus.Toolbox.Network;
+using NTT = Notus.Toolbox.Text;
 using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
 using NVD = Notus.Validator.Date;
@@ -180,15 +181,6 @@ namespace Notus.Validator
                 NVH.RemoveFromValidatorList(tmpRemoveKeyList[i]);
             }
         }
-        private bool CheckXmlTag(string rawDataStr, string tagName)
-        {
-            return ((rawDataStr.IndexOf("<" + tagName + ">") >= 0 && rawDataStr.IndexOf("</" + tagName + ">") >= 0) ? true : false);
-        }
-        private string GetPureText(string rawDataStr, string tagName)
-        {
-            rawDataStr = rawDataStr.Replace("<" + tagName + ">", "");
-            return rawDataStr.Replace("</" + tagName + ">", "");
-        }
         public string Process(NVS.HttpRequestDetails incomeData)
         {
             string reponseText = ProcessIncomeData(incomeData.PostParams["data"]);
@@ -197,36 +189,28 @@ namespace Notus.Validator
         }
         public string ProcessIncomeData(string incomeData)
         {
-            if (CheckXmlTag(incomeData, "genesis"))
+            if (NTT.CheckXmlTag(incomeData, "genesis"))
             {
                 Console.WriteLine("Genesis Data Arrived-1");
+                Console.WriteLine(NVG.Settings.GenesisCreated);
                 if (NVG.Settings.GenesisCreated == true)
                 {
                     return "error";
                 }
-                incomeData = GetPureText(incomeData, "genesis");
-                try
-                {
-                    NVG.Settings.Genesis = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(incomeData);
-                }
-                catch
-                {
-                    Console.WriteLine("Json  Convert Error : " + incomeData);
-                }
                 return "genesis";
             }
 
-            if (CheckXmlTag(incomeData, "ping"))
+            if (NTT.CheckXmlTag(incomeData, "ping"))
             {
                 return "pong";
             }
-            if (CheckXmlTag(incomeData, "pQueue"))
+            if (NTT.CheckXmlTag(incomeData, "pQueue"))
             {
                 NP.PrintQueue(false, "Queue.cs -> Line 199");
                 return "ok";
             }
 
-            if (CheckXmlTag(incomeData, "block"))
+            if (NTT.CheckXmlTag(incomeData, "block"))
             {
                 if (Notus.Toolbox.Text.CountChar(incomeData, '/') > 1)
                 {
@@ -241,7 +225,7 @@ namespace Notus.Validator
                 NVG.Settings.WaitForGeneratedBlock = true;
                 NP.Warning("Wait To Get New Block");
 
-                string incomeDataStr = GetPureText(incomeData, "block");
+                string incomeDataStr = NTT.GetPureText(incomeData, "block");
                 if (incomeDataStr.IndexOf(":") < 0)
                 {
                     NVG.Settings.WaitForGeneratedBlock = false;
@@ -299,9 +283,9 @@ namespace Notus.Validator
                 NP.Danger("Error Occurred While Getting New Block");
                 return "fncResult-false";
             }
-            if (CheckXmlTag(incomeData, "kill"))
+            if (NTT.CheckXmlTag(incomeData, "kill"))
             {
-                incomeData = GetPureText(incomeData, "kill");
+                incomeData = NTT.GetPureText(incomeData, "kill");
                 string[] tmpHashPart = incomeData.Split(NVC.CommonDelimeterChar);
                 ulong incomeUtc = ulong.Parse(tmpHashPart[1]);
                 ulong incomeDiff = (ulong)Math.Abs((decimal)NVG.NOW.Int - incomeUtc);
@@ -337,9 +321,9 @@ namespace Notus.Validator
                 return "0";
             }
 
-            if (CheckXmlTag(incomeData, "when"))
+            if (NTT.CheckXmlTag(incomeData, "when"))
             {
-                StartingTimeAfterEnoughNode = ND.ToDateTime(GetPureText(incomeData, "when"));
+                StartingTimeAfterEnoughNode = ND.ToDateTime(NTT.GetPureText(incomeData, "when"));
                 NVG.NodeQueue.Starting = Notus.Date.ToLong(StartingTimeAfterEnoughNode);
                 NVG.CurrentSyncNo = NVG.NodeQueue.Starting;
                 /*
@@ -363,9 +347,9 @@ namespace Notus.Validator
                 StartingTimeAfterEnoughNode_Arrived = true;
                 return "done";
             }
-            if (CheckXmlTag(incomeData, "hash"))
+            if (NTT.CheckXmlTag(incomeData, "hash"))
             {
-                incomeData = GetPureText(incomeData, "hash");
+                incomeData = NTT.GetPureText(incomeData, "hash");
                 string[] tmpHashPart = incomeData.Split(':');
                 if (string.Equals(tmpHashPart[0], NGF.ValidatorListHash.Substring(0, 20)) == false)
                 {
@@ -378,14 +362,14 @@ namespace Notus.Validator
                 }
                 return "0";
             }
-            if (CheckXmlTag(incomeData, "lhash"))
+            if (NTT.CheckXmlTag(incomeData, "lhash"))
             {
-                return (string.Equals(GetPureText(incomeData, "lhash"), NGF.ValidatorListHash) == true ? "1" : "0");
+                return (string.Equals(NTT.GetPureText(incomeData, "lhash"), NGF.ValidatorListHash) == true ? "1" : "0");
             }
-            if (CheckXmlTag(incomeData, "nList"))
+            if (NTT.CheckXmlTag(incomeData, "nList"))
             {
                 //burada eğer liste içeriği farklı ise yeni listeyi gönder
-                incomeData = GetPureText(incomeData, "nList");
+                incomeData = NTT.GetPureText(incomeData, "nList");
                 SortedDictionary<string, NVS.IpInfo>? tmpNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(incomeData);
                 if (tmpNodeList == null)
                 {
@@ -399,9 +383,9 @@ namespace Notus.Validator
             }
 
 
-            if (CheckXmlTag(incomeData, "ready"))
+            if (NTT.CheckXmlTag(incomeData, "ready"))
             {
-                incomeData = GetPureText(incomeData, "ready");
+                incomeData = NTT.GetPureText(incomeData, "ready");
                 Console.WriteLine("Ready Income : " + incomeData);
                 foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
                 {
@@ -412,9 +396,9 @@ namespace Notus.Validator
                 }
                 return "done";
             }
-            if (CheckXmlTag(incomeData, "sNode"))
+            if (NTT.CheckXmlTag(incomeData, "sNode"))
             {
-                incomeData = GetPureText(incomeData, "sNode");
+                incomeData = NTT.GetPureText(incomeData, "sNode");
                 Console.WriteLine("Node Wants Our Info -> (" + incomeData + ")");
                 foreach (var validatorItem in NVG.NodeList)
                 {
@@ -441,14 +425,14 @@ namespace Notus.Validator
                 }
                 return "done";
             }
-            if (CheckXmlTag(incomeData, "rNode"))
+            if (NTT.CheckXmlTag(incomeData, "rNode"))
             {
                 return "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
             }
 
-            if (CheckXmlTag(incomeData, "fReady"))
+            if (NTT.CheckXmlTag(incomeData, "fReady"))
             {
-                incomeData = GetPureText(incomeData, "fReady");
+                incomeData = NTT.GetPureText(incomeData, "fReady");
                 string[] tmpHashPart = incomeData.Split(NVC.CommonDelimeterChar);
                 ulong incomeUtc = ulong.Parse(tmpHashPart[1]);
                 ulong incomeDiff = (ulong)Math.Abs((decimal)NVG.NOW.Int - incomeUtc);
@@ -486,10 +470,10 @@ namespace Notus.Validator
                 return "0";
             }
 
-            if (CheckXmlTag(incomeData, "waitingRoomNodeReady"))
+            if (NTT.CheckXmlTag(incomeData, "waitingRoomNodeReady"))
             {
                 //NP.Basic("IncomeText : " + incomeData);
-                incomeData = GetPureText(incomeData, "waitingRoomNodeReady");
+                incomeData = NTT.GetPureText(incomeData, "waitingRoomNodeReady");
                 string[] tmpHashPart = incomeData.Split(NVC.CommonDelimeterChar);
                 ulong incomeUtc = ulong.Parse(tmpHashPart[1]);
                 ulong incomeDiff = (ulong)Math.Abs((decimal)NVG.NOW.Int - incomeUtc);
@@ -526,11 +510,11 @@ namespace Notus.Validator
                 }
                 return "0";
             }
-            if (CheckXmlTag(incomeData, "syncNo"))
+            if (NTT.CheckXmlTag(incomeData, "syncNo"))
             {
                 //NP.Basic("IncomeText : " + incomeData);
 
-                incomeData = GetPureText(incomeData, "syncNo");
+                incomeData = NTT.GetPureText(incomeData, "syncNo");
                 string[] tmpArr = incomeData.Split(":");
                 if (tmpArr.Length > 3)
                 {
@@ -585,9 +569,9 @@ namespace Notus.Validator
                 return "0";
             }
 
-            if (CheckXmlTag(incomeData, "joinTime"))
+            if (NTT.CheckXmlTag(incomeData, "joinTime"))
             {
-                incomeData = GetPureText(incomeData, "joinTime");
+                incomeData = NTT.GetPureText(incomeData, "joinTime");
                 string[] tmpArr = incomeData.Split(":");
                 if (tmpArr.Length > 3)
                 {
@@ -644,11 +628,11 @@ namespace Notus.Validator
             }
 
             //bu komut ile bekleme odasındaki node ağa dahil ediliyor
-            if (CheckXmlTag(incomeData, "yourTurn"))
+            if (NTT.CheckXmlTag(incomeData, "yourTurn"))
             {
                 //NP.Basic("IncomeText : " + incomeData);
 
-                incomeData = GetPureText(incomeData, "yourTurn");
+                incomeData = NTT.GetPureText(incomeData, "yourTurn");
                 if (incomeData.IndexOf(':') >= 0)
                 {
                     string[] tmpArr = incomeData.Split(":");
@@ -683,9 +667,9 @@ namespace Notus.Validator
                 return "0";
             }
 
-            if (CheckXmlTag(incomeData, "node"))
+            if (NTT.CheckXmlTag(incomeData, "node"))
             {
-                incomeData = GetPureText(incomeData, "node");
+                incomeData = NTT.GetPureText(incomeData, "node");
                 try
                 {
                     NVS.NodeQueueInfo? tmpNodeQueueInfo =
@@ -723,9 +707,9 @@ namespace Notus.Validator
                 catch { }
                 return "0";
             }
-            if (CheckXmlTag(incomeData, "list"))
+            if (NTT.CheckXmlTag(incomeData, "list"))
             {
-                incomeData = GetPureText(incomeData, "list");
+                incomeData = NTT.GetPureText(incomeData, "list");
                 SortedDictionary<string, NVS.IpInfo>? tmpNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(incomeData);
                 if (tmpNodeList == null)
                 {

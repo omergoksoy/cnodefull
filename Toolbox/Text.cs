@@ -10,6 +10,16 @@ namespace Notus.Toolbox
 {
     public static class Text
     {
+        public static bool CheckXmlTag(string rawDataStr, string tagName)
+        {
+            return ((rawDataStr.IndexOf("<" + tagName + ">") >= 0 && rawDataStr.IndexOf("</" + tagName + ">") >= 0) ? true : false);
+        }
+        public static string GetPureText(string rawDataStr, string tagName)
+        {
+            rawDataStr = rawDataStr.Replace("<" + tagName + ">", "");
+            return rawDataStr.Replace("</" + tagName + ">", "");
+        }
+
         public static string ShrinkHex(string inputHexData, byte howManyByte)
         {
             if ((2 * howManyByte) >= inputHexData.Length)
