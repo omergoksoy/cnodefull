@@ -15,7 +15,7 @@ using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVS = Notus.Variable.Struct;
-
+using NTT = Notus.Toolbox.Text;
 namespace Notus.Ceremony
 {
     public static class Genesis
@@ -54,6 +54,36 @@ namespace Notus.Ceremony
                         }
                     }
                 }
+            }
+        }
+        public static void SocketDataControl(string incomeText)
+        {
+            incomeText = NTT.GetPureText(incomeText, "genesis");
+            //Console.WriteLine(incomeMessage);
+            try
+            {
+                NCG.GenesisObj = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(incomeText);
+                if (Notus.Block.Genesis.Verify(NCG.GenesisObj, (NCG.MyOrderNo - 1)) == false)
+                {
+                    Console.WriteLine("Gelen Blok Hatali");
+                }
+                else
+                {
+                    Console.WriteLine("Gelen Blok Uygun");
+                    string rawGenesisDataStr = Notus.Block.Genesis.CalculateRaw(
+                        NCG.GenesisObj,
+                        NCG.MyOrderNo
+                    );
+                    NCG.GenesisObj.Ceremony[NCG.MyOrderNo].Sign = Notus.Wallet.ID.Sign(rawGenesisDataStr, NVG.Settings.Nodes.My.PrivateKey);
+
+                    Console.WriteLine("JsonSerializer.Serialize(NCG.GenesisObj.Ceremony)");
+                    Console.WriteLine(JsonSerializer.Serialize(NCG.GenesisObj.Ceremony));
+                    DistributeTheNext();
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Json  Convert Error : " + incomeText);
             }
         }
         public static bool Generate()

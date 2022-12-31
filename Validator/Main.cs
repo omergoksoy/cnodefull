@@ -517,26 +517,7 @@ namespace Notus.Validator
                     string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
                     if (string.Equals(innerResultStr, "genesis"))
                     {
-                        incomeMessage = NTT.GetPureText(incomeMessage, "genesis");
-                        //Console.WriteLine(incomeMessage);
-                        try
-                        {
-                            NCG.GenesisObj = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(incomeMessage);
-                            if (Notus.Block.Genesis.Verify(NCG.GenesisObj, (NCG.MyOrderNo-1)) == false)
-                            {
-                                Console.WriteLine("Gelen Blok Hatali");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Gelen Blok Uygun");
-                            }
-                        }
-                        catch
-                        {
-                            Console.WriteLine("Json  Convert Error : " + incomeMessage);
-                        }
-
-                        //Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Genesis, NVC.JsonSetting));
+                        NCG.SocketDataControl(incomeMessage);
                     }
 
                     /*
