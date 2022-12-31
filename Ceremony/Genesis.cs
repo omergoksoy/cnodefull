@@ -79,11 +79,13 @@ namespace Notus.Ceremony
                 else
                 {
                     Console.WriteLine("Gelen Blok Uygun");
+                    NCG.GenesisObj.Ceremony[NCG.MyOrderNo].PublicKey = NVG.Settings.Nodes.My.PublicKey;
                     string rawGenesisDataStr = Notus.Block.Genesis.CalculateRaw(
                         NCG.GenesisObj,
                         NCG.MyOrderNo
                     );
-                    NCG.GenesisObj.Ceremony[NCG.MyOrderNo].PublicKey = NVG.Settings.Nodes.My.PublicKey;
+
+                    Console.WriteLine("Ozet : " + new Notus.Hash().CommonHash("sha1", rawGenesisDataStr));
                     NCG.GenesisObj.Ceremony[NCG.MyOrderNo].Sign = Notus.Wallet.ID.Sign(rawGenesisDataStr, NVG.Settings.Nodes.My.PrivateKey);
 
                     Console.WriteLine("JsonSerializer.Serialize(NCG.GenesisObj.Ceremony)");
@@ -116,6 +118,7 @@ namespace Notus.Ceremony
             GenesisObj.Ceremony[myOrderNo].Sign = "";
 
             string rawGenesisDataStr = Notus.Block.Genesis.CalculateRaw(GenesisObj, myOrderNo);
+            Console.WriteLine("Ozet : " + new Notus.Hash().CommonHash("sha1", rawGenesisDataStr));
             GenesisObj.Ceremony[myOrderNo].Sign = Notus.Wallet.ID.Sign(rawGenesisDataStr, NVG.Settings.Nodes.My.PrivateKey);
 
             if (Notus.Block.Genesis.Verify(GenesisObj, myOrderNo) == false)
