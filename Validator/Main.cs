@@ -548,8 +548,8 @@ namespace Notus.Validator
                 Console.WriteLine("nextWalletId : " + nextWalletId);
                 NP.Success("myOrderNo : " + NCG.MyOrderNo.ToString());
                 NP.ReadLine();
-                Comparison çalışan validatör nedense işleme başlayamıyor
-                burası düzeltilmeli
+                //Comparison çalışan validatör nedense işleme başlayamıyor
+                //burası düzeltilmeli
                 //diğer validatörden gelen işlemi sıradaki diğerlerine aktar
                 if (NCG.MyOrderNo == 1)
                 {
