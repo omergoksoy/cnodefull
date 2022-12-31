@@ -77,31 +77,32 @@ namespace Notus.Ceremony
                                 }
                                 catch
                                 {
-                                    Console.WriteLine("Genesis Text Convert Error : " + MainResultStr);
+                                    //Console.WriteLine("Genesis Text Convert Error : " + MainResultStr);
                                 }
 
                                 if (tmpGenObj == null)
                                 {
-                                    Console.WriteLine("Genesis Text Is NULL");
+                                    //Console.WriteLine("Genesis Text Is NULL");
                                 }
                                 else
                                 {
-                                    if (Notus.Block.Genesis.Verify(tmpGenObj, NCG.MyOrderNo) == false)
+                                    //öncekini doğrula 
+                                    if (Notus.Block.Genesis.Verify(tmpGenObj, NCG.MyOrderNo-1) == false)
                                     {
                                         NP.Success("Verified");
+                                        NP.ReadLine();
+                                        SignedGenesis();
                                     }
                                     else
                                     {
                                         NP.Danger("Un Verified");
                                     }
-                                    NP.ReadLine();
-                                    SignedGenesis();
                                 }
                                 NP.ReadLine();
                             }
                             else
                             {
-                                Console.WriteLine("Genesis Text Is Empty : " + MainResultStr);
+                                //Console.WriteLine("Genesis Text Is Empty : " + MainResultStr);
                                 Thread.Sleep(5000);
                             }
                         }
