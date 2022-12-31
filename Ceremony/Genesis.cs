@@ -74,6 +74,7 @@ namespace Notus.Ceremony
                         NCG.GenesisObj,
                         NCG.MyOrderNo
                     );
+                    NCG.GenesisObj.Ceremony[NCG.MyOrderNo].PublicKey = NVG.Settings.Nodes.My.PublicKey;
                     NCG.GenesisObj.Ceremony[NCG.MyOrderNo].Sign = Notus.Wallet.ID.Sign(rawGenesisDataStr, NVG.Settings.Nodes.My.PrivateKey);
 
                     Console.WriteLine("JsonSerializer.Serialize(NCG.GenesisObj.Ceremony)");
