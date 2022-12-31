@@ -66,7 +66,6 @@ namespace Notus.Ceremony
                             string requestUrl = Notus.Network.Node.MakeHttpListenerPath(
                                     validatorItem.Value.IP.IpAddress, SelectedPortVal
                                 ) + "genesis";
-                            Console.WriteLine(requestUrl);
                             string MainResultStr = NCR.GetSync(requestUrl, 2, true, false);
                             if (MainResultStr.Length > 20)
                             {
@@ -95,6 +94,9 @@ namespace Notus.Ceremony
                                     }
                                     else
                                     {
+                                        string rawGenesisDataStr = Notus.Block.Genesis.CalculateRaw(tmpGenObj, NCG.MyOrderNo-1);
+                                        Console.WriteLine("Ozet : " + new Notus.Hash().CommonHash("sha1", rawGenesisDataStr));
+
                                         NP.Danger("Un Verified");
                                     }
                                 }
