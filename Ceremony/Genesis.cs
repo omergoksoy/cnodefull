@@ -59,10 +59,19 @@ namespace Notus.Ceremony
         public static void SocketDataControl(string incomeText)
         {
             incomeText = NTT.GetPureText(incomeText, "genesis");
+            bool textConverted = false;
             //Console.WriteLine(incomeMessage);
             try
             {
                 NCG.GenesisObj = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(incomeText);
+                textConverted = true;
+            }
+            catch
+            {
+                Console.WriteLine("Json  Convert Error : " + incomeText);
+            }
+            if (textConverted == true)
+            {
                 if (Notus.Block.Genesis.Verify(NCG.GenesisObj, (NCG.MyOrderNo - 1)) == false)
                 {
                     Console.WriteLine("Gelen Blok Hatali");
@@ -81,10 +90,6 @@ namespace Notus.Ceremony
                     Console.WriteLine(JsonSerializer.Serialize(NCG.GenesisObj.Ceremony));
                     DistributeTheNext();
                 }
-            }
-            catch
-            {
-                Console.WriteLine("Json  Convert Error : " + incomeText);
             }
         }
         public static bool Generate()
@@ -157,7 +162,7 @@ namespace Notus.Ceremony
                 }
             }
 
-            MyOrderNo =0;
+            MyOrderNo = 0;
             foreach (var item in resultList)
             {
                 Console.WriteLine(item.Key.ToString() + " - " + item.Value);
@@ -189,7 +194,7 @@ namespace Notus.Ceremony
                         weWaitResponseFromNode = true;
                         if ((DateTime.Now - waitTimeDiff).TotalSeconds > 5)
                         {
-                            bool msgSended=NVG.Settings.PeerManager.Send(validatorItem.Key, "<sNode>" + NVG.Settings.Nodes.My.IP.Wallet + "</sNode>", false);
+                            bool msgSended = NVG.Settings.PeerManager.Send(validatorItem.Key, "<sNode>" + NVG.Settings.Nodes.My.IP.Wallet + "</sNode>", false);
                             /*
                             if (msgSended == true)
                             {
