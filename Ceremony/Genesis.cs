@@ -3,6 +3,7 @@ using System.Net;
 using System.Numerics;
 using System.Text.Json;
 using NCG = Notus.Ceremony.Genesis;
+using NCR = Notus.Communication.Request;
 using NH = Notus.Hash;
 using NP = Notus.Print;
 using NTT = Notus.Toolbox.Text;
@@ -10,12 +11,13 @@ using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVS = Notus.Variable.Struct;
-using NCR = Notus.Communication.Request;
 
 namespace Notus.Ceremony
 {
     public static class Genesis
     {
+        public static SortedDictionary<BigInteger, string> ValidatorOrder = new SortedDictionary<BigInteger, string>();
+        public static bool Signed = false;
         public static Notus.Variable.Genesis.GenesisBlockData GenesisObj = new();
         public static int MyOrderNo = 0;
         public static Notus.Communication.Http HttpObj = new Notus.Communication.Http(true);
@@ -44,36 +46,52 @@ namespace Notus.Ceremony
             ControlOtherValidatorStatus();
             NCG.MakeMembersOrders();
         }
-        public static void DistributeTheNext()
+        public static void WaitPrevSigner()
         {
-            /*
-            string genesisText = JsonSerializer.Serialize(GenesisObj);
-            foreach (var validatorItem in NVG.NodeList)
+            int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
+            if (NCG.MyOrderNo > 1)
             {
-                bool genesisSended = false;
-                while (genesisSended == false)
+                string waitingWalletId = ValidatorOrder.Values.ElementAt(NCG.MyOrderNo - 1);
+                foreach (var validatorItem in NVG.NodeList)
                 {
-                    genesisSended = true;
-                    if (NextWalletId.Length == 0 || string.Equals(NextWalletId, validatorItem.Value.IP.Wallet))
+                    if (string.Equals(waitingWalletId, validatorItem.Value.IP.Wallet))
                     {
-                        genesisSended = NVG.Settings.PeerManager.Send(
-                            validatorItem.Key,
-                            "<genesis>" + genesisText + "</genesis>",
-                            false
-                        );
-                        if (genesisSended == false)
+                        bool exitFromWhileLoop = false;
+                        while (exitFromWhileLoop == false)
                         {
-                            //Console.WriteLine("validatorItem.Key" + validatorItem.Key);
-                            Thread.Sleep(50);
+                            string requestUrl = Notus.Network.Node.MakeHttpListenerPath(
+                                    validatorItem.Value.IP.IpAddress, SelectedPortVal
+                                ) + "genesis";
+                            string MainResultStr = NCR.GetSync(requestUrl, 2, true, false);
+                            if (MainResultStr.Length > 0)
+                            {
+                                try
+                                {
+                                    Notus.Variable.Genesis.GenesisBlockData? tmpGenObj = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(MainResultStr);
+                                    if (tmpGenObj != null)
+                                    {
+                                        SignedGenesis();
+                                    }
+                                }
+                                catch { }
+                            }
                         }
                     }
                 }
             }
-            */
         }
-        public static bool Generate()
+        public static void SignedGenesis()
         {
-            int myOrderNo = 1;
+            GenesisObj.Ceremony[NCG.MyOrderNo].PublicKey = NVG.Settings.Nodes.My.PublicKey;
+            GenesisObj.Ceremony[NCG.MyOrderNo].Sign = "";
+
+            string rawGenesisDataStr = Notus.Block.Genesis.CalculateRaw(GenesisObj, NCG.MyOrderNo);
+            Console.WriteLine("Ozet : " + new Notus.Hash().CommonHash("sha1", rawGenesisDataStr));
+            GenesisObj.Ceremony[NCG.MyOrderNo].Sign = Notus.Wallet.ID.Sign(rawGenesisDataStr, NVG.Settings.Nodes.My.PrivateKey);
+            Signed = true;
+        }
+        public static void Generate()
+        {
             GenesisObj = Notus.Block.Genesis.Generate(
                 //NVG.Settings.NodeWallet.WalletKey, 
                 NVG.Settings.Nodes.My.IP.Wallet,
@@ -91,22 +109,17 @@ namespace Notus.Ceremony
                     Sign = ""
                 });
             }
-            GenesisObj.Ceremony[myOrderNo].PublicKey = NVG.Settings.Nodes.My.PublicKey;
-            GenesisObj.Ceremony[myOrderNo].Sign = "";
-
-            string rawGenesisDataStr = Notus.Block.Genesis.CalculateRaw(GenesisObj, myOrderNo);
-            Console.WriteLine("Ozet : " + new Notus.Hash().CommonHash("sha1", rawGenesisDataStr));
-            GenesisObj.Ceremony[myOrderNo].Sign = Notus.Wallet.ID.Sign(rawGenesisDataStr, NVG.Settings.Nodes.My.PrivateKey);
-
+            SignedGenesis();
+            /*
             if (Notus.Block.Genesis.Verify(GenesisObj, myOrderNo) == false)
             {
                 return false;
             }
             return true;
+            */
         }
         public static void MakeMembersOrders()
         {
-            SortedDictionary<BigInteger, string> resultList = new SortedDictionary<BigInteger, string>();
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
                 if (entry.Value.Status == NVS.NodeStatus.Online)
@@ -128,9 +141,9 @@ namespace Notus.Ceremony
                             ),
                             NumberStyles.AllowHexSpecifier
                         );
-                        if (resultList.ContainsKey(intWalletNo) == false)
+                        if (ValidatorOrder.ContainsKey(intWalletNo) == false)
                         {
-                            resultList.Add(intWalletNo, entry.Value.IP.Wallet);
+                            ValidatorOrder.Add(intWalletNo, entry.Value.IP.Wallet);
                             exitInnerWhileLoop = true;
                         }
                         else
@@ -142,9 +155,9 @@ namespace Notus.Ceremony
             }
 
             MyOrderNo = 0;
-            for (int i = 0; i < resultList.Count; i++)
+            for (int i = 0; i < ValidatorOrder.Count; i++)
             {
-                string? currentWalletId = resultList.Values.ElementAt(i);
+                string? currentWalletId = ValidatorOrder.Values.ElementAt(i);
                 if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, currentWalletId))
                 {
                     MyOrderNo = i + 1;
@@ -165,6 +178,14 @@ namespace Notus.Ceremony
             if (string.Equals(incomeFullUrlPath, "nodeinfo"))
             {
                 return JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]);
+            }
+
+            if (string.Equals(incomeFullUrlPath, "genesis"))
+            {
+                if (Signed == true)
+                {
+                    return JsonSerializer.Serialize(GenesisObj);
+                }
             }
 
             if (string.Equals(incomeFullUrlPath, "infostatus"))

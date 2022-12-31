@@ -521,22 +521,9 @@ namespace Notus.Validator
                 NP.ReadLine();
                 if (NCG.MyOrderNo == 1)
                 {
-                    NP.Success("I'm The First");
-                    if (NCG.Generate())
-                    {
-                        Console.WriteLine("Verified");
-                        NCG.DistributeTheNext();
-                    }
-                    else
-                    {
-                        Console.WriteLine("UN verified");
-                        NP.ReadLine();
-                    }
+                    NCG.Generate();
                 }
-                else
-                {
-                    Console.WriteLine("The Others");
-                }
+                NCG.WaitPrevSigner();
                 NP.ReadLine();
                 NP.ReadLine();
                 NP.ReadLine();
