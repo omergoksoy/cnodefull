@@ -65,7 +65,7 @@ namespace Notus.Ceremony
                                     validatorItem.Value.IP.IpAddress, SelectedPortVal
                                 ) + "genesis";
                             string MainResultStr = NCR.GetSync(requestUrl, 2, true, false);
-                            if (MainResultStr.Length > 0)
+                            if (MainResultStr.Length > 20)
                             {
                                 try
                                 {
@@ -89,8 +89,9 @@ namespace Notus.Ceremony
                                     }
                                 }
                                 catch {
-                                    Console.WriteLine("Genesis Text Convert Error");
+                                    Console.WriteLine("Genesis Text Convert Error : " + MainResultStr);
                                 }
+                                NP.ReadLine();
                             }
                             else
                             {
