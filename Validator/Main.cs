@@ -523,6 +523,10 @@ namespace Notus.Validator
                 }
                 NCG.WaitPrevSigner();
 
+                burada son validator işlemi bitirince birinci sıradaki validatör
+                geneisi bloğunu çekecek ve oluşturup diğerleri ile paylaşacak
+                sonra uygulamadan exit yapıp 
+                    tekrar başlatacak veya oradan çıkış yapacaklar
                 NP.Success("Son Validatorden Blok alinip Genesis bloğu oluşturulacak");
                 NP.ReadLine();
                 NP.ReadLine();
