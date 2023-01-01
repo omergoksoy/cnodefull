@@ -88,6 +88,7 @@ namespace Notus.Ceremony
                                     //öncekini doğrula 
                                     if (Notus.Block.Genesis.Verify(tmpGenObj, NCG.MyOrderNo-1) == true)
                                     {
+                                        GenesisObj = tmpGenObj;
                                         NP.Success("Verified");
                                         //NP.ReadLine();
                                         SignedGenesis();
