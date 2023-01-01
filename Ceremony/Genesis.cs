@@ -46,6 +46,67 @@ namespace Notus.Ceremony
             ControlOtherValidatorStatus();
             NCG.MakeMembersOrders();
         }
+        public static void GetAllSignedGenesisFromValidator()
+        {
+            if (NCG.MyOrderNo == 6)
+            {
+                Console.WriteLine("Last Validator");
+                return;
+            }
+            int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
+            string waitingWalletId = ValidatorOrder.Values.ElementAt(5);
+            NP.Basic("Last Validator Wallet Id : " + waitingWalletId);
+            //NP.Basic("ValidatorOrder.Values.ElementAt(NCG.MyOrderNo-2) : " + ValidatorOrder.Values.ElementAt(NCG.MyOrderNo-2));
+            foreach (var validatorItem in NVG.NodeList)
+            {
+                if (string.Equals(waitingWalletId, validatorItem.Value.IP.Wallet))
+                {
+                    bool exitFromWhileLoop = false;
+                    while (exitFromWhileLoop == false)
+                    {
+                        string requestUrl = Notus.Network.Node.MakeHttpListenerPath(
+                                validatorItem.Value.IP.IpAddress, SelectedPortVal
+                            ) + "finalization";
+                        string MainResultStr = NCR.GetSync(requestUrl, 2, true, false);
+                        if (MainResultStr.Length > 20)
+                        {
+                            Notus.Variable.Genesis.GenesisBlockData? tmpGenObj = null;
+                            try
+                            {
+                                tmpGenObj = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(MainResultStr);
+                            }
+                            catch
+                            {
+                            }
+
+                            if (tmpGenObj != null)
+                            {
+                                //öncekileri doğrula 
+                                for (int count = 1; count < 7; count++)
+                                {
+                                    if (Notus.Block.Genesis.Verify(tmpGenObj, count) == true)
+                                    {
+                                        GenesisObj = tmpGenObj;
+                                        NP.Success("Verified -> " + count.ToString());
+                                        exitFromWhileLoop = true;
+                                    }
+                                    else
+                                    {
+                                        NP.Success("Un Verified -> " + count.ToString());
+                                        Environment.Exit(0);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Thread.Sleep(1500);
+                        }
+                    }
+                }
+            }
+        }
+
         public static void WaitPrevSigner()
         {
             int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
@@ -81,7 +142,7 @@ namespace Notus.Ceremony
                                 if (tmpGenObj != null)
                                 {
                                     //öncekileri doğrula 
-                                    for(int count=1; count< NCG.MyOrderNo; count++)
+                                    for (int count = 1; count < NCG.MyOrderNo; count++)
                                     {
                                         if (Notus.Block.Genesis.Verify(tmpGenObj, count) == true)
                                         {
@@ -200,6 +261,16 @@ namespace Notus.Ceremony
             {
                 return JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]);
             }
+
+            if (string.Equals(incomeFullUrlPath, "finalization"))
+            {
+                if (Signed == true && NCG.MyOrderNo == 6)
+                {
+                    return JsonSerializer.Serialize(GenesisObj);
+                }
+                return "false";
+            }
+
 
             if (string.Equals(incomeFullUrlPath, "genesis"))
             {
