@@ -5,6 +5,11 @@ namespace Notus
 {
     public static class IO
     {
+        public static void DeleteFile(string fileName)
+        {
+            if (File.Exists(fileName))
+                File.Delete(fileName);
+        }
         public static void DeleteAllFileInsideDirectory(string directoryName,string extension)
         {
             foreach (string fileName in Notus.IO.GetFileList(directoryName, extension))
