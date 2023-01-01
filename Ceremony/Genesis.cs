@@ -54,7 +54,7 @@ namespace Notus.Ceremony
                 //Console.WriteLine("NCG.MyOrderNo : " + NCG.MyOrderNo.ToString());
                 int controlOrderNo = NCG.MyOrderNo - 2;
                 string waitingWalletId = ValidatorOrder.Values.ElementAt(controlOrderNo);
-                NP.Basic("Control Wallet : " + waitingWalletId);
+                //NP.Basic("Control Wallet : " + waitingWalletId);
                 //NP.Basic("ValidatorOrder.Values.ElementAt(NCG.MyOrderNo-2) : " + ValidatorOrder.Values.ElementAt(NCG.MyOrderNo-2));
                 foreach (var validatorItem in NVG.NodeList)
                 {
@@ -92,15 +92,17 @@ namespace Notus.Ceremony
                                         NP.Success("Verified");
                                         //NP.ReadLine();
                                         SignedGenesis();
+                                        exitFromWhileLoop = true;
                                     }
                                     else
                                     {
-                                        string rawGenesisDataStr = Notus.Block.Genesis.CalculateRaw(tmpGenObj, NCG.MyOrderNo-1);
-                                        Console.WriteLine("Ozet : " + new Notus.Hash().CommonHash("sha1", rawGenesisDataStr));
+                                        //string rawGenesisDataStr = Notus.Block.Genesis.CalculateRaw(tmpGenObj, NCG.MyOrderNo-1);
+                                        //Console.WriteLine("Ozet : " + new Notus.Hash().CommonHash("sha1", rawGenesisDataStr));
                                         NP.Danger("Un Verified");
+                                        Environment.Exit(0);
                                     }
                                 }
-                                NP.ReadLine();
+                                //NP.ReadLine();
                             }
                             else
                             {
@@ -118,7 +120,7 @@ namespace Notus.Ceremony
             GenesisObj.Ceremony[NCG.MyOrderNo].Sign = "";
 
             string rawGenesisDataStr = Notus.Block.Genesis.CalculateRaw(GenesisObj, NCG.MyOrderNo);
-            Console.WriteLine("Ozet : " + new Notus.Hash().CommonHash("sha1", rawGenesisDataStr));
+            //Console.WriteLine("Ozet : " + new Notus.Hash().CommonHash("sha1", rawGenesisDataStr));
             GenesisObj.Ceremony[NCG.MyOrderNo].Sign = Notus.Wallet.ID.Sign(rawGenesisDataStr, NVG.Settings.Nodes.My.PrivateKey);
             Signed = true;
         }

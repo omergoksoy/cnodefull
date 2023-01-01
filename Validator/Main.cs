@@ -522,6 +522,8 @@ namespace Notus.Validator
                     NCG.Generate();
                 }
                 NCG.WaitPrevSigner();
+
+                NP.Success("Son Validatorden Blok alinip Genesis bloğu oluşturulacak");
                 NP.ReadLine();
                 NP.ReadLine();
                 NP.ReadLine();

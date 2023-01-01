@@ -17,9 +17,9 @@ namespace Notus.Block
 
         public static bool Verify(GenesisBlockData genesisObj, int signerOrderNo)
         {
-            Console.WriteLine(JsonSerializer.Serialize(genesisObj.Ceremony[signerOrderNo]));
+            //Console.WriteLine(JsonSerializer.Serialize(genesisObj.Ceremony[signerOrderNo]));
             string rawDataStr = CalculateRaw(genesisObj, signerOrderNo);
-            Console.WriteLine("Ozet : " + new Notus.Hash().CommonHash("sha1", rawDataStr));
+            //Console.WriteLine("Ozet : " + new Notus.Hash().CommonHash("sha1", rawDataStr));
             return Notus.Wallet.ID.Verify(rawDataStr, 
                 genesisObj.Ceremony[signerOrderNo].Sign, 
                 genesisObj.Ceremony[signerOrderNo].PublicKey
