@@ -533,6 +533,7 @@ namespace Notus.Validator
                 */
                 NCG.GetAllSignedGenesisFromValidator();
                 NCG.RealGeneration();
+                NCG.ControlAllBlockSign()
                 NP.Success("Son Validatorden Blok alinip Genesis bloğu oluşturulacak");
                 NP.ReadLine();
                 NP.ReadLine();
