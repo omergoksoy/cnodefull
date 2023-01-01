@@ -70,20 +70,23 @@ namespace Notus.Ceremony
                             {
                                 Thread.Sleep(500);
                             }
-                            if(string.Equals(MainResultStr, BlockSignHash))
-                            {
-                                exitFromWhileLoop = true;
-
-                            }
                             else
                             {
-                                diffSignExist = true;
+                                if (string.Equals(MainResultStr, BlockSignHash))
+                                {
+                                    exitFromWhileLoop = true;
+
+                                }
+                                else
+                                {
+                                    diffSignExist = true;
+                                }
                             }
                         }
                     }
                 }
             }
-            if(diffSignExist == false)
+            if (diffSignExist == false)
             {
                 NP.Success("All Sign Are Equals");
             }
