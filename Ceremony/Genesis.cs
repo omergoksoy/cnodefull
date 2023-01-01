@@ -17,6 +17,7 @@ namespace Notus.Ceremony
     public class Genesis : IDisposable
     {
         private SortedDictionary<BigInteger, string> ValidatorOrder = new SortedDictionary<BigInteger, string>();
+        private int CeremonyMemberCount = 6;
         private bool Signed = false;
         private NVClass.BlockData genesisBlock = new();
         private string BlockSignHash = string.Empty;
@@ -54,7 +55,7 @@ namespace Notus.Ceremony
             }
             WaitPrevSigner();
             GetAllSignedGenesisFromValidator();
-            
+
             RealGeneration();
             NP.Info("My Block Sign : " + BlockSignHash.Substring(0, 10) + "..." + BlockSignHash.Substring(BlockSignHash.Length - 10));
 
@@ -123,12 +124,12 @@ namespace Notus.Ceremony
         }
         private void GetAllSignedGenesisFromValidator()
         {
-            if (MyOrderNo == 6)
+            if (MyOrderNo == CeremonyMemberCount)
             {
                 return;
             }
             int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
-            string waitingWalletId = ValidatorOrder.Values.ElementAt(5);
+            string waitingWalletId = ValidatorOrder.Values.ElementAt(CeremonyMemberCount - 1);
             foreach (var validatorItem in NVG.NodeList)
             {
                 if (string.Equals(waitingWalletId, validatorItem.Value.IP.Wallet))
@@ -154,7 +155,7 @@ namespace Notus.Ceremony
                             if (tmpGenObj != null)
                             {
                                 //öncekileri doğrula 
-                                for (int count = 1; count < 7; count++)
+                                for (int count = 1; count < CeremonyMemberCount+1; count++)
                                 {
                                     if (Notus.Block.Genesis.Verify(tmpGenObj, count) == false)
                                     {
@@ -251,7 +252,7 @@ namespace Notus.Ceremony
 
             //burada birinci sıradaki validatörün imzası eklenece
             GenesisObj.Ceremony.Clear();
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i < CeremonyMemberCount+1; i++)
             {
                 GenesisObj.Ceremony.Add(i, new Variable.Genesis.GenesisCeremonyOrderType()
                 {
@@ -326,7 +327,7 @@ namespace Notus.Ceremony
 
             if (string.Equals(incomeFullUrlPath, "finalization"))
             {
-                if (Signed == true && MyOrderNo == 6)
+                if (Signed == true && MyOrderNo == CeremonyMemberCount)
                 {
                     return JsonSerializer.Serialize(GenesisObj);
                 }
@@ -415,6 +416,7 @@ namespace Notus.Ceremony
         }
         public Genesis()
         {
+            CeremonyMemberCount = NVG.NodeList.Count;
         }
         ~Genesis()
         {
