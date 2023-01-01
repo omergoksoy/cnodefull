@@ -34,6 +34,11 @@ namespace Notus.Validator
         }
         public static void PrepareValidatorList(bool OnlyPredefinedNodes)
         {
+            OnlyPredefinedNodes değişkeni true olduğunda sadece listeyi oluşturuyor
+            ancak false olduğunda DB'den okuyor 
+                bu da node tarafından 1 adet node olduğunu gösteriyor
+                burayı düzelt
+
             NVG.NodeList.Clear();
             NGF.ValidatorList.Clear();
             bool generateBaseValidatorList = false;
