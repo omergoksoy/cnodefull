@@ -85,6 +85,10 @@ namespace Notus.Ceremony
                                 }
                                 else
                                 {
+                                    for(int count=1; count< NCG.MyOrderNo; count++)
+                                    {
+                                        Console.WriteLine("You Must Control Order -> " + count.ToString());
+                                    }
                                     //öncekini doğrula 
                                     if (Notus.Block.Genesis.Verify(tmpGenObj, NCG.MyOrderNo-1) == true)
                                     {
