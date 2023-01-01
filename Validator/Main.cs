@@ -529,6 +529,8 @@ namespace Notus.Validator
                 sonra uygulamadan exit yapıp 
                 tekrar başlatacak veya oradan çıkış yapacaklar
                 */
+                NCG.GetAllSignedGenesisFromValidator();
+                NCG.RealGeneration();
                 NP.Success("Son Validatorden Blok alinip Genesis bloğu oluşturulacak");
                 NP.ReadLine();
                 NP.ReadLine();
