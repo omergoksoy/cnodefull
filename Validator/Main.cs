@@ -507,6 +507,7 @@ namespace Notus.Validator
                 NP.Success("My Wallet : " + NVG.Settings.Nodes.My.IP.Wallet);
                 NCG.PreStart();
 
+                /*
                 if (NCG.MyOrderNo > NVG.NodeList.Count)
                 {
                     NP.Basic("nextWalletId : ALL OF THEM");
@@ -515,7 +516,8 @@ namespace Notus.Validator
                 {
                     NP.Basic("nextWalletId : Just One");
                 }
-                NP.Success("myOrderNo : " + NCG.MyOrderNo.ToString());
+                */
+                NP.Success("Ceremony Order No : " + NCG.MyOrderNo.ToString());
 
                 if (NCG.MyOrderNo == 1)
                 {

@@ -168,7 +168,7 @@ namespace Notus.Ceremony
                                         if (Notus.Block.Genesis.Verify(tmpGenObj, count) == true)
                                         {
                                             GenesisObj = tmpGenObj;
-                                            NP.Success("Verified -> " + count.ToString());
+                                            //NP.Success("Verified -> " + count.ToString());
                                             exitFromWhileLoop = true;
                                         }
                                         else
