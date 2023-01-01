@@ -11,7 +11,7 @@ using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVS = Notus.Variable.Struct;
-
+using NVClass = Notus.Variable.Class;
 namespace Notus.Ceremony
 {
     public static class Genesis
@@ -45,6 +45,28 @@ namespace Notus.Ceremony
             StartGenesisConnection();
             ControlOtherValidatorStatus();
             NCG.MakeMembersOrders();
+        }
+        public static void RealGeneration()
+        {
+            NVClass.BlockData genesisBlock = NVClass.Block.GetEmpty();
+
+            genesisBlock.info.type = 360;
+            genesisBlock.info.rowNo = 1;
+            genesisBlock.info.multi = false;
+            genesisBlock.info.uID = NVC.GenesisBlockUid;
+            genesisBlock.prev = "";
+            genesisBlock.info.prevList.Clear();
+            genesisBlock.info.time = Notus.Block.Key.GetTimeFromKey(genesisBlock.info.uID, true);
+            genesisBlock.cipher.ver = "NE";
+            genesisBlock.cipher.data = System.Convert.ToBase64String(
+                System.Text.Encoding.ASCII.GetBytes(
+                    JsonSerializer.Serialize(GenesisObj)
+                )
+            );
+            genesisBlock = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(genesisBlock, 1000);
+
+            Console.WriteLine("Genesis Sign : " + genesisBlock.sign);
+            NP.ReadLine();
         }
         public static void GetAllSignedGenesisFromValidator()
         {
@@ -86,8 +108,6 @@ namespace Notus.Ceremony
                                 {
                                     if (Notus.Block.Genesis.Verify(tmpGenObj, count) == true)
                                     {
-                                        GenesisObj = tmpGenObj;
-                                        NP.Success("Verified -> " + count.ToString());
                                         exitFromWhileLoop = true;
                                     }
                                     else
@@ -96,6 +116,7 @@ namespace Notus.Ceremony
                                         Environment.Exit(0);
                                     }
                                 }
+                                GenesisObj = tmpGenObj;
                             }
                         }
                         else
@@ -286,10 +307,7 @@ namespace Notus.Ceremony
                 return JsonSerializer.Serialize(NVG.NodeList);
             }
 
-            Console.WriteLine(incomeFullUrlPath);
-            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
-            //string resultData = Obj_Api.Interpret(IncomeData);
-
+            NP.Warning("Unknown Or Unready Url : " + incomeFullUrlPath);
             return "false";
         }
 
