@@ -48,6 +48,9 @@ namespace Notus.Ceremony
         }
         public static void RealGeneration()
         {
+            string leaderWalletId = ValidatorOrder.Values.ElementAt(5);
+            // NP.Basic("Last Validator Wallet Id : " + waitingWalletId);
+
             NVClass.BlockData genesisBlock = NVClass.Block.GetEmpty();
 
             genesisBlock.info.type = 360;
@@ -63,7 +66,7 @@ namespace Notus.Ceremony
                     JsonSerializer.Serialize(GenesisObj)
                 )
             );
-            genesisBlock = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(genesisBlock, 1000);
+            genesisBlock = new Notus.Block.Generate(leaderWalletId).Make(genesisBlock, 1000);
 
             Console.WriteLine("Genesis Sign : " + genesisBlock.sign);
             NP.ReadLine();
@@ -77,7 +80,7 @@ namespace Notus.Ceremony
             }
             int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
             string waitingWalletId = ValidatorOrder.Values.ElementAt(5);
-            NP.Basic("Last Validator Wallet Id : " + waitingWalletId);
+            //NP.Basic("Last Validator Wallet Id : " + waitingWalletId);
             //NP.Basic("ValidatorOrder.Values.ElementAt(NCG.MyOrderNo-2) : " + ValidatorOrder.Values.ElementAt(NCG.MyOrderNo-2));
             foreach (var validatorItem in NVG.NodeList)
             {
