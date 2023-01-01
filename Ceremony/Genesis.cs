@@ -8,13 +8,13 @@ using NH = Notus.Hash;
 using NP = Notus.Print;
 using NTT = Notus.Toolbox.Text;
 using NVC = Notus.Variable.Constant;
+using NVClass = Notus.Variable.Class;
 using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVS = Notus.Variable.Struct;
-using NVClass = Notus.Variable.Class;
 namespace Notus.Ceremony
 {
-    public class Genesis:IDisposable
+    public class Genesis : IDisposable
     {
         private SortedDictionary<BigInteger, string> ValidatorOrder = new SortedDictionary<BigInteger, string>();
         private bool Signed = false;
@@ -54,23 +54,28 @@ namespace Notus.Ceremony
             }
             WaitPrevSigner();
             GetAllSignedGenesisFromValidator();
+            
             RealGeneration();
+            NP.Info("My Block Sign : " + BlockSignHash.Substring(0, 10) + "..." + BlockSignHash.Substring(BlockSignHash.Length - 10));
+
             ControlAllBlockSign();
-            NP.Success("Son Validatorden Blok alinip Genesis bloğu oluşturulacak");
+
+            Console.WriteLine(JsonSerializer.Serialize(genesisBlock));
             NP.ReadLine();
             NP.ReadLine();
-            NP.ReadLine();
+            using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
+            {
+                BS_Storage.AddSync(genesisBlock, true);
+            }
         }
         private void ControlAllBlockSign()
         {
-            bool diffSignExist = false;
             int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
             foreach (var validatorItem in NVG.NodeList)
             {
                 if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, validatorItem.Value.IP.Wallet) == false)
                 {
                     bool exitFromWhileLoop = false;
-                    string MainResultStr = string.Empty;
                     while (exitFromWhileLoop == false)
                     {
                         if (BlockSignHash.Length > 0)
@@ -78,36 +83,25 @@ namespace Notus.Ceremony
                             string requestUrl = Notus.Network.Node.MakeHttpListenerPath(
                                     validatorItem.Value.IP.IpAddress, SelectedPortVal
                                 ) + "sign";
-                            MainResultStr = NCR.GetSync(requestUrl, 2, true, false);
-                            if (MainResultStr.Length == 0)
+                            string MainResultStr = NCR.GetSync(requestUrl, 2, true, false);
+                            if (MainResultStr.Length > 10)
                             {
-                                Thread.Sleep(500);
+                                if (string.Equals(MainResultStr, BlockSignHash) == false)
+                                {
+                                    NP.Danger("Different Sign Exists");
+                                    Environment.Exit(0);
+                                }
+                                exitFromWhileLoop = true;
                             }
                             else
                             {
-                                if (string.Equals(MainResultStr, BlockSignHash))
-                                {
-                                    exitFromWhileLoop = true;
-
-                                }
-                                else
-                                {
-                                    diffSignExist = true;
-                                }
+                                Thread.Sleep(500);
                             }
                         }
                     }
                 }
             }
-            if (diffSignExist == false)
-            {
-                NP.Success("All Sign Are Equals");
-            }
-            else
-            {
-                NP.Danger("Different Sign Exists");
-                Environment.Exit(0);
-            }
+            NP.Success("All Sign Are Equals");
         }
         private void RealGeneration()
         {
@@ -130,7 +124,6 @@ namespace Notus.Ceremony
             );
             genesisBlock = new Notus.Block.Generate(leaderWalletId).Make(genesisBlock, 1000);
             BlockSignHash = genesisBlock.sign;
-            NP.Info("My Block Sign : " + BlockSignHash.Substring(0, 10) + "..." + BlockSignHash.Substring(BlockSignHash.Length - 10));
         }
         private void GetAllSignedGenesisFromValidator()
         {
@@ -167,16 +160,13 @@ namespace Notus.Ceremony
                                 //öncekileri doğrula 
                                 for (int count = 1; count < 7; count++)
                                 {
-                                    if (Notus.Block.Genesis.Verify(tmpGenObj, count) == true)
-                                    {
-                                        exitFromWhileLoop = true;
-                                    }
-                                    else
+                                    if (Notus.Block.Genesis.Verify(tmpGenObj, count) == false)
                                     {
                                         NP.Success("Un Verified -> " + count.ToString());
                                         Environment.Exit(0);
                                     }
                                 }
+                                exitFromWhileLoop = true;
                                 GenesisObj = tmpGenObj;
                             }
                         }

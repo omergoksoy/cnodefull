@@ -216,11 +216,11 @@ ZK - konusu için incelenecek
 * univariate lagrange interpolation
 
 */
-
-var id = Notus.Wallet.ID.New();
+/*
+var id = Notus.Wallet.ID.GenerateKeyPair();
 Console.WriteLine(JsonSerializer.Serialize(id));
 Console.ReadLine();
-
+*/
 Notus.Validator.Node.Start(args);
 
 
