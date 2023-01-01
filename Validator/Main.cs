@@ -2,7 +2,7 @@
 using System.Net;
 using System.Numerics;
 using System.Text.Json;
-using NCG = Notus.Ceremony.Genesis;
+using NC = Notus.Ceremony;
 using NCH = Notus.Communication.Helper;
 using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
@@ -502,44 +502,7 @@ namespace Notus.Validator
             NVR.NetworkSelectorList.Clear();
 
             Obj_Integrity = new Notus.Block.Integrity();
-            if (Obj_Integrity.IsGenesisNeed())
-            {
-                NP.Success("My Wallet : " + NVG.Settings.Nodes.My.IP.Wallet);
-                NCG.PreStart();
-
-                /*
-                if (NCG.MyOrderNo > NVG.NodeList.Count)
-                {
-                    NP.Basic("nextWalletId : ALL OF THEM");
-                }
-                else
-                {
-                    NP.Basic("nextWalletId : Just One");
-                }
-                */
-                NP.Success("Ceremony Order No : " + NCG.MyOrderNo.ToString() + " / " + NVG.NodeList.Count.ToString());
-
-                if (NCG.MyOrderNo == 1)
-                {
-                    NCG.Generate();
-                }
-                NCG.WaitPrevSigner();
-
-                /*
-                burada son validator işlemi bitirince birinci sıradaki validatör
-                geneisi bloğunu çekecek ve oluşturup diğerleri ile paylaşacak
-                sonra uygulamadan exit yapıp 
-                tekrar başlatacak veya oradan çıkış yapacaklar
-                */
-                NCG.GetAllSignedGenesisFromValidator();
-                NCG.RealGeneration();
-                NCG.ControlAllBlockSign();
-                NP.Success("Son Validatorden Blok alinip Genesis bloğu oluşturulacak");
-                NP.ReadLine();
-                NP.ReadLine();
-                NP.ReadLine();
-            }
-
+            Obj_Integrity.IsGenesisNeed();
 
             /*
             burada port ile soket başlatacak ve kontrollü bir şekilde 

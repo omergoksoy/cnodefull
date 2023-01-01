@@ -14,16 +14,16 @@ using NVS = Notus.Variable.Struct;
 using NVClass = Notus.Variable.Class;
 namespace Notus.Ceremony
 {
-    public static class Genesis
+    public class Genesis:IDisposable
     {
-        public static SortedDictionary<BigInteger, string> ValidatorOrder = new SortedDictionary<BigInteger, string>();
-        public static bool Signed = false;
-        public static NVClass.BlockData genesisBlock = new();
-        public static string BlockSignHash = string.Empty;
-        public static Notus.Variable.Genesis.GenesisBlockData GenesisObj = new();
-        public static int MyOrderNo = 0;
-        public static Notus.Communication.Http HttpObj = new Notus.Communication.Http(true);
-        public static void PreStart()
+        private SortedDictionary<BigInteger, string> ValidatorOrder = new SortedDictionary<BigInteger, string>();
+        private bool Signed = false;
+        private NVClass.BlockData genesisBlock = new();
+        private string BlockSignHash = string.Empty;
+        private Notus.Variable.Genesis.GenesisBlockData GenesisObj = new();
+        private int MyOrderNo = 0;
+        private Notus.Communication.Http HttpObj = new Notus.Communication.Http(true);
+        public void Start()
         {
             NVH.PrepareValidatorList(true);
             bool predefinedValidator = false;
@@ -37,8 +37,6 @@ namespace Notus.Ceremony
             if (predefinedValidator == false)
             {
                 NP.Danger("Diger nodelardan tanımlanmış Validatorlerden tarafından olusturulmus Genesis blogunu iste");
-                NP.Danger("Diger nodelardan tanımlanmış Validatorlerden tarafından olusturulmus Genesis blogunu iste");
-                NP.Danger("Diger nodelardan tanımlanmış Validatorlerden tarafından olusturulmus Genesis blogunu iste");
                 NP.Danger("Genesis Ceremony Works With Only Defined Validators");
                 Environment.Exit(0);
             }
@@ -46,9 +44,24 @@ namespace Notus.Ceremony
             NVH.DefineMyNodeInfo();
             StartGenesisConnection();
             ControlOtherValidatorStatus();
-            NCG.MakeMembersOrders();
+            MakeMembersOrders();
+
+            NP.Success("Ceremony Order No : " + MyOrderNo.ToString() + " / " + NVG.NodeList.Count.ToString());
+
+            if (MyOrderNo == 1)
+            {
+                Generate();
+            }
+            WaitPrevSigner();
+            GetAllSignedGenesisFromValidator();
+            RealGeneration();
+            ControlAllBlockSign();
+            NP.Success("Son Validatorden Blok alinip Genesis bloğu oluşturulacak");
+            NP.ReadLine();
+            NP.ReadLine();
+            NP.ReadLine();
         }
-        public static void ControlAllBlockSign()
+        private void ControlAllBlockSign()
         {
             bool diffSignExist = false;
             int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
@@ -96,10 +109,9 @@ namespace Notus.Ceremony
                 Environment.Exit(0);
             }
         }
-        public static void RealGeneration()
+        private void RealGeneration()
         {
             string leaderWalletId = ValidatorOrder.Values.ElementAt(5);
-            // NP.Basic("Last Validator Wallet Id : " + waitingWalletId);
 
             genesisBlock = NVClass.Block.GetEmpty();
 
@@ -119,20 +131,15 @@ namespace Notus.Ceremony
             genesisBlock = new Notus.Block.Generate(leaderWalletId).Make(genesisBlock, 1000);
             BlockSignHash = genesisBlock.sign;
             NP.Info("My Block Sign : " + BlockSignHash.Substring(0, 10) + "..." + BlockSignHash.Substring(BlockSignHash.Length - 10));
-            //Console.WriteLine("Genesis Sign : " + genesisBlock.sign);
-            //NP.ReadLine();
         }
-        public static void GetAllSignedGenesisFromValidator()
+        private void GetAllSignedGenesisFromValidator()
         {
-            if (NCG.MyOrderNo == 6)
+            if (MyOrderNo == 6)
             {
-                //Console.WriteLine("Last Validator");
                 return;
             }
             int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
             string waitingWalletId = ValidatorOrder.Values.ElementAt(5);
-            //NP.Basic("Last Validator Wallet Id : " + waitingWalletId);
-            //NP.Basic("ValidatorOrder.Values.ElementAt(NCG.MyOrderNo-2) : " + ValidatorOrder.Values.ElementAt(NCG.MyOrderNo-2));
             foreach (var validatorItem in NVG.NodeList)
             {
                 if (string.Equals(waitingWalletId, validatorItem.Value.IP.Wallet))
@@ -182,16 +189,13 @@ namespace Notus.Ceremony
             }
         }
 
-        public static void WaitPrevSigner()
+        private void WaitPrevSigner()
         {
             int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
-            if (NCG.MyOrderNo > 1)
+            if (MyOrderNo > 1)
             {
-                //Console.WriteLine("NCG.MyOrderNo : " + NCG.MyOrderNo.ToString());
-                int controlOrderNo = NCG.MyOrderNo - 2;
+                int controlOrderNo = MyOrderNo - 2;
                 string waitingWalletId = ValidatorOrder.Values.ElementAt(controlOrderNo);
-                //NP.Basic("Control Wallet : " + waitingWalletId);
-                //NP.Basic("ValidatorOrder.Values.ElementAt(NCG.MyOrderNo-2) : " + ValidatorOrder.Values.ElementAt(NCG.MyOrderNo-2));
                 foreach (var validatorItem in NVG.NodeList)
                 {
                     if (string.Equals(waitingWalletId, validatorItem.Value.IP.Wallet))
@@ -217,12 +221,11 @@ namespace Notus.Ceremony
                                 if (tmpGenObj != null)
                                 {
                                     //öncekileri doğrula 
-                                    for (int count = 1; count < NCG.MyOrderNo; count++)
+                                    for (int count = 1; count < MyOrderNo; count++)
                                     {
                                         if (Notus.Block.Genesis.Verify(tmpGenObj, count) == true)
                                         {
                                             GenesisObj = tmpGenObj;
-                                            //NP.Success("Verified -> " + count.ToString());
                                             exitFromWhileLoop = true;
                                         }
                                         else
@@ -236,7 +239,6 @@ namespace Notus.Ceremony
                             }
                             else
                             {
-                                //Console.WriteLine("Genesis Text Is Empty : " + MainResultStr);
                                 Thread.Sleep(5000);
                             }
                         }
@@ -244,17 +246,16 @@ namespace Notus.Ceremony
                 }
             }
         }
-        public static void SignedGenesis()
+        private void SignedGenesis()
         {
-            GenesisObj.Ceremony[NCG.MyOrderNo].PublicKey = NVG.Settings.Nodes.My.PublicKey;
-            GenesisObj.Ceremony[NCG.MyOrderNo].Sign = "";
+            GenesisObj.Ceremony[MyOrderNo].PublicKey = NVG.Settings.Nodes.My.PublicKey;
+            GenesisObj.Ceremony[MyOrderNo].Sign = "";
 
-            string rawGenesisDataStr = Notus.Block.Genesis.CalculateRaw(GenesisObj, NCG.MyOrderNo);
-            //Console.WriteLine("Ozet : " + new Notus.Hash().CommonHash("sha1", rawGenesisDataStr));
-            GenesisObj.Ceremony[NCG.MyOrderNo].Sign = Notus.Wallet.ID.Sign(rawGenesisDataStr, NVG.Settings.Nodes.My.PrivateKey);
+            string rawGenesisDataStr = Notus.Block.Genesis.CalculateRaw(GenesisObj, MyOrderNo);
+            GenesisObj.Ceremony[MyOrderNo].Sign = Notus.Wallet.ID.Sign(rawGenesisDataStr, NVG.Settings.Nodes.My.PrivateKey);
             Signed = true;
         }
-        public static void Generate()
+        private void Generate()
         {
             GenesisObj = Notus.Block.Genesis.Generate(
                 NVG.Settings.Nodes.My.IP.Wallet,
@@ -275,7 +276,7 @@ namespace Notus.Ceremony
             SignedGenesis();
             NP.Success("I Generate Genesis Block");
         }
-        public static void MakeMembersOrders()
+        private void MakeMembersOrders()
         {
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
@@ -321,7 +322,7 @@ namespace Notus.Ceremony
                 }
             }
         }
-        private static string Fnc_OnReceiveData(NVS.HttpRequestDetails IncomeData)
+        private string Fnc_OnReceiveData(NVS.HttpRequestDetails IncomeData)
         {
             if (IncomeData.UrlList.Length == 0)
             {
@@ -339,7 +340,7 @@ namespace Notus.Ceremony
 
             if (string.Equals(incomeFullUrlPath, "finalization"))
             {
-                if (Signed == true && NCG.MyOrderNo == 6)
+                if (Signed == true && MyOrderNo == 6)
                 {
                     return JsonSerializer.Serialize(GenesisObj);
                 }
@@ -368,11 +369,9 @@ namespace Notus.Ceremony
             NP.Warning("Unknown Or Unready Url : " + incomeFullUrlPath);
             return "false";
         }
-
-        public static void StartGenesisConnection()
+        private void StartGenesisConnection()
         {
             int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
-            // Console.WriteLine("SelectedPortVal : " + SelectedPortVal.ToString());
             IPAddress NodeIpAddress = IPAddress.Parse(
                 NVG.Settings.LocalNode == false
                     ?
@@ -391,7 +390,7 @@ namespace Notus.Ceremony
             HttpObj.Start(NodeIpAddress, SelectedPortVal);
             NP.Success("Http Has Started");
         }
-        public static void ControlOtherValidatorStatus()
+        private void ControlOtherValidatorStatus()
         {
             bool exitFromWhileLoop = false;
             int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
@@ -428,5 +427,23 @@ namespace Notus.Ceremony
                 }
             }
         }
+        public Genesis()
+        {
+        }
+        ~Genesis()
+        {
+            Dispose();
+        }
+        public void Dispose()
+        {
+            try
+            {
+                HttpObj.Dispose();
+            }
+            catch
+            {
+            }
+        }
+
     }
 }

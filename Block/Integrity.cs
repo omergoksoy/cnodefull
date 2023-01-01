@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NC = Notus.Ceremony;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -57,17 +58,19 @@ namespace Notus.Block
             return null;
         }
         //genesis bloğu oluşturuldumu diye kontrol ediyor
-        public bool IsGenesisNeed()
+        public void IsGenesisNeed()
         {
             string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
             if (ZipFileList.Length == 0)
-                return true;
+            {
+                NP.Success("My Wallet : " + NVG.Settings.Nodes.My.IP.Wallet);
+                NC.Genesis genesisCeremony = new NC.Genesis();
+                genesisCeremony.Start();
+            }
+            else
+            {
 
-            //burada genesis bloğunun geçerliliği kontrol edilecek
-            //burada genesis bloğunun geçerliliği kontrol edilecek
-            //burada genesis bloğunun geçerliliği kontrol edilecek
-
-            return false;
+            }
         }
         // burası merkezi kontrol noktası
         private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity()

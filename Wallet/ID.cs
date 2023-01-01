@@ -440,6 +440,9 @@ walletAddress : EDAqkHFMPF8v9thkjbzCazUf6uDYzPHHdRXK
                 keyPrefix = Notus.Variable.Constant.SingleWalletPrefix_DevelopmentNetwork;
                 networkByteStr = "30";
             }
+
+
+
             //Console.WriteLine("publicKeyX : " + publicKeyX);
             Notus.HashLib.Sasha sashaObj = new Notus.HashLib.Sasha();
             string hashPubKeyStr = Notus.Toolbox.Text.ShrinkHex(
