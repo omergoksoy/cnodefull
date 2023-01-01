@@ -824,6 +824,10 @@ namespace Notus.Block
                 Dictionary<string, List<NVS.IpInfo>> signNode = new Dictionary<string, List<NVS.IpInfo>>();
                 signNode.Clear();
 
+                burası asenkron bir şekilde çalıştırılabilir
+                //burası asenkron bir şekilde çalıştırılabilir
+                //burası asenkron bir şekilde çalıştırılabilir
+                //burası asenkron bir şekilde çalıştırılabilir
                 foreach (NVS.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
                 {
                     if (string.Equals(NVG.Settings.IpInfo.Public, item.IpAddress) == false)
