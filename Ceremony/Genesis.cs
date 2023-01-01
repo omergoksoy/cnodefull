@@ -328,15 +328,15 @@ namespace Notus.Ceremony
 
             if (string.Equals(incomeFullUrlPath, "genesis"))
             {
-                return BlockSignHash;
-            }
-            if (string.Equals(incomeFullUrlPath, "sign"))
-            {
                 if (Signed == true)
                 {
                     return JsonSerializer.Serialize(GenesisObj);
                 }
                 return "false";
+            }
+            if (string.Equals(incomeFullUrlPath, "sign"))
+            {
+                return BlockSignHash;
             }
 
             if (string.Equals(incomeFullUrlPath, "infostatus"))
