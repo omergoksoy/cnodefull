@@ -50,6 +50,7 @@ namespace Notus.Ceremony
         }
         public static void ControlAllBlockSign()
         {
+            bool diffSignExist = false;
             int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
             foreach (var validatorItem in NVG.NodeList)
             {
@@ -69,11 +70,27 @@ namespace Notus.Ceremony
                             {
                                 Thread.Sleep(500);
                             }
-                            exitFromWhileLoop = string.Equals(MainResultStr, BlockSignHash);
+                            if(string.Equals(MainResultStr, BlockSignHash))
+                            {
+                                exitFromWhileLoop = true;
+
+                            }
+                            else
+                            {
+                                diffSignExist = true;
+                            }
                         }
                     }
-                    NP.Info(validatorItem.Value.IP.Wallet + " => " + MainResultStr);
                 }
+            }
+            if(diffSignExist == false)
+            {
+                NP.Success("All Sign Are Equals");
+            }
+            else
+            {
+                NP.Danger("Different Sign Exists");
+                Environment.Exit(0);
             }
         }
         public static void RealGeneration()
@@ -98,7 +115,8 @@ namespace Notus.Ceremony
             );
             genesisBlock = new Notus.Block.Generate(leaderWalletId).Make(genesisBlock, 1000);
             BlockSignHash = genesisBlock.sign;
-            Console.WriteLine("Genesis Sign : " + genesisBlock.sign);
+            NP.Info("My Block Sign : " + BlockSignHash.Substring(0, 10) + "..." + BlockSignHash.Substring(BlockSignHash.Length - 10));
+            //Console.WriteLine("Genesis Sign : " + genesisBlock.sign);
             //NP.ReadLine();
         }
         public static void GetAllSignedGenesisFromValidator()
