@@ -59,10 +59,6 @@ namespace Notus.Ceremony
             NP.Info("My Block Sign : " + BlockSignHash.Substring(0, 10) + "..." + BlockSignHash.Substring(BlockSignHash.Length - 10));
 
             ControlAllBlockSign();
-
-            Console.WriteLine(JsonSerializer.Serialize(genesisBlock));
-            NP.ReadLine();
-            NP.ReadLine();
             using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
             {
                 BS_Storage.AddSync(genesisBlock, true);
