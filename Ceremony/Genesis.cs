@@ -75,7 +75,7 @@ namespace Notus.Ceremony
         {
             if (NCG.MyOrderNo == 6)
             {
-                Console.WriteLine("Last Validator");
+                //Console.WriteLine("Last Validator");
                 return;
             }
             int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;

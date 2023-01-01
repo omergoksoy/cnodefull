@@ -517,7 +517,7 @@ namespace Notus.Validator
                     NP.Basic("nextWalletId : Just One");
                 }
                 */
-                NP.Success("Ceremony Order No : " + NCG.MyOrderNo.ToString());
+                NP.Success("Ceremony Order No : " + NCG.MyOrderNo.ToString() + " / " + NVG.NodeList.Count.ToString());
 
                 if (NCG.MyOrderNo == 1)
                 {
