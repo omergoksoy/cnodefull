@@ -86,17 +86,16 @@ namespace Notus.Ceremony
                                 else
                                 {
                                     //öncekini doğrula 
-                                    if (Notus.Block.Genesis.Verify(tmpGenObj, NCG.MyOrderNo-1) == false)
+                                    if (Notus.Block.Genesis.Verify(tmpGenObj, NCG.MyOrderNo-1) == true)
                                     {
                                         NP.Success("Verified");
-                                        NP.ReadLine();
+                                        //NP.ReadLine();
                                         SignedGenesis();
                                     }
                                     else
                                     {
                                         string rawGenesisDataStr = Notus.Block.Genesis.CalculateRaw(tmpGenObj, NCG.MyOrderNo-1);
                                         Console.WriteLine("Ozet : " + new Notus.Hash().CommonHash("sha1", rawGenesisDataStr));
-
                                         NP.Danger("Un Verified");
                                     }
                                 }
