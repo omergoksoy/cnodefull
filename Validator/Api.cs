@@ -454,18 +454,8 @@ namespace Notus.Validator
                 if (IncomeData.UrlList.Length > 1)
                 {
                     string tmpWallet = IncomeData.UrlList[1];
-                    string multiPrefix = Notus.Variable.Constant.MultiWalletPrefix_MainNetwork;
-                    string singlePrefix = Notus.Variable.Constant.SingleWalletPrefix_MainNetwork;
-                    if (NVG.Settings.Network == Variable.Enum.NetworkType.DevNet)
-                    {
-                        singlePrefix = Notus.Variable.Constant.SingleWalletPrefix_DevelopmentNetwork;
-                        multiPrefix = Notus.Variable.Constant.MultiWalletPrefix_DevelopmentNetwork;
-                    }
-                    if (NVG.Settings.Network == Variable.Enum.NetworkType.TestNet)
-                    {
-                        singlePrefix = Notus.Variable.Constant.SingleWalletPrefix_TestNetwork;
-                        multiPrefix = Notus.Variable.Constant.MultiWalletPrefix_TestNetwork;
-                    }
+                    string multiPrefix = Notus.Variable.Constant.MultiWalletPrefix;
+                    string singlePrefix = Notus.Variable.Constant.SingleWalletPrefix;
                     if (tmpWallet.Length >= singlePrefix.Length)
                     {
                         if (string.Equals(singlePrefix, tmpWallet.Substring(0, singlePrefix.Length)))

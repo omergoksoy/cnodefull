@@ -38,13 +38,9 @@ namespace Notus.Variable
         public static readonly int WalletEncodeTextLength = 36;
         public static readonly int SingleWalletTextLength = 39;
         public static readonly int MultiWalletTextLength = 39;
-        public static readonly string SingleWalletPrefix_MainNetwork = "NTS";
-        public static readonly string SingleWalletPrefix_TestNetwork = "not";
-        public static readonly string SingleWalletPrefix_DevelopmentNetwork = "NOD";
+        public static readonly string SingleWalletPrefix = "nX";
+        public static readonly string MultiWalletPrefix= "NM";
 
-        public static readonly string MultiWalletPrefix_MainNetwork = "NMR";
-        public static readonly string MultiWalletPrefix_TestNetwork = "NMT";
-        public static readonly string MultiWalletPrefix_DevelopmentNetwork = "NMD";
         public static readonly int MultiWalletTransactionTimeout = 604800;
 
         //notus coin

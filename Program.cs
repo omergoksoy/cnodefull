@@ -215,7 +215,11 @@ ZK - konusu için incelenecek
 * freivalds algorithm
 * univariate lagrange interpolation
 
-*/ 
+*/
+
+var id = Notus.Wallet.ID.New();
+Console.WriteLine(JsonSerializer.Serialize(id));
+Console.ReadLine();
 
 Notus.Validator.Node.Start(args);
 
