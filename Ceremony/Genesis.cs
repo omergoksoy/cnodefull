@@ -76,37 +76,27 @@ namespace Notus.Ceremony
                                 }
                                 catch
                                 {
-                                    //Console.WriteLine("Genesis Text Convert Error : " + MainResultStr);
                                 }
 
-                                if (tmpGenObj == null)
+                                if (tmpGenObj != null)
                                 {
-                                    //Console.WriteLine("Genesis Text Is NULL");
-                                }
-                                else
-                                {
+                                    //öncekileri doğrula 
                                     for(int count=1; count< NCG.MyOrderNo; count++)
                                     {
-                                        Console.WriteLine("You Must Control Order -> " + count.ToString());
+                                        if (Notus.Block.Genesis.Verify(tmpGenObj, count) == true)
+                                        {
+                                            GenesisObj = tmpGenObj;
+                                            NP.Success("Verified -> " + count.ToString());
+                                            exitFromWhileLoop = true;
+                                        }
+                                        else
+                                        {
+                                            NP.Success("Un Verified -> " + count.ToString());
+                                            Environment.Exit(0);
+                                        }
                                     }
-                                    //öncekini doğrula 
-                                    if (Notus.Block.Genesis.Verify(tmpGenObj, NCG.MyOrderNo-1) == true)
-                                    {
-                                        GenesisObj = tmpGenObj;
-                                        NP.Success("Verified");
-                                        //NP.ReadLine();
-                                        SignedGenesis();
-                                        exitFromWhileLoop = true;
-                                    }
-                                    else
-                                    {
-                                        //string rawGenesisDataStr = Notus.Block.Genesis.CalculateRaw(tmpGenObj, NCG.MyOrderNo-1);
-                                        //Console.WriteLine("Ozet : " + new Notus.Hash().CommonHash("sha1", rawGenesisDataStr));
-                                        NP.Danger("Un Verified");
-                                        Environment.Exit(0);
-                                    }
+                                    SignedGenesis();
                                 }
-                                //NP.ReadLine();
                             }
                             else
                             {
