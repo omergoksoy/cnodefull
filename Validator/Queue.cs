@@ -430,6 +430,7 @@ namespace Notus.Validator
                 //100 saniyeden eski ise göz ardı edilecek
                 if (incomeDiff > 100000)
                 {
+                    Console.WriteLine("Sign Very Old");
                     return "0";
                 }
                 foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
@@ -1213,6 +1214,17 @@ namespace Notus.Validator
             NVG.Settings.PeerManager.StartAllPeers();
             NVG.Settings.PeerManager.StopOldPeers();
         }
+        private (ulong ,string) CalculateReadySign()
+        {
+            ulong nowUtcValue = NVG.NOW.Int;
+            string controlSignForReadyMsg = Notus.Wallet.ID.Sign(
+                nowUtcValue.ToString() +
+                    NVC.CommonDelimeterChar +
+                NVG.Settings.Nodes.My.IP.Wallet,
+                NVG.SessionPrivateKey
+            );
+            return (nowUtcValue, controlSignForReadyMsg);
+        }
         private bool WaitUntilAvailable()
         {
             NP.Info("Wait Until Nodes Available");
@@ -1290,19 +1302,12 @@ namespace Notus.Validator
 
             if (firstHandShake == true)
             {
-                ulong nowUtcValue = NVG.NOW.Int;
-                string controlSignForReadyMsg = Notus.Wallet.ID.Sign(
-                    nowUtcValue.ToString() +
-                        NVC.CommonDelimeterChar +
-                    NVG.Settings.Nodes.My.IP.Wallet,
-                    NVG.SessionPrivateKey
-                );
                 ReadyMessageIncomeList.Add(NVG.Settings.Nodes.My.IP.Wallet, true);
-                Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
                 foreach (var iE in NVG.NodeList)
                 {
                     if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
+                        (ulong nowUtcValue , string controlSignForReadyMsg)=CalculateReadySign();
                         NCH.SendMessageED(iE.Key, iE.Value.IP.IpAddress, iE.Value.IP.Port,
                             "<fReady>" +
                                 NVG.Settings.Nodes.My.IP.Wallet +
