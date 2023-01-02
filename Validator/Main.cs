@@ -534,10 +534,7 @@ namespace Notus.Validator
                 }
             , false);
 
-            if (NVG.Settings.GenesisCreated == false)
-            {
-                Start_HttpListener();
-            }
+            Start_HttpListener();
 
             NVH.PrepareValidatorList();
 
@@ -601,11 +598,6 @@ namespace Notus.Validator
                     }
                 }
                 NP.Info("All Blocks Loaded");
-                SelectedPortVal = NVG.Settings.Nodes.My.IP.Port;
-            }
-            else
-            {
-                SelectedPortVal = Notus.Toolbox.Network.FindFreeTcpPort();
             }
 
             if (NVG.Settings.GenesisCreated == false)
@@ -1318,22 +1310,33 @@ namespace Notus.Validator
 
         private void Start_HttpListener()
         {
-            IPAddress NodeIpAddress = IPAddress.Parse(
-                NVG.Settings.LocalNode == false
-                    ?
-                NVG.Settings.IpInfo.Public
-                    :
-                NVG.Settings.IpInfo.Local
-            );
+            if (NVG.Settings.GenesisCreated == false && NVG.Settings.Genesis != null)
+            {
+                SelectedPortVal = NVG.Settings.Nodes.My.IP.Port;
+            }
+            else
+            {
+                SelectedPortVal = Notus.Toolbox.Network.FindFreeTcpPort();
+            }
+            if (NVG.Settings.GenesisCreated == false)
+            {
+                IPAddress NodeIpAddress = IPAddress.Parse(
+                    NVG.Settings.LocalNode == false
+                        ?
+                    NVG.Settings.IpInfo.Public
+                        :
+                    NVG.Settings.IpInfo.Local
+                );
 
-            NP.Basic("Listining : " + Notus.Network.Node.MakeHttpListenerPath(NodeIpAddress.ToString(), SelectedPortVal));
-            HttpObj.DefaultResult_OK = "null";
-            HttpObj.DefaultResult_ERR = "null";
-            HttpObj.OnReceive(Fnc_OnReceiveData);
-            HttpObj.ResponseType = "application/json";
-            HttpObj.StoreUrl = false;
-            HttpObj.Start(NodeIpAddress, SelectedPortVal);
-            NP.Success("Http Has Started");
+                NP.Basic("Listining : " + Notus.Network.Node.MakeHttpListenerPath(NodeIpAddress.ToString(), SelectedPortVal));
+                HttpObj.DefaultResult_OK = "null";
+                HttpObj.DefaultResult_ERR = "null";
+                HttpObj.OnReceive(Fnc_OnReceiveData);
+                HttpObj.ResponseType = "application/json";
+                HttpObj.StoreUrl = false;
+                HttpObj.Start(NodeIpAddress, SelectedPortVal);
+                NP.Success("Http Has Started");
+            }
         }
 
         private string Fnc_OnReceiveData(NVS.HttpRequestDetails IncomeData)
