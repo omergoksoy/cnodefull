@@ -141,9 +141,9 @@ namespace Notus.Block
             DateTime generationTime = ND.ToDateTime(NVG.NOW.Int - (NVG.NOW.Int % NVD.Calculate()));
 
             string EncKey = generationTime.ToString(Notus.Variable.Constant.DefaultDateTimeFormatText);
-            Notus.Variable.Struct.EccKeyPair KeyPair_PreSeed = Notus.Wallet.ID.GenerateKeyPair(SelectedCurveName, NetworkType);
-            Notus.Variable.Struct.EccKeyPair KeyPair_Private = Notus.Wallet.ID.GenerateKeyPair(SelectedCurveName, NetworkType);
-            Notus.Variable.Struct.EccKeyPair KeyPair_Public = Notus.Wallet.ID.GenerateKeyPair(SelectedCurveName, NetworkType);
+            Notus.Variable.Struct.EccKeyPair KeyPair_PreSeed = Notus.Wallet.ID.GenerateKeyPair(SelectedCurveName);
+            Notus.Variable.Struct.EccKeyPair KeyPair_Private = Notus.Wallet.ID.GenerateKeyPair(SelectedCurveName);
+            Notus.Variable.Struct.EccKeyPair KeyPair_Public = Notus.Wallet.ID.GenerateKeyPair(SelectedCurveName);
 
             using (Notus.Mempool ObjMp_Genesis =
                 new Notus.Mempool(

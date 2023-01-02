@@ -18,7 +18,7 @@ namespace Notus.Ceremony
     public class Genesis : IDisposable
     {
         private SortedDictionary<BigInteger, string> ValidatorOrder = new SortedDictionary<BigInteger, string>();
-        private int CeremonyMemberCount = 6;
+        private int CeremonyMemberCount = 2;
         private bool Signed = false;
         private NVClass.BlockData genesisBlock = new();
         private string BlockSignHash = string.Empty;
@@ -33,6 +33,38 @@ namespace Notus.Ceremony
             {
                 NVH.AddToValidatorList(item.IpAddress, item.Port, false);
             }
+            Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
+            List<string> removeList = new();
+            foreach(var item in NGF.ValidatorList)
+            {
+                if(
+                    string.Equals("13.229.56.127",item.Value.IpAddress) 
+                    ||
+                    string.Equals("3.75.110.186", item.Value.IpAddress)
+                )
+                {
+
+                }
+                else
+                {
+                    removeList.Add(item.Key); 
+                }
+            }
+
+            foreach(var address in removeList)
+            {
+                NGF.ValidatorList.Remove(address);
+            }
+            Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
+            NP.ReadLine();
+
+            /*
+            13.229.56.127
+            3.75.110.186
+            */
+
+            NVG.OnlineNodeCount = NVG.NodeList.Count;
+
             NVH.DefineMyNodeInfo();
             NVH.AddToValidatorList(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
             NVH.GenerateNodeInfoListViaValidatorList();

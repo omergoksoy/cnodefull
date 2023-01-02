@@ -1343,7 +1343,7 @@ namespace Notus.Validator
 
                 }
             });
-            string calculatedWalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(tmpTransfer.PublicKey, NVG.Settings.Network);
+            string calculatedWalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(tmpTransfer.PublicKey);
             for (int i = 0; i < participant.Count; i++)
             {
                 if (string.Equals(participant[i], calculatedWalletKey) == false)
@@ -1499,7 +1499,7 @@ namespace Notus.Validator
                 });
             }
 
-            string calculatedWalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(tmpTransfer.PublicKey, NVG.Settings.Network);
+            string calculatedWalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(tmpTransfer.PublicKey);
             if (string.Equals(calculatedWalletKey, tmpTransfer.Sender) == false)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
@@ -1880,7 +1880,7 @@ namespace Notus.Validator
                         });
                     }
 
-                    string tmpOwnerWalletStr = Notus.Wallet.ID.GetAddressWithPublicKey(tmpTokenObj.Creation.PublicKey, NVG.Settings.Network);
+                    string tmpOwnerWalletStr = Notus.Wallet.ID.GetAddressWithPublicKey(tmpTokenObj.Creation.PublicKey);
                     if (string.Equals(WalletKeyStr, tmpOwnerWalletStr) == false)
                     {
                         return JsonSerializer.Serialize(new NVS.BlockResponseStruct()
@@ -2105,10 +2105,7 @@ namespace Notus.Validator
             }
 
 
-            string voter_WalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(
-                TransctionApproveObj.PublicKey,
-                NVG.Settings.Network
-            );
+            string voter_WalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(TransctionApproveObj.PublicKey);
             Dictionary<string, NVE.BlockStatusCode> SignList
                 = new Dictionary<string, NVE.BlockStatusCode>();
             string multiTxText = string.Empty;
@@ -2683,7 +2680,7 @@ namespace Notus.Validator
                 });
             }
             */
-            if (Notus.Wallet.ID.CheckAddress(WalletObj.Founder.WalletKey, NVG.Settings.Network) == false)
+            if (Notus.Wallet.ID.CheckAddress(WalletObj.Founder.WalletKey) == false)
             {
                 NGF.Balance.StopWalletUsage(WalletObj.Founder.WalletKey);
                 return JsonSerializer.Serialize(new NVS.BlockResponse()
@@ -2850,7 +2847,7 @@ namespace Notus.Validator
                 });
             }
             */
-            if (Notus.Wallet.ID.CheckAddress(LockObj.WalletKey, NVG.Settings.Network) == false)
+            if (Notus.Wallet.ID.CheckAddress(LockObj.WalletKey) == false)
             {
                 return JsonSerializer.Serialize(new NVS.BlockResponse()
                 {
@@ -3027,7 +3024,7 @@ namespace Notus.Validator
             if (IncomeData.PostParams.ContainsKey("data") == true)
             {
                 NVS.GenericSignStruct signData = JsonSerializer.Deserialize<NVS.GenericSignStruct>(IncomeData.PostParams["data"]);
-                string tmpWalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(signData.PublicKey, NVG.Settings.Network);
+                string tmpWalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(signData.PublicKey);
 
                 string tmpNftStorageId = IncomeData.UrlList[2];
                 string publicKey = "";

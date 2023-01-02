@@ -782,7 +782,7 @@ namespace Notus.Wallet
                 if (tmpBalanceVal != null)
                 {
                     Int64 BlockFee = Notus.Wallet.Fee.Calculate(tmpBalanceVal, NVG.Settings.Network);
-                    string WalletKeyStr = Notus.Wallet.ID.GetAddressWithPublicKey(tmpBalanceVal.Creation.PublicKey, NVG.Settings.Network);
+                    string WalletKeyStr = Notus.Wallet.ID.GetAddressWithPublicKey(tmpBalanceVal.Creation.PublicKey);
                     NVS.WalletBalanceStruct CurrentBalance = Get(WalletKeyStr, 0);
                     string TokenBalanceStr = tmpBalanceVal.Reserve.Supply.ToString();
 
@@ -812,7 +812,7 @@ namespace Notus.Wallet
                         Balance = newBalanceVal.Balance,
                         RowNo = tmpBlockForBalance.info.rowNo,
                         UID = tmpBlockForBalance.info.uID,
-                        Wallet = Notus.Wallet.ID.GetAddressWithPublicKey(tmpBalanceVal.Creation.PublicKey, NVG.Settings.Network)
+                        Wallet = Notus.Wallet.ID.GetAddressWithPublicKey(tmpBalanceVal.Creation.PublicKey)
                     }
                     );
 

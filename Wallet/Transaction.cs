@@ -29,7 +29,7 @@ namespace Notus.Wallet
         {
             try
             {
-                if (Notus.Wallet.ID.CheckAddress(walletKey, currentNetwork) == false)
+                if (Notus.Wallet.ID.CheckAddress(walletKey) == false)
                 {
                     return new Notus.Variable.Struct.CryptoTransactionResult()
                     {
@@ -333,12 +333,12 @@ namespace Notus.Wallet
         /// <returns>Returns Result of the Verification.</returns>
         public static bool Verify(Notus.Variable.Struct.CryptoTransactionStruct preTransfer)
         {
-            if (Notus.Wallet.ID.CheckAddress(preTransfer.Sender, preTransfer.Network) == false)
+            if (Notus.Wallet.ID.CheckAddress(preTransfer.Sender) == false)
             {
                 return false;
             }
 
-            if (Notus.Wallet.ID.CheckAddress(preTransfer.Receiver, preTransfer.Network) == false)
+            if (Notus.Wallet.ID.CheckAddress(preTransfer.Receiver) == false)
             {
                 return false;
             }
@@ -363,12 +363,12 @@ namespace Notus.Wallet
         /// <returns>Returns Result of the Verification.</returns>
         public static bool MultiSignatureVerify(Notus.Variable.Struct.CryptoTransactionStruct preTransfer)
         {
-            if (Notus.Wallet.ID.CheckAddress(preTransfer.Sender, preTransfer.Network) == false)
+            if (Notus.Wallet.ID.CheckAddress(preTransfer.Sender) == false)
             {
                 return false;
             }
 
-            if (Notus.Wallet.ID.CheckAddress(preTransfer.Receiver, preTransfer.Network) == false)
+            if (Notus.Wallet.ID.CheckAddress(preTransfer.Receiver) == false)
             {
                 return false;
             }
@@ -393,7 +393,7 @@ namespace Notus.Wallet
         public static Notus.Variable.Struct.CryptoTransactionStruct Sign(Notus.Variable.Struct.CryptoTransactionBeforeStruct preTransfer)
         {
 
-            if (Notus.Wallet.ID.CheckAddress(preTransfer.Sender, preTransfer.Network) == false)
+            if (Notus.Wallet.ID.CheckAddress(preTransfer.Sender) == false)
             {
                 return new Notus.Variable.Struct.CryptoTransactionStruct()
                 {
@@ -401,7 +401,7 @@ namespace Notus.Wallet
                 };
             }
 
-            if (Notus.Wallet.ID.CheckAddress(preTransfer.Receiver, preTransfer.Network) == false)
+            if (Notus.Wallet.ID.CheckAddress(preTransfer.Receiver) == false)
             {
                 return new Notus.Variable.Struct.CryptoTransactionStruct()
                 {

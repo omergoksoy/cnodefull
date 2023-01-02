@@ -50,7 +50,7 @@ namespace Notus.Prepare
             };
 
             bool exitInnerLoop = false;
-            string WalletKeyStr = Notus.Wallet.ID.GetAddressWithPublicKey(PublicKeyHex, currentNetwork);
+            string WalletKeyStr = Notus.Wallet.ID.GetAddressWithPublicKey(PublicKeyHex);
             while (exitInnerLoop == false)
             {
                 List<string> ListMainNodeIp = Notus.Validator.List.Get(Variable.Enum.NetworkLayer.Layer1, currentNetwork);
