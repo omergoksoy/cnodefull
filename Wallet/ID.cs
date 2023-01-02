@@ -121,17 +121,19 @@ namespace Notus.Wallet
         /// <param name="WhichNetworkFor">Current Network for Request (optional).</param>
         /// <param name="CurveName">Current curve (optional).</param>
         /// <returns>Returns Wallet Address</returns>
-        public static string GetAddress_StandartWay(string privateKey, Notus.Variable.Enum.NetworkType WhichNetworkFor = Notus.Variable.Enum.NetworkType.MainNet, string CurveName = "secp256k1")
+        public static string GetAddress_StandartWay(string privateKey, string CurveName = "secp256k1")
         {
             PrivateKey yPrivKey = new PrivateKey(CurveName, Notus.Wallet.Toolbox.BinaryAscii_numberFromHex(privateKey));
             PublicKey yPubKey = yPrivKey.publicKey();
             BigInteger pkPointVal = yPubKey.point.x;
             string publicKeyX = (yPubKey.point.y % 2 == 0 ? "02" : "03") + pkPointVal.ToString("x");
             string networkByteStr = "00";
+            /*
             if (WhichNetworkFor == Notus.Variable.Enum.NetworkType.TestNet)
             {
                 networkByteStr = "04";
             }
+            */
 
             Notus.HashLib.RIPEMD160 ripObj = new Notus.HashLib.RIPEMD160();
             Notus.HashLib.SHA256 shaObj = new Notus.HashLib.SHA256();
@@ -153,7 +155,7 @@ namespace Notus.Wallet
         /// <param name="walletAddress">Wallet Address <see cref="string"/></param>
         /// <param name="WhichNetworkFor">Current Network for Request (optional).</param>
         /// <returns>Returns true if wallet address is correct. Returns false if wallet address is incorrect.</returns>
-        public static bool CheckAddress(string walletAddress, Notus.Variable.Enum.NetworkType WhichNetworkFor = Notus.Variable.Enum.NetworkType.MainNet)
+        public static bool CheckAddress(string walletAddress)
         {
             if (walletAddress == null)
             {
@@ -195,7 +197,7 @@ namespace Notus.Wallet
         /// <param name="publicKey">Public Key <see cref="string"/></param>
         /// <param name="WhichNetworkFor">Current Network for Request.</param>
         /// <returns>Returns Wallet Address</returns>
-        public static string GetAddressWithPublicKey(string publicKey, Notus.Variable.Enum.NetworkType WhichNetworkFor)
+        public static string GetAddressWithPublicKey(string publicKey)
         {
             return GetAddress_SubFunction_FromPublicKey(
                 PublicKey.fromString(
@@ -204,7 +206,7 @@ namespace Notus.Wallet
                     ),
                     NVC.Default_EccCurveName,
                     true
-                ), WhichNetworkFor, NVC.Default_EccCurveName);
+                ), NVC.Default_EccCurveName);
         }
 
         /// <summary>
@@ -216,7 +218,6 @@ namespace Notus.Wallet
         /// <returns>Returns Wallet Address</returns>
         public static string GetAddressWithPublicKey(
             string publicKey,
-            Notus.Variable.Enum.NetworkType WhichNetworkFor,
             string CurveName
         )
         {
@@ -230,7 +231,6 @@ namespace Notus.Wallet
                     CurveName,
                     true
                 ),
-                WhichNetworkFor,
                 CurveName
             );
         }
@@ -239,16 +239,11 @@ namespace Notus.Wallet
         /// Returns wallet address via given private key.
         /// </summary>
         /// <param name="privateKey">Private Key <see cref="string"/></param>
-        /// <param name="WhichNetworkFor">Current Network for Request.</param>
         /// <returns>Returns Wallet Address</returns>
-        public static string GetAddress(
-            string privateKey,
-            Notus.Variable.Enum.NetworkType WhichNetworkFor
-        )
+        public static string GetAddress(string privateKey)
         {
             return GetAddress_SubFunction(
                 privateKey,
-                WhichNetworkFor,
                 NVC.Default_EccCurveName
             );
         }
@@ -262,20 +257,17 @@ namespace Notus.Wallet
         /// <returns>Returns Wallet Address</returns>
         public static string GetAddress(
             string privateKey,
-            Notus.Variable.Enum.NetworkType WhichNetworkFor,
             string CurveName
         )
         {
             return GetAddress_SubFunction(
                 privateKey,
-                WhichNetworkFor,
                 CurveName
             );
         }
 
         private static string GetAddress_SubFunction(
             string privateKey,
-            Notus.Variable.Enum.NetworkType WhichNetworkFor,
             string CurveName = "secp256k1"
         )
         {
@@ -283,14 +275,12 @@ namespace Notus.Wallet
             PublicKey yPubKey = yPrivKey.publicKey();
             return GetAddress_SubFunction_FromPublicKey(
                 yPubKey,
-                WhichNetworkFor,
                 CurveName
             );
         }
 
         private static string GetAddress_SubFunction_FromPublicKey(
             PublicKey yPubKey,
-            Notus.Variable.Enum.NetworkType WhichNetworkFor,
             //string CurveName = "secp256k1"
             string CurveName = NVC.Default_EccCurveName
         )
@@ -388,7 +378,7 @@ namespace Notus.Wallet
         /// <returns>Returns Wallet Key Pair</returns>
         public static Notus.Variable.Struct.EccKeyPair GenerateKeyPair()
         {
-            return GenerateKeyPair(NVC.Default_EccCurveName, Notus.Variable.Enum.NetworkType.MainNet);
+            return GenerateKeyPair(NVC.Default_EccCurveName);
         }
 
         /// <summary>
@@ -398,42 +388,7 @@ namespace Notus.Wallet
         /// <returns>Returns Wallet Key Pair</returns>
         public static Notus.Variable.Struct.EccKeyPair GenerateKeyPair(string curveName)
         {
-            return GenerateKeyPair(curveName, Notus.Variable.Enum.NetworkType.MainNet);
-        }
-
-        /// <summary>
-        /// Generates a new <see cref="Notus.Variable.Struct.EccKeyPair"/> via given network.
-        /// </summary>
-        /// <param name="WhichNetworkFor">Current Network for Request.</param>
-        /// <returns>Returns Wallet Key Pair</returns>
-        public static Notus.Variable.Struct.EccKeyPair GenerateKeyPair(Notus.Variable.Enum.NetworkType WhichNetworkFor)
-        {
-            return GenerateKeyPair(NVC.Default_EccCurveName, WhichNetworkFor);
-        }
-
-        /// <summary>
-        /// Generates a new <see cref="Notus.Variable.Struct.EccKeyPair"/> via given curve name and network.
-        /// </summary>
-        /// <param name="curveName">Current curve.</param>
-        /// <param name="WhichNetworkFor">Current Network for Request.</param>
-        /// <returns>Returns Wallet Key Pair</returns>
-        public static Notus.Variable.Struct.EccKeyPair GenerateKeyPair(string curveName, Notus.Variable.Enum.NetworkType WhichNetworkFor)
-        {
-            if (curveName == "")
-            {
-                curveName = NVC.Default_EccCurveName;
-            }
-            string[] WordList = Notus.Wallet.Toolbox.SeedPhraseList();
-            BigInteger PrivateKeySeedNumber = PrivateKeyFromPassPhrase(WordList);
-            string privateHexStr = New(curveName, PrivateKeySeedNumber);
-            return new Notus.Variable.Struct.EccKeyPair()
-            {
-                CurveName = curveName,
-                Words = WordList,
-                PrivateKey = privateHexStr,
-                PublicKey = Generate(privateHexStr, curveName),
-                WalletKey = GetAddress(privateHexStr, WhichNetworkFor, curveName)
-            };
+            return GenerateKeyPair(curveName);
         }
 
         public static string GetPublicKeyFromPrivateKey(string privateKey, string curveName = NVC.Default_EccCurveName)
