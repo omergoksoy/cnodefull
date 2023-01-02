@@ -34,6 +34,8 @@ namespace Notus.Toolbox
         {
             string requestUrl = NNN.MakeHttpListenerPath(ipAddress, portNo) + "ping/";
             string serverResponse = NCR.GetSync(requestUrl, 1, true, false);
+            Console.WriteLine("requestUrl : " + requestUrl);
+            Console.WriteLine("serverResponse : " + serverResponse);
             return string.Equals(serverResponse, "pong") == true ? NVS.NodeStatus.Online : NVS.NodeStatus.Offline;
         }
         public static string IpAndPortToHex(NVS.NodeInfo NodeIp)
