@@ -121,19 +121,17 @@ namespace Notus.Wallet
         /// <param name="WhichNetworkFor">Current Network for Request (optional).</param>
         /// <param name="CurveName">Current curve (optional).</param>
         /// <returns>Returns Wallet Address</returns>
-        public static string GetAddress_StandartWay(string privateKey, string CurveName = "secp256k1")
+        public static string GetAddress_StandartWay(string privateKey, Notus.Variable.Enum.NetworkType WhichNetworkFor = Notus.Variable.Enum.NetworkType.MainNet, string CurveName = "secp256k1")
         {
             PrivateKey yPrivKey = new PrivateKey(CurveName, Notus.Wallet.Toolbox.BinaryAscii_numberFromHex(privateKey));
             PublicKey yPubKey = yPrivKey.publicKey();
             BigInteger pkPointVal = yPubKey.point.x;
             string publicKeyX = (yPubKey.point.y % 2 == 0 ? "02" : "03") + pkPointVal.ToString("x");
             string networkByteStr = "00";
-            /*
             if (WhichNetworkFor == Notus.Variable.Enum.NetworkType.TestNet)
             {
                 networkByteStr = "04";
             }
-            */
 
             Notus.HashLib.RIPEMD160 ripObj = new Notus.HashLib.RIPEMD160();
             Notus.HashLib.SHA256 shaObj = new Notus.HashLib.SHA256();
@@ -155,7 +153,7 @@ namespace Notus.Wallet
         /// <param name="walletAddress">Wallet Address <see cref="string"/></param>
         /// <param name="WhichNetworkFor">Current Network for Request (optional).</param>
         /// <returns>Returns true if wallet address is correct. Returns false if wallet address is incorrect.</returns>
-        public static bool CheckAddress(string walletAddress)
+        public static bool CheckAddress(string walletAddress, Notus.Variable.Enum.NetworkType WhichNetworkFor = Notus.Variable.Enum.NetworkType.MainNet)
         {
             if (walletAddress == null)
             {
@@ -239,6 +237,7 @@ namespace Notus.Wallet
         /// Returns wallet address via given private key.
         /// </summary>
         /// <param name="privateKey">Private Key <see cref="string"/></param>
+        /// <param name="WhichNetworkFor">Current Network for Request.</param>
         /// <returns>Returns Wallet Address</returns>
         public static string GetAddress(string privateKey)
         {
@@ -255,15 +254,9 @@ namespace Notus.Wallet
         /// <param name="WhichNetworkFor">Current Network for Request.</param>
         /// <param name="CurveName">Current curve.</param>
         /// <returns>Returns Wallet Address</returns>
-        public static string GetAddress(
-            string privateKey,
-            string CurveName
-        )
+        public static string GetAddress(string privateKey,string CurveName)
         {
-            return GetAddress_SubFunction(
-                privateKey,
-                CurveName
-            );
+            return GetAddress_SubFunction(privateKey,CurveName);
         }
 
         private static string GetAddress_SubFunction(
@@ -382,13 +375,28 @@ namespace Notus.Wallet
         }
 
         /// <summary>
-        /// Generates a new <see cref="Notus.Variable.Struct.EccKeyPair"/> via given curve name.
+        /// Generates a new <see cref="Notus.Variable.Struct.EccKeyPair"/> via given curve name and network.
         /// </summary>
         /// <param name="curveName">Current curve.</param>
+        /// <param name="WhichNetworkFor">Current Network for Request.</param>
         /// <returns>Returns Wallet Key Pair</returns>
         public static Notus.Variable.Struct.EccKeyPair GenerateKeyPair(string curveName)
         {
-            return GenerateKeyPair(curveName);
+            if (curveName == "")
+            {
+                curveName = NVC.Default_EccCurveName;
+            }
+            string[] WordList = Notus.Wallet.Toolbox.SeedPhraseList();
+            BigInteger PrivateKeySeedNumber = PrivateKeyFromPassPhrase(WordList);
+            string privateHexStr = New(curveName, PrivateKeySeedNumber);
+            return new Notus.Variable.Struct.EccKeyPair()
+            {
+                CurveName = curveName,
+                Words = WordList,
+                PrivateKey = privateHexStr,
+                PublicKey = Generate(privateHexStr, curveName),
+                WalletKey = GetAddress(privateHexStr, curveName)
+            };
         }
 
         public static string GetPublicKeyFromPrivateKey(string privateKey, string curveName = NVC.Default_EccCurveName)
