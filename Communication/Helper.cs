@@ -30,8 +30,10 @@ namespace Notus.Communication
             );
             if (worksCorrent == true)
             {
+                Console.WriteLine(ipAddress + " -> " + messageText + " -> " + incodeResponse);
                 return incodeResponse;
             }
+            Console.WriteLine(ipAddress + " -> " + messageText + " -> NOT RESPONSE");
             return string.Empty;
         }
         public static string SendMessage(NVS.NodeInfo receiverIp, string messageText, string nodeHexStr = "")

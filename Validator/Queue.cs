@@ -137,7 +137,7 @@ namespace Notus.Validator
             // listesinde eğer 1 adet çevrim içi node varsa döngüden çıkış yapacak
             bool exitInnerWhile = false;
             NP.Info("Finding Online Nodes");
-            NP.Basic(JsonSerializer.Serialize(NGF.ValidatorList));
+            //NP.Basic(JsonSerializer.Serialize(NGF.ValidatorList));
             while (exitInnerWhile == false)
             {
                 foreach (var iE in NGF.ValidatorList)
@@ -189,6 +189,7 @@ namespace Notus.Validator
         }
         public string ProcessIncomeData(string incomeData)
         {
+            Console.WriteLine("ProcessIncomeData : " + incomeData);
             if (NTT.CheckXmlTag(incomeData, "ping"))
             {
                 return "pong";
@@ -1297,6 +1298,7 @@ namespace Notus.Validator
                     NVG.SessionPrivateKey
                 );
                 ReadyMessageIncomeList.Add(NVG.Settings.Nodes.My.IP.Wallet, true);
+                Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
                 foreach (var iE in NVG.NodeList)
                 {
                     if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
