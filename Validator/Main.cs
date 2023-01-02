@@ -534,6 +534,11 @@ namespace Notus.Validator
                 }
             , false);
 
+            if (NVG.Settings.GenesisCreated == false)
+            {
+                Start_HttpListener();
+            }
+
             NVH.PrepareValidatorList();
 
             NGF.GetUtcTimeFromNode(20, true);
@@ -603,9 +608,6 @@ namespace Notus.Validator
                 SelectedPortVal = Notus.Toolbox.Network.FindFreeTcpPort();
             }
 
-            HttpObj.DefaultResult_OK = "null";
-            HttpObj.DefaultResult_ERR = "null";
-
             if (NVG.Settings.GenesisCreated == false)
             {
                 NP.Basic("Main Validator Started");
@@ -626,7 +628,6 @@ namespace Notus.Validator
                 };
             }
 
-            Start_HttpListener();
             if (NVG.Settings.GenesisCreated == false)
             {
                 NVG.Settings.CommEstablished = true;
@@ -1326,6 +1327,8 @@ namespace Notus.Validator
             );
 
             NP.Basic("Listining : " + Notus.Network.Node.MakeHttpListenerPath(NodeIpAddress.ToString(), SelectedPortVal));
+            HttpObj.DefaultResult_OK = "null";
+            HttpObj.DefaultResult_ERR = "null";
             HttpObj.OnReceive(Fnc_OnReceiveData);
             HttpObj.ResponseType = "application/json";
             HttpObj.StoreUrl = false;
