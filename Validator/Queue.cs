@@ -426,17 +426,17 @@ namespace Notus.Validator
                 string[] tmpHashPart = incomeData.Split(NVC.CommonDelimeterChar);
                 ulong incomeUtc = ulong.Parse(tmpHashPart[1]);
                 ulong incomeDiff = (ulong)Math.Abs((decimal)NVG.NOW.Int - incomeUtc);
-
+                Console.WriteLine(JsonSerializer.Serialize(tmpHashPart, NVC.JsonSetting));
                 //100 saniyeden eski ise göz ardı edilecek
                 if (incomeDiff > 100000)
                 {
-                    Console.WriteLine("Sign Very Old");
-                    return "0";
+                    return "2";
                 }
                 foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
                 {
                     if (string.Equals(tmpHashPart[0], entry.Value.IP.Wallet) == true)
                     {
+                        Console.WriteLine("Esit");
                         if (
                             Notus.Wallet.ID.Verify(
                                 tmpHashPart[1] +
@@ -449,11 +449,22 @@ namespace Notus.Validator
                         {
                             if (NVG.NodeList.ContainsKey(entry.Key))
                             {
+                                Console.WriteLine("ContainsKey = TRUE");
                                 if (ReadyMessageIncomeList.ContainsKey(entry.Value.IP.Wallet) == false)
                                 {
+                                    Console.WriteLine("ReadyMessageIncomeList.ContainsKey = TRUE");
                                     ReadyMessageIncomeList.Add(entry.Value.IP.Wallet, true);
                                 }
+                                else
+                                {
+                                    Console.WriteLine("ReadyMessageIncomeList.ContainsKey = FALSE");
+                                    ReadyMessageIncomeList[entry.Value.IP.Wallet] = true;
+                                }
                                 return "1";
+                            }
+                            else
+                            {
+                                Console.WriteLine("ContainsKey = FALSE");
                             }
                         }
                     }
