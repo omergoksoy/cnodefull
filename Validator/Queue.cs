@@ -467,6 +467,10 @@ namespace Notus.Validator
                                 Console.WriteLine("ContainsKey = FALSE");
                             }
                         }
+                        else
+                        {
+                            Console.WriteLine("NOT VERIFIED");
+                        }
                     }
                 }
                 return "0";
