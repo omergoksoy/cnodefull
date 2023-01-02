@@ -1214,7 +1214,7 @@ namespace Notus.Validator
             NVG.Settings.PeerManager.StartAllPeers();
             NVG.Settings.PeerManager.StopOldPeers();
         }
-        private (ulong ,string) CalculateReadySign()
+        private (ulong, string) CalculateReadySign()
         {
             ulong nowUtcValue = NVG.NOW.Int;
             string controlSignForReadyMsg = Notus.Wallet.ID.Sign(
@@ -1305,7 +1305,7 @@ namespace Notus.Validator
 
             if (firstHandShake == true)
             {
-                DateTime startingTime = DateTime.Now.Subtract(new TimeSpan(1,0,0));
+                DateTime startingTime = DateTime.Now.Subtract(new TimeSpan(1, 0, 0));
                 ReadyMessageIncomeList.Add(NVG.Settings.Nodes.My.IP.Wallet, true);
                 while (ReadyMessageIncomeList.Count == 1)
                 {
@@ -1327,7 +1327,7 @@ namespace Notus.Validator
                 if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
                 {
                     (ulong nowUtcValue, string controlSignForReadyMsg) = CalculateReadySign();
-                    NCH.SendMessageED(iE.Key, iE.Value.IP.IpAddress, iE.Value.IP.Port,
+                    string fReadySendResponse = NCH.SendMessageED(iE.Key, iE.Value.IP.IpAddress, iE.Value.IP.Port,
                         "<fReady>" +
                             NVG.Settings.Nodes.My.IP.Wallet +
                             NVC.CommonDelimeterChar +
@@ -1336,6 +1336,8 @@ namespace Notus.Validator
                             controlSignForReadyMsg +
                         "</fReady>"
                     );
+
+                    Console.WriteLine(iE.Value.IP.IpAddress + " -> [" + fReadySendResponse + "]");
                 }
             }
         }
