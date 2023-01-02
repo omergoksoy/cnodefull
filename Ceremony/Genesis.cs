@@ -102,7 +102,7 @@ namespace Notus.Ceremony
         }
         private void RealGeneration()
         {
-            string leaderWalletId = ValidatorOrder.Values.ElementAt(5);
+            string leaderWalletId = ValidatorOrder.Values.ElementAt(CeremonyMemberCount-1);
 
             genesisBlock = NVClass.Block.GetEmpty();
 
