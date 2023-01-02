@@ -189,7 +189,7 @@ namespace Notus.Validator
         }
         public string ProcessIncomeData(string incomeData)
         {
-            Console.WriteLine("ProcessIncomeData : " + incomeData);
+            //Console.WriteLine("ProcessIncomeData : " + incomeData);
             if (NTT.CheckXmlTag(incomeData, "ping"))
             {
                 return "pong";
@@ -1228,6 +1228,9 @@ namespace Notus.Validator
         private bool WaitUntilAvailable()
         {
             NP.Info("Wait Until Nodes Available");
+            Console.WriteLine("JsonSerializer.Serialize(NVG.NodeList)");
+            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+            Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
             // burada beklerken diğer node'dan syncno zamanı gelecek
             // gelen zamana kadar buradan ve diğer işlemleri bypass ederek 
             // doğrudan iletişim kısmına geçecek
@@ -1302,29 +1305,39 @@ namespace Notus.Validator
 
             if (firstHandShake == true)
             {
+                DateTime startingTime = DateTime.Now.Subtract(new TimeSpan(1,0,0));
                 ReadyMessageIncomeList.Add(NVG.Settings.Nodes.My.IP.Wallet, true);
-                foreach (var iE in NVG.NodeList)
-                {
-                    if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
-                    {
-                        (ulong nowUtcValue , string controlSignForReadyMsg)=CalculateReadySign();
-                        NCH.SendMessageED(iE.Key, iE.Value.IP.IpAddress, iE.Value.IP.Port,
-                            "<fReady>" +
-                                NVG.Settings.Nodes.My.IP.Wallet +
-                                NVC.CommonDelimeterChar +
-                                nowUtcValue.ToString() +
-                                NVC.CommonDelimeterChar +
-                                controlSignForReadyMsg +
-                            "</fReady>"
-                        );
-                    }
-                }
                 while (ReadyMessageIncomeList.Count == 1)
                 {
-                    Thread.Sleep(5);
+                    TimeSpan timeDiff = DateTime.Now - startingTime;
+                    if (timeDiff.TotalSeconds > 60)
+                    {
+                        SendReadyMsgToNodes();
+                        startingTime = DateTime.Now;
+                    }
+                    Thread.Sleep(20);
                 }
             }
             return firstHandShake;
+        }
+        private void SendReadyMsgToNodes()
+        {
+            foreach (var iE in NVG.NodeList)
+            {
+                if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
+                {
+                    (ulong nowUtcValue, string controlSignForReadyMsg) = CalculateReadySign();
+                    NCH.SendMessageED(iE.Key, iE.Value.IP.IpAddress, iE.Value.IP.Port,
+                        "<fReady>" +
+                            NVG.Settings.Nodes.My.IP.Wallet +
+                            NVC.CommonDelimeterChar +
+                            nowUtcValue.ToString() +
+                            NVC.CommonDelimeterChar +
+                            controlSignForReadyMsg +
+                        "</fReady>"
+                    );
+                }
+            }
         }
         private ulong FindBiggestSyncNo()
         {
