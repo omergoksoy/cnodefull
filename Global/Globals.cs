@@ -70,6 +70,7 @@ namespace Notus.Variable
         public static Notus.Globals.Variable.Settings Settings { get; set; }
         static Globals()
         {
+            Console.WriteLine("Globals Class Started");
             OtherValidatorSelectedMe = false;
             LocalBlockLoaded = false;
             GroupNo = 1;
