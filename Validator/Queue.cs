@@ -1232,6 +1232,7 @@ namespace Notus.Validator
         private (ulong, string) CalculateReadySign()
         {
             ulong nowUtcValue = NVG.NOW.Int;
+            Console.WriteLine(nowUtcValue.ToString() + NVC.CommonDelimeterChar + NVG.Settings.Nodes.My.IP.Wallet);
             string controlSignForReadyMsg = Notus.Wallet.ID.Sign(
                 nowUtcValue.ToString() +
                     NVC.CommonDelimeterChar +
