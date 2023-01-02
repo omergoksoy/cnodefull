@@ -2,12 +2,10 @@
 using System.Net;
 using System.Numerics;
 using System.Text.Json;
-using NGF = Notus.Variable.Globals.Functions;
-using NCG = Notus.Ceremony.Genesis;
 using NCR = Notus.Communication.Request;
+using NGF = Notus.Variable.Globals.Functions;
 using NH = Notus.Hash;
 using NP = Notus.Print;
-using NTT = Notus.Toolbox.Text;
 using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
 using NVG = Notus.Variable.Globals;
@@ -33,12 +31,11 @@ namespace Notus.Ceremony
             {
                 NVH.AddToValidatorList(item.IpAddress, item.Port, false);
             }
-            Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
             List<string> removeList = new();
-            foreach(var item in NGF.ValidatorList)
+            foreach (var item in NGF.ValidatorList)
             {
-                if(
-                    string.Equals("13.229.56.127",item.Value.IpAddress) 
+                if (
+                    string.Equals("13.229.56.127", item.Value.IpAddress)
                     ||
                     string.Equals("3.75.110.186", item.Value.IpAddress)
                 )
@@ -47,22 +44,20 @@ namespace Notus.Ceremony
                 }
                 else
                 {
-                    removeList.Add(item.Key); 
+                    removeList.Add(item.Key);
                 }
             }
 
-            foreach(var address in removeList)
+            foreach (var address in removeList)
             {
                 NGF.ValidatorList.Remove(address);
             }
-            Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
-            NP.ReadLine();
 
             /*
             13.229.56.127
             3.75.110.186
             */
-
+            CeremonyMemberCount = NVG.NodeList.Count;
             NVG.OnlineNodeCount = NVG.NodeList.Count;
 
             NVH.DefineMyNodeInfo();
@@ -203,7 +198,7 @@ namespace Notus.Ceremony
                             if (tmpGenObj != null)
                             {
                                 //öncekileri doğrula 
-                                for (int count = 1; count < CeremonyMemberCount+1; count++)
+                                for (int count = 1; count < CeremonyMemberCount + 1; count++)
                                 {
                                     if (Notus.Block.Genesis.Verify(tmpGenObj, count) == false)
                                     {
@@ -300,7 +295,7 @@ namespace Notus.Ceremony
 
             //burada birinci sıradaki validatörün imzası eklenece
             GenesisObj.Ceremony.Clear();
-            for (int i = 1; i < CeremonyMemberCount+1; i++)
+            for (int i = 1; i < CeremonyMemberCount + 1; i++)
             {
                 GenesisObj.Ceremony.Add(i, new Variable.Genesis.GenesisCeremonyOrderType()
                 {
