@@ -1236,10 +1236,11 @@ namespace Notus.Validator
             string controlSignForReadyMsg = Notus.Wallet.ID.Sign(rawDataText,NVG.SessionPrivateKey);
             Notus.Wallet.ID.Sign(rawDataText, NVG.SessionPrivateKey);
 
-            Console.WriteLine("CalculateReadySign   [sign] : " + controlSignForReadyMsg);
-            Console.WriteLine("CalculateReadySign [public] : " + NVG.NodeList[NVG.Settings.Nodes.My.HexKey].PublicKey);
-            Console.WriteLine("CalculateReadySign    [raw] : " + rawDataText);
-            Console.WriteLine("CalculateReadySign [verify] : " + Notus.Wallet.ID.Verify(rawDataText, controlSignForReadyMsg , NVG.NodeList[NVG.Settings.Nodes.My.HexKey].PublicKey));
+            Console.WriteLine("CalculateReadySign    [sign] : " + controlSignForReadyMsg);
+            Console.WriteLine("CalculateReadySign [private] : " + NVG.SessionPrivateKey);
+            Console.WriteLine("CalculateReadySign  [public] : " + NVG.NodeList[NVG.Settings.Nodes.My.HexKey].PublicKey);
+            Console.WriteLine("CalculateReadySign     [raw] : " + rawDataText);
+            Console.WriteLine("CalculateReadySign  [verify] : " + Notus.Wallet.ID.Verify(rawDataText, controlSignForReadyMsg , NVG.NodeList[NVG.Settings.Nodes.My.HexKey].PublicKey));
 
             return (nowUtcValue, controlSignForReadyMsg);
         }
