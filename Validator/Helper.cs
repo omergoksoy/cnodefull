@@ -133,6 +133,11 @@ namespace Notus.Validator
                     NGF.ValidatorList[entry.Key].Status = NVS.NodeStatus.Online;
                 }
             }
+
+            foreach (KeyValuePair<string, NVS.IpInfo> entry in NGF.ValidatorList)
+            {
+                Console.WriteLine(entry.Value.IpAddress);
+            }
         }
 
         public static List<NVS.IpInfo> GiveMeNodeList()
