@@ -1232,21 +1232,22 @@ namespace Notus.Validator
         private (ulong, string) CalculateReadySign()
         {
             ulong nowUtcValue = NVG.NOW.Int;
-            Console.WriteLine(nowUtcValue.ToString() + NVC.CommonDelimeterChar + NVG.Settings.Nodes.My.IP.Wallet);
-            string controlSignForReadyMsg = Notus.Wallet.ID.Sign(
-                nowUtcValue.ToString() +
-                    NVC.CommonDelimeterChar +
-                NVG.Settings.Nodes.My.IP.Wallet,
-                NVG.SessionPrivateKey
-            );
+            string rawDataText = nowUtcValue.ToString() + NVC.CommonDelimeterChar + NVG.Settings.Nodes.My.IP.Wallet;
+            string controlSignForReadyMsg = Notus.Wallet.ID.Sign(rawDataText,NVG.SessionPrivateKey);
+            Notus.Wallet.ID.Sign(rawDataText, NVG.SessionPrivateKey);
+
+            Console.WriteLine("CalculateReadySign   [sign] : " + controlSignForReadyMsg);
+            Console.WriteLine("CalculateReadySign    [raw] : " + rawDataText);
+            Console.WriteLine("CalculateReadySign [verify] : " + Notus.Wallet.ID.Verify(rawDataText, controlSignForReadyMsg , NVG.NodeList[NVG.Settings.Nodes.My.HexKey].PublicKey));
+
             return (nowUtcValue, controlSignForReadyMsg);
         }
         private bool WaitUntilAvailable()
         {
             NP.Info("Wait Until Nodes Available");
-            Console.WriteLine("JsonSerializer.Serialize(NVG.NodeList)");
-            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
-            Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
+            //Console.WriteLine("JsonSerializer.Serialize(NVG.NodeList)");
+            //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+            //Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
             // burada beklerken diğer node'dan syncno zamanı gelecek
             // gelen zamana kadar buradan ve diğer işlemleri bypass ederek 
             // doğrudan iletişim kısmına geçecek
