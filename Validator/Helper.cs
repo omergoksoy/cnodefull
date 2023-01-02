@@ -79,10 +79,6 @@ namespace Notus.Validator
                 }
             }
 
-            DefineMyNodeInfo();
-            NVH.AddToValidatorList(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
-            GenerateNodeInfoListViaValidatorList();
-
             string tmpOfflineNodeListStr = string.Empty;
             string tmpNodeListStr = string.Empty;
             using (Notus.Mempool objMpNodeList = new Notus.Mempool(NVC.MemoryPoolName["ValidatorList"]))
@@ -124,6 +120,9 @@ namespace Notus.Validator
                 }
             }
 
+            DefineMyNodeInfo();
+            NVH.AddToValidatorList(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
+            GenerateNodeInfoListViaValidatorList();
             foreach (KeyValuePair<string, NVS.IpInfo> entry in NGF.ValidatorList)
             {
                 NGF.ValidatorList[entry.Key].Status = NVS.NodeStatus.Unknown;
@@ -138,6 +137,8 @@ namespace Notus.Validator
             {
                 Console.WriteLine(entry.Value.IpAddress);
             }
+            //NP.ReadLine();
+            //NP.ReadLine();
         }
 
         public static List<NVS.IpInfo> GiveMeNodeList()
