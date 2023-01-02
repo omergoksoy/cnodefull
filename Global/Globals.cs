@@ -111,7 +111,8 @@ namespace Notus.Variable
                 {
                     My = new Struct.NodeQueueInfo()
                     {
-                        PublicKey = Notus.Wallet.ID.Generate(SessionPrivateKey),
+                        PrivateKey = SessionPrivateKey,
+                        PublicKey = "",
                         Begin = 0,
                         Tick = 0,
                         SyncNo = 0,
@@ -292,6 +293,7 @@ namespace Notus.Variable
                 NOW.Diff = new TimeSpan(0);
                 NOW.DiffUpdated = false;
                 NOW.LastDiffUpdate = DateTime.UtcNow;
+                Settings.Nodes.My.PublicKey = Notus.Wallet.ID.Generate(SessionPrivateKey);
             }
             public static void Start()
             {

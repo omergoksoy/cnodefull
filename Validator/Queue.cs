@@ -1234,7 +1234,6 @@ namespace Notus.Validator
             ulong nowUtcValue = NVG.NOW.Int;
             string rawDataText = nowUtcValue.ToString() + NVC.CommonDelimeterChar + NVG.Settings.Nodes.My.IP.Wallet;
             string controlSignForReadyMsg = Notus.Wallet.ID.Sign(rawDataText,NVG.SessionPrivateKey);
-            Notus.Wallet.ID.Sign(rawDataText, NVG.SessionPrivateKey);
 
             Console.WriteLine("CalculateReadySign    [sign] : " + controlSignForReadyMsg);
             Console.WriteLine("CalculateReadySign [private] : " + NVG.SessionPrivateKey);
