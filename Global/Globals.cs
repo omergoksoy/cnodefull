@@ -71,6 +71,7 @@ namespace Notus.Variable
         static Globals()
         {
             Console.WriteLine("Globals Class Started");
+            NP.ReadLine();
             OtherValidatorSelectedMe = false;
             LocalBlockLoaded = false;
             GroupNo = 1;
