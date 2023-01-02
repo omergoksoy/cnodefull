@@ -255,7 +255,6 @@ namespace Notus.Ceremony
                                     {
                                         if (Notus.Block.Genesis.Verify(tmpGenObj, count) == true)
                                         {
-                                            GenesisObj = tmpGenObj;
                                             exitFromWhileLoop = true;
                                         }
                                         else
@@ -264,6 +263,7 @@ namespace Notus.Ceremony
                                             Environment.Exit(0);
                                         }
                                     }
+                                    GenesisObj = tmpGenObj;
                                     SignedGenesis();
                                 }
                             }
