@@ -534,6 +534,8 @@ namespace Notus.Validator
                 }
             , false);
 
+            Obj_Api = new Notus.Validator.Api();
+
             Start_HttpListener();
 
             NVH.PrepareValidatorList();
@@ -565,8 +567,6 @@ namespace Notus.Validator
             {
                 NP.Basic(NVG.Settings, "Notus.Validator.Main -> Genesis Is NULL");
             }
-
-            Obj_Api = new Notus.Validator.Api();
 
             NGF.BlockQueue.Start();
 
@@ -1310,6 +1310,8 @@ namespace Notus.Validator
 
         private void Start_HttpListener()
         {
+            SelectedPortVal = NVG.Settings.Nodes.My.IP.Port;
+            /*
             if (NVG.Settings.GenesisCreated == false && NVG.Settings.Genesis != null)
             {
                 SelectedPortVal = NVG.Settings.Nodes.My.IP.Port;
@@ -1318,6 +1320,7 @@ namespace Notus.Validator
             {
                 SelectedPortVal = Notus.Toolbox.Network.FindFreeTcpPort();
             }
+            */
             if (NVG.Settings.GenesisCreated == false)
             {
                 IPAddress NodeIpAddress = IPAddress.Parse(
