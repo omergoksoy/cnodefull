@@ -823,8 +823,9 @@ namespace Notus.Block
 
                 Dictionary<string, List<NVS.IpInfo>> signNode = new Dictionary<string, List<NVS.IpInfo>>();
                 signNode.Clear();
-
-                burası asenkron bir şekilde çalıştırılabilir
+                
+                //fix-ing-control-point
+                //burası asenkron bir şekilde çalıştırılabilir
                 //burası asenkron bir şekilde çalıştırılabilir
                 //burası asenkron bir şekilde çalıştırılabilir
                 //burası asenkron bir şekilde çalıştırılabilir

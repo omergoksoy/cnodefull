@@ -534,7 +534,7 @@ namespace Notus.Validator
                 }
             , false);
 
-            NVH.PrepareValidatorList(false);
+            NVH.PrepareValidatorList();
 
             NGF.GetUtcTimeFromNode(20, true);
             TimeBaseBlockUidList.Clear();

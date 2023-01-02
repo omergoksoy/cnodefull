@@ -32,60 +32,11 @@ namespace Notus.Validator
                 PublicKey = NVG.Settings.Nodes.My.PublicKey,
             }, true);
         }
-        public static void PrepareValidatorList(bool OnlyPredefinedNodes)
+        public static void GenerateNodeInfoListViaValidatorList()
         {
-            OnlyPredefinedNodes değişkeni true olduğunda sadece listeyi oluşturuyor
-            ancak false olduğunda DB'den okuyor 
-                bu da node tarafından 1 adet node olduğunu gösteriyor
-                burayı düzelt
-
-            NVG.NodeList.Clear();
-            NGF.ValidatorList.Clear();
-            bool generateBaseValidatorList = false;
-            if (OnlyPredefinedNodes == true)
-            {
-                generateBaseValidatorList = true;
-            }
-            else
-            {
-                using (Notus.Mempool objMpNodeList = new Notus.Mempool(NVC.MemoryPoolName["ValidatorList"]))
-                {
-                    objMpNodeList.AsyncActive = false;
-                    string addressListStr = objMpNodeList.Get("address_list", string.Empty);
-                    if (addressListStr.Length == 0)
-                    {
-                        generateBaseValidatorList = true;
-                    }
-                }
-            }
-            if (generateBaseValidatorList == true)
-            {
-                foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
-                {
-                    NVH.AddToValidatorList(item.IpAddress, item.Port, true);
-                }
-            }
-
-            if (OnlyPredefinedNodes == false)
-            {
-                DefineMyNodeInfo();
-                NVH.AddToValidatorList(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
-            }
-
             foreach (KeyValuePair<string, NVS.IpInfo> entry in NGF.ValidatorList)
             {
-                bool addValidatorInfoToList = false;
-                if (OnlyPredefinedNodes == true)
-                {
-                    addValidatorInfoToList = true;
-                }
-                else {
-                    if (string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false)
-                    {
-                        addValidatorInfoToList = true;
-                    }
-                }
-                if (addValidatorInfoToList == true)
+                if (string.Equals(NVG.Settings.Nodes.My.HexKey, entry.Key) == false)
                 {
                     NVH.AddValidatorInfo(new NVS.NodeQueueInfo()
                     {
@@ -105,56 +56,86 @@ namespace Notus.Validator
                     }, false);
                 }
             }
-
-            if (OnlyPredefinedNodes == false)
+        }
+        public static void PrepareValidatorList()
+        {
+            //fix-ing-control-point
+            /*
+            OnlyPredefinedNodes değişkeni true olduğunda sadece listeyi oluşturuyor
+            ancak false olduğunda DB'den okuyor 
+            bu da node tarafından 1 adet node olduğunu gösteriyor
+            burayı düzelt
+            */
+            NVG.NodeList.Clear();
+            NGF.ValidatorList.Clear();
+            bool generateBaseValidatorList = false;
+            using (Notus.Mempool objMpNodeList = new Notus.Mempool(NVC.MemoryPoolName["ValidatorList"]))
             {
-                string tmpOfflineNodeListStr = string.Empty;
-                string tmpNodeListStr = string.Empty;
-                using (Notus.Mempool objMpNodeList = new Notus.Mempool(NVC.MemoryPoolName["ValidatorList"]))
+                objMpNodeList.AsyncActive = false;
+                string addressListStr = objMpNodeList.Get("address_list", string.Empty);
+                if (addressListStr.Length == 0)
                 {
-                    tmpOfflineNodeListStr = objMpNodeList.Get("offline_list", "");
-                    tmpNodeListStr = objMpNodeList.Get("address_list", "");
+                    generateBaseValidatorList = true;
                 }
+            }
+            if (generateBaseValidatorList == true)
+            {
+                foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
+                {
+                    NVH.AddToValidatorList(item.IpAddress, item.Port, true);
+                }
+            }
 
-                if (tmpOfflineNodeListStr.Length == 0 && tmpNodeListStr.Length == 0)
+            DefineMyNodeInfo();
+            NVH.AddToValidatorList(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
+            GenerateNodeInfoListViaValidatorList();
+
+            string tmpOfflineNodeListStr = string.Empty;
+            string tmpNodeListStr = string.Empty;
+            using (Notus.Mempool objMpNodeList = new Notus.Mempool(NVC.MemoryPoolName["ValidatorList"]))
+            {
+                tmpOfflineNodeListStr = objMpNodeList.Get("offline_list", "");
+                tmpNodeListStr = objMpNodeList.Get("address_list", "");
+            }
+
+            if (tmpOfflineNodeListStr.Length == 0 && tmpNodeListStr.Length == 0)
+            {
+                foreach (NVS.IpInfo defaultNodeInfo in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
                 {
-                    foreach (NVS.IpInfo defaultNodeInfo in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
-                    {
-                        AddToValidatorList(defaultNodeInfo.IpAddress, defaultNodeInfo.Port);
-                    }
+                    AddToValidatorList(defaultNodeInfo.IpAddress, defaultNodeInfo.Port);
                 }
-                else
+            }
+            else
+            {
+                if (tmpOfflineNodeListStr.Length > 0)
                 {
-                    if (tmpOfflineNodeListStr.Length > 0)
+                    SortedDictionary<string, NVS.IpInfo>? tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(tmpOfflineNodeListStr);
+                    if (tmpDbNodeList != null)
                     {
-                        SortedDictionary<string, NVS.IpInfo>? tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(tmpOfflineNodeListStr);
-                        if (tmpDbNodeList != null)
+                        foreach (var iE in tmpDbNodeList)
                         {
-                            foreach (var iE in tmpDbNodeList)
-                            {
-                                AddToValidatorList(iE.Value.IpAddress, iE.Value.Port);
-                            }
+                            AddToValidatorList(iE.Value.IpAddress, iE.Value.Port);
                         }
                     }
-                    if (tmpNodeListStr.Length > 0)
+                }
+                if (tmpNodeListStr.Length > 0)
+                {
+                    SortedDictionary<string, NVS.IpInfo>? tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(tmpNodeListStr);
+                    if (tmpDbNodeList != null)
                     {
-                        SortedDictionary<string, NVS.IpInfo>? tmpDbNodeList = JsonSerializer.Deserialize<SortedDictionary<string, NVS.IpInfo>>(tmpNodeListStr);
-                        if (tmpDbNodeList != null)
+                        foreach (var iE in tmpDbNodeList)
                         {
-                            foreach (var iE in tmpDbNodeList)
-                            {
-                                AddToValidatorList(iE.Value.IpAddress, iE.Value.Port);
-                            }
+                            AddToValidatorList(iE.Value.IpAddress, iE.Value.Port);
                         }
                     }
                 }
             }
-            
+
             foreach (KeyValuePair<string, NVS.IpInfo> entry in NGF.ValidatorList)
             {
                 NGF.ValidatorList[entry.Key].Status = NVS.NodeStatus.Unknown;
 
-                if(string.Equals(entry.Key, NVG.Settings.Nodes.My.HexKey) == true)
+                if (string.Equals(entry.Key, NVG.Settings.Nodes.My.HexKey) == true)
                 {
                     NGF.ValidatorList[entry.Key].Status = NVS.NodeStatus.Online;
                 }
