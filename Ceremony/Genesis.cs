@@ -23,18 +23,10 @@ namespace Notus.Ceremony
         private Notus.Variable.Genesis.GenesisBlockData GenesisObj = new();
         private int MyOrderNo = 0;
         private Notus.Communication.Http HttpObj = new Notus.Communication.Http(true);
-        public void PrepareCeremonyList()
-        {
-            NVH.DefineMyNodeInfo();
-            NVH.AddToValidatorList(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
-            NVH.GenerateNodeInfoListViaValidatorList();
-        }
-
         public void Start()
         {
             //kontrollü bir şekilde dosyayı silerek sıfırlıyor
             Notus.IO.DeleteFile(NVC.MemoryPoolName["ValidatorList"] + ".db");
-            PrepareCeremonyList();
             bool predefinedValidator = false;
             foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
             {
@@ -451,6 +443,10 @@ namespace Notus.Ceremony
             {
                 NGF.ValidatorList.Remove(address);
             }
+
+            NVH.DefineMyNodeInfo();
+            NVH.AddToValidatorList(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
+            NVH.GenerateNodeInfoListViaValidatorList();
 
             /*
             13.229.56.127
