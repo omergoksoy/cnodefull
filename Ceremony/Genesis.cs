@@ -25,41 +25,6 @@ namespace Notus.Ceremony
         private Notus.Communication.Http HttpObj = new Notus.Communication.Http(true);
         public void PrepareCeremonyList()
         {
-            NVG.NodeList.Clear();
-            NGF.ValidatorList.Clear();
-            foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
-            {
-                NVH.AddToValidatorList(item.IpAddress, item.Port, false);
-            }
-            List<string> removeList = new();
-            foreach (var item in NGF.ValidatorList)
-            {
-                if (
-                    string.Equals("13.229.56.127", item.Value.IpAddress)
-                    ||
-                    string.Equals("3.75.110.186", item.Value.IpAddress)
-                )
-                {
-
-                }
-                else
-                {
-                    removeList.Add(item.Key);
-                }
-            }
-
-            foreach (var address in removeList)
-            {
-                NGF.ValidatorList.Remove(address);
-            }
-
-            /*
-            13.229.56.127
-            3.75.110.186
-            */
-            CeremonyMemberCount = NVG.NodeList.Count;
-            NVG.OnlineNodeCount = NVG.NodeList.Count;
-
             NVH.DefineMyNodeInfo();
             NVH.AddToValidatorList(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
             NVH.GenerateNodeInfoListViaValidatorList();
@@ -459,7 +424,40 @@ namespace Notus.Ceremony
         }
         public Genesis()
         {
+            NVG.NodeList.Clear();
+            NGF.ValidatorList.Clear();
+            foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
+            {
+                NVH.AddToValidatorList(item.IpAddress, item.Port, false);
+            }
+            List<string> removeList = new();
+            foreach (var item in NGF.ValidatorList)
+            {
+                if (
+                    string.Equals("13.229.56.127", item.Value.IpAddress)
+                    ||
+                    string.Equals("3.75.110.186", item.Value.IpAddress)
+                )
+                {
+
+                }
+                else
+                {
+                    removeList.Add(item.Key);
+                }
+            }
+
+            foreach (var address in removeList)
+            {
+                NGF.ValidatorList.Remove(address);
+            }
+
+            /*
+            13.229.56.127
+            3.75.110.186
+            */
             CeremonyMemberCount = NVG.NodeList.Count;
+            NVG.OnlineNodeCount = NVG.NodeList.Count;
         }
         ~Genesis()
         {
