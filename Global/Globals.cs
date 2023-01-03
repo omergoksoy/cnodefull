@@ -237,7 +237,7 @@ namespace Notus.Variable
                     nowUtcValue.ToString() +
                         NVC.CommonDelimeterChar +
                     NVG.Settings.Nodes.My.IP.Wallet,
-                    SessionPrivateKey
+                    NVG.Settings.Nodes.My.PrivateKey
                 );
 
                 foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NodeList)
