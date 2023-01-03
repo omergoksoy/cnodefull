@@ -1238,12 +1238,12 @@ namespace Notus.Validator
         {
             ulong nowUtcValue = NVG.NOW.Int;
             string rawDataText = nowUtcValue.ToString() + NVC.CommonDelimeterChar + NVG.Settings.Nodes.My.IP.Wallet;
-            string controlSignForReadyMsg = Notus.Wallet.ID.Sign(rawDataText, NVG.SessionPrivateKey);
+            string controlSignForReadyMsg = Notus.Wallet.ID.Sign(rawDataText, NVG.Settings.Nodes.My.PrivateKey);
             Console.WriteLine("HASH                   [RAW] : " + new Notus.Hash().CommonHash("md5", rawDataText));
             Console.WriteLine("CalculateReadySign    [sign] : " + controlSignForReadyMsg);
-            Console.WriteLine("CalculateReadySign [private] : " + NVG.SessionPrivateKey);
-            Console.WriteLine("CalculateReadySign [generated-public] : " + Notus.Wallet.ID.GetPublicKeyFromPrivateKey(NVG.SessionPrivateKey));
-            Console.WriteLine("CalculateReadySign [private] : " + NVG.SessionPrivateKey);
+            Console.WriteLine("CalculateReadySign [private] : " + NVG.Settings.Nodes.My.PrivateKey);
+            Console.WriteLine("CalculateReadySign [generated-public] : " + Notus.Wallet.ID.GetPublicKeyFromPrivateKey(NVG.Settings.Nodes.My.PrivateKey));
+            Console.WriteLine("CalculateReadySign [private] : " + NVG.Settings.Nodes.My.PrivateKey);
             Console.WriteLine("CalculateReadySign  [public] : " + NVG.NodeList[NVG.Settings.Nodes.My.HexKey].PublicKey);
             Console.WriteLine("CalculateReadySign     [raw] : " + rawDataText);
             Console.WriteLine("CalculateReadySign  [verify] : " + Notus.Wallet.ID.Verify(rawDataText, controlSignForReadyMsg, NVG.NodeList[NVG.Settings.Nodes.My.HexKey].PublicKey));

@@ -60,7 +60,7 @@ namespace Notus.Variable
         public static ulong CurrentSyncNo = 0;
         public static bool LocalBlockLoaded = false;
         public static int GroupNo = 0;
-        public static string SessionPrivateKey = "";
+        //public static string SessionPrivateKey = "";
         public static bool NodeListPrinted = false;
         public static int OnlineNodeCount = 0;
         public static TimeStruct NOW { get; set; }
@@ -73,8 +73,6 @@ namespace Notus.Variable
             OtherValidatorSelectedMe = false;
             LocalBlockLoaded = false;
             GroupNo = 1;
-            SessionPrivateKey = Notus.Wallet.ID.New();
-
             Cache = new Notus.Globals.Variable.CacheClass()
             {
                 Transaction = new Notus.Cache.Transaction()
@@ -111,7 +109,7 @@ namespace Notus.Variable
                 {
                     My = new Struct.NodeQueueInfo()
                     {
-                        PrivateKey = SessionPrivateKey,
+                        PrivateKey = "",
                         PublicKey = "",
                         Begin = 0,
                         Tick = 0,
@@ -293,7 +291,6 @@ namespace Notus.Variable
                 NOW.Diff = new TimeSpan(0);
                 NOW.DiffUpdated = false;
                 NOW.LastDiffUpdate = DateTime.UtcNow;
-                Settings.Nodes.My.PublicKey = Notus.Wallet.ID.Generate(SessionPrivateKey);
             }
             public static void Start()
             {
