@@ -453,10 +453,10 @@ namespace Notus.Validator
                             return "3";
                         }
 
+                        Console.WriteLine("entry.Value.IP.Wallet : " + entry.Value.IP.Wallet);
+                        Console.WriteLine(JsonSerializer.Serialize(ReadyMessageIncomeList));
                         if (ReadyMessageIncomeList.ContainsKey(entry.Value.IP.Wallet) == false)
                         {
-                            Console.WriteLine(JsonSerializer.Serialize(ReadyMessageIncomeList));
-
                             ReadyMessageIncomeList.TryAdd(entry.Value.IP.Wallet, true);
                             return "1";
                         }
@@ -1235,8 +1235,8 @@ namespace Notus.Validator
         private bool WaitUntilAvailable()
         {
             NP.Info("Wait Until Nodes Available");
-            Console.WriteLine("JsonSerializer.Serialize(ReadyMessageIncomeList)");
-            Console.WriteLine("JsonSerializer.Serialize(NVG.NodeList)");
+            //Console.WriteLine("JsonSerializer.Serialize(ReadyMessageIncomeList)");
+            //Console.WriteLine("JsonSerializer.Serialize(NVG.NodeList)");
             //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
             //Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
             // burada beklerken diğer node'dan syncno zamanı gelecek
