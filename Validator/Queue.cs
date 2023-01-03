@@ -455,6 +455,8 @@ namespace Notus.Validator
 
                         if (ReadyMessageIncomeList.ContainsKey(entry.Value.IP.Wallet) == false)
                         {
+                            Console.WriteLine(JsonSerializer.Serialize(ReadyMessageIncomeList));
+
                             ReadyMessageIncomeList.Add(entry.Value.IP.Wallet, true);
                             return "1";
                         }
