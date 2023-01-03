@@ -1340,7 +1340,7 @@ namespace Notus.Validator
                             controlSignForReadyMsg +
                         "</fReady>"
                     );
-
+                    Console.WriteLine(iE.Value.IP.IpAddress + " -> [" + fReadySendResponse + "]");
                 }
             }
         }
