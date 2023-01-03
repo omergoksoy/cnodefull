@@ -455,6 +455,14 @@ namespace Notus.Validator
                                 }
                                 return "1";
                             }
+                            else
+                            {
+                                return "3";
+                            }
+                        }
+                        else
+                        {
+                            return "4";
                         }
                     }
                 }
@@ -1333,7 +1341,6 @@ namespace Notus.Validator
                         "</fReady>"
                     );
 
-                    Console.WriteLine(iE.Value.IP.IpAddress + " -> [" + fReadySendResponse + "]");
                 }
             }
         }
