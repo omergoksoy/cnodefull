@@ -39,6 +39,7 @@ namespace Notus.P2P
                     if (bytesRec > 0)
                     {
                         string message = Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                        Console.WriteLine("Peer Receive : " + message);
                         this.messageReceivedCallback(message);
                     }
                 }

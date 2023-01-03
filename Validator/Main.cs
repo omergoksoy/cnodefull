@@ -522,7 +522,7 @@ namespace Notus.Validator
                 p2pPortNo,
                 (string incomeMessage) =>
                 {
-                    Console.WriteLine("incomeMessage : " + incomeMessage);
+                    Console.WriteLine("incomeMessage [NVG.Settings.PeerManager] : " + incomeMessage);
                     /*
                     if (string.Equals(incomeMessage, "<ping>1</ping>") == false)
                     {
