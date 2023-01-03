@@ -1242,6 +1242,8 @@ namespace Notus.Validator
             Console.WriteLine("HASH                   [RAW] : " + new Notus.Hash().CommonHash("md5", rawDataText));
             Console.WriteLine("CalculateReadySign    [sign] : " + controlSignForReadyMsg);
             Console.WriteLine("CalculateReadySign [private] : " + NVG.SessionPrivateKey);
+            Console.WriteLine("CalculateReadySign [generated-public] : " + Notus.Wallet.ID.GetPublicKeyFromPrivateKey(NVG.SessionPrivateKey));
+            Console.WriteLine("CalculateReadySign [private] : " + NVG.SessionPrivateKey);
             Console.WriteLine("CalculateReadySign  [public] : " + NVG.NodeList[NVG.Settings.Nodes.My.HexKey].PublicKey);
             Console.WriteLine("CalculateReadySign     [raw] : " + rawDataText);
             Console.WriteLine("CalculateReadySign  [verify] : " + Notus.Wallet.ID.Verify(rawDataText, controlSignForReadyMsg, NVG.NodeList[NVG.Settings.Nodes.My.HexKey].PublicKey));
