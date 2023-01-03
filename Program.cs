@@ -281,8 +281,6 @@ CalculateReadySign  [verify] : False
 Esit
 NOT VERIFIED
 
-*/
-/*
 //string SessionPrivateKey = Notus.Wallet.ID.New();
 string SessionPrivateKey = "657a3279c9ef660b5e4af412eed5382c6760b025bec8ed908d9950386e59e992";
 string PublicKey = Notus.Wallet.ID.GetPublicKeyFromPrivateKey(SessionPrivateKey);
@@ -299,8 +297,8 @@ Console.WriteLine("CalculateReadySign  [public] : " + PublicKey);
 Console.WriteLine("CalculateReadySign     [raw] : " + rawDataText);
 Console.Write("CalculateReadySign  [verify] : ");
 Console.WriteLine(status);
+Console.ReadLine();
 */
-
 Notus.Validator.Node.Start(args);
 
 

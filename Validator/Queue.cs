@@ -1,6 +1,5 @@
 ﻿using System.Collections.Concurrent;
 using System.Globalization;
-using System.Net;
 using System.Numerics;
 using System.Text.Json;
 using NCH = Notus.Communication.Helper;
@@ -427,6 +426,7 @@ namespace Notus.Validator
                 ulong incomeUtc = ulong.Parse(tmpHashPart[1]);
                 ulong incomeDiff = (ulong)Math.Abs((decimal)NVG.NOW.Int - incomeUtc);
                 Console.WriteLine(JsonSerializer.Serialize(tmpHashPart, NVC.JsonSetting));
+
                 //100 saniyeden eski ise göz ardı edilecek
                 if (incomeDiff > 100000)
                 {
@@ -436,16 +436,20 @@ namespace Notus.Validator
                 {
                     if (string.Equals(tmpHashPart[0], entry.Value.IP.Wallet) == true)
                     {
+                        string rawDataStr =
+                            tmpHashPart[1] +
+                                Notus.Variable.Constant.CommonDelimeterChar +
+                            tmpHashPart[0];
+                        bool status = Notus.Wallet.ID.Verify(
+                            rawDataStr, 
+                            tmpHashPart[2], 
+                            entry.Value.PublicKey
+                        );
                         Console.WriteLine("Esit");
-                        if (
-                            Notus.Wallet.ID.Verify(
-                                tmpHashPart[1] +
-                                    Notus.Variable.Constant.CommonDelimeterChar +
-                                tmpHashPart[0],
-                                tmpHashPart[2],
-                                entry.Value.PublicKey
-                            ) == true
-                        )
+                        Console.WriteLine("entry.Value.PublicKey : " + entry.Value.PublicKey);
+                        Console.WriteLine(status);
+
+                        if (status == true)
                         {
                             if (NVG.NodeList.ContainsKey(entry.Key))
                             {
@@ -1233,13 +1237,13 @@ namespace Notus.Validator
         {
             ulong nowUtcValue = NVG.NOW.Int;
             string rawDataText = nowUtcValue.ToString() + NVC.CommonDelimeterChar + NVG.Settings.Nodes.My.IP.Wallet;
-            string controlSignForReadyMsg = Notus.Wallet.ID.Sign(rawDataText,NVG.SessionPrivateKey);
+            string controlSignForReadyMsg = Notus.Wallet.ID.Sign(rawDataText, NVG.SessionPrivateKey);
 
             Console.WriteLine("CalculateReadySign    [sign] : " + controlSignForReadyMsg);
             Console.WriteLine("CalculateReadySign [private] : " + NVG.SessionPrivateKey);
             Console.WriteLine("CalculateReadySign  [public] : " + NVG.NodeList[NVG.Settings.Nodes.My.HexKey].PublicKey);
             Console.WriteLine("CalculateReadySign     [raw] : " + rawDataText);
-            Console.WriteLine("CalculateReadySign  [verify] : " + Notus.Wallet.ID.Verify(rawDataText, controlSignForReadyMsg , NVG.NodeList[NVG.Settings.Nodes.My.HexKey].PublicKey));
+            Console.WriteLine("CalculateReadySign  [verify] : " + Notus.Wallet.ID.Verify(rawDataText, controlSignForReadyMsg, NVG.NodeList[NVG.Settings.Nodes.My.HexKey].PublicKey));
 
             return (nowUtcValue, controlSignForReadyMsg);
         }
