@@ -323,7 +323,7 @@ namespace Notus.Validator
                                 selectedEarliestWalletId + NVC.CommonDelimeterChar +
                                 NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar +
                                 NVG.Settings.Nodes.My.IP.Wallet,
-                                NVG.SessionPrivateKey
+                                NVG.Settings.Nodes.My.PrivateKey
                             ) +
                             "</yourTurn>";
                         string resultStr = NCH.SendMessageED(
@@ -364,7 +364,7 @@ namespace Notus.Validator
                     joinTime.ToString() +
                         NVC.CommonDelimeterChar +
                     NVG.Settings.Nodes.My.IP.Wallet,
-                    NVG.SessionPrivateKey
+                    NVG.Settings.Nodes.My.PrivateKey
                 ) +
                 "</joinTime>";
             List<string> tmpNodeList = new List<string>();
@@ -436,7 +436,7 @@ namespace Notus.Validator
                     NVG.CurrentSyncNo.ToString() +
                         NVC.CommonDelimeterChar +
                     NVG.Settings.Nodes.My.IP.Wallet,
-                    NVG.SessionPrivateKey
+                    NVG.Settings.Nodes.My.PrivateKey
                 ) +
                 "</syncNo>";
             List<string> tmpNodeList = new List<string>();
