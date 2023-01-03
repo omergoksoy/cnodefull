@@ -25,7 +25,7 @@ namespace Notus.Validator
         private bool DistributeTimerIsRunning = false;
         private ConcurrentQueue<NVS.BlockDistributeListStruct> DistributeErrorList = new();
 
-        private Dictionary<string, bool> ReadyMessageIncomeList = new Dictionary<string, bool>();
+        private ConcurrentDictionary<string, bool> ReadyMessageIncomeList = new ConcurrentDictionary<string, bool>();
 
         private bool StartingTimeAfterEnoughNode_Arrived = false;
         private DateTime StartingTimeAfterEnoughNode;
@@ -457,7 +457,7 @@ namespace Notus.Validator
                         {
                             Console.WriteLine(JsonSerializer.Serialize(ReadyMessageIncomeList));
 
-                            ReadyMessageIncomeList.Add(entry.Value.IP.Wallet, true);
+                            ReadyMessageIncomeList.TryAdd(entry.Value.IP.Wallet, true);
                             return "1";
                         }
                         else
@@ -963,6 +963,8 @@ namespace Notus.Validator
             if (NVG.Settings.GenesisCreated == true)
                 return;
 
+            ReadyMessageIncomeList.TryAdd(NVG.Settings.Nodes.My.IP.Wallet, true);
+
             NP.Info("Node Sync Starting");
 
             // eğer sadece 2 adet node var ise, node selector timer devreye girmeyecek
@@ -1233,7 +1235,8 @@ namespace Notus.Validator
         private bool WaitUntilAvailable()
         {
             NP.Info("Wait Until Nodes Available");
-            //Console.WriteLine("JsonSerializer.Serialize(NVG.NodeList)");
+            Console.WriteLine("JsonSerializer.Serialize(ReadyMessageIncomeList)");
+            Console.WriteLine("JsonSerializer.Serialize(NVG.NodeList)");
             //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
             //Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
             // burada beklerken diğer node'dan syncno zamanı gelecek
@@ -1311,7 +1314,6 @@ namespace Notus.Validator
             if (firstHandShake == true)
             {
                 DateTime startingTime = DateTime.Now.Subtract(new TimeSpan(1, 0, 0));
-                ReadyMessageIncomeList.Add(NVG.Settings.Nodes.My.IP.Wallet, true);
                 while (ReadyMessageIncomeList.Count == 1)
                 {
                     TimeSpan timeDiff = DateTime.Now - startingTime;
