@@ -440,6 +440,7 @@ namespace Notus.Validator
                             tmpHashPart[1] +
                                 Notus.Variable.Constant.CommonDelimeterChar +
                             tmpHashPart[0];
+                        Console.WriteLine("HASH                   [RAW] : " + new Notus.Hash().CommonHash("md5", rawDataStr));
                         bool status = Notus.Wallet.ID.Verify(
                             rawDataStr, 
                             tmpHashPart[2], 
@@ -1238,7 +1239,7 @@ namespace Notus.Validator
             ulong nowUtcValue = NVG.NOW.Int;
             string rawDataText = nowUtcValue.ToString() + NVC.CommonDelimeterChar + NVG.Settings.Nodes.My.IP.Wallet;
             string controlSignForReadyMsg = Notus.Wallet.ID.Sign(rawDataText, NVG.SessionPrivateKey);
-
+            Console.WriteLine("HASH                   [RAW] : " + new Notus.Hash().CommonHash("md5", rawDataText));
             Console.WriteLine("CalculateReadySign    [sign] : " + controlSignForReadyMsg);
             Console.WriteLine("CalculateReadySign [private] : " + NVG.SessionPrivateKey);
             Console.WriteLine("CalculateReadySign  [public] : " + NVG.NodeList[NVG.Settings.Nodes.My.HexKey].PublicKey);
