@@ -522,6 +522,7 @@ namespace Notus.Validator
                 p2pPortNo,
                 (string incomeMessage) =>
                 {
+                    Console.WriteLine("incomeMessage : " + incomeMessage);
                     /*
                     if (string.Equals(incomeMessage, "<ping>1</ping>") == false)
                     {
@@ -1311,16 +1312,6 @@ namespace Notus.Validator
         private void Start_HttpListener()
         {
             SelectedPortVal = NVG.Settings.Nodes.My.IP.Port;
-            /*
-            if (NVG.Settings.GenesisCreated == false && NVG.Settings.Genesis != null)
-            {
-                SelectedPortVal = NVG.Settings.Nodes.My.IP.Port;
-            }
-            else
-            {
-                SelectedPortVal = Notus.Toolbox.Network.FindFreeTcpPort();
-            }
-            */
             if (NVG.Settings.GenesisCreated == false)
             {
                 IPAddress NodeIpAddress = IPAddress.Parse(

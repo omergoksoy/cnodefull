@@ -835,7 +835,13 @@ namespace Notus.Block
                     {
                         NP.Info("Checking From -> " + item.IpAddress);
                         NVClass.BlockData? tmpInnerBlockData =
-                        Notus.Toolbox.Network.GetBlockFromNode(item.IpAddress, item.Port, 1, NVG.Settings);
+                            Notus.Toolbox.Network.GetBlockFromNode(
+                                item.IpAddress, 
+                                item.Port, 
+                                1, 
+                                NVG.Settings
+                            );
+
                         if (tmpInnerBlockData != null)
                         {
                             if (signCount.ContainsKey(tmpInnerBlockData.sign) == false)

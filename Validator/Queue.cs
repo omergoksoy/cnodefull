@@ -388,7 +388,6 @@ namespace Notus.Validator
             if (NTT.CheckXmlTag(incomeData, "sNode"))
             {
                 incomeData = NTT.GetPureText(incomeData, "sNode");
-                Console.WriteLine("Node Wants Our Info -> (" + incomeData + ")");
                 foreach (var validatorItem in NVG.NodeList)
                 {
                     if (string.Equals(validatorItem.Value.IP.Wallet, incomeData) == false)
@@ -398,18 +397,6 @@ namespace Notus.Validator
                             "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>",
                             false
                         );
-
-                        // Console.WriteLine("sNode -> " + validatorItem.Key);
-                        /*
-                        if (msgSended == true)
-                        {
-                            // NP.Info("( sNode ) Message [Receiver] - Sended");
-                        }
-                        else
-                        {
-                            NP.Danger("( sNode ) Message [Receiver] - Sending Error");
-                        }
-                        */
                     }
                 }
                 return "done";
@@ -453,8 +440,6 @@ namespace Notus.Validator
                             return "3";
                         }
 
-                        Console.WriteLine("entry.Value.IP.Wallet : " + entry.Value.IP.Wallet);
-                        Console.WriteLine(JsonSerializer.Serialize(ReadyMessageIncomeList));
                         if (ReadyMessageIncomeList.ContainsKey(entry.Value.IP.Wallet) == false)
                         {
                             ReadyMessageIncomeList.TryAdd(entry.Value.IP.Wallet, true);
@@ -1343,7 +1328,7 @@ namespace Notus.Validator
                             controlSignForReadyMsg +
                         "</fReady>"
                     );
-                    Console.WriteLine(iE.Value.IP.IpAddress + " -> [" + fReadySendResponse + "]");
+                    //Console.WriteLine(iE.Value.IP.IpAddress + " -> [" + fReadySendResponse + "]");
                 }
             }
         }
