@@ -742,7 +742,7 @@ namespace Notus.Validator
                     nowUtcValue.ToString() +
                         NVC.CommonDelimeterChar +
                     NVG.Settings.Nodes.My.IP.Wallet,
-                    NVG.SessionPrivateKey
+                    NVG.Settings.Nodes.My.PrivateKey
                 );
 
                 foreach (var iE in NVG.NodeList)
