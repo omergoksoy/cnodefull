@@ -1239,15 +1239,6 @@ namespace Notus.Validator
             ulong nowUtcValue = NVG.NOW.Int;
             string rawDataText = nowUtcValue.ToString() + NVC.CommonDelimeterChar + NVG.Settings.Nodes.My.IP.Wallet;
             string controlSignForReadyMsg = Notus.Wallet.ID.Sign(rawDataText, NVG.Settings.Nodes.My.PrivateKey);
-            Console.WriteLine("HASH                   [RAW] : " + new Notus.Hash().CommonHash("md5", rawDataText));
-            Console.WriteLine("CalculateReadySign    [sign] : " + controlSignForReadyMsg);
-            Console.WriteLine("CalculateReadySign [private] : " + NVG.Settings.Nodes.My.PrivateKey);
-            Console.WriteLine("CalculateReadySign [generated-public] : " + Notus.Wallet.ID.GetPublicKeyFromPrivateKey(NVG.Settings.Nodes.My.PrivateKey));
-            Console.WriteLine("CalculateReadySign [private] : " + NVG.Settings.Nodes.My.PrivateKey);
-            Console.WriteLine("CalculateReadySign  [public] : " + NVG.NodeList[NVG.Settings.Nodes.My.HexKey].PublicKey);
-            Console.WriteLine("CalculateReadySign     [raw] : " + rawDataText);
-            Console.WriteLine("CalculateReadySign  [verify] : " + Notus.Wallet.ID.Verify(rawDataText, controlSignForReadyMsg, NVG.NodeList[NVG.Settings.Nodes.My.HexKey].PublicKey));
-
             return (nowUtcValue, controlSignForReadyMsg);
         }
         private bool WaitUntilAvailable()
@@ -1335,7 +1326,7 @@ namespace Notus.Validator
                 while (ReadyMessageIncomeList.Count == 1)
                 {
                     TimeSpan timeDiff = DateTime.Now - startingTime;
-                    if (timeDiff.TotalSeconds > 60)
+                    if (timeDiff.TotalSeconds > 30)
                     {
                         SendReadyMsgToNodes();
                         startingTime = DateTime.Now;
