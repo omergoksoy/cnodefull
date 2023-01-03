@@ -740,7 +740,7 @@ namespace Notus.Validator
                 ulong nowUtcValue = NVG.NOW.Int;
                 string controlSignForReadyMsg = Notus.Wallet.ID.Sign(
                     nowUtcValue.ToString() +
-                        NVC.CommonDelimeterChar +
+                        NVC.Delimeter +
                     NVG.Settings.Nodes.My.IP.Wallet,
                     NVG.Settings.Nodes.My.PrivateKey
                 );
@@ -753,9 +753,9 @@ namespace Notus.Validator
                             iE.Key, iE.Value.IP,
                             "<waitingRoomNodeReady>" +
                                 NVG.Settings.Nodes.My.IP.Wallet +
-                                    NVC.CommonDelimeterChar +
+                                    NVC.Delimeter +
                                 nowUtcValue.ToString() +
-                                    NVC.CommonDelimeterChar +
+                                    NVC.Delimeter +
                                 controlSignForReadyMsg +
                             "</waitingRoomNodeReady>"
                         );

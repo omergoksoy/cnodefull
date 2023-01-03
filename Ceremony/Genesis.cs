@@ -277,11 +277,11 @@ namespace Notus.Ceremony
                             "0" +
                             new NH().CommonHash("sha1",
                                 entry.Value.IP.Wallet +
-                                NVC.CommonDelimeterChar +
+                                NVC.Delimeter +
                                 entry.Value.Begin.ToString() +
-                                NVC.CommonDelimeterChar +
+                                NVC.Delimeter +
                                 "executing_genesis_ceremony" +
-                                NVC.CommonDelimeterChar +
+                                NVC.Delimeter +
                                 innerCount.ToString()
                             ),
                             NumberStyles.AllowHexSpecifier

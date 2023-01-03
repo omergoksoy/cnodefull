@@ -275,7 +275,7 @@ namespace Notus.Validator
             if (NTT.CheckXmlTag(incomeData, "kill"))
             {
                 incomeData = NTT.GetPureText(incomeData, "kill");
-                string[] tmpHashPart = incomeData.Split(NVC.CommonDelimeterChar);
+                string[] tmpHashPart = incomeData.Split(NVC.Delimeter);
                 ulong incomeUtc = ulong.Parse(tmpHashPart[1]);
                 ulong incomeDiff = (ulong)Math.Abs((decimal)NVG.NOW.Int - incomeUtc);
 
@@ -291,7 +291,7 @@ namespace Notus.Validator
                         if (
                             Notus.Wallet.ID.Verify(
                                 tmpHashPart[1] +
-                                    Notus.Variable.Constant.CommonDelimeterChar +
+                                    NVC.Delimeter +
                                 tmpHashPart[0],
                                 tmpHashPart[2],
                                 entry.Value.PublicKey
@@ -422,7 +422,7 @@ namespace Notus.Validator
             if (NTT.CheckXmlTag(incomeData, "fReady"))
             {
                 incomeData = NTT.GetPureText(incomeData, "fReady");
-                string[] tmpHashPart = incomeData.Split(NVC.CommonDelimeterChar);
+                string[] tmpHashPart = incomeData.Split(NVC.Delimeter);
                 ulong incomeUtc = ulong.Parse(tmpHashPart[1]);
                 ulong incomeDiff = (ulong)Math.Abs((decimal)NVG.NOW.Int - incomeUtc);
                 Console.WriteLine(JsonSerializer.Serialize(tmpHashPart, NVC.JsonSetting));
@@ -438,7 +438,7 @@ namespace Notus.Validator
                     {
                         string rawDataStr =
                             tmpHashPart[1] +
-                                Notus.Variable.Constant.CommonDelimeterChar +
+                                NVC.Delimeter +
                             tmpHashPart[0];
                         Console.WriteLine("HASH                   [RAW] : " + new Notus.Hash().CommonHash("md5", rawDataStr));
                         bool status = Notus.Wallet.ID.Verify(
@@ -485,7 +485,7 @@ namespace Notus.Validator
             {
                 //NP.Basic("IncomeText : " + incomeData);
                 incomeData = NTT.GetPureText(incomeData, "waitingRoomNodeReady");
-                string[] tmpHashPart = incomeData.Split(NVC.CommonDelimeterChar);
+                string[] tmpHashPart = incomeData.Split(NVC.Delimeter);
                 ulong incomeUtc = ulong.Parse(tmpHashPart[1]);
                 ulong incomeDiff = (ulong)Math.Abs((decimal)NVG.NOW.Int - incomeUtc);
 
@@ -501,7 +501,7 @@ namespace Notus.Validator
                         if (
                             Notus.Wallet.ID.Verify(
                                 tmpHashPart[1] +
-                                    Notus.Variable.Constant.CommonDelimeterChar +
+                                    NVC.Delimeter +
                                 tmpHashPart[0],
                                 tmpHashPart[2],
                                 entry.Value.PublicKey
@@ -536,9 +536,9 @@ namespace Notus.Validator
 
                     string controlText =
                         selectedEarliestWalletId +
-                            NVC.CommonDelimeterChar +
+                            NVC.Delimeter +
                         incomeSyncNo.ToString() +
-                            NVC.CommonDelimeterChar +
+                            NVC.Delimeter +
                         chooserWalletId;
                     string chooserPublicKeyStr = string.Empty;
                     string earlistNodeKeyStr = string.Empty;
@@ -593,9 +593,9 @@ namespace Notus.Validator
 
                     string controlText =
                         selectedEarliestWalletId +
-                            NVC.CommonDelimeterChar +
+                            NVC.Delimeter +
                         joinTime.ToString() +
-                            NVC.CommonDelimeterChar +
+                            NVC.Delimeter +
                         chooserWalletId;
                     string chooserPublicKeyStr = string.Empty;
                     string earlistNodeKeyStr = string.Empty;
@@ -658,8 +658,8 @@ namespace Notus.Validator
                             if (string.Equals(iEntry.Value.IP.Wallet, chooserWalletId) == true)
                             {
                                 string controlText =
-                                    NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
-                                    selectedSyncNo.ToString() + NVC.CommonDelimeterChar + chooserWalletId;
+                                    NVG.Settings.Nodes.My.IP.Wallet + NVC.Delimeter +
+                                    selectedSyncNo.ToString() + NVC.Delimeter + chooserWalletId;
                                 if (Notus.Wallet.ID.Verify(
                                     controlText,
                                     chooserSignStr,
@@ -917,11 +917,11 @@ namespace Notus.Validator
                             "0" +
                             new NH().CommonHash("sha1",
                                 entry.Value.IP.Wallet +
-                                NVC.CommonDelimeterChar +
+                                NVC.Delimeter +
                                 entry.Value.Begin.ToString() +
-                                NVC.CommonDelimeterChar +
+                                NVC.Delimeter +
                                 seedForQueue.ToString() +
-                                NVC.CommonDelimeterChar +
+                                NVC.Delimeter +
                                 innerCount.ToString()
                             ),
                             NumberStyles.AllowHexSpecifier
@@ -1237,7 +1237,7 @@ namespace Notus.Validator
         private (ulong, string) CalculateReadySign()
         {
             ulong nowUtcValue = NVG.NOW.Int;
-            string rawDataText = nowUtcValue.ToString() + NVC.CommonDelimeterChar + NVG.Settings.Nodes.My.IP.Wallet;
+            string rawDataText = nowUtcValue.ToString() + NVC.Delimeter + NVG.Settings.Nodes.My.IP.Wallet;
             string controlSignForReadyMsg = Notus.Wallet.ID.Sign(rawDataText, NVG.Settings.Nodes.My.PrivateKey);
             return (nowUtcValue, controlSignForReadyMsg);
         }
@@ -1346,9 +1346,9 @@ namespace Notus.Validator
                     string fReadySendResponse = NCH.SendMessageED(iE.Key, iE.Value.IP.IpAddress, iE.Value.IP.Port,
                         "<fReady>" +
                             NVG.Settings.Nodes.My.IP.Wallet +
-                            NVC.CommonDelimeterChar +
+                            NVC.Delimeter +
                             nowUtcValue.ToString() +
-                            NVC.CommonDelimeterChar +
+                            NVC.Delimeter +
                             controlSignForReadyMsg +
                         "</fReady>"
                     );

@@ -13,6 +13,7 @@ using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using NVC = Notus.Variable.Constant;
 
 namespace Notus
 {
@@ -21,6 +22,7 @@ namespace Notus
     /// </summary>
     public static class Convert
     {
+
         /// <summary>
         /// Converts the specified <see cref="byte"/>[] to Base32 <see cref="string"/>
         /// </summary>
@@ -404,7 +406,32 @@ namespace Notus
             }
             return YedArray;
         }
-
+        static string MergeStructWithDelimeterChar(object arg)
+        {
+            List<string> result = new();
+            Type type = arg.GetType();
+            System.Reflection.PropertyInfo[] properties = type.GetProperties();
+            if (type.IsArray)
+                foreach (var item in (Array)arg)
+                    result.Add(MergeStructWithDelimeterChar(item));
+            else if (type.IsPrimitive || type == typeof(string))
+                result.Add(arg.ToString());
+            else
+                foreach (System.Reflection.PropertyInfo property in properties)
+                {
+                    if (property.PropertyType.IsArray)
+                        foreach (var item in (Array)property.GetValue(arg))
+                        {
+                            if (item.GetType().IsArray)
+                                result.Add(MergeStructWithDelimeterChar(item));
+                            else
+                                result.Add(item.ToString());
+                        }
+                    else
+                        result.Add(property.GetValue(arg).ToString());
+                }
+            return string.Join(NVC.Delimeter, result);
+        }
         private static string EncodeBase_subFunc(Int64 incomeIntVal)
         {
             int base_count = Notus.Variable.Constant.DefaultBase35AlphabetString.Length;

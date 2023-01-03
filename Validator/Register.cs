@@ -82,7 +82,7 @@ namespace Notus.Validator
                     earlistNodeChoosing.Add(
                         NTN.HexToNumber(
                             new NH().CommonHash("sha1",
-                                iEntry.Key + NVC.CommonDelimeterChar + selectedEarliestWalletId
+                                iEntry.Key + NVC.Delimeter + selectedEarliestWalletId
                             )
                         ), iEntry.Key
                     );

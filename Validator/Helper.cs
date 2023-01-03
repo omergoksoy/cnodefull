@@ -317,11 +317,11 @@ namespace Notus.Validator
                     if (string.Equals(iEntry.Value.IP.Wallet, selectedEarliestWalletId) == true)
                     {
                         string tmpSyncNoStr = "<yourTurn>" +
-                            NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar +
-                            NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
+                            NVG.CurrentSyncNo.ToString() + NVC.Delimeter +
+                            NVG.Settings.Nodes.My.IP.Wallet + NVC.Delimeter +
                             Notus.Wallet.ID.Sign(
-                                selectedEarliestWalletId + NVC.CommonDelimeterChar +
-                                NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar +
+                                selectedEarliestWalletId + NVC.Delimeter +
+                                NVG.CurrentSyncNo.ToString() + NVC.Delimeter +
                                 NVG.Settings.Nodes.My.IP.Wallet,
                                 NVG.Settings.Nodes.My.PrivateKey
                             ) +
@@ -355,14 +355,14 @@ namespace Notus.Validator
         public static void TellToNetworkNewNodeJoinTime(string selectedEarliestWalletId, ulong joinTime)
         {
             string tmpSyncNoStr = "<joinTime>" +
-                selectedEarliestWalletId + NVC.CommonDelimeterChar +
-                joinTime.ToString() + NVC.CommonDelimeterChar +
-                NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
+                selectedEarliestWalletId + NVC.Delimeter +
+                joinTime.ToString() + NVC.Delimeter +
+                NVG.Settings.Nodes.My.IP.Wallet + NVC.Delimeter +
                 Notus.Wallet.ID.Sign(
                     selectedEarliestWalletId +
-                        NVC.CommonDelimeterChar +
+                        NVC.Delimeter +
                     joinTime.ToString() +
-                        NVC.CommonDelimeterChar +
+                        NVC.Delimeter +
                     NVG.Settings.Nodes.My.IP.Wallet,
                     NVG.Settings.Nodes.My.PrivateKey
                 ) +
@@ -427,14 +427,14 @@ namespace Notus.Validator
         public static void TellSyncNoToEarlistNode(string selectedEarliestWalletId)
         {
             string tmpSyncNoStr = "<syncNo>" +
-                selectedEarliestWalletId + NVC.CommonDelimeterChar +
-                NVG.CurrentSyncNo.ToString() + NVC.CommonDelimeterChar +
-                NVG.Settings.Nodes.My.IP.Wallet + NVC.CommonDelimeterChar +
+                selectedEarliestWalletId + NVC.Delimeter +
+                NVG.CurrentSyncNo.ToString() + NVC.Delimeter +
+                NVG.Settings.Nodes.My.IP.Wallet + NVC.Delimeter +
                 Notus.Wallet.ID.Sign(
                     selectedEarliestWalletId +
-                        NVC.CommonDelimeterChar +
+                        NVC.Delimeter +
                     NVG.CurrentSyncNo.ToString() +
-                        NVC.CommonDelimeterChar +
+                        NVC.Delimeter +
                     NVG.Settings.Nodes.My.IP.Wallet,
                     NVG.Settings.Nodes.My.PrivateKey
                 ) +

@@ -331,14 +331,14 @@ namespace Notus.Wallet
             {
                 if (i == 0)
                 {
-                    fullWordLine = WordList[i] + NVC.CommonDelimeterChar;
+                    fullWordLine = WordList[i] + NVC.Delimeter;
                 }
                 else
                 {
                     fullWordLine = fullWordLine + WordList[i];
                     if (NVC.Default_WordListArrayCount - 1 > i)
                     {
-                        fullWordLine = fullWordLine + NVC.CommonDelimeterChar;
+                        fullWordLine = fullWordLine + NVC.Delimeter;
                     }
                 }
                 tmpWordList[i] = new Notus.Hash().CommonHash("md5", WordList[i]);
@@ -347,7 +347,7 @@ namespace Notus.Wallet
                 new Notus.Hash().CommonHash("sasha",
                     fullWordLine
                 ) +
-                NVC.CommonDelimeterChar +
+                NVC.Delimeter +
                 fullWordLine
             );
             string hexResultStr = "";
@@ -356,7 +356,7 @@ namespace Notus.Wallet
                 tmpWordList[i] = Notus.Toolbox.Text.ShrinkHex(
                     new Notus.Hash().CommonHash("sha1",
                         fullWordLine +
-                        NVC.CommonDelimeterChar +
+                        NVC.Delimeter +
                         tmpWordList[i]
                     )
                 , 2);

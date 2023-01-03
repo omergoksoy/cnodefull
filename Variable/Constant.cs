@@ -70,7 +70,8 @@ namespace Notus.Variable
         { '4', 0x4 },{ '5', 0x5 },{ '6', 0x6 },{ '7', 0x7 },
         { '8', 0x8 },{ '9', 0x9 }
         };
-        public static readonly string CommonDelimeterChar = ":";
+        public static readonly string Delimeter = ":";
+        //public static readonly string CommonDelimeterChar = ":";
 
         public static readonly string GenesisBlockUid = "100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
 

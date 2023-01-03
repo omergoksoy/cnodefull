@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NVC = Notus.Variable.Constant;
+using System;
 namespace Notus.Block
 {
     public static class Key
@@ -15,21 +16,21 @@ namespace Notus.Block
                 SeedForKey = "#a;s<c>4.t,j8s4j[a]q";
             }
 
-            SeedForKey = SeedForKey + Notus.Variable.Constant.CommonDelimeterChar + new Random().Next(1, 42949295).ToString();
+            SeedForKey = SeedForKey + NVC.Delimeter + new Random().Next(1, 42949295).ToString();
 
             string RandomHashStr1 = new Notus.Hash().CommonHash("ripemd160",
                 tmpTimeHexStr +
-                Notus.Variable.Constant.CommonDelimeterChar +
+                NVC.Delimeter +
                 SeedForKey +
-                Notus.Variable.Constant.CommonDelimeterChar +
+                NVC.Delimeter +
                 tmpTimeHexStr
             );
 
             string RandomHashStr2 = new Notus.Hash().CommonHash("ripemd160",
                 SeedForKey +
-                Notus.Variable.Constant.CommonDelimeterChar +
+                NVC.Delimeter +
                 RandomHashStr1 +
-                Notus.Variable.Constant.CommonDelimeterChar +
+                NVC.Delimeter +
                 tmpTimeHexStr
             );
 

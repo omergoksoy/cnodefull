@@ -235,7 +235,7 @@ namespace Notus.Variable
                 ulong nowUtcValue = NVG.NOW.Int;
                 string controlSignForKillMsg = Notus.Wallet.ID.Sign(
                     nowUtcValue.ToString() +
-                        NVC.CommonDelimeterChar +
+                        NVC.Delimeter +
                     NVG.Settings.Nodes.My.IP.Wallet,
                     NVG.Settings.Nodes.My.PrivateKey
                 );
@@ -251,9 +251,9 @@ namespace Notus.Variable
                                 entry.Value.IP.Port,
                                 "<kill>" +
                                     Settings.Nodes.My.IP.Wallet +
-                                    NVC.CommonDelimeterChar +
+                                    NVC.Delimeter +
                                     nowUtcValue.ToString() +
-                                    NVC.CommonDelimeterChar +
+                                    NVC.Delimeter +
                                     controlSignForKillMsg +
                                 "</kill>",
                                 entry.Key

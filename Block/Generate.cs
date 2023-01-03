@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NVC = Notus.Variable.Constant;
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 
@@ -84,7 +85,7 @@ namespace Notus.Block
             BlockData.nonce.info = GenerateNonce(TmpText, BlockData);
             Notus.HashLib.Sasha hashObj = new Notus.HashLib.Sasha();
             BlockData.hash.info = hashObj.ComputeHash(
-                TmpText + Notus.Variable.Constant.CommonDelimeterChar + BlockData.nonce.info,
+                TmpText + NVC.Delimeter + BlockData.nonce.info,
                 false
             );
             return BlockData;
@@ -100,17 +101,17 @@ namespace Notus.Block
         }
         private Notus.Variable.Class.BlockData Make_Data(Notus.Variable.Class.BlockData BlockData)
         {
-            string TmpText = BlockData.cipher.data + Notus.Variable.Constant.CommonDelimeterChar + BlockData.cipher.ver;
+            string TmpText = BlockData.cipher.data + NVC.Delimeter + BlockData.cipher.ver;
             Notus.Hash hashObj = new Notus.Hash();
 
             BlockData.cipher.sign = hashObj.CommonHash("sasha", TmpText);
 
-            TmpText = TmpText + Notus.Variable.Constant.CommonDelimeterChar + BlockData.cipher.sign;
+            TmpText = TmpText + NVC.Delimeter + BlockData.cipher.sign;
 
             BlockData.nonce.data = GenerateNonce(TmpText, BlockData);
 
             BlockData.hash.data = new Notus.HashLib.Sasha().ComputeHash(
-                TmpText + Notus.Variable.Constant.CommonDelimeterChar + BlockData.nonce.data,
+                TmpText + NVC.Delimeter + BlockData.nonce.data,
                 false
             );
             return BlockData;
@@ -118,11 +119,11 @@ namespace Notus.Block
 
         private Notus.Variable.Class.BlockData Make_Block(Notus.Variable.Class.BlockData BlockData)
         {
-            string TmpText = BlockData.hash.data + Notus.Variable.Constant.CommonDelimeterChar + BlockData.hash.info;
+            string TmpText = BlockData.hash.data + NVC.Delimeter + BlockData.hash.info;
             BlockData.nonce.block = GenerateNonce(TmpText, BlockData);
             Notus.HashLib.Sasha sashaObj = new Notus.HashLib.Sasha();
             BlockData.hash.block = sashaObj.ComputeHash(
-                TmpText + Notus.Variable.Constant.CommonDelimeterChar + BlockData.nonce.block,
+                TmpText + NVC.Delimeter + BlockData.nonce.block,
                 false
             );
             return BlockData;
@@ -139,9 +140,9 @@ namespace Notus.Block
             );
             Notus.HashLib.Sasha sashaObj2 = new Notus.HashLib.Sasha();
             BlockData.sign = sashaObj2.ComputeHash(
-                BlockData.hash.info + Notus.Variable.Constant.CommonDelimeterChar +
-                BlockData.hash.data + Notus.Variable.Constant.CommonDelimeterChar +
-                BlockData.hash.block + Notus.Variable.Constant.CommonDelimeterChar +
+                BlockData.hash.info + NVC.Delimeter +
+                BlockData.hash.data + NVC.Delimeter +
+                BlockData.hash.block + NVC.Delimeter +
                 BlockData.hash.FINAL,
                 false
             );
@@ -184,21 +185,21 @@ namespace Notus.Block
 
         public bool Verify(Notus.Variable.Class.BlockData BlockData)
         {
-            string TmpText = BlockData.cipher.data + Notus.Variable.Constant.CommonDelimeterChar + BlockData.cipher.ver;
+            string TmpText = BlockData.cipher.data + NVC.Delimeter + BlockData.cipher.ver;
             Notus.Hash hashObj = new Notus.Hash();
             string ControlStr = hashObj.CommonHash("sasha", TmpText);
             if (string.Equals(BlockData.cipher.sign, ControlStr) == false)
             {
                 return false;
             }
-            TmpText = TmpText + Notus.Variable.Constant.CommonDelimeterChar + BlockData.cipher.sign;
+            TmpText = TmpText + NVC.Delimeter + BlockData.cipher.sign;
             if (CheckValidNonce(TmpText, BlockData, BlockData.nonce.data) == false)
             {
                 return false;
             }
             Notus.HashLib.Sasha sashaObj = new Notus.HashLib.Sasha();
             ControlStr = sashaObj.ComputeHash(
-                TmpText + Notus.Variable.Constant.CommonDelimeterChar + BlockData.nonce.data,
+                TmpText + NVC.Delimeter + BlockData.nonce.data,
                 false
             );
             if (string.Equals(BlockData.hash.data, ControlStr) == false)
@@ -212,21 +213,21 @@ namespace Notus.Block
             }
             Notus.HashLib.Sasha sashaObj2 = new Notus.HashLib.Sasha();
             ControlStr = sashaObj2.ComputeHash(
-                TmpText + Notus.Variable.Constant.CommonDelimeterChar + BlockData.nonce.info,
+                TmpText + NVC.Delimeter + BlockData.nonce.info,
                 false
             );
             if (string.Equals(BlockData.hash.info, ControlStr) == false)
             {
                 return false;
             }
-            TmpText = BlockData.hash.data + Notus.Variable.Constant.CommonDelimeterChar + BlockData.hash.info;
+            TmpText = BlockData.hash.data + NVC.Delimeter + BlockData.hash.info;
             if (CheckValidNonce(TmpText, BlockData, BlockData.nonce.block) == false)
             {
                 return false;
             }
             Notus.HashLib.Sasha sashaObj3 = new Notus.HashLib.Sasha();
             ControlStr = sashaObj3.ComputeHash(
-                TmpText + Notus.Variable.Constant.CommonDelimeterChar + BlockData.nonce.block,
+                TmpText + NVC.Delimeter + BlockData.nonce.block,
                 false
             );
             if (string.Equals(BlockData.hash.block, ControlStr) == false)
@@ -250,9 +251,9 @@ namespace Notus.Block
             }
             Notus.HashLib.Sasha sashaObj5 = new Notus.HashLib.Sasha();
             ControlStr = sashaObj5.ComputeHash(
-                BlockData.hash.info + Notus.Variable.Constant.CommonDelimeterChar +
-                BlockData.hash.data + Notus.Variable.Constant.CommonDelimeterChar +
-                BlockData.hash.block + Notus.Variable.Constant.CommonDelimeterChar +
+                BlockData.hash.info + NVC.Delimeter +
+                BlockData.hash.data + NVC.Delimeter +
+                BlockData.hash.block + NVC.Delimeter +
                 BlockData.hash.FINAL,
                 false
             );
@@ -269,55 +270,55 @@ namespace Notus.Block
         private string FirstString_Block(Notus.Variable.Class.BlockData BlockData)
         {
             return
-                BlockData.validator.sign + Notus.Variable.Constant.CommonDelimeterChar +
-                BlockData.prev + Notus.Variable.Constant.CommonDelimeterChar +
-                BlockData.info.rowNo.ToString() + Notus.Variable.Constant.CommonDelimeterChar +
-                BlockNonce_GetPrevListStr(BlockData) + Notus.Variable.Constant.CommonDelimeterChar +
-                BlockData.hash.data + Notus.Variable.Constant.CommonDelimeterChar +
-                BlockData.hash.info + Notus.Variable.Constant.CommonDelimeterChar +
+                BlockData.validator.sign + NVC.Delimeter +
+                BlockData.prev + NVC.Delimeter +
+                BlockData.info.rowNo.ToString() + NVC.Delimeter +
+                BlockNonce_GetPrevListStr(BlockData) + NVC.Delimeter +
+                BlockData.hash.data + NVC.Delimeter +
+                BlockData.hash.info + NVC.Delimeter +
                 BlockData.hash.block;
         }
         private string FirstString_Validator(Notus.Variable.Class.BlockData BlockData)
         {
             return
             BlockNonce_ValidatorMapList_IntAndString(BlockData.validator.map.data) +
-            Notus.Variable.Constant.CommonDelimeterChar +
+            NVC.Delimeter +
 
             BlockNonce_ValidatorMapList_IntAndString(BlockData.validator.map.info) +
-            Notus.Variable.Constant.CommonDelimeterChar +
+            NVC.Delimeter +
 
             BlockNonce_ValidatorMapList_IntAndString(BlockData.validator.map.block) +
-            Notus.Variable.Constant.CommonDelimeterChar +
+            NVC.Delimeter +
 
             BlockNonce_ValidatorMapList_IntAndString(BlockData.validator.map.block) +
-            Notus.Variable.Constant.CommonDelimeterChar +
+            NVC.Delimeter +
 
             BlockNonce_ValidatorMapList_StringAndInt(BlockData.validator.count);
         }
         private string FirstString_Info(Notus.Variable.Class.BlockData BlockData)
         {
             return
-            BlockData.info.version.ToString() + Notus.Variable.Constant.CommonDelimeterChar +
-            BlockData.info.type.ToString() + Notus.Variable.Constant.CommonDelimeterChar +
-            BlockData.info.uID + Notus.Variable.Constant.CommonDelimeterChar +
-            BlockData.info.time + Notus.Variable.Constant.CommonDelimeterChar +
-            BoolToStr(BlockData.info.multi) + Notus.Variable.Constant.CommonDelimeterChar +
+            BlockData.info.version.ToString() + NVC.Delimeter +
+            BlockData.info.type.ToString() + NVC.Delimeter +
+            BlockData.info.uID + NVC.Delimeter +
+            BlockData.info.time + NVC.Delimeter +
+            BoolToStr(BlockData.info.multi) + NVC.Delimeter +
 
-            BlockData.info.nonce.method.ToString() + Notus.Variable.Constant.CommonDelimeterChar +
-            BlockData.info.nonce.type.ToString() + Notus.Variable.Constant.CommonDelimeterChar +
-            BlockData.info.nonce.difficulty.ToString() + Notus.Variable.Constant.CommonDelimeterChar +
+            BlockData.info.nonce.method.ToString() + NVC.Delimeter +
+            BlockData.info.nonce.type.ToString() + NVC.Delimeter +
+            BlockData.info.nonce.difficulty.ToString() + NVC.Delimeter +
 
-            BlockData.info.node.id + Notus.Variable.Constant.CommonDelimeterChar +
-            BoolToStr(BlockData.info.node.master) + Notus.Variable.Constant.CommonDelimeterChar +
-            BoolToStr(BlockData.info.node.replicant) + Notus.Variable.Constant.CommonDelimeterChar +
-            BoolToStr(BlockData.info.node.broadcaster) + Notus.Variable.Constant.CommonDelimeterChar +
-            BoolToStr(BlockData.info.node.validator) + Notus.Variable.Constant.CommonDelimeterChar +
-            BoolToStr(BlockData.info.node.executor) + Notus.Variable.Constant.CommonDelimeterChar +
+            BlockData.info.node.id + NVC.Delimeter +
+            BoolToStr(BlockData.info.node.master) + NVC.Delimeter +
+            BoolToStr(BlockData.info.node.replicant) + NVC.Delimeter +
+            BoolToStr(BlockData.info.node.broadcaster) + NVC.Delimeter +
+            BoolToStr(BlockData.info.node.validator) + NVC.Delimeter +
+            BoolToStr(BlockData.info.node.executor) + NVC.Delimeter +
 
-            BoolToStr(BlockData.info.node.keeper.key) + Notus.Variable.Constant.CommonDelimeterChar +
-            BoolToStr(BlockData.info.node.keeper.block) + Notus.Variable.Constant.CommonDelimeterChar +
-            BoolToStr(BlockData.info.node.keeper.file) + Notus.Variable.Constant.CommonDelimeterChar +
-            BoolToStr(BlockData.info.node.keeper.tor) + Notus.Variable.Constant.CommonDelimeterChar;
+            BoolToStr(BlockData.info.node.keeper.key) + NVC.Delimeter +
+            BoolToStr(BlockData.info.node.keeper.block) + NVC.Delimeter +
+            BoolToStr(BlockData.info.node.keeper.file) + NVC.Delimeter +
+            BoolToStr(BlockData.info.node.keeper.tor) + NVC.Delimeter;
         }
 
         private string BlockNonce_ValidatorMapList_StringAndInt(Dictionary<string, int> DicList)

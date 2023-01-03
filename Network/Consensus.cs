@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NVC = Notus.Variable.Constant;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -29,9 +30,9 @@ namespace Notus
                         BigInteger tmpBigVal = new BigInteger(
                             new Notus.HashLib.SHA1().Compute(
                                 tmpBlockStr +
-                                Notus.Variable.Constant.CommonDelimeterChar +
+                                NVC.Delimeter +
                                 NodeList[a].key +
-                                Notus.Variable.Constant.CommonDelimeterChar +
+                                NVC.Delimeter +
                                 innerCount.ToString()
                             )
                         );

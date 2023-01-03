@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NVC = Notus.Variable.Constant;
+using System;
 using System.Collections.Generic;
 using NVG = Notus.Variable.Globals;
 namespace Notus.Core
@@ -13,10 +14,10 @@ namespace Notus.Core
         )
         {
             walletList.Sort();
-            string walletListText = string.Join(Notus.Variable.Constant.CommonDelimeterChar, walletList.ToArray());
+            string walletListText = string.Join(NVC.Delimeter, walletList.ToArray());
             string signRawStr =
-                creatorWallet + Notus.Variable.Constant.CommonDelimeterChar +
-                walletListText + Notus.Variable.Constant.CommonDelimeterChar +
+                creatorWallet + NVC.Delimeter +
+                walletListText + NVC.Delimeter +
                 walletType.ToString();
 
             return signRawStr;
@@ -29,9 +30,9 @@ namespace Notus.Core
         )
         {
             return
-                walletKey + Notus.Variable.Constant.CommonDelimeterChar +
-                publicKey + Notus.Variable.Constant.CommonDelimeterChar +
-                pass + Notus.Variable.Constant.CommonDelimeterChar +
+                walletKey + NVC.Delimeter +
+                publicKey + NVC.Delimeter +
+                pass + NVC.Delimeter +
                 unlockTime.ToString();
         }
 
@@ -66,11 +67,11 @@ namespace Notus.Core
             string Currency
         )
         {
-            return Sender + Notus.Variable.Constant.CommonDelimeterChar +
-            Receiver + Notus.Variable.Constant.CommonDelimeterChar +
-            Volume + Notus.Variable.Constant.CommonDelimeterChar +
-            CurrentTime + Notus.Variable.Constant.CommonDelimeterChar +
-            UnlockTime + Notus.Variable.Constant.CommonDelimeterChar +
+            return Sender + NVC.Delimeter +
+            Receiver + NVC.Delimeter +
+            Volume + NVC.Delimeter +
+            CurrentTime + NVC.Delimeter +
+            UnlockTime + NVC.Delimeter +
             Currency;
         }
 
@@ -78,14 +79,14 @@ namespace Notus.Core
         {
 
             uploadFile.Sign =
-                uploadFile.BlockType.ToString() + Notus.Variable.Constant.CommonDelimeterChar +
-                uploadFile.FileName + Notus.Variable.Constant.CommonDelimeterChar +
-                uploadFile.FileSize.ToString() + Notus.Variable.Constant.CommonDelimeterChar +
-                uploadFile.FileHash + Notus.Variable.Constant.CommonDelimeterChar +
-                uploadFile.ChunkSize.ToString() + Notus.Variable.Constant.CommonDelimeterChar +
-                uploadFile.ChunkCount.ToString() + Notus.Variable.Constant.CommonDelimeterChar +
-                uploadFile.Level.ToString() + Notus.Variable.Constant.CommonDelimeterChar +
-                Notus.Toolbox.Text.BoolToStr(uploadFile.WaterMarkIsLight) + Notus.Variable.Constant.CommonDelimeterChar +
+                uploadFile.BlockType.ToString() + NVC.Delimeter +
+                uploadFile.FileName + NVC.Delimeter +
+                uploadFile.FileSize.ToString() + NVC.Delimeter +
+                uploadFile.FileHash + NVC.Delimeter +
+                uploadFile.ChunkSize.ToString() + NVC.Delimeter +
+                uploadFile.ChunkCount.ToString() + NVC.Delimeter +
+                uploadFile.Level.ToString() + NVC.Delimeter +
+                Notus.Toolbox.Text.BoolToStr(uploadFile.WaterMarkIsLight) + NVC.Delimeter +
                 uploadFile.PublicKey;
             return uploadFile;
         }
@@ -93,18 +94,18 @@ namespace Notus.Core
         {
 
             return 
-                StorageData.Name + Notus.Variable.Constant.CommonDelimeterChar +
-                StorageData.Size.ToString() + Notus.Variable.Constant.CommonDelimeterChar +
-                StorageData.Hash + Notus.Variable.Constant.CommonDelimeterChar +
-                Notus.Toolbox.Text.BoolToStr(StorageData.Encrypted) + Notus.Variable.Constant.CommonDelimeterChar +
+                StorageData.Name + NVC.Delimeter +
+                StorageData.Size.ToString() + NVC.Delimeter +
+                StorageData.Hash + NVC.Delimeter +
+                Notus.Toolbox.Text.BoolToStr(StorageData.Encrypted) + NVC.Delimeter +
                 StorageData.PublicKey;
         }
 
         public static string ApproveMultiWalletTransaction(bool Approve, string TransactionId, ulong CurrentTime)
         {
             return
-                Notus.Toolbox.Text.BoolToStr(Approve) + Notus.Variable.Constant.CommonDelimeterChar +
-                TransactionId + Notus.Variable.Constant.CommonDelimeterChar +
+                Notus.Toolbox.Text.BoolToStr(Approve) + NVC.Delimeter +
+                TransactionId + NVC.Delimeter +
                 CurrentTime.ToString().Substring(0, 14);
         }
         public static string TokenGenerate(
@@ -115,18 +116,18 @@ namespace Notus.Core
         {
             //Notus.Variable.Struct.
             return
-                PublicKey + Notus.Variable.Constant.CommonDelimeterChar +
+                PublicKey + NVC.Delimeter +
 
-                InfoData.Name + Notus.Variable.Constant.CommonDelimeterChar +
-                InfoData.Tag + Notus.Variable.Constant.CommonDelimeterChar +
+                InfoData.Name + NVC.Delimeter +
+                InfoData.Tag + NVC.Delimeter +
 
-                    Notus.Toolbox.Text.BoolToStr(InfoData.Logo.Used) + Notus.Variable.Constant.CommonDelimeterChar +
-                    InfoData.Logo.Base64 + Notus.Variable.Constant.CommonDelimeterChar +
-                    InfoData.Logo.Url + Notus.Variable.Constant.CommonDelimeterChar +
-                    InfoData.Logo.Source + Notus.Variable.Constant.CommonDelimeterChar +
+                    Notus.Toolbox.Text.BoolToStr(InfoData.Logo.Used) + NVC.Delimeter +
+                    InfoData.Logo.Base64 + NVC.Delimeter +
+                    InfoData.Logo.Url + NVC.Delimeter +
+                    InfoData.Logo.Source + NVC.Delimeter +
 
-                TokenSupplyData.Supply.ToString() + Notus.Variable.Constant.CommonDelimeterChar +
-                TokenSupplyData.Decimal.ToString() + Notus.Variable.Constant.CommonDelimeterChar +
+                TokenSupplyData.Supply.ToString() + NVC.Delimeter +
+                TokenSupplyData.Decimal.ToString() + NVC.Delimeter +
                 Notus.Toolbox.Text.BoolToStr(TokenSupplyData.Resupplyable);
         }
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NVC = Notus.Variable.Constant;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Numerics;
@@ -41,7 +42,7 @@ namespace Notus.Wallet
         )
         {
             walletList.Sort();
-            string walletListText = string.Join(Notus.Variable.Constant.CommonDelimeterChar, walletList.ToArray());
+            string walletListText = string.Join(NVC.Delimeter, walletList.ToArray());
 
             string keyPrefix = Notus.Variable.Constant.MultiWalletPrefix;
 
