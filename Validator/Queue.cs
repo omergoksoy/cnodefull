@@ -431,38 +431,37 @@ namespace Notus.Validator
                 {
                     return "2";
                 }
+
                 foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
                 {
                     if (string.Equals(tmpHashPart[0], entry.Value.IP.Wallet) == true)
                     {
                         string rawDataStr = tmpHashPart[1] + NVC.Delimeter + tmpHashPart[0];
                         bool status = Notus.Wallet.ID.Verify(
-                            rawDataStr, 
-                            tmpHashPart[2], 
+                            rawDataStr,
+                            tmpHashPart[2],
                             entry.Value.PublicKey
                         );
-                        if (status == true)
+
+                        if (status == false)
                         {
-                            if (NVG.NodeList.ContainsKey(entry.Key))
-                            {
-                                if (ReadyMessageIncomeList.ContainsKey(entry.Value.IP.Wallet) == false)
-                                {
-                                    ReadyMessageIncomeList.Add(entry.Value.IP.Wallet, true);
-                                }
-                                else
-                                {
-                                    ReadyMessageIncomeList[entry.Value.IP.Wallet] = true;
-                                }
-                                return "1";
-                            }
-                            else
-                            {
-                                return "3";
-                            }
+                            return "4";
+                        }
+
+                        if (NVG.NodeList.ContainsKey(entry.Key) == false)
+                        {
+                            return "3";
+                        }
+
+                        if (ReadyMessageIncomeList.ContainsKey(entry.Value.IP.Wallet) == false)
+                        {
+                            ReadyMessageIncomeList.Add(entry.Value.IP.Wallet, true);
+                            return "1";
                         }
                         else
                         {
-                            return "4";
+                            ReadyMessageIncomeList[entry.Value.IP.Wallet] = true;
+                            return "6";
                         }
                     }
                 }
