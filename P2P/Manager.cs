@@ -171,6 +171,8 @@ namespace Notus.P2P
         }
         public bool Send(string peerId, string message, bool removePeerIfOffline = true)
         {
+            Console.WriteLine("Peer Send : " + peerId + " -> " + message);
+
             if (this.Peers.ContainsKey(peerId))
             {
                 if (this.Peers[peerId].Send(message) == true)
