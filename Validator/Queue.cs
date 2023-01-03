@@ -1380,7 +1380,7 @@ namespace Notus.Validator
                 {
                     if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
-                        NCH.SendMessageED(tmpMainList[i].Key, tmpMainList[i].Value, myNodeDataText);
+                        string msgResult=NCH.SendMessageED(tmpMainList[i].Key, tmpMainList[i].Value, myNodeDataText);
                     }
                 }
             }

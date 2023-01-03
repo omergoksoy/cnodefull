@@ -501,6 +501,12 @@ namespace Notus.Validator
 
             NVR.NetworkSelectorList.Clear();
 
+            if (NVG.Settings.GenesisCreated == false)
+            {
+                TimeSyncObj.Start();
+                NtpDateSyncObj.Start();
+            }
+
             Obj_Integrity = new Notus.Block.Integrity();
             Obj_Integrity.IsGenesisNeed();
 
@@ -542,12 +548,6 @@ namespace Notus.Validator
 
             NGF.GetUtcTimeFromNode(20, true);
             TimeBaseBlockUidList.Clear();
-
-            if (NVG.Settings.GenesisCreated == false)
-            {
-                TimeSyncObj.Start();
-                NtpDateSyncObj.Start();
-            }
 
             bool controlStatus = Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with another node
             if (controlStatus == true)
