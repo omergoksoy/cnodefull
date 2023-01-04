@@ -1254,15 +1254,15 @@ namespace Notus.Validator
                             }
                             else
                             {
-                                Console.WriteLine("JsonSerializer.Serialize(syncNoCount)");
-                                Console.WriteLine(JsonSerializer.Serialize(syncNoCount));
-                                NP.ReadLine();
+                                //Console.WriteLine("JsonSerializer.Serialize(syncNoCount)");
+                                //Console.WriteLine(JsonSerializer.Serialize(syncNoCount));
+                                //NP.ReadLine();
                             }
                         }
                         else
                         {
-                            Console.WriteLine(JsonSerializer.Serialize(syncNoCount));
-                            NP.ReadLine();
+                            //Console.WriteLine(JsonSerializer.Serialize(syncNoCount));
+                            //NP.ReadLine();
                         }
                         // sayı 1 adet veya benim SYNC_NO değerim eşit olduğunda çıkış yapılsın
                         // çıkış yapıldıktan sonra eksik bloklar yüklenecek ve senkronizasyon
@@ -1282,7 +1282,7 @@ namespace Notus.Validator
                     }
                 }
             }
-
+            /*
             if (firstHandShake == true)
             {
                 Console.WriteLine("First HandShake -> true");
@@ -1294,7 +1294,7 @@ namespace Notus.Validator
             Console.WriteLine("JsonSerializer.Serialize(syncNoCount)");
             Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
             //NP.ReadLine();
-
+            */
             if (firstHandShake == false)
             {
                 //Console.WriteLine("Queue.cs -> Line 1241");
@@ -1391,7 +1391,7 @@ namespace Notus.Validator
                     if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
                         string msgResult = NCH.SendMessageED(tmpMainList[i].Key, tmpMainList[i].Value, myNodeDataText);
-                        Console.WriteLine("msgResult : " + msgResult);
+                        //Console.WriteLine("msgResult : " + msgResult);
                     }
                 }
             }
