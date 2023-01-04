@@ -1220,6 +1220,8 @@ namespace Notus.Validator
         private bool WaitUntilAvailable()
         {
             NP.Info("Wait Until Nodes Available");
+            Console.WriteLine("JsonSerializer.Serialize(NVG.NodeList)");
+            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
             //Console.WriteLine("JsonSerializer.Serialize(ReadyMessageIncomeList)");
             //Console.WriteLine("JsonSerializer.Serialize(NVG.NodeList)");
             //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
@@ -1264,6 +1266,7 @@ namespace Notus.Validator
                                 // burada diğer node'un hazır olması durumunu bekleyecek
                                 // kendisinin de buraya geldiğini belirtecek
                             }
+                            Console.WriteLine("JsonSerializer.Serialize(syncNoCount)");
                             Console.WriteLine(JsonSerializer.Serialize(syncNoCount));
                             NP.ReadLine();
                         }
