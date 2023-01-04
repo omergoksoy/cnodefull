@@ -965,7 +965,7 @@ namespace Notus.Validator
             SyncListWithNode();
 
             // diğer node'lara bizim kim olduğumuz söyleniyor...
-            SendMyInfoToAllNodes();
+           x SendMyInfoToAllNodes();
 
             // eğer bende bilgisi olmayan node varsa bilgisini istiyor
             AskInfoFromNode();
@@ -1264,6 +1264,8 @@ namespace Notus.Validator
                                 // burada diğer node'un hazır olması durumunu bekleyecek
                                 // kendisinin de buraya geldiğini belirtecek
                             }
+                            Console.WriteLine(JsonSerializer.Serialize(syncNoCount));
+                            NP.ReadLine();
                         }
                         else
                         {
@@ -1281,6 +1283,10 @@ namespace Notus.Validator
                         {
                             Thread.Sleep(10);
                         }
+                    }
+                    else
+                    {
+                        Console.WriteLine("WaitUntilAvailable() -> NULL");
                     }
                 }
             }
@@ -1367,7 +1373,7 @@ namespace Notus.Validator
             NP.Info("Send My Node Full Info");
             // her 30 saniyede bir diğer node'ları kim olduğumu söylüyor.
             KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = NGF.ValidatorList.ToArray();
-            Console.WriteLine(JsonSerializer.Serialize(tmpMainList, NVC.JsonSetting));
+            //Console.WriteLine(JsonSerializer.Serialize(tmpMainList, NVC.JsonSetting));
             if (tmpMainList != null)
             {
                 string myNodeDataText = "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
