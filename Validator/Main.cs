@@ -549,7 +549,9 @@ namespace Notus.Validator
 
             NGF.GetUtcTimeFromNode(20, true);
             TimeBaseBlockUidList.Clear();
-
+            Console.WriteLine("Main.cs -> Line 552");
+            Console.WriteLine(NVG.Settings.Network.ToString());
+            Console.WriteLine(NVG.Settings.Network.ToString());
             bool controlStatus = Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with another node
             if (controlStatus == true)
             {

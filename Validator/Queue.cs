@@ -1284,7 +1284,16 @@ namespace Notus.Validator
                     }
                 }
             }
-            if (firstHandShake == false)
+
+            if (firstHandShake == true)
+            {
+                Console.WriteLine("First HandShake -> true");
+            }
+            else
+            {
+                Console.WriteLine("First HandShake -> FALSE");
+            }
+                if (firstHandShake == false)
             {
                 //Console.WriteLine("Queue.cs -> Line 1241");
                 //Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
