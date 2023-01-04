@@ -102,7 +102,7 @@ namespace Notus.Ceremony
         }
         private void RealGeneration()
         {
-            string leaderWalletId = ValidatorOrder.Values.ElementAt(CeremonyMemberCount-1);
+            string leaderWalletId = ValidatorOrder.Values.ElementAt(CeremonyMemberCount - 1);
 
             genesisBlock = NVClass.Block.GetEmpty();
 
@@ -320,11 +320,11 @@ namespace Notus.Ceremony
             {
                 incomeFullUrlPath = incomeFullUrlPath.Substring(0, incomeFullUrlPath.Length - 1);
             }
+
             if (string.Equals(incomeFullUrlPath, "nodeinfo"))
             {
                 return JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]);
             }
-
             if (string.Equals(incomeFullUrlPath, "finalization"))
             {
                 if (Signed == true && MyOrderNo == CeremonyMemberCount)
@@ -333,27 +333,24 @@ namespace Notus.Ceremony
                 }
                 return "false";
             }
-
-
             if (string.Equals(incomeFullUrlPath, "genesis"))
             {
-                if (Signed == true)
+                if (Signed == false)
                 {
-                    return JsonSerializer.Serialize(GenesisObj);
+                    return "false";
                 }
-                return "false";
+                return JsonSerializer.Serialize(GenesisObj);
             }
             if (string.Equals(incomeFullUrlPath, "sign"))
             {
                 return BlockSignHash;
             }
-
             if (string.Equals(incomeFullUrlPath, "infostatus"))
             {
                 return JsonSerializer.Serialize(NVG.NodeList);
             }
 
-            NP.Warning("Unknown Or Unready Url : " + incomeFullUrlPath);
+            NP.Warning("Unknown Url : " + incomeFullUrlPath);
             return "false";
         }
         private void StartGenesisConnection()
@@ -423,35 +420,9 @@ namespace Notus.Ceremony
                 NVH.AddToValidatorList(item.IpAddress, item.Port, false);
             }
             List<string> removeList = new();
-            foreach (var item in NGF.ValidatorList)
-            {
-                if (
-                    string.Equals("13.229.56.127", item.Value.IpAddress)
-                    ||
-                    string.Equals("3.75.110.186", item.Value.IpAddress)
-                )
-                {
-
-                }
-                else
-                {
-                    removeList.Add(item.Key);
-                }
-            }
-
-            foreach (var address in removeList)
-            {
-                NGF.ValidatorList.Remove(address);
-            }
-
             NVH.DefineMyNodeInfo();
             NVH.AddToValidatorList(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
             NVH.GenerateNodeInfoListViaValidatorList();
-
-            /*
-            13.229.56.127
-            3.75.110.186
-            */
             CeremonyMemberCount = NVG.NodeList.Count;
             NVG.OnlineNodeCount = NVG.NodeList.Count;
         }
