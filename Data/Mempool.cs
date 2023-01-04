@@ -202,8 +202,9 @@ namespace Notus
             }
             return false;
         }
-        private void DeleteFromTable_SubMethod(string KeyName,bool showError = false) {
-            bool resultVal=SqlObj.Delete("key_value", new Dictionary<string, string>(){
+        private void DeleteFromTable_SubMethod(string KeyName, bool showError = false)
+        {
+            bool resultVal = SqlObj.Delete("key_value", new Dictionary<string, string>(){
                 { "key", KeyName }
             });
             if (showError == true)
@@ -215,7 +216,7 @@ namespace Notus
                 //Console.WriteLine(KeyName);
             }
         }
-        private void DeleteFromTable(string KeyName,bool showError=false)
+        private void DeleteFromTable(string KeyName, bool showError = false)
         {
             if (AsyncMethodActivated == true)
             {
@@ -282,7 +283,7 @@ namespace Notus
                         }
                         else
                         {
-                            if ((DateTime.Now- startTime).TotalMilliseconds > UseThisNumberAsCountOrMiliSeconds)
+                            if ((DateTime.Now - startTime).TotalMilliseconds > UseThisNumberAsCountOrMiliSeconds)
                             {
                                 break;
                             }
@@ -314,7 +315,7 @@ namespace Notus
             }
             return false;
         }
-        public void Remove(string KeyName,bool showError=false)
+        public void Remove(string KeyName, bool showError = false)
         {
             if (Obj_DataList.ContainsKey(KeyName) == false)
             {
@@ -323,15 +324,15 @@ namespace Notus
                     //Console.WriteLine("ContainsKey == false");
                 }
             }
-            bool tst=Obj_DataList.TryRemove(KeyName,out _);
-            if(showError== true)
+            bool tst = Obj_DataList.TryRemove(KeyName, out _);
+            if (showError == true)
             {
                 //Console.WriteLine(tst);
                 //Console.WriteLine("bool tst=Obj_DataList.TryRemove(KeyName,out _);");
                 //Console.WriteLine(JsonSerializer.Serialize(Obj_DataList));
             }
-            DeleteFromTable(KeyName,showError);
-        }   
+            DeleteFromTable(KeyName, showError);
+        }
         public string Get(string KeyName, string? ReturnIfKeyDoesntExist = null)
         {
             if (Obj_DataList.ContainsKey(KeyName))
@@ -342,7 +343,7 @@ namespace Notus
             {
                 return string.Empty;
             }
-            if (ReturnIfKeyDoesntExist.Length==0)
+            if (ReturnIfKeyDoesntExist.Length == 0)
             {
                 return string.Empty;
             }
@@ -439,7 +440,7 @@ namespace Notus
                             {
                                 if (0 > (entry.Value.remove - DateTime.Now).TotalSeconds)
                                 {
-                                    Obj_DataList.TryRemove(entry.Key,out _);
+                                    Obj_DataList.TryRemove(entry.Key, out _);
                                     DeleteFromTable(entry.Key);
                                 }
                             }
@@ -456,24 +457,25 @@ namespace Notus
         }
         public void Dispose()
         {
+            Obj_DataList.Clear();
+
             try
             {
                 TimerObj.Dispose();
             }
-            catch (Exception err)
-            {
-            }
+            catch { }
 
-            Obj_DataList.Clear();
             try
             {
                 SqlObj.Close();
-                Thread.Sleep(150);
-                //SqlObj.Dispose();
             }
-            catch (Exception err)
+            catch { }
+
+            try
             {
+                SqlObj.Dispose();
             }
+            catch { }
         }
     }
 }

@@ -70,6 +70,7 @@ namespace Notus.Validator
                 {
                     generateBaseValidatorList = true;
                 }
+                objMpNodeList.Dispose();
             }
             if (generateBaseValidatorList == true)
             {

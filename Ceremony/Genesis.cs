@@ -27,7 +27,7 @@ namespace Notus.Ceremony
         public void Start()
         {
             //kontrollü bir şekilde dosyayı silerek sıfırlıyor
-            Notus.IO.DeleteFile(NVC.MemoryPoolName["ValidatorList"] + ".db");
+            Notus.Data.Helper.ClearTable(NVC.MemoryPoolName["ValidatorList"]);
             bool predefinedValidator = false;
             foreach (Variable.Struct.IpInfo item in Notus.Validator.List.Main[NVG.Settings.Layer][NVG.Settings.Network])
             {
