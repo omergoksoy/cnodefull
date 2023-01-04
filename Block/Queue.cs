@@ -647,7 +647,7 @@ namespace Notus.Block
             string RemoveKeyStr = string.Empty;
             if (NewBlock.info.type == NVE.BlockTypeList.AirDrop)
             {
-                NVClass.BlockStruct_125? tmpLockBalance = NBD.Convert_125(rawDataStr);
+                NVClass.BlockStruct_125? tmpLockBalance = NBD.Convert_125(rawDataStr,false);
                 if (tmpLockBalance != null)
                 {
                     foreach (var entry in tmpLockBalance.In)

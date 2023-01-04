@@ -165,7 +165,7 @@ namespace Notus.Coin
             if (blockData.info.type != NVE.BlockTypeList.AirDrop)
                 return;
 
-            NVClass.BlockStruct_125? tmpLockBalance = NBD.Convert_125(blockData.cipher.data);
+            NVClass.BlockStruct_125? tmpLockBalance = NBD.Convert_125(blockData.cipher.data,true);
             if (tmpLockBalance != null)
             {
                 //Console.WriteLine("Process AirDrop Block");

@@ -162,7 +162,7 @@ namespace Notus.Validator
 
             if (Obj_BlockData.info.type == NVE.BlockTypeList.CryptoTransfer)
             {
-                NVClass.BlockStruct_120? tmpBalanceVal = NBD.Convert_120(Obj_BlockData.cipher.data);
+                NVClass.BlockStruct_120? tmpBalanceVal = NBD.Convert_120(Obj_BlockData.cipher.data,true);
                 if (tmpBalanceVal != null)
                 {
                     foreach (KeyValuePair<string, NVClass.BlockStruct_120_In_Struct> entry in tmpBalanceVal.In)
