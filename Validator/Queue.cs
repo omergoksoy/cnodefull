@@ -1367,6 +1367,7 @@ namespace Notus.Validator
             NP.Info("Send My Node Full Info");
             // her 30 saniyede bir diğer node'ları kim olduğumu söylüyor.
             KeyValuePair<string, NVS.IpInfo>[]? tmpMainList = NGF.ValidatorList.ToArray();
+            Console.WriteLine(JsonSerializer.Serialize(tmpMainList, NVC.JsonSetting));
             if (tmpMainList != null)
             {
                 string myNodeDataText = "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
@@ -1375,8 +1376,13 @@ namespace Notus.Validator
                     if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
                         string msgResult=NCH.SendMessageED(tmpMainList[i].Key, tmpMainList[i].Value, myNodeDataText);
+                        Console.WriteLine("msgResult : " + msgResult);
                     }
                 }
+            }
+            else
+            {
+                Console.WriteLine("SendMyInfoToAllNodes -> NULL");
             }
         }
         private void AskInfoFromNode()
