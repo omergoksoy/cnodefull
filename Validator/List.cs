@@ -95,9 +95,7 @@ namespace Notus.Validator
                         Variable.Enum.NetworkType.MainNet,
                         new List<Variable.Struct.IpInfo>()
                         {
-                            {
-                                new Variable.Struct.IpInfo() { IpAddress = "3.75.110.186", Port = 5000 }
-                            },
+                            /*
                             {
                                 new Variable.Struct.IpInfo() { IpAddress = "3.68.233.67", Port = 5000 }
                             },
@@ -110,6 +108,10 @@ namespace Notus.Validator
                             {
                                 new Variable.Struct.IpInfo() { IpAddress = "18.156.37.61", Port = 5000 }
                             },
+                            */
+                            {
+                                new Variable.Struct.IpInfo() { IpAddress = "3.75.110.186", Port = 5000 }
+                            },
                             {
                                 new Variable.Struct.IpInfo() { IpAddress = "13.229.56.127", Port = 5000 }
                             }
@@ -119,23 +121,25 @@ namespace Notus.Validator
                         Variable.Enum.NetworkType.TestNet,
                         new List<Variable.Struct.IpInfo>()
                         {
+                            /*
                             {
-                                new Variable.Struct.IpInfo() { IpAddress = "3.75.110.186", Port = 5001 }
+                                new Variable.Struct.IpInfo() { IpAddress = "3.68.233.67", Port = 5000 }
                             },
                             {
-                                new Variable.Struct.IpInfo() { IpAddress = "3.68.233.67", Port = 5001 }
+                                new Variable.Struct.IpInfo() { IpAddress = "3.75.243.44", Port = 5000 }
                             },
                             {
-                                new Variable.Struct.IpInfo() { IpAddress = "3.75.243.44", Port = 5001 }
+                                new Variable.Struct.IpInfo() { IpAddress = "3.125.159.102",Port = 5000 }
                             },
                             {
-                                new Variable.Struct.IpInfo() { IpAddress = "3.125.159.102",Port = 5001 }
+                                new Variable.Struct.IpInfo() { IpAddress = "18.156.37.61", Port = 5000 }
+                            },
+                            */
+                            {
+                                new Variable.Struct.IpInfo() { IpAddress = "3.75.110.186", Port = 5000 }
                             },
                             {
-                                new Variable.Struct.IpInfo() { IpAddress = "18.156.37.61", Port = 5001 }
-                            },
-                            {
-                                new Variable.Struct.IpInfo() { IpAddress = "13.229.56.127", Port = 5001 }
+                                new Variable.Struct.IpInfo() { IpAddress = "13.229.56.127", Port = 5000 }
                             }
                         }
                     },
@@ -143,23 +147,25 @@ namespace Notus.Validator
                         Variable.Enum.NetworkType.DevNet,
                         new List<Variable.Struct.IpInfo>()
                         {
+                            /*
                             {
-                                new Variable.Struct.IpInfo() { IpAddress = "3.75.110.186", Port = 5002 }
+                                new Variable.Struct.IpInfo() { IpAddress = "3.68.233.67", Port = 5000 }
                             },
                             {
-                                new Variable.Struct.IpInfo() { IpAddress = "3.68.233.67", Port = 5002 }
+                                new Variable.Struct.IpInfo() { IpAddress = "3.75.243.44", Port = 5000 }
                             },
                             {
-                                new Variable.Struct.IpInfo() { IpAddress = "3.75.243.44", Port = 5002 }
+                                new Variable.Struct.IpInfo() { IpAddress = "3.125.159.102",Port = 5000 }
                             },
                             {
-                                new Variable.Struct.IpInfo() { IpAddress = "3.125.159.102",Port = 5002 }
+                                new Variable.Struct.IpInfo() { IpAddress = "18.156.37.61", Port = 5000 }
+                            },
+                            */
+                            {
+                                new Variable.Struct.IpInfo() { IpAddress = "3.75.110.186", Port = 5000 }
                             },
                             {
-                                new Variable.Struct.IpInfo() { IpAddress = "18.156.37.61", Port = 5002 }
-                            },
-                            {
-                                new Variable.Struct.IpInfo() { IpAddress = "13.229.56.127", Port = 5002 }
+                                new Variable.Struct.IpInfo() { IpAddress = "13.229.56.127", Port = 5000 }
                             }
                         }
                     }
