@@ -1220,8 +1220,8 @@ namespace Notus.Validator
         private bool WaitUntilAvailable()
         {
             NP.Info("Wait Until Nodes Available");
-            Console.WriteLine("JsonSerializer.Serialize(NVG.NodeList)");
-            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+            //Console.WriteLine("JsonSerializer.Serialize(NVG.NodeList)");
+            //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
             //Console.WriteLine("JsonSerializer.Serialize(ReadyMessageIncomeList)");
             //Console.WriteLine("JsonSerializer.Serialize(NVG.NodeList)");
             //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
@@ -1266,9 +1266,12 @@ namespace Notus.Validator
                                 // burada diğer node'un hazır olması durumunu bekleyecek
                                 // kendisinin de buraya geldiğini belirtecek
                             }
-                            Console.WriteLine("JsonSerializer.Serialize(syncNoCount)");
-                            Console.WriteLine(JsonSerializer.Serialize(syncNoCount));
-                            NP.ReadLine();
+                            else
+                            {
+                                Console.WriteLine("JsonSerializer.Serialize(syncNoCount)");
+                                Console.WriteLine(JsonSerializer.Serialize(syncNoCount));
+                                NP.ReadLine();
+                            }
                         }
                         else
                         {
@@ -1302,7 +1305,11 @@ namespace Notus.Validator
             {
                 Console.WriteLine("First HandShake -> FALSE");
             }
-                if (firstHandShake == false)
+            Console.WriteLine("JsonSerializer.Serialize(syncNoCount)");
+            Console.WriteLine(JsonSerializer.Serialize(syncNoCount));
+            NP.ReadLine();
+
+            if (firstHandShake == false)
             {
                 //Console.WriteLine("Queue.cs -> Line 1241");
                 //Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
@@ -1384,7 +1391,7 @@ namespace Notus.Validator
                 {
                     if (string.Equals(tmpMainList[i].Key, NVG.Settings.Nodes.My.HexKey) == false)
                     {
-                        string msgResult=NCH.SendMessageED(tmpMainList[i].Key, tmpMainList[i].Value, myNodeDataText);
+                        string msgResult = NCH.SendMessageED(tmpMainList[i].Key, tmpMainList[i].Value, myNodeDataText);
                         Console.WriteLine("msgResult : " + msgResult);
                     }
                 }
