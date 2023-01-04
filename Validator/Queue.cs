@@ -315,6 +315,7 @@ namespace Notus.Validator
                 StartingTimeAfterEnoughNode = ND.ToDateTime(NTT.GetPureText(incomeData, "when"));
                 NVG.NodeQueue.Starting = Notus.Date.ToLong(StartingTimeAfterEnoughNode);
                 NVG.CurrentSyncNo = NVG.NodeQueue.Starting;
+                NP.Info("Statring Time Arrived " + StartingTimeAfterEnoughNode.ToString("HH:mm:ss"));
                 /*
                 foreach (var iE in NVG.NodeList)
                 {
@@ -980,7 +981,7 @@ namespace Notus.Validator
             if (NVG.OtherValidatorSelectedMe == false)
             {
                 //bu fonksyion ile amaç en çok sayıda olan sync no bulunacak
-                StartingTimeAfterEnoughNode_Arrived = false;
+                //StartingTimeAfterEnoughNode_Arrived = false;
                 if (biggestSyncNo == 0)
                 {
                     ulong extraSeconds = 0;
