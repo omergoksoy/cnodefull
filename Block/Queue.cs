@@ -787,7 +787,6 @@ namespace Notus.Block
             }
             if (executeEach == true)
             {
-                Console.WriteLine("Pool Loaded From DB");
                 NGF.BlockQueue.CheckPoolDb = false;
                 MP_BlockPoolList.Each((string blockTransactionKey, string TextBlockDataString) =>
                 {
@@ -795,7 +794,7 @@ namespace Notus.Block
                     {
                         Console.WriteLine("Load : " + blockTransactionKey);
                         NVS.PoolBlockRecordStruct? PreBlockData =
-                        JsonSerializer.Deserialize<NVS.PoolBlockRecordStruct>(TextBlockDataString);
+                            JsonSerializer.Deserialize<NVS.PoolBlockRecordStruct>(TextBlockDataString);
                         if (PreBlockData != null)
                         {
                             Add2Queue(PreBlockData, blockTransactionKey);
