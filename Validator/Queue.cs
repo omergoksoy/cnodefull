@@ -1306,8 +1306,8 @@ namespace Notus.Validator
                 Console.WriteLine("First HandShake -> FALSE");
             }
             Console.WriteLine("JsonSerializer.Serialize(syncNoCount)");
-            Console.WriteLine(JsonSerializer.Serialize(syncNoCount));
-            NP.ReadLine();
+            Console.WriteLine(JsonSerializer.Serialize(syncNoCount,NVC.JsonSetting));
+            //NP.ReadLine();
 
             if (firstHandShake == false)
             {
