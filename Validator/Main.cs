@@ -715,13 +715,8 @@ namespace Notus.Validator
                 GarbageCollector();
             }
             DateTime LastPrintTime = NVG.NOW.Obj;
-            bool tmpStartWorkingPrinted = false;
+            //bool tmpStartWorkingPrinted = false;
             bool tmpExitMainLoop = false;
-            if (NVG.Settings.LocalNode == true)
-            {
-                ValidatorQueueObj.WaitForEnoughNode = false;
-            }
-
             NVG.LocalBlockLoaded = true;
 
             // her node için ayrılan süre

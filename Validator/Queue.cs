@@ -30,16 +30,6 @@ namespace Notus.Validator
         private bool StartingTimeAfterEnoughNode_Arrived = false;
         private DateTime StartingTimeAfterEnoughNode;
 
-        private bool WaitForEnoughNode_Val = true;
-        public bool WaitForEnoughNode
-        {
-            get { return WaitForEnoughNode_Val; }
-            set { WaitForEnoughNode_Val = value; }
-        }
-
-        public bool NotEnoughNode_Printed = false;
-        public bool NotEnoughNode_Val = true;
-
         private string NodeListHash = "#";
 
         public System.Func<Notus.Variable.Class.BlockData, bool>? Func_NewBlockIncome = null;
