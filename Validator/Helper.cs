@@ -132,15 +132,6 @@ namespace Notus.Validator
                     NGF.SetNodeOnline(entry.Key);
                 }
             }
-
-            /*
-            foreach (KeyValuePair<string, NVS.IpInfo> entry in NGF.ValidatorList)
-            {
-                Console.WriteLine(entry.Value.IpAddress);
-            }
-            //NP.ReadLine();
-            //NP.ReadLine();
-            */
         }
 
         public static List<NVS.IpInfo> GiveMeNodeList()
