@@ -408,6 +408,7 @@ namespace Notus.Validator
 
             if (NTT.CheckXmlTag(incomeData, "fReady"))
             {
+                Console.WriteLine("We Received Ready Flag");
                 incomeData = NTT.GetPureText(incomeData, "fReady");
                 string[] tmpHashPart = incomeData.Split(NVC.Delimeter);
                 ulong incomeUtc = ulong.Parse(tmpHashPart[1]);
