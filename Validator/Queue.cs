@@ -1307,7 +1307,7 @@ namespace Notus.Validator
                 Console.WriteLine("First HandShake -> FALSE");
             }
             Console.WriteLine("JsonSerializer.Serialize(syncNoCount)");
-            Console.WriteLine(JsonSerializer.Serialize(syncNoCount,NVC.JsonSetting));
+            Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
             //NP.ReadLine();
 
             if (firstHandShake == false)
@@ -1330,9 +1330,12 @@ namespace Notus.Validator
                     TimeSpan timeDiff = DateTime.Now - startingTime;
                     if (timeDiff.TotalSeconds > 30)
                     {
-                        SendReadyMsgToNodes();
                         startingTime = DateTime.Now;
+                        Console.WriteLine("Zaman Asimi Oldu");
                     }
+                    /*
+                    */
+                    SendReadyMsgToNodes();
                     Thread.Sleep(20);
                 }
             }
