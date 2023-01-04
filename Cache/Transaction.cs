@@ -47,9 +47,26 @@ namespace Notus.Cache
             else
             {
                 ulong tmpRightNow = NVG.NOW.Int;
-
+                bool exitInnerLoop = false;
+                while (exitInnerLoop == false)
+                {
+                    if (txCheck.ContainsKey(tmpRightNow) == true)
+                    {
+                        if(string.Equals(txCheck[tmpRightNow], blockUid) == false)
+                        {
+                            tmpRightNow = tmpRightNow + 1;
+                        }
+                        else
+                        {
+                            exitInnerLoop = true;
+                        }
+                    }
+                    else
+                    {
+                        exitInnerLoop = true;
+                    }
+                }
                 txCheck.Add(tmpRightNow, blockUid);
-
                 txTime.Add(blockUid, tmpRightNow);
                 txStatus.Add(blockUid, statusCode);
             }
