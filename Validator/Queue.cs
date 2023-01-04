@@ -1282,31 +1282,6 @@ namespace Notus.Validator
                     }
                 }
             }
-            /*
-            if (firstHandShake == true)
-            {
-                Console.WriteLine("First HandShake -> true");
-            }
-            else
-            {
-                Console.WriteLine("First HandShake -> FALSE");
-            }
-            Console.WriteLine("JsonSerializer.Serialize(syncNoCount)");
-            Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
-            //NP.ReadLine();
-            */
-            if (firstHandShake == false)
-            {
-                //Console.WriteLine("Queue.cs -> Line 1241");
-                //Console.WriteLine(JsonSerializer.Serialize(syncNoCount, NVC.JsonSetting));
-            }
-            /*
-            if (NVG.OtherValidatorSelectedMe == true)
-            {
-                Console.WriteLine("I'm Waiting In The Waiting Room -> Queue.cs");
-            }
-            */
-
             if (firstHandShake == true)
             {
                 DateTime startingTime = DateTime.Now.Subtract(new TimeSpan(1, 0, 0));
