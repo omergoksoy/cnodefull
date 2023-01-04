@@ -1353,7 +1353,7 @@ namespace Notus.Validator
                             controlSignForReadyMsg +
                         "</fReady>"
                     );
-                    //Console.WriteLine(iE.Value.IP.IpAddress + " -> [" + fReadySendResponse + "]");
+                    Console.WriteLine("Sended Ready Msg To -> " + iE.Value.IP.IpAddress + " -> [" + fReadySendResponse + "]");
                 }
             }
         }
