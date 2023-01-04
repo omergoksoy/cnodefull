@@ -210,7 +210,7 @@ namespace Notus.Variable
                 );
                 if (worksCorrent == true)
                 {
-                    NodeList[nodeHexStr].Status = NVS.NodeStatus.Online;
+                    SetNodeOnline(nodeHexStr);
                     return incodeResponse;
                 }
                 return string.Empty;
@@ -509,6 +509,23 @@ namespace Notus.Variable
                         }
                     }
                 });
+            }
+            public static void SetNodeOnline(string nodeHexText)
+            {
+                if (NVG.NodeList.ContainsKey(nodeHexText) == true)
+                {
+                    NVG.NodeList[nodeHexText].Status = NVS.NodeStatus.Online;
+                }
+                if (ValidatorList.ContainsKey(nodeHexText))
+                {
+                    ValidatorList[nodeHexText].Status = NVS.NodeStatus.Online;
+                }
+            }
+            public static void SetNodeOffline(string nodeHexKey)
+            {
+                NVG.NodeList[nodeHexKey].Status = NVS.NodeStatus.Offline;
+                ValidatorList[nodeHexKey].Status = NVS.NodeStatus.Offline;
+                NP.Danger("Lost Connection With " + NVG.NodeList[nodeHexKey].IP.IpAddress + ":" + NVG.NodeList[nodeHexKey].IP.Port);
             }
             static Functions()
             {

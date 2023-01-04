@@ -401,7 +401,7 @@ namespace Notus.Ceremony
                                 if (tmpNodeInfo != null)
                                 {
                                     NVG.NodeList[validatorItem.Key] = tmpNodeInfo;
-                                    NVG.NodeList[validatorItem.Key].Status = NVS.NodeStatus.Online;
+                                    NGF.SetNodeOnline(validatorItem.Key);
                                 }
                             }
                             catch { }

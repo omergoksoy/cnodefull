@@ -33,11 +33,6 @@ namespace Notus.Validator
         private string NodeListHash = "#";
 
         public System.Func<Notus.Variable.Class.BlockData, bool>? Func_NewBlockIncome = null;
-
-        private string fixedRowNoLength(long blockRowNo)
-        {
-            return blockRowNo.ToString().PadLeft(15, '_');
-        }
         public void Distrubute(long blockRowNo, int blockType, ulong currentNodeStartingTime)
         {
             ulong totalQueuePeriod = NVD.Calculate();
@@ -78,14 +73,14 @@ namespace Notus.Validator
                     if (messageSended == true)
                     {
                         NP.Info(
-                        "Distributed [ " + fixedRowNoLength(blockRowNo) + " : " + blockType.ToString() + " ] To " +
+                        "Distributed [ " + NTT.FixedRowNoLength(blockRowNo) + " : " + blockType.ToString() + " ] To " +
                             entry.Value.IP.IpAddress + ":" + entry.Value.IP.Port.ToString()
                         );
                     }
                     else
                     {
                         NP.Warning(
-                        "Distribution Error [ " + fixedRowNoLength(blockRowNo) + " : " + blockType.ToString() + " ] " +
+                        "Distribution Error [ " + NTT.FixedRowNoLength(blockRowNo) + " : " + blockType.ToString() + " ] " +
                             entry.Value.IP.IpAddress + ":" + entry.Value.IP.Port.ToString()
                         );
                         DistributeErrorList.Enqueue(new NVS.BlockDistributeListStruct()
@@ -134,7 +129,7 @@ namespace Notus.Validator
                     {
                         if (NTN.PingToNode(iE.Value) == NVS.NodeStatus.Online)
                         {
-                            NGF.ValidatorList[iE.Key].Status = NVS.NodeStatus.Online;
+                            NGF.SetNodeOnline(iE.Key);
                             exitInnerWhile = true;
                             break;
                         }
@@ -156,7 +151,7 @@ namespace Notus.Validator
                 {
                     if (NTN.PingToNode(iE.Value) == NVS.NodeStatus.Online)
                     {
-                        NGF.ValidatorList[iE.Key].Status = NVS.NodeStatus.Online;
+                        NGF.SetNodeOnline(iE.Key);
                     }
                     else
                     {
@@ -168,12 +163,6 @@ namespace Notus.Validator
             {
                 NVH.RemoveFromValidatorList(tmpRemoveKeyList[i]);
             }
-        }
-        public string Process(NVS.HttpRequestDetails incomeData)
-        {
-            string reponseText = ProcessIncomeData(incomeData.PostParams["data"]);
-            NodeIsOnline(incomeData.UrlList[2].ToLower());
-            return reponseText;
         }
         public string ProcessIncomeData(string incomeData)
         {
@@ -675,14 +664,6 @@ namespace Notus.Validator
             NP.Basic("Unknown IncomeText : " + incomeData);
             return "<err>1</err>";
         }
-        private void NodeIsOnline(string nodeHexText)
-        {
-            if (NVG.NodeList.ContainsKey(nodeHexText) == true)
-            {
-                NVG.NodeList[nodeHexText].Status = NVS.NodeStatus.Online;
-            }
-        }
-
         public void GenerateNodeQueue(
             ulong biggestSyncNo,
             ulong syncStaringTime,
@@ -1372,7 +1353,7 @@ namespace Notus.Validator
                     );
                     if (string.Equals(innerResponseStr.Trim(), "1"))
                     {
-                        NGF.ValidatorList[iE.Key].Status = NVS.NodeStatus.Online;
+                        NGF.SetNodeOnline(iE.Key);
                     }
                     else
                     {
@@ -1409,7 +1390,7 @@ namespace Notus.Validator
                             if (NVG.Settings.PeerManager.Send(testResult.peerId, testResult.message) == true)
                             {
                                 NP.Info(
-                                "Distributed [ " + fixedRowNoLength(testResult.rowNo) + " ] To " +
+                                "Distributed [ " + NTT.FixedRowNoLength(testResult.rowNo) + " ] To " +
                                     testResult.peerId
                                 );
                             }
@@ -1418,7 +1399,7 @@ namespace Notus.Validator
                                 testResult.sended = localTime;
                                 testResult.tryCount = testResult.tryCount + 1;
                                 NP.Info(
-                                "Distribution Error [ " + fixedRowNoLength(testResult.rowNo) + " ] To " +
+                                "Distribution Error [ " + NTT.FixedRowNoLength(testResult.rowNo) + " ] To " +
                                     testResult.peerId + " -> " + testResult.tryCount.ToString()
 
                                 );

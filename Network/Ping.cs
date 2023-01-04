@@ -11,7 +11,7 @@ using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
 using NP = Notus.Print;
-
+using NGF = Notus.Variable.Globals.Functions;
 namespace Notus.Network
 {
     public class Ping : IDisposable
@@ -42,7 +42,7 @@ namespace Notus.Network
                                         ErrorCount[nList[count].Key]++;
                                         if (ErrorCount[nList[count].Key] >= NVC.NodePingErrorLimit)
                                         {
-                                            NVH.SetNodeOffline(nList[count].Key);
+                                            NGF.SetNodeOffline(nList[count].Key);
                                             removeList.Add(nList[count].Key);
                                         }
                                     }

@@ -129,7 +129,7 @@ namespace Notus.Validator
 
                 if (string.Equals(entry.Key, NVG.Settings.Nodes.My.HexKey) == true)
                 {
-                    NGF.ValidatorList[entry.Key].Status = NVS.NodeStatus.Online;
+                    NGF.SetNodeOnline(entry.Key);
                 }
             }
 
@@ -203,17 +203,6 @@ namespace Notus.Validator
                 }
             }
             return false;
-        }
-        public static void SetNodeOnline(string nodeHexKey)
-        {
-            NVG.NodeList[nodeHexKey].Status = NVS.NodeStatus.Online;
-            NGF.ValidatorList[nodeHexKey].Status = NVS.NodeStatus.Online;
-        }
-        public static void SetNodeOffline(string nodeHexKey)
-        {
-            NVG.NodeList[nodeHexKey].Status = NVS.NodeStatus.Offline;
-            NGF.ValidatorList[nodeHexKey].Status = NVS.NodeStatus.Offline;
-            NP.Danger("Lost Connection With " + NVG.NodeList[nodeHexKey].IP.IpAddress + ":" + NVG.NodeList[nodeHexKey].IP.Port);
         }
         public static void RemoveFromValidatorList(string nodeHexKey)
         {

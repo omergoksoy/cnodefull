@@ -5,11 +5,19 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-
+using NVClass = Notus.Variable.Class;
 namespace Notus.Toolbox
 {
     public static class Text
     {
+        public static string FixedRowNoLength(NVClass.BlockData blockData)
+        {
+            return blockData.info.rowNo.ToString().PadLeft(15, '_');
+        }
+        public static string FixedRowNoLength(long blockRowNo)
+        {
+            return blockRowNo.ToString().PadLeft(15, '_');
+        }
         public static bool CheckXmlTag(string rawDataStr, string tagName)
         {
             return ((rawDataStr.IndexOf("<" + tagName + ">") >= 0 && rawDataStr.IndexOf("</" + tagName + ">") >= 0) ? true : false);
