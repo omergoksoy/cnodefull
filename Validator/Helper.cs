@@ -64,9 +64,7 @@ namespace Notus.Validator
             bool generateBaseValidatorList = false;
             using (Notus.Mempool objMpNodeList = new Notus.Mempool(NVC.MemoryPoolName["ValidatorList"]))
             {
-                objMpNodeList.AsyncActive = false;
-                string addressListStr = objMpNodeList.Get("address_list", string.Empty);
-                if (addressListStr.Length == 0)
+                if (objMpNodeList.Get("address_list", string.Empty).Length == 0)
                 {
                     generateBaseValidatorList = true;
                 }
