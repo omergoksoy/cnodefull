@@ -136,7 +136,6 @@ namespace Notus.Validator
             // listesinde eğer 1 adet çevrim içi node varsa döngüden çıkış yapacak
             bool exitInnerWhile = false;
             NP.Info("Finding Online Nodes");
-            //NP.Basic(JsonSerializer.Serialize(NGF.ValidatorList));
             while (exitInnerWhile == false)
             {
                 foreach (var iE in NGF.ValidatorList)
@@ -188,7 +187,6 @@ namespace Notus.Validator
         }
         public string ProcessIncomeData(string incomeData)
         {
-            //Console.WriteLine("ProcessIncomeData : " + incomeData);
             if (NTT.CheckXmlTag(incomeData, "ping"))
             {
                 return "pong";
@@ -316,24 +314,8 @@ namespace Notus.Validator
                 NVG.NodeQueue.Starting = Notus.Date.ToLong(StartingTimeAfterEnoughNode);
                 NVG.CurrentSyncNo = NVG.NodeQueue.Starting;
                 NP.Info("Statring Time Arrived " + StartingTimeAfterEnoughNode.ToString("HH:mm:ss"));
-                /*
-                foreach (var iE in NVG.NodeList)
-                {
-                    if (string.Equals(iE.Value.IP.Wallet, NVG.Settings.Nodes.My.IP.Wallet) == true)
-                    {
-                        //NVG.NodeList[iE.Key].SyncNo= NVG.CurrentSyncNo;
-                        NVH.SetJoinTimeToNode(iE.Key, NVG.CurrentSyncNo);
-                    }
-                    if (iE.Value.SyncNo == NVG.CurrentSyncNo)
-                    {
-                        NVH.SetJoinTimeToNode(iE.Key, NVG.CurrentSyncNo);
-                    }
-                }
-                */
                 NVG.NodeQueue.OrderCount = 1;
                 NVG.NodeQueue.Begin = true;
-                //NVH.SetJoinTimeToNode(NVG.Settings.Nodes.My.HexKey, NVG.CurrentSyncNo);
-
                 StartingTimeAfterEnoughNode_Arrived = true;
                 return "done";
             }
@@ -409,7 +391,6 @@ namespace Notus.Validator
 
             if (NTT.CheckXmlTag(incomeData, "fReady"))
             {
-                //Console.WriteLine("We Received Ready Flag");
                 incomeData = NTT.GetPureText(incomeData, "fReady");
                 string[] tmpHashPart = incomeData.Split(NVC.Delimeter);
                 ulong incomeUtc = ulong.Parse(tmpHashPart[1]);
