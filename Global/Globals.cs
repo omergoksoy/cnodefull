@@ -60,7 +60,6 @@ namespace Notus.Variable
         public static ulong CurrentSyncNo = 0;
         public static bool LocalBlockLoaded = false;
         public static int GroupNo = 0;
-        //public static string SessionPrivateKey = "";
         public static bool NodeListPrinted = false;
         public static int OnlineNodeCount = 0;
         public static TimeStruct NOW { get; set; }
