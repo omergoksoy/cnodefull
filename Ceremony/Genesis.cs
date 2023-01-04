@@ -363,14 +363,9 @@ namespace Notus.Ceremony
                     :
                 NVG.Settings.IpInfo.Local
             );
-            HttpObj.StoreUrl = false;
-            HttpObj.DefaultResult_OK = "null";
-            HttpObj.DefaultResult_ERR = "null";
-
             NP.Basic("Listining : " + Notus.Network.Node.MakeHttpListenerPath(NodeIpAddress.ToString(), SelectedPortVal));
             HttpObj.OnReceive(Fnc_OnReceiveData);
             HttpObj.ResponseType = "application/json";
-            HttpObj.StoreUrl = false;
             HttpObj.Start(NodeIpAddress, SelectedPortVal);
             NP.Success("Http Has Started");
         }
