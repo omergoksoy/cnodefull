@@ -787,6 +787,7 @@ namespace Notus.Block
             }
             if (executeEach == true)
             {
+                Console.WriteLine("Pool Loaded From DB");
                 NGF.BlockQueue.CheckPoolDb = false;
                 MP_BlockPoolList.Each((string blockTransactionKey, string TextBlockDataString) =>
                 {
