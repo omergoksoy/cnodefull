@@ -1330,13 +1330,11 @@ namespace Notus.Validator
                     TimeSpan timeDiff = DateTime.Now - startingTime;
                     if (timeDiff.TotalSeconds > 30)
                     {
-                        startingTime = DateTime.Now;
                         Console.WriteLine("Zaman Asimi Oldu");
+                        startingTime = DateTime.Now;
+                        SendReadyMsgToNodes();
                     }
-                    /*
-                    */
-                    SendReadyMsgToNodes();
-                    Thread.Sleep(20);
+                    Thread.Sleep(100);
                 }
             }
             return firstHandShake;
