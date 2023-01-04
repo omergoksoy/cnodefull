@@ -48,6 +48,10 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 
 
 
+
+
+key value db'sini kontrol et
+
 /*
 Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue(new Notus.Data.KeyValueSettings()
 {
