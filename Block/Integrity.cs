@@ -72,7 +72,8 @@ namespace Notus.Block
             }
             else
             {
-
+                NP.Warning("Burada Diger Genesisler Kontrol Edilmeli");
+                NP.Warning("Burada Diger Genesisler Kontrol Edilmeli");
             }
         }
         // burası merkezi kontrol noktası

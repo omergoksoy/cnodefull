@@ -501,6 +501,12 @@ namespace Notus.Validator
 
             NVR.NetworkSelectorList.Clear();
 
+            NVH.PrepareValidatorList();
+
+            NGF.GetUtcTimeFromNode(20, true);
+
+            TimeBaseBlockUidList.Clear();
+
             if (NVG.Settings.GenesisCreated == false)
             {
                 TimeSyncObj.Start();
@@ -510,11 +516,6 @@ namespace Notus.Validator
             Obj_Integrity = new Notus.Block.Integrity();
             Obj_Integrity.IsGenesisNeed();
 
-            /*
-            burada port ile soket başlatacak ve kontrollü bir şekilde 
-            başlangıçlarını ayarla
-            */
-
             int p2pPortNo = Notus.Network.Node.GetP2PPort();
             NP.Info("Node P2P Port No : " + p2pPortNo.ToString());
             NVG.Settings.PeerManager = new NP2P.Manager(
@@ -523,6 +524,11 @@ namespace Notus.Validator
                 (string incomeMessage) =>
                 {
                     Console.WriteLine("incomeMessage [NVG.Settings.PeerManager] : " + incomeMessage);
+                    string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
+                    if (string.Equals(innerResultStr, "done") == false)
+                    {
+                        NP.Basic("Function Response : " + innerResultStr);
+                    }
                     /*
                     if (string.Equals(incomeMessage, "<ping>1</ping>") == false)
                     {
@@ -544,11 +550,6 @@ namespace Notus.Validator
             Obj_Api = new Notus.Validator.Api();
 
             Start_HttpListener();
-
-            NVH.PrepareValidatorList();
-
-            NGF.GetUtcTimeFromNode(20, true);
-            TimeBaseBlockUidList.Clear();
 
             bool controlStatus = Obj_Integrity.ControlGenesisBlock(); // we check and compare genesis with another node
             /*
