@@ -17,7 +17,7 @@ namespace Notus.Communication
         }
         public static string SendMessageED(string nodeHex, string ipAddress, int portNo, string messageText)
         {
-            Console.WriteLine("SendMessageED [send]: " + messageText);
+            //Console.WriteLine("SendMessageED [send]: " + messageText);
             (bool worksCorrent, string incodeResponse) = Notus.Communication.Request.PostSync(
                 Notus.Network.Node.MakeHttpListenerPath(ipAddress, portNo) +
                 "queue/node/" + nodeHex,
@@ -31,7 +31,7 @@ namespace Notus.Communication
             );
             if (worksCorrent == true)
             {
-                Console.WriteLine("SendMessageED [receive]: " + incodeResponse);
+                //Console.WriteLine("SendMessageED [receive]: " + incodeResponse);
                 return incodeResponse;
             }
             return string.Empty;

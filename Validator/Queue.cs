@@ -188,7 +188,7 @@ namespace Notus.Validator
         }
         public string ProcessIncomeData(string incomeData)
         {
-            Console.WriteLine("ProcessIncomeData : " + incomeData);
+            //Console.WriteLine("ProcessIncomeData : " + incomeData);
             if (NTT.CheckXmlTag(incomeData, "ping"))
             {
                 return "pong";
