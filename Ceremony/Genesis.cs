@@ -11,6 +11,7 @@ using NVClass = Notus.Variable.Class;
 using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVS = Notus.Variable.Struct;
+using NNN = Notus.Network.Node;
 namespace Notus.Ceremony
 {
     public class Genesis : IDisposable
@@ -77,7 +78,7 @@ namespace Notus.Ceremony
                     {
                         if (BlockSignHash.Length > 0)
                         {
-                            string requestUrl = Notus.Network.Node.MakeHttpListenerPath(
+                            string requestUrl = NNN.MakeHttpListenerPath(
                                     validatorItem.Value.IP.IpAddress, SelectedPortVal
                                 ) + "sign";
                             string MainResultStr = NCR.GetSync(requestUrl, 2, true, false);
@@ -137,7 +138,7 @@ namespace Notus.Ceremony
                     bool exitFromWhileLoop = false;
                     while (exitFromWhileLoop == false)
                     {
-                        string requestUrl = Notus.Network.Node.MakeHttpListenerPath(
+                        string requestUrl = NNN.MakeHttpListenerPath(
                                 validatorItem.Value.IP.IpAddress, SelectedPortVal
                             ) + "finalization";
                         string MainResultStr = NCR.GetSync(requestUrl, 2, true, false);
@@ -190,7 +191,7 @@ namespace Notus.Ceremony
                         bool exitFromWhileLoop = false;
                         while (exitFromWhileLoop == false)
                         {
-                            string requestUrl = Notus.Network.Node.MakeHttpListenerPath(
+                            string requestUrl = NNN.MakeHttpListenerPath(
                                     validatorItem.Value.IP.IpAddress, SelectedPortVal
                                 ) + "genesis";
                             string MainResultStr = NCR.GetSync(requestUrl, 2, true, false);
@@ -363,7 +364,7 @@ namespace Notus.Ceremony
                     :
                 NVG.Settings.IpInfo.Local
             );
-            NP.Basic("Listining : " + Notus.Network.Node.MakeHttpListenerPath(NodeIpAddress.ToString(), SelectedPortVal));
+            NP.Basic("Listining : " + NNN.MakeHttpListenerPath(NodeIpAddress.ToString(), SelectedPortVal));
             HttpObj.OnReceive(Fnc_OnReceiveData);
             HttpObj.ResponseType = "application/json";
             HttpObj.Start(NodeIpAddress, SelectedPortVal);
@@ -381,7 +382,7 @@ namespace Notus.Ceremony
                     if (validatorItem.Value.Status != NVS.NodeStatus.Online)
                     {
                         allValidatorIsOnline = false;
-                        string requestUrl = Notus.Network.Node.MakeHttpListenerPath(
+                        string requestUrl = NNN.MakeHttpListenerPath(
                                 validatorItem.Value.IP.IpAddress, SelectedPortVal
                             ) + "nodeinfo";
                         string MainResultStr = NCR.GetSync(requestUrl, 2, true, false);
