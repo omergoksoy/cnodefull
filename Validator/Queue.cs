@@ -965,7 +965,7 @@ namespace Notus.Validator
             SyncListWithNode();
 
             // diğer node'lara bizim kim olduğumuz söyleniyor...
-           x SendMyInfoToAllNodes();
+            SendMyInfoToAllNodes();
 
             // eğer bende bilgisi olmayan node varsa bilgisini istiyor
             AskInfoFromNode();
