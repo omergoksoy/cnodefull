@@ -409,7 +409,7 @@ namespace Notus.Validator
 
             if (NTT.CheckXmlTag(incomeData, "fReady"))
             {
-                Console.WriteLine("We Received Ready Flag");
+                //Console.WriteLine("We Received Ready Flag");
                 incomeData = NTT.GetPureText(incomeData, "fReady");
                 string[] tmpHashPart = incomeData.Split(NVC.Delimeter);
                 ulong incomeUtc = ulong.Parse(tmpHashPart[1]);
@@ -1229,56 +1229,37 @@ namespace Notus.Validator
                 }
                 else
                 {
-                    KeyValuePair<string, NVS.NodeQueueInfo>[]? tmpArr = NVG.NodeList.ToArray();
-                    if (tmpArr != null)
-                    {
-                        syncNoCount.Clear();
-                        foreach (KeyValuePair<string, NVS.NodeQueueInfo> iE in tmpArr)
-                        {
-                            if (syncNoCount.ContainsKey(iE.Value.SyncNo) == false)
-                            {
-                                syncNoCount.Add(iE.Value.SyncNo, 0);
-                            }
-                            syncNoCount[iE.Value.SyncNo] = syncNoCount[iE.Value.SyncNo] + 1;
-                        }
+                    KeyValuePair<string, NVS.NodeQueueInfo>[] tmpArr = NVG.NodeList.ToArray();
+                    syncNoCount.Clear();
 
-                        if (syncNoCount.ContainsKey(0))
+                    foreach (KeyValuePair<string, NVS.NodeQueueInfo> iE in tmpArr)
+                    {
+                        if (syncNoCount.ContainsKey(iE.Value.SyncNo) == false)
                         {
-                            if (syncNoCount[0] == 2)
-                            {
-                                //Console.WriteLine("Ilk-Baslangic-Durumu");
-                                //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
-                                firstHandShake = true;
-                                // burada diğer node'un hazır olması durumunu bekleyecek
-                                // kendisinin de buraya geldiğini belirtecek
-                            }
-                            else
-                            {
-                                //Console.WriteLine("JsonSerializer.Serialize(syncNoCount)");
-                                //Console.WriteLine(JsonSerializer.Serialize(syncNoCount));
-                                //NP.ReadLine();
-                            }
+                            syncNoCount.Add(iE.Value.SyncNo, 0);
                         }
-                        else
+                        syncNoCount[iE.Value.SyncNo] = syncNoCount[iE.Value.SyncNo] + 1;
+                    }
+
+                    if (syncNoCount.ContainsKey(0))
+                    {
+                        if (syncNoCount[0] == 2)
                         {
-                            //Console.WriteLine(JsonSerializer.Serialize(syncNoCount));
-                            //NP.ReadLine();
+                            firstHandShake = true;
+                            // burada diğer node'un hazır olması durumunu bekleyecek
+                            // kendisinin de buraya geldiğini belirtecek
                         }
-                        // sayı 1 adet veya benim SYNC_NO değerim eşit olduğunda çıkış yapılsın
-                        // çıkış yapıldıktan sonra eksik bloklar yüklenecek ve senkronizasyon
-                        // süreci tamamlanana kadar bekleyecek.
-                        if (syncNoCount.Count == 1)
-                        {
-                            exitLoop = true;
-                        }
-                        else
-                        {
-                            Thread.Sleep(10);
-                        }
+                    }
+                    // sayı 1 adet veya benim SYNC_NO değerim eşit olduğunda çıkış yapılsın
+                    // çıkış yapıldıktan sonra eksik bloklar yüklenecek ve senkronizasyon
+                    // süreci tamamlanana kadar bekleyecek.
+                    if (syncNoCount.Count == 1)
+                    {
+                        exitLoop = true;
                     }
                     else
                     {
-                        Console.WriteLine("WaitUntilAvailable() -> NULL");
+                        Thread.Sleep(10);
                     }
                 }
             }
@@ -1290,7 +1271,6 @@ namespace Notus.Validator
                     TimeSpan timeDiff = DateTime.Now - startingTime;
                     if (timeDiff.TotalSeconds > 30)
                     {
-                        Console.WriteLine("Zaman Asimi Oldu");
                         startingTime = DateTime.Now;
                         SendReadyMsgToNodes();
                     }
@@ -1327,7 +1307,7 @@ namespace Notus.Validator
                         "</fReady>"
                     );
                     AddToReadyList(NVG.Settings.Nodes.My.IP.Wallet);
-                    Console.WriteLine("Sended Ready Msg To -> " + iE.Value.IP.IpAddress + " -> [" + fReadySendResponse + "]");
+                    //Console.WriteLine("Sended Ready Msg To -> " + iE.Value.IP.IpAddress + " -> [" + fReadySendResponse + "]");
                 }
             }
         }
