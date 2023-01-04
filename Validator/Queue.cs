@@ -441,16 +441,8 @@ namespace Notus.Validator
                             return "3";
                         }
 
-                        if (ReadyMessageIncomeList.ContainsKey(entry.Value.IP.Wallet) == false)
-                        {
-                            ReadyMessageIncomeList.TryAdd(entry.Value.IP.Wallet, true);
-                            return "1";
-                        }
-                        else
-                        {
-                            ReadyMessageIncomeList[entry.Value.IP.Wallet] = true;
-                            return "6";
-                        }
+                        AddToReadyList(entry.Value.IP.Wallet);
+                        return "1";
                     }
                 }
                 return "0";
@@ -949,8 +941,6 @@ namespace Notus.Validator
             if (NVG.Settings.GenesisCreated == true)
                 return;
 
-            ReadyMessageIncomeList.TryAdd(NVG.Settings.Nodes.My.IP.Wallet, true);
-
             NP.Info("Node Sync Starting");
 
             // eğer sadece 2 adet node var ise, node selector timer devreye girmeyecek
@@ -1221,12 +1211,6 @@ namespace Notus.Validator
         private bool WaitUntilAvailable()
         {
             NP.Info("Wait Until Nodes Available");
-            //Console.WriteLine("JsonSerializer.Serialize(NVG.NodeList)");
-            //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
-            //Console.WriteLine("JsonSerializer.Serialize(ReadyMessageIncomeList)");
-            //Console.WriteLine("JsonSerializer.Serialize(NVG.NodeList)");
-            //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
-            //Console.WriteLine(JsonSerializer.Serialize(NGF.ValidatorList));
             // burada beklerken diğer node'dan syncno zamanı gelecek
             // gelen zamana kadar buradan ve diğer işlemleri bypass ederek 
             // doğrudan iletişim kısmına geçecek
@@ -1339,6 +1323,17 @@ namespace Notus.Validator
             }
             return firstHandShake;
         }
+        private void AddToReadyList(string readyWalletId)
+        {
+            if (ReadyMessageIncomeList.ContainsKey(readyWalletId) == false)
+            {
+                ReadyMessageIncomeList.TryAdd(readyWalletId, true);
+            }
+            else
+            {
+                ReadyMessageIncomeList[readyWalletId] = true;
+            }
+        }
         private void SendReadyMsgToNodes()
         {
             foreach (var iE in NVG.NodeList)
@@ -1355,6 +1350,7 @@ namespace Notus.Validator
                             controlSignForReadyMsg +
                         "</fReady>"
                     );
+                    AddToReadyList(NVG.Settings.Nodes.My.IP.Wallet);
                     Console.WriteLine("Sended Ready Msg To -> " + iE.Value.IP.IpAddress + " -> [" + fReadySendResponse + "]");
                 }
             }
@@ -1518,6 +1514,7 @@ namespace Notus.Validator
 
         public Queue()
         {
+            ReadyMessageIncomeList.Clear();
         }
         ~Queue()
         {
