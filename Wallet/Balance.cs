@@ -870,18 +870,21 @@ namespace Notus.Wallet
         {
             Summary.SetSettings(new NVS.KeyValueSettings()
             {
+                ResetTable = true,
                 Path = "wallet",
                 MemoryLimitCount = 1000,
                 Name = "balance"
             });
             ObjMp_MultiWalletParticipant.SetSettings(new NVS.KeyValueSettings()
             {
+                ResetTable = true,
                 Path = "wallet",
                 MemoryLimitCount = 1000,
                 Name = "multi_wallet_participant"
             });
             ObjMp_WalletsICanApprove.SetSettings(new NVS.KeyValueSettings()
             {
+                ResetTable = true,
                 Path = "wallet",
                 MemoryLimitCount = 1000,
                 Name = "wallet_i_can_approve"

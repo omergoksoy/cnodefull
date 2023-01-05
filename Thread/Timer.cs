@@ -27,18 +27,26 @@ namespace Notus.Threads
         {
             IntervalTimeValue = TimerInterval;
         }
+        public void Close()
+        {
+            Kill();
+        }
         public void Kill()
         {
+            DefinedFunctionObj = null;
             if (TimerStarted == true)
             {
                 if (InnerTimerObject != null)
                 {
-                    InnerTimerObject.Stop();
-                    InnerTimerObject.Dispose();
+                    try
+                    {
+                        InnerTimerObject.Stop();
+                        InnerTimerObject.Dispose();
+                    }
+                    catch { }
                 }
                 InnerTimerObject = null;
             }
-            DefinedFunctionObj = null;
         }
         public void SetInterval(int newInterval)
         {

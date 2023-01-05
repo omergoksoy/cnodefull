@@ -1,5 +1,4 @@
-﻿using NVS = Notus.Variable.Struct;
-using Notus.Communication;
+﻿using Notus.Communication;
 using Notus.Network;
 using System.Globalization;
 using System.Net;
@@ -11,6 +10,7 @@ using System.Text.Json;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
 using NVG = Notus.Variable.Globals;
+using NVS = Notus.Variable.Struct;
 
 static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 {
@@ -50,12 +50,14 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 
 
 
-
+/*
 key value db'sini kontrol et
+*/
 
+/*
 Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue(new NVS.KeyValueSettings()
 {
-    ResetTable=true,
+    ResetTable = true,
     Path = "test",
     MemoryLimitCount = 1000,
     Name = "balance"
@@ -81,6 +83,7 @@ Console.WriteLine(rrr);
 Console.ReadLine();
 Console.ReadLine();
 Console.ReadLine();
+*/
 /*
 */
 

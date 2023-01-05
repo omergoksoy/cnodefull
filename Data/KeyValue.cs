@@ -442,6 +442,7 @@ namespace Notus.Data
         {
             DeleteKeyList.Clear();
             SetValueList.Clear();
+            ValueList.Clear();
 
             if (SqlObj != null)
             {
@@ -454,6 +455,20 @@ namespace Notus.Data
                 try
                 {
                     SqlObj.Dispose();
+                }
+                catch { }
+            }
+            if (TimerObj != null)
+            {
+                try
+                {
+                    TimerObj.Close();
+                }
+                catch { }
+
+                try
+                {
+                    TimerObj.Dispose();
                 }
                 catch { }
             }
