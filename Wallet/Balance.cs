@@ -14,18 +14,18 @@ namespace Notus.Wallet
     public class Balance : IDisposable
     {
         //this store balance to Dictionary list
-        private Notus.Data.KeyValue Summary = new Notus.Data.KeyValue();
+        private Notus.Data.KeyValue SummaryDb = new Notus.Data.KeyValue();
         //private Notus.Mempool ObjMp_Balance;
 
         //private Notus.Mempool ObjMp_WalletUsage;
         //private Notus.Mempool ObjMp_LockWallet;
-        private Notus.Data.KeyValue ObjMp_MultiWalletParticipant = new Notus.Data.KeyValue();
-        private Notus.Data.KeyValue ObjMp_WalletsICanApprove = new Notus.Data.KeyValue();
+        private Notus.Data.KeyValue MultiWalletParticipantDb = new Notus.Data.KeyValue();
+        private Notus.Data.KeyValue WalletsICanApproveDb = new Notus.Data.KeyValue();
         private ConcurrentDictionary<string, Notus.Variable.Enum.MultiWalletType> MultiWalletTypeList = new ConcurrentDictionary<string, Variable.Enum.MultiWalletType>();
 
         public List<string> WalletsICanApprove(string WalletId)
         {
-            string multiParticipantStr = ObjMp_WalletsICanApprove.Get(WalletId);
+            string multiParticipantStr = WalletsICanApproveDb.Get(WalletId);
             if (multiParticipantStr == "")
             {
                 return new List<string>();
@@ -54,7 +54,7 @@ namespace Notus.Wallet
         }
         public List<string> GetParticipant(string MultiSignatureWalletId)
         {
-            string multiParticipantStr = ObjMp_MultiWalletParticipant.Get(MultiSignatureWalletId);
+            string multiParticipantStr = MultiWalletParticipantDb.Get(MultiSignatureWalletId);
             if (multiParticipantStr == "")
             {
                 return new List<string>();
@@ -97,7 +97,7 @@ namespace Notus.Wallet
 
         private void StoreToDb(NVS.WalletBalanceStruct BalanceObj)
         {
-            Summary.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj));
+            SummaryDb.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj));
 
             //burada cüzdan kilidi açılacak...
             StopWalletUsage(BalanceObj.Wallet);
@@ -135,7 +135,7 @@ namespace Notus.Wallet
         }
         public NVS.WalletBalanceStruct Get(string WalletKey, ulong timeYouCanUse)
         {
-            string returnText = Summary.Get(WalletKey);
+            string returnText = SummaryDb.Get(WalletKey);
             if (returnText.Length > 0)
             {
                 try
@@ -678,7 +678,7 @@ namespace Notus.Wallet
                 }
                 else
                 {
-                    //string multiParticipantStr = ObjMp_MultiWalletParticipant.Get(tmpBalanceVal.MultiWalletKey, "");
+                    //string multiParticipantStr = MultiWalletParticipantDb.Get(tmpBalanceVal.MultiWalletKey, "");
 
                     //multi wallet cüzdanın katılımcılarını tutan mempool listesi
                     List<string> participantList = GetParticipant(tmpBalanceVal.MultiWalletKey);
@@ -693,7 +693,7 @@ namespace Notus.Wallet
                         if (walletIcanApprove.IndexOf(tmpBalanceVal.MultiWalletKey) == -1)
                         {
                             walletIcanApprove.Add(tmpBalanceVal.MultiWalletKey);
-                            ObjMp_WalletsICanApprove.Set(
+                            WalletsICanApproveDb.Set(
                                 tmpBalanceVal.WalletList[i],
                                 JsonSerializer.Serialize(walletIcanApprove)
                             );
@@ -711,7 +711,7 @@ namespace Notus.Wallet
                     {
                         MultiWalletTypeList[tmpBalanceVal.MultiWalletKey] = tmpBalanceVal.VoteType;
                     }
-                    ObjMp_MultiWalletParticipant.Set(
+                    MultiWalletParticipantDb.Set(
                         tmpBalanceVal.MultiWalletKey,
                         JsonSerializer.Serialize(participantList)
                     );
@@ -868,21 +868,23 @@ namespace Notus.Wallet
         }
         public Balance()
         {
-            Summary.SetSettings(new NVS.KeyValueSettings()
+            SummaryDb.SetSettings(new NVS.KeyValueSettings()
             {
                 ResetTable = true,
                 Path = "wallet",
                 MemoryLimitCount = 1000,
                 Name = "balance"
             });
-            ObjMp_MultiWalletParticipant.SetSettings(new NVS.KeyValueSettings()
+
+            MultiWalletParticipantDb.SetSettings(new NVS.KeyValueSettings()
             {
                 ResetTable = true,
                 Path = "wallet",
                 MemoryLimitCount = 1000,
                 Name = "multi_wallet_participant"
             });
-            ObjMp_WalletsICanApprove.SetSettings(new NVS.KeyValueSettings()
+
+            WalletsICanApproveDb.SetSettings(new NVS.KeyValueSettings()
             {
                 ResetTable = true,
                 Path = "wallet",
@@ -896,12 +898,12 @@ namespace Notus.Wallet
         }
         private void ClearAllData()
         {
-            Summary.Clear();
+            SummaryDb.Clear();
             NGF.LockWalletList.Clear();
             NGF.WalletUsageList.Clear();
             //ObjMp_WalletUsage.Clear();
-            ObjMp_MultiWalletParticipant.Clear();
-            ObjMp_WalletsICanApprove.Clear();
+            MultiWalletParticipantDb.Clear();
+            WalletsICanApproveDb.Clear();
             MultiWalletTypeList.Clear();
         }
         public void Dispose()
@@ -932,12 +934,12 @@ namespace Notus.Wallet
             */
             try
             {
-                Summary.Dispose();
+                SummaryDb.Dispose();
             }
             catch { }
             try
             {
-                ObjMp_MultiWalletParticipant.Dispose();
+                MultiWalletParticipantDb.Dispose();
             }
             catch
             {
@@ -946,7 +948,7 @@ namespace Notus.Wallet
 
             try
             {
-                ObjMp_WalletsICanApprove.Dispose();
+                WalletsICanApproveDb.Dispose();
             }
             catch 
             {
