@@ -18,11 +18,12 @@ using NVClass = Notus.Variable.Class;
 using NBD = Notus.Block.Decrypt;
 namespace Notus.Coin
 {
+    aşrdrop üzerinden işlemin pool'a atılması durumunu kontrol et ve key value DB'ye bağla
     public class AirDrop : IDisposable
     {
-        private ConcurrentDictionary<string, List<string>> RequestList = new ConcurrentDictionary<string, List<string>>();
         private readonly string CurrentVersion = "1.0.0.0";
-        private Notus.Mempool ObjMp_AirdropLimit;
+        private ConcurrentDictionary<string, List<string>> RequestList = new ConcurrentDictionary<string, List<string>>();
+        Notus.Data.KeyValue LimitDb = new Notus.Data.KeyValue();
 
         public string Request(NVS.HttpRequestDetails IncomeData)
         {
@@ -137,7 +138,7 @@ namespace Notus.Coin
             if (tmpAddResult == true)
             {
                 RequestList[ReceiverWalletKey].Add(tmpChunkIdKey);
-                ObjMp_AirdropLimit.Set(ReceiverWalletKey, JsonSerializer.Serialize(RequestList[ReceiverWalletKey]), true);
+                LimitDb.Set(ReceiverWalletKey, JsonSerializer.Serialize(RequestList[ReceiverWalletKey]));
 
                 // burada transactionları belleğe alıyor böyle hızlı ulaşım sağlanıyor...
                 NVG.Cache.Transaction.Add(tmpChunkIdKey, NVE.BlockStatusCode.AddedToQueue);
@@ -176,29 +177,29 @@ namespace Notus.Coin
                         RequestList.TryAdd(entry.Value.Wallet, new List<string>());
                     }
                     RequestList[entry.Value.Wallet].Add(entry.Key);
-                    ObjMp_AirdropLimit.Set(
+                    LimitDb.Set(
                         entry.Value.Wallet, 
-                        JsonSerializer.Serialize(RequestList[entry.Value.Wallet]), 
-                        true
+                        JsonSerializer.Serialize(RequestList[entry.Value.Wallet])
                     );
                 }
             }
         }
         public AirDrop()
         {
-            ObjMp_AirdropLimit = new Notus.Mempool(
-                Notus.IO.GetFolderName(
-                    NVG.Settings, NVC.StorageFolderName.Pool
-                ) + "airdrop_request");
-
-            ObjMp_AirdropLimit.AsyncActive = true;
+            LimitDb.SetSettings(new NVS.KeyValueSettings()
+            {
+                ResetTable = false,
+                Path = "wallet",
+                MemoryLimitCount = 1000,
+                Name = "airdrop"
+            });
 
             // veri tabanındaki versiyon mevcut versiyon ile farklı ise
             // tabloda bulunan kayıtları temizle
-            if (string.Equals(ObjMp_AirdropLimit.Get("CurrentVersion", ""), CurrentVersion) == false)
+            if (string.Equals(LimitDb.Get("CurrentVersion"), CurrentVersion) == false)
             {
-                ObjMp_AirdropLimit.Clear("ObjMp_AirdropLimit");
-                ObjMp_AirdropLimit.Set("CurrentVersion", CurrentVersion, true);
+                LimitDb.Clear();
+                LimitDb.Set("CurrentVersion", CurrentVersion);
             }
         }
 
@@ -221,7 +222,7 @@ namespace Notus.Coin
         private List<string> LoadFromDb(string walletId)
         {
             List<string>? innerRequestList = new();
-            string controlStr = ObjMp_AirdropLimit.Get(walletId, JsonSerializer.Serialize(new List<string>()));
+            string controlStr = LimitDb.Get(walletId);
             if (controlStr.Length > 0)
             {
                 try
@@ -249,7 +250,7 @@ namespace Notus.Coin
         {
             try
             {
-                ObjMp_AirdropLimit.Dispose();
+                LimitDb.Dispose();
             }
             catch { }
         }

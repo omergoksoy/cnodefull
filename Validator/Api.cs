@@ -40,9 +40,6 @@ namespace Notus.Validator
         private Notus.Mempool ObjMp_CryptoTransfer;
         private ConcurrentDictionary<string, NVE.BlockStatusCode> Obj_TransferStatusList;
 
-        //public System.Func<int, List<NVS.List_PoolBlockRecordStruct>?>? Func_GetPoolList = null;
-        //public System.Func<Dictionary<int, int>?>? Func_GetPoolCount = null;
-        //public System.Func<string, NVClass.BlockData?>? Func_OnReadFromChain = null;
         //public System.Func<NVS.PoolBlockRecordStruct, bool>? Func_AddToChainPool = null;
 
         private bool PrepareExecuted = false;
@@ -50,7 +47,6 @@ namespace Notus.Validator
         //ffb_CurrencyList Currency list buffer
         private List<NVS.CurrencyList> ffb_CurrencyList = new List<NVS.CurrencyList>();
         private DateTime ffb_CurrencyList_LastCheck = ND.NowObj().Subtract(TimeSpan.FromDays(1));
-        //private bool ffb_CurrencyList_Defined = false;
         private NVE.NetworkType ffb_CurrencyList_Network = NVE.NetworkType.MainNet;
         private NVE.NetworkLayer ffb_CurrencyList_Layer = NVE.NetworkLayer.Layer1;
 
@@ -688,12 +684,6 @@ namespace Notus.Validator
 
         private NVClass.BlockData? GetBlockWithRowNo(Int64 BlockRowNo)
         {
-            /*
-            if (Func_OnReadFromChain == null)
-            {
-                return null;
-            }
-            */
             if (NVG.Settings == null)
             {
                 return null;
