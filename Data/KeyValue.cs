@@ -53,7 +53,6 @@ namespace Notus.Data
         }
         public int LoadFromDisk()
         {
-            NP.Info("Set Value Cache Load From Disk");
             SortedDictionary<ulong, string> setFileOrder = new();
             string[] setList =NI.GetFileList(TempPath, "set");
             SetValueList.Clear();
@@ -96,7 +95,6 @@ namespace Notus.Data
                 setFileOrder.Remove(firstItem.Key);
             }
 
-            NP.Info("Del Key Cache Load From Disk");
             SortedDictionary<ulong, string> delFileOrder = new();
             string[] delList = NI.GetFileList(TempPath, "del");
             DeleteKeyList.Clear();
