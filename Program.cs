@@ -1,4 +1,5 @@
-﻿using Notus.Communication;
+﻿using NVS = Notus.Variable.Struct;
+using Notus.Communication;
 using Notus.Network;
 using System.Globalization;
 using System.Net;
@@ -52,15 +53,16 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 
 key value db'sini kontrol et
 
-/*
-Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue(new Notus.Data.KeyValueSettings()
+Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue(new NVS.KeyValueSettings()
 {
+    ResetTable=true,
     Path = "test",
     MemoryLimitCount = 1000,
     Name = "balance"
 });
 
 DateTime baslangic = DateTime.Now;
+Console.ReadLine();
 //keyValue.Set("0123456789abcdea", "deger");
 
 for (int i = 0; i < 100000; i++)
@@ -79,6 +81,7 @@ Console.WriteLine(rrr);
 Console.ReadLine();
 Console.ReadLine();
 Console.ReadLine();
+/*
 */
 
 

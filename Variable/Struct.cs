@@ -644,6 +644,7 @@ namespace Notus.Variable.Struct
     }
     public class KeyValueSettings
     {
+        public bool ResetTable { get; set; }
         public ulong MemoryLimitCount { get; set; }
         public string Path { get; set; }
         public string Name { get; set; }

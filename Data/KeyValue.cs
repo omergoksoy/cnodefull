@@ -1,6 +1,9 @@
 ﻿using System.Collections.Concurrent;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 using ND = Notus.Date;
+using NP = Notus.Print;
+using NI = Notus.IO;
 using NNT = Notus.Network.Text;
 using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
@@ -48,6 +51,90 @@ namespace Notus.Data
                 ValueList[key].Value = value;
             }
         }
+        public int LoadFromDisk()
+        {
+            NP.Info("Set Value Cache Load From Disk");
+            SortedDictionary<ulong, string> setFileOrder = new();
+            string[] setList =NI.GetFileList(TempPath, "set");
+            SetValueList.Clear();
+            foreach(string setFilename in setList)
+            {
+                ulong fileTime=ND.ToLong(File.GetCreationTime(setFilename));
+                bool innerLoop = false;
+                while (innerLoop == false)
+                {
+                    if (setFileOrder.ContainsKey(fileTime) == true)
+                    {
+                        fileTime++;
+                        innerLoop = true;
+                    }
+                    else
+                    {
+                        setFileOrder.Add(fileTime, setFilename);
+                    }
+                }
+            }
+            while (setFileOrder.Count > 0)
+            {
+                var firstItem=setFileOrder.First();
+                string setDataText = System.IO.File.ReadAllText(firstItem.Value);
+                try
+                {
+                    NVS.KeyValueDataList? storeObj = JsonSerializer.Deserialize<NVS.KeyValueDataList>(setDataText);
+                    if (storeObj != null)
+                    {
+                        SetValueList.Enqueue(storeObj);
+                    }
+                    else
+                    {
+                        NI.DeleteFile(firstItem.Value);
+                    }
+                }
+                catch {
+                    NI.DeleteFile(firstItem.Value);
+                }
+                setFileOrder.Remove(firstItem.Key);
+            }
+
+            NP.Info("Del Key Cache Load From Disk");
+            SortedDictionary<ulong, string> delFileOrder = new();
+            string[] delList = NI.GetFileList(TempPath, "del");
+            DeleteKeyList.Clear();
+            foreach (string delFilename in delList)
+            {
+                ulong fileTime = ND.ToLong(File.GetCreationTime(delFilename));
+                bool innerLoop = false;
+                while (innerLoop == false)
+                {
+                    if (delFileOrder.ContainsKey(fileTime) == true)
+                    {
+                        fileTime++;
+                        innerLoop = true;
+                    }
+                    else
+                    {
+                        delFileOrder.Add(fileTime, delFilename);
+                    }
+                }
+            }
+            while (delFileOrder.Count > 0)
+            {
+                var firstItem = delFileOrder.First();
+                string setDataText = System.IO.File.ReadAllText(firstItem.Value);
+                try
+                {
+                    NVS.KeyValueDataList? storeObj = JsonSerializer.Deserialize<NVS.KeyValueDataList>(setDataText);
+                    if (storeObj != null)
+                    {
+                        DeleteKeyList.Enqueue(storeObj);
+                    }
+                }
+                catch { }
+                delFileOrder.Remove(firstItem.Key);
+            }
+
+            return setList.Length + delList.Length;
+        }
         public void SetSettings(NVS.KeyValueSettings settings)
         {
             ObjSettings.MemoryLimitCount = settings.MemoryLimitCount;
@@ -59,6 +146,7 @@ namespace Notus.Data
                 }
             }
 
+            ObjSettings.ResetTable= settings.ResetTable;
             ObjSettings.Path = settings.Path;
             ObjSettings.Name = settings.Name;
 
@@ -69,10 +157,10 @@ namespace Notus.Data
             ObjSettings.Path +
                 System.IO.Path.DirectorySeparatorChar;
 
-            TempPath = DirPath + ObjSettings.Name + " _temp" + System.IO.Path.DirectorySeparatorChar;
+            TempPath = DirPath + ObjSettings.Name + "_temp" + System.IO.Path.DirectorySeparatorChar;
 
-            Notus.IO.CreateDirectory(DirPath);
-            Notus.IO.CreateDirectory(TempPath);
+            NI.CreateDirectory(DirPath);
+            NI.CreateDirectory(TempPath);
 
             PoolName = DirPath + ObjSettings.Name + ".db";
             DeleteKeyList.Clear();
@@ -87,12 +175,27 @@ namespace Notus.Data
                 );
             }
             catch { }
-            TimerObj.Interval = 100;
-            TimerObj.Start(() =>
+
+            int timerInterval= 100;
+            if(ObjSettings.ResetTable==false)
+            {
+                int totalRecord=LoadFromDisk();
+                if (totalRecord > 10)
+                {
+                    timerInterval = 5;
+                }
+            }
+
+            TimerObj.Start(timerInterval, () =>
             {
                 SetValueToDbFunction();
             }, true);
             SettingsDefined = true;
+
+            if (ObjSettings.ResetTable == true)
+            {
+                Clear();
+            }
         }
         public KeyValue()
         {
@@ -113,12 +216,12 @@ namespace Notus.Data
             ValueList.Clear();
             try
             {
-                SqlObj.Clear(PoolName);
+                SqlObj.Clear("key_value");
             }
             catch { }
 
-            Notus.IO.DeleteAllFileInsideDirectory(TempPath, "set");
-            Notus.IO.DeleteAllFileInsideDirectory(TempPath, "del");
+            NI.DeleteAllFileInsideDirectory(TempPath, "set");
+            NI.DeleteAllFileInsideDirectory(TempPath, "del");
         }
         public void Each(System.Action<string, string> incomeAction,
             int UseThisNumberAsCountOrMiliSeconds = 1000,
