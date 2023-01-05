@@ -94,7 +94,7 @@ namespace Notus
         public static void NodeFolderControl()
         {
             //cüzdan ve bakiye ile ilgili tüm işlemler bu klasör içinde kalacak
-            CreateDirectory(GetFolderName(DirListConst.Wallet));
+            //CreateDirectory(GetFolderName(DirListConst.Wallet));
 
             CreateDirectory(GetFolderName(DirListConst.BlockInfo));
             CreateDirectory(GetFolderName(DirListConst.TxList));

@@ -519,7 +519,7 @@ namespace Notus.Validator
                 //ResetTable = true,
                 Path = "block_raw",
                 MemoryLimitCount = 1000,
-                Name = "block_list"
+                Name = "blocks"
             });
 
             Obj_Integrity = new Notus.Block.Integrity();
@@ -1266,9 +1266,9 @@ namespace Notus.Validator
                 ProcessBlock_PrintSection(blockData, blockSource);
             }
 
+                BlockDbObj.Set(blockData.info.rowNo.ToString(), JsonSerializer.Serialize(blockData));
             if (addBlockToChain == true)
             {
-                BlockDbObj.Set(blockData.info.rowNo.ToString(), JsonSerializer.Serialize(blockData));
 
                 NGF.BlockQueue.AddToChain(blockData);
             }
