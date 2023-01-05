@@ -13,6 +13,7 @@ namespace Notus.Validator
 {
     public class Api : IDisposable
     {
+        private Notus.Data.KeyValue BlockDbObj = new Notus.Data.KeyValue();
         private DateTime LastNtpTime = Notus.Variable.Constant.DefaultTime;
         private TimeSpan NtpTimeDifference;
         private bool NodeTimeAfterNtpTime = false;      // time difference before or after NTP Server
@@ -113,6 +114,14 @@ namespace Notus.Validator
         }
         public void Prepare()
         {
+            BlockDbObj.SetSettings(new NVS.KeyValueSettings()
+            {
+                //ResetTable = true,
+                Path = "block_raw",
+                MemoryLimitCount = 1000,
+                Name = "blocks"
+            });
+
             if (NVG.Settings.Layer == NVE.NetworkLayer.Layer1)
             {
                 Prepare_Layer1();
@@ -131,6 +140,7 @@ namespace Notus.Validator
 
         public void AddForCache(NVClass.BlockData Obj_BlockData, int blockSource = 0)
         {
+            string blockRowNoStr = Obj_BlockData.info.rowNo.ToString();
             if (blockSource == 2 || blockSource == 4)
             {
                 if (Obj_BlockData.info.rowNo == NVG.Settings.LastBlock.info.rowNo)
@@ -140,7 +150,7 @@ namespace Notus.Validator
                         if (string.Equals(NVG.Settings.LastBlock.info.uID, Obj_BlockData.info.uID))
                         {
                             NP.Info("Block Is Proccessing   -> " +
-                                Obj_BlockData.info.rowNo.ToString() +
+                                blockRowNoStr +
                                 " -> " +
                                 Obj_BlockData.info.uID.Substring(0, 20) +
                                 " -> " +
@@ -150,6 +160,8 @@ namespace Notus.Validator
                     }
                 }
             }
+
+            BlockDbObj.Set(blockRowNoStr, JsonSerializer.Serialize(Obj_BlockData));
 
             NVG.Settings.BlockOrder.Add(Obj_BlockData.info.rowNo, Obj_BlockData.info.uID);
             NVG.Settings.BlockSign.Add(Obj_BlockData.info.rowNo, Obj_BlockData.sign);
@@ -3299,9 +3311,15 @@ namespace Notus.Validator
                 {
                     NGF.Balance.Dispose();
                 }
-                catch (Exception err)
+                catch { }
+            }
+            if (BlockDbObj != null)
+            {
+                try
                 {
+                    BlockDbObj.Dispose();
                 }
+                catch{}
             }
         }
     }

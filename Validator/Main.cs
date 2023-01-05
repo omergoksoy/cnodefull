@@ -36,7 +36,6 @@ namespace Notus.Validator
         private Notus.Sync.Date NtpDateSyncObj = new Notus.Sync.Date();
         private Notus.Reward.Block RewardBlockObj = new Notus.Reward.Block();
         private Notus.Communication.Http HttpObj = new Notus.Communication.Http(true);
-        private Notus.Data.KeyValue BlockDbObj = new Notus.Data.KeyValue();
         private Notus.Block.Integrity Obj_Integrity;
         private Notus.Validator.Api Obj_Api;
 
@@ -513,14 +512,6 @@ namespace Notus.Validator
                 TimeSyncObj.Start();
                 NtpDateSyncObj.Start();
             }
-
-            BlockDbObj.SetSettings(new NVS.KeyValueSettings()
-            {
-                //ResetTable = true,
-                Path = "block_raw",
-                MemoryLimitCount = 1000,
-                Name = "blocks"
-            });
 
             Obj_Integrity = new Notus.Block.Integrity();
             Obj_Integrity.IsGenesisNeed();
@@ -1266,10 +1257,8 @@ namespace Notus.Validator
                 ProcessBlock_PrintSection(blockData, blockSource);
             }
 
-                BlockDbObj.Set(blockData.info.rowNo.ToString(), JsonSerializer.Serialize(blockData));
             if (addBlockToChain == true)
             {
-
                 NGF.BlockQueue.AddToChain(blockData);
             }
 
@@ -1382,17 +1371,6 @@ namespace Notus.Validator
                 {
                 }
             }
-            if (BlockDbObj != null)
-            {
-                try
-                {
-                    BlockDbObj.Dispose();
-                }
-                catch (Exception err)
-                {
-                }
-            }
-
             if (HttpObj != null)
             {
                 try
