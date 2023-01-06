@@ -18,7 +18,7 @@ using NVClass = Notus.Variable.Class;
 using NBD = Notus.Block.Decrypt;
 namespace Notus.Coin
 {
-    aşrdrop üzerinden işlemin pool'a atılması durumunu kontrol et ve key value DB'ye bağla
+    //aşrdrop üzerinden işlemin pool'a atılması durumunu kontrol et ve key value DB'ye bağla
     public class AirDrop : IDisposable
     {
         private readonly string CurrentVersion = "1.0.0.0";

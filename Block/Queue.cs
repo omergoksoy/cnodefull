@@ -608,7 +608,7 @@ namespace Notus.Block
             {
                 for (int i = 0; i < poolList.Count; i++)
                 {
-                    control-point
+                    //control-point
                     Console.WriteLine("Remove Key From List : " + poolList[i]);
                     PoolIdList.TryRemove(poolList[i], out _);
                 }
