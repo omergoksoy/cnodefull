@@ -227,6 +227,14 @@ ZK - konusu için incelenecek
 * univariate lagrange interpolation
 
 */
+
+/*
+ 
+BIP39'un diğer diller için olan verisyonları da eklenecek 
+ 
+ 
+*/
+
 /*
 var id = Notus.Wallet.ID.GenerateKeyPair();
 Console.WriteLine(JsonSerializer.Serialize(id));
