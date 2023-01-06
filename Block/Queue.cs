@@ -671,7 +671,6 @@ namespace Notus.Block
         }
         public bool Add(NVS.PoolBlockRecordStruct? PreBlockData, bool addedToPoolDb = true)
         {
-            
             Console.WriteLine("Add To Pool -> " + PreBlockData.uid);
             // burada kuyruğa eklenen her iş
             // diğer nodelara da dağıtılacak
