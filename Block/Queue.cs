@@ -77,7 +77,6 @@ namespace Notus.Block
         {
             if (Queue_PoolTransaction.Count == 0)
             {
-                //Console.WriteLine("Queue_PoolTransaction.Count.ToString() : " + Queue_PoolTransaction.Count.ToString());
                 return (null, null);
             }
 
@@ -672,6 +671,8 @@ namespace Notus.Block
         }
         public bool Add(NVS.PoolBlockRecordStruct? PreBlockData, bool addedToPoolDb = true)
         {
+            
+            Console.WriteLine("Add To Pool -> " + PreBlockData.uid);
             // burada kuyruğa eklenen her iş
             // diğer nodelara da dağıtılacak
 
@@ -712,6 +713,8 @@ namespace Notus.Block
                 }
             }
             Console.WriteLine("keyStr : " + keyStr);
+            Console.WriteLine("addedToPoolDb : " + (addedToPoolDb == true ? "true" : "false"));
+
             if (keyStr.Length > 0)
             {
                 if (addedToPoolDb == true)
