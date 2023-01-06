@@ -72,6 +72,7 @@ namespace Notus.Coin
                     Result = NVE.BlockStatusCode.TooManyRequest
                 });
             }
+            string tmpChunkIdKey = NGF.GenerateTxUid();
 
             // eğer cüzdan kilitli ise hata gönderecek
             if (NGF.Balance.AccountIsLock(ReceiverWalletKey) == true)
