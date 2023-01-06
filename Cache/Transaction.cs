@@ -30,8 +30,7 @@ namespace Notus.Cache
         {
             keyValue.Set(blockUid, JsonSerializer.Serialize(statusCode));
         }
-        public Transaction()
-        {
+        public void Start() {
             keyValue.SetSettings(new NVS.KeyValueSettings()
             {
                 LoadFromBeginning = true,
@@ -40,6 +39,9 @@ namespace Notus.Cache
                 MemoryLimitCount = 1000,
                 Name = "block_status"
             });
+        }
+        public Transaction()
+        {
         }
         ~Transaction()
         {

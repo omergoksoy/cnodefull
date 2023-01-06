@@ -28,7 +28,7 @@ namespace Notus.Validator
             NVG.Settings.BlockOrder.Start();
             NVG.Settings.BlockSign.Start();
             NVG.Settings.BlockPrev.Start();
-
+            NVG.Cache.Transaction.Start();
             NP.ExecuteTime();
 
             if (NVG.Settings.LocalNode == true)
