@@ -40,6 +40,21 @@ namespace Notus.Coin
             }
 
             string ReceiverWalletKey = IncomeData.UrlList[1];
+
+            if(
+                ReceiverWalletKey.Length!=NVC.SingleWalletTextLength
+                ||
+                ReceiverWalletKey.Length != NVC.MultiWalletTextLength
+            )
+            {
+                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
+                {
+                    ErrorNo = 91983,
+                    ErrorText = "WrongWallet",
+                    ID = string.Empty,
+                    Result = NVE.BlockStatusCode.WrongWallet
+                });
+            }
             Console.WriteLine("AirDrop ReceiverWalletKey : " + ReceiverWalletKey);
             List<string> innerRequestList = LoadFromDb(ReceiverWalletKey);
 
