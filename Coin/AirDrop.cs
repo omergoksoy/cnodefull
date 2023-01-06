@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Notus.Sync;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -7,15 +8,15 @@ using System.Numerics;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using NBD = Notus.Block.Decrypt;
 using NBK = Notus.Block.Key;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
+using NVClass = Notus.Variable.Class;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
-using NVClass = Notus.Variable.Class;
-using NBD = Notus.Block.Decrypt;
 namespace Notus.Coin
 {
     //aşrdrop üzerinden işlemin pool'a atılması durumunu kontrol et ve key value DB'ye bağla
@@ -24,7 +25,6 @@ namespace Notus.Coin
         private readonly string CurrentVersion = "1.0.0.0";
         private ConcurrentDictionary<string, List<string>> RequestList = new ConcurrentDictionary<string, List<string>>();
         Notus.Data.KeyValue LimitDb = new Notus.Data.KeyValue();
-
         public string Request(NVS.HttpRequestDetails IncomeData)
         {
             // mainnet ise hata gönderecek
@@ -51,9 +51,7 @@ namespace Notus.Coin
                     Result = NVE.BlockStatusCode.WrongWallet
                 });
             }
-            Console.WriteLine("AirDrop ReceiverWalletKey : " + ReceiverWalletKey);
             List<string> innerRequestList = LoadFromDb(ReceiverWalletKey);
-
             for (int count = 0; count < innerRequestList.Count; count++)
             {
                 TimeSpan diff = (NVG.NOW.Obj - NBK.BlockIdToTime(innerRequestList[count])).Duration();
@@ -65,6 +63,7 @@ namespace Notus.Coin
 
             if (RequestList[ReceiverWalletKey].Count >= NVC.AirDropVolumeCount)
             {
+                LimitDb.Set(ReceiverWalletKey,JsonSerializer.Serialize(RequestList[ReceiverWalletKey]));
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
                 {
                     ErrorNo = 371854,
@@ -111,7 +110,6 @@ namespace Notus.Coin
             }
 
             string tmpCoinCurrency = NVG.Settings.Genesis.CoinInfo.Tag;
-            string tmpChunkIdKey = NGF.GenerateTxUid();
 
             NVS.WalletBalanceStruct tmpBalanceBefore = NGF.Balance.Get(ReceiverWalletKey, 0);
             NVS.WalletBalanceStruct tmpBalanceAfter = NGF.Balance.Get(ReceiverWalletKey, 0);
@@ -237,9 +235,8 @@ namespace Notus.Coin
         {
             List<string>? innerRequestList = new();
             string controlStr = LimitDb.Get(walletId);
-            Console.WriteLine("Get Wallet - >" + walletId);
-
-            Console.WriteLine(controlStr);
+            //Console.WriteLine("Get Wallet - >" + walletId);
+            //Console.WriteLine("controlStr : " + controlStr);
             if (controlStr.Length > 0)
             {
                 try

@@ -99,6 +99,9 @@ namespace Notus.Wallet
         {
             SummaryDb.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj));
 
+            Console.WriteLine("StoreToDb(NVS.WalletBalanceStruct BalanceObj)");
+            Console.WriteLine(BalanceObj.Wallet + " -> " + JsonSerializer.Serialize(BalanceObj));
+
             //burada cüzdan kilidi açılacak...
             StopWalletUsage(BalanceObj.Wallet);
         }
@@ -136,6 +139,8 @@ namespace Notus.Wallet
         public NVS.WalletBalanceStruct Get(string WalletKey, ulong timeYouCanUse)
         {
             string returnText = SummaryDb.Get(WalletKey);
+            Console.WriteLine("Get(string WalletKey, ulong timeYouCanUse)");
+            Console.WriteLine(WalletKey + " -> " + returnText);
             if (returnText.Length > 0)
             {
                 try
