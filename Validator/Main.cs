@@ -893,6 +893,7 @@ namespace Notus.Validator
                                             }
                                             else
                                             {
+                                                /*
                                                 if (PreparedBlockData.info.type == NVE.BlockTypeList.AirDrop)
                                                 {
                                                     Console.WriteLine("if(PreparedBlockData.info.type== NVE.BlockTypeList.AirDrop)");
@@ -900,8 +901,9 @@ namespace Notus.Validator
                                                 else
                                                 {
                                                     Console.WriteLine("NGF.BlockQueue.ReloadPoolList(poolList);");
-                                                    NGF.BlockQueue.ReloadPoolList(poolList);
                                                 }
+                                                */
+                                                NGF.BlockQueue.ReloadPoolList(poolList);
                                             }
                                             NGF.WalletUsageList.Clear();
                                         } // if (PreBlockData != null)
