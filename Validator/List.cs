@@ -95,6 +95,8 @@ namespace Notus.Validator
                         Variable.Enum.NetworkType.MainNet,
                         new List<Variable.Struct.IpInfo>()
                         {
+                            //ec2-3-125-159-102.eu-central-1.compute.amazonaws.com
+                            //ec2-18-156-37-61.eu-central-1.compute.amazonaws.com
                             {
                                 new Variable.Struct.IpInfo() { IpAddress = "3.125.159.102",Port = 5000 }
                             },
