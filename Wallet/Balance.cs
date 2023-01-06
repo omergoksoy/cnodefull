@@ -80,15 +80,11 @@ namespace Notus.Wallet
         }
         public bool StartWalletUsage(string walletKey)
         {
-            if (WalletUsageAvailable(walletKey) == false)
-            {
-                return false;
-            }
             if (NGF.WalletUsageList.ContainsKey(walletKey) == false)
             {
-                NGF.WalletUsageList.TryAdd(walletKey, 1);
+                return NGF.WalletUsageList.TryAdd(walletKey, 1);
             }
-            return true;
+            return false;
         }
         public void StopWalletUsage(string walletKey)
         {
