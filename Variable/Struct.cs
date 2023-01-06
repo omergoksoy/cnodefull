@@ -428,6 +428,7 @@ namespace Notus.Variable.Struct
     }
     public class KeyValueDataList
     {
+        public bool Set { get; set; }
         public string Key { get; set; }
         public string Value { get; set; }
         public DateTime Time { get; set; }

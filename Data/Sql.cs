@@ -66,7 +66,46 @@ namespace Notus.Data
         }
 
         // select işlemi
-        public void Select(string tableName, Action<Dictionary<string, string>> incomeAction, List<string> nameList, Dictionary<string, string> condAndValue)
+        public void Select(
+            string tableName, 
+            Action<Dictionary<string, string>> incomeAction,
+            List<string> nameList
+        )
+        {
+            CurrentTableName = tableName;
+            List<string> fCond = new List<string>();
+            string selectQuery = "SELECT * FROM " + tableName;
+
+            SqliteCommand command = conObj.CreateCommand();
+            command.CommandText = selectQuery;
+            try
+            {
+                using (SqliteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Dictionary<string, string> returnList = new Dictionary<string, string>();
+                        foreach (string fieldName in nameList)
+                        {
+                            string dataValue = reader[fieldName].ToString();
+                            returnList.Add(fieldName, dataValue);
+                        }
+                        incomeAction(returnList);
+                    }
+                    reader.Close();
+                }
+            }
+            catch (Exception msg)
+            {
+                ErrorStrInsideObj = msg.Message;
+            }
+        }
+        public void Select(
+            string tableName, 
+            Action<Dictionary<string, string>> incomeAction, 
+            List<string> nameList, 
+            Dictionary<string, string> condAndValue
+        )
         {
             CurrentTableName = tableName;
             List<string> fCond = new List<string>();

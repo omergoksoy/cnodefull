@@ -20,18 +20,10 @@ namespace Notus.Validator
                             new List<Variable.Struct.IpInfo>()
                             {
                                 {
-                                    new Variable.Struct.IpInfo()
-                                    {
-                                        IpAddress = "89.252.134.91",
-                                        Port = 5000
-                                    }
+                                    new Variable.Struct.IpInfo() { IpAddress = "89.252.134.91", Port = 5000 }
                                 },
                                 {
-                                    new Variable.Struct.IpInfo()
-                                    {
-                                        IpAddress = "89.252.184.151",
-                                        Port = 5000
-                                    }
+                                    new Variable.Struct.IpInfo() { IpAddress = "89.252.184.151", Port = 5000 }
                                 }
                             }
                         },
@@ -40,18 +32,10 @@ namespace Notus.Validator
                             new List<Variable.Struct.IpInfo>()
                             {
                                 {
-                                    new Variable.Struct.IpInfo()
-                                    {
-                                        IpAddress = "89.252.134.91",
-                                        Port = 5001
-                                    }
+                                    new Variable.Struct.IpInfo() { IpAddress = "89.252.134.91", Port = 5001 }
                                 },
                                 {
-                                    new Variable.Struct.IpInfo()
-                                    {
-                                        IpAddress = "89.252.184.151",
-                                        Port = 5001
-                                    }
+                                    new Variable.Struct.IpInfo() { IpAddress = "89.252.184.151", Port = 5001 }
                                 }
                             }
                         },
@@ -60,18 +44,10 @@ namespace Notus.Validator
                             new List<Variable.Struct.IpInfo>()
                             {
                                 {
-                                    new Variable.Struct.IpInfo()
-                                    {
-                                        IpAddress = "89.252.134.91",
-                                        Port = 5002
-                                    }
+                                    new Variable.Struct.IpInfo() { IpAddress = "89.252.134.91", Port = 5002 }
                                 },
                                 {
-                                    new Variable.Struct.IpInfo()
-                                    {
-                                        IpAddress = "89.252.184.151",
-                                        Port = 5002
-                                    }
+                                    new Variable.Struct.IpInfo() { IpAddress = "89.252.184.151", Port = 5002 }
                                 }
                             }
                         }

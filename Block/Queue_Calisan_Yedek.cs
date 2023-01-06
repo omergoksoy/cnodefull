@@ -1,4 +1,5 @@
-﻿using Notus.Compression.TGZ;
+﻿/*
+using Notus.Compression.TGZ;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -17,8 +18,8 @@ namespace Notus.Block
 {
     public class Queue : IDisposable
     {
-        
-        private bool CheckPoolDb = false;
+        public bool CheckPoolDb = false;                // time difference before or after NTP Server
+
         private Notus.Mempool MP_BlockPoolList;
         private Notus.Block.Storage BS_Storage;
         private ConcurrentDictionary<string, byte> PoolIdList = new ConcurrentDictionary<string, byte>();
@@ -361,18 +362,15 @@ namespace Notus.Block
                             );
                         if (tmpBalanceResult == false)
                         {
-                            /*
-                            foreach (KeyValuePair<string, Dictionary<ulong, string>> curEntry in tmpNewGeneratorBalance.Balance)
-                            {
-                                foreach (KeyValuePair<ulong, string> balanceEntry in curEntry.Value)
-                                {
-                                    if (tmpLockWalletStruct.UnlockTime > balanceEntry.Key){
-
-                                        tmpNewGeneratorBalance.Balance[curEntry.Key]
-                                    }
-                                }
-                            }
-                            */
+                            //foreach (KeyValuePair<string, Dictionary<ulong, string>> curEntry in tmpNewGeneratorBalance.Balance)
+                            //{
+                                //foreach (KeyValuePair<ulong, string> balanceEntry in curEntry.Value)
+                                //{
+                                    //if (tmpLockWalletStruct.UnlockTime > balanceEntry.Key){
+                                        //tmpNewGeneratorBalance.Balance[curEntry.Key]
+                                    //}
+                                //}
+                            //}
 
                             TempBlockList.Add(
                                 JsonSerializer.Serialize(
@@ -532,8 +530,11 @@ namespace Notus.Block
         }
 
 
-        /*
-        
+
+        aşağıdaki fonksiyon kapalıydı
+        aşağıdaki fonksiyon kapalıydı
+        aşağıdaki fonksiyon kapalıydı
+        aşağıdaki fonksiyon kapalıydı
         buraya blok sıra numarası ile okuma işlemi eklenecek
         public (bool, NVClass.BlockData) ReadWithRowNo(Int64 BlockRowNo)
         {
@@ -563,7 +564,10 @@ namespace Notus.Block
                 }
             }
         }
-        */
+        yukarısı - kapalı fonksiyon
+        yukarısı - kapalı fonksiyon
+        yukarısı - kapalı fonksiyon
+
 
         public void ReloadPoolList(List<string>? poolList)
         {
@@ -608,7 +612,9 @@ namespace Notus.Block
         //yeni blok hesaplanması tamamlandığı zaman buraya gelecek ve geçerli blok ise eklenecek.
         public void AddToChain(NVClass.BlockData NewBlock)
         {
-            /*
+            aşağısı - kapalı kod bloğu 
+            aşağısı - kapalı kod bloğu 
+            aşağısı - kapalı kod bloğu 
             if (NewBlock.prev.Length < 20)
             {
                 NP.Info("Block Added To Chain -> " +
@@ -623,7 +629,10 @@ namespace Notus.Block
                     NewBlock.prev.Substring(0,20)
                 );
             }
-            */
+            yukarısı - kapalı kod bloğu 
+            yukarısı - kapalı kod bloğu 
+            yukarısı - kapalı kod bloğu 
+
             BS_Storage.AddSync(NewBlock);
 
             string rawDataStr = Notus.Toolbox.Text.RawCipherData2String(
@@ -671,7 +680,7 @@ namespace Notus.Block
         }
         public bool Add(NVS.PoolBlockRecordStruct? PreBlockData, bool addedToPoolDb = true)
         {
-            //Console.WriteLine("Add To Pool -> " + PreBlockData.uid);
+            Console.WriteLine("Add To Pool -> " + PreBlockData.uid);
             // burada kuyruğa eklenen her iş
             // diğer nodelara da dağıtılacak
 
@@ -829,3 +838,4 @@ namespace Notus.Block
         }
     }
 }
+*/

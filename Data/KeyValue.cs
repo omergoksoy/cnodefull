@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 using ND = Notus.Date;
-using NP = Notus.Print;
 using NI = Notus.IO;
 using NNT = Notus.Network.Text;
+using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
@@ -16,23 +16,19 @@ namespace Notus.Data
         private string PoolName = string.Empty;
         private string TempPath = string.Empty;
         private string DirPath = string.Empty;
+
         private NVS.KeyValueSettings ObjSettings = new();
         private bool TimerRunning = false;
         private Notus.Threads.Timer TimerObj = new();
         private Notus.Data.Sql SqlObj = new();
         private ConcurrentDictionary<string, NVS.ValueTimeStruct> ValueList = new();
-        private ConcurrentQueue<NVS.KeyValueDataList> DeleteKeyList = new();
-        private ConcurrentQueue<NVS.KeyValueDataList> SetValueList = new();
+
+        private ConcurrentQueue<NVS.KeyValueDataList> DataValueList = new();
         public ConcurrentDictionary<string, NVS.ValueTimeStruct> List
         {
             get { return ValueList; }
         }
 
-        public void Print()
-        {
-            //Console.WriteLine(JsonSerializer.Serialize(ValueList));
-            File.WriteAllText("deneme.cache", JsonSerializer.Serialize(ValueList));
-        }
         private void AddToMemoryList(string key, string value)
         {
             //ulong exactTime = NVG.NOW.Int;
@@ -51,14 +47,14 @@ namespace Notus.Data
                 ValueList[key].Value = value;
             }
         }
-        public int LoadFromDisk()
+        private int LoadFromDisk()
         {
             SortedDictionary<ulong, string> setFileOrder = new();
-            string[] setList =NI.GetFileList(TempPath, "set");
-            SetValueList.Clear();
-            foreach(string setFilename in setList)
+            string[] dataList = NI.GetFileList(TempPath, "data");
+            DataValueList.Clear();
+            foreach (string setFilename in dataList)
             {
-                ulong fileTime=ND.ToLong(File.GetCreationTime(setFilename));
+                ulong fileTime = ND.ToLong(File.GetCreationTime(setFilename));
                 bool innerLoop = false;
                 while (innerLoop == false)
                 {
@@ -75,63 +71,28 @@ namespace Notus.Data
             }
             while (setFileOrder.Count > 0)
             {
-                var firstItem=setFileOrder.First();
+                var firstItem = setFileOrder.First();
                 string setDataText = System.IO.File.ReadAllText(firstItem.Value);
                 try
                 {
                     NVS.KeyValueDataList? storeObj = JsonSerializer.Deserialize<NVS.KeyValueDataList>(setDataText);
                     if (storeObj != null)
                     {
-                        SetValueList.Enqueue(storeObj);
+                        DataValueList.Enqueue(storeObj);
                     }
                     else
                     {
                         NI.DeleteFile(firstItem.Value);
                     }
                 }
-                catch {
+                catch
+                {
                     NI.DeleteFile(firstItem.Value);
                 }
                 setFileOrder.Remove(firstItem.Key);
             }
 
-            SortedDictionary<ulong, string> delFileOrder = new();
-            string[] delList = NI.GetFileList(TempPath, "del");
-            DeleteKeyList.Clear();
-            foreach (string delFilename in delList)
-            {
-                ulong fileTime = ND.ToLong(File.GetCreationTime(delFilename));
-                bool innerLoop = false;
-                while (innerLoop == false)
-                {
-                    if (delFileOrder.ContainsKey(fileTime) == true)
-                    {
-                        fileTime++;
-                        innerLoop = true;
-                    }
-                    else
-                    {
-                        delFileOrder.Add(fileTime, delFilename);
-                    }
-                }
-            }
-            while (delFileOrder.Count > 0)
-            {
-                var firstItem = delFileOrder.First();
-                string setDataText = System.IO.File.ReadAllText(firstItem.Value);
-                try
-                {
-                    NVS.KeyValueDataList? storeObj = JsonSerializer.Deserialize<NVS.KeyValueDataList>(setDataText);
-                    if (storeObj != null)
-                    {
-                        DeleteKeyList.Enqueue(storeObj);
-                    }
-                }
-                catch { }
-                delFileOrder.Remove(firstItem.Key);
-            }
-
-            return setList.Length + delList.Length;
+            return dataList.Length;
         }
         public void SetSettings(NVS.KeyValueSettings settings)
         {
@@ -144,7 +105,7 @@ namespace Notus.Data
                 }
             }
 
-            ObjSettings.ResetTable= settings.ResetTable;
+            ObjSettings.ResetTable = settings.ResetTable;
             ObjSettings.Path = settings.Path;
             ObjSettings.Name = settings.Name;
 
@@ -161,8 +122,7 @@ namespace Notus.Data
             NI.CreateDirectory(TempPath);
 
             PoolName = DirPath + ObjSettings.Name + ".db";
-            DeleteKeyList.Clear();
-            SetValueList.Clear();
+            DataValueList.Clear();
 
             SqlObj.Open(PoolName);
             try
@@ -174,10 +134,10 @@ namespace Notus.Data
             }
             catch { }
 
-            int timerInterval= 100;
-            if(ObjSettings.ResetTable==false)
+            int timerInterval = 100;
+            if (ObjSettings.ResetTable == false)
             {
-                int totalRecord=LoadFromDisk();
+                int totalRecord = LoadFromDisk();
                 if (totalRecord > 10)
                 {
                     timerInterval = 5;
@@ -195,20 +155,12 @@ namespace Notus.Data
                 Clear();
             }
         }
-        public KeyValue()
-        {
-        }
-        public KeyValue(NVS.KeyValueSettings settings)
-        {
-            SetSettings(settings);
-        }
         public void Clear()
         {
             if (SettingsDefined == false)
                 return;
 
-            DeleteKeyList.Clear();
-            SetValueList.Clear();
+            DataValueList.Clear();
             Thread.Sleep(100);
 
             ValueList.Clear();
@@ -218,43 +170,29 @@ namespace Notus.Data
             }
             catch { }
 
-            NI.DeleteAllFileInsideDirectory(TempPath, "set");
-            NI.DeleteAllFileInsideDirectory(TempPath, "del");
+            NI.DeleteAllFileInsideDirectory(TempPath, "data");
         }
-        public void Each(System.Action<string, string> incomeAction,
-            int UseThisNumberAsCountOrMiliSeconds = 1000,
-            Notus.Variable.Enum.MempoolEachRecordLimitType UseThisNumberType = Notus.Variable.Enum.MempoolEachRecordLimitType.Count
-        )
+        public void Each(System.Action<string, string> incomeAction)
         {
-            if (ValueList.Count == 0)
-            {
-                return;
-            }
-            KeyValuePair<string, NVS.ValueTimeStruct>[]? tmpObj_DataList = ValueList.ToArray();
-            DateTime startTime = DateTime.Now;
-            int recordCount = 0;
-            for (int i = 0; i < tmpObj_DataList.Count(); i++)
-            {
-                if (UseThisNumberAsCountOrMiliSeconds > 0)
+            string valueKeyText = string.Empty;
+            string valueResultText = string.Empty;
+            SqlObj.Select("key_value",
+                (Dictionary<string, string> rList) =>
                 {
-                    if (UseThisNumberType == Notus.Variable.Enum.MempoolEachRecordLimitType.Count)
+                    foreach (KeyValuePair<string, string> entry in rList)
                     {
-                        recordCount++;
-                        if (recordCount > UseThisNumberAsCountOrMiliSeconds)
+                        if (entry.Key == "key")
                         {
-                            break;
+                            valueKeyText = entry.Value;
+                        }
+                        if (entry.Key == "value")
+                        {
+                            valueResultText = entry.Value;
                         }
                     }
-                    else
-                    {
-                        if ((DateTime.Now - startTime).TotalMilliseconds > UseThisNumberAsCountOrMiliSeconds)
-                        {
-                            break;
-                        }
-                    }
-                }
-                incomeAction(tmpObj_DataList[i].Key, tmpObj_DataList[i].Value.Value);
-            }
+                    incomeAction(valueKeyText, valueResultText);
+                }, new List<string>() { "key", "value" }
+            );
         }
         public string Get(string key)
         {
@@ -283,62 +221,64 @@ namespace Notus.Data
             AddToMemoryList(key, resultText);
             return resultText;
         }
-
-        /*
         public void Delete(string key)
         {
-            if (ValueList.ContainsKey(key) == true)
-                ValueList.TryRemove(key, out _);
+            ValueList.TryRemove(key, out _);
             Task.Run(() =>
             {
-                NVS.KeyValueDataList storeObj = new NVS.KeyValueDataList()
+                StoreObject(new NVS.KeyValueDataList()
                 {
+                    Set = false,
                     Key = key,
                     Value = "",
                     Time = DateTime.UtcNow
-                };
-
-                File.WriteAllText(
-                    FileName(key, storeObj.Time, false),
-                    JsonSerializer.Serialize(storeObj)
-                );
-
-                DeleteKeyList.Enqueue(storeObj);
+                });
             });
         }
-        */
-
+        public void Set(string key, string value, bool onlyMemory)
+        {
+            if (onlyMemory == true)
+            {
+                AddToMemoryList(key, value);
+            }
+            else
+            {
+                Set(key, value);
+            }
+        }
+        private void StoreObject(NVS.KeyValueDataList storeObj)
+        {
+            bool fileWritten = false;
+            while (fileWritten == false)
+            {
+                try
+                {
+                    File.WriteAllText(
+                        FileName(storeObj.Key, storeObj.Time, true),
+                        JsonSerializer.Serialize(storeObj)
+                    );
+                    fileWritten = true;
+                }
+                catch { }
+                if (fileWritten == false)
+                {
+                    Thread.Sleep(10);
+                }
+            }
+            DataValueList.Enqueue(storeObj);
+        }
         public void Set(string key, string value)
         {
             AddToMemoryList(key, value);
             Task.Run(() =>
             {
-                NVS.KeyValueDataList storeObj = new NVS.KeyValueDataList()
+                StoreObject(new NVS.KeyValueDataList()
                 {
+                    Set = true,
                     Key = key,
                     Value = value,
                     Time = DateTime.UtcNow
-                };
-                bool fileWritten = false;
-                while (fileWritten == false)
-                {
-
-                    try
-                    {
-
-                        File.WriteAllText(
-                            FileName(key, storeObj.Time, true),
-                            JsonSerializer.Serialize(storeObj)
-                        );
-                        fileWritten = true;
-                    }
-                    catch { }
-                    if (fileWritten == false)
-                    {
-                        Thread.Sleep(10);
-                    }
-                }
-                SetValueList.Enqueue(storeObj);
+                });
             });
         }
         private void SetValueToDbFunction()
@@ -346,70 +286,68 @@ namespace Notus.Data
             if (TimerRunning == false)
             {
                 TimerRunning = true;
-                TimerObj.SetInterval(DeleteKeyList.Count > 10 || SetValueList.Count > 10 ? 5 : 100);
+                TimerObj.SetInterval(DataValueList.Count > 10 ? 5 : 100);
 
                 // burada silinecek kayıtlar kontrol ediliyor...
-                if (DeleteKeyList.TryDequeue(out NVS.KeyValueDataList? deleteResult))
+                if (DataValueList.TryDequeue(out NVS.KeyValueDataList? dataResult))
                 {
-                    if (deleteResult != null)
+                    if (dataResult != null)
                     {
                         if (SqlObj != null)
                         {
-                            bool deleteResultVal = SqlObj.Delete("key_value", new Dictionary<string, string>(){
-                                { "key", deleteResult.Key }
-                            });
-                            if (deleteResultVal == true)
+                            if (dataResult.Set == true)
                             {
-                                File.Delete(FileName(deleteResult.Key, deleteResult.Time, false));
+                                bool insertStatus = false, updateStatus = false, deletFile = true;
+                                try
+                                {
+                                    insertStatus = SqlObj.Insert("key_value", new Dictionary<string, string>(){
+                                        { "key", dataResult.Key},
+                                        { "value", dataResult.Value}
+                                    });
+                                }
+                                catch { }
+                                if (insertStatus == false)
+                                {
+                                    try
+                                    {
+                                        updateStatus = SqlObj.Update("key_value",
+                                            new Dictionary<string, string>(){
+                                        { "value", dataResult.Value }
+                                            },
+                                            new Dictionary<string, string>(){
+                                        { "key",dataResult.Key}
+                                            }
+                                        );
+                                        if (updateStatus == false)
+                                        {
+                                            deletFile = false;
+                                            DataValueList.Enqueue(dataResult);
+                                        }
+                                    }
+                                    catch { }
+                                }
+
+                                if (deletFile == true)
+                                {
+                                    File.Delete(FileName(dataResult.Key, dataResult.Time, true));
+                                }
                             }
                             else
                             {
-                                DeleteKeyList.Enqueue(deleteResult);
-                            }
-                        }
-                    }
-                }
-
-                //burada eklenecek veya güncellenecek kayıtlar kontrol ediliyor...
-                if (SetValueList.TryDequeue(out NVS.KeyValueDataList? setResult))
-                {
-                    if (setResult != null)
-                    {
-                        if (SqlObj != null)
-                        {
-                            bool insertStatus = false, updateStatus = false, deletFile = true;
-                            try
-                            {
-                                insertStatus = SqlObj.Insert("key_value", new Dictionary<string, string>(){
-                                { "key", setResult.Key},
-                                { "value", setResult.Value}
-                            });
-                            }
-                            catch { }
-                            if (insertStatus == false)
-                            {
-                                try
-                                {
-                                    updateStatus = SqlObj.Update("key_value",
-                                        new Dictionary<string, string>(){
-                                        { "value", setResult.Value }
-                                        },
-                                        new Dictionary<string, string>(){
-                                        { "key",setResult.Key}
-                                        }
-                                    );
-                                    if (updateStatus == false)
-                                    {
-                                        deletFile = false;
-                                        SetValueList.Enqueue(setResult);
+                                bool deleteResultVal = SqlObj.Delete(
+                                    "key_value",
+                                    new Dictionary<string, string>(){
+                                        { "key", dataResult.Key }
                                     }
+                                );
+                                if (deleteResultVal == true)
+                                {
+                                    File.Delete(FileName(dataResult.Key, dataResult.Time, false));
                                 }
-                                catch { }
-                            }
-
-                            if (deletFile == true)
-                            {
-                                File.Delete(FileName(setResult.Key, setResult.Time, true));
+                                else
+                                {
+                                    DataValueList.Enqueue(dataResult);
+                                }
                             }
                         }
                     }
@@ -429,8 +367,15 @@ namespace Notus.Data
                 exactTime.ToString(NVC.DefaultDateTimeFormatText + "ff") +
                 "_" +
                 hexKey +
-                "." + (setFile == true ? "set" : "del");
+                ".data";
             return dataLockFileName;
+        }
+        public KeyValue()
+        {
+        }
+        public KeyValue(NVS.KeyValueSettings settings)
+        {
+            SetSettings(settings);
         }
         ~KeyValue()
         {
@@ -438,37 +383,17 @@ namespace Notus.Data
         }
         public void Dispose()
         {
-            DeleteKeyList.Clear();
-            SetValueList.Clear();
+            DataValueList.Clear();
             ValueList.Clear();
-
             if (SqlObj != null)
             {
-                try
-                {
-                    SqlObj.Close();
-                }
-                catch { }
-
-                try
-                {
-                    SqlObj.Dispose();
-                }
-                catch { }
+                try { SqlObj.Close(); } catch { }
+                try { SqlObj.Dispose(); } catch { }
             }
             if (TimerObj != null)
             {
-                try
-                {
-                    TimerObj.Close();
-                }
-                catch { }
-
-                try
-                {
-                    TimerObj.Dispose();
-                }
-                catch { }
+                try { TimerObj.Close(); } catch { }
+                try { TimerObj.Dispose(); } catch { }
             }
         }
     }
