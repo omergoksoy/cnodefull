@@ -41,11 +41,7 @@ namespace Notus.Coin
 
             string ReceiverWalletKey = IncomeData.UrlList[1];
 
-            if(
-                ReceiverWalletKey.Length!=NVC.SingleWalletTextLength
-                ||
-                ReceiverWalletKey.Length != NVC.MultiWalletTextLength
-            )
+            if (ReceiverWalletKey.Length != NVC.SingleWalletTextLength)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
                 {
@@ -89,7 +85,7 @@ namespace Notus.Coin
                     Result = NVE.BlockStatusCode.WalletNotAllowed
                 });
             }
-            
+
             // eğer cüzdan başka bir işlem tarafından kilitli ise hata gönderecek
             if (NGF.Balance.WalletUsageAvailable(ReceiverWalletKey) == false)
             {
@@ -153,7 +149,7 @@ namespace Notus.Coin
             if (tmpAddResult == true)
             {
                 RequestList[ReceiverWalletKey].Add(tmpChunkIdKey);
-                LimitDb.Set(ReceiverWalletKey, 
+                LimitDb.Set(ReceiverWalletKey,
                     JsonSerializer.Serialize(RequestList[ReceiverWalletKey])
                 );
                 Console.WriteLine("Set Wallet - >" + ReceiverWalletKey);
@@ -184,19 +180,19 @@ namespace Notus.Coin
             if (blockData.info.type != NVE.BlockTypeList.AirDrop)
                 return;
 
-            NVClass.BlockStruct_125? tmpLockBalance = NBD.Convert_125(blockData.cipher.data,true);
+            NVClass.BlockStruct_125? tmpLockBalance = NBD.Convert_125(blockData.cipher.data, true);
             if (tmpLockBalance != null)
             {
                 //Console.WriteLine("Process AirDrop Block");
                 foreach (var entry in tmpLockBalance.In)
                 {
-                    if (RequestList.ContainsKey(entry.Value.Wallet)==false)
+                    if (RequestList.ContainsKey(entry.Value.Wallet) == false)
                     {
                         RequestList.TryAdd(entry.Value.Wallet, new List<string>());
                     }
                     RequestList[entry.Value.Wallet].Add(entry.Key);
                     LimitDb.Set(
-                        entry.Value.Wallet, 
+                        entry.Value.Wallet,
                         JsonSerializer.Serialize(RequestList[entry.Value.Wallet])
                     );
                 }
