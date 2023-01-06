@@ -29,6 +29,10 @@ namespace Notus.Data
             get { return ValueList; }
         }
 
+        public int Count()
+        {
+            return ValueList.Count;
+        }
         private void AddToMemoryList(string key, string value)
         {
             //ulong exactTime = NVG.NOW.Int;
@@ -46,6 +50,13 @@ namespace Notus.Data
                 ValueList[key].Time = exactTime;
                 ValueList[key].Value = value;
             }
+        }
+        public void FirstLoad()
+        {
+            Each((string key, string value) =>
+            {
+                AddToMemoryList(key, value);
+            });
         }
         private int LoadFromDisk()
         {
@@ -128,8 +139,7 @@ namespace Notus.Data
             try
             {
                 SqlObj.TableExist(
-                    "key_value",
-                    "CREATE TABLE key_value ( key TEXT NOT NULL UNIQUE, value TEXT NOT NULL );"
+                    "key_value", "CREATE TABLE key_value ( key TEXT NOT NULL UNIQUE, value TEXT NOT NULL );"
                 );
             }
             catch { }
@@ -137,11 +147,11 @@ namespace Notus.Data
             int timerInterval = 100;
             if (ObjSettings.ResetTable == false)
             {
-                int totalRecord = LoadFromDisk();
-                if (totalRecord > 10)
+                if (ObjSettings.LoadFromBeginning == true)
                 {
-                    timerInterval = 5;
+                    FirstLoad();
                 }
+                timerInterval = (LoadFromDisk() > 10 ? 5 : timerInterval);
             }
 
             TimerObj.Start(timerInterval, () =>
@@ -220,6 +230,10 @@ namespace Notus.Data
 
             AddToMemoryList(key, resultText);
             return resultText;
+        }
+        public void Remove(string key)
+        {
+            Delete(key);
         }
         public void Delete(string key)
         {

@@ -57,6 +57,7 @@ key value db'sini kontrol et
 
 Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue(new NVS.KeyValueSettings()
 {
+    LoadFromBeginning = true,
     ResetTable = false,
     Path = "test",
     MemoryLimitCount = 1000,
@@ -66,11 +67,12 @@ Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue(new NVS.KeyValueSettings(
 DateTime baslangic = DateTime.Now;
 //Console.ReadLine();
 //keyValue.Set("0123456789abcdea", "deger");
+keyValue.FirstLoad();
+/*
 keyValue.Each((string blockTransactionKey, string TextBlockDataString) =>
 {
     Console.WriteLine(blockTransactionKey +" ->> " + TextBlockDataString);
 });
-/*
 */
 for (int i = 0; i < 100; i++)
 {
