@@ -15,6 +15,11 @@ using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
 namespace Notus.Block
 {
+
+    bu kitaplık üzerinde çalışmaya devam et
+    bu kitaplık üzerinde çalışmaya devam et
+    bu kitaplık üzerinde çalışmaya devam et
+    bu kitaplık üzerinde çalışmaya devam et
     public class Queue : IDisposable
     {
         private bool CheckPoolDb = false;
