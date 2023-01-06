@@ -409,9 +409,7 @@ namespace Notus.Block
 
                 if (CurrentBlockType == NVE.BlockTypeList.AirDrop)
                 {
-                    //Console.WriteLine(JsonSerializer.Serialize( TempBlockList));
-                    //Console.ReadLine();
-                    if (TempBlockList.Count > 1)
+                    if (TempBlockList.Count > 0)
                     {
                         NVClass.BlockStruct_125 tmpBlockCipherData = new Variable.Class.BlockStruct_125()
                         {
@@ -444,13 +442,10 @@ namespace Notus.Block
                             }
                         }
                         TempBlockList.Clear();
-                        //Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData, NVC.JsonSetting));
-                        //Console.ReadLine();
                         TempBlockList.Add(JsonSerializer.Serialize(tmpBlockCipherData));
                     }
-                    //Console.WriteLine(TempBlockList);
-                    //Console.ReadLine();
                 }
+
                 if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer)
                 {
                     if (TempBlockList.Count > 1)
@@ -513,15 +508,6 @@ namespace Notus.Block
             BlockStruct.info.time = Notus.Block.Key.GetTimeFromKey(BlockStruct.info.uID, true);
 
             BlockStruct.info.type = CurrentBlockType;
-            /*
-            if (CurrentBlockType == 300)
-            {
-                BlockStruct.cipher.data = LongNonceText;
-            }
-            else
-            {
-            }
-            */
             BlockStruct.cipher.data = System.Convert.ToBase64String(
                 System.Text.Encoding.ASCII.GetBytes(
                     LongNonceText
@@ -533,9 +519,9 @@ namespace Notus.Block
             {
                 removeRoolList.Add(TempPoolTransactionList[i].key);
             }
+
             //burası pooldaki kayıtların fazla birikmesi ve para transferi işlemlerinin key'lerinin örtüşmemesinden
             //dolayı eklendi
-            //Console.WriteLine("removeRoolList.Count : " + removeRoolList.Count.ToString());
             return (
                 removeRoolList,
                 new NVS.PoolBlockRecordStruct()
