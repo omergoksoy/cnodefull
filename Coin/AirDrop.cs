@@ -138,8 +138,11 @@ namespace Notus.Coin
             if (tmpAddResult == true)
             {
                 RequestList[ReceiverWalletKey].Add(tmpChunkIdKey);
-                LimitDb.Set(ReceiverWalletKey, JsonSerializer.Serialize(RequestList[ReceiverWalletKey]));
-
+                LimitDb.Set(ReceiverWalletKey, 
+                    JsonSerializer.Serialize(RequestList[ReceiverWalletKey])
+                );
+                Console.WriteLine("Set Wallet - >" + ReceiverWalletKey);
+                Console.WriteLine(JsonSerializer.Serialize(RequestList[ReceiverWalletKey]));
                 // burada transactionları belleğe alıyor böyle hızlı ulaşım sağlanıyor...
                 NVG.Cache.Transaction.Add(tmpChunkIdKey, NVE.BlockStatusCode.AddedToQueue);
 
@@ -223,6 +226,9 @@ namespace Notus.Coin
         {
             List<string>? innerRequestList = new();
             string controlStr = LimitDb.Get(walletId);
+            Console.WriteLine("Get Wallet - >" + walletId);
+
+            Console.WriteLine(controlStr);
             if (controlStr.Length > 0)
             {
                 try
