@@ -2931,6 +2931,10 @@ namespace Notus.Validator
 
         private string Request_Balance(NVS.HttpRequestDetails IncomeData)
         {
+            if (IncomeData.UrlList[1].Length != Notus.Variable.Constant.SingleWalletTextLength)
+            {
+                return JsonSerializer.Serialize(false);
+            }
             NVS.WalletBalanceStruct balanceResult = new NVS.WalletBalanceStruct()
             {
                 Balance = new Dictionary<string, Dictionary<ulong, string>>(){
@@ -2947,8 +2951,7 @@ namespace Notus.Validator
                 UID = "",
                 Wallet = IncomeData.UrlList[1],
                 RowNo = 0
-            }
-            ;
+            };
             if (IncomeData.UrlList[1].Length == Notus.Variable.Constant.SingleWalletTextLength)
             {
                 balanceResult = NGF.Balance.Get(IncomeData.UrlList[1], 0);
