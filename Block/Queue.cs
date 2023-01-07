@@ -12,6 +12,7 @@ using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
+using NTT = Notus.Toolbox.Text;
 using NVS = Notus.Variable.Struct;
 namespace Notus.Block
 {
@@ -631,7 +632,7 @@ namespace Notus.Block
             */
             BS_Storage.AddSync(NewBlock);
 
-            string rawDataStr = Notus.Toolbox.Text.RawCipherData2String(
+            string rawDataStr = NTT.RawCipherData2String(
                 NewBlock.cipher.data
             );
 
