@@ -466,7 +466,7 @@ namespace Notus.Validator
                 }  //if (CryptoTransferTimerIsRunning == false)
             }, true);  //TimerObj.Start(() =>
         }
-        private bool ControlEmptyBlockGenerationTime()
+        private bool ControlEmptyBlockGenerationTime(ulong CurrentQueueTime)
         {
             int howManySeconds = NVG.Settings.Genesis.Empty.Interval.Time;
             if (NVG.Settings.Genesis.Empty.SlowBlock.Count >= NVG.Settings.EmptyBlockCount)
@@ -493,7 +493,26 @@ namespace Notus.Validator
             {
                 NP.Success("Empty Block Executed");
                 Notus.Validator.Helper.CheckBlockAndEmptyCounter(300);
-                //NGF.BlockQueue.AddEmptyBlock();
+                NVClass.BlockData rawBlock = Notus.Variable.Class.Block.GetOrganizedEmpty(NVE.BlockTypeList.EmptyBlock);
+                rawBlock.cipher.ver = "NE";
+                rawBlock.cipher.data = System.Convert.ToBase64String(
+                    System.Text.Encoding.ASCII.GetBytes(
+                        NVG.Settings.LastBlock.info.rowNo.ToString()
+                    )
+                );
+                rawBlock.info.uID = NGF.GenerateTxUid();
+                rawBlock.info.time = NBK.GetTimeFromKey(rawBlock.info.uID, true);
+                rawBlock = NGF.BlockQueue.OrganizeBlockOrder(rawBlock);
+                NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(rawBlock, 1000);
+
+                if (ProcessBlock(PreparedBlockData, 4) == true)
+                {
+                    ValidatorQueueObj.Distrubute(
+                        rawBlock.info.rowNo,
+                        rawBlock.info.type,
+                        CurrentQueueTime
+                    );
+                }
             }
             return executeEmptyBlock;
         }
@@ -867,35 +886,13 @@ namespace Notus.Validator
                                 if (txExecuted == false)
                                 {
 
+                                    burada empty blok oluşturulması sırası geldiyse oluşturuluyor
+                                    ancak sonrasında diğer blokları oluşturmaya geçmesin
                                     if (emptyBlockChecked == false)
                                     {
-                                        generateEmptyBlock = ControlEmptyBlockGenerationTime();
+                                        generateEmptyBlock = ControlEmptyBlockGenerationTime(CurrentQueueTime);
                                         if (generateEmptyBlock == true)
                                         {
-                                            NVClass.BlockData rawBlock = Notus.Variable.Class.Block.GetOrganizedEmpty(NVE.BlockTypeList.EmptyBlock);
-                                            rawBlock.cipher.ver = "NE";
-                                            rawBlock.cipher.data = System.Convert.ToBase64String(
-                                                System.Text.Encoding.ASCII.GetBytes(
-                                                    NVG.Settings.LastBlock.info.rowNo.ToString()
-                                                )
-                                            );
-                                            rawBlock.info.uID = NGF.GenerateTxUid();
-                                            rawBlock.info.time = NBK.GetTimeFromKey(rawBlock.info.uID, true);
-                                            rawBlock = NGF.BlockQueue.OrganizeBlockOrder(rawBlock);
-                                            NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(rawBlock, 1000);
-                                            Console.WriteLine(JsonSerializer.Serialize(PreparedBlockData, NVC.JsonSetting));
-                                            Console.WriteLine("-----------------------------");
-                                            Console.WriteLine(JsonSerializer.Serialize(PreparedBlockData));
-                                            Console.WriteLine("-----------------------------");
-
-                                            if (ProcessBlock(PreparedBlockData, 4) == true)
-                                            {
-                                                ValidatorQueueObj.Distrubute(
-                                                    rawBlock.info.rowNo,
-                                                    rawBlock.info.type,
-                                                    CurrentQueueTime
-                                                );
-                                            }
                                             generateEmptyBlock = false;
                                         }
                                         emptyBlockChecked = true;
