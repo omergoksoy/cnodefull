@@ -28,6 +28,8 @@ namespace Notus.Block
         private bool CheckPoolDb = false;
         private Notus.Data.KeyValue txPool = new();
 
+        buradaki queue ve dictionary değişkenlerini kontrol ederek gereksiz olarak sil veya düzelt
+
         private ConcurrentDictionary<string, byte> PoolBlockIdList = new();
         private ConcurrentDictionary<int, List<NVS.List_PoolBlockRecordStruct>> Obj_PoolTransactionList = new();
         private Queue<NVS.List_PoolBlockRecordStruct> Queue_PoolTransaction = new();
@@ -519,16 +521,16 @@ namespace Notus.Block
                 )
             );
 
-            List<string> removeRoolList = new();
+            List<string> removePoolList = new();
             for (int i = 0; i < TempPoolTransactionList.Count; i++)
             {
-                removeRoolList.Add(TempPoolTransactionList[i].key);
+                removePoolList.Add(TempPoolTransactionList[i].key);
             }
 
             //burası pooldaki kayıtların fazla birikmesi ve para transferi işlemlerinin key'lerinin örtüşmemesinden
             //dolayı eklendi
             return (
-                removeRoolList,
+                removePoolList,
                 new NVS.PoolBlockRecordStruct()
                 {
                     type = CurrentBlockType,

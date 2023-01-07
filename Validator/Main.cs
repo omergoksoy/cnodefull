@@ -869,6 +869,11 @@ namespace Notus.Validator
                                         emptyBlockChecked = true;
                                     } // if (emptyBlockChecked == false)
 
+
+
+                                    burada blok oluşturacak listeler çekiliyor
+                                    birinci parametredeki "poolList" değişkeni işlem ID'lerinin listesini tutuyor
+
                                     (List<string>? poolList, NVS.PoolBlockRecordStruct? TmpBlockStruct) = NGF.BlockQueue.Get(
                                         ND.AddMiliseconds(CurrentQueueTime, NVC.BlockListeningForPoolTime)
                                     );
