@@ -55,6 +55,7 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 key value db'sini kontrol et
 */
 
+/*
 Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue(new NVS.KeyValueSettings()
 {
     LoadFromBeginning = true,
@@ -68,7 +69,6 @@ DateTime baslangic = DateTime.Now;
 Console.WriteLine(JsonSerializer.Serialize(keyValue.GetList()));
 Console.ReadLine();
 //keyValue.Set("0123456789abcdea", "deger");
-/*
 keyValue.FirstLoad();
 keyValue.Each((string blockTransactionKey, string TextBlockDataString) =>
 {
@@ -95,10 +95,10 @@ Console.WriteLine(rrr);
 rrr = keyValue.Get("deneme-100");
 Console.WriteLine(rrr);
 
+Console.ReadLine();
+Console.ReadLine();
+Console.ReadLine();
 */
-Console.ReadLine();
-Console.ReadLine();
-Console.ReadLine();
 /*
 */
 
