@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using Notus.Block;
+using System.Collections.Concurrent;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 using ND = Notus.Date;
@@ -29,6 +30,15 @@ namespace Notus.Data
             get { return ValueList; }
         }
 
+        public Dictionary<string,string> GetList()
+        {
+            Dictionary<string, string> resultList = new();
+            foreach(var item in ValueList)
+            {
+                resultList.Add(item.Key, item.Value.Value);
+            }
+            return resultList;
+        }
         public int Count()
         {
             return ValueList.Count;
@@ -116,6 +126,7 @@ namespace Notus.Data
                 }
             }
 
+            ObjSettings.LoadFromBeginning = settings.LoadFromBeginning;
             ObjSettings.ResetTable = settings.ResetTable;
             ObjSettings.Path = settings.Path;
             ObjSettings.Name = settings.Name;

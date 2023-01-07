@@ -16,17 +16,19 @@ using NVS = Notus.Variable.Struct;
 namespace Notus.Block
 {
 
-    bu kitaplık üzerinde çalışmaya devam et
-    bu kitaplık üzerinde çalışmaya devam et
-    bu kitaplık üzerinde çalışmaya devam et
-    bu kitaplık üzerinde çalışmaya devam et
+    //bu kitaplık üzerinde çalışmaya devam et
+    //bu kitaplık üzerinde çalışmaya devam et
+    //bu kitaplık üzerinde çalışmaya devam et
+    ////bu kitaplık üzerinde çalışmaya devam et
     public class Queue : IDisposable
     {
-        private bool CheckPoolDb = false;
-        private Notus.Data.KeyValue poolList = new();
         private Notus.Block.Storage BS_Storage;
+
+        private bool CheckPoolDb = false;
+        private Notus.Data.KeyValue txPool = new();
+
         private ConcurrentDictionary<string, byte> PoolBlockIdList = new();
-        private ConcurrentDictionary<int, List<NVS.List_PoolBlockRecordStruct>> Obj_PoolTransactionList =new ();
+        private ConcurrentDictionary<int, List<NVS.List_PoolBlockRecordStruct>> Obj_PoolTransactionList = new();
         private Queue<NVS.List_PoolBlockRecordStruct> Queue_PoolTransaction = new();
 
         //bu foknsiyonun görevi blok sırası ve önceki değerlerini blok içeriğine eklemek
@@ -83,14 +85,14 @@ namespace Notus.Block
                 return (null, null);
             }
 
-            int diffBetween = System.Convert.ToInt32(poolList.Count() / Queue_PoolTransaction.Count);
+            int diffBetween = System.Convert.ToInt32(txPool.Count() / Queue_PoolTransaction.Count);
             if (diffBetween > 10)
             {
                 CheckPoolDb = true;
             }
             else
             {
-                if (poolList.Count() < 10)
+                if (txPool.Count() < 10)
                 {
                     CheckPoolDb = true;
                 }
@@ -586,7 +588,7 @@ namespace Notus.Block
                 for (int i = 0; i < innerPoolList.Count; i++)
                 {
                     Console.WriteLine("Remove Key From DB : " + innerPoolList[i]);
-                    poolList.Remove(innerPoolList[i]);
+                    txPool.Remove(innerPoolList[i]);
                 }
             }
         }
@@ -662,13 +664,13 @@ namespace Notus.Block
             }
             //Console.WriteLine("Control-Point-a055");
             //Console.WriteLine("Remove Key From Pool : " + RemoveKeyStr);
-            poolList.Remove(RemoveKeyStr);
+            txPool.Remove(RemoveKeyStr);
         }
 
         public void Reset()
         {
             Notus.Archive.ClearBlocks(NVG.Settings);
-            poolList.Clear();
+            txPool.Clear();
             Queue_PoolTransaction.Clear();
             Obj_PoolTransactionList.Clear();
         }
@@ -689,9 +691,16 @@ namespace Notus.Block
                     keyStr = "";
                 }
             }
-            if (keyStr.Length > 0 && addedToPoolDb == true)
+            if (keyStr.Length > 0)
             {
-                poolList.Set(keyStr, JsonSerializer.Serialize(PreBlockData));
+                if (addedToPoolDb == true)
+                {
+                    txPool.Set(keyStr, JsonSerializer.Serialize(PreBlockData));
+                }
+                else
+                {
+                    txPool.Set(keyStr, JsonSerializer.Serialize(PreBlockData), true);
+                }
             }
             return true;
         }
@@ -740,7 +749,7 @@ namespace Notus.Block
             if (forceToRun == true || CheckPoolDb == true)
             {
                 CheckPoolDb = false;
-                poolList.Each((string blockTransactionKey, string TextBlockDataString) =>
+                txPool.Each((string blockTransactionKey, string TextBlockDataString) =>
                 {
                     if (PoolBlockIdList.ContainsKey(blockTransactionKey) == false)
                     {
@@ -761,7 +770,7 @@ namespace Notus.Block
             BS_Storage = new Notus.Block.Storage(false);
             BS_Storage.Start();
 
-            poolList.SetSettings(new NVS.KeyValueSettings()
+            txPool.SetSettings(new NVS.KeyValueSettings()
             {
                 LoadFromBeginning = true,
                 ResetTable = false,
@@ -786,7 +795,7 @@ namespace Notus.Block
         {
             try
             {
-                poolList.Dispose();
+                txPool.Dispose();
             }
             catch (Exception err)
             {
