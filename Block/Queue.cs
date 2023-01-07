@@ -262,34 +262,7 @@ namespace Notus.Block
                 return (null, null);
             }
 
-            NVClass.BlockData BlockStruct = NVClass.Block.GetEmpty();
-
-            if (NVC.BlockNonceType.ContainsKey(CurrentBlockType) == true)
-            {
-                BlockStruct.info.nonce.type = NVC.BlockNonceType[CurrentBlockType];     // 1-Slide, 2-Bounce
-            }
-            else
-            {
-                BlockStruct.info.nonce.type = NVC.Default_BlockNonceType;     // 1-Slide, 2-Bounce
-            }
-
-            if (NVC.BlockNonceMethod.ContainsKey(CurrentBlockType) == true)
-            {
-                BlockStruct.info.nonce.method = NVC.BlockNonceMethod[CurrentBlockType];   // which hash algorithm
-            }
-            else
-            {
-                BlockStruct.info.nonce.method = NVC.Default_BlockNonceMethod;   // which hash algorithm
-            }
-
-            if (NVC.BlockDifficulty.ContainsKey(CurrentBlockType) == true)
-            {
-                BlockStruct.info.nonce.difficulty = NVC.BlockDifficulty[CurrentBlockType];  // block difficulty level
-            }
-            else
-            {
-                BlockStruct.info.nonce.difficulty = NVC.Default_BlockDifficulty;  // block difficulty level
-            }
+            NVClass.BlockData BlockStruct = NVClass.Block.GetOrganizedEmpty(CurrentBlockType);
 
             string LongNonceText = string.Empty;
 

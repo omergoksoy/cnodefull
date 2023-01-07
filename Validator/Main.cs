@@ -883,22 +883,28 @@ namespace Notus.Validator
                                     //empty block oluşturma işlemi esnasında burada geçerli empty blok değerleri oluşturulup 
                                     // get işlemi yapılmadan ve listeye eklenmeden ilerlenecek
                                     //generateEmptyBlock
+                                    if (generateEmptyBlock == true)
+                                    {
+                                        Console.WriteLine("You Must Generate Empty Block");
+                                        Console.WriteLine("You Must Generate Empty Block");
+                                        Console.WriteLine("You Must Generate Empty Block");
+                                    }
                                     (List<string>? poolList, NVS.PoolBlockRecordStruct? TmpBlockStruct) = NGF.BlockQueue.Get(
                                         ND.AddMiliseconds(CurrentQueueTime, NVC.BlockListeningForPoolTime)
                                     );
                                     if (TmpBlockStruct != null)
                                     {
+                                        NVClass.BlockData? PreBlockData = JsonSerializer.Deserialize<NVClass.BlockData>(TmpBlockStruct.data);
+                                        /*
                                         if (TmpBlockStruct.type == 300)
                                         {
                                             Console.WriteLine("empty block yapısı");
                                             Console.WriteLine(JsonSerializer.Serialize(TmpBlockStruct));
                                             Console.WriteLine("empty block yapısı");
                                         }
-                                    }
-                                    if (TmpBlockStruct != null)
-                                    {
+                                        */
+
                                         txExecuted = true;
-                                        NVClass.BlockData? PreBlockData = JsonSerializer.Deserialize<NVClass.BlockData>(TmpBlockStruct.data);
                                         if (PreBlockData != null)
                                         {
                                             PreBlockData = NGF.BlockQueue.OrganizeBlockOrder(PreBlockData);

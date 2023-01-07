@@ -1,11 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using NVC = Notus.Variable.Constant;
 
 namespace Notus.Variable.Class
 {
     public static class Block
     {
+        public static BlockData GetOrganizedEmpty(int blockType)
+        {
+            BlockData rawBlock = GetEmpty();
+            rawBlock.info.nonce.type = NVC.Default_BlockNonceType;     // 1-Slide, 2-Bounce
+            if (NVC.BlockNonceType.ContainsKey(blockType) == true)
+            {
+                rawBlock.info.nonce.type = NVC.BlockNonceType[blockType];     // 1-Slide, 2-Bounce
+            }
+
+            rawBlock.info.nonce.method = NVC.Default_BlockNonceMethod;   // which hash algorithm
+            if (NVC.BlockNonceMethod.ContainsKey(blockType) == true)
+            {
+                rawBlock.info.nonce.method = NVC.BlockNonceMethod[blockType];   // which hash algorithm
+            }
+
+            rawBlock.info.nonce.difficulty = NVC.Default_BlockDifficulty;  // block difficulty level
+            if (NVC.BlockDifficulty.ContainsKey(blockType) == true)
+            {
+                rawBlock.info.nonce.difficulty = NVC.BlockDifficulty[blockType];  // block difficulty level
+            }
+
+            return rawBlock;
+        }
         public static BlockData GetEmpty()
         {
             return new BlockData()
@@ -111,7 +135,7 @@ namespace Notus.Variable.Class
         public Dictionary<int, string> data { get; set; }
         public Dictionary<int, string> info { get; set; }
     }
-    
+
     //group-no-exception
     public class ValidatorGroupType
     {
@@ -120,7 +144,7 @@ namespace Notus.Variable.Class
 
         // grup zaman bilgisi, işlemi yapan public key
         public Dictionary<ulong, string> queue { get; set; }
-        
+
         //bu değişken ile belirlenen zamanda işlem yapmayan validator'un göndereceği zaman ve imza değeri burada olacak
         public Dictionary<ulong, string> notWorkList { get; set; }
     }
