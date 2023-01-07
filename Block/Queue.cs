@@ -513,15 +513,16 @@ namespace Notus.Block
                 )
             );
 
-            Console.WriteLine("-----------------------------------------------");
-            Console.WriteLine(JsonSerializer.Serialize(TempPoolTransactionList));
-            Console.WriteLine(JsonSerializer.Serialize(removePoolList));
-            Console.WriteLine("-----------------------------------------------");
             List<string> removePoolList = new();
             for (int i = 0; i < TempPoolTransactionList.Count; i++)
             {
                 removePoolList.Add(TempPoolTransactionList[i].key);
             }
+
+            Console.WriteLine("-----------------------------------------------");
+            Console.WriteLine(JsonSerializer.Serialize(TempPoolTransactionList));
+            Console.WriteLine(JsonSerializer.Serialize(removePoolList));
+            Console.WriteLine("-----------------------------------------------");
 
             //burası pooldaki kayıtların fazla birikmesi ve para transferi işlemlerinin key'lerinin örtüşmemesinden
             //dolayı eklendi
