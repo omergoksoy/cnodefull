@@ -1,14 +1,14 @@
 ﻿using System.Collections.Concurrent;
 using System.Numerics;
 using System.Text.Json;
+using NBD = Notus.Block.Decrypt;
 using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
+using NVClass = Notus.Variable.Class;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
-using NBD = Notus.Block.Decrypt;
-using NVClass = Notus.Variable.Class;
 namespace Notus.Validator
 {
     public class Api : IDisposable
@@ -170,7 +170,7 @@ namespace Notus.Validator
 
             if (Obj_BlockData.info.type == NVE.BlockTypeList.CryptoTransfer)
             {
-                NVClass.BlockStruct_120? tmpBalanceVal = NBD.Convert_120(Obj_BlockData.cipher.data,true);
+                NVClass.BlockStruct_120? tmpBalanceVal = NBD.Convert_120(Obj_BlockData.cipher.data, true);
                 if (tmpBalanceVal != null)
                 {
                     foreach (KeyValuePair<string, NVClass.BlockStruct_120_In_Struct> entry in tmpBalanceVal.In)
@@ -1962,10 +1962,11 @@ namespace Notus.Validator
 
                     tmpTokenObj.Out = tmpNewGeneratorBalance.Balance;
 
+                    string tmpChunkIdKey = NGF.GenerateTxUid();
                     //private string Request_GenerateToken(NVS.HttpRequestDetails IncomeData)
                     bool tmpAddResult = NGF.BlockQueue.Add(new NVS.PoolBlockRecordStruct()
                     {
-                        uid = NGF.GenerateTxUid(),
+                        uid = tmpChunkIdKey,
                         type = NVE.BlockTypeList.TokenGeneration,
                         data = JsonSerializer.Serialize(tmpTokenObj)
                     });
@@ -2752,6 +2753,7 @@ namespace Notus.Validator
 
             bool tmpAddResult = NGF.BlockQueue.Add(new NVS.PoolBlockRecordStruct()
             {
+                uid = tmpChunkIdKey,
                 type = NVE.BlockTypeList.MultiWalletContract,
                 data = JsonSerializer.Serialize(tmpLockObj)
             });
@@ -3309,7 +3311,7 @@ namespace Notus.Validator
                 {
                     BlockDbObj.Dispose();
                 }
-                catch{}
+                catch { }
             }
         }
     }

@@ -65,18 +65,12 @@ namespace Notus.Variable
         public static TimeStruct NOW { get; set; }
         public static Notus.Globals.Variable.NodeQueueList NodeQueue { get; set; }
         public static ConcurrentDictionary<string, NVS.NodeQueueInfo> NodeList { get; set; }
-        public static Notus.Globals.Variable.CacheClass Cache { get; set; }
         public static Notus.Globals.Variable.Settings Settings { get; set; }
         static Globals()
         {
             OtherValidatorSelectedMe = false;
             LocalBlockLoaded = false;
             GroupNo = 1;
-            Cache = new Notus.Globals.Variable.CacheClass()
-            {
-                Transaction = new Notus.Cache.Transaction()
-            };
-
             Settings = new Notus.Globals.Variable.Settings()
             {
                 SyncBlockIsDone = false,
@@ -145,7 +139,8 @@ namespace Notus.Variable
                 },
                 BlockOrder = new Notus.Block.Order(),
                 BlockSign = new Notus.Block.Sign(),
-                BlockPrev = new Notus.Block.Prev()
+                BlockPrev = new Notus.Block.Prev(),
+                TxStatus = new Notus.Block.TxStatus()
             };
         }
 

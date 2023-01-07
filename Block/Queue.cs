@@ -8,11 +8,11 @@ using System.Text.Json;
 using NBD = Notus.Block.Decrypt;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
+using NTT = Notus.Toolbox.Text;
 using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
-using NTT = Notus.Toolbox.Text;
 using NVS = Notus.Variable.Struct;
 namespace Notus.Block
 {
@@ -26,12 +26,15 @@ namespace Notus.Block
         private Notus.Block.Storage BS_Storage;
 
         private bool CheckPoolDb = false;
+
+        // tüm işlemlerin kayıt altına alındığı Key-Value DB
         private Notus.Data.KeyValue txPool = new();
 
-        buradaki queue ve dictionary değişkenlerini kontrol ederek gereksiz olarak sil veya düzelt
-
+        //buradaki queue ve dictionary değişkenlerini kontrol ederek gereksiz olarak sil veya düzelt
         private ConcurrentDictionary<string, byte> PoolBlockIdList = new();
+        
         private ConcurrentDictionary<int, List<NVS.List_PoolBlockRecordStruct>> Obj_PoolTransactionList = new();
+        
         private Queue<NVS.List_PoolBlockRecordStruct> Queue_PoolTransaction = new();
 
         //bu foknsiyonun görevi blok sırası ve önceki değerlerini blok içeriğine eklemek
@@ -287,16 +290,7 @@ namespace Notus.Block
             string LongNonceText = string.Empty;
 
             BlockStruct.cipher.ver = "NE";
-            if (transactionId.Length == 0)
-            {
-                BlockStruct.info.uID = NGF.GenerateTxUid();
-                //BlockStruct.info.uID = Notus.Block.Key.Generate(GetNtpTime(), NVG.Settings.NodeWallet.WalletKey);
-            }
-            else
-            {
-                BlockStruct.info.uID = transactionId;
-            }
-
+            BlockStruct.info.uID = (transactionId.Length == 0 ? NGF.GenerateTxUid() : transactionId);
             if (CurrentBlockType == NVE.BlockTypeList.GenesisBlock)
             {
                 LongNonceText = TempPoolTransactionList[0].data;
@@ -646,7 +640,7 @@ namespace Notus.Block
                 {
                     foreach (var entry in tmpLockBalance.In)
                     {
-                        NVG.Cache.Transaction.Add(entry.Key, NVE.BlockStatusCode.Completed);
+                        NVG.Settings.TxStatus.Add(entry.Key, NVE.BlockStatusCode.Completed);
                     }
                 }
             }
@@ -680,6 +674,11 @@ namespace Notus.Block
         public bool Add(NVS.PoolBlockRecordStruct PreBlockData, bool addedToPoolDb = true)
         {
             PreBlockData.uid = (PreBlockData.uid == null ? NGF.GenerateTxUid() : PreBlockData.uid);
+            PreBlockData.uid = (PreBlockData.uid.Length==0 ? NGF.GenerateTxUid() : PreBlockData.uid);
+            Console.WriteLine(JsonSerializer.Serialize(PreBlockData));
+            Console.ReadLine();
+
+
             Add2Queue(PreBlockData, PreBlockData.uid);
             string keyStr = PreBlockData.uid;
             if (PreBlockData.type == 40)
@@ -694,6 +693,7 @@ namespace Notus.Block
                     keyStr = "";
                 }
             }
+            
             if (keyStr.Length > 0)
             {
                 if (addedToPoolDb == true)
@@ -706,6 +706,7 @@ namespace Notus.Block
                 }
             }
             return true;
+            return false;
         }
 
         public void AddEmptyBlock()

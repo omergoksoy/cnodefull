@@ -154,7 +154,7 @@ namespace Notus.Coin
                 Console.WriteLine("Set Wallet - >" + ReceiverWalletKey);
                 Console.WriteLine(JsonSerializer.Serialize(RequestList[ReceiverWalletKey]));
                 // burada transactionları belleğe alıyor böyle hızlı ulaşım sağlanıyor...
-                NVG.Cache.Transaction.Add(tmpChunkIdKey, NVE.BlockStatusCode.AddedToQueue);
+                NVG.Settings.TxStatus.Add(tmpChunkIdKey, NVE.BlockStatusCode.AddedToQueue);
 
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
                 {
@@ -164,7 +164,7 @@ namespace Notus.Coin
                     Result = NVE.BlockStatusCode.AddedToQueue
                 });
             }
-            NVG.Cache.Transaction.Add(tmpChunkIdKey, NVE.BlockStatusCode.Unknown);
+            NVG.Settings.TxStatus.Add(tmpChunkIdKey, NVE.BlockStatusCode.Unknown);
             return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
             {
                 ErrorNo = 55632,

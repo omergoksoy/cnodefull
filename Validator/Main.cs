@@ -870,10 +870,12 @@ namespace Notus.Validator
                                     } // if (emptyBlockChecked == false)
 
 
-
+                                    /*
                                     burada blok oluşturacak listeler çekiliyor
                                     birinci parametredeki "poolList" değişkeni işlem ID'lerinin listesini tutuyor
-
+                                    */
+                                    //control-point
+                                    //omergoksoy
                                     (List<string>? poolList, NVS.PoolBlockRecordStruct? TmpBlockStruct) = NGF.BlockQueue.Get(
                                         ND.AddMiliseconds(CurrentQueueTime, NVC.BlockListeningForPoolTime)
                                     );
@@ -898,16 +900,6 @@ namespace Notus.Validator
                                             }
                                             else
                                             {
-                                                /*
-                                                if (PreparedBlockData.info.type == NVE.BlockTypeList.AirDrop)
-                                                {
-                                                    Console.WriteLine("if(PreparedBlockData.info.type== NVE.BlockTypeList.AirDrop)");
-                                                }
-                                                else
-                                                {
-                                                    Console.WriteLine("NGF.BlockQueue.ReloadPoolList(poolList);");
-                                                }
-                                                */
                                                 NGF.BlockQueue.ReloadPoolList(poolList);
                                             }
                                             NGF.WalletUsageList.Clear();

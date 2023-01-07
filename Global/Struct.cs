@@ -13,10 +13,6 @@ namespace Notus.Globals.Variable
 
     }
 
-    public class CacheClass
-    {
-        public Notus.Cache.Transaction Transaction { get; set; }
-    }
     public class Settings
     {
         public bool SyncBlockIsDone { get; set; }
@@ -46,7 +42,7 @@ namespace Notus.Globals.Variable
         public Notus.Block.Order BlockOrder { get; set; }
         public Notus.Block.Sign BlockSign { get; set; }
         public Notus.Block.Prev BlockPrev { get; set; }
-
+        public Notus.Block.TxStatus TxStatus { get; set; }
         public bool DebugMode { get; set; }
         public bool InfoMode { get; set; }
         public bool PrettyJson { get; set; }

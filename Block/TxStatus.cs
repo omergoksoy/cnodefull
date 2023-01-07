@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
-namespace Notus.Cache
+namespace Notus.Block
 {
-    public class Transaction : IDisposable
+    public class TxStatus : IDisposable
     {
         private Notus.Data.KeyValue keyValue = new();
         public NVE.BlockStatusCode Status(string blockUid)
@@ -40,10 +40,10 @@ namespace Notus.Cache
                 Name = "block_status"
             });
         }
-        public Transaction()
+        public TxStatus()
         {
         }
-        ~Transaction()
+        ~TxStatus()
         {
             Dispose();
         }
