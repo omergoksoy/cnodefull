@@ -886,11 +886,14 @@ namespace Notus.Validator
                                     (List<string>? poolList, NVS.PoolBlockRecordStruct? TmpBlockStruct) = NGF.BlockQueue.Get(
                                         ND.AddMiliseconds(CurrentQueueTime, NVC.BlockListeningForPoolTime)
                                     );
-                                    if (TmpBlockStruct.type == 300)
+                                    if (TmpBlockStruct != null)
                                     {
-                                        Console.WriteLine("empty block yapısı");
-                                        Console.WriteLine(JsonSerializer.Serialize(TmpBlockStruct));
-                                        Console.WriteLine("empty block yapısı");
+                                        if (TmpBlockStruct.type == 300)
+                                        {
+                                            Console.WriteLine("empty block yapısı");
+                                            Console.WriteLine(JsonSerializer.Serialize(TmpBlockStruct));
+                                            Console.WriteLine("empty block yapısı");
+                                        }
                                     }
                                     if (TmpBlockStruct != null)
                                     {
