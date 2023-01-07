@@ -884,6 +884,9 @@ namespace Notus.Validator
                                             rawBlock = NGF.BlockQueue.OrganizeBlockOrder(rawBlock);
                                             NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(rawBlock, 1000);
                                             Console.WriteLine(JsonSerializer.Serialize(PreparedBlockData, NVC.JsonSetting));
+                                            Console.WriteLine("-----------------------------");
+                                            Console.WriteLine(JsonSerializer.Serialize(PreparedBlockData));
+                                            Console.WriteLine("-----------------------------");
 
                                             if (ProcessBlock(PreparedBlockData, 4) == true)
                                             {

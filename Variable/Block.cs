@@ -10,6 +10,7 @@ namespace Notus.Variable.Class
         public static BlockData GetOrganizedEmpty(int blockType)
         {
             BlockData rawBlock = GetEmpty();
+            rawBlock.info.type = blockType;
             rawBlock.info.nonce.type = NVC.Default_BlockNonceType;     // 1-Slide, 2-Bounce
             if (NVC.BlockNonceType.ContainsKey(blockType) == true)
             {
