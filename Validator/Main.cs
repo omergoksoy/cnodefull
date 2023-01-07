@@ -894,14 +894,15 @@ namespace Notus.Validator
                                     );
                                     if (TmpBlockStruct != null)
                                     {
-                                        NVClass.BlockData? PreBlockData = JsonSerializer.Deserialize<NVClass.BlockData>(TmpBlockStruct.data);
-                                        /*
                                         if (TmpBlockStruct.type == 300)
                                         {
                                             Console.WriteLine("empty block yapısı");
                                             Console.WriteLine(JsonSerializer.Serialize(TmpBlockStruct));
                                             Console.WriteLine("empty block yapısı");
                                         }
+                                        
+                                        NVClass.BlockData? PreBlockData = JsonSerializer.Deserialize<NVClass.BlockData>(TmpBlockStruct.data);
+                                        /*
                                         */
 
                                         txExecuted = true;
