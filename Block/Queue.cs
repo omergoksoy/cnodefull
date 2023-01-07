@@ -110,14 +110,12 @@ namespace Notus.Block
 
             int CurrentBlockType = -1;
             List<string> TempWalletList = new List<string>() { NVG.Settings.NodeWallet.WalletKey };
-
             List<string> TempBlockList = new List<string>();
             List<NVS.List_PoolBlockRecordStruct> TempPoolTransactionList = new List<NVS.List_PoolBlockRecordStruct>();
             bool exitLoop = false;
             string transactionId = string.Empty;
             while (exitLoop == false)
             {
-                //NGF.UpdateUtcNowValue();
                 if (Queue_PoolTransaction.Count > 0)
                 {
                     NVS.List_PoolBlockRecordStruct? TmpPoolRecord = Queue_PoolTransaction.Peek();
@@ -515,6 +513,10 @@ namespace Notus.Block
                 )
             );
 
+            Console.WriteLine("-----------------------------------------------");
+            Console.WriteLine(JsonSerializer.Serialize(TempPoolTransactionList));
+            Console.WriteLine(JsonSerializer.Serialize(removePoolList));
+            Console.WriteLine("-----------------------------------------------");
             List<string> removePoolList = new();
             for (int i = 0; i < TempPoolTransactionList.Count; i++)
             {
@@ -664,13 +666,6 @@ namespace Notus.Block
             txPool.Remove(RemoveKeyStr);
         }
 
-        public void Reset()
-        {
-            Notus.Archive.ClearBlocks(NVG.Settings);
-            txPool.Clear();
-            Queue_PoolTransaction.Clear();
-            Obj_PoolTransactionList.Clear();
-        }
         public bool Add(NVS.PoolBlockRecordStruct PreBlockData, bool addedToPoolDb = true)
         {
             PreBlockData.uid = (PreBlockData.uid == null ? NGF.GenerateTxUid() : PreBlockData.uid);
@@ -726,7 +721,8 @@ namespace Notus.Block
 
         private void Add2Queue(NVS.PoolBlockRecordStruct PreBlockData, string BlockKeyStr)
         {
-            Console.WriteLine(PreBlockData.type.ToString() + " - " + BlockKeyStr.Substring(0, 20));
+            //Console.WriteLine(PreBlockData.type.ToString() + " - " + BlockKeyStr.Substring(0, 20));
+
             if (PoolBlockIdList.ContainsKey(BlockKeyStr) == false)
             {
                 bool added = PoolBlockIdList.TryAdd(BlockKeyStr, 1);
@@ -790,6 +786,15 @@ namespace Notus.Block
             LoadFromPoolDb(true);
             CheckPoolDb = false;
         }
+        /*
+        public void Reset()
+        {
+            Notus.Archive.ClearBlocks(NVG.Settings);
+            txPool.Clear();
+            Queue_PoolTransaction.Clear();
+            Obj_PoolTransactionList.Clear();
+        }
+        */
         public Queue()
         {
             Obj_PoolTransactionList.Clear();
