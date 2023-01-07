@@ -32,9 +32,9 @@ namespace Notus.Block
 
         //buradaki queue ve dictionary değişkenlerini kontrol ederek gereksiz olarak sil veya düzelt
         private ConcurrentDictionary<string, byte> PoolBlockIdList = new();
-        
+
         private ConcurrentDictionary<int, List<NVS.List_PoolBlockRecordStruct>> Obj_PoolTransactionList = new();
-        
+
         private Queue<NVS.List_PoolBlockRecordStruct> Queue_PoolTransaction = new();
 
         //bu foknsiyonun görevi blok sırası ve önceki değerlerini blok içeriğine eklemek
@@ -674,10 +674,15 @@ namespace Notus.Block
         public bool Add(NVS.PoolBlockRecordStruct PreBlockData, bool addedToPoolDb = true)
         {
             PreBlockData.uid = (PreBlockData.uid == null ? NGF.GenerateTxUid() : PreBlockData.uid);
-            PreBlockData.uid = (PreBlockData.uid.Length==0 ? NGF.GenerateTxUid() : PreBlockData.uid);
-            Console.WriteLine(JsonSerializer.Serialize(PreBlockData));
-            Console.ReadLine();
+            PreBlockData.uid = (PreBlockData.uid.Length == 0 ? NGF.GenerateTxUid() : PreBlockData.uid);
 
+            /*
+            // eğer bu blok tipi veya id'si daha önceden eklendiyse uid kabul edilmesin
+            if (NVG.Settings.UidTypeList.Type(PreBlockData.uid) != NVE.UidTypeCode.Unknown)
+            {
+                return false;
+            }
+            */
 
             Add2Queue(PreBlockData, PreBlockData.uid);
             string keyStr = PreBlockData.uid;
@@ -693,7 +698,7 @@ namespace Notus.Block
                     keyStr = "";
                 }
             }
-            
+
             if (keyStr.Length > 0)
             {
                 if (addedToPoolDb == true)

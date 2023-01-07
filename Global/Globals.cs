@@ -141,6 +141,7 @@ namespace Notus.Variable
                 BlockSign = new Notus.Block.Sign(),
                 BlockPrev = new Notus.Block.Prev(),
                 TxStatus = new Notus.Block.TxStatus()
+                // , UidTypeList = new Notus.Block.UidTypeList()
             };
         }
 

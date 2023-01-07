@@ -118,6 +118,12 @@ namespace Notus.Variable.Enum
         High = 2
     }
 
+    public enum UidTypeCode
+    {
+        Block = 0,
+        Transaction = 1,
+        Unknown = 9999
+    }
     public enum BlockStatusCode
     {
         AddedToQueue = 0,
@@ -150,7 +156,7 @@ namespace Notus.Variable.Enum
         UnknownTransaction = 79,
         NotSupported=65,
         TooManyRequest=44,
-        Unknown = 78
+        Unknown = 9999
     }
 
     public enum WalletTypeCode

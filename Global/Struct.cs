@@ -43,6 +43,7 @@ namespace Notus.Globals.Variable
         public Notus.Block.Sign BlockSign { get; set; }
         public Notus.Block.Prev BlockPrev { get; set; }
         public Notus.Block.TxStatus TxStatus { get; set; }
+        //public Notus.Block.UidTypeList UidTypeList { get; set; }
         public bool DebugMode { get; set; }
         public bool InfoMode { get; set; }
         public bool PrettyJson { get; set; }
