@@ -28,7 +28,13 @@ namespace Notus.Block
         private bool CheckPoolDb = false;
 
         // tüm işlemlerin kayıt altına alındığı Key-Value DB
-        private Notus.Data.KeyValue txPool = new();
+        private Notus.Data.KeyValue kvPoolDb = new();
+
+        private Queue<string> txQueue = new();
+
+
+
+
 
         //buradaki queue ve dictionary değişkenlerini kontrol ederek gereksiz olarak sil veya düzelt
         private ConcurrentDictionary<string, byte> PoolBlockIdList = new();
@@ -91,14 +97,14 @@ namespace Notus.Block
                 return (null, null);
             }
 
-            int diffBetween = System.Convert.ToInt32(txPool.Count() / Queue_PoolTransaction.Count);
+            int diffBetween = System.Convert.ToInt32(kvPoolDb.Count() / Queue_PoolTransaction.Count);
             if (diffBetween > 10)
             {
                 CheckPoolDb = true;
             }
             else
             {
-                if (txPool.Count() < 10)
+                if (kvPoolDb.Count() < 10)
                 {
                     CheckPoolDb = true;
                 }
@@ -588,7 +594,7 @@ namespace Notus.Block
                 for (int i = 0; i < innerPoolList.Count; i++)
                 {
                     Console.WriteLine("Remove Key From DB : " + innerPoolList[i]);
-                    txPool.Remove(innerPoolList[i]);
+                    kvPoolDb.Remove(innerPoolList[i]);
                 }
             }
         }
@@ -664,13 +670,22 @@ namespace Notus.Block
             }
             //Console.WriteLine("Control-Point-a055");
             //Console.WriteLine("Remove Key From Pool : " + RemoveKeyStr);
-            txPool.Remove(RemoveKeyStr);
+            kvPoolDb.Remove(RemoveKeyStr);
         }
 
         public bool Add(NVS.PoolBlockRecordStruct PreBlockData, bool addedToPoolDb = true)
         {
             PreBlockData.uid = (PreBlockData.uid == null ? NGF.GenerateTxUid() : PreBlockData.uid);
             PreBlockData.uid = (PreBlockData.uid.Length == 0 ? NGF.GenerateTxUid() : PreBlockData.uid);
+            string keyStr = PreBlockData.uid;
+            if (addedToPoolDb == true)
+            {
+                kvPoolDb.Set(keyStr, JsonSerializer.Serialize(PreBlockData));
+            }
+            else
+            {
+                kvPoolDb.Set(keyStr, JsonSerializer.Serialize(PreBlockData), true);
+            }
 
             /*
             // eğer bu blok tipi veya id'si daha önceden eklendiyse uid kabul edilmesin
@@ -681,7 +696,6 @@ namespace Notus.Block
             */
 
             Add2Queue(PreBlockData, PreBlockData.uid);
-            string keyStr = PreBlockData.uid;
             if (PreBlockData.type == 40)
             {
                 NVS.LockWalletBeforeStruct? tmpLockWalletData = JsonSerializer.Deserialize<NVS.LockWalletBeforeStruct>(PreBlockData.data);
@@ -695,17 +709,6 @@ namespace Notus.Block
                 }
             }
 
-            if (keyStr.Length > 0)
-            {
-                if (addedToPoolDb == true)
-                {
-                    txPool.Set(keyStr, JsonSerializer.Serialize(PreBlockData));
-                }
-                else
-                {
-                    txPool.Set(keyStr, JsonSerializer.Serialize(PreBlockData), true);
-                }
-            }
             return true;
             return false;
         }
@@ -755,7 +758,7 @@ namespace Notus.Block
             if (forceToRun == true || CheckPoolDb == true)
             {
                 CheckPoolDb = false;
-                txPool.Each((string blockTransactionKey, string TextBlockDataString) =>
+                kvPoolDb.Each((string blockTransactionKey, string TextBlockDataString) =>
                 {
                     if (PoolBlockIdList.ContainsKey(blockTransactionKey) == false)
                     {
@@ -776,7 +779,7 @@ namespace Notus.Block
             BS_Storage = new Notus.Block.Storage(false);
             BS_Storage.Start();
 
-            txPool.SetSettings(new NVS.KeyValueSettings()
+            kvPoolDb.SetSettings(new NVS.KeyValueSettings()
             {
                 LoadFromBeginning = true,
                 ResetTable = false,
@@ -791,7 +794,7 @@ namespace Notus.Block
         public void Reset()
         {
             Notus.Archive.ClearBlocks(NVG.Settings);
-            txPool.Clear();
+            kvPoolDb.Clear();
             Queue_PoolTransaction.Clear();
             Obj_PoolTransactionList.Clear();
         }
@@ -810,7 +813,7 @@ namespace Notus.Block
         {
             try
             {
-                txPool.Dispose();
+                kvPoolDb.Dispose();
             }
             catch (Exception err)
             {

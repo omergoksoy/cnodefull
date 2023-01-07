@@ -140,7 +140,7 @@ namespace Notus.Validator
                                         uid = NGF.GenerateTxUid(),
                                         type = 250,
                                         data = outputFileName
-                                    }); ;
+                                    });
 
                                     ObjMp_FileStatus.Set(tmpStorageId, JsonSerializer.Serialize(NVE.BlockStatusCode.InProgress));
                                     try
@@ -465,7 +465,7 @@ namespace Notus.Validator
                 }  //if (CryptoTransferTimerIsRunning == false)
             }, true);  //TimerObj.Start(() =>
         }
-        private void ControlEmptyBlockGenerationTime()
+        private bool ControlEmptyBlockGenerationTime()
         {
             int howManySeconds = NVG.Settings.Genesis.Empty.Interval.Time;
             if (NVG.Settings.Genesis.Empty.SlowBlock.Count >= NVG.Settings.EmptyBlockCount)
@@ -494,6 +494,7 @@ namespace Notus.Validator
                 Notus.Validator.Helper.CheckBlockAndEmptyCounter(300);
                 NGF.BlockQueue.AddEmptyBlock();
             }
+            return executeEmptyBlock;
         }
         public void Start()
         {
@@ -721,6 +722,7 @@ namespace Notus.Validator
             // her node için ayrılan süre
             ulong queueTimePeriod = NVD.Calculate();
 
+            bool generateEmptyBlock = false;
             bool start_FirstQueueGroupTime = false;
             bool prepareNextQueue = false;
             byte nodeOrderCount = 0;
@@ -863,9 +865,10 @@ namespace Notus.Validator
                             {
                                 if (txExecuted == false)
                                 {
+
                                     if (emptyBlockChecked == false)
                                     {
-                                        ControlEmptyBlockGenerationTime();
+                                        generateEmptyBlock = ControlEmptyBlockGenerationTime();
                                         emptyBlockChecked = true;
                                     } // if (emptyBlockChecked == false)
 
@@ -876,9 +879,19 @@ namespace Notus.Validator
                                     */
                                     //control-point
                                     //omergoksoy
+
+                                    //empty block oluşturma işlemi esnasında burada geçerli empty blok değerleri oluşturulup 
+                                    // get işlemi yapılmadan ve listeye eklenmeden ilerlenecek
+                                    //generateEmptyBlock
                                     (List<string>? poolList, NVS.PoolBlockRecordStruct? TmpBlockStruct) = NGF.BlockQueue.Get(
                                         ND.AddMiliseconds(CurrentQueueTime, NVC.BlockListeningForPoolTime)
                                     );
+                                    if (TmpBlockStruct.type == 300)
+                                    {
+                                        Console.WriteLine("empty block yapısı");
+                                        Console.WriteLine(JsonSerializer.Serialize(TmpBlockStruct));
+                                        Console.WriteLine("empty block yapısı");
+                                    }
                                     if (TmpBlockStruct != null)
                                     {
                                         txExecuted = true;

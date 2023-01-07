@@ -30,10 +30,10 @@ namespace Notus.Data
             get { return ValueList; }
         }
 
-        public Dictionary<string,string> GetList()
+        public Dictionary<string, string> GetList()
         {
             Dictionary<string, string> resultList = new();
-            foreach(var item in ValueList)
+            foreach (var item in ValueList)
             {
                 resultList.Add(item.Key, item.Value.Value);
             }
@@ -215,6 +215,27 @@ namespace Notus.Data
                 }, new List<string>() { "key", "value" }
             );
         }
+        private (bool, string) GetFromSqlDb(string key)
+        {
+            bool founded = false;
+            string resultText = string.Empty;
+            SqlObj.Select("key_value",
+                (Dictionary<string, string> rList) =>
+                {
+                    foreach (KeyValuePair<string, string> entry in rList)
+                    {
+                        if (string.Equals(entry.Key, "value"))
+                        {
+                            resultText = entry.Value;
+                            founded = true;
+                        }
+                    }
+                },
+                new List<string>() { "key", "value" },
+                new Dictionary<string, string>() { { "key", key } }
+            );
+            return (founded, resultText);
+        }
         public string Get(string key)
         {
             if (ValueList.ContainsKey(key) == true)
@@ -223,21 +244,7 @@ namespace Notus.Data
             if (SqlObj == null)
                 return string.Empty;
 
-            string resultText = string.Empty;
-            SqlObj.Select("key_value",
-                (Dictionary<string, string> rList) =>
-                {
-                    foreach (KeyValuePair<string, string> entry in rList)
-                    {
-                        if (entry.Key == "value")
-                        {
-                            resultText = entry.Value;
-                        }
-                    }
-                },
-                new List<string>() { "key", "value" },
-                new Dictionary<string, string>() { { "key", key } }
-            );
+            (bool founded, string resultText) = GetFromSqlDb(key);
 
             AddToMemoryList(key, resultText);
             return resultText;
@@ -259,6 +266,19 @@ namespace Notus.Data
                     Time = DateTime.UtcNow
                 });
             });
+        }
+        public bool ContainsKey(string key)
+        {
+            if (ValueList.ContainsKey(key) == true)
+            {
+                return true;
+            }
+            (bool founded, string resultText) = GetFromSqlDb(key);
+            if (founded == true)
+            {
+                return true;
+            }
+            return false;
         }
         public void Set(string key, string value, bool onlyMemory)
         {
