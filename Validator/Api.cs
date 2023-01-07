@@ -2935,6 +2935,11 @@ namespace Notus.Validator
             {
                 return JsonSerializer.Serialize(false);
             }
+            if (NVG.Settings.Genesis == null)
+            {
+                return JsonSerializer.Serialize(false);
+            }
+
             NVS.WalletBalanceStruct balanceResult = new NVS.WalletBalanceStruct()
             {
                 Balance = new Dictionary<string, Dictionary<ulong, string>>(){
