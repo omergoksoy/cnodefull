@@ -19,6 +19,7 @@ using NVH = Notus.Validator.Helper;
 using NVJ = Notus.Validator.Join;
 using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
+using NBK= Notus.Block.Key;
 namespace Notus.Validator
 {
     public class Main : IDisposable
@@ -492,7 +493,7 @@ namespace Notus.Validator
             {
                 NP.Success("Empty Block Executed");
                 Notus.Validator.Helper.CheckBlockAndEmptyCounter(300);
-                NGF.BlockQueue.AddEmptyBlock();
+                //NGF.BlockQueue.AddEmptyBlock();
             }
             return executeEmptyBlock;
         }
@@ -869,84 +870,96 @@ namespace Notus.Validator
                                     if (emptyBlockChecked == false)
                                     {
                                         generateEmptyBlock = ControlEmptyBlockGenerationTime();
+                                        if (generateEmptyBlock == true)
+                                        {
+                                            NVClass.BlockData rawBlock = Notus.Variable.Class.Block.GetOrganizedEmpty(NVE.BlockTypeList.EmptyBlock);
+                                            rawBlock.cipher.ver = "NE";
+                                            rawBlock.cipher.data = System.Convert.ToBase64String(
+                                                System.Text.Encoding.ASCII.GetBytes(
+                                                    NVG.Settings.LastBlock.info.rowNo.ToString()
+                                                )
+                                            );
+                                            rawBlock.info.uID = NGF.GenerateTxUid();
+                                            rawBlock.info.time = NBK.GetTimeFromKey(rawBlock.info.uID, true);
+                                            rawBlock = NGF.BlockQueue.OrganizeBlockOrder(rawBlock);
+                                            NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(rawBlock, 1000);
+                                            Console.WriteLine(JsonSerializer.Serialize(PreparedBlockData, NVC.JsonSetting));
+
+                                            if (ProcessBlock(PreparedBlockData, 4) == true)
+                                            {
+                                                ValidatorQueueObj.Distrubute(
+                                                    rawBlock.info.rowNo,
+                                                    rawBlock.info.type,
+                                                    CurrentQueueTime
+                                                );
+                                            }
+                                            generateEmptyBlock = false;
+                                        }
                                         emptyBlockChecked = true;
                                     } // if (emptyBlockChecked == false)
 
-
-                                    /*
-                                    burada blok oluşturacak listeler çekiliyor
-                                    birinci parametredeki "poolList" değişkeni işlem ID'lerinin listesini tutuyor
-                                    */
-                                    //control-point
-                                    //omergoksoy
-
-                                    //empty block oluşturma işlemi esnasında burada geçerli empty blok değerleri oluşturulup 
-                                    // get işlemi yapılmadan ve listeye eklenmeden ilerlenecek
-                                    //generateEmptyBlock
-                                    if (generateEmptyBlock == true)
+                                    if (generateEmptyBlock == false)
                                     {
-                                        Console.WriteLine("You Must Generate Empty Block");
-                                        Console.WriteLine("You Must Generate Empty Block");
-                                        Console.WriteLine("You Must Generate Empty Block");
-                                    }
-                                    (List<string>? poolList, NVS.PoolBlockRecordStruct? TmpBlockStruct) = NGF.BlockQueue.Get(
-                                        ND.AddMiliseconds(CurrentQueueTime, NVC.BlockListeningForPoolTime)
-                                    );
-                                    if (TmpBlockStruct != null)
-                                    {
-                                        if (TmpBlockStruct.type == 300)
+                                        (List<string>? poolList, NVS.PoolBlockRecordStruct? TmpBlockStruct) = NGF.BlockQueue.Get(
+                                            ND.AddMiliseconds(CurrentQueueTime, NVC.BlockListeningForPoolTime)
+                                        );
+                                        if (TmpBlockStruct != null)
                                         {
-                                            Console.WriteLine("empty block yapısı");
-                                            Console.WriteLine(JsonSerializer.Serialize(TmpBlockStruct));
-                                            Console.WriteLine("empty block yapısı");
-                                        }
-                                        
-                                        NVClass.BlockData? PreBlockData = JsonSerializer.Deserialize<NVClass.BlockData>(TmpBlockStruct.data);
-                                        /*
-                                        */
-
-                                        txExecuted = true;
-                                        if (PreBlockData != null)
-                                        {
-                                            PreBlockData = NGF.BlockQueue.OrganizeBlockOrder(PreBlockData);
-                                            NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
-                                            bool processResult = ProcessBlock(PreparedBlockData, 4);
-                                            if (processResult == true)
+                                            if (TmpBlockStruct.type == 300)
                                             {
-                                                ValidatorQueueObj.Distrubute(
-                                                    PreBlockData.info.rowNo,
-                                                    PreBlockData.info.type,
-                                                    CurrentQueueTime
-                                                );
-                                                NGF.BlockQueue.RemovePermanentlyFromDb(poolList);
-                                                NGF.BlockQueue.RemovePoolIdList(poolList);
+                                                Console.WriteLine("empty block yapısı");
+                                                Console.WriteLine(JsonSerializer.Serialize(TmpBlockStruct));
+                                                Console.WriteLine(JsonSerializer.Serialize(TmpBlockStruct.data));
+                                                Console.WriteLine("empty block yapısı");
                                             }
+
+                                            NVClass.BlockData? PreBlockData = JsonSerializer.Deserialize<NVClass.BlockData>(TmpBlockStruct.data);
+                                            /*
+                                            */
+
+                                            txExecuted = true;
+                                            if (PreBlockData != null)
+                                            {
+                                                PreBlockData = NGF.BlockQueue.OrganizeBlockOrder(PreBlockData);
+                                                NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(PreBlockData, 1000);
+                                                bool processResult = ProcessBlock(PreparedBlockData, 4);
+                                                if (processResult == true)
+                                                {
+                                                    ValidatorQueueObj.Distrubute(
+                                                        PreBlockData.info.rowNo,
+                                                        PreBlockData.info.type,
+                                                        CurrentQueueTime
+                                                    );
+                                                    NGF.BlockQueue.RemovePermanentlyFromDb(poolList);
+                                                    NGF.BlockQueue.RemovePoolIdList(poolList);
+                                                }
+                                                else
+                                                {
+                                                    NGF.BlockQueue.ReloadPoolList(poolList);
+                                                }
+                                                NGF.WalletUsageList.Clear();
+                                            } // if (PreBlockData != null)
                                             else
                                             {
-                                                NGF.BlockQueue.ReloadPoolList(poolList);
-                                            }
-                                            NGF.WalletUsageList.Clear();
-                                        } // if (PreBlockData != null)
+                                                NP.Danger(NVG.Settings, "Pre Block Is NULL");
+                                            } // if (PreBlockData != null) ELSE
+                                        } //if (TmpBlockStruct != null)
                                         else
                                         {
-                                            NP.Danger(NVG.Settings, "Pre Block Is NULL");
-                                        } // if (PreBlockData != null) ELSE
-                                    } //if (TmpBlockStruct != null)
-                                    else
-                                    {
-                                        if ((NVG.NOW.Obj - LastPrintTime).TotalSeconds > 20)
-                                        {
-                                            LastPrintTime = NVG.NOW.Obj;
-                                            if (NVG.Settings.GenesisCreated == true)
+                                            if ((NVG.NOW.Obj - LastPrintTime).TotalSeconds > 20)
                                             {
-                                                tmpExitMainLoop = true;
+                                                LastPrintTime = NVG.NOW.Obj;
+                                                if (NVG.Settings.GenesisCreated == true)
+                                                {
+                                                    tmpExitMainLoop = true;
+                                                }
+                                                else
+                                                {
+                                                    NP.WaitDot();
+                                                }
                                             }
-                                            else
-                                            {
-                                                NP.WaitDot();
-                                            }
-                                        }
-                                    } // if (TmpBlockStruct != null) ELSE 
+                                        } // if (TmpBlockStruct != null) ELSE 
+                                    }
                                 } // if (txExecuted == false)
                             } // while (endingTime >= NGF.NowInt())
                         }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId))

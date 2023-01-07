@@ -686,6 +686,7 @@ namespace Notus.Block
             return false;
         }
 
+        /*
         public void AddEmptyBlock()
         {
             Add(new NVS.PoolBlockRecordStruct()
@@ -695,6 +696,7 @@ namespace Notus.Block
                 data = JsonSerializer.Serialize(NVG.Settings.LastBlock.info.rowNo)
             }, false);
         }
+        */
 
         private void Add2Queue(NVS.PoolBlockRecordStruct PreBlockData, string BlockKeyStr)
         {
