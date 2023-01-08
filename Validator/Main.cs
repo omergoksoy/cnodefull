@@ -510,6 +510,7 @@ namespace Notus.Validator
                 Console.WriteLine("Hatali Blok Sirasi");
                 if (RawBlock.info.type != NVE.BlockTypeList.EmptyBlock)
                 {
+                    Console.WriteLine("Reload Tx From Temp List");
                     NGF.BlockQueue.ReloadPoolList();
                 }
             }
@@ -917,10 +918,11 @@ namespace Notus.Validator
                                         );
                                         if (PreBlockData != null)
                                         {
+                                            txExecuted = true;
+                                            NP.Success("Getting Block From Pool");
                                             Console.WriteLine("----------------------------------");
                                             Console.WriteLine(JsonSerializer.Serialize(PreBlockData));
                                             Console.WriteLine("----------------------------------");
-                                            txExecuted = true;
                                             OrganizeAndDistributeBlock(PreBlockData, CurrentQueueTime);
                                         } //if (TmpBlockStruct != null)
                                         

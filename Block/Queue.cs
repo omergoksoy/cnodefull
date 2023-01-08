@@ -515,6 +515,7 @@ namespace Notus.Block
 
         public void RemoveTempPoolList()
         {
+            Console.WriteLine("Remove Temp List");
             for (int i = 0; i < tempRemovePoolList.Count; i++)
             {
                 txQueueList.TryRemove(tempRemovePoolList[i], out _);
