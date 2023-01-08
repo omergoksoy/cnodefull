@@ -751,6 +751,7 @@ namespace Notus.Validator
             bool notMyTurnPrinted = false;
 
             NVG.ShowWhoseTurnOrNot = true;
+            NVG.ShowWhoseTurnOrNot = false;
 
             if (NVG.OtherValidatorSelectedMe == true)
             {
