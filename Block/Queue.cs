@@ -145,6 +145,7 @@ namespace Notus.Block
                     }
                     else
                     {
+                        Console.WriteLine("txQueue.TryDequeue -> FALSE");
                         exitLoop = true;
                     }
                 }
