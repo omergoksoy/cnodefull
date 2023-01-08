@@ -425,6 +425,11 @@ namespace Notus.Data
             {
                 hexKey = hexKey.Substring(0, 30);
             }
+            Console.WriteLine(PoolName);
+            Console.WriteLine(TempPath);
+            Console.WriteLine(DirPath);
+            Console.WriteLine("----------------------------");
+
             string dataLockFileName =
                 TempPath +
                 exactTime.ToString(NVC.DefaultDateTimeFormatText + "ff") +
