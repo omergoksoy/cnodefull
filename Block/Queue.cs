@@ -696,19 +696,19 @@ namespace Notus.Block
         {
             kvPoolDb.Each((string blockTransactionKey, string TextBlockDataString) =>
             {
-                    Console.WriteLine("Load : " + blockTransactionKey);
-                    NVS.PoolBlockRecordStruct? PreBlockData =
-                        JsonSerializer.Deserialize<NVS.PoolBlockRecordStruct>(TextBlockDataString);
-                    if (PreBlockData != null)
-                    {
-                        Add2Queue(PreBlockData);
-                    }
-                    //omergoksoy
-                    /*
-                if (PoolBlockIdList.ContainsKey(blockTransactionKey) == false)
+                Console.WriteLine("Load : " + blockTransactionKey);
+                NVS.PoolBlockRecordStruct? PreBlockData =
+                    JsonSerializer.Deserialize<NVS.PoolBlockRecordStruct>(TextBlockDataString);
+                if (PreBlockData != null)
                 {
+                    Add2Queue(PreBlockData);
                 }
-                    */
+                //omergoksoy
+                /*
+            if (PoolBlockIdList.ContainsKey(blockTransactionKey) == false)
+            {
+            }
+                */
             });
         }
         public void Start()
