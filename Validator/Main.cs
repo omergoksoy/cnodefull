@@ -962,8 +962,7 @@ namespace Notus.Validator
                                     NP.Info("Not My Turn : " + CurrentQueueTime.ToString());
                                 }
                             }
-
-                            NGF.BlockQueue.LoadFromPoolDb(false);
+                            NGF.BlockQueue.LoadFromPoolDb();
                         }// if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, selectedWalletId)) ELSE 
 
                         if (NVC.RegenerateNodeQueueCount == nodeOrderCount)
