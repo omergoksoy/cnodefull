@@ -246,6 +246,9 @@ namespace Notus.Data
 
             (bool founded, string resultText) = GetFromSqlDb(key);
 
+            if (founded == false)
+                return string.Empty;
+
             AddToMemoryList(key, resultText);
             return resultText;
         }

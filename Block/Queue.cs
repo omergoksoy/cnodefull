@@ -104,11 +104,11 @@ namespace Notus.Block
                 exitLoop = (NVG.NOW.Int >= WaitingForPool ? true : exitLoop);
                 exitLoop = (txQueue.Count == 0 ? true : exitLoop);
 
-                string? TmpTxUid = null;
+                string? tmpTxUid = null;
                 if (txQueue.Count > 0)
                 {
-                    TmpTxUid = txQueue.Peek();
-                    if (TmpTxUid == null)
+                    tmpTxUid = txQueue.Peek();
+                    if (tmpTxUid == null)
                     {
                         exitLoop = true;
                     }
@@ -116,127 +116,144 @@ namespace Notus.Block
 
                 if (exitLoop == false)
                 {
-                    if (CurrentBlockType == -1)
+                    string kvDataStr = kvPoolDb.Get(tmpTxUid);
+                    if (kvDataStr.Length == 0)
                     {
-                        CurrentBlockType = TmpPoolRecord.type;
+                        NVG.Settings.TxStatus.Set(tmpTxUid, NVE.BlockStatusCode.WrongTxFormat);
                     }
+                    NVS.PoolBlockRecordStruct? TmpPoolRecord = JsonSerializer.Deserialize<NVS.PoolBlockRecordStruct>(kvDataStr);
 
-                    if (CurrentBlockType == TmpPoolRecord.type)
+                    if (TmpPoolRecord == null)
                     {
-                        bool addToList = true;
-                        if (CurrentBlockType == NVE.BlockTypeList.MultiWalletCryptoTransfer)
+                        NVG.Settings.TxStatus.Set(tmpTxUid, NVE.BlockStatusCode.WrongTxFormat);
+                        txQueue.Dequeue();
+                    }
+                    else
+                    {
+                        CurrentBlockType = (CurrentBlockType == -1 ? TmpPoolRecord.type : CurrentBlockType);
+
+                        if (CurrentBlockType == TmpPoolRecord.type)
                         {
-                            Dictionary<string, NVS.MultiWalletTransactionStruct>? multiTx =
-                                JsonSerializer.Deserialize<
-                                    Dictionary<string, NVS.MultiWalletTransactionStruct>
-                                >(TmpPoolRecord.data);
-                            if (multiTx == null)
+                            bool addToList = true;
+                            if (CurrentBlockType == NVE.BlockTypeList.MultiWalletCryptoTransfer)
                             {
-                                addToList = false;
-                            }
-                            else
-                            {
-                                foreach (var iEntry in multiTx)
+                                Dictionary<string, NVS.MultiWalletTransactionStruct>? multiTx =
+                                    JsonSerializer.Deserialize<
+                                        Dictionary<string, NVS.MultiWalletTransactionStruct>
+                                    >(TmpPoolRecord.data);
+                                if (multiTx == null)
                                 {
-                                    if (transactionId.Length == 0)
+                                    addToList = false;
+                                }
+                                else
+                                {
+                                    foreach (var iEntry in multiTx)
                                     {
-                                        transactionId = iEntry.Key;
+                                        if (transactionId.Length == 0)
+                                        {
+                                            transactionId = iEntry.Key;
+                                        }
                                     }
                                 }
+                            }
+
+                            if (CurrentBlockType == NVE.BlockTypeList.AirDrop)
+                            {
+                                NVClass.BlockStruct_125? tmpBlockCipherData = JsonSerializer.Deserialize<NVClass.BlockStruct_125>(TmpPoolRecord.data);
+                                if (tmpBlockCipherData == null)
+                                {
+                                    addToList = false;
+                                }
+                                else
+                                {
+                                    // out işlemindeki cüzdanları kontrol ediyor...
+                                    foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> tmpEntry in tmpBlockCipherData.Out)
+                                    {
+                                        if (TempWalletList.IndexOf(tmpEntry.Key) == -1)
+                                        {
+                                            TempWalletList.Add(tmpEntry.Key);
+                                        }
+                                        else
+                                        {
+                                            addToList = false;
+                                        }
+                                    }
+
+                                    if (addToList == false)
+                                    {
+                                        Queue_PoolTransaction.Enqueue(TmpPoolRecord);
+                                        //Obj_PoolTransactionList[CurrentBlockType].Add(TmpPoolRecord);
+                                    }
+                                }
+                            }
+
+                            if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer)
+                            {
+                                NVClass.BlockStruct_120? tmpBlockCipherData = JsonSerializer.Deserialize<NVClass.BlockStruct_120>(TmpPoolRecord.data);
+                                if (tmpBlockCipherData == null)
+                                {
+                                    addToList = false;
+                                }
+                                else
+                                {
+                                    // out işlemindeki cüzdanları kontrol ediyor...
+                                    foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> tmpEntry in tmpBlockCipherData.Out)
+                                    {
+                                        if (TempWalletList.IndexOf(tmpEntry.Key) == -1)
+                                        {
+                                            TempWalletList.Add(tmpEntry.Key);
+                                        }
+                                        else
+                                        {
+                                            addToList = false;
+                                        }
+                                    }
+
+                                    if (addToList == false)
+                                    {
+                                        //Queue_PoolTransaction.Enqueue(TmpPoolRecord);
+                                        //Obj_PoolTransactionList[CurrentBlockType].Add(TmpPoolRecord);
+                                        //exitLoop = true;
+                                    }
+                                }
+                            }
+
+                            if (addToList == true)
+                            {
+                                TempPoolTransactionList.Add(TmpPoolRecord);
+                                TempBlockList.Add(TmpPoolRecord.data);
+                            }
+
+                            //Queue_PoolTransaction.Dequeue();
+                            //Obj_PoolTransactionList[CurrentBlockType].RemoveAt(0);
+                            if (
+                                TempPoolTransactionList.Count == NVC.BlockTransactionLimit ||
+                                CurrentBlockType == 240 || // layer1 - > dosya ekleme isteği
+                                CurrentBlockType == 250 || // layer3 - > dosya içeriği
+                                CurrentBlockType == NVE.BlockTypeList.EmptyBlock ||
+                                CurrentBlockType == NVE.BlockTypeList.MultiWalletCryptoTransfer
+                            )
+                            {
+                                exitLoop = true;
                             }
                         }
-
-                        if (CurrentBlockType == NVE.BlockTypeList.AirDrop)
-                        {
-                            NVClass.BlockStruct_125? tmpBlockCipherData = JsonSerializer.Deserialize<NVClass.BlockStruct_125>(TmpPoolRecord.data);
-                            if (tmpBlockCipherData == null)
-                            {
-                                addToList = false;
-                            }
-                            else
-                            {
-                                // out işlemindeki cüzdanları kontrol ediyor...
-                                foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> tmpEntry in tmpBlockCipherData.Out)
-                                {
-                                    if (TempWalletList.IndexOf(tmpEntry.Key) == -1)
-                                    {
-                                        TempWalletList.Add(tmpEntry.Key);
-                                    }
-                                    else
-                                    {
-                                        addToList = false;
-                                    }
-                                }
-
-                                if (addToList == false)
-                                {
-                                    Queue_PoolTransaction.Enqueue(TmpPoolRecord);
-                                    //Obj_PoolTransactionList[CurrentBlockType].Add(TmpPoolRecord);
-                                }
-                            }
-                        }
-
-                        if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer)
-                        {
-                            NVClass.BlockStruct_120? tmpBlockCipherData = JsonSerializer.Deserialize<NVClass.BlockStruct_120>(TmpPoolRecord.data);
-                            if (tmpBlockCipherData == null)
-                            {
-                                addToList = false;
-                            }
-                            else
-                            {
-                                // out işlemindeki cüzdanları kontrol ediyor...
-                                foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> tmpEntry in tmpBlockCipherData.Out)
-                                {
-                                    if (TempWalletList.IndexOf(tmpEntry.Key) == -1)
-                                    {
-                                        TempWalletList.Add(tmpEntry.Key);
-                                    }
-                                    else
-                                    {
-                                        addToList = false;
-                                    }
-                                }
-
-                                if (addToList == false)
-                                {
-                                    Queue_PoolTransaction.Enqueue(TmpPoolRecord);
-                                    //Obj_PoolTransactionList[CurrentBlockType].Add(TmpPoolRecord);
-                                    //exitLoop = true;
-                                }
-                            }
-                        }
-
-                        if (addToList == true)
-                        {
-                            TempPoolTransactionList.Add(TmpPoolRecord);
-                            TempBlockList.Add(TmpPoolRecord.data);
-                        }
-
-                        Queue_PoolTransaction.Dequeue();
-                        //Obj_PoolTransactionList[CurrentBlockType].RemoveAt(0);
-                        if (
-                            TempPoolTransactionList.Count == NVC.BlockTransactionLimit ||
-                            CurrentBlockType == 240 || // layer1 - > dosya ekleme isteği
-                            CurrentBlockType == 250 || // layer3 - > dosya içeriği
-                            CurrentBlockType == NVE.BlockTypeList.EmptyBlock ||
-                            CurrentBlockType == NVE.BlockTypeList.MultiWalletCryptoTransfer
-                        )
+                        else
                         {
                             exitLoop = true;
                         }
                     }
-                    else
-                    {
-                        exitLoop = true;
-                    }
                 }
             }
+            
             if (TempPoolTransactionList.Count == 0)
-            {
-                Console.WriteLine("TempPoolTransactionList.Count : " + TempPoolTransactionList.Count.ToString());
                 return null;
-            }
+
+            Console.WriteLine("------------------------------------------------");
+            Console.WriteLine("CurrentBlockType : " + CurrentBlockType.ToString());
+            Console.WriteLine(JsonSerializer.Serialize(TempWalletList));
+            Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
+            Console.WriteLine(JsonSerializer.Serialize(TempPoolTransactionList));
+            Console.WriteLine("------------------------------------------------");
 
             NVClass.BlockData BlockStruct = NVClass.Block.GetOrganizedEmpty(CurrentBlockType);
 
@@ -703,14 +720,14 @@ namespace Notus.Block
             tempRemovePoolList.Clear();
             kvPoolDb.Clear();
             txQueue.Clear();
-            Queue_PoolTransaction.Clear();
+            //Queue_PoolTransaction.Clear();
             //Obj_PoolTransactionList.Clear();
         }
         public Queue()
         {
             //Obj_PoolTransactionList.Clear();
 
-            Queue_PoolTransaction.Clear();
+            //Queue_PoolTransaction.Clear();
         }
         ~Queue()
         {
