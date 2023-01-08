@@ -27,6 +27,16 @@ namespace Notus.Coin
         Notus.Data.KeyValue LimitDb = new Notus.Data.KeyValue();
         public string Request(NVS.HttpRequestDetails IncomeData)
         {
+            if (NVG.Settings.Genesis == null)
+            {
+                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
+                {
+                    ErrorNo = 553268,
+                    ErrorText = "AnErrorOccurred",
+                    ID = string.Empty,
+                    Result = NVE.BlockStatusCode.AnErrorOccurred
+                });
+            }
             // mainnet ise hata gönderecek
             if (NVG.Settings.Network == Variable.Enum.NetworkType.MainNet)
             {

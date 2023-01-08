@@ -106,9 +106,7 @@ namespace Notus.Block
         )
         {
             if (txQueue.Count == 0)
-            {
                 return null;
-            }
 
             int CurrentBlockType = -1;
 
@@ -127,7 +125,7 @@ namespace Notus.Block
             {
                 exitLoop = (NVG.NOW.Int >= WaitingForPool ? true : exitLoop);
                 exitLoop = (txQueue.Count == 0 ? true : exitLoop);
-
+                Console.WriteLine(exitLoop);
                 string? tmpTxUid = string.Empty;
                 if (txQueue.Count > 0)
                 {
@@ -135,11 +133,21 @@ namespace Notus.Block
                     {
                         if (testUid == null)
                         {
+                            Console.WriteLine("testUid : NULL");
                             exitLoop = true;
                         }
                         else
                         {
-                            tmpTxUid = testUid;
+                            if (testUid.Length == 0)
+                            {
+                                Console.WriteLine("testUid : Zero-len");
+                                exitLoop = true;
+                            }
+                            else
+                            {
+                                Console.WriteLine("testUid : " + testUid);
+                                tmpTxUid = testUid;
+                            }
                         }
                     }
                     else
@@ -152,7 +160,20 @@ namespace Notus.Block
                 if (exitLoop == false)
                 {
                     string kvDataStr = kvPoolDb.Get(tmpTxUid);
-                    NVS.PoolBlockRecordStruct? TmpPoolRecord = JsonSerializer.Deserialize<NVS.PoolBlockRecordStruct>(kvDataStr);
+                    NVS.PoolBlockRecordStruct? TmpPoolRecord = null;
+                    if (kvDataStr.Length > 0)
+                    {
+                        kontrol noktası
+                        Console.WriteLine(tmpTxUid + " => " + kvDataStr);
+                        try
+                        {
+                            TmpPoolRecord = JsonSerializer.Deserialize<NVS.PoolBlockRecordStruct>(kvDataStr);
+                        }
+                        catch
+                        {
+                            TmpPoolRecord = null;
+                        }
+                    }
 
                     // eğer çevrim işleminde hata olursa
                     // kayıt kuyruktan alınacak ve sonraki işleme geçilecek

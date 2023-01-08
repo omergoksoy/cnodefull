@@ -919,7 +919,6 @@ namespace Notus.Validator
                                         if (PreBlockData != null)
                                         {
                                             txExecuted = true;
-                                            //NP.Success("Getting Block From Pool");
                                             //Console.WriteLine("----------------------------------");
                                             //Console.WriteLine(JsonSerializer.Serialize(PreBlockData));
                                             //Console.WriteLine("----------------------------------");
