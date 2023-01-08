@@ -138,8 +138,8 @@ namespace Notus.Data
             ObjSettings.Path +
                 System.IO.Path.DirectorySeparatorChar;
             TempPath = DirPath + ObjSettings.Name + "_temp" + System.IO.Path.DirectorySeparatorChar;
-            Console.WriteLine(DirPath);
-            Console.WriteLine(TempPath);
+            //Console.WriteLine(DirPath);
+            //Console.WriteLine(TempPath);
 
             NI.CreateDirectory(DirPath);
             NI.CreateDirectory(TempPath);

@@ -50,6 +50,8 @@ namespace Notus.Block
         {
             listObj.SetSettings(new NVS.KeyValueSettings()
             {
+                LoadFromBeginning = true,
+                ResetTable = false,
                 Path = "block_meta",
                 MemoryLimitCount = 0,
                 Name = Notus.Variable.Constant.MemoryPoolName["BlockPrevList"]

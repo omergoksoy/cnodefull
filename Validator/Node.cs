@@ -27,7 +27,7 @@ namespace Notus.Validator
         {
             NVG.Settings.BlockOrder.Start();
             NVG.Settings.BlockSign.Start();
-            NVG.Settings.BlockSign.Start();
+            NVG.Settings.BlockPrev.Start();
             NVG.Settings.TxStatus.Start();
             //NVG.Settings.UidTypeList.Start();
 

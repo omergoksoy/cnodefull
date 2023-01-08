@@ -30,13 +30,14 @@ namespace Notus.Block
         {
             keyValue.Set(blockUid, JsonSerializer.Serialize(statusCode));
         }
-        public void Start() {
+        public void Start()
+        {
             keyValue.SetSettings(new NVS.KeyValueSettings()
             {
                 LoadFromBeginning = true,
                 ResetTable = false,
                 Path = "block_meta",
-                MemoryLimitCount = 1000,
+                MemoryLimitCount = 10000,
                 Name = "block_status"
             });
         }
