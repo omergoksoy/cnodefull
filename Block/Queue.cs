@@ -111,7 +111,7 @@ namespace Notus.Block
             int CurrentBlockType = -1;
             List<string> TempWalletList = new List<string>() { NVG.Settings.NodeWallet.WalletKey };
             List<string> TempBlockList = new List<string>();
-            List<NVS.List_PoolBlockRecordStruct> TempPoolTransactionList = new List<NVS.List_PoolBlockRecordStruct>();
+            List<NVS.PoolBlockRecordStruct> TempPoolTransactionList = new();
             bool exitLoop = false;
             string transactionId = string.Empty;
 
@@ -121,12 +121,21 @@ namespace Notus.Block
                 exitLoop = (NVG.NOW.Int >= WaitingForPool ? true : exitLoop);
                 exitLoop = (txQueue.Count == 0 ? true : exitLoop);
 
-                string? tmpTxUid = null;
+                string? tmpTxUid = string.Empty;
                 if (txQueue.Count > 0)
                 {
-                    tmpTxUid = txQueue.Peek();
-                    Console.WriteLine("txQueue.Peek() = " + tmpTxUid);
-                    if (tmpTxUid == null)
+                    if (txQueue.TryDequeue(out string? testUid))
+                    {
+                        if (testUid == null)
+                        {
+                            exitLoop = true;
+                        }
+                        else
+                        {
+                            tmpTxUid = testUid;
+                        }
+                    }
+                    else
                     {
                         exitLoop = true;
                     }
@@ -140,7 +149,10 @@ namespace Notus.Block
                     // eğer çevrim işleminde hata olursa
                     // kayıt kuyruktan alınacak ve sonraki işleme geçilecek
                     if (TmpPoolRecord == null)
+                    {
                         WrongTx(tmpTxUid, kvDataStr);
+                        tmpTxUid = "";
+                    }
 
                     if (TmpPoolRecord != null)
                     {
@@ -159,6 +171,7 @@ namespace Notus.Block
                                 {
                                     addToList = false;
                                     WrongTx(tmpTxUid, TmpPoolRecord.data);
+                                    tmpTxUid = "";
                                 }
 
                                 if (multiTx != null)
@@ -180,6 +193,7 @@ namespace Notus.Block
                                 {
                                     addToList = false;
                                     WrongTx(tmpTxUid, TmpPoolRecord.data);
+                                    tmpTxUid = "";
                                 }
 
                                 if (tmpBlockCipherData != null)
@@ -206,6 +220,7 @@ namespace Notus.Block
                                 {
                                     addToList = false;
                                     WrongTx(tmpTxUid, TmpPoolRecord.data);
+                                    tmpTxUid = "";
                                 }
 
                                 if (tmpBlockCipherData != null)
@@ -227,9 +242,14 @@ namespace Notus.Block
 
                             if (addToList == true)
                             {
-                                //omergoksoy
-                                //TempPoolTransactionList.Add(TmpPoolRecord);
-                                //TempBlockList.Add(TmpPoolRecord.data);
+                                tempRemovePoolList.Add(tmpTxUid);
+                                TempPoolTransactionList.Add(new NVS.PoolBlockRecordStruct()
+                                {
+                                    data = TmpPoolRecord.data,
+                                    type = TmpPoolRecord.type,
+                                    uid = TmpPoolRecord.uid
+                                });
+                                TempBlockList.Add(TmpPoolRecord.data);
                             }
 
                             //Queue_PoolTransaction.Dequeue();
@@ -496,7 +516,7 @@ namespace Notus.Block
 
             for (int i = 0; i < TempPoolTransactionList.Count; i++)
             {
-                tempRemovePoolList.Add(TempPoolTransactionList[i].key);
+                tempRemovePoolList.Add(TempPoolTransactionList[i].uid);
             }
 
             Console.WriteLine("-----------------------------------------------");
