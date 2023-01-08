@@ -660,8 +660,7 @@ namespace Notus.Block
                 return false;
             }
             */
-
-            Add2Queue(PreBlockData, PreBlockData.uid);
+            Add2Queue(PreBlockData);
             if (PreBlockData.type == 40)
             {
                 NVS.LockWalletBeforeStruct? tmpLockWalletData = JsonSerializer.Deserialize<NVS.LockWalletBeforeStruct>(PreBlockData.data);
@@ -679,13 +678,13 @@ namespace Notus.Block
             return false;
         }
 
-        private void Add2Queue(NVS.PoolBlockRecordStruct PreBlockData, string BlockKeyStr)
+        private void Add2Queue(NVS.PoolBlockRecordStruct PreBlockData)
         {
             //Console.WriteLine(PreBlockData.type.ToString() + " - " + BlockKeyStr.Substring(0, 20));
 
-            if (PoolBlockIdList.ContainsKey(BlockKeyStr) == false)
+            if (PoolBlockIdList.ContainsKey(PreBlockData.uid) == false)
             {
-                bool added = PoolBlockIdList.TryAdd(BlockKeyStr, 1);
+                bool added = PoolBlockIdList.TryAdd(PreBlockData.uid, 1);
                 if (Obj_PoolTransactionList.ContainsKey(PreBlockData.type) == false)
                 {
                     Obj_PoolTransactionList.TryAdd(
@@ -696,14 +695,14 @@ namespace Notus.Block
                 Obj_PoolTransactionList[PreBlockData.type].Add(
                     new NVS.List_PoolBlockRecordStruct()
                     {
-                        key = BlockKeyStr,
+                        key = PreBlockData.uid,
                         type = PreBlockData.type,
                         data = PreBlockData.data
                     }
                 );
                 Queue_PoolTransaction.Enqueue(new NVS.List_PoolBlockRecordStruct()
                 {
-                    key = BlockKeyStr,
+                    key = PreBlockData.uid,
                     type = PreBlockData.type,
                     data = PreBlockData.data
                 });
@@ -723,7 +722,7 @@ namespace Notus.Block
                             JsonSerializer.Deserialize<NVS.PoolBlockRecordStruct>(TextBlockDataString);
                         if (PreBlockData != null)
                         {
-                            Add2Queue(PreBlockData, blockTransactionKey);
+                            Add2Queue(PreBlockData);
                         }
                     }
                 });
