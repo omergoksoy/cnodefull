@@ -27,6 +27,7 @@ namespace Notus.Block
 
         // tüm işlemlerin kayıt altına alındığı Key-Value DB
         private Notus.Data.KeyValue kvPoolDb = new();
+        private Notus.Data.KeyValue kvPoolTxErrorList = new();
         private List<string> tempRemovePoolList = new();
 
         //buradaki queue ve dictionary değişkenlerini kontrol ederek gereksiz olarak sil veya düzelt
@@ -37,7 +38,6 @@ namespace Notus.Block
 
 
         //private ConcurrentDictionary<int, List<NVS.List_PoolBlockRecordStruct>> Obj_PoolTransactionList = new();
-        //private Queue<NVS.List_PoolBlockRecordStruct> Queue_PoolTransaction = new();
 
         //bu foknsiyonun görevi blok sırası ve önceki değerlerini blok içeriğine eklemek
         public List<NVS.List_PoolBlockRecordStruct>? GetPoolList(int BlockType)
@@ -86,6 +86,21 @@ namespace Notus.Block
 
 
         //bu fonksiyon ile işlem yapılacak aynı türden bloklar sırası ile listeden çekilip geri gönderilecek
+        private void WrongTx(string? txUid, string? rawTxText)
+        {
+            // hatalı işlem kayıt altına alınıyor...
+            kvPoolTxErrorList.Set(txUid, rawTxText);
+
+            // tx durumu hatalı olarak işaretleniyor...
+            NVG.Settings.TxStatus.Set(txUid, NVE.BlockStatusCode.WrongTxFormat);
+
+            // işlem hatalı olduğu için kuyruktan çıkartılıyor
+            txQueue.Dequeue();
+
+            // işlem hatalı olduğu için kuyruk listesinden çıkartılıyor
+            if (txUid != null)
+                txQueueList.TryRemove(txUid, out _);
+        }
         public NVS.PoolBlockRecordStruct? Get(
             ulong WaitingForPool
         )
@@ -99,6 +114,8 @@ namespace Notus.Block
             List<NVS.List_PoolBlockRecordStruct> TempPoolTransactionList = new List<NVS.List_PoolBlockRecordStruct>();
             bool exitLoop = false;
             string transactionId = string.Empty;
+
+            tempRemovePoolList.Clear();
             while (exitLoop == false)
             {
                 exitLoop = (NVG.NOW.Int >= WaitingForPool ? true : exitLoop);
@@ -108,6 +125,7 @@ namespace Notus.Block
                 if (txQueue.Count > 0)
                 {
                     tmpTxUid = txQueue.Peek();
+                    Console.WriteLine("txQueue.Peek() = " + tmpTxUid);
                     if (tmpTxUid == null)
                     {
                         exitLoop = true;
@@ -117,18 +135,14 @@ namespace Notus.Block
                 if (exitLoop == false)
                 {
                     string kvDataStr = kvPoolDb.Get(tmpTxUid);
-                    if (kvDataStr.Length == 0)
-                    {
-                        NVG.Settings.TxStatus.Set(tmpTxUid, NVE.BlockStatusCode.WrongTxFormat);
-                    }
                     NVS.PoolBlockRecordStruct? TmpPoolRecord = JsonSerializer.Deserialize<NVS.PoolBlockRecordStruct>(kvDataStr);
 
+                    // eğer çevrim işleminde hata olursa
+                    // kayıt kuyruktan alınacak ve sonraki işleme geçilecek
                     if (TmpPoolRecord == null)
-                    {
-                        NVG.Settings.TxStatus.Set(tmpTxUid, NVE.BlockStatusCode.WrongTxFormat);
-                        txQueue.Dequeue();
-                    }
-                    else
+                        WrongTx(tmpTxUid, kvDataStr);
+
+                    if (TmpPoolRecord != null)
                     {
                         CurrentBlockType = (CurrentBlockType == -1 ? TmpPoolRecord.type : CurrentBlockType);
 
@@ -144,8 +158,10 @@ namespace Notus.Block
                                 if (multiTx == null)
                                 {
                                     addToList = false;
+                                    WrongTx(tmpTxUid, TmpPoolRecord.data);
                                 }
-                                else
+
+                                if (multiTx != null)
                                 {
                                     foreach (var iEntry in multiTx)
                                     {
@@ -163,8 +179,10 @@ namespace Notus.Block
                                 if (tmpBlockCipherData == null)
                                 {
                                     addToList = false;
+                                    WrongTx(tmpTxUid, TmpPoolRecord.data);
                                 }
-                                else
+
+                                if (tmpBlockCipherData != null)
                                 {
                                     // out işlemindeki cüzdanları kontrol ediyor...
                                     foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> tmpEntry in tmpBlockCipherData.Out)
@@ -177,12 +195,6 @@ namespace Notus.Block
                                         {
                                             addToList = false;
                                         }
-                                    }
-
-                                    if (addToList == false)
-                                    {
-                                        Queue_PoolTransaction.Enqueue(TmpPoolRecord);
-                                        //Obj_PoolTransactionList[CurrentBlockType].Add(TmpPoolRecord);
                                     }
                                 }
                             }
@@ -193,8 +205,10 @@ namespace Notus.Block
                                 if (tmpBlockCipherData == null)
                                 {
                                     addToList = false;
+                                    WrongTx(tmpTxUid, TmpPoolRecord.data);
                                 }
-                                else
+
+                                if (tmpBlockCipherData != null)
                                 {
                                     // out işlemindeki cüzdanları kontrol ediyor...
                                     foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> tmpEntry in tmpBlockCipherData.Out)
@@ -208,20 +222,14 @@ namespace Notus.Block
                                             addToList = false;
                                         }
                                     }
-
-                                    if (addToList == false)
-                                    {
-                                        //Queue_PoolTransaction.Enqueue(TmpPoolRecord);
-                                        //Obj_PoolTransactionList[CurrentBlockType].Add(TmpPoolRecord);
-                                        //exitLoop = true;
-                                    }
                                 }
                             }
 
                             if (addToList == true)
                             {
-                                TempPoolTransactionList.Add(TmpPoolRecord);
-                                TempBlockList.Add(TmpPoolRecord.data);
+                                //omergoksoy
+                                //TempPoolTransactionList.Add(TmpPoolRecord);
+                                //TempBlockList.Add(TmpPoolRecord.data);
                             }
 
                             //Queue_PoolTransaction.Dequeue();
@@ -237,14 +245,15 @@ namespace Notus.Block
                                 exitLoop = true;
                             }
                         }
-                        else
+
+                        if (CurrentBlockType != TmpPoolRecord.type)
                         {
                             exitLoop = true;
                         }
                     }
                 }
             }
-            
+
             if (TempPoolTransactionList.Count == 0)
                 return null;
 
@@ -512,7 +521,8 @@ namespace Notus.Block
             {
                 Console.WriteLine("Remove Key From DB : " + tempRemovePoolList[i]);
                 kvPoolDb.Remove(tempRemovePoolList[i]);
-                PoolBlockIdList.TryRemove(tempRemovePoolList[i], out _);
+                //omergoksoy
+                //PoolBlockIdList.TryRemove(tempRemovePoolList[i], out _);
             }
         }
         public void ReloadPoolList()
@@ -712,6 +722,15 @@ namespace Notus.Block
                 MemoryLimitCount = 1000,
                 Name = "new_block"
             });
+
+            kvPoolTxErrorList.SetSettings(new NVS.KeyValueSettings()
+            {
+                LoadFromBeginning = false,
+                ResetTable = false,
+                Path = "pool",
+                MemoryLimitCount = 1000,
+                Name = "wrong_tx"
+            });
             LoadFromPoolDb();
         }
         public void Reset()
@@ -719,15 +738,13 @@ namespace Notus.Block
             Notus.Archive.ClearBlocks(NVG.Settings);
             tempRemovePoolList.Clear();
             kvPoolDb.Clear();
+            kvPoolTxErrorList.Clear();
             txQueue.Clear();
-            //Queue_PoolTransaction.Clear();
             //Obj_PoolTransactionList.Clear();
         }
         public Queue()
         {
             //Obj_PoolTransactionList.Clear();
-
-            //Queue_PoolTransaction.Clear();
         }
         ~Queue()
         {
@@ -739,12 +756,12 @@ namespace Notus.Block
             {
                 kvPoolDb.Dispose();
             }
-            catch (Exception err)
+            catch { }
+            try
             {
-                NP.Danger(NVG.Settings, "Error -> Notus.Block.Queue");
-                NP.Danger(NVG.Settings, err.Message);
-                NP.Danger(NVG.Settings, "Error -> Notus.Block.Queue");
+                kvPoolTxErrorList.Dispose();
             }
+            catch { }
         }
     }
 }

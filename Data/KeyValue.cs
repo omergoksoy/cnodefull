@@ -236,8 +236,14 @@ namespace Notus.Data
             );
             return (founded, resultText);
         }
-        public string Get(string key)
+        public string Get(string? key)
         {
+            if (key == null)
+                return string.Empty;
+
+            if (key.Length==0)
+                return string.Empty;
+
             if (ValueList.ContainsKey(key) == true)
                 return ValueList[key].Value;
 
@@ -315,8 +321,17 @@ namespace Notus.Data
             }
             DataValueList.Enqueue(storeObj);
         }
-        public void Set(string key, string value)
+        public void Set(string? key, string? value)
         {
+            if (key == null)
+                return;
+
+            if (key.Length==0)
+                return;
+
+            if (value == null)
+                value = string.Empty;
+
             AddToMemoryList(key, value);
             Task.Run(() =>
             {

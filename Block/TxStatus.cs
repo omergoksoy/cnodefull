@@ -26,7 +26,7 @@ namespace Notus.Block
             catch { }
             return NVE.BlockStatusCode.Unknown;
         }
-        public void Set(string blockUid, NVE.BlockStatusCode statusCode)
+        public void Set(string? blockUid, NVE.BlockStatusCode statusCode)
         {
             keyValue.Set(blockUid, JsonSerializer.Serialize(statusCode));
         }
