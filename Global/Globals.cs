@@ -56,7 +56,7 @@ namespace Notus.Variable
         */
         //başka bir node tarafından devam edilmesi söylendiğinde true olarak işaretlenecek
         public static bool OtherValidatorSelectedMe = false;
-        public static bool ShowWhoseTurnOrNot = false;
+        public static bool ShowWhoseTurnOrNot = true;
         public static ulong CurrentSyncNo = 0;
         public static bool LocalBlockLoaded = false;
         public static int GroupNo = 0;
