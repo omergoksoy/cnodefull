@@ -272,9 +272,9 @@ namespace Notus.Block
             Console.WriteLine("------------------------------------------------");
             Console.WriteLine("CurrentBlockType : " + CurrentBlockType.ToString());
             Console.WriteLine("Kilitlenmesi gereken cüzdanlar");
-            Console.WriteLine(JsonSerializer.Serialize(TempWalletList), NVC.JsonSetting);
+            Console.WriteLine(JsonSerializer.Serialize(TempWalletList, NVC.JsonSetting));
             Console.WriteLine("bloğa eklenecek olan işlemlerin listesi");
-            Console.WriteLine(JsonSerializer.Serialize(TempBlockList), NVC.JsonSetting);
+            Console.WriteLine(JsonSerializer.Serialize(TempBlockList, NVC.JsonSetting));
             Console.WriteLine("silinecek olanların listesi");
             Console.WriteLine(JsonSerializer.Serialize(tempRemovePoolList, NVC.JsonSetting));
             Console.WriteLine("------------------------------------------------");
