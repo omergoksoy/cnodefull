@@ -917,12 +917,14 @@ namespace Notus.Validator
 
                                     if (generateEmptyBlock == false)
                                     {
-                                        NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
+                                        NVClass.BlockData? PreBlockData = NGF.BlockQueue.Get(
                                             ND.AddMiliseconds(CurrentQueueTime, NVC.BlockListeningForPoolTime)
                                         );
-                                        if (TmpBlockStruct != null)
+                                        if (PreBlockData != null)
                                         {
-                                            NVClass.BlockData? PreBlockData = JsonSerializer.Deserialize<NVClass.BlockData>(TmpBlockStruct.data);
+                                            Console.WriteLine("----------------------------------");
+                                            Console.WriteLine(JsonSerializer.Serialize(PreBlockData));
+                                            Console.WriteLine("----------------------------------");
                                             txExecuted = true;
                                             if (PreBlockData != null)
                                             {

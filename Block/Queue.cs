@@ -101,7 +101,7 @@ namespace Notus.Block
             if (txUid != null)
                 txQueueList.TryRemove(txUid, out _);
         }
-        public NVS.PoolBlockRecordStruct? Get(
+        public NVClass.BlockData? Get(
             ulong WaitingForPool
         )
         {
@@ -269,16 +269,16 @@ namespace Notus.Block
             if (TempBlockList.Count == 0)
                 return null;
 
-            Console.WriteLine("------------------------------------------------");
-            Console.WriteLine("CurrentBlockType : " + CurrentBlockType.ToString());
-            Console.WriteLine("Kilitlenmesi gereken cüzdanlar");
-            Console.WriteLine(JsonSerializer.Serialize(TempWalletList, NVC.JsonSetting));
-            Console.WriteLine("bloğa eklenecek olan işlemlerin listesi");
-            Console.WriteLine(JsonSerializer.Serialize(TempBlockList, NVC.JsonSetting));
-            Console.WriteLine("silinecek olanların listesi");
-            Console.WriteLine(JsonSerializer.Serialize(tempRemovePoolList, NVC.JsonSetting));
-            Console.WriteLine("------------------------------------------------");
-            Environment.Exit(0);
+            // Console.WriteLine("------------------------------------------------");
+            // Console.WriteLine("CurrentBlockType : " + CurrentBlockType.ToString());
+            // Console.WriteLine("Kilitlenmesi gereken cüzdanlar");
+            // Console.WriteLine(JsonSerializer.Serialize(TempWalletList, NVC.JsonSetting));
+            // Console.WriteLine("bloğa eklenecek olan işlemlerin listesi");
+            // Console.WriteLine(JsonSerializer.Serialize(TempBlockList, NVC.JsonSetting));
+            // Console.WriteLine("silinecek olanların listesi");
+            // Console.WriteLine(JsonSerializer.Serialize(tempRemovePoolList, NVC.JsonSetting));
+            // Console.WriteLine("------------------------------------------------");
+            // Environment.Exit(0);
             NVClass.BlockData BlockStruct = NVClass.Block.GetOrganizedEmpty(CurrentBlockType);
 
             string LongNonceText = string.Empty;
@@ -510,11 +510,7 @@ namespace Notus.Block
 
             //burası pooldaki kayıtların fazla birikmesi ve para transferi işlemlerinin key'lerinin örtüşmemesinden
             //dolayı eklendi
-            return new NVS.PoolBlockRecordStruct()
-            {
-                type = CurrentBlockType,
-                data = JsonSerializer.Serialize(BlockStruct)
-            };
+            return BlockStruct;
         }
 
         public void RemoveTempPoolList()

@@ -139,6 +139,10 @@ namespace Notus.Coin
             airDrop.In.Add(tmpChunkIdKey, tmpBalanceBefore);
             airDrop.Out.Add(ReceiverWalletKey, tmpBalanceAfter.Balance);
 
+            Console.WriteLine("---------------------------------------");
+            Console.WriteLine(JsonSerializer.Serialize(airDrop, NVC.JsonSetting));
+            Console.WriteLine("---------------------------------------");
+
             bool tmpAddResult = NGF.BlockQueue.Add(new NVS.PoolBlockRecordStruct()
             {
                 uid = tmpChunkIdKey,
