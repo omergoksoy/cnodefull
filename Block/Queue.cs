@@ -517,53 +517,20 @@ namespace Notus.Block
         {
             for (int i = 0; i < tempRemovePoolList.Count; i++)
             {
-                Console.WriteLine("Remove Key From DB : " + tempRemovePoolList[i]);
+                txQueueList.TryRemove(tempRemovePoolList[i], out _);
                 kvPoolDb.Remove(tempRemovePoolList[i]);
-                //omergoksoy
-                //PoolBlockIdList.TryRemove(tempRemovePoolList[i], out _);
             }
+            tempRemovePoolList.Clear();
         }
         public void ReloadPoolList()
         {
-            /*
-            if (poolList != null)
+            for (int i = 0; i < tempRemovePoolList.Count; i++)
             {
-                if (poolList.Count > 0)
-                {
-                    RemovePoolIdList(poolList);
-                }
+                txQueue.Enqueue(tempRemovePoolList[i]);
             }
-            */
-            //CheckPoolDb = true;
-            LoadFromPoolDb();
+            tempRemovePoolList.Clear();
+            //LoadFromPoolDb();
         }
-        /*
-        public void RemovePermanentlyFromDb(List<string>? innerPoolList)
-        {
-            if (innerPoolList != null)
-            {
-                for (int i = 0; i < innerPoolList.Count; i++)
-                {
-                    Console.WriteLine("Remove Key From DB : " + innerPoolList[i]);
-                    kvPoolDb.Remove(innerPoolList[i]);
-                    PoolBlockIdList.TryRemove(poolList[i], out _);
-                }
-            }
-        }
-        public void RemovePoolIdList(List<string>? poolList)
-        {
-            if (poolList != null)
-            {
-                for (int i = 0; i < poolList.Count; i++)
-                {
-                    //control-point
-                    Console.WriteLine("Remove Key From List : " + poolList[i]);
-                    PoolBlockIdList.TryRemove(poolList[i], out _);
-                }
-            }
-        }
-        */
-
         public NVClass.BlockData? ReadFromChain(string BlockId)
         {
             //tgz-exception
@@ -658,18 +625,9 @@ namespace Notus.Block
 
         private void Add2Queue(NVS.PoolBlockRecordStruct PreBlockData)
         {
-            if (txQueueList.ContainsKey(PreBlockData.uid) == true)
-            {
-                Console.WriteLine("Uid Exist -> Line 656");
-            }
-            bool added = txQueueList.TryAdd(PreBlockData.uid, 1);
-            if (added == true)
+            if (txQueueList.TryAdd(PreBlockData.uid, 1) == true)
             {
                 txQueue.Enqueue(PreBlockData.uid);
-            }
-            else
-            {
-                Console.WriteLine("TryAdd -> false -> Line 670");
             }
 
             /*
@@ -694,19 +652,15 @@ namespace Notus.Block
         {
             kvPoolDb.Each((string blockTransactionKey, string TextBlockDataString) =>
             {
-                Console.WriteLine("Load : " + blockTransactionKey);
-                NVS.PoolBlockRecordStruct? PreBlockData =
-                    JsonSerializer.Deserialize<NVS.PoolBlockRecordStruct>(TextBlockDataString);
-                if (PreBlockData != null)
+                if (txQueueList.ContainsKey(blockTransactionKey) == false)
                 {
-                    Add2Queue(PreBlockData);
+                    NVS.PoolBlockRecordStruct? PreBlockData =
+                        JsonSerializer.Deserialize<NVS.PoolBlockRecordStruct>(TextBlockDataString);
+                    if (PreBlockData != null)
+                    {
+                        Add2Queue(PreBlockData);
+                    }
                 }
-                //omergoksoy
-                /*
-            if (PoolBlockIdList.ContainsKey(blockTransactionKey) == false)
-            {
-            }
-                */
             });
         }
         public void Start()
@@ -714,6 +668,7 @@ namespace Notus.Block
             NP.Info("Pool Loaded From Local DB");
             BS_Storage = new Notus.Block.Storage(false);
             BS_Storage.Start();
+            txQueueList.Clear();
 
             kvPoolDb.SetSettings(new NVS.KeyValueSettings()
             {

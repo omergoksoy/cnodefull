@@ -491,7 +491,7 @@ namespace Notus.Validator
             }
             return executeEmptyBlock;
         }
-        private void OrganizeAndDistributeBlock(NVClass.BlockData RawBlock,ulong CurrentQueueTime,bool reloadPool)
+        private void OrganizeAndDistributeBlock(NVClass.BlockData RawBlock,ulong CurrentQueueTime)
         {
             RawBlock = NGF.BlockQueue.OrganizeBlockOrder(RawBlock);
             NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(RawBlock, 1000);
@@ -503,19 +503,14 @@ namespace Notus.Validator
                     RawBlock.info.type,
                     CurrentQueueTime
                 );
-                if (reloadPool == true)
-                {
-                    NGF.BlockQueue.RemoveTempPoolList();
-                    //NGF.BlockQueue.RemovePermanentlyFromDb(poolList);
-                    //NGF.BlockQueue.RemovePoolIdList(poolList);
-                }
+                NGF.BlockQueue.RemoveTempPoolList();
             }
             else
             {
-                if (reloadPool == true)
+                Console.WriteLine("Hatali Blok Sirasi");
+                if (RawBlock.info.type != NVE.BlockTypeList.EmptyBlock)
                 {
                     NGF.BlockQueue.ReloadPoolList();
-                    //NGF.BlockQueue.ReloadPoolList(poolList);
                 }
             }
             NGF.WalletUsageList.Clear();
@@ -909,7 +904,7 @@ namespace Notus.Validator
                                             );
                                             rawBlock.info.uID = NGF.GenerateTxUid();
                                             rawBlock.info.time = NBK.GetTimeFromKey(rawBlock.info.uID, true);
-                                            OrganizeAndDistributeBlock(rawBlock, CurrentQueueTime,false);
+                                            OrganizeAndDistributeBlock(rawBlock, CurrentQueueTime);
                                             generateEmptyBlock = false;
                                         }
                                         emptyBlockChecked = true;
@@ -926,16 +921,10 @@ namespace Notus.Validator
                                             Console.WriteLine(JsonSerializer.Serialize(PreBlockData));
                                             Console.WriteLine("----------------------------------");
                                             txExecuted = true;
-                                            if (PreBlockData != null)
-                                            {
-                                                OrganizeAndDistributeBlock(PreBlockData, CurrentQueueTime, true);
-                                            } // if (PreBlockData != null)
-                                            else
-                                            {
-                                                NP.Danger(NVG.Settings, "Pre Block Is NULL");
-                                            } // if (PreBlockData != null) ELSE
+                                            OrganizeAndDistributeBlock(PreBlockData, CurrentQueueTime);
                                         } //if (TmpBlockStruct != null)
-                                        else
+                                        
+                                        if (PreBlockData == null)
                                         {
                                             if ((NVG.NOW.Obj - LastPrintTime).TotalSeconds > 20)
                                             {
