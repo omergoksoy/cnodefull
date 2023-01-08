@@ -604,7 +604,7 @@ namespace Notus.Block
                 {
                     foreach (var entry in tmpLockBalance.In)
                     {
-                        NVG.Settings.TxStatus.Add(entry.Key, NVE.BlockStatusCode.Completed);
+                        NVG.Settings.TxStatus.Set(entry.Key, NVE.BlockStatusCode.Completed);
                     }
                 }
             }
@@ -696,8 +696,6 @@ namespace Notus.Block
         {
             kvPoolDb.Each((string blockTransactionKey, string TextBlockDataString) =>
             {
-                if (PoolBlockIdList.ContainsKey(blockTransactionKey) == false)
-                {
                     Console.WriteLine("Load : " + blockTransactionKey);
                     NVS.PoolBlockRecordStruct? PreBlockData =
                         JsonSerializer.Deserialize<NVS.PoolBlockRecordStruct>(TextBlockDataString);
@@ -705,7 +703,12 @@ namespace Notus.Block
                     {
                         Add2Queue(PreBlockData);
                     }
+                    //omergoksoy
+                    /*
+                if (PoolBlockIdList.ContainsKey(blockTransactionKey) == false)
+                {
                 }
+                    */
             });
         }
         public void Start()
