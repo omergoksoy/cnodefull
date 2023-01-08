@@ -137,8 +137,9 @@ namespace Notus.Data
                 System.IO.Path.DirectorySeparatorChar +
             ObjSettings.Path +
                 System.IO.Path.DirectorySeparatorChar;
-
             TempPath = DirPath + ObjSettings.Name + "_temp" + System.IO.Path.DirectorySeparatorChar;
+            Console.WriteLine(DirPath);
+            Console.WriteLine(TempPath);
 
             NI.CreateDirectory(DirPath);
             NI.CreateDirectory(TempPath);
@@ -425,11 +426,12 @@ namespace Notus.Data
             {
                 hexKey = hexKey.Substring(0, 30);
             }
+            /*
             Console.WriteLine(PoolName);
             Console.WriteLine(TempPath);
             Console.WriteLine(DirPath);
             Console.WriteLine("----------------------------");
-
+            */
             string dataLockFileName =
                 TempPath +
                 exactTime.ToString(NVC.DefaultDateTimeFormatText + "ff") +
