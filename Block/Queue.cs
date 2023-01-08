@@ -117,8 +117,6 @@ namespace Notus.Block
             // data elamanı içersine eklenecek olan veri bu dizi içinde tutuluyor
             List<string> TempBlockList = new List<string>();
 
-
-            //List<NVS.PoolBlockRecordStruct> TempPoolTransactionList = new();
             bool exitLoop = false;
             string transactionId = string.Empty;
 
@@ -252,19 +250,12 @@ namespace Notus.Block
                                 tempRemovePoolList.Add(tmpTxUid);
                                 TempBlockList.Add(TmpPoolRecord.data);
                             }
-
-                            //Queue_PoolTransaction.Dequeue();
                             //Obj_PoolTransactionList[CurrentBlockType].RemoveAt(0);
-                            if (
-                                TempBlockList.Count == NVC.BlockTransactionLimit ||
-                                CurrentBlockType == 240 || // layer1 - > dosya ekleme isteği
-                                CurrentBlockType == 250 || // layer3 - > dosya içeriği
-                                CurrentBlockType == NVE.BlockTypeList.EmptyBlock ||
-                                CurrentBlockType == NVE.BlockTypeList.MultiWalletCryptoTransfer
-                            )
-                            {
-                                exitLoop = true;
-                            }
+                            exitLoop = (TempBlockList.Count == NVC.BlockTransactionLimit ? true : exitLoop);
+                            exitLoop = (CurrentBlockType == 240 ? true : exitLoop); // layer1 - > dosya ekleme isteği
+                            exitLoop = (CurrentBlockType == 250 ? true : exitLoop); // layer3 - > dosya içeriği
+                            exitLoop = (CurrentBlockType == NVE.BlockTypeList.EmptyBlock ? true : exitLoop);
+                            exitLoop = (CurrentBlockType == NVE.BlockTypeList.MultiWalletCryptoTransfer ? true : exitLoop);
                         }
 
                         if (CurrentBlockType != TmpPoolRecord.type)
@@ -280,9 +271,12 @@ namespace Notus.Block
 
             Console.WriteLine("------------------------------------------------");
             Console.WriteLine("CurrentBlockType : " + CurrentBlockType.ToString());
-            Console.WriteLine(JsonSerializer.Serialize(TempWalletList));
-            Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
-            //Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
+            Console.WriteLine("Kilitlenmesi gereken cüzdanlar");
+            Console.WriteLine(JsonSerializer.Serialize(TempWalletList), NVC.JsonSetting);
+            Console.WriteLine("bloğa eklenecek olan işlemlerin listesi");
+            Console.WriteLine(JsonSerializer.Serialize(TempBlockList), NVC.JsonSetting);
+            Console.WriteLine("silinecek olanların listesi");
+            Console.WriteLine(JsonSerializer.Serialize(tempRemovePoolList, NVC.JsonSetting));
             Console.WriteLine("------------------------------------------------");
 
             NVClass.BlockData BlockStruct = NVClass.Block.GetOrganizedEmpty(CurrentBlockType);
@@ -496,7 +490,6 @@ namespace Notus.Block
                             }
                         }
                         TempBlockList.Clear();
-                        //Console.WriteLine(tmpBlockCipherData.Out.Count)
                         TempBlockList.Add(JsonSerializer.Serialize(tmpBlockCipherData));
                     }
                 }
@@ -514,11 +507,6 @@ namespace Notus.Block
                     LongNonceText
                 )
             );
-
-            Console.WriteLine("-----------------------------------------------");
-            Console.WriteLine("silinecek olanların listesi");
-            Console.WriteLine(JsonSerializer.Serialize(tempRemovePoolList, NVC.JsonSetting));
-            Console.WriteLine("-----------------------------------------------");
 
             //burası pooldaki kayıtların fazla birikmesi ve para transferi işlemlerinin key'lerinin örtüşmemesinden
             //dolayı eklendi
