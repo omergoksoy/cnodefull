@@ -507,7 +507,6 @@ namespace Notus.Validator
             }
             else
             {
-                Console.WriteLine("Hatali Blok Sirasi");
                 if (RawBlock.info.type != NVE.BlockTypeList.EmptyBlock)
                 {
                     Console.WriteLine("Reload Tx From Temp List");
@@ -751,7 +750,7 @@ namespace Notus.Validator
             bool myTurnPrinted = false;
             bool notMyTurnPrinted = false;
 
-            NVG.ShowWhoseTurnOrNot = false;
+            NVG.ShowWhoseTurnOrNot = true;
 
             if (NVG.OtherValidatorSelectedMe == true)
             {

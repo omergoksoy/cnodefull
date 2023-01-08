@@ -628,17 +628,11 @@ namespace Notus.Block
         {
             if (txQueueList.TryAdd(PreBlockData.uid, 1) == true)
             {
+                Console.WriteLine("Add2Queue(NVS.PoolBlockRecordStruct PreBlockData)");
                 txQueue.Enqueue(PreBlockData.uid);
             }
 
             /*
-            if (Obj_PoolTransactionList.ContainsKey(PreBlockData.type) == false)
-            {
-                Obj_PoolTransactionList.TryAdd(
-                    PreBlockData.type,
-                    new List<Variable.Struct.List_PoolBlockRecordStruct>() { }
-                );
-            }
             Obj_PoolTransactionList[PreBlockData.type].Add(
                 new NVS.List_PoolBlockRecordStruct()
                 {
