@@ -278,7 +278,7 @@ namespace Notus.Block
             Console.WriteLine("silinecek olanların listesi");
             Console.WriteLine(JsonSerializer.Serialize(tempRemovePoolList, NVC.JsonSetting));
             Console.WriteLine("------------------------------------------------");
-
+            Environment.Exit(0);
             NVClass.BlockData BlockStruct = NVClass.Block.GetOrganizedEmpty(CurrentBlockType);
 
             string LongNonceText = string.Empty;
