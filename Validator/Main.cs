@@ -491,7 +491,7 @@ namespace Notus.Validator
             }
             return executeEmptyBlock;
         }
-        private void OrganizeAndDistributeBlock(NVClass.BlockData RawBlock,ulong CurrentQueueTime, List<string>? poolList)
+        private void OrganizeAndDistributeBlock(NVClass.BlockData RawBlock,ulong CurrentQueueTime,bool reloadPool)
         {
             RawBlock = NGF.BlockQueue.OrganizeBlockOrder(RawBlock);
             NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(RawBlock, 1000);
@@ -503,17 +503,19 @@ namespace Notus.Validator
                     RawBlock.info.type,
                     CurrentQueueTime
                 );
-                if (poolList != null)
+                if (reloadPool == true)
                 {
-                    NGF.BlockQueue.RemovePermanentlyFromDb(poolList);
-                    NGF.BlockQueue.RemovePoolIdList(poolList);
+                    NGF.BlockQueue.RemoveTempPoolList();
+                    //NGF.BlockQueue.RemovePermanentlyFromDb(poolList);
+                    //NGF.BlockQueue.RemovePoolIdList(poolList);
                 }
             }
             else
             {
-                if (poolList != null)
+                if (reloadPool == true)
                 {
-                    NGF.BlockQueue.ReloadPoolList(poolList);
+                    NGF.BlockQueue.ReloadPoolList();
+                    //NGF.BlockQueue.ReloadPoolList(poolList);
                 }
             }
             NGF.WalletUsageList.Clear();
@@ -907,7 +909,7 @@ namespace Notus.Validator
                                             );
                                             rawBlock.info.uID = NGF.GenerateTxUid();
                                             rawBlock.info.time = NBK.GetTimeFromKey(rawBlock.info.uID, true);
-                                            OrganizeAndDistributeBlock(rawBlock, CurrentQueueTime,null);
+                                            OrganizeAndDistributeBlock(rawBlock, CurrentQueueTime,false);
                                             generateEmptyBlock = false;
                                         }
                                         emptyBlockChecked = true;
@@ -915,7 +917,7 @@ namespace Notus.Validator
 
                                     if (generateEmptyBlock == false)
                                     {
-                                        (List<string>? poolList, NVS.PoolBlockRecordStruct? TmpBlockStruct) = NGF.BlockQueue.Get(
+                                        NVS.PoolBlockRecordStruct? TmpBlockStruct = NGF.BlockQueue.Get(
                                             ND.AddMiliseconds(CurrentQueueTime, NVC.BlockListeningForPoolTime)
                                         );
                                         if (TmpBlockStruct != null)
@@ -924,7 +926,7 @@ namespace Notus.Validator
                                             txExecuted = true;
                                             if (PreBlockData != null)
                                             {
-                                                OrganizeAndDistributeBlock(PreBlockData, CurrentQueueTime, poolList);
+                                                OrganizeAndDistributeBlock(PreBlockData, CurrentQueueTime, true);
                                             } // if (PreBlockData != null)
                                             else
                                             {
