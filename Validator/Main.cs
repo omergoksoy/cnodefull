@@ -509,7 +509,7 @@ namespace Notus.Validator
             {
                 if (RawBlock.info.type != NVE.BlockTypeList.EmptyBlock)
                 {
-                    Console.WriteLine("Reload Tx From Temp List");
+                    //Console.WriteLine("Reload Tx From Temp List");
                     NGF.BlockQueue.ReloadPoolList();
                 }
             }
@@ -919,10 +919,10 @@ namespace Notus.Validator
                                         if (PreBlockData != null)
                                         {
                                             txExecuted = true;
-                                            NP.Success("Getting Block From Pool");
-                                            Console.WriteLine("----------------------------------");
-                                            Console.WriteLine(JsonSerializer.Serialize(PreBlockData));
-                                            Console.WriteLine("----------------------------------");
+                                            //NP.Success("Getting Block From Pool");
+                                            //Console.WriteLine("----------------------------------");
+                                            //Console.WriteLine(JsonSerializer.Serialize(PreBlockData));
+                                            //Console.WriteLine("----------------------------------");
                                             OrganizeAndDistributeBlock(PreBlockData, CurrentQueueTime);
                                         } //if (TmpBlockStruct != null)
                                         

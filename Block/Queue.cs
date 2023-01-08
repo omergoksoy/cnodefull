@@ -107,7 +107,6 @@ namespace Notus.Block
         {
             if (txQueue.Count == 0)
             {
-                //Console.Write("*");
                 return null;
             }
 
@@ -273,16 +272,6 @@ namespace Notus.Block
             if (TempBlockList.Count == 0)
                 return null;
 
-            // Console.WriteLine("------------------------------------------------");
-            // Console.WriteLine("CurrentBlockType : " + CurrentBlockType.ToString());
-            // Console.WriteLine("Kilitlenmesi gereken cüzdanlar");
-            // Console.WriteLine(JsonSerializer.Serialize(TempWalletList, NVC.JsonSetting));
-            // Console.WriteLine("bloğa eklenecek olan işlemlerin listesi");
-            // Console.WriteLine(JsonSerializer.Serialize(TempBlockList, NVC.JsonSetting));
-            // Console.WriteLine("silinecek olanların listesi");
-            // Console.WriteLine(JsonSerializer.Serialize(tempRemovePoolList, NVC.JsonSetting));
-            // Console.WriteLine("------------------------------------------------");
-            // Environment.Exit(0);
             NVClass.BlockData BlockStruct = NVClass.Block.GetOrganizedEmpty(CurrentBlockType);
 
             string LongNonceText = string.Empty;
@@ -449,7 +438,6 @@ namespace Notus.Block
                 {
                     if (TempBlockList.Count > 1)
                     {
-                        //Console.WriteLine(JsonSerializer.Serialize( TempBlockList));
                         NVClass.BlockStruct_120 tmpBlockCipherData = new Variable.Class.BlockStruct_120()
                         {
                             In = new Dictionary<string, Variable.Class.BlockStruct_120_In_Struct>(),
@@ -519,7 +507,6 @@ namespace Notus.Block
 
         public void RemoveTempPoolList()
         {
-            Console.WriteLine("Remove Temp List");
             for (int i = 0; i < tempRemovePoolList.Count; i++)
             {
                 txQueueList.TryRemove(tempRemovePoolList[i], out _);
@@ -590,12 +577,7 @@ namespace Notus.Block
             }
             else
             {
-                //Console.WriteLine("Silinecek Block Anahtari Bilinmiyor");
-                //RemoveKeyStr = GiveBlockKey(rawDataStr);
             }
-            //Console.WriteLine("Control-Point-a055");
-            //Console.WriteLine("Remove Key From Pool : " + RemoveKeyStr);
-            kvPoolDb.Remove(RemoveKeyStr);
         }
 
         public bool Add(NVS.PoolBlockRecordStruct PreBlockData)
@@ -632,7 +614,6 @@ namespace Notus.Block
         {
             if (txQueueList.TryAdd(PreBlockData.uid, 1) == true)
             {
-                Console.WriteLine("Add2Queue(NVS.PoolBlockRecordStruct PreBlockData)");
                 txQueue.Enqueue(PreBlockData.uid);
                 Console.WriteLine("txQueue.Count : " + txQueue.Count.ToString());
             }

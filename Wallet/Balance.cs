@@ -95,8 +95,8 @@ namespace Notus.Wallet
         {
             SummaryDb.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj));
 
-            Console.WriteLine("StoreToDb(NVS.WalletBalanceStruct BalanceObj)");
-            Console.WriteLine(BalanceObj.Wallet + " -> " + JsonSerializer.Serialize(BalanceObj));
+            //Console.WriteLine("StoreToDb(NVS.WalletBalanceStruct BalanceObj)");
+            //Console.WriteLine(BalanceObj.Wallet + " -> " + JsonSerializer.Serialize(BalanceObj));
 
             //burada cüzdan kilidi açılacak...
             StopWalletUsage(BalanceObj.Wallet);
