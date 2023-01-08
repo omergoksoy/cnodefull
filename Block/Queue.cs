@@ -106,7 +106,10 @@ namespace Notus.Block
         )
         {
             if (txQueue.Count == 0)
+            {
+                //Console.Write("*");
                 return null;
+            }
 
             int CurrentBlockType = -1;
 
@@ -630,6 +633,11 @@ namespace Notus.Block
             {
                 Console.WriteLine("Add2Queue(NVS.PoolBlockRecordStruct PreBlockData)");
                 txQueue.Enqueue(PreBlockData.uid);
+                Console.WriteLine("txQueue.Count : " + txQueue.Count.ToString());
+            }
+            else
+            {
+                NP.Danger("txQueueList.TryAdd(PreBlockData.uid, 1) == FALSE");
             }
 
             /*
