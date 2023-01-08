@@ -151,8 +151,8 @@ namespace Notus.Coin
                 LimitDb.Set(ReceiverWalletKey,
                     JsonSerializer.Serialize(RequestList[ReceiverWalletKey])
                 );
-                Console.WriteLine("Set Wallet - >" + ReceiverWalletKey);
-                Console.WriteLine(JsonSerializer.Serialize(RequestList[ReceiverWalletKey]));
+                //Console.WriteLine("Set Wallet - >" + ReceiverWalletKey);
+                //Console.WriteLine(JsonSerializer.Serialize(RequestList[ReceiverWalletKey]));
                 // burada transactionları belleğe alıyor böyle hızlı ulaşım sağlanıyor...
                 NVG.Settings.TxStatus.Set(tmpChunkIdKey, NVE.BlockStatusCode.AddedToQueue);
 

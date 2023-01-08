@@ -109,9 +109,16 @@ namespace Notus.Block
                 return null;
 
             int CurrentBlockType = -1;
-            List<string> TempWalletList = new List<string>() { NVG.Settings.NodeWallet.WalletKey };
+
+            // aynı cüzdan adresini sadece 1 kez kullanmak için bu değişken kullanılıyor
+            Dictionary<string, byte> TempWalletList = new();
+            TempWalletList.Add(NVG.Settings.NodeWallet.WalletKey, 1);
+
+            // data elamanı içersine eklenecek olan veri bu dizi içinde tutuluyor
             List<string> TempBlockList = new List<string>();
-            List<NVS.PoolBlockRecordStruct> TempPoolTransactionList = new();
+
+
+            //List<NVS.PoolBlockRecordStruct> TempPoolTransactionList = new();
             bool exitLoop = false;
             string transactionId = string.Empty;
 
@@ -201,9 +208,9 @@ namespace Notus.Block
                                     // out işlemindeki cüzdanları kontrol ediyor...
                                     foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> tmpEntry in tmpBlockCipherData.Out)
                                     {
-                                        if (TempWalletList.IndexOf(tmpEntry.Key) == -1)
+                                        if (TempWalletList.ContainsKey(tmpEntry.Key) == false)
                                         {
-                                            TempWalletList.Add(tmpEntry.Key);
+                                            TempWalletList.Add(tmpEntry.Key, 1);
                                         }
                                         else
                                         {
@@ -228,9 +235,9 @@ namespace Notus.Block
                                     // out işlemindeki cüzdanları kontrol ediyor...
                                     foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> tmpEntry in tmpBlockCipherData.Out)
                                     {
-                                        if (TempWalletList.IndexOf(tmpEntry.Key) == -1)
+                                        if (TempWalletList.ContainsKey(tmpEntry.Key) == false)
                                         {
-                                            TempWalletList.Add(tmpEntry.Key);
+                                            TempWalletList.Add(tmpEntry.Key, 1);
                                         }
                                         else
                                         {
@@ -243,19 +250,13 @@ namespace Notus.Block
                             if (addToList == true)
                             {
                                 tempRemovePoolList.Add(tmpTxUid);
-                                TempPoolTransactionList.Add(new NVS.PoolBlockRecordStruct()
-                                {
-                                    data = TmpPoolRecord.data,
-                                    type = TmpPoolRecord.type,
-                                    uid = TmpPoolRecord.uid
-                                });
                                 TempBlockList.Add(TmpPoolRecord.data);
                             }
 
                             //Queue_PoolTransaction.Dequeue();
                             //Obj_PoolTransactionList[CurrentBlockType].RemoveAt(0);
                             if (
-                                TempPoolTransactionList.Count == NVC.BlockTransactionLimit ||
+                                TempBlockList.Count == NVC.BlockTransactionLimit ||
                                 CurrentBlockType == 240 || // layer1 - > dosya ekleme isteği
                                 CurrentBlockType == 250 || // layer3 - > dosya içeriği
                                 CurrentBlockType == NVE.BlockTypeList.EmptyBlock ||
@@ -274,14 +275,14 @@ namespace Notus.Block
                 }
             }
 
-            if (TempPoolTransactionList.Count == 0)
+            if (TempBlockList.Count == 0)
                 return null;
 
             Console.WriteLine("------------------------------------------------");
             Console.WriteLine("CurrentBlockType : " + CurrentBlockType.ToString());
             Console.WriteLine(JsonSerializer.Serialize(TempWalletList));
             Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
-            Console.WriteLine(JsonSerializer.Serialize(TempPoolTransactionList));
+            //Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
             Console.WriteLine("------------------------------------------------");
 
             NVClass.BlockData BlockStruct = NVClass.Block.GetOrganizedEmpty(CurrentBlockType);
@@ -292,7 +293,7 @@ namespace Notus.Block
             BlockStruct.info.uID = (transactionId.Length == 0 ? NGF.GenerateTxUid() : transactionId);
             if (CurrentBlockType == NVE.BlockTypeList.GenesisBlock)
             {
-                LongNonceText = TempPoolTransactionList[0].data;
+                LongNonceText = TempBlockList[0];
                 BlockStruct.info.rowNo = 1;
                 BlockStruct.info.multi = false;
                 BlockStruct.info.uID = NVC.GenesisBlockUid;
@@ -514,17 +515,10 @@ namespace Notus.Block
                 )
             );
 
-            for (int i = 0; i < TempPoolTransactionList.Count; i++)
-            {
-                tempRemovePoolList.Add(TempPoolTransactionList[i].uid);
-            }
-
             Console.WriteLine("-----------------------------------------------");
-            Console.WriteLine(JsonSerializer.Serialize(TempPoolTransactionList));
-            Console.WriteLine(JsonSerializer.Serialize(tempRemovePoolList));
+            Console.WriteLine("silinecek olanların listesi");
+            Console.WriteLine(JsonSerializer.Serialize(tempRemovePoolList, NVC.JsonSetting));
             Console.WriteLine("-----------------------------------------------");
-
-            //
 
             //burası pooldaki kayıtların fazla birikmesi ve para transferi işlemlerinin key'lerinin örtüşmemesinden
             //dolayı eklendi
