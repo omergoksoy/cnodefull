@@ -646,19 +646,12 @@ namespace Notus.Block
             kvPoolDb.Remove(RemoveKeyStr);
         }
 
-        public bool Add(NVS.PoolBlockRecordStruct PreBlockData, bool addedToPoolDb = true)
+        public bool Add(NVS.PoolBlockRecordStruct PreBlockData)
         {
             PreBlockData.uid = (PreBlockData.uid == null ? NGF.GenerateTxUid() : PreBlockData.uid);
             PreBlockData.uid = (PreBlockData.uid.Length == 0 ? NGF.GenerateTxUid() : PreBlockData.uid);
             string keyStr = PreBlockData.uid;
-            if (addedToPoolDb == true)
-            {
-                kvPoolDb.Set(keyStr, JsonSerializer.Serialize(PreBlockData));
-            }
-            else
-            {
-                kvPoolDb.Set(keyStr, JsonSerializer.Serialize(PreBlockData), true);
-            }
+            kvPoolDb.Set(keyStr, JsonSerializer.Serialize(PreBlockData));
 
             /*
             // eğer bu blok tipi veya id'si daha önceden eklendiyse uid kabul edilmesin
@@ -685,18 +678,6 @@ namespace Notus.Block
             return true;
             return false;
         }
-
-        /*
-        public void AddEmptyBlock()
-        {
-            Add(new NVS.PoolBlockRecordStruct()
-            {
-                uid = NGF.GenerateTxUid(),
-                type = NVE.BlockTypeList.EmptyBlock,
-                data = JsonSerializer.Serialize(NVG.Settings.LastBlock.info.rowNo)
-            }, false);
-        }
-        */
 
         private void Add2Queue(NVS.PoolBlockRecordStruct PreBlockData, string BlockKeyStr)
         {

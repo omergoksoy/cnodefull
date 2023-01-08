@@ -489,31 +489,6 @@ namespace Notus.Validator
             {
                 executeEmptyBlock = true;
             }
-            if (executeEmptyBlock == true)
-            {
-                NP.Success("Empty Block Executed");
-                Notus.Validator.Helper.CheckBlockAndEmptyCounter(300);
-                NVClass.BlockData rawBlock = Notus.Variable.Class.Block.GetOrganizedEmpty(NVE.BlockTypeList.EmptyBlock);
-                rawBlock.cipher.ver = "NE";
-                rawBlock.cipher.data = System.Convert.ToBase64String(
-                    System.Text.Encoding.ASCII.GetBytes(
-                        NVG.Settings.LastBlock.info.rowNo.ToString()
-                    )
-                );
-                rawBlock.info.uID = NGF.GenerateTxUid();
-                rawBlock.info.time = NBK.GetTimeFromKey(rawBlock.info.uID, true);
-                rawBlock = NGF.BlockQueue.OrganizeBlockOrder(rawBlock);
-                NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(rawBlock, 1000);
-
-                if (ProcessBlock(PreparedBlockData, 4) == true)
-                {
-                    ValidatorQueueObj.Distrubute(
-                        rawBlock.info.rowNo,
-                        rawBlock.info.type,
-                        CurrentQueueTime
-                    );
-                }
-            }
             return executeEmptyBlock;
         }
         public void Start()
@@ -886,13 +861,37 @@ namespace Notus.Validator
                                 if (txExecuted == false)
                                 {
 
-                                    burada empty blok oluşturulması sırası geldiyse oluşturuluyor
-                                    ancak sonrasında diğer blokları oluşturmaya geçmesin
+                                    //burada empty blok oluşturulması sırası geldiyse oluşturuluyor
+                                    //ancak sonrasında diğer blokları oluşturmaya geçmesin
                                     if (emptyBlockChecked == false)
                                     {
                                         generateEmptyBlock = ControlEmptyBlockGenerationTime(CurrentQueueTime);
                                         if (generateEmptyBlock == true)
                                         {
+                                            txExecuted = true;
+                                            NP.Success("Empty Block Executed");
+                                            Notus.Validator.Helper.CheckBlockAndEmptyCounter(300);
+                                            NVClass.BlockData rawBlock = Notus.Variable.Class.Block.GetOrganizedEmpty(NVE.BlockTypeList.EmptyBlock);
+                                            rawBlock.cipher.ver = "NE";
+                                            rawBlock.cipher.data = System.Convert.ToBase64String(
+                                                System.Text.Encoding.ASCII.GetBytes(
+                                                    NVG.Settings.LastBlock.info.rowNo.ToString()
+                                                )
+                                            );
+                                            rawBlock.info.uID = NGF.GenerateTxUid();
+                                            rawBlock.info.time = NBK.GetTimeFromKey(rawBlock.info.uID, true);
+                                            rawBlock = NGF.BlockQueue.OrganizeBlockOrder(rawBlock);
+                                            NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(rawBlock, 1000);
+
+                                            if (ProcessBlock(PreparedBlockData, 4) == true)
+                                            {
+                                                ValidatorQueueObj.Distrubute(
+                                                    rawBlock.info.rowNo,
+                                                    rawBlock.info.type,
+                                                    CurrentQueueTime
+                                                );
+                                            }
+
                                             generateEmptyBlock = false;
                                         }
                                         emptyBlockChecked = true;
