@@ -31,7 +31,7 @@ namespace Notus.Block
         private List<string> tempRemovePoolList = new();
 
         //buradaki queue ve dictionary değişkenlerini kontrol ederek gereksiz olarak sil veya düzelt
-        private Queue<string> txQueue = new();
+        private ConcurrentQueue<string> txQueue = new();
         private ConcurrentDictionary<string, byte> txQueueList = new();
 
 
@@ -129,7 +129,7 @@ namespace Notus.Block
                 string? tmpTxUid = string.Empty;
                 if (txQueue.Count > 0)
                 {
-                    tmpTxUid = txQueue.Dequeue();
+                    txQueue.TryDequeue(out tmpTxUid);
                     if (tmpTxUid == null)
                     {
                         Console.WriteLine("testUid : NULL");
