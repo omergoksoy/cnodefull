@@ -267,10 +267,11 @@ namespace Notus.Coin
                 RequestList.TryAdd(walletId, new List<string>());
             }
 
+            Console.WriteLine("controlStr: " + controlStr + " -> " + innerRequestList.Count.ToString());
             RequestList[walletId].Clear();
             for (int count = 0; count < innerRequestList.Count; count++)
             {
-                TimeSpan diff = (NVG.NOW.Obj - NBK.BlockIdToTime(innerRequestList[count])).Duration();
+                TimeSpan diff = ( NVG.NOW.Obj - NBK.BlockIdToTime(innerRequestList[count]) ).Duration();
                 if (NVC.AirDropTimeLimit > diff.TotalHours)
                 {
                     RequestList[walletId].Add(innerRequestList[count]);
