@@ -186,6 +186,7 @@ namespace Notus.Coin
             });
         }
 
+        /*
         public void Process(NVClass.BlockData blockData)
         {
             if (blockData.info.type != NVE.BlockTypeList.AirDrop)
@@ -209,6 +210,7 @@ namespace Notus.Coin
                 }
             }
         }
+        */
         public AirDrop()
         {
             LimitDb.SetSettings(new NVS.KeyValueSettings()
