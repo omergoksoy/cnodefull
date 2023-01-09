@@ -76,6 +76,8 @@ namespace Notus.Wallet
         // bu fonksiyonlar ile cüzdanın kilitlenmesi durumuna bakalım
         public bool WalletUsageAvailable(string walletKey)
         {
+            Console.WriteLine("public bool WalletUsageAvailable(string walletKey)");
+            Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
             lock (NGF.WalletUsageList)
             {
                 return (NGF.WalletUsageList.ContainsKey(walletKey) == false ? true : false);
@@ -83,11 +85,19 @@ namespace Notus.Wallet
         }
         public bool StartWalletUsage(string walletKey)
         {
-            lock(NGF.WalletUsageList)
+            Console.WriteLine("public bool StartWalletUsage(string walletKey)");
+            lock (NGF.WalletUsageList)
             {
+                Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                 if (NGF.WalletUsageList.ContainsKey(walletKey) == false)
                 {
-                    return NGF.WalletUsageList.TryAdd(walletKey, 1);
+                    bool result=NGF.WalletUsageList.TryAdd(walletKey, 1);
+                    Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
+                    return result;
+                }
+                else
+                {
+                    Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                 }
             }
             return false;
