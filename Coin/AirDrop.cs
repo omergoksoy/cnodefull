@@ -37,7 +37,7 @@ namespace Notus.Coin
                     Result = NVE.BlockStatusCode.AnErrorOccurred
                 });
             }
-            
+
             // mainnet ise hata gönderecek
             if (NVG.Settings.Network == Variable.Enum.NetworkType.MainNet)
             {
@@ -69,24 +69,25 @@ namespace Notus.Coin
                 for (int count = 0; count < innerRequestList.Count; count++)
                 {
                     TimeSpan diff = (NVG.NOW.Obj - NBK.BlockIdToTime(innerRequestList[count])).Duration();
-                    if (NVC.AirDropTimeLimit > diff.TotalMinutes)
+                    if (NVC.AirDropTimeLimit > diff.TotalHours)
                     {
                         RequestList[ReceiverWalletKey].Add(innerRequestList[count]);
                     }
                 }
+
+                if (RequestList[ReceiverWalletKey].Count >= NVC.AirDropVolumeCount)
+                {
+                    LimitDb.Set(ReceiverWalletKey, JsonSerializer.Serialize(RequestList[ReceiverWalletKey]));
+                    return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
+                    {
+                        ErrorNo = 371854,
+                        ErrorText = "TooManyRequest",
+                        ID = string.Empty,
+                        Result = NVE.BlockStatusCode.TooManyRequest
+                    });
+                }
             }
 
-            if (RequestList[ReceiverWalletKey].Count >= NVC.AirDropVolumeCount)
-            {
-                LimitDb.Set(ReceiverWalletKey,JsonSerializer.Serialize(RequestList[ReceiverWalletKey]));
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 371854,
-                    ErrorText = "TooManyRequest",
-                    ID = string.Empty,
-                    Result = NVE.BlockStatusCode.TooManyRequest
-                });
-            }
             string tmpChunkIdKey = NGF.GenerateTxUid();
 
             // eğer cüzdan kilitli ise hata gönderecek

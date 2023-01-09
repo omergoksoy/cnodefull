@@ -85,7 +85,7 @@ namespace Notus.Variable
         public static readonly int AirDropVolumeCount = 10;
 
         // alınan airdrop ne zaman silinecek
-        public static readonly int AirDropTimeLimit = 72;
+        public static readonly int AirDropTimeLimit = 24;
         
 
         public static readonly Dictionary<NetworkLayer, Dictionary<NetworkType, string>> AirDropVolume =

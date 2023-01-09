@@ -8,7 +8,7 @@ namespace Notus.Variable.Enum
     {
         public const int GenesisBlock = 360;
         public const int EmptyBlock = 300;
-        public const int CryptoTransfer= 120;
+        public const int CryptoTransfer = 120;
         public const int AirDrop = 125;
         public const int MultiWalletCryptoTransfer = 100;
 
@@ -136,7 +136,7 @@ namespace Notus.Variable.Enum
         WrongWallet = 67,
         WalletUsing = 75,
 
-        WrongTxFormat= 8888,
+        WrongTxFormat = 8888,
         WrongWallet_Sender = 6,
         WrongWallet_Receiver = 9,
 
@@ -155,8 +155,8 @@ namespace Notus.Variable.Enum
         NotEnoughParticipant = 39,
         RejectedMultiWalletAccess = 38,
         UnknownTransaction = 79,
-        NotSupported=65,
-        TooManyRequest=44,
+        NotSupported = 65,
+        TooManyRequest = 44,
         Unknown = 9999
     }
 
