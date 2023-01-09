@@ -155,7 +155,7 @@ namespace Notus.Block
                     NVS.PoolBlockRecordStruct? TmpPoolRecord = null;
                     if (kvDataStr.Length > 0)
                     {
-                        kontrol noktası
+                        //kontrol noktası
                         Console.WriteLine(tmpTxUid + " => " + kvDataStr);
                         try
                         {
@@ -265,6 +265,10 @@ namespace Notus.Block
                             {
                                 tempRemovePoolList.Add(tmpTxUid);
                                 TempBlockList.Add(TmpPoolRecord.data);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Eklenmeyen Uid : " + tmpTxUid);
                             }
                             //Obj_PoolTransactionList[CurrentBlockType].RemoveAt(0);
                             exitLoop = (TempBlockList.Count == NVC.BlockTransactionLimit ? true : exitLoop);
