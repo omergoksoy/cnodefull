@@ -78,8 +78,8 @@ namespace Notus.Wallet
         {
             lock (NGF.WalletUsageList)
             {
+                Console.WriteLine("Wallet Usage Available : " + walletKey);
                 Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
-                Console.WriteLine("Wallet Usage Available");
                 return (NGF.WalletUsageList.ContainsKey(walletKey) == false ? true : false);
             }
         }
@@ -87,7 +87,7 @@ namespace Notus.Wallet
         {
             lock (NGF.WalletUsageList)
             {
-                Console.WriteLine("Start Wallet Usage");
+                Console.WriteLine("Start Wallet Usage : " + walletKey);
                 Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                 if (NGF.WalletUsageList.ContainsKey(walletKey) == false)
                 {
@@ -107,7 +107,7 @@ namespace Notus.Wallet
         {
             lock (NGF.WalletUsageList)
             {
-                Console.WriteLine("Stop Wallet Usage");
+                Console.WriteLine("Stop Wallet Usage : " + walletKey);
                 Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                 NGF.WalletUsageList.TryRemove(walletKey, out _);
                 Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
