@@ -1388,30 +1388,20 @@ namespace Notus.Validator
         }
         private string Request_Send(NVS.HttpRequestDetails IncomeData)
         {
+            /*
             transfer işlemlerindeki değişken kilitleme işlemlerini kontrol et
             transfer işlemlerindeki değişken kilitleme işlemlerini kontrol et
             transfer işlemlerindeki değişken kilitleme işlemlerini kontrol et
             transfer işlemlerindeki değişken kilitleme işlemlerini kontrol et
-            
+            */
 
-            NVS.CryptoTransactionStruct? tmpTransfer;
+            NVS.CryptoTransactionStruct? tmpTransfer=null;
             try
             {
-                tmpTransfer = JsonSerializer.Deserialize<NVS.CryptoTransactionStruct>(
-                    IncomeData.PostParams["data"]
-                );
+                tmpTransfer = JsonSerializer.Deserialize<NVS.CryptoTransactionStruct>(IncomeData.PostParams["data"]);
             }
-            catch (Exception err)
-            {
-                NP.Danger(NVG.Settings, "Error Text [abc875768] : " + err.Message);
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 9618,
-                    ErrorText = "AnErrorOccurred",
-                    ID = string.Empty,
-                    Result = NVE.BlockStatusCode.AnErrorOccurred
-                });
-            }
+            catch { tmpTransfer = null; }
+
             if (tmpTransfer == null)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
@@ -1454,6 +1444,7 @@ namespace Notus.Validator
                     Result = NVE.BlockStatusCode.WalletNotAllowed
                 });
             }
+
             if (Notus.Wallet.MultiID.IsMultiId(tmpTransfer.Sender, NVG.Settings.Network) == true)
             {
                 return Request_MultiSignatureSend(IncomeData, tmpTransfer);

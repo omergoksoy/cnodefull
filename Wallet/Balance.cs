@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
 using System.Text.Json;
-using NP = Notus.Print;
 using NGF = Notus.Variable.Globals.Functions;
+using NP = Notus.Print;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
 
@@ -118,9 +118,6 @@ namespace Notus.Wallet
         {
             SummaryDb.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj));
 
-            //Console.WriteLine("StoreToDb(NVS.WalletBalanceStruct BalanceObj)");
-            //Console.WriteLine(BalanceObj.Wallet + " -> " + JsonSerializer.Serialize(BalanceObj));
-
             //burada cüzdan kilidi açılacak...
             StopWalletUsage(BalanceObj.Wallet);
         }
@@ -158,8 +155,6 @@ namespace Notus.Wallet
         public NVS.WalletBalanceStruct Get(string WalletKey, ulong timeYouCanUse)
         {
             string returnText = SummaryDb.Get(WalletKey);
-            //Console.WriteLine("Get(string WalletKey, ulong timeYouCanUse)");
-            //Console.WriteLine(WalletKey + " -> " + returnText);
             if (returnText.Length > 0)
             {
                 try
@@ -222,6 +217,7 @@ namespace Notus.Wallet
             }
             return tmpResult;
         }
+
         /*
 
         controlpoint
@@ -331,24 +327,17 @@ namespace Notus.Wallet
         public bool HasEnoughCoin(string walletKey, BigInteger howMuchCoinNeed, string CoinTagName = "")
         {
             if (NVG.Settings == null)
-            {
                 return false;
-            }
+            
             if (NVG.Settings.Genesis == null)
-            {
                 return false;
-            }
+
             if (CoinTagName.Length == 0)
-            {
                 CoinTagName = NVG.Settings.Genesis.CoinInfo.Tag;
-            }
+
             NVS.WalletBalanceStruct tmpGeneratorBalanceObj = Get(walletKey, 0);
             BigInteger currentVolume = GetCoinBalance(tmpGeneratorBalanceObj, CoinTagName);
-            if (howMuchCoinNeed > currentVolume)
-            {
-                return false;
-            }
-            return true;
+            return (howMuchCoinNeed > currentVolume ? false : true);
         }
         public BigInteger GetCoinBalance(NVS.WalletBalanceStruct tmpBalanceObj, string CoinTagName)
         {
@@ -371,27 +360,19 @@ namespace Notus.Wallet
         public bool AccountIsLock(string WalletKey)
         {
             string unlockTimeStr = "";
-            if (NGF.LockWalletList.ContainsKey(WalletKey) == true)
+            lock (NGF.LockWalletList)
             {
-                unlockTimeStr = NGF.LockWalletList[WalletKey];
+                if (NGF.LockWalletList.ContainsKey(WalletKey) == true)
+                {
+                    unlockTimeStr = NGF.LockWalletList[WalletKey];
+                }
             }
-
-            /*
-            string unlockTimeStr = ObjMp_LockWallet.Get(
-                Notus.Toolbox.Text.ToHex(WalletKey),
-                ""
-            );
-            */
 
             if (unlockTimeStr.Length > 0)
             {
                 if (ulong.TryParse(unlockTimeStr, out ulong unlockTimeLong))
                 {
-                    DateTime unlockTime = Notus.Date.ToDateTime(unlockTimeStr);
-                    if (NVG.NOW.Obj > unlockTime)
-                    {
-                        return true;
-                    }
+                    return (NVG.NOW.Obj > Notus.Date.ToDateTime(unlockTimeLong) ? true : false);
                 }
             }
             return false;
