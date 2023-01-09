@@ -76,22 +76,23 @@ namespace Notus.Wallet
         // bu fonksiyonlar ile cüzdanın kilitlenmesi durumuna bakalım
         public bool WalletUsageAvailable(string walletKey)
         {
-            Console.WriteLine("public bool WalletUsageAvailable(string walletKey)");
-            Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
             lock (NGF.WalletUsageList)
             {
+                Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
+                Console.WriteLine("Wallet Usage Available");
                 return (NGF.WalletUsageList.ContainsKey(walletKey) == false ? true : false);
             }
         }
         public bool StartWalletUsage(string walletKey)
         {
-            Console.WriteLine("public bool StartWalletUsage(string walletKey)");
             lock (NGF.WalletUsageList)
             {
+                Console.WriteLine("Start Wallet Usage");
                 Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                 if (NGF.WalletUsageList.ContainsKey(walletKey) == false)
                 {
-                    bool result=NGF.WalletUsageList.TryAdd(walletKey, 1);
+                    bool result = NGF.WalletUsageList.TryAdd(walletKey, 1);
+                    Console.WriteLine(result);
                     Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                     return result;
                 }
@@ -99,12 +100,18 @@ namespace Notus.Wallet
                 {
                     Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                 }
+                return false;
             }
-            return false;
         }
         public void StopWalletUsage(string walletKey)
         {
-            NGF.WalletUsageList.TryRemove(walletKey, out _);
+            lock (NGF.WalletUsageList)
+            {
+                Console.WriteLine("Stop Wallet Usage");
+                Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
+                NGF.WalletUsageList.TryRemove(walletKey, out _);
+                Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
+            }
         }
 
         private void StoreToDb(NVS.WalletBalanceStruct BalanceObj)
@@ -654,7 +661,7 @@ namespace Notus.Wallet
                     }
                 }
             }
-            
+
             //CryptoTransfer
             if (tmpBlockForBalance.info.type == Notus.Variable.Enum.BlockTypeList.CryptoTransfer)
             {
@@ -967,7 +974,7 @@ namespace Notus.Wallet
             {
                 WalletsICanApproveDb.Dispose();
             }
-            catch 
+            catch
             {
             }
 
