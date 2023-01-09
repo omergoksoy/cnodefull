@@ -76,13 +76,19 @@ namespace Notus.Wallet
         // bu fonksiyonlar ile cüzdanın kilitlenmesi durumuna bakalım
         public bool WalletUsageAvailable(string walletKey)
         {
-            return (NGF.WalletUsageList.ContainsKey(walletKey) == false ? true : false);
+            lock (NGF.WalletUsageList)
+            {
+                return (NGF.WalletUsageList.ContainsKey(walletKey) == false ? true : false);
+            }
         }
         public bool StartWalletUsage(string walletKey)
         {
-            if (NGF.WalletUsageList.ContainsKey(walletKey) == false)
+            lock(NGF.WalletUsageList)
             {
-                return NGF.WalletUsageList.TryAdd(walletKey, 1);
+                if (NGF.WalletUsageList.ContainsKey(walletKey) == false)
+                {
+                    return NGF.WalletUsageList.TryAdd(walletKey, 1);
+                }
             }
             return false;
         }
