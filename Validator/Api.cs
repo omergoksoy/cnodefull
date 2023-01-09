@@ -1388,6 +1388,12 @@ namespace Notus.Validator
         }
         private string Request_Send(NVS.HttpRequestDetails IncomeData)
         {
+            transfer işlemlerindeki değişken kilitleme işlemlerini kontrol et
+            transfer işlemlerindeki değişken kilitleme işlemlerini kontrol et
+            transfer işlemlerindeki değişken kilitleme işlemlerini kontrol et
+            transfer işlemlerindeki değişken kilitleme işlemlerini kontrol et
+            
+
             NVS.CryptoTransactionStruct? tmpTransfer;
             try
             {
