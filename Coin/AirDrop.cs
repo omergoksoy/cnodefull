@@ -62,13 +62,17 @@ namespace Notus.Coin
                     Result = NVE.BlockStatusCode.WrongWallet
                 });
             }
-            List<string> innerRequestList = LoadFromDb(ReceiverWalletKey);
-            for (int count = 0; count < innerRequestList.Count; count++)
+
+            lock (RequestList)
             {
-                TimeSpan diff = (NVG.NOW.Obj - NBK.BlockIdToTime(innerRequestList[count])).Duration();
-                if (NVC.AirDropTimeLimit > diff.TotalMinutes)
+                List<string> innerRequestList = LoadFromDb(ReceiverWalletKey);
+                for (int count = 0; count < innerRequestList.Count; count++)
                 {
-                    RequestList[ReceiverWalletKey].Add(innerRequestList[count]);
+                    TimeSpan diff = (NVG.NOW.Obj - NBK.BlockIdToTime(innerRequestList[count])).Duration();
+                    if (NVC.AirDropTimeLimit > diff.TotalMinutes)
+                    {
+                        RequestList[ReceiverWalletKey].Add(innerRequestList[count]);
+                    }
                 }
             }
 
