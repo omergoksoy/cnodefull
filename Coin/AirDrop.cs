@@ -65,15 +65,7 @@ namespace Notus.Coin
 
             lock (RequestList)
             {
-                List<string> innerRequestList = LoadFromDb(ReceiverWalletKey);
-                for (int count = 0; count < innerRequestList.Count; count++)
-                {
-                    TimeSpan diff = (NVG.NOW.Obj - NBK.BlockIdToTime(innerRequestList[count])).Duration();
-                    if (NVC.AirDropTimeLimit > diff.TotalHours)
-                    {
-                        RequestList[ReceiverWalletKey].Add(innerRequestList[count]);
-                    }
-                }
+                LoadFromDb(ReceiverWalletKey);
 
                 if (RequestList[ReceiverWalletKey].Count >= NVC.AirDropVolumeCount)
                 {
@@ -252,7 +244,7 @@ namespace Notus.Coin
             }
             return airdropStr;
         }
-        private List<string> LoadFromDb(string walletId)
+        private void LoadFromDb(string walletId)
         {
             List<string>? innerRequestList = new();
             string controlStr = LimitDb.Get(walletId);
@@ -269,15 +261,25 @@ namespace Notus.Coin
             {
                 innerRequestList = new List<string>();
             }
+            
             if (RequestList.ContainsKey(walletId) == false)
             {
                 RequestList.TryAdd(walletId, new List<string>());
             }
-            else
+
+            RequestList[walletId].Clear();
+            for (int count = 0; count < innerRequestList.Count; count++)
             {
-                RequestList[walletId].Clear();
+                TimeSpan diff = (NVG.NOW.Obj - NBK.BlockIdToTime(innerRequestList[count])).Duration();
+                if (NVC.AirDropTimeLimit > diff.TotalHours)
+                {
+                    RequestList[walletId].Add(innerRequestList[count]);
+                }
+                else
+                {
+                    Console.WriteLine("Yazilmadi : " +" -> " + count .ToString()+" - "+ innerRequestList[count]);
+                }
             }
-            return innerRequestList;
         }
         public void Dispose()
         {
