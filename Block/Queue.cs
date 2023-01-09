@@ -95,11 +95,12 @@ namespace Notus.Block
             NVG.Settings.TxStatus.Set(txUid, NVE.BlockStatusCode.WrongTxFormat);
 
             // işlem hatalı olduğu için kuyruktan çıkartılıyor
-            //txQueue.Dequeue();
+            txQueue.TryDequeue(out _);
 
             // işlem hatalı olduğu için kuyruk listesinden çıkartılıyor
             if (txUid != null)
                 txQueueList.TryRemove(txUid, out _);
+
         }
         public NVClass.BlockData? Get(
             ulong WaitingForPool
@@ -129,7 +130,7 @@ namespace Notus.Block
                 string? tmpTxUid = string.Empty;
                 if (txQueue.Count > 0)
                 {
-                    txQueue.TryDequeue(out tmpTxUid);
+                    txQueue.TryPeek(out tmpTxUid);
                     if (tmpTxUid == null)
                     {
                         Console.WriteLine("testUid : NULL");
@@ -263,6 +264,7 @@ namespace Notus.Block
 
                             if (addToList == true)
                             {
+                                txQueue.TryDequeue(out _);
                                 tempRemovePoolList.Add(tmpTxUid);
                                 TempBlockList.Add(TmpPoolRecord.data);
                             }
@@ -271,7 +273,6 @@ namespace Notus.Block
                                 Console.WriteLine("----------------------------------------------------------");
                                 Console.WriteLine(JsonSerializer.Serialize(new List<string>(txQueue)));
                                 Console.WriteLine("Eklenmeyen Uid : " + tmpTxUid);
-                                txQueue.Enqueue(tmpTxUid);
                                 Console.WriteLine(JsonSerializer.Serialize(new List<string>(txQueue)));
                             }
                             //Obj_PoolTransactionList[CurrentBlockType].RemoveAt(0);
