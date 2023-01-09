@@ -185,32 +185,6 @@ namespace Notus.Coin
                 Result = NVE.BlockStatusCode.Unknown
             });
         }
-
-        /*
-        public void Process(NVClass.BlockData blockData)
-        {
-            if (blockData.info.type != NVE.BlockTypeList.AirDrop)
-                return;
-
-            NVClass.BlockStruct_125? tmpLockBalance = NBD.Convert_125(blockData.cipher.data, true);
-            if (tmpLockBalance != null)
-            {
-                //Console.WriteLine("Process AirDrop Block");
-                foreach (var entry in tmpLockBalance.In)
-                {
-                    if (RequestList.ContainsKey(entry.Value.Wallet) == false)
-                    {
-                        RequestList.TryAdd(entry.Value.Wallet, new List<string>());
-                    }
-                    RequestList[entry.Value.Wallet].Add(entry.Key);
-                    LimitDb.Set(
-                        entry.Value.Wallet,
-                        JsonSerializer.Serialize(RequestList[entry.Value.Wallet])
-                    );
-                }
-            }
-        }
-        */
         public AirDrop()
         {
             LimitDb.SetSettings(new NVS.KeyValueSettings()

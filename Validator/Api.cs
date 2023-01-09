@@ -165,9 +165,6 @@ namespace Notus.Validator
 
             NGF.Balance.Control(Obj_BlockData);
 
-            // airdrop ise burada yapılan istekler veri tabanına kaydedilecek
-            //airdropObj.Process(Obj_BlockData);
-
             if (Obj_BlockData.info.type == NVE.BlockTypeList.CryptoTransfer)
             {
                 NVClass.BlockStruct_120? tmpBalanceVal = NBD.Convert_120(Obj_BlockData.cipher.data, true);
