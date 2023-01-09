@@ -95,7 +95,7 @@ namespace Notus.Block
             NVG.Settings.TxStatus.Set(txUid, NVE.BlockStatusCode.WrongTxFormat);
 
             // işlem hatalı olduğu için kuyruktan çıkartılıyor
-            txQueue.Dequeue();
+            //txQueue.Dequeue();
 
             // işlem hatalı olduğu için kuyruk listesinden çıkartılıyor
             if (txUid != null)
@@ -129,31 +129,23 @@ namespace Notus.Block
                 string? tmpTxUid = string.Empty;
                 if (txQueue.Count > 0)
                 {
-                    if (txQueue.TryDequeue(out string? testUid))
+                    tmpTxUid = txQueue.Dequeue();
+                    if (tmpTxUid == null)
                     {
-                        if (testUid == null)
+                        Console.WriteLine("testUid : NULL");
+                        exitLoop = true;
+                    }
+                    else
+                    {
+                        if (tmpTxUid.Length == 0)
                         {
-                            Console.WriteLine("testUid : NULL");
+                            Console.WriteLine("testUid : Zero-len");
                             exitLoop = true;
                         }
                         else
                         {
-                            if (testUid.Length == 0)
-                            {
-                                Console.WriteLine("testUid : Zero-len");
-                                exitLoop = true;
-                            }
-                            else
-                            {
-                                Console.WriteLine("testUid : " + testUid);
-                                tmpTxUid = testUid;
-                            }
+                            Console.WriteLine("testUid : " + tmpTxUid);
                         }
-                    }
-                    else
-                    {
-                        Console.WriteLine("txQueue.TryDequeue -> FALSE");
-                        exitLoop = true;
                     }
                 }
 
