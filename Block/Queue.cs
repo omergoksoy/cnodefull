@@ -268,7 +268,11 @@ namespace Notus.Block
                             }
                             else
                             {
+                                Console.WriteLine("----------------------------------------------------------");
+                                Console.WriteLine(JsonSerializer.Serialize(new List<string>(txQueue)));
                                 Console.WriteLine("Eklenmeyen Uid : " + tmpTxUid);
+                                txQueue.Enqueue(tmpTxUid);
+                                Console.WriteLine(JsonSerializer.Serialize(new List<string>(txQueue)));
                             }
                             //Obj_PoolTransactionList[CurrentBlockType].RemoveAt(0);
                             exitLoop = (TempBlockList.Count == NVC.BlockTransactionLimit ? true : exitLoop);
