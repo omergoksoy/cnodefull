@@ -328,7 +328,7 @@ namespace Notus.Wallet
         {
             if (NVG.Settings == null)
                 return false;
-            
+
             if (NVG.Settings.Genesis == null)
                 return false;
 
