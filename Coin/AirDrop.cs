@@ -261,7 +261,7 @@ namespace Notus.Coin
             {
                 innerRequestList = new List<string>();
             }
-            
+
             if (RequestList.ContainsKey(walletId) == false)
             {
                 RequestList.TryAdd(walletId, new List<string>());
@@ -277,7 +277,7 @@ namespace Notus.Coin
                 }
                 else
                 {
-                    Console.WriteLine("Yazilmadi : " +" -> " + count .ToString()+" - "+ innerRequestList[count]);
+                    Console.WriteLine("Yazilmadi : " + " -> " + count.ToString() + " - " + innerRequestList[count]);
                 }
             }
         }
