@@ -126,26 +126,26 @@ namespace Notus.Block
             {
                 exitLoop = (NVG.NOW.Int >= WaitingForPool ? true : exitLoop);
                 exitLoop = (txQueue.Count == 0 ? true : exitLoop);
-                Console.WriteLine(exitLoop);
+                //Console.WriteLine(exitLoop);
                 string? tmpTxUid = string.Empty;
                 if (txQueue.Count > 0)
                 {
                     txQueue.TryPeek(out tmpTxUid);
                     if (tmpTxUid == null)
                     {
-                        Console.WriteLine("testUid : NULL");
+                        //Console.WriteLine("testUid : NULL");
                         exitLoop = true;
                     }
                     else
                     {
                         if (tmpTxUid.Length == 0)
                         {
-                            Console.WriteLine("testUid : Zero-len");
+                            //Console.WriteLine("testUid : Zero-len");
                             exitLoop = true;
                         }
                         else
                         {
-                            Console.WriteLine("testUid : " + tmpTxUid);
+                            //Console.WriteLine("testUid : " + tmpTxUid);
                         }
                     }
                 }
@@ -157,7 +157,7 @@ namespace Notus.Block
                     if (kvDataStr.Length > 0)
                     {
                         //kontrol noktası
-                        Console.WriteLine(tmpTxUid + " => " + kvDataStr);
+                        //Console.WriteLine(tmpTxUid + " => " + kvDataStr);
                         try
                         {
                             TmpPoolRecord = JsonSerializer.Deserialize<NVS.PoolBlockRecordStruct>(kvDataStr);
@@ -270,10 +270,12 @@ namespace Notus.Block
                             }
                             else
                             {
+                                /*
                                 Console.WriteLine("----------------------------------------------------------");
                                 Console.WriteLine(JsonSerializer.Serialize(new List<string>(txQueue)));
                                 Console.WriteLine("Eklenmeyen Uid : " + tmpTxUid);
                                 Console.WriteLine(JsonSerializer.Serialize(new List<string>(txQueue)));
+                                */
                             }
                             //Obj_PoolTransactionList[CurrentBlockType].RemoveAt(0);
                             exitLoop = (TempBlockList.Count == NVC.BlockTransactionLimit ? true : exitLoop);
@@ -637,7 +639,7 @@ namespace Notus.Block
             if (txQueueList.TryAdd(PreBlockData.uid, 1) == true)
             {
                 txQueue.Enqueue(PreBlockData.uid);
-                Console.WriteLine("txQueue.Count : " + txQueue.Count.ToString());
+                //Console.WriteLine("txQueue.Count : " + txQueue.Count.ToString());
             }
             else
             {

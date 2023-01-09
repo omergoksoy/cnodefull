@@ -37,6 +37,7 @@ namespace Notus.Coin
                     Result = NVE.BlockStatusCode.AnErrorOccurred
                 });
             }
+            
             // mainnet ise hata gönderecek
             if (NVG.Settings.Network == Variable.Enum.NetworkType.MainNet)
             {
@@ -250,8 +251,6 @@ namespace Notus.Coin
         {
             List<string>? innerRequestList = new();
             string controlStr = LimitDb.Get(walletId);
-            //Console.WriteLine("Get Wallet - >" + walletId);
-            //Console.WriteLine("controlStr : " + controlStr);
             if (controlStr.Length > 0)
             {
                 try
