@@ -223,7 +223,6 @@ namespace Notus.Coin
             LimitDb.SetSettings(new NVS.KeyValueSettings()
             {
                 ResetTable = false,
-                Path = "wallet",
                 MemoryLimitCount = 1000,
                 Name = "airdrop"
             });

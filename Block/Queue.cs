@@ -683,7 +683,6 @@ namespace Notus.Block
             {
                 LoadFromBeginning = true,
                 ResetTable = false,
-                Path = "pool",
                 MemoryLimitCount = 1000,
                 Name = "new_block"
             });
@@ -692,7 +691,6 @@ namespace Notus.Block
             {
                 LoadFromBeginning = false,
                 ResetTable = false,
-                Path = "pool",
                 MemoryLimitCount = 1000,
                 Name = "wrong_tx"
             });

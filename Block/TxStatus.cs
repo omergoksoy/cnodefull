@@ -36,7 +36,6 @@ namespace Notus.Block
             {
                 LoadFromBeginning = true,
                 ResetTable = false,
-                Path = "block_meta",
                 MemoryLimitCount = 10000,
                 Name = "block_status"
             });

@@ -115,7 +115,6 @@ namespace Notus.Validator
             {
                 LoadFromBeginning = false,
                 ResetTable = false,
-                Path = "block_raw",
                 MemoryLimitCount = 1000,
                 Name = "blocks"
             });
@@ -124,9 +123,8 @@ namespace Notus.Validator
             {
                 LoadFromBeginning = false,
                 ResetTable = false,
-                Path = "transaction",
                 MemoryLimitCount = 1000,
-                Name = "list"
+                Name = "transaction_list"
             });
 
             if (NVG.Settings.Layer == NVE.NetworkLayer.Layer1)
@@ -1544,9 +1542,9 @@ bu hatayı düzeltmenin en kolay yolu her cüzdanın kilidi 2 blok sonra kaldır
 {"In":{"134afdd31dbd07e07694a936956e9cc6e7be7eb8e4bcfbe4bdd78d280ce7a34a67b19385f6aa98ed5be482a399":{"Wallet":"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT","Balance":{"NOTUS":{"20230109204207903":"2000000000","20230109204216803":"2000000000"}},"RowNo":924,"UID":"134afdd31db9000489d5ba83ca5592b77e621c7d6b8ba97b531fc6c4fe85fbadc21d2467a7c9547323e3a5e4ad"}},"Out":{"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT":{"NOTUS":{"20230109204207903":"2000000000","20230109204216803":"2000000000","20230109204221539":"2000000000"}}},"Validator":"NSX4jmTMPuq5JZnGrXb2DsGxt85B5svJL8PnFKb"}
 
 
-                    */
                     burada imza kontrolü yapılacak ve 
                     aynı imza + aynı tarih ve aynı gönderici ise işlem reddedilecek
+                    */
                 }
             }
                 

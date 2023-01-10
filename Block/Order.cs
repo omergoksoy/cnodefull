@@ -52,7 +52,6 @@ namespace Notus.Block
             {
                 LoadFromBeginning = true,
                 ResetTable = false,
-                Path = "block_meta",
                 MemoryLimitCount = 1000,
                 Name = Notus.Variable.Constant.MemoryPoolName["BlockOrderList"]
             });

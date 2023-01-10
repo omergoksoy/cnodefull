@@ -876,7 +876,6 @@ namespace Notus.Wallet
             SummaryDb.SetSettings(new NVS.KeyValueSettings()
             {
                 ResetTable = true,
-                Path = "wallet",
                 MemoryLimitCount = 1000,
                 Name = "balance"
             });
@@ -884,7 +883,6 @@ namespace Notus.Wallet
             MultiWalletParticipantDb.SetSettings(new NVS.KeyValueSettings()
             {
                 ResetTable = true,
-                Path = "wallet",
                 MemoryLimitCount = 1000,
                 Name = "multi_wallet_participant"
             });
@@ -892,7 +890,6 @@ namespace Notus.Wallet
             WalletsICanApproveDb.SetSettings(new NVS.KeyValueSettings()
             {
                 ResetTable = true,
-                Path = "wallet",
                 MemoryLimitCount = 1000,
                 Name = "wallet_i_can_approve"
             });

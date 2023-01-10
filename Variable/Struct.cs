@@ -426,13 +426,6 @@ namespace Notus.Variable.Struct
         public DateTime added { get; set; }
         public DateTime remove { get; set; }
     }
-    public class KeyValueDataList
-    {
-        public bool Set { get; set; }
-        public string Key { get; set; }
-        public string Value { get; set; }
-        public DateTime Time { get; set; }
-    }
 
     public class MetricsResponseStruct
     {
@@ -648,7 +641,6 @@ namespace Notus.Variable.Struct
         public bool LoadFromBeginning { get; set; }
         public bool ResetTable { get; set; }
         public ulong MemoryLimitCount { get; set; }
-        public string Path { get; set; }
         public string Name { get; set; }
     }
 

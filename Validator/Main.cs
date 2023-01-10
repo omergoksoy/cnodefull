@@ -187,7 +187,7 @@ namespace Notus.Validator
                         //Console.WriteLine("tmpRequestSend_ListCount : " + tmpRequestSend_ListCount.ToString());
                         ulong unlockTimeForNodeWallet = NVG.NOW.Int;
                         NVS.WalletBalanceStruct tmpValidatorWalletBalance = NGF.Balance.Get(NVG.Settings.NodeWallet.WalletKey, unlockTimeForNodeWallet);
-                        List<string> tmpWalletList = new List<string>() { };
+                        Dictionary<string,byte> tmpWalletList = new Dictionary<string, byte>() { };
                         tmpWalletList.Clear();
 
                         List<string> tmpKeyList = new List<string>();
@@ -260,13 +260,13 @@ namespace Notus.Validator
                                     NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Sender);
                                     NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Receiver);
 
-                                    bool senderExist = tmpWalletList.IndexOf(tmpObjPoolCrypto.Sender) >= 0 ? true : false;
-                                    bool receiverExist = tmpWalletList.IndexOf(tmpObjPoolCrypto.Receiver) >= 0 ? true : false;
+                                    bool senderExist = tmpWalletList.ContainsKey(tmpObjPoolCrypto.Sender);
+                                    bool receiverExist = tmpWalletList.ContainsKey(tmpObjPoolCrypto.Receiver);
                                     //Console.WriteLine(senderExist)
                                     if (senderExist == false && receiverExist == false)
                                     {
-                                        tmpWalletList.Add(tmpObjPoolCrypto.Sender);
-                                        tmpWalletList.Add(tmpObjPoolCrypto.Receiver);
+                                        tmpWalletList.Add(tmpObjPoolCrypto.Sender,1);
+                                        tmpWalletList.Add(tmpObjPoolCrypto.Receiver,1);
 
                                         NVS.WalletBalanceStruct tmpSenderBalance = NGF.Balance.Get(tmpObjPoolCrypto.Sender, unlockTimeForNodeWallet);
                                         NVS.WalletBalanceStruct tmpReceiverBalance = NGF.Balance.Get(tmpObjPoolCrypto.Receiver, unlockTimeForNodeWallet);

@@ -1,4 +1,5 @@
-﻿using Notus.Communication;
+﻿using RocksDbSharp;
+using Notus.Communication;
 using Notus.Network;
 using System.Globalization;
 using System.Net;
@@ -43,8 +44,29 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     Console.WriteLine();
     NGF.CloseMyNode();
 }
+/*
+DbOptions options = new DbOptions().SetCreateIfMissing(true);
+RocksDb db = RocksDb.Open(options, "dev-net/layer-1/deneme/ornek");
+DateTime baslangic = DateTime.Now;
+
+for (int i = 0; i < 1000000; i++)
+{
+    db.Put(i.ToString(),(i+5).ToString());
+}
+Console.WriteLine(DateTime.Now- baslangic);
+Console.ReadLine();
+
+Iterator iterator = db.NewIterator().SeekToFirst();
+while (iterator.Valid())
+{
+    Console.WriteLine(iterator.StringKey());
+    Console.WriteLine(iterator.StringValue());
+    iterator.Next();
+}
 
 
+Console.ReadLine();
+*/
 //fix-ing-control-point
 
 
