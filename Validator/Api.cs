@@ -111,6 +111,8 @@ namespace Notus.Validator
         }
         public void Prepare()
         {
+            Console.WriteLine("API Executed");
+            NP.ReadLine();
             PrepareExecuted = true;
             BlockDbObj.SetSettings(new NVS.KeyValueSettings()
             {
