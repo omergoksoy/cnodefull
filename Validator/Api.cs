@@ -219,9 +219,10 @@ namespace Notus.Validator
 
         public string Interpret(NVS.HttpRequestDetails IncomeData)
         {
-            //Console.WriteLine("IncomeData.RawUrl : " + IncomeData.RawUrl);
+            Console.WriteLine("IncomeData.RawUrl : " + IncomeData.RawUrl);
             if (PrepareExecuted == false)
             {
+                Console.WriteLine("Interpret Bölümü Devreye Girdi");
                 Prepare();
             }
 
