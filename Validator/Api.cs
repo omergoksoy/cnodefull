@@ -221,10 +221,8 @@ namespace Notus.Validator
 
         public string Interpret(NVS.HttpRequestDetails IncomeData)
         {
-            //Console.WriteLine("IncomeData.RawUrl : " + IncomeData.RawUrl);
             if (PrepareExecuted == false)
             {
-                //Console.WriteLine("Interpret Bölümü Devreye Girdi");
                 Prepare();
             }
 
@@ -234,7 +232,6 @@ namespace Notus.Validator
             }
             string incomeFullUrlPath = string.Join("/", IncomeData.UrlList).ToLower();
 
-            //Console.WriteLine("incomeFullUrlPath : " + incomeFullUrlPath);
             if (incomeFullUrlPath.Length < 2)
             {
                 return JsonSerializer.Serialize(false);
@@ -251,8 +248,6 @@ namespace Notus.Validator
             {
                 if (string.Equals(IncomeData.UrlList[0].ToLower(), "storage"))
                 {
-                    //Console.WriteLine(JsonSerializer.Serialize(IncomeData, Notus.Variable.Constant.JsonSetting);
-                    //Console.WriteLine(JsonSerializer.Serialize(IncomeData));
                     if (string.Equals(IncomeData.UrlList[1].ToLower(), "file"))
                     {
                         //this parts need to organize
