@@ -192,7 +192,14 @@ namespace Notus.Coin
                     JsonSerializer.Serialize(RequestList[ReceiverWalletKey])
                 );
                 // burada transactionları belleğe alıyor böyle hızlı ulaşım sağlanıyor...
-                NVG.Settings.TxStatus.Set(tmpChunkIdKey, NVE.BlockStatusCode.AddedToQueue);
+                NVG.Settings.TxStatus.Set(tmpChunkIdKey, new NVS.CryptoTransferStatus()
+                {
+                    Code = NVE.BlockStatusCode.Completed,
+                    RowNo = 0,
+                    UID = "",
+                    Text = "AddedToQueue"
+                });
+
 
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
                 {
@@ -202,7 +209,13 @@ namespace Notus.Coin
                     Result = NVE.BlockStatusCode.AddedToQueue
                 });
             }
-            NVG.Settings.TxStatus.Set(tmpChunkIdKey, NVE.BlockStatusCode.Unknown);
+            NVG.Settings.TxStatus.Set(tmpChunkIdKey, new NVS.CryptoTransferStatus()
+            {
+                Code = NVE.BlockStatusCode.Unknown,
+                RowNo = 0,
+                UID = "",
+                Text = "Unknown"
+            });
             return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
             {
                 ErrorNo = 55632,

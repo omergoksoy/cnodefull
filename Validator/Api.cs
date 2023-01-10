@@ -13,7 +13,7 @@ namespace Notus.Validator
 {
     public class Api : IDisposable
     {
-        private Notus.Data.KeyValue TxListObj = new Notus.Data.KeyValue();
+
         private Notus.Data.KeyValue BlockDbObj = new Notus.Data.KeyValue();
         private DateTime LastNtpTime = Notus.Variable.Constant.DefaultTime;
         private TimeSpan NtpTimeDifference;
@@ -24,6 +24,7 @@ namespace Notus.Validator
         private List<string> AllMasterList = new List<string>();
         private List<string> AllReplicantList = new List<string>();
 
+        private Notus.Coin.Transfer transferObj = new Notus.Coin.Transfer();
         private Notus.Coin.AirDrop airdropObj = new Notus.Coin.AirDrop();
         private Notus.Mempool ObjMp_MultiSignPool;
         public Notus.Mempool Obj_MultiSignPool
@@ -31,15 +32,7 @@ namespace Notus.Validator
             get { return ObjMp_MultiSignPool; }
         }
 
-        //private Notus.Mempool ObjMp_BlockOrderList;
-        private Notus.Mempool ObjMp_CryptoTranStatus;
-        public Notus.Mempool CryptoTranStatus
-        {
-            get { return ObjMp_CryptoTranStatus; }
-            set { ObjMp_CryptoTranStatus = value; }
-        }
-        private Notus.Mempool ObjMp_CryptoTransfer;
-        private ConcurrentDictionary<string, NVE.BlockStatusCode> Obj_TransferStatusList;
+        //private ConcurrentDictionary<string, NVE.BlockStatusCode> Obj_TransferStatusList;
 
         //public System.Func<NVS.PoolBlockRecordStruct, bool>? Func_AddToChainPool = null;
 
@@ -55,13 +48,7 @@ namespace Notus.Validator
         {
             if (NVG.Settings.GenesisCreated == false)
             {
-                Obj_TransferStatusList = new ConcurrentDictionary<string, NVE.BlockStatusCode>();
-
-                ObjMp_CryptoTransfer = new Notus.Mempool(Notus.IO.GetFolderName(NVG.Settings, Notus.Variable.Constant.StorageFolderName.Common) + "crypto_transfer");
-                ObjMp_CryptoTransfer.AsyncActive = false;
-
-                ObjMp_CryptoTranStatus = new Notus.Mempool(Notus.IO.GetFolderName(NVG.Settings, Notus.Variable.Constant.StorageFolderName.Common) + "crypto_transfer_status");
-                ObjMp_CryptoTranStatus.AsyncActive = false;
+                //Obj_TransferStatusList = new ConcurrentDictionary<string, NVE.BlockStatusCode>();
 
                 //NGF.BlockOrder.Clear();
                 /*
@@ -87,26 +74,16 @@ namespace Notus.Validator
         {
             if (NVG.Settings.GenesisCreated == false)
             {
-                Obj_TransferStatusList = new ConcurrentDictionary<string, NVE.BlockStatusCode>();
+                //Obj_TransferStatusList = new ConcurrentDictionary<string, NVE.BlockStatusCode>();
                 //NGF.Balance.Start();
-                ObjMp_CryptoTransfer = new Notus.Mempool(Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) + "crypto_transfer");
-                ObjMp_CryptoTranStatus = new Notus.Mempool(Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) + "crypto_transfer_status");
-
-                ObjMp_CryptoTransfer.AsyncActive = false;
-                ObjMp_CryptoTranStatus.AsyncActive = false;
             }
         }
         private void Prepare_Layer3()
         {
             if (NVG.Settings.GenesisCreated == false)
             {
-                Obj_TransferStatusList = new ConcurrentDictionary<string, NVE.BlockStatusCode>();
+                //Obj_TransferStatusList = new ConcurrentDictionary<string, NVE.BlockStatusCode>();
                 //NGF.Balance.Start();
-                ObjMp_CryptoTransfer = new Notus.Mempool(Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) + "crypto_transfer");
-                ObjMp_CryptoTranStatus = new Notus.Mempool(Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) + "crypto_transfer_status");
-
-                ObjMp_CryptoTransfer.AsyncActive = false;
-                ObjMp_CryptoTranStatus.AsyncActive = false;
             }
         }
         public void Prepare()
@@ -118,19 +95,10 @@ namespace Notus.Validator
             PrepareExecuted = true;
             BlockDbObj.SetSettings(new NVS.KeyValueSettings()
             {
-                LoadFromBeginning = false,
-                ResetTable = false,
                 MemoryLimitCount = 1000,
                 Name = "blocks"
             });
 
-            TxListObj.SetSettings(new NVS.KeyValueSettings()
-            {
-                LoadFromBeginning = false,
-                ResetTable = false,
-                MemoryLimitCount = 1000,
-                Name = "transaction_list"
-            });
 
             if (NVG.Settings.Layer == NVE.NetworkLayer.Layer1)
             {
@@ -188,7 +156,13 @@ namespace Notus.Validator
                 {
                     foreach (KeyValuePair<string, NVClass.BlockStruct_120_In_Struct> entry in tmpBalanceVal.In)
                     {
-                        RequestSend_Done(entry.Key, Obj_BlockData.info.rowNo, Obj_BlockData.info.uID);
+                        NVG.Settings.TxStatus.Set(entry.Key, new NVS.CryptoTransferStatus()
+                        {
+                            Code = NVE.BlockStatusCode.Completed,
+                            RowNo = Obj_BlockData.info.rowNo,
+                            UID = Obj_BlockData.info.uID,
+                            Text = "Completed"
+                        });
                     }
                 }
             }
@@ -596,7 +570,7 @@ namespace Notus.Validator
                         {
                             if (string.Equals(IncomeData.UrlList[1].ToLower(), "status"))
                             {
-                                return Request_TransactionStatus(IncomeData);
+                                return JsonSerializer.Serialize(transferObj.Status(IncomeData));
                             }
 
                             if (string.Equals(IncomeData.UrlList[1].ToLower(), "hash"))
@@ -615,7 +589,7 @@ namespace Notus.Validator
                         {
                             if (string.Equals(IncomeData.UrlList[1].ToLower(), "status"))
                             {
-                                return Request_TransactionStatus(IncomeData);
+                                return JsonSerializer.Serialize(transferObj.Status(IncomeData));
                             }
                         }
                     }
@@ -643,8 +617,8 @@ namespace Notus.Validator
 
                 if (string.Equals(IncomeData.UrlList[0].ToLower(), "send") && IncomeData.PostParams.ContainsKey("data") == true)
                 {
-                    //control_point
-                    return Request_Send(IncomeData);
+                    return transferObj.Request(IncomeData);
+                    //return Request_Send(IncomeData);
                 }
 
                 if (string.Equals(IncomeData.UrlList[0].ToLower(), "airdrop"))
@@ -740,33 +714,6 @@ namespace Notus.Validator
                 }
             }
             return null;
-        }
-
-        private string Request_TransactionStatus(NVS.HttpRequestDetails IncomeData)
-        {
-            string tmpTransactionIdStr = IncomeData.UrlList[2].ToLower();
-            string tmpDataResultStr = ObjMp_CryptoTranStatus.Get(tmpTransactionIdStr, string.Empty);
-            if (tmpDataResultStr.Length > 5)
-            {
-                try
-                {
-                    NVS.CryptoTransferStatus Obj_CryptTrnStatus = JsonSerializer.Deserialize<NVS.CryptoTransferStatus>(tmpDataResultStr);
-                    return JsonSerializer.Serialize(Obj_CryptTrnStatus.Code);
-                }
-                catch (Exception err)
-                {
-                    Console.WriteLine("Error Text [ba09c83fe] : " + err.Message);
-                }
-            }
-            return JsonSerializer.Serialize(
-                new NVS.CryptoTransferStatus()
-                {
-                    Code = Variable.Enum.BlockStatusCode.Unknown,
-                    RowNo = 0,
-                    Text = "Unknown",
-                    UID = string.Empty
-                }
-            );
         }
 
         private string Request_Layer3_StoreFileNew(NVS.HttpRequestDetails IncomeData)
@@ -1308,448 +1255,6 @@ namespace Notus.Validator
                     Status = "Unknown",
                     Result = NVE.BlockStatusCode.Unknown
                 });
-            }
-        }
-
-        private string Request_MultiSignatureSend(
-            NVS.HttpRequestDetails IncomeData,
-            NVS.CryptoTransactionStruct tmpTransfer
-        )
-        {
-            Dictionary<ulong, NVS.MultiWalletTransactionVoteStruct>? uidList = null;
-            string dbKeyStr = Notus.Toolbox.Text.ToHex(tmpTransfer.Sender, 90);
-            string dbText = ObjMp_MultiSignPool.Get(dbKeyStr, "");
-            if (dbText.Length > 0)
-            {
-                uidList = JsonSerializer.Deserialize<Dictionary<
-                    ulong,
-                    NVS.MultiWalletTransactionVoteStruct>
-                >(dbText);
-            }
-            if (uidList == null)
-            {
-                uidList = new Dictionary<ulong, NVS.MultiWalletTransactionVoteStruct>();
-            }
-
-            if (uidList.ContainsKey(tmpTransfer.CurrentTime) == true)
-            {
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 0,
-                    ErrorText = uidList[tmpTransfer.CurrentTime].Status.ToString(),
-                    ID = uidList[tmpTransfer.CurrentTime].TransactionId,
-                    Result = uidList[tmpTransfer.CurrentTime].Status
-                });
-            }
-
-            string tmpBlockUid = Notus.Block.Key.Generate(Notus.Date.ToDateTime(tmpTransfer.CurrentTime), NVG.Settings.NodeWallet.WalletKey);
-            List<string>? participant = NGF.Balance.GetParticipant(tmpTransfer.Sender);
-            uidList.Add(tmpTransfer.CurrentTime, new NVS.MultiWalletTransactionVoteStruct()
-            {
-                TransactionId = tmpBlockUid,
-                Sender = tmpTransfer,
-                VoteType = NGF.Balance.GetMultiWalletType(tmpTransfer.Sender),
-                Status = Variable.Enum.BlockStatusCode.Pending,
-                Approve = new Dictionary<string, NVS.MultiWalletTransactionApproveStruct>()
-                {
-
-                }
-            });
-            string calculatedWalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(tmpTransfer.PublicKey);
-            for (int i = 0; i < participant.Count; i++)
-            {
-                if (string.Equals(participant[i], calculatedWalletKey) == false)
-                {
-                    uidList[tmpTransfer.CurrentTime].Approve.Add(
-                        participant[i], new NVS.MultiWalletTransactionApproveStruct()
-                        {
-                            Approve = false,
-                            TransactionId = "",
-                            CurrentTime = 0,
-                            PublicKey = "",
-                            Sign = ""
-                        }
-                    );
-                }
-            }
-
-            bool addingResult = ObjMp_MultiSignPool.Add(
-                dbKeyStr,
-                JsonSerializer.Serialize(uidList),
-                Notus.Variable.Constant.MultiWalletTransactionTimeout
-            );
-            if (addingResult == true)
-            {
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 0,
-                    ErrorText = "AddedToQueue",
-                    ID = tmpBlockUid,
-                    Result = NVE.BlockStatusCode.AddedToQueue
-                });
-            }
-            return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-            {
-                ErrorNo = 7546,
-                ErrorText = "AnErrorOccurred",
-                ID = string.Empty,
-                Result = NVE.BlockStatusCode.AnErrorOccurred
-            });
-        }
-        private string Request_Send(NVS.HttpRequestDetails IncomeData)
-        {
-            /*
-            transfer işlemlerindeki değişken kilitleme işlemlerini kontrol et
-            transfer işlemlerindeki değişken kilitleme işlemlerini kontrol et
-            transfer işlemlerindeki değişken kilitleme işlemlerini kontrol et
-            transfer işlemlerindeki değişken kilitleme işlemlerini kontrol et
-            */
-            NVS.CryptoTransactionStruct? tmpTransfer=null;
-            try
-            {
-                tmpTransfer = JsonSerializer.Deserialize<NVS.CryptoTransactionStruct>(IncomeData.PostParams["data"]);
-            }
-            catch { tmpTransfer = null; }
-
-            if (tmpTransfer == null)
-            {
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 78945,
-                    ErrorText = "AnErrorOccurred",
-                    ID = string.Empty,
-                    Result = NVE.BlockStatusCode.AnErrorOccurred
-                });
-            }
-
-            if (
-                tmpTransfer.Volume == null ||
-                tmpTransfer.Sign == null ||
-                tmpTransfer.PublicKey == null ||
-                tmpTransfer.Sender == null ||
-                tmpTransfer.CurrentTime == 0 ||
-                tmpTransfer.UnlockTime == 0 ||
-                tmpTransfer.Currency == null ||
-                tmpTransfer.Receiver == null
-            )
-            {
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 4928,
-                    ErrorText = "WrongParameter",
-                    ID = string.Empty,
-                    Result = NVE.BlockStatusCode.WrongParameter
-                });
-            }
-
-            if (tmpTransfer.Sender.Length != Notus.Variable.Constant.SingleWalletTextLength)
-            {
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 7546,
-                    ErrorText = "WrongWallet_Sender",
-                    ID = string.Empty,
-                    Result = NVE.BlockStatusCode.WrongWallet_Sender
-                });
-            }
-            if (tmpTransfer.Receiver.Length != Notus.Variable.Constant.SingleWalletTextLength)
-            {
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 5245,
-                    ErrorText = "WrongWallet_Receiver",
-                    ID = string.Empty,
-                    Result = NVE.BlockStatusCode.WrongWallet_Receiver
-                });
-            }
-            if (string.Equals(tmpTransfer.Receiver, tmpTransfer.Sender))
-            {
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 5245,
-                    ErrorText = "WrongWallet_Receiver",
-                    ID = string.Empty,
-                    Result = NVE.BlockStatusCode.WrongWallet_Receiver
-                });
-            }
-
-            bool accountLocked = NGF.Balance.AccountIsLock(tmpTransfer.Sender);
-            if (accountLocked == true)
-            {
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 3827,
-                    ErrorText = "WalletNotAllowed",
-                    ID = string.Empty,
-                    Result = NVE.BlockStatusCode.WalletNotAllowed
-                });
-            }
-
-            if (Notus.Wallet.MultiID.IsMultiId(tmpTransfer.Sender, NVG.Settings.Network) == true)
-            {
-                return Request_MultiSignatureSend(IncomeData, tmpTransfer);
-            }
-
-            const int transferTimeOut = 0;
-            DateTime rightNow = ND.NowObj();
-            DateTime currentTime = Notus.Date.ToDateTime(tmpTransfer.CurrentTime);
-            double totaSeconds = Math.Abs((rightNow - currentTime).TotalSeconds);
-            // iki günden eski ise  zaman aşımı olarak işaretle
-            if (totaSeconds > (2 * 86400))
-            {
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 5245,
-                    ErrorText = "OldTransaction",
-                    ID = string.Empty,
-                    Result = NVE.BlockStatusCode.OldTransaction
-                });
-            }
-
-
-            string controlKey = tmpTransfer.CurrentTime.ToString().PadRight(20, '0');
-            string prevSignStr=TxListObj.Get(controlKey);
-            if (prevSignStr.Length > 0)
-            {
-                if(string.Equals(prevSignStr, tmpTransfer.Sign))
-                {
-                    /*
-
-
-blok bakiyelerini çekme işlemi yapılırken bakiye güncellenmesi ile işlemin çekilmesi
-arasında bir blokluk boşluk gerekiyor.
-
-bu boşluk olmadığı için hesabın bakiyesi çekilirken hatalı bir şekilde çekiliyor.
-
-bu hatayı düzeltmenin en kolay yolu her cüzdanın kilidi 2 blok sonra kaldırılsın
-bu hatayı düzeltmenin en kolay yolu her cüzdanın kilidi 2 blok sonra kaldırılsın
-bu hatayı düzeltmenin en kolay yolu her cüzdanın kilidi 2 blok sonra kaldırılsın
-bu hatayı düzeltmenin en kolay yolu her cüzdanın kilidi 2 blok sonra kaldırılsın
-
-
-922. blok
-{"In":{"134afdd31db0080062d3a85fcca69b3ca52cc05d1d36b2c01aea3f2d2e598c25b0417c5fd18b40ac6559b8b29a":{"Wallet":"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT","Balance":{"NOTUS":{"20230109204208538":"0"}},"RowNo":0,"UID":""}},"Out":{"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT":{"NOTUS":{"20230109204208538":"2000000000"}}},"Validator":"NSX4jmTMPuq5JZnGrXb2DsGxt85B5svJL8PnFKb"}
-
-923. blok
-{"In":{"134afdd31daf0d8858e787ebe8af05b723cefd67db610489b4d10998f03d90c9b371c81597a20abb2a0be14685":{"Wallet":"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT","Balance":{"NOTUS":{"20230109204207903":"0"}},"RowNo":0,"UID":""}},"Out":{"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT":{"NOTUS":{"20230109204207903":"2000000000"}}},"Validator":"NSX4jmTMPuq5JZnGrXb2DsGxt85B5svJL8PnFKb"}
-
-924. blok
-{"In":{"134afdd31db80beb8d8c43cdb1585bff3397fc5e6442fbd24092c845451f4324eb455a36c60b0eee87ed92f004":{"Wallet":"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT","Balance":{"NOTUS":{"20230109204207903":"2000000000"}},"RowNo":923,"UID":"134afdd31db5000426085872b0016dc2bbe73fb92e78c5c049647be5d7a4c06c21271f0ff0d66589d286fa744c"}},"Out":{"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT":{"NOTUS":{"20230109204207903":"2000000000","20230109204216803":"2000000000"}}},"Validator":"NSX4jmTMPuq5JZnGrXb2DsGxt85B5svJL8PnFKb"}
-
-925. blok
-{"In":{"134afdd31dbc0b5ddca0b7adb40bce15ad6b823dac3dba30449bf907fa57f9ec3af497f8568c5c2c9cdab44423":{"Wallet":"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT","Balance":{"NOTUS":{"20230109204207903":"2000000000","20230109204216803":"2000000000"}},"RowNo":924,"UID":"134afdd31db9000489d5ba83ca5592b77e621c7d6b8ba97b531fc6c4fe85fbadc21d2467a7c9547323e3a5e4ad"}},"Out":{"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT":{"NOTUS":{"20230109204207903":"2000000000","20230109204216803":"2000000000","20230109204220764":"2000000000"}}},"Validator":"NSX4jmTMPuq5JZnGrXb2DsGxt85B5svJL8PnFKb"}
-
-926. blok
-{"In":{"134afdd31dbd07e07694a936956e9cc6e7be7eb8e4bcfbe4bdd78d280ce7a34a67b19385f6aa98ed5be482a399":{"Wallet":"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT","Balance":{"NOTUS":{"20230109204207903":"2000000000","20230109204216803":"2000000000"}},"RowNo":924,"UID":"134afdd31db9000489d5ba83ca5592b77e621c7d6b8ba97b531fc6c4fe85fbadc21d2467a7c9547323e3a5e4ad"}},"Out":{"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT":{"NOTUS":{"20230109204207903":"2000000000","20230109204216803":"2000000000","20230109204221539":"2000000000"}}},"Validator":"NSX4jmTMPuq5JZnGrXb2DsGxt85B5svJL8PnFKb"}
-
-
-                    burada imza kontrolü yapılacak ve 
-                    aynı imza + aynı tarih ve aynı gönderici ise işlem reddedilecek
-                    */
-                }
-            }
-                
-
-            string calculatedWalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(tmpTransfer.PublicKey);
-            if (string.Equals(calculatedWalletKey, tmpTransfer.Sender) == false)
-            {
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 5245,
-                    ErrorText = "WrongWallet_Sender",
-                    ID = string.Empty,
-                    Result = NVE.BlockStatusCode.WrongWallet_Sender
-                });
-            }
-
-            if (Int64.TryParse(tmpTransfer.Volume, out _) == false)
-            {
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 3652,
-                    ErrorText = "WrongVolume",
-                    ID = string.Empty,
-                    Result = NVE.BlockStatusCode.WrongVolume
-                });
-            }
-
-
-            string rawDataStr = Notus.Core.MergeRawData.Transaction(tmpTransfer);
-            //transaction sign
-            if (Notus.Wallet.ID.Verify(rawDataStr, tmpTransfer.Sign, tmpTransfer.PublicKey) == false)
-            {
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 7314,
-                    ErrorText = "WrongSignature",
-                    ID = string.Empty,
-                    Result = NVE.BlockStatusCode.WrongSignature
-                });
-            }
-
-
-            // burada gelen bakiyeyi zaman kiliti ile kontrol edecek.
-
-            NVS.WalletBalanceStruct tmpSenderBalanceObj = NGF.Balance.Get(tmpTransfer.Sender, 0);
-
-            if (tmpSenderBalanceObj.Balance.ContainsKey(tmpTransfer.Currency) == false)
-            {
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 7854,
-                    ErrorText = "InsufficientBalance",
-                    ID = string.Empty,
-                    Result = NVE.BlockStatusCode.InsufficientBalance
-                });
-            }
-
-            // if wallet wants to send coin then control only coin balance
-            Int64 transferFee = Notus.Wallet.Fee.Calculate(
-                NVE.Fee.CryptoTransfer,
-                NVG.Settings.Network,
-                NVG.Settings.Layer
-            );
-            if (string.Equals(tmpTransfer.Currency, NVG.Settings.Genesis.CoinInfo.Tag))
-            {
-                BigInteger RequiredBalanceInt = BigInteger.Parse(tmpTransfer.Volume) + transferFee;
-                BigInteger CoinBalanceInt = NGF.Balance.GetCoinBalance(tmpSenderBalanceObj, NVG.Settings.Genesis.CoinInfo.Tag);
-
-                if (RequiredBalanceInt > CoinBalanceInt)
-                {
-                    return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                    {
-                        ErrorNo = 2536,
-                        ErrorText = "InsufficientBalance",
-                        ID = string.Empty,
-                        Result = NVE.BlockStatusCode.InsufficientBalance
-                    });
-                }
-            }
-            else
-            {
-                if (tmpSenderBalanceObj.Balance.ContainsKey(NVG.Settings.Genesis.CoinInfo.Tag) == false)
-                {
-                    return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                    {
-                        ErrorNo = 7854,
-                        ErrorText = "InsufficientBalance",
-                        ID = string.Empty,
-                        Result = NVE.BlockStatusCode.InsufficientBalance
-                    });
-                }
-                BigInteger coinFeeBalance = NGF.Balance.GetCoinBalance(tmpSenderBalanceObj, NVG.Settings.Genesis.CoinInfo.Tag);
-                if (transferFee > coinFeeBalance)
-                {
-                    return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                    {
-                        ErrorNo = 7523,
-                        ErrorText = "InsufficientBalance",
-                        ID = string.Empty,
-                        Result = NVE.BlockStatusCode.InsufficientBalance
-                    });
-                }
-                BigInteger tokenCurrentBalance = NGF.Balance.GetCoinBalance(tmpSenderBalanceObj, tmpTransfer.Currency);
-                BigInteger RequiredBalanceInt = BigInteger.Parse(tmpTransfer.Volume);
-                if (RequiredBalanceInt > tokenCurrentBalance)
-                {
-                    return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                    {
-                        ErrorNo = 2365,
-                        ErrorText = "InsufficientBalance",
-                        ID = string.Empty,
-                        Result = NVE.BlockStatusCode.InsufficientBalance
-                    });
-                }
-            }
-
-            // transfer process status is saved
-            string tmpTransferIdKey = NGF.GenerateTxUid();
-            ObjMp_CryptoTranStatus.Add(
-                tmpTransferIdKey,
-                JsonSerializer.Serialize(
-                    new NVS.CryptoTransferStatus()
-                    {
-                        Code = NVE.BlockStatusCode.InQueue,
-                        RowNo = 0,
-                        UID = "",
-                        Text = "InQueue"
-                    }
-                ),
-                transferTimeOut
-            );
-
-            NVS.CryptoTransactionStoreStruct recordStruct = new NVS.CryptoTransactionStoreStruct()
-            {
-                Version = 1000,
-                TransferId = tmpTransferIdKey,
-                CurrentTime = tmpTransfer.CurrentTime,
-                UnlockTime = tmpTransfer.UnlockTime,
-                Currency = tmpTransfer.Currency,
-                Sender = tmpTransfer.Sender,
-                Receiver = tmpTransfer.Receiver,
-                Volume = tmpTransfer.Volume,
-                Fee = transferFee.ToString(),
-                PublicKey = tmpTransfer.PublicKey,
-                Sign = tmpTransfer.Sign,
-            };
-
-            // transfer data saved for next step
-            ObjMp_CryptoTransfer.Add(tmpTransferIdKey, JsonSerializer.Serialize(recordStruct), transferTimeOut);
-
-            Obj_TransferStatusList.TryAdd(tmpTransferIdKey, NVE.BlockStatusCode.AddedToQueue);
-
-            if (NVG.Settings.PrettyJson == true)
-            {
-                return JsonSerializer.Serialize(
-                    new NVS.CryptoTransactionResult()
-                    {
-                        ErrorNo = 0,
-                        ErrorText = "AddedToQueue",
-                        ID = tmpTransferIdKey,
-                        Result = NVE.BlockStatusCode.AddedToQueue,
-                    }, Notus.Variable.Constant.JsonSetting
-                );
-            }
-            return JsonSerializer.Serialize(
-                new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 0,
-                    ErrorText = "AddedToQueue",
-                    ID = tmpTransferIdKey,
-                    Result = NVE.BlockStatusCode.AddedToQueue,
-                }
-            );
-        }
-        public int RequestSend_ListCount()
-        {
-            return ObjMp_CryptoTransfer.Count();
-        }
-        public ConcurrentDictionary<string, NVS.MempoolDataList> RequestSend_DataList()
-        {
-            return ObjMp_CryptoTransfer.DataList;
-        }
-        public void RequestSend_Remove(string tmpKeyStr)
-        {
-            ObjMp_CryptoTransfer.Remove(tmpKeyStr);
-        }
-
-        private void RequestSend_Done(string TransferKeyUid, Int64 tmpBlockRowNo, string tmpBlockUid)
-        {
-            if (TransferKeyUid.Length > 0)
-            {
-                ObjMp_CryptoTranStatus.Set(
-                    TransferKeyUid,
-                    JsonSerializer.Serialize(
-                        new NVS.CryptoTransferStatus()
-                        {
-                            Code = NVE.BlockStatusCode.Completed,
-                            RowNo = tmpBlockRowNo,
-                            UID = tmpBlockUid,
-                            Text = "Completed"
-                        }
-                    ),
-                    86400
-                );
             }
         }
 

@@ -92,7 +92,14 @@ namespace Notus.Block
             kvPoolTxErrorList.Set(txUid, rawTxText);
 
             // tx durumu hatalı olarak işaretleniyor...
-            NVG.Settings.TxStatus.Set(txUid, NVE.BlockStatusCode.WrongTxFormat);
+            //NVG.Settings.TxStatus.Set(txUid, NVE.BlockStatusCode.WrongTxFormat);
+            NVG.Settings.TxStatus.Set(txUid, new NVS.CryptoTransferStatus()
+            {
+                Code = NVE.BlockStatusCode.WrongTxFormat,
+                RowNo = 0,
+                UID = txUid,
+                Text = "WrongTxFormat"
+            });
 
             // işlem hatalı olduğu için kuyruktan çıkartılıyor
             txQueue.TryDequeue(out _);
@@ -585,7 +592,13 @@ namespace Notus.Block
                 {
                     foreach (var entry in tmpLockBalance.In)
                     {
-                        NVG.Settings.TxStatus.Set(entry.Key, NVE.BlockStatusCode.Completed);
+                        NVG.Settings.TxStatus.Set(entry.Key, new NVS.CryptoTransferStatus()
+                        {
+                            Code = NVE.BlockStatusCode.Completed,
+                            RowNo = NewBlock.info.rowNo,
+                            UID = NewBlock.info.uID,
+                            Text = "Completed"
+                        });
                     }
                 }
             }

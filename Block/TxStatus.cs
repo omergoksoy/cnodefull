@@ -15,18 +15,24 @@ namespace Notus.Block
     public class TxStatus : IDisposable
     {
         private Notus.Data.KeyValue keyValue = new();
-        public NVE.BlockStatusCode Status(string blockUid)
+        public NVS.CryptoTransferStatus Status(string blockUid)
         {
             string rawDataStr = keyValue.Get(blockUid);
             try
             {
-                NVE.BlockStatusCode tmpstatus = JsonSerializer.Deserialize<NVE.BlockStatusCode>(rawDataStr);
-                return tmpstatus;
+                NVS.CryptoTransferStatus tmpStatus = JsonSerializer.Deserialize<NVS.CryptoTransferStatus>(rawDataStr);
+                return tmpStatus;
             }
             catch { }
-            return NVE.BlockStatusCode.Unknown;
+            return new NVS.CryptoTransferStatus()
+            {
+                Code = NVE.BlockStatusCode.Unknown,
+                RowNo = 0,
+                UID = "",
+                Text = "Unknown"
+            };
         }
-        public void Set(string? blockUid, NVE.BlockStatusCode statusCode)
+        public void Set(string? blockUid, NVS.CryptoTransferStatus statusCode)
         {
             keyValue.Set(blockUid, JsonSerializer.Serialize(statusCode));
         }
@@ -35,7 +41,7 @@ namespace Notus.Block
             keyValue.SetSettings(new NVS.KeyValueSettings()
             {
                 MemoryLimitCount = 10000,
-                Name = "block_status"
+                Name = "tx_status"
             });
         }
         public TxStatus()

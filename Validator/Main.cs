@@ -2,6 +2,7 @@
 using System.Net;
 using System.Numerics;
 using System.Text.Json;
+using NBK = Notus.Block.Key;
 using NC = Notus.Ceremony;
 using NCH = Notus.Communication.Helper;
 using ND = Notus.Date;
@@ -19,7 +20,6 @@ using NVH = Notus.Validator.Helper;
 using NVJ = Notus.Validator.Join;
 using NVR = Notus.Validator.Register;
 using NVS = Notus.Variable.Struct;
-using NBK= Notus.Block.Key;
 namespace Notus.Validator
 {
     public class Main : IDisposable
@@ -181,13 +181,13 @@ namespace Notus.Validator
                 if (CryptoTransferTimerIsRunning == false)
                 {
                     CryptoTransferTimerIsRunning = true;
-                    int tmpRequestSend_ListCount = Obj_Api.RequestSend_ListCount();
+                    int tmpRequestSend_ListCount = NVG.Settings.Transfer.Count();
                     if (tmpRequestSend_ListCount > 0)
                     {
                         //Console.WriteLine("tmpRequestSend_ListCount : " + tmpRequestSend_ListCount.ToString());
                         ulong unlockTimeForNodeWallet = NVG.NOW.Int;
                         NVS.WalletBalanceStruct tmpValidatorWalletBalance = NGF.Balance.Get(NVG.Settings.NodeWallet.WalletKey, unlockTimeForNodeWallet);
-                        Dictionary<string,byte> tmpWalletList = new Dictionary<string, byte>() { };
+                        Dictionary<string, byte> tmpWalletList = new Dictionary<string, byte>() { };
                         tmpWalletList.Clear();
 
                         List<string> tmpKeyList = new List<string>();
@@ -206,8 +206,6 @@ namespace Notus.Validator
                             }
                         };
 
-                        ConcurrentDictionary<string, NVS.MempoolDataList> tmpTransactionList = Obj_Api.RequestSend_DataList();
-                        //Console.WriteLine("tmpTransactionList [1] : " + tmpTransactionList.Count.ToString());
                         // wallet balances are assigned
                         Int64 transferFee = Notus.Wallet.Fee.Calculate(
                             NVE.Fee.CryptoTransfer,
@@ -215,211 +213,202 @@ namespace Notus.Validator
                             NVG.Settings.Layer
                         );
                         ulong transactionCount = 0;
-                        foreach (KeyValuePair<string, NVS.MempoolDataList> entry in tmpTransactionList)
+                        foreach (KeyValuePair<string, NVS.CryptoTransactionStoreStruct> entry in NVG.Settings.Transfer.GetList())
                         {
-                            NVS.CryptoTransactionStoreStruct? tmpObjPoolCrypto = JsonSerializer.Deserialize<NVS.CryptoTransactionStoreStruct>(entry.Value.Data);
-                            if (tmpObjPoolCrypto != null)
+                            NVS.CryptoTransactionStoreStruct tmpObjPoolCrypto = entry.Value;
+                            bool thisRecordCanBeAdded = false;
+                            bool senderAvailable = NGF.Balance.WalletUsageAvailable(tmpObjPoolCrypto.Sender);
+                            if (senderAvailable == true)
                             {
-                                bool thisRecordCanBeAdded = false;
-                                bool senderAvailable = NGF.Balance.WalletUsageAvailable(tmpObjPoolCrypto.Sender);
-                                if (senderAvailable == true)
+                                bool receiverAvailable = NGF.Balance.WalletUsageAvailable(tmpObjPoolCrypto.Receiver);
+                                if (receiverAvailable == true)
                                 {
-                                    bool receiverAvailable = NGF.Balance.WalletUsageAvailable(tmpObjPoolCrypto.Receiver);
-                                    if (receiverAvailable == true)
+                                    bool senderLocked = NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Sender);
+                                    if (senderLocked == true)
                                     {
-                                        bool senderLocked = NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Sender);
-                                        if (senderLocked == true)
+                                        bool receiverLocked = NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Receiver);
+                                        if (receiverLocked == true)
                                         {
-                                            bool receiverLocked = NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Receiver);
-                                            if (receiverLocked == true)
-                                            {
-                                                thisRecordCanBeAdded = true;
-                                            }
-                                            else
-                                            {
-                                                //Console.WriteLine("Receiver Locked");
-                                            }
+                                            thisRecordCanBeAdded = true;
                                         }
                                         else
                                         {
-                                            //Console.WriteLine("Sender Locked");
+                                            //Console.WriteLine("Receiver Locked");
                                         }
                                     }
                                     else
                                     {
-                                        //Console.WriteLine("Receiver Not Available");
+                                        //Console.WriteLine("Sender Locked");
                                     }
                                 }
                                 else
                                 {
-                                    //Console.WriteLine("Sender Not Available");
+                                    //Console.WriteLine("Receiver Not Available");
                                 }
-                                if (thisRecordCanBeAdded == true)
+                            }
+                            else
+                            {
+                                //Console.WriteLine("Sender Not Available");
+                            }
+                            if (thisRecordCanBeAdded == true)
+                            {
+                                bool walletHaveEnoughCoinOrToken = true;
+                                NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Sender);
+                                NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Receiver);
+
+                                bool senderExist = tmpWalletList.ContainsKey(tmpObjPoolCrypto.Sender);
+                                bool receiverExist = tmpWalletList.ContainsKey(tmpObjPoolCrypto.Receiver);
+                                //Console.WriteLine(senderExist)
+                                if (senderExist == false && receiverExist == false)
                                 {
-                                    bool walletHaveEnoughCoinOrToken = true;
-                                    NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Sender);
-                                    NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Receiver);
+                                    tmpWalletList.Add(tmpObjPoolCrypto.Sender, 1);
+                                    tmpWalletList.Add(tmpObjPoolCrypto.Receiver, 1);
 
-                                    bool senderExist = tmpWalletList.ContainsKey(tmpObjPoolCrypto.Sender);
-                                    bool receiverExist = tmpWalletList.ContainsKey(tmpObjPoolCrypto.Receiver);
-                                    //Console.WriteLine(senderExist)
-                                    if (senderExist == false && receiverExist == false)
+                                    NVS.WalletBalanceStruct tmpSenderBalance = NGF.Balance.Get(tmpObjPoolCrypto.Sender, unlockTimeForNodeWallet);
+                                    NVS.WalletBalanceStruct tmpReceiverBalance = NGF.Balance.Get(tmpObjPoolCrypto.Receiver, unlockTimeForNodeWallet);
+                                    string tmpTokenTagStr = "";
+                                    BigInteger tmpTokenVolume = 0;
+
+                                    if (string.Equals(tmpObjPoolCrypto.Currency, NVG.Settings.Genesis.CoinInfo.Tag))
                                     {
-                                        tmpWalletList.Add(tmpObjPoolCrypto.Sender,1);
-                                        tmpWalletList.Add(tmpObjPoolCrypto.Receiver,1);
-
-                                        NVS.WalletBalanceStruct tmpSenderBalance = NGF.Balance.Get(tmpObjPoolCrypto.Sender, unlockTimeForNodeWallet);
-                                        NVS.WalletBalanceStruct tmpReceiverBalance = NGF.Balance.Get(tmpObjPoolCrypto.Receiver, unlockTimeForNodeWallet);
-                                        string tmpTokenTagStr = "";
-                                        BigInteger tmpTokenVolume = 0;
-
-                                        if (string.Equals(tmpObjPoolCrypto.Currency, NVG.Settings.Genesis.CoinInfo.Tag))
+                                        tmpTokenTagStr = NVG.Settings.Genesis.CoinInfo.Tag;
+                                        BigInteger WalletBalanceInt = NGF.Balance.GetCoinBalance(tmpSenderBalance, tmpTokenTagStr);
+                                        BigInteger RequiredBalanceInt = BigInteger.Parse(tmpObjPoolCrypto.Volume);
+                                        tmpTokenVolume = RequiredBalanceInt;
+                                        if ((RequiredBalanceInt + transferFee) > WalletBalanceInt)
                                         {
-                                            tmpTokenTagStr = NVG.Settings.Genesis.CoinInfo.Tag;
-                                            BigInteger WalletBalanceInt = NGF.Balance.GetCoinBalance(tmpSenderBalance, tmpTokenTagStr);
-                                            BigInteger RequiredBalanceInt = BigInteger.Parse(tmpObjPoolCrypto.Volume);
-                                            tmpTokenVolume = RequiredBalanceInt;
-                                            if ((RequiredBalanceInt + transferFee) > WalletBalanceInt)
-                                            {
-                                                walletHaveEnoughCoinOrToken = false;
-                                            }
+                                            walletHaveEnoughCoinOrToken = false;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (tmpSenderBalance.Balance.ContainsKey(NVG.Settings.Genesis.CoinInfo.Tag) == false)
+                                        {
+                                            walletHaveEnoughCoinOrToken = false;
                                         }
                                         else
                                         {
-                                            if (tmpSenderBalance.Balance.ContainsKey(NVG.Settings.Genesis.CoinInfo.Tag) == false)
+                                            BigInteger coinFeeBalance = NGF.Balance.GetCoinBalance(tmpSenderBalance, NVG.Settings.Genesis.CoinInfo.Tag);
+                                            if (transferFee > coinFeeBalance)
                                             {
                                                 walletHaveEnoughCoinOrToken = false;
                                             }
                                             else
                                             {
-                                                BigInteger coinFeeBalance = NGF.Balance.GetCoinBalance(tmpSenderBalance, NVG.Settings.Genesis.CoinInfo.Tag);
-                                                if (transferFee > coinFeeBalance)
+                                                BigInteger tokenCurrentBalance = NGF.Balance.GetCoinBalance(tmpSenderBalance, tmpObjPoolCrypto.Currency);
+                                                BigInteger RequiredBalanceInt = BigInteger.Parse(tmpObjPoolCrypto.Volume);
+                                                if (RequiredBalanceInt > tokenCurrentBalance)
                                                 {
                                                     walletHaveEnoughCoinOrToken = false;
                                                 }
                                                 else
                                                 {
-                                                    BigInteger tokenCurrentBalance = NGF.Balance.GetCoinBalance(tmpSenderBalance, tmpObjPoolCrypto.Currency);
-                                                    BigInteger RequiredBalanceInt = BigInteger.Parse(tmpObjPoolCrypto.Volume);
-                                                    if (RequiredBalanceInt > tokenCurrentBalance)
-                                                    {
-                                                        walletHaveEnoughCoinOrToken = false;
-                                                    }
-                                                    else
-                                                    {
-                                                        tmpTokenTagStr = tmpObjPoolCrypto.Currency;
-                                                        tmpTokenVolume = RequiredBalanceInt;
-                                                    }
+                                                    tmpTokenTagStr = tmpObjPoolCrypto.Currency;
+                                                    tmpTokenVolume = RequiredBalanceInt;
                                                 }
                                             }
-                                        }
-
-                                        if (walletHaveEnoughCoinOrToken == false)
-                                        {
-                                            Obj_Api.RequestSend_Remove(entry.Key);
-                                            Obj_Api.CryptoTranStatus.Set(entry.Key, JsonSerializer.Serialize(
-                                                new NVS.CryptoTransferStatus()
-                                                {
-                                                    Code = NVE.BlockStatusCode.Rejected,
-                                                    RowNo = 0,
-                                                    UID = "",
-                                                    Text = "Rejected"
-                                                }
-                                            ));
-                                        }
-                                        else
-                                        {
-                                            totalBlockReward = totalBlockReward + transferFee;
-                                            transactionCount++;
-                                            if (tmpBlockCipherData.Out.ContainsKey(tmpObjPoolCrypto.Sender) == false)
-                                            {
-                                                tmpBlockCipherData.Out.Add(tmpObjPoolCrypto.Sender, GetWalletBalanceDictionary(tmpObjPoolCrypto.Sender, unlockTimeForNodeWallet));
-                                            }
-                                            if (tmpBlockCipherData.Out.ContainsKey(tmpObjPoolCrypto.Receiver) == false)
-                                            {
-                                                tmpBlockCipherData.Out.Add(tmpObjPoolCrypto.Receiver, GetWalletBalanceDictionary(tmpObjPoolCrypto.Receiver, unlockTimeForNodeWallet));
-                                            }
-                                            Console.WriteLine("entry.Key : " + entry.Key);
-                                            tmpBlockCipherData.In.Add(entry.Key, new NVClass.BlockStruct_120_In_Struct()
-                                            {
-                                                Fee = tmpObjPoolCrypto.Fee,
-                                                PublicKey = tmpObjPoolCrypto.PublicKey,
-                                                Sign = tmpObjPoolCrypto.Sign,
-                                                CurrentTime = tmpObjPoolCrypto.CurrentTime,
-                                                Volume = tmpObjPoolCrypto.Volume,
-                                                Currency = tmpObjPoolCrypto.Currency,
-                                                Receiver = new NVClass.WalletBalanceStructForTransaction()
-                                                {
-                                                    Balance = NGF.Balance.ReAssign(tmpReceiverBalance.Balance),
-                                                    Wallet = tmpObjPoolCrypto.Receiver,
-                                                    WitnessBlockUid = tmpReceiverBalance.UID,
-                                                    WitnessRowNo = tmpReceiverBalance.RowNo
-                                                },
-                                                Sender = new NVClass.WalletBalanceStructForTransaction()
-                                                {
-                                                    Balance = NGF.Balance.ReAssign(tmpSenderBalance.Balance),
-                                                    Wallet = tmpObjPoolCrypto.Sender,
-                                                    WitnessBlockUid = tmpSenderBalance.UID,
-                                                    WitnessRowNo = tmpSenderBalance.RowNo
-                                                }
-                                            });
-
-                                            // transfer fee added to validator wallet
-
-                                            tmpValidatorWalletBalance = NGF.Balance.AddVolumeWithUnlockTime(
-                                                tmpValidatorWalletBalance,
-                                                transferFee.ToString(),
-                                                NVG.Settings.Genesis.CoinInfo.Tag,
-                                                unlockTimeForNodeWallet
-                                            );
-                                            //tmpBlockCipherData.Out[NVG.Settings.NodeWallet.WalletKey] = tmpValidatorWalletBalance.Balance;
-
-                                            // sender pays transfer fee
-                                            (bool tmpErrorStatusForFee, NVS.WalletBalanceStruct tmpNewResultForFee) =
-                                            NGF.Balance.SubtractVolumeWithUnlockTime(
-                                                tmpSenderBalance,
-                                                transferFee.ToString(),
-                                                NVG.Settings.Genesis.CoinInfo.Tag,
-                                                unlockTimeForNodeWallet
-                                            );
-                                            if (tmpErrorStatusForFee == true)
-                                            {
-                                                Console.WriteLine("Coin Needed - Main.Cs -> Line 498");
-                                                Console.WriteLine("Coin Needed - Main.Cs -> Line 498");
-                                                Console.ReadLine();
-                                            }
-
-                                            // sender give coin or token
-                                            (bool tmpErrorStatusForTransaction, NVS.WalletBalanceStruct tmpNewResultForTransaction) =
-                                            NGF.Balance.SubtractVolumeWithUnlockTime(
-                                                tmpNewResultForFee,
-                                                tmpTokenVolume.ToString(),
-                                                tmpTokenTagStr,
-                                                unlockTimeForNodeWallet
-                                            );
-                                            if (tmpErrorStatusForTransaction == true)
-                                            {
-                                                Console.WriteLine("Coin Needed - Main.Cs -> Line 498");
-                                                Console.WriteLine("Coin Needed - Main.Cs -> Line 498");
-                                                Console.ReadLine();
-                                            }
-                                            tmpBlockCipherData.Out[tmpObjPoolCrypto.Sender] = tmpNewResultForTransaction.Balance;
-
-                                            //receiver get coin or token
-                                            NVS.WalletBalanceStruct tmpNewReceiverBalance = NGF.Balance.AddVolumeWithUnlockTime(
-                                                tmpReceiverBalance,
-                                                tmpObjPoolCrypto.Volume,
-                                                tmpObjPoolCrypto.Currency,
-                                                tmpObjPoolCrypto.UnlockTime
-                                            );
-                                            tmpBlockCipherData.Out[tmpObjPoolCrypto.Receiver] = tmpNewReceiverBalance.Balance;
                                         }
                                     }
+
+                                    if (walletHaveEnoughCoinOrToken == false)
+                                    {
+                                        NVG.Settings.Transfer.Remove(entry.Key);
+                                        NVG.Settings.TxStatus.Set(entry.Key, new NVS.CryptoTransferStatus()
+                                        {
+                                            Code = NVE.BlockStatusCode.Rejected,
+                                            RowNo = 0,
+                                            UID = "",
+                                            Text = "Rejected"
+                                        });
+                                    }
+                                    else
+                                    {
+                                        totalBlockReward = totalBlockReward + transferFee;
+                                        transactionCount++;
+                                        if (tmpBlockCipherData.Out.ContainsKey(tmpObjPoolCrypto.Sender) == false)
+                                        {
+                                            tmpBlockCipherData.Out.Add(tmpObjPoolCrypto.Sender, GetWalletBalanceDictionary(tmpObjPoolCrypto.Sender, unlockTimeForNodeWallet));
+                                        }
+                                        if (tmpBlockCipherData.Out.ContainsKey(tmpObjPoolCrypto.Receiver) == false)
+                                        {
+                                            tmpBlockCipherData.Out.Add(tmpObjPoolCrypto.Receiver, GetWalletBalanceDictionary(tmpObjPoolCrypto.Receiver, unlockTimeForNodeWallet));
+                                        }
+                                        Console.WriteLine("entry.Key : " + entry.Key);
+                                        tmpBlockCipherData.In.Add(entry.Key, new NVClass.BlockStruct_120_In_Struct()
+                                        {
+                                            Fee = tmpObjPoolCrypto.Fee,
+                                            PublicKey = tmpObjPoolCrypto.PublicKey,
+                                            Sign = tmpObjPoolCrypto.Sign,
+                                            CurrentTime = tmpObjPoolCrypto.CurrentTime,
+                                            Volume = tmpObjPoolCrypto.Volume,
+                                            Currency = tmpObjPoolCrypto.Currency,
+                                            Receiver = new NVClass.WalletBalanceStructForTransaction()
+                                            {
+                                                Balance = NGF.Balance.ReAssign(tmpReceiverBalance.Balance),
+                                                Wallet = tmpObjPoolCrypto.Receiver,
+                                                WitnessBlockUid = tmpReceiverBalance.UID,
+                                                WitnessRowNo = tmpReceiverBalance.RowNo
+                                            },
+                                            Sender = new NVClass.WalletBalanceStructForTransaction()
+                                            {
+                                                Balance = NGF.Balance.ReAssign(tmpSenderBalance.Balance),
+                                                Wallet = tmpObjPoolCrypto.Sender,
+                                                WitnessBlockUid = tmpSenderBalance.UID,
+                                                WitnessRowNo = tmpSenderBalance.RowNo
+                                            }
+                                        });
+
+                                        // transfer fee added to validator wallet
+
+                                        tmpValidatorWalletBalance = NGF.Balance.AddVolumeWithUnlockTime(
+                                            tmpValidatorWalletBalance,
+                                            transferFee.ToString(),
+                                            NVG.Settings.Genesis.CoinInfo.Tag,
+                                            unlockTimeForNodeWallet
+                                        );
+                                        //tmpBlockCipherData.Out[NVG.Settings.NodeWallet.WalletKey] = tmpValidatorWalletBalance.Balance;
+
+                                        // sender pays transfer fee
+                                        (bool tmpErrorStatusForFee, NVS.WalletBalanceStruct tmpNewResultForFee) =
+                                        NGF.Balance.SubtractVolumeWithUnlockTime(
+                                            tmpSenderBalance,
+                                            transferFee.ToString(),
+                                            NVG.Settings.Genesis.CoinInfo.Tag,
+                                            unlockTimeForNodeWallet
+                                        );
+                                        if (tmpErrorStatusForFee == true)
+                                        {
+                                            Console.WriteLine("Coin Needed - Main.Cs -> Line 498");
+                                            Console.WriteLine("Coin Needed - Main.Cs -> Line 498");
+                                            Console.ReadLine();
+                                        }
+
+                                        // sender give coin or token
+                                        (bool tmpErrorStatusForTransaction, NVS.WalletBalanceStruct tmpNewResultForTransaction) =
+                                        NGF.Balance.SubtractVolumeWithUnlockTime(
+                                            tmpNewResultForFee,
+                                            tmpTokenVolume.ToString(),
+                                            tmpTokenTagStr,
+                                            unlockTimeForNodeWallet
+                                        );
+                                        if (tmpErrorStatusForTransaction == true)
+                                        {
+                                            Console.WriteLine("Coin Needed - Main.Cs -> Line 498");
+                                            Console.WriteLine("Coin Needed - Main.Cs -> Line 498");
+                                            Console.ReadLine();
+                                        }
+                                        tmpBlockCipherData.Out[tmpObjPoolCrypto.Sender] = tmpNewResultForTransaction.Balance;
+
+                                        //receiver get coin or token
+                                        NVS.WalletBalanceStruct tmpNewReceiverBalance = NGF.Balance.AddVolumeWithUnlockTime(
+                                            tmpReceiverBalance,
+                                            tmpObjPoolCrypto.Volume,
+                                            tmpObjPoolCrypto.Currency,
+                                            tmpObjPoolCrypto.UnlockTime
+                                        );
+                                        tmpBlockCipherData.Out[tmpObjPoolCrypto.Receiver] = tmpNewReceiverBalance.Balance;
+                                    }
                                 }
-                            }
-                            else
-                            {
-                                Console.WriteLine("Contents : Null -> " + entry.Value.Data);
                             }
                         }
                         if (transactionCount > 0)
@@ -456,7 +445,7 @@ namespace Notus.Validator
                         }
                         foreach (KeyValuePair<string, NVClass.BlockStruct_120_In_Struct> entry in tmpBlockCipherData.In)
                         {
-                            Obj_Api.RequestSend_Remove(entry.Key);
+                            NVG.Settings.Transfer.Remove(entry.Key);
                         }
                     }  //if (ObjMp_CryptoTransfer.Count() > 0)
 
@@ -491,7 +480,7 @@ namespace Notus.Validator
             }
             return executeEmptyBlock;
         }
-        private void OrganizeAndDistributeBlock(NVClass.BlockData RawBlock,ulong CurrentQueueTime)
+        private void OrganizeAndDistributeBlock(NVClass.BlockData RawBlock, ulong CurrentQueueTime)
         {
             RawBlock = NGF.BlockQueue.OrganizeBlockOrder(RawBlock);
             NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(RawBlock, 1000);
@@ -923,7 +912,7 @@ namespace Notus.Validator
                                             //Console.WriteLine("----------------------------------");
                                             OrganizeAndDistributeBlock(PreBlockData, CurrentQueueTime);
                                         } //if (TmpBlockStruct != null)
-                                        
+
                                         if (PreBlockData == null)
                                         {
                                             if ((NVG.NOW.Obj - LastPrintTime).TotalSeconds > 20)

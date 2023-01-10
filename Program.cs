@@ -75,6 +75,7 @@ Console.ReadLine();
 
 //key value db'sini kontrol et
 
+/*
 Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue();
 keyValue.SetSettings(
     new NVS.KeyValueSettings()
@@ -84,11 +85,18 @@ keyValue.SetSettings(
     }
 );
 
-string deneme=keyValue.Get(null);
-Console.WriteLine(deneme);
+buyuk küçük harf hassasiyeti var
+keyValue.Set("omer","kucuk_harf");
+keyValue.Set("Omer", "ilk_harf");
+keyValue.Set("OMER", "buyuk_harf");
+string deneme1=keyValue.Get("omer");
+string deneme2=keyValue.Get("Omer");
+string deneme3=keyValue.Get("OMER");
+Console.WriteLine(deneme1);
+Console.WriteLine(deneme2);
+Console.WriteLine(deneme3);
 
 Console.ReadLine();
-/*
 */
 /*
 DateTime baslangic = DateTime.Now;

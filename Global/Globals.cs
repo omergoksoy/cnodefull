@@ -140,7 +140,8 @@ namespace Notus.Variable
                 BlockOrder = new Notus.Block.Order(),
                 BlockSign = new Notus.Block.Sign(),
                 BlockPrev = new Notus.Block.Prev(),
-                TxStatus = new Notus.Block.TxStatus()
+                TxStatus = new Notus.Block.TxStatus(),
+                Transfer = new Notus.Coin.Transfer()
                 // , UidTypeList = new Notus.Block.UidTypeList()
             };
         }
