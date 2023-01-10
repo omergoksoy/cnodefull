@@ -56,13 +56,6 @@ namespace Notus.Data
                 ValueList[key].Value = value;
             }
         }
-        public void FirstLoad()
-        {
-            Each((string key, string value) =>
-            {
-                AddToMemoryList(key, value);
-            });
-        }
         public void SetSettings(NVS.KeyValueSettings settings)
         {
             ObjSettings.MemoryLimitCount = settings.MemoryLimitCount;
@@ -88,12 +81,15 @@ namespace Notus.Data
 
             PoolName = DirPath + ObjSettings.Name;
             DbOptions options = new DbOptions().SetCreateIfMissing(true);
-            RocksDb db = RocksDb.Open(options, PoolName);
+            SqlObj = RocksDb.Open(options, PoolName);
             if (ObjSettings.ResetTable == false)
             {
                 if (ObjSettings.LoadFromBeginning == true)
                 {
-                    FirstLoad();
+                    Each((string key, string value) =>
+                    {
+                        AddToMemoryList(key, value);
+                    });
                 }
             }
             SettingsDefined = true;
