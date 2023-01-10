@@ -882,14 +882,14 @@ namespace Notus.Wallet
 
             MultiWalletParticipantDb.SetSettings(new NVS.KeyValueSettings()
             {
-                ResetTable = true,
+                //ResetTable = true,
                 MemoryLimitCount = 1000,
                 Name = "multi_wallet_participant"
             });
 
             WalletsICanApproveDb.SetSettings(new NVS.KeyValueSettings()
             {
-                ResetTable = true,
+                //ResetTable = true,
                 MemoryLimitCount = 1000,
                 Name = "wallet_i_can_approve"
             });
