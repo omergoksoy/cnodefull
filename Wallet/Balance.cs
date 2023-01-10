@@ -91,7 +91,7 @@ namespace Notus.Wallet
                 Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                 if (NGF.WalletUsageList.ContainsKey(walletKey) == false)
                 {
-                    bool result = NGF.WalletUsageList.TryAdd(walletKey, 1);
+                    bool result = NGF.WalletUsageList.TryAdd(walletKey, "456465");
                     Console.WriteLine(result);
                     Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                     return result;

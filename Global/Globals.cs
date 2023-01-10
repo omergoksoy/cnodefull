@@ -170,7 +170,7 @@ namespace Notus.Variable
 
             bu şahitlik ile birlitke ortak ir oy kullanılacak ve validator'e süre, sıra veya stake üzerinden ceza uygulanacak
             */
-            public static ConcurrentDictionary<string, byte> WalletUsageList { get; set; }
+            public static ConcurrentDictionary<string, string> WalletUsageList { get; set; }
 
             //public static ConcurrentDictionary<ulong, string> BlockCreatorList { get; set; }
 
@@ -292,7 +292,7 @@ namespace Notus.Variable
             {
                 ValidatorListHash = "";
                 ValidatorList = new SortedDictionary<string, NVS.IpInfo>();
-                WalletUsageList = new ConcurrentDictionary<string, byte>();
+                WalletUsageList = new ConcurrentDictionary<string, string>();
                 LockWalletList = new ConcurrentDictionary<string, string>();
                 //BlockOrder = new ConcurrentDictionary<long, string>();
                 Storage = new Notus.Block.Storage();

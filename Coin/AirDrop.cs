@@ -122,6 +122,44 @@ namespace Notus.Coin
                 });
             }
 
+            lock (NGF.WalletUsageList)
+            {
+                bool returnWalletUsing = false;
+                if (NGF.WalletUsageList.ContainsKey(ReceiverWalletKey) == true)
+                {
+                    if (string.Equals(NGF.WalletUsageList[ReceiverWalletKey], tmpChunkIdKey) == false)
+                    {
+                        returnWalletUsing = true;
+                    }
+                }
+                else
+                {
+                    if (NGF.WalletUsageList.TryAdd(ReceiverWalletKey, tmpChunkIdKey) == false)
+                    {
+                        returnWalletUsing = true;
+                    }
+                    else
+                    {
+                        if (string.Equals(NGF.WalletUsageList[ReceiverWalletKey], tmpChunkIdKey) == false)
+                        {
+                            returnWalletUsing = true;
+                        }
+                    }
+                }
+
+                if (returnWalletUsing == true)
+                {
+                    return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
+                    {
+                        ErrorNo = 36789,
+                        ErrorText = "WalletUsing",
+                        ID = string.Empty,
+                        Result = NVE.BlockStatusCode.WalletUsing
+                    });
+                }
+            }
+
+            /*
             // eğer cüzdan başka bir işlem tarafından kilitli ise hata gönderecek
             if (NGF.Balance.WalletUsageAvailable(ReceiverWalletKey) == false)
             {
@@ -145,6 +183,7 @@ namespace Notus.Coin
                     Result = NVE.BlockStatusCode.AnErrorOccurred
                 });
             }
+            */
 
             string tmpCoinCurrency = NVG.Settings.Genesis.CoinInfo.Tag;
 
@@ -244,7 +283,7 @@ namespace Notus.Coin
                         }
                         else
                         {
-                            if(RequestList[entry.Value.Wallet].IndexOf(entry.Key) == -1)
+                            if (RequestList[entry.Value.Wallet].IndexOf(entry.Key) == -1)
                             {
                                 RequestList[entry.Value.Wallet].Add(entry.Key);
                             }
