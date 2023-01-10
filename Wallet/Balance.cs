@@ -875,7 +875,7 @@ namespace Notus.Wallet
         {
             SummaryDb.SetSettings(new NVS.KeyValueSettings()
             {
-                ResetTable = true,
+                //ResetTable = true,
                 MemoryLimitCount = 1000,
                 Name = "balance"
             });
