@@ -220,9 +220,15 @@ namespace Notus.Block
         public void Start()
         {
             LoadZipFromDirectory();
-            MP_BlockFile = new Notus.Mempool(
-                Notus.IO.GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, Notus.Variable.Constant.StorageFolderName.Common) +
-                Notus.Variable.Constant.MemoryPoolName["MempoolListBeforeBlockStorage"]);
+            MP_BlockFile = 
+                new Notus.Mempool(
+                    Notus.IO.GetFolderName(
+                        NVG.Settings.Network, 
+                        NVG.Settings.Layer, 
+                        Notus.Variable.Constant.StorageFolderName.DB
+                    ) +
+                    Notus.Variable.Constant.MemoryPoolName["MempoolListBeforeBlockStorage"]
+                );
 
             TimerObj = new Notus.Threads.Timer(DefaultBlockGenerateInterval);
             TimerObj.Start(() =>
