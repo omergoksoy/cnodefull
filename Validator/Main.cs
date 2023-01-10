@@ -593,7 +593,6 @@ namespace Notus.Validator
             }
 
             NGF.BlockQueue.Start();
-            Console.WriteLine("Main Bölümü Devreye Girdi");
             Obj_Api.Prepare();
 
             // Obj_MainCache = new Notus.Cache.Main();

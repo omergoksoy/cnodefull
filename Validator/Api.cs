@@ -111,8 +111,10 @@ namespace Notus.Validator
         }
         public void Prepare()
         {
-            Console.WriteLine("API Executed");
-            NP.ReadLine();
+            if (PrepareExecuted == true)
+            {
+                return;
+            }
             PrepareExecuted = true;
             BlockDbObj.SetSettings(new NVS.KeyValueSettings()
             {
@@ -219,10 +221,10 @@ namespace Notus.Validator
 
         public string Interpret(NVS.HttpRequestDetails IncomeData)
         {
-            Console.WriteLine("IncomeData.RawUrl : " + IncomeData.RawUrl);
+            //Console.WriteLine("IncomeData.RawUrl : " + IncomeData.RawUrl);
             if (PrepareExecuted == false)
             {
-                Console.WriteLine("Interpret Bölümü Devreye Girdi");
+                //Console.WriteLine("Interpret Bölümü Devreye Girdi");
                 Prepare();
             }
 
