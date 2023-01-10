@@ -96,15 +96,15 @@ namespace Notus
             //cüzdan ve bakiye ile ilgili tüm işlemler bu klasör içinde kalacak
             //CreateDirectory(GetFolderName(DirListConst.Wallet));
 
-            CreateDirectory(GetFolderName(DirListConst.BlockInfo));
-            CreateDirectory(GetFolderName(DirListConst.TxList));
-            CreateDirectory(GetFolderName(DirListConst.BlockForTgz));
-            CreateDirectory(GetFolderName(DirListConst.TempBlock));
+            //CreateDirectory(GetFolderName(DirListConst.BlockInfo));
+            //CreateDirectory(GetFolderName(DirListConst.TxList));
+            //CreateDirectory(GetFolderName(DirListConst.BlockForTgz));
+            //CreateDirectory(GetFolderName(DirListConst.TempBlock));
             //CreateDirectory(GetFolderName(DirListConst.Balance));
             CreateDirectory(GetFolderName(DirListConst.Block));
             CreateDirectory(GetFolderName(DirListConst.Common));
-            CreateDirectory(GetFolderName(DirListConst.File));
-            CreateDirectory(GetFolderName(DirListConst.Node));
+            //CreateDirectory(GetFolderName(DirListConst.File));
+            //CreateDirectory(GetFolderName(DirListConst.Node));
             CreateDirectory(GetFolderName(DirListConst.Pool));
         }
     }

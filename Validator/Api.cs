@@ -26,6 +26,7 @@ namespace Notus.Validator
 
         private Notus.Coin.Transfer transferObj = new Notus.Coin.Transfer();
         private Notus.Coin.AirDrop airdropObj = new Notus.Coin.AirDrop();
+
         private Notus.Mempool ObjMp_MultiSignPool;
         public Notus.Mempool Obj_MultiSignPool
         {

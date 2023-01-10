@@ -594,6 +594,7 @@ namespace Notus.Block
         }
 
         //control-local-block
+        /*
         private bool AddFromLocalTemp(Int64 BlockRowNo)
         {
             string[] ZipFileList = Notus.IO.GetFileList(NVG.Settings, NVC.StorageFolderName.TempBlock, "tmp");
@@ -618,6 +619,7 @@ namespace Notus.Block
             }
             return false;
         }
+        */
         private void StoreBlockWithRowNo(Int64 BlockRowNo)
         {
             /*
@@ -897,7 +899,7 @@ namespace Notus.Block
                         {
                             NP.Warning(NVG.Settings, "Current Block Were Deleted");
 
-                            Notus.TGZArchiver.ClearBlocks();
+                            //Notus.TGZArchiver.ClearBlocks();
                             Notus.Archive.ClearBlocks(NVG.Settings);
                             BS_Storage.AddSync(signBlock[tmpBiggestSign], true);
                             NP.Basic(NVG.Settings, "Added Block : " + signBlock[tmpBiggestSign].info.uID);

@@ -8,7 +8,7 @@ namespace Notus.Globals.Variable
 {
     public class Object
     {
-        public Notus.TGZArchiver? Archive { get; set; }
+        //public Notus.TGZArchiver? Archive { get; set; }
         public Notus.Wallet.Balance? Balance { get; set; }
 
     }

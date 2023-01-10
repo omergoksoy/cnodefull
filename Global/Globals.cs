@@ -181,7 +181,7 @@ namespace Notus.Variable
 
             public static Notus.Block.Storage Storage { get; set; }
             public static Notus.Wallet.Balance Balance { get; set; }
-            public static Notus.TGZArchiver Archiver { get; set; }
+            //public static Notus.TGZArchiver Archiver { get; set; }
             public static Notus.Block.Queue BlockQueue { get; set; }
             public static string ValidatorListHash { get; set; }
             public static SortedDictionary<string, NVS.IpInfo> ValidatorList { get; set; }
@@ -297,7 +297,7 @@ namespace Notus.Variable
                 //BlockOrder = new ConcurrentDictionary<long, string>();
                 Storage = new Notus.Block.Storage();
                 BlockQueue = new Notus.Block.Queue();
-                Archiver = new Notus.TGZArchiver();
+                //Archiver = new Notus.TGZArchiver();
                 Balance = new Notus.Wallet.Balance();
                 if (Settings.GenesisCreated == false)
                 {
