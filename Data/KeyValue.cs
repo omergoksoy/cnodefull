@@ -103,6 +103,7 @@ namespace Notus.Data
             if (SettingsDefined == false)
                 return;
             ValueList.Clear();
+            return;
             NI.DeleteAllFileInsideDirectory(DirPath, "*");
         }
         public void Each(System.Action<string, string> incomeAction)
