@@ -111,6 +111,7 @@ namespace Notus.Validator
         }
         public void Prepare()
         {
+            PrepareExecuted = true;
             BlockDbObj.SetSettings(new NVS.KeyValueSettings()
             {
                 LoadFromBeginning = false,
@@ -140,7 +141,6 @@ namespace Notus.Validator
                 Prepare_Layer3();
             }
 
-            PrepareExecuted = true;
         }
 
         public void AddForCache(NVClass.BlockData Obj_BlockData, int blockSource = 0)
