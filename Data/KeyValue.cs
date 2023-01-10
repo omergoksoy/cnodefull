@@ -116,17 +116,11 @@ namespace Notus.Data
         }
         public string Get(string? key)
         {
-            if (key == null)
-                return string.Empty;
-
-            if (key.Length==0)
-                return string.Empty;
-
             if (ValueList.ContainsKey(key) == true)
                 return ValueList[key].Value;
 
-            string resultText=SqlObj.Get(key);
-            return resultText;
+            string? resultText = SqlObj.Get(key);
+            return (resultText == null ? string.Empty : resultText);
         }
         public void Remove(string key)
         {
@@ -166,7 +160,7 @@ namespace Notus.Data
             if (key == null)
                 return;
 
-            if (key.Length==0)
+            if (key.Length == 0)
                 return;
 
             if (value == null)

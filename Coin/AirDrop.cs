@@ -24,7 +24,7 @@ namespace Notus.Coin
     {
         private readonly string CurrentVersion = "1.0.0.0";
         private ConcurrentDictionary<string, List<string>> RequestList = new ConcurrentDictionary<string, List<string>>();
-        Notus.Data.KeyValue LimitDb = new Notus.Data.KeyValue();
+        private Notus.Data.KeyValue LimitDb = new Notus.Data.KeyValue();
         public string Request(NVS.HttpRequestDetails IncomeData)
         {
             if (NVG.Settings.Genesis == null)
@@ -65,7 +65,35 @@ namespace Notus.Coin
 
             lock (RequestList)
             {
-                LoadFromDb(ReceiverWalletKey);
+                List<string>? innerRequestList = new();
+                string controlStr = LimitDb.Get(ReceiverWalletKey);
+                if (controlStr.Length > 0)
+                {
+                    try
+                    {
+                        innerRequestList = JsonSerializer.Deserialize<List<string>>(controlStr);
+                    }
+                    catch { }
+                    if (innerRequestList == null)
+                    {
+                        innerRequestList = new List<string>();
+                    }
+                }
+
+                if (RequestList.ContainsKey(ReceiverWalletKey) == false)
+                {
+                    RequestList.TryAdd(ReceiverWalletKey, new List<string>());
+                }
+
+                RequestList[ReceiverWalletKey].Clear();
+                for (int count = 0; count < innerRequestList.Count; count++)
+                {
+                    TimeSpan diff = (NVG.NOW.Obj - NBK.BlockIdToTime(innerRequestList[count])).Duration();
+                    if (NVC.AirDropTimeLimit > diff.TotalHours)
+                    {
+                        RequestList[ReceiverWalletKey].Add(innerRequestList[count]);
+                    }
+                }
 
                 if (RequestList[ReceiverWalletKey].Count >= NVC.AirDropVolumeCount)
                 {
@@ -163,8 +191,6 @@ namespace Notus.Coin
                 LimitDb.Set(ReceiverWalletKey,
                     JsonSerializer.Serialize(RequestList[ReceiverWalletKey])
                 );
-                //Console.WriteLine("Set Wallet - >" + ReceiverWalletKey);
-                //Console.WriteLine(JsonSerializer.Serialize(RequestList[ReceiverWalletKey]));
                 // burada transactionları belleğe alıyor böyle hızlı ulaşım sağlanıyor...
                 NVG.Settings.TxStatus.Set(tmpChunkIdKey, NVE.BlockStatusCode.AddedToQueue);
 
@@ -251,44 +277,6 @@ namespace Notus.Coin
                 }
             }
             return airdropStr;
-        }
-        private void LoadFromDb(string walletId)
-        {
-            List<string>? innerRequestList = new();
-            string controlStr = LimitDb.Get(walletId);
-            if (controlStr.Length > 0)
-            {
-                try
-                {
-                    innerRequestList = JsonSerializer.Deserialize<List<string>>(controlStr);
-                }
-                catch { }
-            }
-
-            if (innerRequestList == null)
-            {
-                innerRequestList = new List<string>();
-            }
-
-            if (RequestList.ContainsKey(walletId) == false)
-            {
-                RequestList.TryAdd(walletId, new List<string>());
-            }
-
-            Console.WriteLine("controlStr: " + controlStr + " -> " + innerRequestList.Count.ToString());
-            RequestList[walletId].Clear();
-            for (int count = 0; count < innerRequestList.Count; count++)
-            {
-                TimeSpan diff = ( NVG.NOW.Obj - NBK.BlockIdToTime(innerRequestList[count]) ).Duration();
-                if (NVC.AirDropTimeLimit > diff.TotalHours)
-                {
-                    RequestList[walletId].Add(innerRequestList[count]);
-                }
-                else
-                {
-                    Console.WriteLine("Yazilmadi : " + " -> " + count.ToString() + " - " + innerRequestList[count]);
-                }
-            }
         }
         public void Dispose()
         {

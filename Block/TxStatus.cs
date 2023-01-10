@@ -34,8 +34,6 @@ namespace Notus.Block
         {
             keyValue.SetSettings(new NVS.KeyValueSettings()
             {
-                LoadFromBeginning = true,
-                ResetTable = false,
                 MemoryLimitCount = 10000,
                 Name = "block_status"
             });

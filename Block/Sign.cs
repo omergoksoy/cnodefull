@@ -50,8 +50,6 @@ namespace Notus.Block
         {
             listObj.SetSettings(new NVS.KeyValueSettings()
             {
-                LoadFromBeginning = true,
-                ResetTable = false,
                 MemoryLimitCount = 10000,
                 Name = Notus.Variable.Constant.MemoryPoolName["BlockSignList"]
             });

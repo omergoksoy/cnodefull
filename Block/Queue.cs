@@ -681,16 +681,12 @@ namespace Notus.Block
 
             kvPoolDb.SetSettings(new NVS.KeyValueSettings()
             {
-                LoadFromBeginning = true,
-                ResetTable = false,
                 MemoryLimitCount = 1000,
                 Name = "new_block"
             });
 
             kvPoolTxErrorList.SetSettings(new NVS.KeyValueSettings()
             {
-                LoadFromBeginning = false,
-                ResetTable = false,
                 MemoryLimitCount = 1000,
                 Name = "wrong_tx"
             });

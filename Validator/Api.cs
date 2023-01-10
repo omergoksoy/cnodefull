@@ -643,6 +643,7 @@ namespace Notus.Validator
 
                 if (string.Equals(IncomeData.UrlList[0].ToLower(), "send") && IncomeData.PostParams.ContainsKey("data") == true)
                 {
+                    //control_point
                     return Request_Send(IncomeData);
                 }
 

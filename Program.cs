@@ -73,20 +73,24 @@ Console.ReadLine();
 //control-point
 
 
+//key value db'sini kontrol et
+
+Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue();
+keyValue.SetSettings(
+    new NVS.KeyValueSettings()
+    {
+        MemoryLimitCount = 1000,
+        Name = "balance"
+    }
+);
+
+string deneme=keyValue.Get(null);
+Console.WriteLine(deneme);
+
+Console.ReadLine();
 /*
-key value db'sini kontrol et
 */
-
 /*
-Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue(new NVS.KeyValueSettings()
-{
-    LoadFromBeginning = true,
-    ResetTable = false,
-    Path = "test",
-    MemoryLimitCount = 1000,
-    Name = "balance"
-});
-
 DateTime baslangic = DateTime.Now;
 Console.WriteLine(JsonSerializer.Serialize(keyValue.GetList()));
 Console.ReadLine();
@@ -278,5 +282,6 @@ Console.ReadLine();
 */
 
 Notus.Validator.Node.Start(args);
+
 
 
