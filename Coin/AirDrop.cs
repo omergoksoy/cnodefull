@@ -300,7 +300,6 @@ namespace Notus.Coin
         {
             LimitDb.SetSettings(new NVS.KeyValueSettings()
             {
-                ResetTable = false,
                 MemoryLimitCount = 1000,
                 Name = "airdrop"
             });
@@ -309,7 +308,7 @@ namespace Notus.Coin
             // tabloda bulunan kayıtları temizle
             if (string.Equals(LimitDb.Get("CurrentVersion"), CurrentVersion) == false)
             {
-                LimitDb.Clear();
+                //LimitDb.Clear();
                 LimitDb.Set("CurrentVersion", CurrentVersion);
             }
         }
