@@ -264,6 +264,7 @@ namespace Notus.Block
                                                 var newAirdropObj=NVG.Settings.Airdrop.Calculate(airdropReceiver, airdropTxUid);
                                                 TmpPoolRecord.data = JsonSerializer.Serialize(newAirdropObj);
 
+                                                /*
                                                 Console.WriteLine("Old Airdrop Request");
                                                 Console.WriteLine("-------------------------------------------");
                                                 Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData, NVC.JsonSetting));
@@ -272,6 +273,7 @@ namespace Notus.Block
                                                 Console.WriteLine("-------------------------------------------");
                                                 Console.WriteLine(JsonSerializer.Serialize(newAirdropObj, NVC.JsonSetting));
                                                 Console.WriteLine("-------------------------------------------");
+                                                */
                                                 TempWalletList.Add(tmpEntry.Key, 1);
                                             }
                                         }

@@ -78,8 +78,8 @@ namespace Notus.Wallet
         {
             lock (NGF.WalletUsageList)
             {
-                Console.WriteLine("Wallet Usage Available : " + walletKey);
-                Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
+                //Console.WriteLine("Wallet Usage Available : " + walletKey);
+                //Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                 return (NGF.WalletUsageList.ContainsKey(walletKey) == false ? true : false);
             }
         }
@@ -87,18 +87,18 @@ namespace Notus.Wallet
         {
             lock (NGF.WalletUsageList)
             {
-                Console.WriteLine("Start Wallet Usage : " + walletKey);
-                Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
+                //Console.WriteLine("Start Wallet Usage : " + walletKey);
+                //Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                 if (NGF.WalletUsageList.ContainsKey(walletKey) == false)
                 {
                     bool result = NGF.WalletUsageList.TryAdd(walletKey, "456465");
-                    Console.WriteLine(result);
-                    Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
+                    //Console.WriteLine(result);
+                    //Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                     return result;
                 }
                 else
                 {
-                    Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
+                    //Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                 }
                 return false;
             }
@@ -107,10 +107,10 @@ namespace Notus.Wallet
         {
             lock (NGF.WalletUsageList)
             {
-                Console.WriteLine("Stop Wallet Usage : " + walletKey);
-                Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
+                //Console.WriteLine("Stop Wallet Usage : " + walletKey);
+                //Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                 NGF.WalletUsageList.TryRemove(walletKey, out _);
-                Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
+                //Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
             }
         }
 
