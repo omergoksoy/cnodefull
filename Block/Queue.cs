@@ -109,9 +109,7 @@ namespace Notus.Block
                 txQueueList.TryRemove(txUid, out _);
 
         }
-        public NVClass.BlockData? Get(
-            ulong WaitingForPool
-        )
+        public NVClass.BlockData? Get(ulong WaitingForPool)
         {
             if (txQueue.Count == 0)
                 return null;
@@ -227,6 +225,8 @@ namespace Notus.Block
 
                                 if (tmpBlockCipherData != null)
                                 {
+                                    Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData,NVC.JsonSetting));
+
                                     // out işlemindeki cüzdanları kontrol ediyor...
                                     foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> tmpEntry in tmpBlockCipherData.Out)
                                     {

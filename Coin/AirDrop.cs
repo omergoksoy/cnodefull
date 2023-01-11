@@ -205,9 +205,11 @@ namespace Notus.Coin
             */
 
             string tmpCoinCurrency = NVG.Settings.Genesis.CoinInfo.Tag;
+
+            /*
             burada cüzdandan bakiye çekilirken kilitleme işlemi yapılmalı
             airdropta hala anlık bakiye çekme esnasında hata oluşturuyor
-
+            */
 
             NVS.WalletBalanceStruct tmpBalanceBefore = NGF.Balance.Get(ReceiverWalletKey, 0);
             NVS.WalletBalanceStruct tmpBalanceAfter = NGF.Balance.Get(ReceiverWalletKey, 0);
@@ -252,10 +254,11 @@ namespace Notus.Coin
                 LimitDb.Set(ReceiverWalletKey,
                     JsonSerializer.Serialize(RequestList[ReceiverWalletKey])
                 );
+
                 // burada transactionları belleğe alıyor böyle hızlı ulaşım sağlanıyor...
                 NVG.Settings.TxStatus.Set(tmpChunkIdKey, new NVS.CryptoTransferStatus()
                 {
-                    Code = NVE.BlockStatusCode.Completed,
+                    Code = NVE.BlockStatusCode.AddedToQueue,
                     RowNo = 0,
                     UID = "",
                     Text = "AddedToQueue"
@@ -277,6 +280,7 @@ namespace Notus.Coin
                 UID = "",
                 Text = "Unknown"
             });
+
             return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
             {
                 ErrorNo = 55632,
