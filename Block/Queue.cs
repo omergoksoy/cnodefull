@@ -1,4 +1,5 @@
-﻿using Notus.Compression.TGZ;
+﻿using Notus.Coin;
+using Notus.Compression.TGZ;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -225,14 +226,54 @@ namespace Notus.Block
 
                                 if (tmpBlockCipherData != null)
                                 {
-                                    Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData,NVC.JsonSetting));
-
                                     // out işlemindeki cüzdanları kontrol ediyor...
                                     foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> tmpEntry in tmpBlockCipherData.Out)
                                     {
                                         if (TempWalletList.ContainsKey(tmpEntry.Key) == false)
                                         {
-                                            TempWalletList.Add(tmpEntry.Key, 1);
+                                            string airdropReceiver = tmpEntry.Key;
+                                            if (NVG.Settings.Airdrop.LimitExceeded(airdropReceiver) == true)
+                                            {
+                                                addToList = false;
+                                                NVG.Settings.TxStatus.Set(tmpTxUid, new NVS.CryptoTransferStatus()
+                                                {
+                                                    Code = NVE.BlockStatusCode.TooManyRequest,
+                                                    RowNo = 0,
+                                                    UID = tmpTxUid,
+                                                    Text = "TooManyRequest"
+                                                });
+
+                                                // airdrop işlem çok fazla olduğu için kuyruktan çıkartılıyor
+                                                txQueue.TryDequeue(out _);
+
+                                                // airdrop işlemi çok fazla olduğu için kuyruk listesinden çıkartılıyor
+                                                txQueueList.TryRemove(tmpTxUid, out _);
+                                                
+                                                //işlem tekrar gelmemesi için veri tabanından siliniyor
+                                                kvPoolDb.Remove(tmpTxUid);
+
+                                                tmpTxUid = "";
+                                            }
+                                            else
+                                            {
+                                                string airdropTxUid = string.Empty;
+                                                foreach (var tmpInnerEntry in tmpBlockCipherData.In)
+                                                {
+                                                    airdropTxUid = tmpInnerEntry.Key;
+                                                }
+                                                var newAirdropObj=NVG.Settings.Airdrop.Calculate(airdropReceiver, airdropTxUid);
+                                                TmpPoolRecord.data = JsonSerializer.Serialize(newAirdropObj);
+
+                                                Console.WriteLine("Old Airdrop Request");
+                                                Console.WriteLine("-------------------------------------------");
+                                                Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData, NVC.JsonSetting));
+                                                Console.WriteLine("-------------------------------------------");
+                                                Console.WriteLine("New Airdrop Request");
+                                                Console.WriteLine("-------------------------------------------");
+                                                Console.WriteLine(JsonSerializer.Serialize(newAirdropObj, NVC.JsonSetting));
+                                                Console.WriteLine("-------------------------------------------");
+                                                TempWalletList.Add(tmpEntry.Key, 1);
+                                            }
                                         }
                                         else
                                         {

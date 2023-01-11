@@ -25,7 +25,6 @@ namespace Notus.Validator
         private List<string> AllReplicantList = new List<string>();
 
         private Notus.Coin.Transfer transferObj = new Notus.Coin.Transfer();
-        private Notus.Coin.AirDrop airdropObj = new Notus.Coin.AirDrop();
 
         private Notus.Mempool ObjMp_MultiSignPool;
         public Notus.Mempool Obj_MultiSignPool
@@ -148,7 +147,7 @@ namespace Notus.Validator
             NGF.Balance.Control(Obj_BlockData);
 
             // airdrop ise burada yapılan istekler veri tabanına kaydedilecek
-            airdropObj.Process(Obj_BlockData);
+            NVG.Settings.Airdrop.Process(Obj_BlockData);
 
             if (Obj_BlockData.info.type == NVE.BlockTypeList.CryptoTransfer)
             {
@@ -626,7 +625,7 @@ namespace Notus.Validator
                 {
                     if (IncomeData.UrlList.Length > 1)
                     {
-                        return airdropObj.Request(IncomeData);
+                        return NVG.Settings.Airdrop.Request(IncomeData);
                     }
                 }
 

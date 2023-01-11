@@ -25,6 +25,48 @@ namespace Notus.Coin
         private readonly string CurrentVersion = "1.0.0.0";
         private ConcurrentDictionary<string, List<string>> RequestList = new ConcurrentDictionary<string, List<string>>();
         private Notus.Data.KeyValue LimitDb = new Notus.Data.KeyValue();
+        public bool LimitExceeded(string ReceiverWalletKey)
+        {
+            lock (RequestList)
+            {
+                List<string>? innerRequestList = new();
+                string controlStr = LimitDb.Get(ReceiverWalletKey);
+                if (controlStr.Length > 0)
+                {
+                    try
+                    {
+                        innerRequestList = JsonSerializer.Deserialize<List<string>>(controlStr);
+                    }
+                    catch { }
+                    if (innerRequestList == null)
+                    {
+                        innerRequestList = new List<string>();
+                    }
+                }
+
+                if (RequestList.ContainsKey(ReceiverWalletKey) == false)
+                {
+                    RequestList.TryAdd(ReceiverWalletKey, new List<string>());
+                }
+
+                RequestList[ReceiverWalletKey].Clear();
+                for (int count = 0; count < innerRequestList.Count; count++)
+                {
+                    TimeSpan diff = (NVG.NOW.Obj - NBK.BlockIdToTime(innerRequestList[count])).Duration();
+                    if (NVC.AirDropTimeLimit > diff.TotalHours)
+                    {
+                        RequestList[ReceiverWalletKey].Add(innerRequestList[count]);
+                    }
+                }
+
+                if (RequestList[ReceiverWalletKey].Count >= NVC.AirDropVolumeCount)
+                {
+                    LimitDb.Set(ReceiverWalletKey, JsonSerializer.Serialize(RequestList[ReceiverWalletKey]));
+                    return true;
+                }
+            }
+            return false;
+        }
         public string Request(NVS.HttpRequestDetails IncomeData)
         {
             if (NVG.Settings.Genesis == null)
@@ -63,52 +105,18 @@ namespace Notus.Coin
                 });
             }
 
-            lock (RequestList)
+            if (LimitExceeded(ReceiverWalletKey) == true)
             {
-                List<string>? innerRequestList = new();
-                string controlStr = LimitDb.Get(ReceiverWalletKey);
-                if (controlStr.Length > 0)
+                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
                 {
-                    try
-                    {
-                        innerRequestList = JsonSerializer.Deserialize<List<string>>(controlStr);
-                    }
-                    catch { }
-                    if (innerRequestList == null)
-                    {
-                        innerRequestList = new List<string>();
-                    }
-                }
-
-                if (RequestList.ContainsKey(ReceiverWalletKey) == false)
-                {
-                    RequestList.TryAdd(ReceiverWalletKey, new List<string>());
-                }
-
-                RequestList[ReceiverWalletKey].Clear();
-                for (int count = 0; count < innerRequestList.Count; count++)
-                {
-                    TimeSpan diff = (NVG.NOW.Obj - NBK.BlockIdToTime(innerRequestList[count])).Duration();
-                    if (NVC.AirDropTimeLimit > diff.TotalHours)
-                    {
-                        RequestList[ReceiverWalletKey].Add(innerRequestList[count]);
-                    }
-                }
-
-                if (RequestList[ReceiverWalletKey].Count >= NVC.AirDropVolumeCount)
-                {
-                    LimitDb.Set(ReceiverWalletKey, JsonSerializer.Serialize(RequestList[ReceiverWalletKey]));
-                    return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                    {
-                        ErrorNo = 371854,
-                        ErrorText = "TooManyRequest",
-                        ID = string.Empty,
-                        Result = NVE.BlockStatusCode.TooManyRequest
-                    });
-                }
+                    ErrorNo = 371854,
+                    ErrorText = "TooManyRequest",
+                    ID = string.Empty,
+                    Result = NVE.BlockStatusCode.TooManyRequest
+                });
             }
 
-            string tmpChunkIdKey = NGF.GenerateTxUid();
+            string airdropUid = NGF.GenerateTxUid();
 
             // eğer cüzdan kilitli ise hata gönderecek
             if (NGF.Balance.AccountIsLock(ReceiverWalletKey) == true)
@@ -121,6 +129,7 @@ namespace Notus.Coin
                     Result = NVE.BlockStatusCode.WalletNotAllowed
                 });
             }
+
             /*
 "rowNo":3,
 {"In":{"134afde3707f":{"Wallet":"NSXhhh","Balance":{"NOTUS":{"20230110225407707":"0"}},"RowNo":0,"UID":""}},"Out":{"NSXhhhhhh888888888888888488888888822222":{"NOTUS":{"20230110225407708":"2000000000"}}},"Validator":"NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63"}
@@ -141,20 +150,20 @@ namespace Notus.Coin
                 bool returnWalletUsing = false;
                 if (NGF.WalletUsageList.ContainsKey(ReceiverWalletKey) == true)
                 {
-                    if (string.Equals(NGF.WalletUsageList[ReceiverWalletKey], tmpChunkIdKey) == false)
+                    if (string.Equals(NGF.WalletUsageList[ReceiverWalletKey], airdropUid) == false)
                     {
                         returnWalletUsing = true;
                     }
                 }
                 else
                 {
-                    if (NGF.WalletUsageList.TryAdd(ReceiverWalletKey, tmpChunkIdKey) == false)
+                    if (NGF.WalletUsageList.TryAdd(ReceiverWalletKey, airdropUid) == false)
                     {
                         returnWalletUsing = true;
                     }
                     else
                     {
-                        if (string.Equals(NGF.WalletUsageList[ReceiverWalletKey], tmpChunkIdKey) == false)
+                        if (string.Equals(NGF.WalletUsageList[ReceiverWalletKey], airdropUid) == false)
                         {
                             returnWalletUsing = true;
                         }
@@ -175,34 +184,68 @@ namespace Notus.Coin
 
             /*
             // eğer cüzdan başka bir işlem tarafından kilitli ise hata gönderecek
-            if (NGF.Balance.WalletUsageAvailable(ReceiverWalletKey) == false)
-            {
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 36789,
-                    ErrorText = "WalletUsing",
-                    ID = string.Empty,
-                    Result = NVE.BlockStatusCode.WalletUsing
-                });
-            }
-
-            // eğer cüzdanı kilitleyemezse hata gönderecek
-            if (NGF.Balance.StartWalletUsage(ReceiverWalletKey) == false)
-            {
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 27468,
-                    ErrorText = "AnErrorOccurred",
-                    ID = string.Empty,
-                    Result = NVE.BlockStatusCode.AnErrorOccurred
-                });
-            }
-            
             http://18.156.37.61:5002/airdrop/NSXhhhhhh888888888888888488888888822222
-            http://18.156.37.61:5002/airdrop/NSXhhhhhh888888888888888488888888822222
+            http://18.156.37.61:5002/airdrop/NSXhhhhhh888888888888888488888888844444
             
             http://18.156.37.61:5002/balance/NSXhhhhhh888888888888888488888888822222
             */
+
+            //burada değişken geri dönecek
+            NVClass.BlockStruct_125 airDrop = Calculate(ReceiverWalletKey, airdropUid);
+            // Console.WriteLine("---------------------------------------");
+            // Console.WriteLine(JsonSerializer.Serialize(airDrop, NVC.JsonSetting));
+            // Console.WriteLine("---------------------------------------");
+
+            bool tmpAddResult = NGF.BlockQueue.Add(new NVS.PoolBlockRecordStruct()
+            {
+                uid = airdropUid,
+                type = NVE.BlockTypeList.AirDrop,
+                data = JsonSerializer.Serialize(airDrop)
+            });
+            if (tmpAddResult == true)
+            {
+                RequestList[ReceiverWalletKey].Add(airdropUid);
+                LimitDb.Set(ReceiverWalletKey,
+                    JsonSerializer.Serialize(RequestList[ReceiverWalletKey])
+                );
+
+                // burada transactionları belleğe alıyor böyle hızlı ulaşım sağlanıyor...
+                NVG.Settings.TxStatus.Set(airdropUid, new NVS.CryptoTransferStatus()
+                {
+                    Code = NVE.BlockStatusCode.AddedToQueue,
+                    RowNo = 0,
+                    UID = "",
+                    Text = "AddedToQueue"
+                });
+
+
+                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
+                {
+                    ErrorNo = 0,
+                    ErrorText = "AddedToQueue",
+                    ID = airdropUid,
+                    Result = NVE.BlockStatusCode.AddedToQueue
+                });
+            }
+            NVG.Settings.TxStatus.Set(airdropUid, new NVS.CryptoTransferStatus()
+            {
+                Code = NVE.BlockStatusCode.Unknown,
+                RowNo = 0,
+                UID = "",
+                Text = "Unknown"
+            });
+
+            return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
+            {
+                ErrorNo = 55632,
+                ErrorText = "Unknown",
+                ID = string.Empty,
+                Result = NVE.BlockStatusCode.Unknown
+            });
+        }
+
+        public NVClass.BlockStruct_125 Calculate(string ReceiverWalletKey, string airdropUid)
+        {
 
             string tmpCoinCurrency = NVG.Settings.Genesis.CoinInfo.Tag;
 
@@ -235,61 +278,10 @@ namespace Notus.Coin
                 Out = new Dictionary<string, Dictionary<string, Dictionary<ulong, string>>>(),
                 Validator = NVG.Settings.NodeWallet.WalletKey
             };
-            airDrop.In.Add(tmpChunkIdKey, tmpBalanceBefore);
+            airDrop.In.Add(airdropUid, tmpBalanceBefore);
             airDrop.Out.Add(ReceiverWalletKey, tmpBalanceAfter.Balance);
-
-            // Console.WriteLine("---------------------------------------");
-            // Console.WriteLine(JsonSerializer.Serialize(airDrop, NVC.JsonSetting));
-            // Console.WriteLine("---------------------------------------");
-
-            bool tmpAddResult = NGF.BlockQueue.Add(new NVS.PoolBlockRecordStruct()
-            {
-                uid = tmpChunkIdKey,
-                type = NVE.BlockTypeList.AirDrop,
-                data = JsonSerializer.Serialize(airDrop)
-            });
-            if (tmpAddResult == true)
-            {
-                RequestList[ReceiverWalletKey].Add(tmpChunkIdKey);
-                LimitDb.Set(ReceiverWalletKey,
-                    JsonSerializer.Serialize(RequestList[ReceiverWalletKey])
-                );
-
-                // burada transactionları belleğe alıyor böyle hızlı ulaşım sağlanıyor...
-                NVG.Settings.TxStatus.Set(tmpChunkIdKey, new NVS.CryptoTransferStatus()
-                {
-                    Code = NVE.BlockStatusCode.AddedToQueue,
-                    RowNo = 0,
-                    UID = "",
-                    Text = "AddedToQueue"
-                });
-
-
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                {
-                    ErrorNo = 0,
-                    ErrorText = "AddedToQueue",
-                    ID = tmpChunkIdKey,
-                    Result = NVE.BlockStatusCode.AddedToQueue
-                });
-            }
-            NVG.Settings.TxStatus.Set(tmpChunkIdKey, new NVS.CryptoTransferStatus()
-            {
-                Code = NVE.BlockStatusCode.Unknown,
-                RowNo = 0,
-                UID = "",
-                Text = "Unknown"
-            });
-
-            return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-            {
-                ErrorNo = 55632,
-                ErrorText = "Unknown",
-                ID = string.Empty,
-                Result = NVE.BlockStatusCode.Unknown
-            });
+            return airDrop;
         }
-
         public void Process(NVClass.BlockData blockData)
         {
             if (blockData.info.type != NVE.BlockTypeList.AirDrop)
@@ -322,7 +314,7 @@ namespace Notus.Coin
                 }
             }
         }
-        public AirDrop()
+        public void Start()
         {
             LimitDb.SetSettings(new NVS.KeyValueSettings()
             {
@@ -337,6 +329,9 @@ namespace Notus.Coin
                 //LimitDb.Clear();
                 LimitDb.Set("CurrentVersion", CurrentVersion);
             }
+        }
+        public AirDrop()
+        {
         }
 
         ~AirDrop()
