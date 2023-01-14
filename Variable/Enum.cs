@@ -8,6 +8,7 @@ namespace Notus.Variable.Enum
     {
         public const int GenesisBlock = 360;
         public const int EmptyBlock = 300;
+        public const int SmartContract = 200;
         public const int CryptoTransfer = 120;
         public const int AirDrop = 125;
         public const int MultiWalletCryptoTransfer = 100;

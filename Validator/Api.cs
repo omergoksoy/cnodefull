@@ -621,6 +621,17 @@ namespace Notus.Validator
                     //return Request_Send(IncomeData);
                 }
 
+                buradan contract içeriği alınacak ve ağa eklenecek
+                gelen program komutları post ile gelsin
+                post ile gelen data doğrudan kaydedilsin
+
+                if (string.Equals(IncomeData.UrlList[0].ToLower(), "contract"))
+                {
+                    if (IncomeData.UrlList.Length > 1)
+                    {
+                        return NVG.Settings.ContractDeploy.Request(IncomeData);
+                    }
+                }
                 if (string.Equals(IncomeData.UrlList[0].ToLower(), "airdrop"))
                 {
                     if (IncomeData.UrlList.Length > 1)

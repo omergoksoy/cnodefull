@@ -31,6 +31,7 @@ namespace Notus.Validator
             NVG.Settings.Transfer.Start();
             NVG.Settings.TxStatus.Start();
             NVG.Settings.Airdrop.Start();
+            NVG.Settings.ContractDeploy.Start();
 
             //NVG.Settings.UidTypeList.Start();
 

@@ -142,7 +142,8 @@ namespace Notus.Variable
                 BlockPrev = new Notus.Block.Prev(),
                 TxStatus = new Notus.Block.TxStatus(),
                 Transfer = new Notus.Coin.Transfer(),
-                Airdrop = new Notus.Coin.AirDrop()
+                Airdrop = new Notus.Coin.AirDrop(),
+                ContractDeploy = new Notus.Contract.Deploy()
                 // , UidTypeList = new Notus.Block.UidTypeList()
             };
         }

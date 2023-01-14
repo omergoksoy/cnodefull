@@ -48,7 +48,18 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 }
 
 
+
+akıllı kontrat kodlarını gömmek için bi tane blok yapısı oluştur.
+blok tip numarası 200 olsun
+
+
+
+
 /*
+
+
+
+
 
 
 boyut testi yapmak için oluşturulmuş kod grubu
@@ -182,7 +193,6 @@ using (FileStream fileStream = new FileStream(ZipFileName, fileModeObj))
                 rawData = new string(Enumerable.Repeat(chars, length).Select(
                     s => s[random.Next(s.Length)]).ToArray()
                 );
-                */
                 rawData=System.Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(rawData));
                 byte[] blockBytes = Encoding.UTF8.GetBytes(rawData);
                 zipStream.Write(blockBytes, 0, blockBytes.Length);
@@ -194,6 +204,7 @@ Console.WriteLine("bitti");
 Console.ReadLine();
 Console.ReadLine();
 Console.ReadLine();
+*/
 
 
 

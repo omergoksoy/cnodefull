@@ -45,6 +45,7 @@ namespace Notus.Globals.Variable
         public Notus.Block.TxStatus TxStatus { get; set; }
         public Notus.Coin.Transfer Transfer { get; set; }
         public Notus.Coin.AirDrop Airdrop { get; set; }
+        public Notus.Contract.Deploy ContractDeploy { get; set; }
         //public Notus.Block.UidTypeList UidTypeList { get; set; }
         public bool DebugMode { get; set; }
         public bool InfoMode { get; set; }
