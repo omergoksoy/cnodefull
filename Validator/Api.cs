@@ -627,7 +627,7 @@ namespace Notus.Validator
                 */
                 if (string.Equals(IncomeData.UrlList[0].ToLower(), "contract"))
                 {
-                    if (IncomeData.UrlList.Length > 1)
+                    if (IncomeData.UrlList.Length > 0)
                     {
                         return NVG.Settings.ContractDeploy.Request(IncomeData);
                     }
