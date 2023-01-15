@@ -48,6 +48,7 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 }
 
 
+/*
 
 akıllı kontrat kodlarını gömmek için bi tane blok yapısı oluştur.
 blok tip numarası 200 olsun
@@ -55,7 +56,6 @@ blok tip numarası 200 olsun
 
 
 
-/*
 
 
 
@@ -204,10 +204,6 @@ Console.WriteLine("bitti");
 Console.ReadLine();
 Console.ReadLine();
 Console.ReadLine();
-*/
-
-
-
 */
 
 
