@@ -627,7 +627,6 @@ namespace Notus.Validator
                 */
                 if (string.Equals(IncomeData.UrlList[0].ToLower(), "contract"))
                 {
-                    Console.WriteLine(JsonSerializer.Serialize(IncomeData));
                     if (IncomeData.UrlList.Length > 1)
                     {
                         return NVG.Settings.ContractDeploy.Request(IncomeData);
