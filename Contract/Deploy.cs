@@ -44,6 +44,15 @@ namespace Notus.Contract
             Console.WriteLine(JsonSerializer.Serialize(IncomeData));
 
 
+            return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
+            {
+                ErrorNo = 35496,
+                ErrorText = "NotSupported",
+                ID = string.Empty,
+                Result = NVE.BlockStatusCode.NotSupported
+            });
+
+
             // mainnet ise hata gönderecek
             if (NVG.Settings.Network == Variable.Enum.NetworkType.MainNet)
             {
