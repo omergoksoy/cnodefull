@@ -19,13 +19,6 @@ namespace Notus.Contract
     {
         public string Request(NVS.HttpRequestDetails IncomeData)
         {
-            return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-            {
-                ErrorNo = 553268,
-                ErrorText = "AnErrorOccurred",
-                ID = string.Empty,
-                Result = NVE.BlockStatusCode.AnErrorOccurred
-            });
             if (NVG.Settings.Genesis == null)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
@@ -36,6 +29,20 @@ namespace Notus.Contract
                     Result = NVE.BlockStatusCode.AnErrorOccurred
                 });
             }
+
+            if (IncomeData.PostParams.ContainsKey("code") == false)
+            {
+                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
+                {
+                    ErrorNo = 553268,
+                    ErrorText = "AnErrorOccurred",
+                    ID = string.Empty,
+                    Result = NVE.BlockStatusCode.AnErrorOccurred
+                });
+            }
+            IncomeData.PostParams["code"]= System.Web.HttpUtility.UrlDecode(IncomeData.PostParams["code"]);
+            Console.WriteLine(JsonSerializer.Serialize(IncomeData));
+
 
             // mainnet ise hata gönderecek
             if (NVG.Settings.Network == Variable.Enum.NetworkType.MainNet)
