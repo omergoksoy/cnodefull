@@ -632,6 +632,7 @@ namespace Notus.Validator
                     {
                         return NVG.Settings.ContractDeploy.Request(IncomeData);
                     }
+                    return JsonSerializer.Serialize(false);
                 }
                 if (string.Equals(IncomeData.UrlList[0].ToLower(), "airdrop"))
                 {
