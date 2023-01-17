@@ -69,6 +69,13 @@ namespace Notus.Ceremony
                 if (NVG.Settings.Network != Variable.Enum.NetworkType.MainNet)
                 {
                     BS_Storage.AddSync(airdropBlock, true);
+
+                    airdrop kontratı çalıştırıldığı zaman,
+                    para transferi olarak ekleyecek ancak
+                    geçerli ağ testTet / devNet ise ve
+                    gönderici adresi NSX111111111111111111111111111111111111 ise
+                    yapılan gönderim işlemindeki sign veya verify işlemini kontrol etmeyecek
+                    // NSX7w199qpQUvYV5iebfvXgAeP51HJx2aApUqti
                     airdrop işlemi için gerekli işlemleri bu kontrat ile blok zinciri içine sabit olarak eklenecek
 
                     omergoksoy
