@@ -71,7 +71,6 @@ namespace Notus.Data
             ObjSettings.ResetTable = settings.ResetTable;
             ObjSettings.Name = settings.Name;
 
-            Console.WriteLine("ObjSettings.Name : " + ObjSettings.Name);
 
             DirPath = NNT.NetworkTypeText(NVG.Settings.Network) +
                 System.IO.Path.DirectorySeparatorChar +
@@ -84,6 +83,14 @@ namespace Notus.Data
             PoolName = DirPath + ObjSettings.Name;
             DbOptions options = new DbOptions().SetCreateIfMissing(true);
             SqlObj = RocksDb.Open(options, PoolName);
+            if (SqlObj == null)
+            {
+                Console.WriteLine("ObjSettings.Name : " + ObjSettings.Name);
+            }
+            else
+            {
+                NP.Success("ObjSettings.Name : " + ObjSettings.Name);
+            }
             if (ObjSettings.ResetTable == false)
             {
                 if (ObjSettings.LoadFromBeginning == true)
