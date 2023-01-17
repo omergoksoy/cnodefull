@@ -188,6 +188,15 @@ namespace Notus.Data
         }
         public void Dispose()
         {
+            if (SqlObj == null)
+            {
+                Console.WriteLine("Dispose -> KeyValue Db : " + ObjSettings.Name);
+            }
+            else
+            {
+                NP.Basic("Dispose -> KeyValue Db : " + ObjSettings.Name);
+            }
+
             ValueList.Clear();
             if (SqlObj != null)
             {
