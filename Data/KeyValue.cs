@@ -83,13 +83,15 @@ namespace Notus.Data
             PoolName = DirPath + ObjSettings.Name;
             DbOptions options = new DbOptions().SetCreateIfMissing(true);
             SqlObj = RocksDb.Open(options, PoolName);
+
+            Console.WriteLine(PoolName);
             if (SqlObj == null)
             {
-                Console.WriteLine("ObjSettings.Name : " + ObjSettings.Name);
+                Console.WriteLine("ObjSettings.Name [NULL]: " + ObjSettings.Name);
             }
             else
             {
-                NP.Success("ObjSettings.Name : " + ObjSettings.Name);
+                Console.WriteLine("ObjSettings.Name [LOADED]: " + ObjSettings.Name);
             }
             if (ObjSettings.ResetTable == false)
             {
