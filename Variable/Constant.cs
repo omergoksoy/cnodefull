@@ -74,6 +74,7 @@ namespace Notus.Variable
         //public static readonly string CommonDelimeterChar = ":";
 
         public static readonly string GenesisBlockUid = "100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+        public static readonly string AirdropBlockUid = "100000000000000000000000000000000000000000000000000000000000000000000000000000000000000001";
 
         private static readonly int DefaultPortNo = 5000;
         public static readonly int DefaultChunkSize = 2048;
