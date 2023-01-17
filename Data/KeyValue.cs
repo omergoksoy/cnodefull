@@ -71,6 +71,8 @@ namespace Notus.Data
             ObjSettings.ResetTable = settings.ResetTable;
             ObjSettings.Name = settings.Name;
 
+            Console.WriteLine("ObjSettings.Name : " + ObjSettings.Name);
+
             DirPath = NNT.NetworkTypeText(NVG.Settings.Network) +
                 System.IO.Path.DirectorySeparatorChar +
             NNT.NetworkLayerText(NVG.Settings.Layer) +
