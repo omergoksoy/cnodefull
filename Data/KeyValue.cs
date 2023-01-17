@@ -84,15 +84,6 @@ namespace Notus.Data
             DbOptions options = new DbOptions().SetCreateIfMissing(true);
             SqlObj = RocksDb.Open(options, PoolName);
 
-            Console.WriteLine(PoolName);
-            if (SqlObj == null)
-            {
-                Console.WriteLine("ObjSettings.Name [NULL]: " + ObjSettings.Name);
-            }
-            else
-            {
-                Console.WriteLine("ObjSettings.Name [LOADED]: " + ObjSettings.Name);
-            }
             if (ObjSettings.ResetTable == false)
             {
                 if (ObjSettings.LoadFromBeginning == true)
@@ -190,15 +181,6 @@ namespace Notus.Data
         }
         public void Dispose()
         {
-            if (SqlObj == null)
-            {
-                Console.WriteLine("Dispose -> KeyValue Db : " + ObjSettings.Name);
-            }
-            else
-            {
-                NP.Basic("Dispose -> KeyValue Db : " + ObjSettings.Name);
-            }
-
             ValueList.Clear();
             if (SqlObj != null)
             {

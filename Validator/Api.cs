@@ -24,7 +24,7 @@ namespace Notus.Validator
         private List<string> AllMasterList = new List<string>();
         private List<string> AllReplicantList = new List<string>();
 
-        private Notus.Coin.Transfer transferObj = new Notus.Coin.Transfer();
+        //private Notus.Coin.Transfer transferObj = new Notus.Coin.Transfer();
 
         private Notus.Mempool ObjMp_MultiSignPool;
         public Notus.Mempool Obj_MultiSignPool
@@ -570,7 +570,7 @@ namespace Notus.Validator
                         {
                             if (string.Equals(IncomeData.UrlList[1].ToLower(), "status"))
                             {
-                                return JsonSerializer.Serialize(transferObj.Status(IncomeData));
+                                return JsonSerializer.Serialize(NVG.Settings.Transfer.Status(IncomeData));
                             }
 
                             if (string.Equals(IncomeData.UrlList[1].ToLower(), "hash"))
@@ -589,7 +589,7 @@ namespace Notus.Validator
                         {
                             if (string.Equals(IncomeData.UrlList[1].ToLower(), "status"))
                             {
-                                return JsonSerializer.Serialize(transferObj.Status(IncomeData));
+                                return JsonSerializer.Serialize(NVG.Settings.Transfer.Status(IncomeData));
                             }
                         }
                     }
@@ -617,7 +617,7 @@ namespace Notus.Validator
 
                 if (string.Equals(IncomeData.UrlList[0].ToLower(), "send") && IncomeData.PostParams.ContainsKey("data") == true)
                 {
-                    return transferObj.Request(IncomeData);
+                    return NVG.Settings.Transfer.Request(IncomeData);
                     //return Request_Send(IncomeData);
                 }
                 /*

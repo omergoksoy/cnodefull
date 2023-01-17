@@ -514,6 +514,7 @@ namespace Notus.Coin
         }
         public void Dispose()
         {
+            //Console.WriteLine("");
             try
             {
                 //LimitDb.Dispose();
