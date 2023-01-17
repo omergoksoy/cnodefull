@@ -468,6 +468,7 @@ namespace Notus.Coin
 
         public void Start()
         {
+            Console.WriteLine("deneme");
             TxSignListObj.SetSettings(new NVS.KeyValueSettings()
             {
                 MemoryLimitCount = 1000,

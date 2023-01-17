@@ -28,10 +28,10 @@ namespace Notus.Validator
             NVG.Settings.BlockOrder.Start();
             NVG.Settings.BlockSign.Start();
             NVG.Settings.BlockPrev.Start();
-            NVG.Settings.Transfer.Start();
             NVG.Settings.TxStatus.Start();
             NVG.Settings.Airdrop.Start();
             NVG.Settings.ContractDeploy.Start();
+            NVG.Settings.Transfer.Start();
             //NGF.BlockQueue.Start();
             //Console.WriteLine("kitaplik yuklendi");
             //NVG.Settings.UidTypeList.Start();
