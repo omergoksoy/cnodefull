@@ -26,13 +26,13 @@ namespace Notus.Coin
         private readonly string CurrentVersion = "1.0.0.0";
 
         //crypto transfer pool
-        private Notus.Data.KeyValue CryptoTransferPool = new Notus.Data.KeyValue();
+        private Notus.Data.KeyValue CryptoTransferPool = new();
         private ConcurrentDictionary<string, NVS.CryptoTransactionStoreStruct> CryptoTransferPool_List = new();
 
         private Notus.Mempool ObjMp_MultiSignPool;
 
         //bu değişken aynı transaction'ın 2 kere işleme alınmasını engelliyor
-        private Notus.Data.KeyValue TxSignListObj = new Notus.Data.KeyValue();
+        private Notus.Data.KeyValue TxSignListObj = new();
 
         private ConcurrentDictionary<string, List<string>> RequestList = new ConcurrentDictionary<string, List<string>>();
         
@@ -468,7 +468,7 @@ namespace Notus.Coin
 
         public void Start()
         {
-            Console.WriteLine("deneme");
+            //Console.WriteLine("deneme");
             TxSignListObj.SetSettings(new NVS.KeyValueSettings()
             {
                 MemoryLimitCount = 1000,
