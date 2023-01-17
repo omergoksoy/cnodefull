@@ -32,7 +32,8 @@ namespace Notus.Validator
             NVG.Settings.TxStatus.Start();
             NVG.Settings.Airdrop.Start();
             NVG.Settings.ContractDeploy.Start();
-            Console.WriteLine("kitaplik yuklendi");
+            //NGF.BlockQueue.Start();
+            //Console.WriteLine("kitaplik yuklendi");
             //NVG.Settings.UidTypeList.Start();
 
             NP.ExecuteTime();
