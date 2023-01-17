@@ -580,9 +580,7 @@ namespace Notus.Validator
             {
                 NP.Basic(NVG.Settings, "Notus.Validator.Main -> Genesis Is NULL");
             }
-            Console.WriteLine("geldi-1");
             NGF.BlockQueue.Start();
-            Console.WriteLine("geldi-2");
             Obj_Api.Prepare();
 
             // Obj_MainCache = new Notus.Cache.Main();
