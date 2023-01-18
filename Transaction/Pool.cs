@@ -16,6 +16,10 @@ namespace Notus.Transaction
         public void Add(Notus.Compiler.TxQueueStruct NewTx)
         {
             TxList.Enqueue(NewTx);
+
+            buraya işlemleri eklesin
+            eklediği gibi dağıtma listesine async olarak dağıtsın
+
         }
         public Pool()
         {
