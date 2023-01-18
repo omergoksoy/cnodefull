@@ -66,10 +66,11 @@ namespace Notus.Ceremony
             using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
             {
                 BS_Storage.AddSync(genesisBlock, true);
+                BS_Storage.AddSync(airdropBlock, true);
+
+                /*
                 if (NVG.Settings.Network != Variable.Enum.NetworkType.MainNet)
                 {
-                    BS_Storage.AddSync(airdropBlock, true);
-
                     airdrop kontratı çalıştırıldığı zaman,
                     para transferi olarak ekleyecek ancak
                     geçerli ağ testTet / devNet ise ve
@@ -80,6 +81,7 @@ namespace Notus.Ceremony
 
                     omergoksoy
                 }
+                */
             }
         }
         private void ControlAllBlockSign()
@@ -139,31 +141,44 @@ namespace Notus.Ceremony
             genesisBlock = new Notus.Block.Generate(leaderWalletId).Make(genesisBlock, 1000);
             BlockSignHash = genesisBlock.sign;
 
+            /*
             if (NVG.Settings.Network != Variable.Enum.NetworkType.MainNet)
             {
-                airdropBlock = NVClass.Block.GetEmpty();
-                airdropBlock.info.type = Notus.Variable.Enum.BlockTypeList.SmartContract;
-                airdropBlock.info.rowNo = 2;
-                airdropBlock.info.multi = false;
-                airdropBlock.info.uID = NVC.AirdropBlockUid;
-                airdropBlock.prev = genesisBlock.info.uID + genesisBlock.sign;
-                airdropBlock.info.prevList.Clear();
-                airdropBlock.info.prevList.Add(
-                    Notus.Variable.Enum.BlockTypeList.GenesisBlock,
-                    airdropBlock.prev
-                );
-                airdropBlock.info.time = Notus.Block.Key.GetTimeFromKey(airdropBlock.info.uID, true);
-                airdropBlock.cipher.ver = "NE";
-
-                burada airdrop kontratı olacak ve o kontrat ile etkileşime girilecek
-
-                airdropBlock.cipher.data = System.Convert.ToBase64String(
-                    System.Text.Encoding.ASCII.GetBytes(
-                        JsonSerializer.Serialize(GenesisObj)
-                    )
-                );
-                airdropBlock = new Notus.Block.Generate(leaderWalletId).Make(airdropBlock, 1000);
             }
+            */
+
+            airdropBlock = NVClass.Block.GetEmpty();
+            airdropBlock.info.prevList.Clear();
+
+            airdropBlock.info.type = Notus.Variable.Enum.BlockTypeList.SmartContract;
+            airdropBlock.info.rowNo = 2;
+            airdropBlock.info.multi = false;
+            airdropBlock.info.uID = NVC.AirdropBlockUid;
+            airdropBlock.prev = genesisBlock.info.uID + genesisBlock.sign;
+            airdropBlock.info.prevList.Add(
+                Notus.Variable.Enum.BlockTypeList.GenesisBlock,
+                genesisBlock.info.uID + genesisBlock.sign
+            );
+            airdropBlock.info.time = Notus.Block.Key.GetTimeFromKey(airdropBlock.info.uID, true);
+
+
+            //burada airdrop kontratı olacak ve o kontrat ile etkileşime girilecek
+            string airDropContractCode = 
+                "IF current_network='main' THEN " + NVC.NewLine +
+                    "PRINT 'AIRDROP NOT AVAILABLE FOR MAIN NETWORK' " + NVC.NewLine +
+                    "KILL " + NVC.NewLine +
+                "ENDIF " + NVC.NewLine +
+                    
+                "CONST AIRDROP_VOLUME = '2000000'  " + NVC.NewLine +
+                "AIRDROP msg_sender " + NVC.NewLine +
+                "KILL ";
+
+            airdropBlock.cipher.ver = "NE";
+            airdropBlock.cipher.data = System.Convert.ToBase64String(
+                System.Text.Encoding.ASCII.GetBytes(airDropContractCode.Replace("'", "\""))
+            );
+
+            airdropBlock = new Notus.Block.Generate(leaderWalletId).Make(airdropBlock, 1000);
         }
         private void GetAllSignedGenesisFromValidator()
         {

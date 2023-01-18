@@ -76,6 +76,9 @@ namespace Notus.Variable
         public static readonly string GenesisBlockUid = "100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
         public static readonly string AirdropBlockUid = "100000000000000000000000000000000000000000000000000000000000000000000000000000000000000001";
 
+        //airdrop gönderimi için kullanılacak adres
+        public static readonly string ProgramAddress_Airdrop = "NSX100000000000000000000000000000000000";
+
         private static readonly int DefaultPortNo = 5000;
         public static readonly int DefaultChunkSize = 2048;
 
@@ -286,6 +289,7 @@ namespace Notus.Variable
         public static readonly int JoinNetworkEndOfTheCounter = 3;
 
         public static readonly string Seed_ForMainNet_BlockKeyGenerate = "NotusMainNetSeedText";
+        public static readonly string NewLine = "\r\n";
 
 
         public class StorageFolderName

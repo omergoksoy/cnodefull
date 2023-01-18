@@ -186,7 +186,6 @@ namespace Notus.Coin
             // eğer cüzdan başka bir işlem tarafından kilitli ise hata gönderecek
             http://18.156.37.61:5002/airdrop/NSXhhhhhh888888888888888488888888822222
             http://18.156.37.61:5002/airdrop/NSXhhhhhh888888888888888488888888844444
-            
             http://18.156.37.61:5002/balance/NSXhhhhhh888888888888888488888888822222
             */
 
