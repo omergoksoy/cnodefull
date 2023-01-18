@@ -222,7 +222,7 @@ namespace Notus
             Console.ForegroundColor = TextColor;
             Console.WriteLine(DetailsStr);
         }
-        public static void ExecuteTime()
+        public static void PrintOnScreenTimer()
         {
             SubTimer.Start(() =>
             {
@@ -271,40 +271,6 @@ namespace Notus
                 Type = tmpType
             });
             Counter++;
-            /*
-            PrintAsync = false;
-            if (ShowOnScreen == true)
-            {
-                if (DetailsStr == "")
-                {
-                    if (PrintAsync == true)
-                    {
-                        Task.Run(() =>
-                        {
-                            Console.WriteLine();
-                        });
-                    }
-                    else
-                    {
-                        Console.WriteLine();
-                    }
-                }
-                else
-                {
-                    if (PrintAsync == true)
-                    {
-                        Task.Run(() =>
-                        {
-                            PrintFunction(tmpLayer, tmpType, TextColor, DetailsStr);
-                        });
-                    }
-                    else
-                    {
-                        PrintFunction(tmpLayer, tmpType, TextColor, DetailsStr);
-                    }
-                }
-            }
-            */
         }
     }
 }

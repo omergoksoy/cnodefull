@@ -33,10 +33,9 @@ namespace Notus.Validator
             NVG.Settings.ContractDeploy.Start();
             NVG.Settings.Transfer.Start();
             //NGF.BlockQueue.Start();
-            //Console.WriteLine("kitaplik yuklendi");
             //NVG.Settings.UidTypeList.Start();
 
-            NP.ExecuteTime();
+            NP.PrintOnScreenTimer();
 
             if (NVG.Settings.LocalNode == true)
             {
