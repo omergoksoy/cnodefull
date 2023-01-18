@@ -67,7 +67,7 @@ namespace Notus.Contract
 
             string ReceiverWalletKey = IncomeData.UrlList[1];
 
-            if (ReceiverWalletKey.Length != NVC.SingleWalletTextLength)
+            if (ReceiverWalletKey.Length != NVC.WalletFullTextLength)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
                 {

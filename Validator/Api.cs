@@ -358,10 +358,10 @@ namespace Notus.Validator
                     }
 
                     //burada seçilen cüzdan detayları verilecek...
-                    if (IncomeData.UrlList[2].Length == Notus.Variable.Constant.SingleWalletTextLength)
+                    if (IncomeData.UrlList[2].Length == Notus.Variable.Constant.WalletFullTextLength)
                     {
                         string controlWalletId = IncomeData.UrlList[2];
-                        bool multiWalletId = Notus.Wallet.MultiID.IsMultiId(controlWalletId, NVG.Settings.Network);
+                        bool multiWalletId = Notus.Wallet.MultiID.IsMultiId(controlWalletId);
 
                         Dictionary<string, NVE.BlockStatusCode> SignList
                             = new Dictionary<string, NVE.BlockStatusCode>();
@@ -539,7 +539,7 @@ namespace Notus.Validator
                     // gönderilen işlem transferini veriyor
                     if (string.Equals(IncomeData.UrlList[0].ToLower(), "tx"))
                     {
-                        if (IncomeData.UrlList[1].Length == Notus.Variable.Constant.SingleWalletTextLength)
+                        if (IncomeData.UrlList[1].Length == Notus.Variable.Constant.WalletFullTextLength)
                         {
 
                         }
@@ -548,7 +548,7 @@ namespace Notus.Validator
                     // alınan işlem transferini veriyor
                     if (string.Equals(IncomeData.UrlList[0].ToLower(), "rx"))
                     {
-                        if (IncomeData.UrlList[1].Length == Notus.Variable.Constant.SingleWalletTextLength)
+                        if (IncomeData.UrlList[1].Length == Notus.Variable.Constant.WalletFullTextLength)
                         {
 
                         }
@@ -618,8 +618,8 @@ namespace Notus.Validator
                 if (string.Equals(IncomeData.UrlList[0].ToLower(), "send") && IncomeData.PostParams.ContainsKey("data") == true)
                 {
                     return NVG.Settings.Transfer.Request(IncomeData);
-                    //return Request_Send(IncomeData);
                 }
+
                 /*
                 buradan contract içeriği alınacak ve ağa eklenecek
                 gelen program komutları post ile gelsin
@@ -2497,7 +2497,7 @@ namespace Notus.Validator
 
         private string Request_Balance(NVS.HttpRequestDetails IncomeData)
         {
-            if (IncomeData.UrlList[1].Length != Notus.Variable.Constant.SingleWalletTextLength)
+            if (IncomeData.UrlList[1].Length != Notus.Variable.Constant.WalletFullTextLength)
             {
                 return JsonSerializer.Serialize(false);
             }
@@ -2523,7 +2523,7 @@ namespace Notus.Validator
                 Wallet = IncomeData.UrlList[1],
                 RowNo = 0
             };
-            if (IncomeData.UrlList[1].Length == Notus.Variable.Constant.SingleWalletTextLength)
+            if (IncomeData.UrlList[1].Length == Notus.Variable.Constant.WalletFullTextLength)
             {
                 balanceResult = NGF.Balance.Get(IncomeData.UrlList[1], 0);
             }

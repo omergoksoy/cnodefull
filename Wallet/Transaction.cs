@@ -207,7 +207,7 @@ namespace Notus.Wallet
         {
             try
             {
-                if (Notus.Wallet.MultiID.IsMultiId(preTransfer.Sender, currentNetwork) == true)
+                if (Notus.Wallet.MultiID.IsMultiId(preTransfer.Sender) == true)
                 {
                     if (MultiSignatureVerify(preTransfer) == false)
                     {

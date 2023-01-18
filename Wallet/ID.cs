@@ -164,14 +164,14 @@ namespace Notus.Wallet
                 return false;
             }
 
-            if (walletAddress.Length == NVC.SingleWalletTextLength)
+            if (walletAddress.Length == NVC.WalletFullTextLength)
             {
                 if (walletAddress.Substring(0, NVC.SingleWalletPrefix.Length) == NVC.SingleWalletPrefix)
                 {
                     return true;
                 }
             }
-            if (walletAddress.Length == NVC.SingleWalletTextLength)
+            if (walletAddress.Length == NVC.WalletFullTextLength)
             {
                 if (walletAddress.Substring(0, NVC.MultiWalletPrefix.Length) == NVC.MultiWalletPrefix)
                 {

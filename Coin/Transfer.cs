@@ -47,12 +47,6 @@ namespace Notus.Coin
         }
         public string Request(NVS.HttpRequestDetails IncomeData)
         {
-            /*
-            transfer işlemlerindeki değişken kilitleme işlemlerini kontrol et
-            transfer işlemlerindeki değişken kilitleme işlemlerini kontrol et
-            transfer işlemlerindeki değişken kilitleme işlemlerini kontrol et
-            transfer işlemlerindeki değişken kilitleme işlemlerini kontrol et
-            */
             NVS.CryptoTransactionStruct? tmpTransfer = null;
             try
             {
@@ -91,7 +85,7 @@ namespace Notus.Coin
                 });
             }
 
-            if (tmpTransfer.Sender.Length != Notus.Variable.Constant.SingleWalletTextLength)
+            if (tmpTransfer.Sender.Length != Notus.Variable.Constant.WalletFullTextLength)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
                 {
@@ -101,7 +95,7 @@ namespace Notus.Coin
                     Result = NVE.BlockStatusCode.WrongWallet_Sender
                 });
             }
-            if (tmpTransfer.Receiver.Length != Notus.Variable.Constant.SingleWalletTextLength)
+            if (tmpTransfer.Receiver.Length != Notus.Variable.Constant.WalletFullTextLength)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
                 {
@@ -116,9 +110,9 @@ namespace Notus.Coin
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
                 {
                     ErrorNo = 5245,
-                    ErrorText = "WrongWallet_Receiver",
+                    ErrorText = "SenderCantBeReceiver",
                     ID = string.Empty,
-                    Result = NVE.BlockStatusCode.WrongWallet_Receiver
+                    Result = NVE.BlockStatusCode.SenderCantBeReceiver
                 });
             }
 
@@ -134,7 +128,7 @@ namespace Notus.Coin
                 });
             }
 
-            if (Notus.Wallet.MultiID.IsMultiId(tmpTransfer.Sender, NVG.Settings.Network) == true)
+            if (Notus.Wallet.MultiID.IsMultiId(tmpTransfer.Sender) == true)
             {
                 return Request_MultiSignatureSend(IncomeData, tmpTransfer);
             }
@@ -160,7 +154,7 @@ namespace Notus.Coin
             {
                 string controlKey = tmpTransfer.CurrentTime.ToString().PadRight(24, '0') + "_" + tmpTransfer.Sender;
                 string? prevSignStr = TxSignListObj.Get(controlKey);
-                if (prevSignStr == null)
+                if (prevSignStr != null)
                 {
                     if (prevSignStr.Length > 0)
                     {

@@ -166,7 +166,7 @@ namespace Notus.Validator
                 userDefineWalletKey = Console.ReadLine();
                 tmpExitWhileLoop = true;
                 userDefineWalletKey = userDefineWalletKey.Trim();
-                if (userDefineWalletKey.Length != NVC.SingleWalletTextLength)
+                if (userDefineWalletKey.Length != NVC.WalletFullTextLength)
                 {
                     userDefineWalletKey = string.Empty;
                     Console.WriteLine();

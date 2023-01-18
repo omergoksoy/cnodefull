@@ -36,8 +36,9 @@ namespace Notus.Variable
 
         // wallet constant
         public static readonly int WalletEncodeTextLength = 36;
-        public static readonly int SingleWalletTextLength = 39;
-        public static readonly int MultiWalletTextLength = 39;
+        public static readonly int WalletFullTextLength = 39;
+        //public static readonly int WalletFullTextLength = 39;
+        //public static readonly int WalletFullTextLength = 39;
         public static readonly string SingleWalletPrefix = "NSX";
         public static readonly string MultiWalletPrefix= "NMX";
 

@@ -138,6 +138,7 @@ namespace Notus.Variable.Enum
         WalletUsing = 75,
 
         WrongTxFormat = 8888,
+        SenderCantBeReceiver = 154,
         WrongWallet_Sender = 6,
         WrongWallet_Receiver = 9,
 

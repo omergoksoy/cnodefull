@@ -11,27 +11,10 @@ namespace Notus.Wallet
 {
     public static class MultiID
     {
-        public static bool IsMultiId(
-            string walletId,
-            Notus.Variable.Enum.NetworkType whichNetworkFor
-        )
+        public static bool IsMultiId(string walletId)
         {
             string keyPrefix = Notus.Variable.Constant.MultiWalletPrefix;
-            /*
-            if (whichNetworkFor == Notus.Variable.Enum.NetworkType.TestNet)
-            {
-                keyPrefix = Notus.Variable.Constant.MultiWalletPrefix;
-            }
-            if (whichNetworkFor == Notus.Variable.Enum.NetworkType.DevNet)
-            {
-                keyPrefix = Notus.Variable.Constant.MultiWalletPrefix;
-            }
-            */
-
-            return string.Equals(
-                walletId.Substring(0, keyPrefix.Length),
-                keyPrefix
-            );
+            return string.Equals(walletId.Substring(0, keyPrefix.Length),keyPrefix);
         }
         public static string GetWalletID
         (
@@ -68,7 +51,7 @@ namespace Notus.Wallet
                 checkSumStr,
                 NumberStyles.AllowHexSpecifier
             );
-            int howManyLen = Notus.Variable.Constant.MultiWalletTextLength -
+            int howManyLen = Notus.Variable.Constant.WalletFullTextLength -
                 Notus.Variable.Constant.MultiWalletPrefix.Length;
             string walletAddressStr = Notus.Wallet.Toolbox.EncodeBase58(number, howManyLen);
             return keyPrefix + walletAddressStr;

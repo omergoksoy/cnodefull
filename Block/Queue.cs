@@ -664,6 +664,7 @@ namespace Notus.Block
         {
             PreBlockData.uid = (PreBlockData.uid == null ? NGF.GenerateTxUid() : PreBlockData.uid);
             PreBlockData.uid = (PreBlockData.uid.Length == 0 ? NGF.GenerateTxUid() : PreBlockData.uid);
+
             kvPoolDb.Set(PreBlockData.uid, JsonSerializer.Serialize(PreBlockData));
             Add2Queue(PreBlockData);
             return true;
@@ -695,23 +696,11 @@ namespace Notus.Block
             if (txQueueList.TryAdd(PreBlockData.uid, 1) == true)
             {
                 txQueue.Enqueue(PreBlockData.uid);
-                //Console.WriteLine("txQueue.Count : " + txQueue.Count.ToString());
             }
             else
             {
                 NP.Danger("txQueueList.TryAdd(PreBlockData.uid, 1) == FALSE");
             }
-
-            /*
-            Obj_PoolTransactionList[PreBlockData.type].Add(
-                new NVS.List_PoolBlockRecordStruct()
-                {
-                    key = PreBlockData.uid,
-                    type = PreBlockData.type,
-                    data = PreBlockData.data
-                }
-            );
-            */
         }
         public void LoadFromPoolDb()
         {
