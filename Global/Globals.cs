@@ -66,8 +66,10 @@ namespace Notus.Variable
         public static Notus.Globals.Variable.NodeQueueList NodeQueue { get; set; }
         public static ConcurrentDictionary<string, NVS.NodeQueueInfo> NodeList { get; set; }
         public static Notus.Globals.Variable.Settings Settings { get; set; }
+        public static Notus.Transaction.Pool TxPool { get; set; }
         static Globals()
         {
+            TxPool = new Notus.Transaction.Pool();
             OtherValidatorSelectedMe = false;
             LocalBlockLoaded = false;
             GroupNo = 1;

@@ -201,6 +201,24 @@ namespace Notus.Coin
                 type = NVE.BlockTypeList.AirDrop,
                 data = JsonSerializer.Serialize(airDrop)
             });
+
+            // burada listeye eklensin
+            // burada listeye eklensin
+            // burada listeye eklensin
+
+            NVG.TxPool.Add(new Notus.Compiler.TxQueueStruct()
+            {
+                Uid = airdropUid,
+                Type = Compiler.TxQueueType.Contract,
+                ContractId = NVC.AirdropBlockUid,
+                Fee = "0",
+                PublicKey = "",
+                FunctionList = new List<Compiler.FunctionList>()
+                {
+
+                },
+                Sign = ""
+            });
             if (tmpAddResult == true)
             {
                 RequestList[ReceiverWalletKey].Add(airdropUid);
