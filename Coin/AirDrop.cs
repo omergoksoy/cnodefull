@@ -205,6 +205,7 @@ namespace Notus.Coin
             // burada listeye eklensin
             // burada listeye eklensin
             // burada listeye eklensin
+            control-noktası
 
             NVG.TxPool.Add(new Notus.Compiler.TxQueueStruct()
             {
