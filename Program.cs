@@ -48,6 +48,25 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 }
 
 
+
+
+
+1- her blok zipli dosya içine kaydedilsin.
+2- kullanılacak Key value tablolarının listesi
+   * Block Uid -> Block No
+   * Block No  -> Block Uid
+   * Block No  -> Block Sign
+   * Block No  -> Block Prev
+   * Block Uid -> Block Type ( Block / Transaction / Contract )
+   * 
+
+
+
+
+/*
+    */
+
+
 /*
 
 akıllı kontrat kodlarını gömmek için bi tane blok yapısı oluştur.
