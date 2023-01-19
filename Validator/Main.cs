@@ -382,6 +382,7 @@ namespace Notus.Validator
                                 }
                             }
                         }
+                        Console.WriteLine("transactionCount : " + transactionCount.ToString());
                         if (transactionCount > 0)
                         {
                             foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> walletEntry in tmpBlockCipherData.Out)
