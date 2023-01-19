@@ -879,6 +879,7 @@ namespace Notus.Validator
                                         NVClass.BlockData? PreBlockData = NGF.BlockQueue.Get(
                                             ND.AddMiliseconds(CurrentQueueTime, NVC.BlockListeningForPoolTime)
                                         );
+                                        //ND.ToDateTime(CurrentQueueTime)
                                         if (PreBlockData != null)
                                         {
                                             txExecuted = true;
