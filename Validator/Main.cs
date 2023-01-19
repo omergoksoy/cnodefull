@@ -790,6 +790,7 @@ namespace Notus.Validator
                         }
                         else
                         {
+                            selectedWalletId = "";
                             if (NVG.NOW.Int > NVG.NodeList[NVG.Settings.Nodes.My.HexKey].JoinTime)
                             {
                                 NP.Danger("Queue Time Info Does Not In The List");
