@@ -118,8 +118,12 @@ namespace Notus.Block
             int CurrentBlockType = -1;
 
             // aynı cüzdan adresini sadece 1 kez kullanmak için bu değişken kullanılıyor
-            Dictionary<string, byte> TempWalletList = new();
-            TempWalletList.Add(NVG.Settings.NodeWallet.WalletKey, 1);
+            ConcurrentDictionary<string, byte> TempWalletList = new();
+            bool outerAddedToList = TempWalletList.TryAdd(NVG.Settings.NodeWallet.WalletKey, 1);
+            if (outerAddedToList == false)
+            {
+                Console.WriteLine("Not Added -> Line 125");
+            }
 
             // data elamanı içersine eklenecek olan veri bu dizi içinde tutuluyor
             List<string> TempBlockList = new List<string>();
@@ -248,7 +252,7 @@ namespace Notus.Block
 
                                                 // airdrop işlemi çok fazla olduğu için kuyruk listesinden çıkartılıyor
                                                 txQueueList.TryRemove(tmpTxUid, out _);
-                                                
+
                                                 //işlem tekrar gelmemesi için veri tabanından siliniyor
                                                 kvPoolDb.Remove(tmpTxUid);
 
@@ -261,7 +265,7 @@ namespace Notus.Block
                                                 {
                                                     airdropTxUid = tmpInnerEntry.Key;
                                                 }
-                                                var newAirdropObj=NVG.Settings.Airdrop.Calculate(airdropReceiver, airdropTxUid);
+                                                var newAirdropObj = NVG.Settings.Airdrop.Calculate(airdropReceiver, airdropTxUid);
                                                 TmpPoolRecord.data = JsonSerializer.Serialize(newAirdropObj);
 
                                                 /*
@@ -274,7 +278,12 @@ namespace Notus.Block
                                                 Console.WriteLine(JsonSerializer.Serialize(newAirdropObj, NVC.JsonSetting));
                                                 Console.WriteLine("-------------------------------------------");
                                                 */
-                                                TempWalletList.Add(tmpEntry.Key, 1);
+                                                bool innerAddedToList = TempWalletList.TryAdd(tmpEntry.Key, 1);
+                                                if (innerAddedToList == false)
+                                                {
+                                                    Console.WriteLine("Not Added To List -> Line 284");
+                                                    addToList = false;
+                                                }
                                             }
                                         }
                                         else
@@ -302,7 +311,12 @@ namespace Notus.Block
                                     {
                                         if (TempWalletList.ContainsKey(tmpEntry.Key) == false)
                                         {
-                                            TempWalletList.Add(tmpEntry.Key, 1);
+                                            bool innerAddedToList = TempWalletList.TryAdd(tmpEntry.Key, 1);
+                                            if (innerAddedToList == false)
+                                            {
+                                                Console.WriteLine("Not Added To -> TempWalletList.TryAdd(tmpEntry.Key, 1);");
+                                                addToList = false;
+                                            }
                                         }
                                         else
                                         {
