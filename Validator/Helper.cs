@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using NVE = Notus.Variable.Enum;
+using System.Globalization;
 using System.Text.Json;
 using NCH = Notus.Communication.Helper;
 using ND = Notus.Date;
