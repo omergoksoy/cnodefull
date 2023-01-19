@@ -44,11 +44,15 @@ namespace Notus.Data
         {
             if (ValueList.ContainsKey(key) == false)
             {
-                ValueList.TryAdd(key, new NVS.ValueTimeStruct()
+                bool errorCheck = ValueList.TryAdd(key, new NVS.ValueTimeStruct()
                 {
                     Value = value,
                     Time = NVG.NOW.Int
                 });
+                if (errorCheck == false)
+                {
+                    Console.WriteLine(key + " - " + value);
+                }
             }
             else
             {
@@ -119,6 +123,15 @@ namespace Notus.Data
         }
         public string Get(string? key)
         {
+            if (ValueList.ContainsKey(key) == true)
+            {
+                string value = ValueList[key].Value;
+                string? value2 = SqlObj.Get(key);
+                Console.WriteLine("MemoryList -> " + value);
+                Console.WriteLine("RockDB -> " + value2);
+                Console.WriteLine("Check if Equal -> " + value == value2);
+            }
+
             if (ValueList.ContainsKey(key) == true)
                 return ValueList[key].Value;
 
