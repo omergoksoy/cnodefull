@@ -408,8 +408,6 @@ namespace Notus.Validator
                             // crypto / token transfer
                             NGF.BlockQueue.Add(new NVS.PoolBlockRecordStruct()
                             {
-                                // type = 120,
-                                // uid =
                                 uid = NGF.GenerateTxUid(),
                                 type = NVE.BlockTypeList.CryptoTransfer,
                                 data = JsonSerializer.Serialize(tmpBlockCipherData)

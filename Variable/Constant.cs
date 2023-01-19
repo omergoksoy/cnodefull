@@ -14,13 +14,13 @@ namespace Notus.Variable
         public static readonly int WalletMemoryCountLimit = 1000000;
 
         // kaç saniye boyunca pool'u dinleyecek
-        public static readonly ulong BlockListeningForPoolTime = 150;
+        public static readonly ulong BlockListeningForPoolTime = 200;
 
         // node kaç milisaniye çalışacak
         public static readonly ulong BlockGeneratingTime = 100;
 
         // node çalışma süresi sonunda kaç mili saniye dağıtmaya geçecek
-        public static readonly ulong BlockDistributingTime = 250;
+        public static readonly ulong BlockDistributingTime = 200;
 
         public static readonly byte NodeOrderGroupSize = 6;
         public static readonly byte RegenerateNodeQueueCount = 4;
