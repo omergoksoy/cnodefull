@@ -1,1 +1,2 @@
-﻿
+﻿blokların sıralamasında hata oluşuyor
+hata oluştuğu içinde bakiye ve blok işleme işlemlerinde hata oluşuor

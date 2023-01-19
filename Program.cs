@@ -48,6 +48,8 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 }
 
 
+hata notları 4 isimli dosyaya bak
+
 /*
 
 
