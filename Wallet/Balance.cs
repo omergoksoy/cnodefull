@@ -152,7 +152,7 @@ namespace Notus.Wallet
             {
                 SummaryDb.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj));
 
-                Console.WriteLine("SET BALANCE -> " + JsonSerializer.Serialize(BalanceObj));
+                NP.Basic("SET BALANCE -> " + JsonSerializer.Serialize(BalanceObj));
 
                 //burada cüzdan kilidi açılacak...
                 StopWalletUsage(BalanceObj.Wallet);
@@ -710,8 +710,8 @@ namespace Notus.Wallet
                 NVS.MultiWalletStoreStruct? tmpBalanceVal = JsonSerializer.Deserialize<NVS.MultiWalletStoreStruct>(tmpRawDataStr);
                 if (tmpBalanceVal == null)
                 {
-                    Console.WriteLine("tmpRawDataStr -> Balance.Cs -> 493. Line");
-                    Console.WriteLine(tmpRawDataStr);
+                    NP.Basic("tmpRawDataStr -> Balance.Cs -> 493. Line");
+                    NP.Basic(tmpRawDataStr);
                 }
                 else
                 {

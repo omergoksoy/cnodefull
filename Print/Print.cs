@@ -61,40 +61,6 @@ namespace Notus
                 }, 0, true, true
             );
         }
-        public static void PrintQueue(bool tellTheOtherNode, string printLoc)
-        {
-            if (tellTheOtherNode == true)
-            {
-                foreach (var iE in NGF.ValidatorList)
-                {
-                    if (string.Equals(iE.Key, NVG.Settings.Nodes.My.HexKey) == false)
-                    {
-                        NCH.SendMessageED(iE.Key, iE.Value, "<pQueue>1</pQueue>");
-                    }
-                }
-            }
-            /*
-            Console.WriteLine("******************************************");
-            Console.WriteLine(printLoc);
-            Console.WriteLine("******************************************");
-            Console.WriteLine("NVG.Settings.PeerManager.Old");
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Old, NVC.JsonSetting));
-
-            Console.WriteLine("NVG.Settings.PeerManager.Now");
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Now, NVC.JsonSetting));
-
-            Console.WriteLine("NVG.Settings.PeerManager.Next");
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Next, NVC.JsonSetting));
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue));
-            */
-
-            /*
-            Console.WriteLine("Environment.Exit(0);");
-
-            Thread.Sleep(2500);
-            Environment.Exit(0);
-            */
-        }
         public static void MainClassClosingControl()
         {
             if (NVG.Settings.NodeClosing == true)
