@@ -692,12 +692,14 @@ namespace Notus.Wallet
                         tmpBlockForBalance.cipher.data
                     )
                 );
+                Console.WriteLine("Balance -> Control Function -> tmpRawDataStr -> " + tmpRawDataStr);
                 Notus.Variable.Class.BlockStruct_120? tmpBalanceVal =
                     JsonSerializer.Deserialize<Notus.Variable.Class.BlockStruct_120>(
                         tmpRawDataStr
                     );
                 foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> entry in tmpBalanceVal.Out)
                 {
+                    Console.WriteLine(JsonSerializer.Serialize(tmpBalanceVal.Out));
                     StoreToDb(new NVS.WalletBalanceStruct()
                     {
                         UID = tmpBlockForBalance.info.uID,
