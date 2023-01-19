@@ -35,6 +35,7 @@ namespace Notus.Validator
         public System.Func<Notus.Variable.Class.BlockData, bool>? Func_NewBlockIncome = null;
         public void Distrubute(long blockRowNo, int blockType, ulong currentNodeStartingTime)
         {
+            NP.Basic("Distrubute To All Other Node / Nodes");
             ulong totalQueuePeriod = NVD.Calculate();
             ulong nextValidatorNodeTime = ND.AddMiliseconds(currentNodeStartingTime, totalQueuePeriod);
 

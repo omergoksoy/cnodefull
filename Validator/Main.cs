@@ -881,10 +881,9 @@ namespace Notus.Validator
                                         if (PreBlockData != null)
                                         {
                                             txExecuted = true;
-                                            //Console.WriteLine("----------------------------------");
-                                            //Console.WriteLine(JsonSerializer.Serialize(PreBlockData));
-                                            //Console.WriteLine("----------------------------------");
+                                            NP.Basic("----------------------------------");
                                             OrganizeAndDistributeBlock(PreBlockData, CurrentQueueTime);
+                                            NP.Basic("OrganizeAndDistributeBlock Executed");
                                         } //if (TmpBlockStruct != null)
 
                                         if (PreBlockData == null)
@@ -1080,6 +1079,7 @@ namespace Notus.Validator
                                 return false;
                             }
                         }
+                        NP.Info("Exit From ProcessBlock Function");
                         return false;
                     }
                 }
