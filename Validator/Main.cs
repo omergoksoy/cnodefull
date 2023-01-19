@@ -221,7 +221,7 @@ namespace Notus.Validator
                                 tmpObjPoolCrypto.Receiver
                             );
 
-                     
+                            Console.WriteLine(transactionCount.ToString() + " -> " + (thisRecordCanBeAdded == true ? "true : false"));
                             if (thisRecordCanBeAdded == true)
                             {
                                 bool walletHaveEnoughCoinOrToken = true;
