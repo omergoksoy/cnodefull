@@ -17,7 +17,7 @@ namespace Notus.Wallet
         private NT.Timer SubTimer = new NT.Timer();
 
         //this store balance to Dictionary list
-        private int SummaryDb_LockObject = 0;
+        private readonly object SummaryDb_LockObject = new object();
         private Notus.Data.KeyValue SummaryDb = new Notus.Data.KeyValue();
         //private Notus.Mempool ObjMp_Balance;
 
@@ -149,7 +149,7 @@ namespace Notus.Wallet
 
         private void StoreToDb(NVS.WalletBalanceStruct BalanceObj)
         {
-            NP.Basic("StoreToDb : -> " + BalanceObj.Wallet)
+            NP.Basic("StoreToDb : -> " + BalanceObj.Wallet);
             lock (SummaryDb_LockObject)
             {
                 SummaryDb.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj));

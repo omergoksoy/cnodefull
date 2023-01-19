@@ -117,10 +117,10 @@ namespace Notus.Validator
 
         public void AddForCache(NVClass.BlockData Obj_BlockData, int blockSource = 0)
         {
+            string blockRowNoStr = Obj_BlockData.info.rowNo.ToString();
             NP.Basic("Balance.Control Just Executed For -> " + blockRowNoStr);
             NGF.Balance.Control(Obj_BlockData);
 
-            string blockRowNoStr = Obj_BlockData.info.rowNo.ToString();
             if (blockSource == 2 || blockSource == 4)
             {
                 if (Obj_BlockData.info.rowNo == NVG.Settings.LastBlock.info.rowNo)
