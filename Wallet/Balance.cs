@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Text.Json;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
+using NT = Notus.Threads;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
 
@@ -13,6 +14,8 @@ namespace Notus.Wallet
 {
     public class Balance : IDisposable
     {
+        private NT.Timer SubTimer = new NT.Timer();
+
         //this store balance to Dictionary list
         private Notus.Data.KeyValue SummaryDb = new Notus.Data.KeyValue();
         //private Notus.Mempool ObjMp_Balance;
@@ -44,6 +47,8 @@ namespace Notus.Wallet
             }
             return participantList;
         }
+
+        public ConcurrentQueue<KeyValuePair<DateTime, string>> WalletReleaseTime = new();
         public Notus.Variable.Enum.MultiWalletType GetMultiWalletType(string MultiSignatureWalletId)
         {
             if (MultiWalletTypeList.ContainsKey(MultiSignatureWalletId))
@@ -132,13 +137,13 @@ namespace Notus.Wallet
         }
         public void StopWalletUsage(string walletKey)
         {
+            WalletReleaseTime.Enqueue(new KeyValuePair<DateTime, string>(NVG.NOW.Obj.AddSeconds(1), walletKey));
+            /*
             lock (NGF.WalletUsageList)
             {
-                //Console.WriteLine("Stop Wallet Usage : " + walletKey);
-                //Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                 NGF.WalletUsageList.TryRemove(walletKey, out _);
-                //Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
             }
+            */
         }
 
         private void StoreToDb(NVS.WalletBalanceStruct BalanceObj)
@@ -146,6 +151,8 @@ namespace Notus.Wallet
             lock (SummaryDb)
             {
                 SummaryDb.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj));
+
+                Console.WriteLine("SET BALANCE -> " + JsonSerializer.Serialize(BalanceObj));
 
                 //burada cüzdan kilidi açılacak...
                 StopWalletUsage(BalanceObj.Wallet);
@@ -505,6 +512,7 @@ namespace Notus.Wallet
                 {
                     tmpBalanceStr = tmpBalanceStr + Notus.Toolbox.Text.RepeatString(NVG.Settings.Genesis.Reserve.Decimal, "0");
                 }
+
                 StoreToDb(new NVS.WalletBalanceStruct()
                 {
                     UID = tmpBlockForBalance.info.uID,
@@ -926,10 +934,32 @@ namespace Notus.Wallet
                 MemoryLimitCount = 1000,
                 Name = "wallet_i_can_approve"
             });
+            
+            ExecuteTimer();
         }
         ~Balance()
         {
             Dispose();
+        }
+        private void ExecuteTimer()
+        {
+            SubTimer.Start(250,() =>
+            {
+                if (WalletReleaseTime.TryPeek(out KeyValuePair<DateTime, string> walletObj))
+                {
+                    if (NVG.NOW.Obj > walletObj.Key)
+                    {
+                        if (WalletReleaseTime.TryDequeue(out KeyValuePair<DateTime, string> innerWalletObj))
+                        {
+                            lock (NGF.WalletUsageList)
+                            {
+                                NGF.WalletUsageList.TryRemove(innerWalletObj.Value, out _);
+                            }
+                        }
+                    }
+                }
+
+            });
         }
         private void ClearAllData()
         {
@@ -943,6 +973,14 @@ namespace Notus.Wallet
         }
         public void Dispose()
         {
+            try
+            {
+                if (SubTimer != null)
+                {
+                    SubTimer.Dispose();
+                }
+            }
+            catch { }
             /*
             try
             {
