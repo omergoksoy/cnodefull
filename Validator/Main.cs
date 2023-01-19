@@ -221,7 +221,7 @@ namespace Notus.Validator
                                 tmpObjPoolCrypto.Receiver
                             );
                             //omergoksoy
-                            Console.WriteLine(transactionCount.ToString() + " -> " + (thisRecordCanBeAdded == true ? "true" : "false"));
+                            NP.Info(transactionCount.ToString() + " -> " + (thisRecordCanBeAdded == true ? "true" : "false"));
                             if (thisRecordCanBeAdded == true)
                             {
                                 bool walletHaveEnoughCoinOrToken = true;
@@ -235,8 +235,8 @@ namespace Notus.Validator
 
                                     NVS.WalletBalanceStruct tmpSenderBalance = NGF.Balance.Get(tmpObjPoolCrypto.Sender, unlockTimeForNodeWallet);
                                     NVS.WalletBalanceStruct tmpReceiverBalance = NGF.Balance.Get(tmpObjPoolCrypto.Receiver, unlockTimeForNodeWallet);
-                                    Console.WriteLine("sewnder  : " + JsonSerializer.Serialize(tmpSenderBalance));
-                                    Console.WriteLine("receiver : " +JsonSerializer.Serialize(tmpReceiverBalance));
+                                    NP.Info("sewnder  : " + JsonSerializer.Serialize(tmpSenderBalance));
+                                    NP.Info("receiver : " + JsonSerializer.Serialize(tmpReceiverBalance));
                                     string tmpTokenTagStr = "";
                                     BigInteger tmpTokenVolume = 0;
 
@@ -304,7 +304,7 @@ namespace Notus.Validator
                                         {
                                             tmpBlockCipherData.Out.Add(tmpObjPoolCrypto.Receiver, GetWalletBalanceDictionary(tmpObjPoolCrypto.Receiver, unlockTimeForNodeWallet));
                                         }
-                                        Console.WriteLine("entry.Key : " + entry.Key);
+                                        NP.Basic("entry.Key : " + entry.Key);
                                         tmpBlockCipherData.In.Add(entry.Key, new NVClass.BlockStruct_120_In_Struct()
                                         {
                                             Fee = tmpObjPoolCrypto.Fee,
@@ -455,7 +455,9 @@ namespace Notus.Validator
             RawBlock = NGF.BlockQueue.OrganizeBlockOrder(RawBlock);
             NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(RawBlock, 1000);
 
-            if (ProcessBlock(PreparedBlockData, 4) == true)
+            bool blockIsValid = ProcessBlock(PreparedBlockData, 4);
+            NP.Basic("blockIsValid Result : " + (blockIsValid == true ? "true" : "false"));
+            if (blockIsValid == true)
             {
                 ValidatorQueueObj.Distrubute(
                     RawBlock.info.rowNo,
@@ -1240,7 +1242,7 @@ namespace Notus.Validator
                 ProcessBlock_PrintSection(blockData, blockSource);
             }
 
-            NP.Info("addBlockToChain : " + (addBlockToChain==true ?"true" : "false"));
+            NP.Info("addBlockToChain : " + (addBlockToChain == true ? "true" : "false"));
             if (addBlockToChain == true)
             {
                 NGF.BlockQueue.AddToChain(blockData);
