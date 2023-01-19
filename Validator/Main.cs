@@ -1039,6 +1039,7 @@ namespace Notus.Validator
         }
         private bool ProcessBlock(NVClass.BlockData blockData, int blockSource)
         {
+            NP.Basic("CurrentBlockRowNo : " + CurrentBlockRowNo.ToString());
             if (blockSource == 2 || blockSource == 4)
             {
                 bool innerSendToMyChain = false;
@@ -1158,9 +1159,13 @@ namespace Notus.Validator
                     else
                     {
                         ProcessBlock_PrintSection(blockData, blockSource);
-                        NP.Warning(NVG.Settings, "We Already Processed The Block -> [ " + blockData.info.rowNo.ToString() + " ]");
+                        NP.Warning("We Already Processed The Block -> [ " + blockData.info.rowNo.ToString() + " ]");
                         return false;
                     }
+                }
+                else
+                {
+                    NP.Info("Control-Point -> Line 1168");
                 }
                 return true;
             }
@@ -1168,6 +1173,7 @@ namespace Notus.Validator
             // eğer gelen blok yeni blok ise buraya girecek ve blok işlenir
             if (blockData.info.rowNo > NVG.Settings.LastBlock.info.rowNo)
             {
+                NP.Info("Other-Control-Point -> Line 1176");
                 if (blockData.info.type == 250)
                 {
                     Obj_Api.Layer3_StorageFileDone(blockData.info.uID);
@@ -1234,6 +1240,7 @@ namespace Notus.Validator
                 ProcessBlock_PrintSection(blockData, blockSource);
             }
 
+            NP.Info("addBlockToChain : " + (addBlockToChain==true ?"true" : "false"));
             if (addBlockToChain == true)
             {
                 NGF.BlockQueue.AddToChain(blockData);

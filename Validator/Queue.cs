@@ -65,7 +65,6 @@ namespace Notus.Validator
                         }
                     }
 
-                    //omergoksoy
                     string messageText = "<block>" +
                             blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey +
                         "</block>";

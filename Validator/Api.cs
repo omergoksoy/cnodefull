@@ -117,7 +117,9 @@ namespace Notus.Validator
 
         public void AddForCache(NVClass.BlockData Obj_BlockData, int blockSource = 0)
         {
-            NP.Basic("AddForCache Executed");
+            NP.Basic("Balance.Control Just Executed For -> " + blockRowNoStr);
+            NGF.Balance.Control(Obj_BlockData);
+
             string blockRowNoStr = Obj_BlockData.info.rowNo.ToString();
             if (blockSource == 2 || blockSource == 4)
             {
@@ -139,15 +141,12 @@ namespace Notus.Validator
                 }
             }
 
-            BlockDbObj.Set(blockRowNoStr, JsonSerializer.Serialize(Obj_BlockData));
 
             NVG.Settings.BlockOrder.Add(Obj_BlockData.info.rowNo, Obj_BlockData.info.uID);
             NVG.Settings.BlockSign.Add(Obj_BlockData.info.rowNo, Obj_BlockData.sign);
             NVG.Settings.BlockPrev.Add(Obj_BlockData.info.rowNo, Obj_BlockData.prev);
 
-            NP.Basic("Balance.Control Will Execute");
-            NGF.Balance.Control(Obj_BlockData);
-            NP.Basic("Balance.Control Just Executed");
+            //NP.Basic("Balance.Control Will Execute");
 
             // airdrop ise burada yapılan istekler veri tabanına kaydedilecek
             NVG.Settings.Airdrop.Process(Obj_BlockData);
@@ -188,6 +187,8 @@ namespace Notus.Validator
                 }
                 */
             }
+
+            BlockDbObj.Set(blockRowNoStr, JsonSerializer.Serialize(Obj_BlockData));
         }
 
         //layer -1 kontrolünü sağla

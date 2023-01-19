@@ -17,6 +17,7 @@ namespace Notus.Wallet
         private NT.Timer SubTimer = new NT.Timer();
 
         //this store balance to Dictionary list
+        private int SummaryDb_LockObject = 0;
         private Notus.Data.KeyValue SummaryDb = new Notus.Data.KeyValue();
         //private Notus.Mempool ObjMp_Balance;
 
@@ -148,12 +149,11 @@ namespace Notus.Wallet
 
         private void StoreToDb(NVS.WalletBalanceStruct BalanceObj)
         {
-            lock (SummaryDb)
+            NP.Basic("StoreToDb : -> " + BalanceObj.Wallet)
+            lock (SummaryDb_LockObject)
             {
                 SummaryDb.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj));
-
-                NP.Basic("SET BALANCE -> " + JsonSerializer.Serialize(BalanceObj));
-
+                NP.Basic("New Balance -> "+ BalanceObj.Wallet + " -> " + JsonSerializer.Serialize(BalanceObj.Balance));
                 //burada cüzdan kilidi açılacak...
                 StopWalletUsage(BalanceObj.Wallet);
             }
@@ -191,7 +191,7 @@ namespace Notus.Wallet
         }
         public NVS.WalletBalanceStruct Get(string WalletKey, ulong timeYouCanUse)
         {
-            lock (SummaryDb)
+            lock (SummaryDb_LockObject)
             {
                 string returnText = SummaryDb.Get(WalletKey);
                 if (returnText.Length > 0)
@@ -448,12 +448,7 @@ namespace Notus.Wallet
         */
         public void Control(Notus.Variable.Class.BlockData tmpBlockForBalance)
         {
-            //bloklar geçici dosyaya kaydediliyor...
-            //control-local-block
             //StoreToTemp(tmpBlockForBalance);
-
-            NP.Basic("Balance -> Control -> Type   : " + tmpBlockForBalance.info.type.ToString());
-            NP.Basic("Balance -> Control -> Row No : " + tmpBlockForBalance.info.rowNo.ToString());
             // genesis block
             if (tmpBlockForBalance.info.type == Notus.Variable.Enum.BlockTypeList.GenesisBlock)
             {
@@ -681,14 +676,14 @@ namespace Notus.Wallet
                         tmpBlockForBalance.cipher.data
                     )
                 );
-                NP.Basic("Balance -> Control Function -> tmpRawDataStr -> " + tmpRawDataStr);
+                //NP.Basic("Balance -> Control Function -> tmpRawDataStr -> " + tmpRawDataStr);
                 Notus.Variable.Class.BlockStruct_120? tmpBalanceVal =
                     JsonSerializer.Deserialize<Notus.Variable.Class.BlockStruct_120>(
                         tmpRawDataStr
                     );
                 foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> entry in tmpBalanceVal.Out)
                 {
-                    NP.Basic(JsonSerializer.Serialize(tmpBalanceVal.Out));
+                    //NP.Basic(JsonSerializer.Serialize(tmpBalanceVal.Out));
                     StoreToDb(new NVS.WalletBalanceStruct()
                     {
                         UID = tmpBlockForBalance.info.uID,
@@ -934,7 +929,7 @@ namespace Notus.Wallet
         }
         private void ExecuteTimer()
         {
-            SubTimer.Start(250,() =>
+            SubTimer.Start(500,() =>
             {
                 if (WalletReleaseTime.TryPeek(out KeyValuePair<DateTime, string> walletObj))
                 {
