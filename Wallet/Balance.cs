@@ -452,6 +452,8 @@ namespace Notus.Wallet
             //control-local-block
             //StoreToTemp(tmpBlockForBalance);
 
+            Console.WriteLine("Balance -> Control -> Type   : " + tmpBlockForBalance.info.type.ToString());
+            Console.WriteLine("Balance -> Control -> Row No : " + tmpBlockForBalance.info.rowNo.ToString());
             // genesis block
             if (tmpBlockForBalance.info.type == Notus.Variable.Enum.BlockTypeList.GenesisBlock)
             {
@@ -565,19 +567,6 @@ namespace Notus.Wallet
                 //Console.ReadLine();
                 //Console.ReadLine();
             }
-
-            /*
-            if (
-                tmpBlockForBalance.info.type != Notus.Variable.Enum.BlockTypeList.EmptyBlock
-                &&
-                tmpBlockForBalance.info.type != Notus.Variable.Enum.BlockTypeList.GenesisBlock
-            )
-            {
-                //Notus.Print.Basic(NVG.Settings, tmpBlockForBalance.info.uID);
-                Notus.Print.Basic(NVG.Settings, "Balance.Cs -> Control function -> Line 178 -> Block type -> " + tmpBlockForBalance.info.type.ToString() + " -> " + tmpBlockForBalance.info.rowNo.ToString());
-            }
-            */
-            // MultiWalletCryptoTransfer
 
             if (tmpBlockForBalance.info.type == Notus.Variable.Enum.BlockTypeList.MultiWalletCryptoTransfer)
             {
