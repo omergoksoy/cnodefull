@@ -872,8 +872,10 @@ namespace Notus.Validator
 
                                     if (txExecuted == false)
                                     {
+                                        /*
                                         burada işlemlerin çekilmesinde hata oluşuyor
                                         kontrol edilsin
+                                        */
                                         NVClass.BlockData? PreBlockData = NGF.BlockQueue.Get(
                                             ND.AddMiliseconds(CurrentQueueTime, NVC.BlockListeningForPoolTime)
                                         );
