@@ -220,7 +220,7 @@ namespace Notus.Validator
                                 tmpObjPoolCrypto.Sender,
                                 tmpObjPoolCrypto.Receiver
                             );
-
+                            //omergoksoy
                             Console.WriteLine(transactionCount.ToString() + " -> " + (thisRecordCanBeAdded == true ? "true" : "false"));
                             if (thisRecordCanBeAdded == true)
                             {
@@ -470,7 +470,7 @@ namespace Notus.Validator
             {
                 if (RawBlock.info.type != NVE.BlockTypeList.EmptyBlock)
                 {
-                    //Console.WriteLine("Reload Tx From Temp List");
+                    Console.WriteLine("Reload Tx From Temp List");
                     NGF.BlockQueue.ReloadPoolList();
                 }
             }
@@ -709,8 +709,8 @@ namespace Notus.Validator
             bool myTurnPrinted = false;
             bool notMyTurnPrinted = false;
 
-            NVG.ShowWhoseTurnOrNot = true;
             NVG.ShowWhoseTurnOrNot = false;
+            NVG.ShowWhoseTurnOrNot = true;
 
             if (NVG.OtherValidatorSelectedMe == true)
             {
@@ -854,7 +854,7 @@ namespace Notus.Validator
                                         {
                                             txExecuted = true;
                                             NP.Success("Empty Block Executed");
-                                            Notus.Validator.Helper.CheckBlockAndEmptyCounter(300);
+                                            Notus.Validator.Helper.CheckBlockAndEmptyCounter(NVE.BlockTypeList.EmptyBlock);
                                             NVClass.BlockData rawBlock = Notus.Variable.Class.Block.GetOrganizedEmpty(NVE.BlockTypeList.EmptyBlock);
                                             rawBlock.cipher.ver = "NE";
                                             rawBlock.cipher.data = System.Convert.ToBase64String(
@@ -1099,6 +1099,7 @@ namespace Notus.Validator
                     }
                 }
             }
+
             bool addBlockToChain = false;
             // yeni blok geldiğinde burası devreye girecek
             if (blockData.info.rowNo > NVG.Settings.LastBlock.info.rowNo)

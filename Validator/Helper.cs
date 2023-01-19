@@ -155,7 +155,7 @@ namespace Notus.Validator
 
         public static void CheckBlockAndEmptyCounter(int blockTypeNo)
         {
-            if (blockTypeNo == 300)
+            if (blockTypeNo == NVE.BlockTypeList.EmptyBlock)
             {
                 NVG.Settings.EmptyBlockCount++;
                 NVG.Settings.OtherBlockCount = 0;
