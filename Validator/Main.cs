@@ -1110,9 +1110,11 @@ namespace Notus.Validator
             if (blockData.info.rowNo > NVG.Settings.LastBlock.info.rowNo)
             {
                 addBlockToChain = true;
+                NP.Basic("NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: " + NVG.Settings.LastBlock.info.rowNo.ToString());
                 NVG.Settings.LastBlock = JsonSerializer.Deserialize<
                     NVClass.BlockData>(JsonSerializer.Serialize(blockData)
                 );
+                NP.Basic("NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: " + NVG.Settings.LastBlock.info.rowNo.ToString());
                 Notus.Validator.Helper.CheckBlockAndEmptyCounter(blockData.info.type);
             }
 

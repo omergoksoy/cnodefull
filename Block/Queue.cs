@@ -64,6 +64,7 @@ namespace Notus.Block
         }
         public NVClass.BlockData OrganizeBlockOrder(NVClass.BlockData CurrentBlock)
         {
+            NP.Basic("NVG.Settings.LastBlock.info.rowNo [ USED ] : " + NVG.Settings.LastBlock.info.rowNo.ToString());
             CurrentBlock.info.rowNo = NVG.Settings.LastBlock.info.rowNo + 1;
             CurrentBlock.prev = NVG.Settings.LastBlock.info.uID + NVG.Settings.LastBlock.sign;
             CurrentBlock.info.prevList.Clear();
