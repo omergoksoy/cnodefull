@@ -117,6 +117,7 @@ namespace Notus.Validator
 
         public void AddForCache(NVClass.BlockData Obj_BlockData, int blockSource = 0)
         {
+            Console.WriteLine("AddForCache Executed");
             string blockRowNoStr = Obj_BlockData.info.rowNo.ToString();
             if (blockSource == 2 || blockSource == 4)
             {
@@ -144,7 +145,9 @@ namespace Notus.Validator
             NVG.Settings.BlockSign.Add(Obj_BlockData.info.rowNo, Obj_BlockData.sign);
             NVG.Settings.BlockPrev.Add(Obj_BlockData.info.rowNo, Obj_BlockData.prev);
 
+            Console.WriteLine("Balance.Control Will Execute");
             NGF.Balance.Control(Obj_BlockData);
+            Console.WriteLine("Balance.Control Just Executed");
 
             // airdrop ise burada yapılan istekler veri tabanına kaydedilecek
             NVG.Settings.Airdrop.Process(Obj_BlockData);
