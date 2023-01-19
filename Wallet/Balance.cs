@@ -452,8 +452,8 @@ namespace Notus.Wallet
             //control-local-block
             //StoreToTemp(tmpBlockForBalance);
 
-            Console.WriteLine("Balance -> Control -> Type   : " + tmpBlockForBalance.info.type.ToString());
-            Console.WriteLine("Balance -> Control -> Row No : " + tmpBlockForBalance.info.rowNo.ToString());
+            NP.Basic("Balance -> Control -> Type   : " + tmpBlockForBalance.info.type.ToString());
+            NP.Basic("Balance -> Control -> Row No : " + tmpBlockForBalance.info.rowNo.ToString());
             // genesis block
             if (tmpBlockForBalance.info.type == Notus.Variable.Enum.BlockTypeList.GenesisBlock)
             {
@@ -681,14 +681,14 @@ namespace Notus.Wallet
                         tmpBlockForBalance.cipher.data
                     )
                 );
-                Console.WriteLine("Balance -> Control Function -> tmpRawDataStr -> " + tmpRawDataStr);
+                NP.Basic("Balance -> Control Function -> tmpRawDataStr -> " + tmpRawDataStr);
                 Notus.Variable.Class.BlockStruct_120? tmpBalanceVal =
                     JsonSerializer.Deserialize<Notus.Variable.Class.BlockStruct_120>(
                         tmpRawDataStr
                     );
                 foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> entry in tmpBalanceVal.Out)
                 {
-                    Console.WriteLine(JsonSerializer.Serialize(tmpBalanceVal.Out));
+                    NP.Basic(JsonSerializer.Serialize(tmpBalanceVal.Out));
                     StoreToDb(new NVS.WalletBalanceStruct()
                     {
                         UID = tmpBlockForBalance.info.uID,

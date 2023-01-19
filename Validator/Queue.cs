@@ -170,11 +170,13 @@ namespace Notus.Validator
             {
                 return "pong";
             }
+            /*
             if (NTT.CheckXmlTag(incomeData, "pQueue"))
             {
                 NP.PrintQueue(false, "Queue.cs -> Line 199");
                 return "ok";
             }
+            */
 
             if (NTT.CheckXmlTag(incomeData, "block"))
             {

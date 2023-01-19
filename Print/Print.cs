@@ -73,10 +73,10 @@ namespace Notus
                     }
                 }
             }
+            /*
             Console.WriteLine("******************************************");
             Console.WriteLine(printLoc);
             Console.WriteLine("******************************************");
-            /*
             Console.WriteLine("NVG.Settings.PeerManager.Old");
             Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.PeerManager.Old, NVC.JsonSetting));
 
@@ -88,9 +88,9 @@ namespace Notus
             Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue));
             */
 
+            /*
             Console.WriteLine("Environment.Exit(0);");
 
-            /*
             Thread.Sleep(2500);
             Environment.Exit(0);
             */
