@@ -604,6 +604,7 @@ namespace Notus.Block
         }
         public void ReloadPoolList()
         {
+            Console.WriteLine(JsonSerializer.Serialize(tempRemovePoolList));
             for (int i = 0; i < tempRemovePoolList.Count; i++)
             {
                 txQueue.Enqueue(tempRemovePoolList[i]);

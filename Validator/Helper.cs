@@ -184,9 +184,15 @@ namespace Notus.Validator
                 {
                     return true;
                 }
+                else
+                {
+                    Console.WriteLine("blockValidatorWalletId : " + blockValidatorWalletId);
+                    Console.WriteLine("NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : " + NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet);
+                }
             }
             else
             {
+                Console.WriteLine("if (NVG.Settings.Nodes.Queue.ContainsKey(blockGenarationTime) == FALSE -> FALSE)");
                 //ekleme noktası burası buradan kontrol edilecek
                 if (Notus.Sync.Block.downloadDone == true)
                 {
