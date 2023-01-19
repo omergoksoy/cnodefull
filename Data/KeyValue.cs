@@ -119,15 +119,11 @@ namespace Notus.Data
         }
         public string Get(string? key)
         {
-            lock (ValueList)
-            {
+            if (ValueList.ContainsKey(key) == true)
+                return ValueList[key].Value;
 
-                if (ValueList.ContainsKey(key) == true)
-                    return ValueList[key].Value;
-
-                string? resultText = SqlObj.Get(key);
-                return (resultText == null ? string.Empty : resultText);
-            }
+            string? resultText = SqlObj.Get(key);
+            return (resultText == null ? string.Empty : resultText);
         }
         public void Remove(string key)
         {
@@ -135,12 +131,8 @@ namespace Notus.Data
         }
         public void Delete(string key)
         {
-            lock (ValueList)
-            {
-
-                ValueList.TryRemove(key, out _);
-                SqlObj.Remove(key);
-            }
+            ValueList.TryRemove(key, out _);
+            SqlObj.Remove(key);
         }
         public bool ContainsKey(string key)
         {
@@ -168,20 +160,17 @@ namespace Notus.Data
         }
         public void Set(string? key, string? value)
         {
-            lock (ValueList)
-            {
-                if (key == null)
-                    return;
+            if (key == null)
+                return;
 
-                if (key.Length == 0)
-                    return;
+            if (key.Length == 0)
+                return;
 
-                if (value == null)
-                    value = string.Empty;
+            if (value == null)
+                value = string.Empty;
 
-                AddToMemoryList(key, value);
-                SqlObj.Put(key, value);
-            }
+            AddToMemoryList(key, value);
+            SqlObj.Put(key, value);
         }
         public KeyValue()
         {

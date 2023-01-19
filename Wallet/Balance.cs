@@ -186,6 +186,7 @@ namespace Notus.Wallet
         {
             lock (SummaryDb)
             {
+
                 string returnText = SummaryDb.Get(WalletKey);
                 if (returnText.Length > 0)
                 {

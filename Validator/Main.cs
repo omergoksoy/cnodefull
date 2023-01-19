@@ -221,7 +221,7 @@ namespace Notus.Validator
                                 tmpObjPoolCrypto.Receiver
                             );
 
-
+                     
                             if (thisRecordCanBeAdded == true)
                             {
                                 bool walletHaveEnoughCoinOrToken = true;
@@ -236,7 +236,7 @@ namespace Notus.Validator
                                     NVS.WalletBalanceStruct tmpSenderBalance = NGF.Balance.Get(tmpObjPoolCrypto.Sender, unlockTimeForNodeWallet);
                                     NVS.WalletBalanceStruct tmpReceiverBalance = NGF.Balance.Get(tmpObjPoolCrypto.Receiver, unlockTimeForNodeWallet);
                                     Console.WriteLine("sewnder  : " + JsonSerializer.Serialize(tmpSenderBalance));
-                                    Console.WriteLine("receiver : " + JsonSerializer.Serialize(tmpReceiverBalance));
+                                    Console.WriteLine("receiver : " +JsonSerializer.Serialize(tmpReceiverBalance));
                                     string tmpTokenTagStr = "";
                                     BigInteger tmpTokenVolume = 0;
 
