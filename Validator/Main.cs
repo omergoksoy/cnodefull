@@ -216,46 +216,15 @@ namespace Notus.Validator
                         foreach (KeyValuePair<string, NVS.CryptoTransactionStoreStruct> entry in NVG.Settings.Transfer.GetList())
                         {
                             NVS.CryptoTransactionStoreStruct tmpObjPoolCrypto = entry.Value;
-                            bool thisRecordCanBeAdded = false;
-                            bool senderAvailable = NGF.Balance.WalletUsageAvailable(tmpObjPoolCrypto.Sender);
-                            if (senderAvailable == true)
-                            {
-                                bool receiverAvailable = NGF.Balance.WalletUsageAvailable(tmpObjPoolCrypto.Receiver);
-                                if (receiverAvailable == true)
-                                {
-                                    bool senderLocked = NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Sender);
-                                    if (senderLocked == true)
-                                    {
-                                        bool receiverLocked = NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Receiver);
-                                        if (receiverLocked == true)
-                                        {
-                                            thisRecordCanBeAdded = true;
-                                        }
-                                        else
-                                        {
-                                            //Console.WriteLine("Receiver Locked");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        //Console.WriteLine("Sender Locked");
-                                    }
-                                }
-                                else
-                                {
-                                    //Console.WriteLine("Receiver Not Available");
-                                }
-                            }
-                            else
-                            {
-                                //Console.WriteLine("Sender Not Available");
-                            }
+                            bool thisRecordCanBeAdded = NGF.Balance.CheckTransactionAvailability(
+                                tmpObjPoolCrypto.Sender,
+                                tmpObjPoolCrypto.Receiver
+                            );
+
+                     
                             if (thisRecordCanBeAdded == true)
                             {
                                 bool walletHaveEnoughCoinOrToken = true;
-                                NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Sender);
-                                NGF.Balance.StartWalletUsage(tmpObjPoolCrypto.Receiver);
-
                                 bool senderExist = tmpWalletList.ContainsKey(tmpObjPoolCrypto.Sender);
                                 bool receiverExist = tmpWalletList.ContainsKey(tmpObjPoolCrypto.Receiver);
                                 //Console.WriteLine(senderExist)
@@ -266,6 +235,8 @@ namespace Notus.Validator
 
                                     NVS.WalletBalanceStruct tmpSenderBalance = NGF.Balance.Get(tmpObjPoolCrypto.Sender, unlockTimeForNodeWallet);
                                     NVS.WalletBalanceStruct tmpReceiverBalance = NGF.Balance.Get(tmpObjPoolCrypto.Receiver, unlockTimeForNodeWallet);
+                                    Console.WriteLine("sewnder  : " + JsonSerializer.Serialize(tmpSenderBalance));
+                                    Console.WriteLine("receiver : " +JsonSerializer.Serialize(tmpReceiverBalance));
                                     string tmpTokenTagStr = "";
                                     BigInteger tmpTokenVolume = 0;
 
@@ -506,7 +477,7 @@ namespace Notus.Validator
         }
         public void Start()
         {
-            NP.ExecuteTime();
+            NP.PrintOnScreenTimer();
 
             NVR.NetworkSelectorList.Clear();
 

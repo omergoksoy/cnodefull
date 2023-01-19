@@ -48,9 +48,9 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 }
 
 
+/*
 
-
-
+control-point-123456
 1- her blok zipli dosya içine kaydedilsin.
 2- kullanılacak Key value tablolarının listesi
    * Block Uid -> Block No
@@ -62,9 +62,7 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 
 
 
-
-/*
-    */
+ */
 
 
 /*

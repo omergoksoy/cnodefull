@@ -74,6 +74,33 @@ namespace Notus.Wallet
             return participantList;
         }
         // bu fonksiyonlar ile cüzdanın kilitlenmesi durumuna bakalım
+        public bool CheckTransactionAvailability(string senderKey, string receiverKey)
+        {
+            lock (NGF.WalletUsageList)
+            {
+                //Console.WriteLine("Wallet Usage Available : " + walletKey);
+                //Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
+                if (
+                    NGF.WalletUsageList.ContainsKey(senderKey) == true
+                    ||
+                    NGF.WalletUsageList.ContainsKey(receiverKey) == true
+                ) { return false; }
+
+                bool resultSender = NGF.WalletUsageList.TryAdd(senderKey, "456465");
+                bool resultReceiver = NGF.WalletUsageList.TryAdd(receiverKey, "456465");
+                if (
+                    resultSender == false
+                    ||
+                    resultReceiver == false
+                )
+                {
+                    NGF.WalletUsageList.TryRemove(senderKey, out _);
+                    NGF.WalletUsageList.TryRemove(receiverKey, out _);
+                    return false;
+                }
+            }
+            return true;
+        }
         public bool WalletUsageAvailable(string walletKey)
         {
             lock (NGF.WalletUsageList)
@@ -116,10 +143,13 @@ namespace Notus.Wallet
 
         private void StoreToDb(NVS.WalletBalanceStruct BalanceObj)
         {
-            SummaryDb.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj));
+            lock (SummaryDb)
+            {
+                SummaryDb.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj));
 
-            //burada cüzdan kilidi açılacak...
-            StopWalletUsage(BalanceObj.Wallet);
+                //burada cüzdan kilidi açılacak...
+                StopWalletUsage(BalanceObj.Wallet);
+            }
         }
         public NVS.WalletBalanceResponseStruct ReadFromNode(string WalletKey)
         {
@@ -154,35 +184,38 @@ namespace Notus.Wallet
         }
         public NVS.WalletBalanceStruct Get(string WalletKey, ulong timeYouCanUse)
         {
-            string returnText = SummaryDb.Get(WalletKey);
-            if (returnText.Length > 0)
+            lock (SummaryDb)
             {
-                try
-                {
-                    return JsonSerializer.Deserialize<NVS.WalletBalanceStruct>(returnText);
-                }
-                catch { }
-            }
 
-            string defaultCoinTag = Notus.Variable.Constant.MainCoinTagName;
-            if (NVG.Settings != null)
-            {
-                if (NVG.Settings.Genesis != null)
+                string returnText = SummaryDb.Get(WalletKey);
+                if (returnText.Length > 0)
                 {
-                    if (NVG.Settings.Genesis.CoinInfo != null)
+                    try
                     {
-                        if (NVG.Settings.Genesis.CoinInfo.Tag.Length > 0)
-                        {
-                            defaultCoinTag = NVG.Settings.Genesis.CoinInfo.Tag;
-                        }
+                        return JsonSerializer.Deserialize<NVS.WalletBalanceStruct>(returnText);
                     }
-
+                    catch { }
                 }
-            }
-            timeYouCanUse = (timeYouCanUse == 0 ? NVG.NOW.Int : timeYouCanUse);
-            return new NVS.WalletBalanceStruct()
-            {
-                Balance = new Dictionary<string, Dictionary<ulong, string>>()
+
+                string defaultCoinTag = Notus.Variable.Constant.MainCoinTagName;
+                if (NVG.Settings != null)
+                {
+                    if (NVG.Settings.Genesis != null)
+                    {
+                        if (NVG.Settings.Genesis.CoinInfo != null)
+                        {
+                            if (NVG.Settings.Genesis.CoinInfo.Tag.Length > 0)
+                            {
+                                defaultCoinTag = NVG.Settings.Genesis.CoinInfo.Tag;
+                            }
+                        }
+
+                    }
+                }
+                timeYouCanUse = (timeYouCanUse == 0 ? NVG.NOW.Int : timeYouCanUse);
+                return new NVS.WalletBalanceStruct()
+                {
+                    Balance = new Dictionary<string, Dictionary<ulong, string>>()
                 {
                     {
                         defaultCoinTag,
@@ -191,10 +224,11 @@ namespace Notus.Wallet
                         }
                     },
                 },
-                RowNo = 0,
-                UID = "",
-                Wallet = WalletKey
-            };
+                    RowNo = 0,
+                    UID = "",
+                    Wallet = WalletKey
+                };
+            }
         }
         /*
         public BigInteger GetCoinBalance(string WalletKey)

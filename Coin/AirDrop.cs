@@ -202,11 +202,14 @@ namespace Notus.Coin
                 data = JsonSerializer.Serialize(airDrop)
             });
 
+            /*
+            
+            control-point-123456
             // burada listeye eklensin
             // burada listeye eklensin
             // burada listeye eklensin
             control-noktası
-
+            */
             NVG.TxPool.Add(new Notus.Compiler.TxQueueStruct()
             {
                 Uid = airdropUid,
