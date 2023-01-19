@@ -382,7 +382,7 @@ namespace Notus.Validator
                                 }
                             }
                         }
-                        Console.WriteLine("transactionCount : " + transactionCount.ToString());
+                        NP.Basic("transactionCount : " + transactionCount.ToString());
                         if (transactionCount > 0)
                         {
                             foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> walletEntry in tmpBlockCipherData.Out)
@@ -883,9 +883,9 @@ namespace Notus.Validator
                                         if (PreBlockData != null)
                                         {
                                             txExecuted = true;
-                                            NP.Basic("----------------------------------");
+                                            NP.Basic("---------------- OrganizeAndDistributeBlock ----------------");
                                             OrganizeAndDistributeBlock(PreBlockData, CurrentQueueTime);
-                                            NP.Basic("OrganizeAndDistributeBlock Executed");
+                                            NP.Basic("------------ OrganizeAndDistributeBlock Executed -----------");
                                         } //if (TmpBlockStruct != null)
 
                                         if (PreBlockData == null)

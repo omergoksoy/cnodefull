@@ -52,6 +52,7 @@ namespace Notus.Validator
                 )
                 {
                     //kullanılan cüzdanlar burada liste olarak gönderilecek...
+                    /*
                     List<string> wList = new List<string>();
                     if (blockType != 300)
                     {
@@ -65,6 +66,7 @@ namespace Notus.Validator
                             Console.WriteLine(JsonSerializer.Serialize(wList));
                         }
                     }
+                    */
 
                     string messageText = "<block>" +
                             blockRowNo.ToString() + ":" + NVG.Settings.NodeWallet.WalletKey +
