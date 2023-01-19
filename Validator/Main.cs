@@ -844,7 +844,6 @@ namespace Notus.Validator
                             {
                                 if (txExecuted == false)
                                 {
-
                                     //burada empty blok oluşturulması sırası geldiyse oluşturuluyor
                                     //ancak sonrasında diğer blokları oluşturmaya geçmesin
                                     if (emptyBlockChecked == false)
@@ -870,7 +869,7 @@ namespace Notus.Validator
                                         emptyBlockChecked = true;
                                     } // if (emptyBlockChecked == false)
 
-                                    if (generateEmptyBlock == false)
+                                    if (generateEmptyBlock == false && txExecuted == false)
                                     {
                                         NVClass.BlockData? PreBlockData = NGF.BlockQueue.Get(
                                             ND.AddMiliseconds(CurrentQueueTime, NVC.BlockListeningForPoolTime)
