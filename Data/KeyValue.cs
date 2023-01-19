@@ -127,9 +127,12 @@ namespace Notus.Data
             {
                 string value = ValueList[key].Value;
                 string? value2 = SqlObj.Get(key);
-                Console.WriteLine("MemoryList -> " + value);
-                Console.WriteLine("RockDB -> " + value2);
-                Console.WriteLine("Check if Equal -> " + value == value2);
+                if (string.Equals( value, value2) == false)
+                {
+                    Console.WriteLine("MemoryList -> " + value);
+                    Console.WriteLine("RockDB -> " + value2);
+                    Console.WriteLine("Check if Equal -> " + value == value2);
+                }
             }
 
             if (ValueList.ContainsKey(key) == true)
