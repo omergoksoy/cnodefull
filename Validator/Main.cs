@@ -474,6 +474,9 @@ namespace Notus.Validator
                     NGF.BlockQueue.ReloadPoolList();
                 }
             }
+            NP.Basic("NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs");
+            NP.Basic(JsonSerializer.Serialize(NGF.WalletUsageList));
+
             NGF.WalletUsageList.Clear();
         }
         public void Start()

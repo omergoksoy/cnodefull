@@ -955,6 +955,10 @@ namespace Notus.Wallet
         {
             SummaryDb.Clear();
             NGF.LockWalletList.Clear();
+
+            NP.Basic("NGF.WalletUsageList.Clear(); -> CLEARED -> Balance.Cs");
+            NP.Basic(JsonSerializer.Serialize(NGF.WalletUsageList));
+
             NGF.WalletUsageList.Clear();
             //ObjMp_WalletUsage.Clear();
             MultiWalletParticipantDb.Clear();

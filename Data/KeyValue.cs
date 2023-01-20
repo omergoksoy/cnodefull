@@ -132,7 +132,7 @@ namespace Notus.Data
             {
                 string value = ValueList[key].Value;
                 string? value2 = SqlObj.Get(key);
-                if (string.Equals( value, value2) == false)
+                if (string.Equals(value, value2) == false)
                 {
                     Console.WriteLine("MemoryList -> " + value);
                     Console.WriteLine("RockDB -> " + value2);
@@ -177,9 +177,20 @@ namespace Notus.Data
                 Set(key, value);
             }
         }
-        public void SetDirectly(string? key, string? value) {
+        public void SetDirectly(string? key, string? value, bool isBalance = true)
+        {
+            if (isBalance)
+            {
+                Console.WriteLine("BEFORE PUT " + key + " ==>> " + value + " SETTED");
+            }
+
             SqlObj.Put(key, value);
-            Console.WriteLine(key + " ==>> " + value + " SETTED");
+
+            if (isBalance)
+            {
+                Console.WriteLine("AFTER PUT " + key + " ==>> " + value + " SETTED");
+                Console.WriteLine("Check if they are equal -> " + value == GetDirectly(value));
+            }
         }
         public void Set(string? key, string? value)
         {
@@ -193,8 +204,8 @@ namespace Notus.Data
                 value = string.Empty;
 
             AddToMemoryList(key, value);
-            SetDirectly(key, value);
-            }
+            SetDirectly(key, value, false);
+        }
         public KeyValue()
         {
         }
