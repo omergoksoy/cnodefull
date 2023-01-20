@@ -177,8 +177,6 @@ namespace Notus.Validator
 
             Coin transfer işlemini timer içerisinden alıp, get işlemi içerisine ekle
             Coin transfer işlemini timer içerisinden alıp, get işlemi içerisine ekle
-            Coin transfer işlemini timer içerisinden alıp, get işlemi içerisine ekle
-            Coin transfer işlemini timer içerisinden alıp, get işlemi içerisine ekle
 
             NP.Success(NVG.Settings, "Crypto Transfer Timer Has Started");
             Notus.Threads.Timer TimerObj = new Notus.Threads.Timer(1000);
