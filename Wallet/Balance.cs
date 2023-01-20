@@ -162,7 +162,7 @@ namespace Notus.Wallet
             }
             */
             SummaryDb.SetDirectly(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj));
-            NP.Basic("New Balance -> "+ BalanceObj.Wallet + " -> " + JsonSerializer.Serialize(BalanceObj.Balance));
+            NP.Basic("New Balance -> " + BalanceObj.Wallet + " -> " + JsonSerializer.Serialize(BalanceObj.Balance));
             //burada cüzdan kilidi açılacak...
             StopWalletUsage(BalanceObj.Wallet);
         }
@@ -199,40 +199,37 @@ namespace Notus.Wallet
         }
         public NVS.WalletBalanceStruct Get(string WalletKey, ulong timeYouCanUse)
         {
-            /*
-            lock (SummaryDb_LockObject)
+            Console.WriteLine("Get Wallet Balance : " + WalletKey);
+            string returnText = SummaryDb.GetDirectly(WalletKey);
+            if (returnText.Length > 0)
             {
+                try
+                {
+                    Console.WriteLine("Get From RocksDb");
+                    return JsonSerializer.Deserialize<NVS.WalletBalanceStruct>(returnText);
+                }
+                catch { }
             }
-            */
-                string returnText = SummaryDb.GetDirectly(WalletKey);
-                if (returnText.Length > 0)
-                {
-                    try
-                    {
-                        return JsonSerializer.Deserialize<NVS.WalletBalanceStruct>(returnText);
-                    }
-                    catch { }
-                }
 
-                string defaultCoinTag = Notus.Variable.Constant.MainCoinTagName;
-                if (NVG.Settings != null)
+            string defaultCoinTag = Notus.Variable.Constant.MainCoinTagName;
+            if (NVG.Settings != null)
+            {
+                if (NVG.Settings.Genesis != null)
                 {
-                    if (NVG.Settings.Genesis != null)
+                    if (NVG.Settings.Genesis.CoinInfo != null)
                     {
-                        if (NVG.Settings.Genesis.CoinInfo != null)
+                        if (NVG.Settings.Genesis.CoinInfo.Tag.Length > 0)
                         {
-                            if (NVG.Settings.Genesis.CoinInfo.Tag.Length > 0)
-                            {
-                                defaultCoinTag = NVG.Settings.Genesis.CoinInfo.Tag;
-                            }
+                            defaultCoinTag = NVG.Settings.Genesis.CoinInfo.Tag;
                         }
-
                     }
+
                 }
-                timeYouCanUse = (timeYouCanUse == 0 ? NVG.NOW.Int : timeYouCanUse);
-                return new NVS.WalletBalanceStruct()
-                {
-                    Balance = new Dictionary<string, Dictionary<ulong, string>>()
+            }
+            timeYouCanUse = (timeYouCanUse == 0 ? NVG.NOW.Int : timeYouCanUse);
+            return new NVS.WalletBalanceStruct()
+            {
+                Balance = new Dictionary<string, Dictionary<ulong, string>>()
                 {
                     {
                         defaultCoinTag,
@@ -241,10 +238,10 @@ namespace Notus.Wallet
                         }
                     },
                 },
-                    RowNo = 0,
-                    UID = "",
-                    Wallet = WalletKey
-                };
+                RowNo = 0,
+                UID = "",
+                Wallet = WalletKey
+            };
         }
         /*
         public BigInteger GetCoinBalance(string WalletKey)
@@ -930,7 +927,7 @@ namespace Notus.Wallet
                 MemoryLimitCount = 1000,
                 Name = "wallet_i_can_approve"
             });
-            
+
             ExecuteTimer();
         }
         ~Balance()
@@ -939,7 +936,7 @@ namespace Notus.Wallet
         }
         private void ExecuteTimer()
         {
-            SubTimer.Start(500,() =>
+            SubTimer.Start(500, () =>
             {
                 if (WalletReleaseTime.TryPeek(out KeyValuePair<DateTime, string> walletObj))
                 {
