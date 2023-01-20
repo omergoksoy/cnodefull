@@ -18,7 +18,8 @@ namespace Notus
         private static bool SubTimerIsRunning = false;
         private static int Counter = 0;
         private static NT.Timer SubTimer = new NT.Timer(100);
-        public static ConcurrentDictionary<int, NGV.PrintQueueList> TextList = new ConcurrentDictionary<int, NGV.PrintQueueList>();
+        private static ConcurrentQueue<NGV.PrintQueueList> TextList = new ConcurrentQueue<NGV.PrintQueueList>();
+        //public static ConcurrentDictionary<int, NGV.PrintQueueList> TextList = new ConcurrentDictionary<int, NGV.PrintQueueList>();
         public static void Log(
             NVE.LogLevel logType,
             int logNo,
@@ -197,6 +198,22 @@ namespace Notus
                     SubTimerIsRunning = true;
                     if (TextList.Count > 0)
                     {
+
+                        var? item = TextList.TryEnqueue();
+                        if(item!=null){
+                            if (item.Value.Dot == false)
+                            {
+                                if (WaitDotUsed == true)
+                                {
+                                    Console.WriteLine();
+                                    WaitDotUsed = false;
+                                }
+                                PrintFunction(item.Value.Layer, item.Value.Type, item.Value.Color, item.Value.Text);
+                                //TextList.TryRemove(item.Key, out _);
+                            }
+                        }
+
+                        /*
                         var item = TextList.First();
 
                         if (item.Value.Dot == false)
@@ -209,6 +226,7 @@ namespace Notus
                             PrintFunction(item.Value.Layer, item.Value.Type, item.Value.Color, item.Value.Text);
                             TextList.TryRemove(item.Key, out _);
                         }
+                        */
                     }
                     SubTimerIsRunning = false;
                 }
@@ -228,6 +246,15 @@ namespace Notus
             if (DetailsStr.Length == 0)
                 return;
 
+            TextList.Enqueu(new NGV.PrintQueueList()
+            {
+                Dot = false,
+                Text = DetailsStr,
+                Color = TextColor,
+                Layer = tmpLayer,
+                Type = tmpType
+            });
+            /*
             TextList.TryAdd(Counter, new NGV.PrintQueueList()
             {
                 Dot = false,
@@ -237,6 +264,7 @@ namespace Notus
                 Type = tmpType
             });
             Counter++;
+            */
         }
     }
 }
