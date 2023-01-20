@@ -120,11 +120,7 @@ namespace Notus.Block
 
             // aynı cüzdan adresini sadece 1 kez kullanmak için bu değişken kullanılıyor
             ConcurrentDictionary<string, byte> TempWalletList = new();
-            bool outerAddedToList = TempWalletList.TryAdd(NVG.Settings.NodeWallet.WalletKey, 1);
-            if (outerAddedToList == false)
-            {
-                Console.WriteLine("Not Added -> Line 125");
-            }
+            TempWalletList.TryAdd(NVG.Settings.NodeWallet.WalletKey, 1);
 
             // data elamanı içersine eklenecek olan veri bu dizi içinde tutuluyor
             List<string> TempBlockList = new List<string>();
@@ -137,27 +133,12 @@ namespace Notus.Block
             {
                 exitLoop = (NVG.NOW.Int >= WaitingForPool ? true : exitLoop);
                 exitLoop = (txQueue.Count == 0 ? true : exitLoop);
-                //Console.WriteLine(exitLoop);
                 string? tmpTxUid = string.Empty;
-                if (txQueue.Count > 0)
+                if (exitLoop == false)
                 {
-                    txQueue.TryPeek(out tmpTxUid);
-                    if (tmpTxUid == null)
+                    if (txQueue.TryPeek(out tmpTxUid))
                     {
-                        //Console.WriteLine("testUid : NULL");
-                        exitLoop = true;
-                    }
-                    else
-                    {
-                        if (tmpTxUid.Length == 0)
-                        {
-                            //Console.WriteLine("testUid : Zero-len");
-                            exitLoop = true;
-                        }
-                        else
-                        {
-                            //Console.WriteLine("testUid : " + tmpTxUid);
-                        }
+                        exitLoop = (tmpTxUid == null ? true : (tmpTxUid.Length == 0 ? true : exitLoop));
                     }
                 }
 
@@ -167,8 +148,6 @@ namespace Notus.Block
                     NVS.PoolBlockRecordStruct? TmpPoolRecord = null;
                     if (kvDataStr.Length > 0)
                     {
-                        //kontrol noktası
-                        //Console.WriteLine(tmpTxUid + " => " + kvDataStr);
                         try
                         {
                             TmpPoolRecord = JsonSerializer.Deserialize<NVS.PoolBlockRecordStruct>(kvDataStr);
@@ -179,8 +158,6 @@ namespace Notus.Block
                         }
                     }
 
-                    // eğer çevrim işleminde hata olursa
-                    // kayıt kuyruktan alınacak ve sonraki işleme geçilecek
                     if (TmpPoolRecord == null)
                     {
                         WrongTx(tmpTxUid, kvDataStr);
@@ -268,17 +245,6 @@ namespace Notus.Block
                                                 }
                                                 var newAirdropObj = NVG.Settings.Airdrop.Calculate(airdropReceiver, airdropTxUid);
                                                 TmpPoolRecord.data = JsonSerializer.Serialize(newAirdropObj);
-
-                                                /*
-                                                Console.WriteLine("Old Airdrop Request");
-                                                Console.WriteLine("-------------------------------------------");
-                                                Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData, NVC.JsonSetting));
-                                                Console.WriteLine("-------------------------------------------");
-                                                Console.WriteLine("New Airdrop Request");
-                                                Console.WriteLine("-------------------------------------------");
-                                                Console.WriteLine(JsonSerializer.Serialize(newAirdropObj, NVC.JsonSetting));
-                                                Console.WriteLine("-------------------------------------------");
-                                                */
                                                 bool innerAddedToList = TempWalletList.TryAdd(tmpEntry.Key, 1);
                                                 if (innerAddedToList == false)
                                                 {
@@ -297,15 +263,20 @@ namespace Notus.Block
 
                             if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer)
                             {
-                                NVClass.BlockStruct_120? tmpBlockCipherData = JsonSerializer.Deserialize<NVClass.BlockStruct_120>(TmpPoolRecord.data);
-                                if (tmpBlockCipherData == null)
+                                NVS.CryptoTransactionStoreStruct? incomeConvertData = JsonSerializer.Deserialize<NVS.CryptoTransactionStoreStruct>(TmpPoolRecord.data);
+
+                                //NVClass.BlockStruct_120? tmpBlockCipherData = JsonSerializer.Deserialize<NVClass.BlockStruct_120>(TmpPoolRecord.data);
+                                if (incomeConvertData == null)
                                 {
                                     addToList = false;
                                     WrongTx(tmpTxUid, TmpPoolRecord.data);
                                     tmpTxUid = "";
                                 }
 
-                                if (tmpBlockCipherData != null)
+
+                                Console.WriteLine(JsonSerializer.Serialize(incomeConvertData, NVC.JsonSetting));
+                                Environment.Exit(0);
+                                if (incomeConvertData != null)
                                 {
                                     // out işlemindeki cüzdanları kontrol ediyor...
                                     foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> tmpEntry in tmpBlockCipherData.Out)

@@ -174,10 +174,6 @@ namespace Notus.Validator
         }
         public void CryptoTransferTimerFunc()
         {
-
-            Coin transfer işlemini timer içerisinden alıp, get işlemi içerisine ekle
-            Coin transfer işlemini timer içerisinden alıp, get işlemi içerisine ekle
-
             NP.Success(NVG.Settings, "Crypto Transfer Timer Has Started");
             Notus.Threads.Timer TimerObj = new Notus.Threads.Timer(1000);
             TimerObj.Start(() =>
@@ -688,7 +684,7 @@ namespace Notus.Validator
 
                 if (NVG.Settings.Layer == NVE.NetworkLayer.Layer1)
                 {
-                    CryptoTransferTimerFunc();
+                    //CryptoTransferTimerFunc();
                 }
                 if (NVG.Settings.Layer == NVE.NetworkLayer.Layer2)
                 {
@@ -1049,7 +1045,7 @@ namespace Notus.Validator
         }
         private bool ProcessBlock(NVClass.BlockData blockData, int blockSource)
         {
-            &&NP.Basic("CurrentBlockRowNo : " + CurrentBlockRowNo.ToString());
+            //NP.Basic("CurrentBlockRowNo : " + CurrentBlockRowNo.ToString());
             if (blockSource == 2 || blockSource == 4)
             {
                 bool innerSendToMyChain = false;

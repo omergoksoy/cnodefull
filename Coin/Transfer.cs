@@ -35,7 +35,7 @@ namespace Notus.Coin
         private Notus.Data.KeyValue TxSignListObj = new();
 
         private ConcurrentDictionary<string, List<string>> RequestList = new ConcurrentDictionary<string, List<string>>();
-        
+
         public ConcurrentDictionary<string, NVS.CryptoTransactionStoreStruct> GetList()
         {
             return CryptoTransferPool_List;
@@ -47,6 +47,7 @@ namespace Notus.Coin
         }
         public string Request(NVS.HttpRequestDetails IncomeData)
         {
+            // 1- data gelip, gelmediği kontrol ediliyor
             NVS.CryptoTransactionStruct? tmpTransfer = null;
             try
             {
@@ -65,6 +66,7 @@ namespace Notus.Coin
                 });
             }
 
+            // 2- data içerikleri kontrol ediliyor
             if (
                 tmpTransfer.Volume == null ||
                 tmpTransfer.Sign == null ||
@@ -85,6 +87,7 @@ namespace Notus.Coin
                 });
             }
 
+            // 3- cüzdan adresinin uzunluğu kontrol ediliyor
             if (tmpTransfer.Sender.Length != Notus.Variable.Constant.WalletFullTextLength)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
@@ -105,6 +108,8 @@ namespace Notus.Coin
                     Result = NVE.BlockStatusCode.WrongWallet_Receiver
                 });
             }
+
+            // 4- gönderen, kendisine gönderemez
             if (string.Equals(tmpTransfer.Receiver, tmpTransfer.Sender))
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
@@ -116,8 +121,8 @@ namespace Notus.Coin
                 });
             }
 
-            bool accountLocked = NGF.Balance.AccountIsLock(tmpTransfer.Sender);
-            if (accountLocked == true)
+            // 5- hesap kilitli ise, gönderim yapamaz
+            if (NGF.Balance.AccountIsLock(tmpTransfer.Sender) == true)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
                 {
@@ -128,17 +133,15 @@ namespace Notus.Coin
                 });
             }
 
+            // 6- multi signature wallet, bu işlem ile gönderim yapamaz
             if (Notus.Wallet.MultiID.IsMultiId(tmpTransfer.Sender) == true)
             {
                 return Request_MultiSignatureSend(IncomeData, tmpTransfer);
             }
 
-            const int transferTimeOut = 0;
-            DateTime rightNow = ND.NowObj();
-            DateTime currentTime = Notus.Date.ToDateTime(tmpTransfer.CurrentTime);
-            double totaSeconds = Math.Abs((rightNow - currentTime).TotalSeconds);
-            // iki günden eski ise  zaman aşımı olarak işaretle
-            if (totaSeconds > (2 * 86400))
+            // 7- iki günden eski işlem ise geçerli sayılmaz
+            const int transferTimeOut = (2 * 86400);
+            if (Math.Abs((ND.NowObj() - Notus.Date.ToDateTime(tmpTransfer.CurrentTime)).TotalSeconds) > transferTimeOut)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
                 {
@@ -149,30 +152,28 @@ namespace Notus.Coin
                 });
             }
 
-
-            lock (TxSignListObj)
+            // 8- gönderilmiş ve işlenmiş olan TX hatalı olarak işaretlenir
+            string controlKey = tmpTransfer.CurrentTime.ToString().PadRight(24, '0') + "_" + tmpTransfer.Sender;
+            string? prevSignStr = TxSignListObj.Get(controlKey);
+            if (prevSignStr != null)
             {
-                string controlKey = tmpTransfer.CurrentTime.ToString().PadRight(24, '0') + "_" + tmpTransfer.Sender;
-                string? prevSignStr = TxSignListObj.Get(controlKey);
-                if (prevSignStr != null)
+                if (prevSignStr.Length > 0)
                 {
-                    if (prevSignStr.Length > 0)
+                    if (string.Equals(prevSignStr, tmpTransfer.Sign))
                     {
-                        if (string.Equals(prevSignStr, tmpTransfer.Sign))
+                        return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
                         {
-                            return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
-                            {
-                                ErrorNo = 5245,
-                                ErrorText = "OldTransaction",
-                                ID = string.Empty,
-                                Result = NVE.BlockStatusCode.OldTransaction
-                            });
-                        }
+                            ErrorNo = 5245,
+                            ErrorText = "OldTransaction",
+                            ID = string.Empty,
+                            Result = NVE.BlockStatusCode.OldTransaction
+                        });
                     }
                 }
-                TxSignListObj.Set(controlKey, tmpTransfer.Sign);
             }
+            TxSignListObj.Set(controlKey, tmpTransfer.Sign);
 
+            // 9- public key ve gönderilen cüzdan adresi eşleştiriliyor
             string calculatedWalletKey = Notus.Wallet.ID.GetAddressWithPublicKey(tmpTransfer.PublicKey);
             if (string.Equals(calculatedWalletKey, tmpTransfer.Sender) == false)
             {
@@ -185,6 +186,7 @@ namespace Notus.Coin
                 });
             }
 
+            // 10- gönderilecek bakiye kontrol ediliyor
             if (Int64.TryParse(tmpTransfer.Volume, out _) == false)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
@@ -197,9 +199,12 @@ namespace Notus.Coin
             }
 
 
-            string rawDataStr = Notus.Core.MergeRawData.Transaction(tmpTransfer);
-            //transaction sign
-            if (Notus.Wallet.ID.Verify(rawDataStr, tmpTransfer.Sign, tmpTransfer.PublicKey) == false)
+            // 11- imza kontrol ediliyor
+            if (Notus.Wallet.ID.Verify(
+                Notus.Core.MergeRawData.Transaction(tmpTransfer), 
+                tmpTransfer.Sign, 
+                tmpTransfer.PublicKey
+            ) == false)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
                 {
@@ -211,10 +216,8 @@ namespace Notus.Coin
             }
 
 
-            // burada gelen bakiyeyi zaman kiliti ile kontrol edecek.
-
+            // 12- işlem için Notus Coin olup olmadığı kontrol ediliyor
             NVS.WalletBalanceStruct tmpSenderBalanceObj = NGF.Balance.Get(tmpTransfer.Sender, 0);
-
             if (tmpSenderBalanceObj.Balance.ContainsKey(tmpTransfer.Currency) == false)
             {
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
@@ -226,7 +229,7 @@ namespace Notus.Coin
                 });
             }
 
-            // if wallet wants to send coin then control only coin balance
+            // 13- transafer ücreti ve işlem için yeterli coin / token olup olmadığı  kontrol ediliyor
             Int64 transferFee = Notus.Wallet.Fee.Calculate(
                 NVE.Fee.CryptoTransfer,
                 NVG.Settings.Network,
@@ -285,7 +288,7 @@ namespace Notus.Coin
                 }
             }
 
-            // transfer process status is saved
+            // 14- işlem durumu kayıt altına alınıyor...
             string tmpTransferIdKey = NGF.GenerateTxUid();
             NVG.Settings.TxStatus.Set(tmpTransferIdKey, new NVS.CryptoTransferStatus()
             {
@@ -310,13 +313,24 @@ namespace Notus.Coin
                 Sign = tmpTransfer.Sign,
             };
 
+            Console.WriteLine(JsonSerializer.Serialize(recordStruct));
+
+            NGF.BlockQueue.Add(new NVS.PoolBlockRecordStruct()
+            {
+                uid = tmpTransferIdKey,
+                type = NVE.BlockTypeList.CryptoTransfer,
+                data = JsonSerializer.Serialize(recordStruct)
+            });
+
+            /*
+            //omergoksoy
             // transfer data saved for next step
             lock (CryptoTransferPool)
             {
                 CryptoTransferPool.Set(tmpTransferIdKey, JsonSerializer.Serialize(recordStruct));
                 CryptoTransferPool_List.TryAdd(tmpTransferIdKey, recordStruct);
             }
-
+            */
             if (NVG.Settings.PrettyJson == true)
             {
                 return JsonSerializer.Serialize(
