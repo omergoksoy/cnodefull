@@ -1,4 +1,7 @@
-﻿using System;
+﻿using NNT = Notus.Network.Text;
+using NI = Notus.IO;
+using RocksDbSharp;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +12,9 @@ using NP = Notus.Print;
 using NT = Notus.Threads;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
+using Notus.Block;
+using Notus.Compiler;
+using Notus.Sync;
 
 namespace Notus.Wallet
 {
@@ -17,12 +23,7 @@ namespace Notus.Wallet
         private NT.Timer SubTimer = new NT.Timer();
 
         //this store balance to Dictionary list
-        private readonly object SummaryDb_LockObject = new object();
-        private Notus.Data.KeyValue SummaryDb = new Notus.Data.KeyValue();
-        //private Notus.Mempool ObjMp_Balance;
-
-        //private Notus.Mempool ObjMp_WalletUsage;
-        //private Notus.Mempool ObjMp_LockWallet;
+        private RocksDb SqlObj;
         private Notus.Data.KeyValue MultiWalletParticipantDb = new Notus.Data.KeyValue();
         private Notus.Data.KeyValue WalletsICanApproveDb = new Notus.Data.KeyValue();
         private ConcurrentDictionary<string, Notus.Variable.Enum.MultiWalletType> MultiWalletTypeList = new ConcurrentDictionary<string, Variable.Enum.MultiWalletType>();
@@ -156,12 +157,24 @@ namespace Notus.Wallet
         private void StoreToDb(NVS.WalletBalanceStruct BalanceObj)
         {
             NP.Basic("StoreToDb : -> " + BalanceObj.Wallet);
-            /*
-            lock (SummaryDb_LockObject)
+            string valueStr = JsonSerializer.Serialize(BalanceObj);
+            Console.WriteLine("BEFORE PUT " + BalanceObj.Wallet+ " ==>> " + valueStr + " SETTED");
+
+            SqlObj.Put(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj));
+
+            string newValue = string.Empty;
+            string? resultText = SqlObj.Get(BalanceObj.Wallet);
+            if (resultText == null)
             {
+                Console.WriteLine("AFTER PUT  " + BalanceObj.Wallet + " ==>> VALUE IS NULL");
             }
-            */
-            SummaryDb.SetDirectly(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj));
+            else
+            {
+                Console.WriteLine("AFTER PUT  " + BalanceObj.Wallet + " ==>> " + resultText + " SETTED");
+                newValue = resultText;
+            }
+            Console.WriteLine("Check if they are equal -> " + (string.Equals(valueStr, newValue) ? "true" : "false"));
+
             NP.Basic("New Balance -> " + BalanceObj.Wallet + " -> " + JsonSerializer.Serialize(BalanceObj.Balance));
             //burada cüzdan kilidi açılacak...
             StopWalletUsage(BalanceObj.Wallet);
@@ -200,7 +213,7 @@ namespace Notus.Wallet
         public NVS.WalletBalanceStruct Get(string WalletKey, ulong timeYouCanUse)
         {
             Console.WriteLine("Get Wallet Balance : " + WalletKey);
-            string returnText = SummaryDb.GetDirectly(WalletKey);
+            string? returnText = SqlObj.Get(WalletKey);
             if (returnText.Length > 0)
             {
                 Console.WriteLine(returnText);
@@ -912,12 +925,16 @@ namespace Notus.Wallet
         }
         public Balance()
         {
-            SummaryDb.SetSettings(new NVS.KeyValueSettings()
-            {
-                //ResetTable = true,
-                MemoryLimitCount = 1000,
-                Name = "balance"
-            });
+            string tmpDirPath = NNT.NetworkTypeText(NVG.Settings.Network) +
+                System.IO.Path.DirectorySeparatorChar +
+            NNT.NetworkLayerText(NVG.Settings.Layer) +
+                System.IO.Path.DirectorySeparatorChar +
+            "db" +
+                System.IO.Path.DirectorySeparatorChar;
+            NI.CreateDirectory(tmpDirPath);
+
+            DbOptions options = new DbOptions().SetCreateIfMissing(true);
+            SqlObj = RocksDb.Open(options, tmpDirPath + "balance");
 
             MultiWalletParticipantDb.SetSettings(new NVS.KeyValueSettings()
             {
@@ -961,7 +978,6 @@ namespace Notus.Wallet
         }
         private void ClearAllData()
         {
-            SummaryDb.Clear();
             NGF.LockWalletList.Clear();
 
             NP.Basic("NGF.WalletUsageList.Clear(); -> CLEARED -> Balance.Cs");
@@ -983,33 +999,10 @@ namespace Notus.Wallet
                 }
             }
             catch { }
-            /*
+           
             try
             {
-                if (ObjMp_LockWallet != null)
-                {
-                    ObjMp_LockWallet.Dispose();
-                }
-            }
-            catch
-            {
-            }
-            */
-            /*
-            try
-            {
-                if (ObjMp_WalletUsage != null)
-                {
-                    ObjMp_WalletUsage.Dispose();
-                }
-            }
-            catch
-            {
-            }
-            */
-            try
-            {
-                SummaryDb.Dispose();
+                SqlObj.Dispose();
             }
             catch { }
             try

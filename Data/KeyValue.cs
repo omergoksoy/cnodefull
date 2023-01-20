@@ -177,36 +177,6 @@ namespace Notus.Data
                 Set(key, value);
             }
         }
-        public void SetDirectly(string? key, string? value, bool isBalance = true)
-        {
-            if (isBalance)
-            {
-                Console.WriteLine("BEFORE PUT " + key + " ==>> " + value + " SETTED");
-            }
-
-            SqlObj.Put(key, value);
-
-            if (isBalance)
-            {
-                string newValue = string.Empty;
-                //string newValue = GetDirectly(key);
-                string ? resultText = SqlObj.Get(key);
-                if (resultText == null)
-                {
-                    Console.WriteLine("AFTER PUT  " + key + " ==>> VALUE IS NULL");
-                }
-                else
-                {
-                    Console.WriteLine("AFTER PUT  " + key + " ==>> " + resultText + " SETTED");
-                    newValue = resultText;
-                }
-                /*
-                */
-                //return (resultText == null ? string.Empty : resultText);
-
-                Console.WriteLine("Check if they are equal -> " + (string.Equals(value , newValue) ? "true" : "false"));
-            }
-        }
         public void Set(string? key, string? value)
         {
             if (key == null)
@@ -219,7 +189,7 @@ namespace Notus.Data
                 value = string.Empty;
 
             AddToMemoryList(key, value);
-            SetDirectly(key, value, false);
+            SqlObj.Put(key, value);
         }
         public KeyValue()
         {
