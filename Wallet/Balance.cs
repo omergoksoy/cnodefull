@@ -127,18 +127,13 @@ namespace Notus.Wallet
         {
             lock (NGF.WalletUsageList)
             {
-                //Console.WriteLine("Start Wallet Usage : " + walletKey);
-                //Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                 if (NGF.WalletUsageList.ContainsKey(walletKey) == false)
                 {
                     bool result = NGF.WalletUsageList.TryAdd(walletKey, "456465");
-                    //Console.WriteLine(result);
-                    //Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                     return result;
                 }
                 else
                 {
-                    //Console.WriteLine(JsonSerializer.Serialize(NGF.WalletUsageList));
                 }
                 return false;
             }
@@ -156,7 +151,7 @@ namespace Notus.Wallet
 
         private void StoreToDb(NVS.WalletBalanceStruct BalanceObj)
         {
-            NP.Basic("StoreToDb : -> " + BalanceObj.Wallet);
+            //NP.Basic("StoreToDb : -> " + BalanceObj.Wallet);
             string valueStr = JsonSerializer.Serialize(BalanceObj);
             Console.WriteLine("BEFORE PUT " + BalanceObj.Wallet+ " ==>> " + valueStr + " SETTED");
 
@@ -173,7 +168,7 @@ namespace Notus.Wallet
                 Console.WriteLine("AFTER PUT  " + BalanceObj.Wallet + " ==>> " + resultText + " SETTED");
                 newValue = resultText;
             }
-            Console.WriteLine("Check if they are equal -> " + (string.Equals(valueStr, newValue) ? "true" : "false"));
+            Console.WriteLine("Check if they are equal -> " + (string.Equals(valueStr, newValue) ? "TRUE" : "FALSE"));
 
             NP.Basic("New Balance -> " + BalanceObj.Wallet + " -> " + JsonSerializer.Serialize(BalanceObj.Balance));
             //burada cüzdan kilidi açılacak...
