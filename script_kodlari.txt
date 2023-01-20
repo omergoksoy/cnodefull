@@ -15,10 +15,10 @@ notusJs.Airdrop(senderKey001.WalletKey, 30, false);
 const receiver001 = notusJs.generateKeyPair(); 
 console.log("receiver001.WalletKey : " ,receiver001.WalletKey);
 
-for(let i = 0; i < 10; i++) {
+for(let i = 0; i < 1; i++) {
     await notusJs.sendTransaction(notusJs.signTransaction({
-        CurrentTime: 20230119131510+i,
-        UnlockTime: 20230119131500,
+        CurrentTime: 2023011913151000+i,
+        UnlockTime:  20230119131500000,
         Currency: "NOTUS",
         Sender: senderKey001.WalletKey,
         Receiver: receiver001.WalletKey,
