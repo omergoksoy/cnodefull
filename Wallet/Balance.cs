@@ -203,12 +203,17 @@ namespace Notus.Wallet
             string returnText = SummaryDb.GetDirectly(WalletKey);
             if (returnText.Length > 0)
             {
+                Console.WriteLine(returnText);
                 try
                 {
                     Console.WriteLine("Get From RocksDb");
                     return JsonSerializer.Deserialize<NVS.WalletBalanceStruct>(returnText);
                 }
                 catch { }
+            }
+            else
+            {
+                Console.WriteLine("Balance Text Is Empty");
             }
 
             string defaultCoinTag = Notus.Variable.Constant.MainCoinTagName;

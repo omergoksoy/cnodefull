@@ -229,6 +229,34 @@ namespace Notus
 
             if (DetailsStr.Length == 0)
                 return;
+
+
+
+            string printTextStr= "";
+            Console.Write(ND.NowObj().ToString("HH:mm:ss.fff"));
+            if (tmpLayer != NVE.NetworkLayer.Unknown && tmpType != NVE.NetworkType.Unknown)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                if (tmpLayer == NVE.NetworkLayer.Layer1)
+                    printTextStr+=(" L1");
+                if (tmpLayer == NVE.NetworkLayer.Layer2)
+                    printTextStr += (" L2");
+                if (tmpLayer == NVE.NetworkLayer.Layer3)
+                    printTextStr += (" L3");
+                if (tmpLayer == NVE.NetworkLayer.Layer4)
+                    printTextStr += (" L4");
+                printTextStr += ("-");
+                if (tmpType == NVE.NetworkType.DevNet)
+                    printTextStr += ("Dev ");
+                if (tmpType == NVE.NetworkType.MainNet)
+                    printTextStr += ("Main");
+                if (tmpType == NVE.NetworkType.TestNet)
+                    printTextStr += ("Test");
+            }
+            printTextStr += (" -> ");
+            printTextStr += (DetailsStr);
+            Console.WriteLine(DetailsStr);
+            /*
             TextList.Enqueue(new NGV.PrintQueueList()
             {
                 Dot = false,
@@ -237,6 +265,7 @@ namespace Notus
                 Layer = tmpLayer,
                 Type = tmpType
             });
+            */
         }
     }
 }
