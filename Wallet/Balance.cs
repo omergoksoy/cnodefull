@@ -100,8 +100,14 @@ namespace Notus.Wallet
                     resultReceiver == false
                 )
                 {
-                    NGF.WalletUsageList.TryRemove(senderKey, out _);
-                    NGF.WalletUsageList.TryRemove(receiverKey, out _);
+                    if (resultSender == true)
+                    {
+                        NGF.WalletUsageList.TryRemove(senderKey, out _);
+                    }
+                    if (resultReceiver == true)
+                    {
+                        NGF.WalletUsageList.TryRemove(receiverKey, out _);
+                    }
                     return false;
                 }
             }
