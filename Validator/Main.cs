@@ -235,8 +235,8 @@ namespace Notus.Validator
 
                                     NVS.WalletBalanceStruct tmpSenderBalance = NGF.Balance.Get(tmpObjPoolCrypto.Sender, unlockTimeForNodeWallet);
                                     NVS.WalletBalanceStruct tmpReceiverBalance = NGF.Balance.Get(tmpObjPoolCrypto.Receiver, unlockTimeForNodeWallet);
-                                    NP.Info("sewnder  : " + JsonSerializer.Serialize(tmpSenderBalance));
-                                    NP.Info("receiver : " + JsonSerializer.Serialize(tmpReceiverBalance));
+                                    NP.Info("sewnder      : " + JsonSerializer.Serialize(tmpSenderBalance));
+                                    NP.Info("receiver     : " + JsonSerializer.Serialize(tmpReceiverBalance));
                                     string tmpTokenTagStr = "";
                                     BigInteger tmpTokenVolume = 0;
 

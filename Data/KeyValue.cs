@@ -59,6 +59,7 @@ namespace Notus.Data
                 ValueList[key].Time = NVG.NOW.Int;
                 ValueList[key].Value = value;
             }
+            Console.WriteLine(key + " ==>> " + value + " SETTED");
         }
         public void SetSettings(NVS.KeyValueSettings settings)
         {

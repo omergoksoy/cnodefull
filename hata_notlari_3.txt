@@ -74,6 +74,9 @@ NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYw
 Reload Tx From Temp List
 ["134afe8172820368967b485e6cbee3d6ca65be794dc4ae86fcbe2609efa91ec4a4f65b19981a27b0102a3ab486"]
 
+
+
+
 09:48:50.536 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
 09:48:50.596 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 3
 09:48:50.627 L1-Dev  -> CurrentBlockRowNo : 4
@@ -81,6 +84,8 @@ Reload Tx From Temp List
 09:48:50.736 L1-Dev  -> We Ignored This Block [ ______________4 ] -> 1
 09:48:50.798 L1-Dev  -> blockIsValid Result : false
 09:48:50.830 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+
+
 09:48:51.502 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
 blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
 NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
@@ -92,6 +97,8 @@ Reload Tx From Temp List
 09:48:51.706 L1-Dev  -> We Ignored This Block [ ______________4 ] -> 2
 09:48:51.736 L1-Dev  -> blockIsValid Result : false
 09:48:51.800 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+
+
 09:48:52.503 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
 blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
 NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
@@ -103,6 +110,8 @@ Reload Tx From Temp List
 09:48:52.706 L1-Dev  -> We Ignored This Block [ ______________4 ] -> 3
 09:48:52.736 L1-Dev  -> blockIsValid Result : false
 09:48:52.800 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+
+
 09:48:53.503 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
 blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
 NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
