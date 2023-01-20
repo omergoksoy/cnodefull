@@ -188,8 +188,22 @@ namespace Notus.Data
 
             if (isBalance)
             {
-                string newValue = GetDirectly(value);
-                Console.WriteLine("AFTER PUT  " + key + " ==>> " + newValue + " SETTED");
+                string newValue = string.Empty;
+                //string newValue = GetDirectly(key);
+                string ? resultText = SqlObj.Get(key);
+                if (resultText == null)
+                {
+                    Console.WriteLine("AFTER PUT  " + key + " ==>> VALUE IS NULL");
+                }
+                else
+                {
+                    Console.WriteLine("AFTER PUT  " + key + " ==>> " + resultText + " SETTED");
+                    newValue = resultText;
+                }
+                /*
+                */
+                //return (resultText == null ? string.Empty : resultText);
+
                 Console.WriteLine("Check if they are equal -> " + (string.Equals(value , newValue) ? "true" : "false"));
             }
         }
