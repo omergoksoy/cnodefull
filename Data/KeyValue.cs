@@ -59,7 +59,6 @@ namespace Notus.Data
                 ValueList[key].Time = NVG.NOW.Int;
                 ValueList[key].Value = value;
             }
-            Console.WriteLine(key + " ==>> " + value + " SETTED");
         }
         public void SetSettings(NVS.KeyValueSettings settings)
         {
@@ -122,6 +121,11 @@ namespace Notus.Data
                 iterator.Next();
             }
         }
+        public string GetDirectly(string? key)
+        {
+            string? resultText = SqlObj.Get(key);
+            return (resultText == null ? string.Empty : resultText);
+        }
         public string Get(string? key)
         {
             if (ValueList.ContainsKey(key) == true)
@@ -138,9 +142,7 @@ namespace Notus.Data
 
             if (ValueList.ContainsKey(key) == true)
                 return ValueList[key].Value;
-
-            string? resultText = SqlObj.Get(key);
-            return (resultText == null ? string.Empty : resultText);
+            return GetDirectly(key);
         }
         public void Remove(string key)
         {
@@ -175,6 +177,10 @@ namespace Notus.Data
                 Set(key, value);
             }
         }
+        public void SetDirectly(string? key, string? value) {
+            SqlObj.Put(key, value);
+            Console.WriteLine(key + " ==>> " + value + " SETTED");
+        }
         public void Set(string? key, string? value)
         {
             if (key == null)
@@ -187,8 +193,8 @@ namespace Notus.Data
                 value = string.Empty;
 
             AddToMemoryList(key, value);
-            SqlObj.Put(key, value);
-        }
+            SetDirectly(key, value);
+            }
         public KeyValue()
         {
         }

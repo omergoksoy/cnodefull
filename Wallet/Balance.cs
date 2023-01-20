@@ -150,13 +150,15 @@ namespace Notus.Wallet
         private void StoreToDb(NVS.WalletBalanceStruct BalanceObj)
         {
             NP.Basic("StoreToDb : -> " + BalanceObj.Wallet);
+            /*
             lock (SummaryDb_LockObject)
             {
-                SummaryDb.Set(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj));
-                NP.Basic("New Balance -> "+ BalanceObj.Wallet + " -> " + JsonSerializer.Serialize(BalanceObj.Balance));
-                //burada cüzdan kilidi açılacak...
-                StopWalletUsage(BalanceObj.Wallet);
             }
+            */
+            SummaryDb.SetDirectly(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj));
+            NP.Basic("New Balance -> "+ BalanceObj.Wallet + " -> " + JsonSerializer.Serialize(BalanceObj.Balance));
+            //burada cüzdan kilidi açılacak...
+            StopWalletUsage(BalanceObj.Wallet);
         }
         public NVS.WalletBalanceResponseStruct ReadFromNode(string WalletKey)
         {
@@ -191,9 +193,12 @@ namespace Notus.Wallet
         }
         public NVS.WalletBalanceStruct Get(string WalletKey, ulong timeYouCanUse)
         {
+            /*
             lock (SummaryDb_LockObject)
             {
-                string returnText = SummaryDb.Get(WalletKey);
+            }
+            */
+                string returnText = SummaryDb.GetDirectly(WalletKey);
                 if (returnText.Length > 0)
                 {
                     try
@@ -234,7 +239,6 @@ namespace Notus.Wallet
                     UID = "",
                     Wallet = WalletKey
                 };
-            }
         }
         /*
         public BigInteger GetCoinBalance(string WalletKey)
