@@ -480,7 +480,7 @@ namespace Notus.Block
                                             incomeConvertData.UnlockTime
                                         );
                                         tmpBlockCipherData.Out[incomeConvertData.Receiver] = tmpNewReceiverBalance.Balance;
-                                        Console.WriteLine(JsonSerializer.Serialize(incomeConvertData,NVC.JsonSetting));
+                                        Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData, NVC.JsonSetting));
                                         Environment.Exit(0);
                                         TmpPoolRecord.data = JsonSerializer.Serialize(incomeConvertData);
 
