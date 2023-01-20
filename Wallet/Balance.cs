@@ -214,19 +214,26 @@ namespace Notus.Wallet
         {
             Console.WriteLine("Get Wallet Balance : " + WalletKey);
             string? returnText = SqlObj.Get(WalletKey);
-            if (returnText.Length > 0)
+            if (returnText != null)
             {
-                Console.WriteLine(returnText);
-                try
+                if (returnText.Length > 0)
                 {
-                    Console.WriteLine("Get From RocksDb");
-                    return JsonSerializer.Deserialize<NVS.WalletBalanceStruct>(returnText);
+                    Console.WriteLine(returnText);
+                    try
+                    {
+                        Console.WriteLine("Get From RocksDb");
+                        return JsonSerializer.Deserialize<NVS.WalletBalanceStruct>(returnText);
+                    }
+                    catch { }
                 }
-                catch { }
+                else
+                {
+                    Console.WriteLine("Balance Text Is Empty");
+                }
             }
             else
             {
-                Console.WriteLine("Balance Text Is Empty");
+                Console.WriteLine("Balance Text Is NULL");
             }
 
             string defaultCoinTag = Notus.Variable.Constant.MainCoinTagName;
