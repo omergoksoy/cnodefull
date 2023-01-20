@@ -232,11 +232,12 @@ namespace Notus
 
 
 
-            string printTextStr= "";
-            Console.Write(ND.NowObj().ToString("HH:mm:ss.fff"));
+            Console.ForegroundColor = ConsoleColor.Gray;
+
+            string printTextStr= ND.NowObj().ToString("HH:mm:ss.fff");
+
             if (tmpLayer != NVE.NetworkLayer.Unknown && tmpType != NVE.NetworkType.Unknown)
             {
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
                 if (tmpLayer == NVE.NetworkLayer.Layer1)
                     printTextStr+=(" L1");
                 if (tmpLayer == NVE.NetworkLayer.Layer2)
@@ -255,7 +256,7 @@ namespace Notus
             }
             printTextStr += (" -> ");
             printTextStr += (DetailsStr);
-            Console.WriteLine(DetailsStr);
+            Console.WriteLine(printTextStr);
             /*
             TextList.Enqueue(new NGV.PrintQueueList()
             {
