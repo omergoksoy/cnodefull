@@ -167,37 +167,6 @@ namespace Notus.Coin
                                 ID = string.Empty,
                                 Result = NVE.BlockStatusCode.OldTransaction
                             });
-                            /*
-
-
-        blok bakiyelerini çekme işlemi yapılırken bakiye güncellenmesi ile işlemin çekilmesi
-        arasında bir blokluk boşluk gerekiyor.
-
-        bu boşluk olmadığı için hesabın bakiyesi çekilirken hatalı bir şekilde çekiliyor.
-
-        bu hatayı düzeltmenin en kolay yolu her cüzdanın kilidi 2 blok sonra kaldırılsın
-        bu hatayı düzeltmenin en kolay yolu her cüzdanın kilidi 2 blok sonra kaldırılsın
-        bu hatayı düzeltmenin en kolay yolu her cüzdanın kilidi 2 blok sonra kaldırılsın
-        bu hatayı düzeltmenin en kolay yolu her cüzdanın kilidi 2 blok sonra kaldırılsın
-
-
-        922. blok
-        {"In":{"134afdd31db0080062d3a85fcca69b3ca52cc05d1d36b2c01aea3f2d2e598c25b0417c5fd18b40ac6559b8b29a":{"Wallet":"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT","Balance":{"NOTUS":{"20230109204208538":"0"}},"RowNo":0,"UID":""}},"Out":{"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT":{"NOTUS":{"20230109204208538":"2000000000"}}},"Validator":"NSX4jmTMPuq5JZnGrXb2DsGxt85B5svJL8PnFKb"}
-
-        923. blok
-        {"In":{"134afdd31daf0d8858e787ebe8af05b723cefd67db610489b4d10998f03d90c9b371c81597a20abb2a0be14685":{"Wallet":"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT","Balance":{"NOTUS":{"20230109204207903":"0"}},"RowNo":0,"UID":""}},"Out":{"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT":{"NOTUS":{"20230109204207903":"2000000000"}}},"Validator":"NSX4jmTMPuq5JZnGrXb2DsGxt85B5svJL8PnFKb"}
-
-        924. blok
-        {"In":{"134afdd31db80beb8d8c43cdb1585bff3397fc5e6442fbd24092c845451f4324eb455a36c60b0eee87ed92f004":{"Wallet":"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT","Balance":{"NOTUS":{"20230109204207903":"2000000000"}},"RowNo":923,"UID":"134afdd31db5000426085872b0016dc2bbe73fb92e78c5c049647be5d7a4c06c21271f0ff0d66589d286fa744c"}},"Out":{"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT":{"NOTUS":{"20230109204207903":"2000000000","20230109204216803":"2000000000"}}},"Validator":"NSX4jmTMPuq5JZnGrXb2DsGxt85B5svJL8PnFKb"}
-
-        925. blok
-        {"In":{"134afdd31dbc0b5ddca0b7adb40bce15ad6b823dac3dba30449bf907fa57f9ec3af497f8568c5c2c9cdab44423":{"Wallet":"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT","Balance":{"NOTUS":{"20230109204207903":"2000000000","20230109204216803":"2000000000"}},"RowNo":924,"UID":"134afdd31db9000489d5ba83ca5592b77e621c7d6b8ba97b531fc6c4fe85fbadc21d2467a7c9547323e3a5e4ad"}},"Out":{"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT":{"NOTUS":{"20230109204207903":"2000000000","20230109204216803":"2000000000","20230109204220764":"2000000000"}}},"Validator":"NSX4jmTMPuq5JZnGrXb2DsGxt85B5svJL8PnFKb"}
-
-        926. blok
-        {"In":{"134afdd31dbd07e07694a936956e9cc6e7be7eb8e4bcfbe4bdd78d280ce7a34a67b19385f6aa98ed5be482a399":{"Wallet":"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT","Balance":{"NOTUS":{"20230109204207903":"2000000000","20230109204216803":"2000000000"}},"RowNo":924,"UID":"134afdd31db9000489d5ba83ca5592b77e621c7d6b8ba97b531fc6c4fe85fbadc21d2467a7c9547323e3a5e4ad"}},"Out":{"NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT":{"NOTUS":{"20230109204207903":"2000000000","20230109204216803":"2000000000","20230109204221539":"2000000000"}}},"Validator":"NSX4jmTMPuq5JZnGrXb2DsGxt85B5svJL8PnFKb"}
-
-
-                            */
                         }
                     }
                 }

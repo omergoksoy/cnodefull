@@ -49,52 +49,6 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 
 /*
 
-hata notları 4 isimli dosyaya bak
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body style="background-color:#000;">
-const senderKey001=notusJs.generateKeyPair(); 
-console.log("senderKey001.WalletKey : " ,senderKey001.WalletKey);
-notusJs.Airdrop(senderKey001.WalletKey, 30, false);
-
-
-const receiver001 = notusJs.generateKeyPair(); 
-console.log("receiver001.WalletKey : " ,receiver001.WalletKey);
-
-for(let i = 0; i < 10; i++) {
-    await notusJs.sendTransaction(notusJs.signTransaction({
-        CurrentTime: 20230119131510+i,
-        UnlockTime: 20230119131500,
-        Currency: "NOTUS",
-        Sender: senderKey001.WalletKey,
-        Receiver: receiver001.WalletKey,
-        Volume: notusJs.toLNotus("0.01"),
-        PrivateKey: senderKey001.PrivateKey,
-        Network: 30
-    }), 30, undefined, false)
-}
-
-
-
-    <script src="./index.iife.min.js"></script>
-</body>
-</html>
-
-
-
-*/
-/*
-
 control-point-123456
 1- her blok zipli dosya içine kaydedilsin.
 2- kullanılacak Key value tablolarının listesi
