@@ -278,6 +278,7 @@ namespace Notus.Block
                                 Environment.Exit(0);
                                 if (incomeConvertData != null)
                                 {
+                                    /*
                                     // out işlemindeki cüzdanları kontrol ediyor...
                                     foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> tmpEntry in tmpBlockCipherData.Out)
                                     {
@@ -295,6 +296,7 @@ namespace Notus.Block
                                             addToList = false;
                                         }
                                     }
+                                    */
                                 }
                             }
 
