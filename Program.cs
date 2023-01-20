@@ -47,10 +47,10 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     NGF.CloseMyNode();
 }
 
+/*
 
 hata notları 4 isimli dosyaya bak
 
-/*
 
 
 

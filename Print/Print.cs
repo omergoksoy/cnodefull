@@ -1,14 +1,14 @@
 ﻿using System.Collections.Concurrent;
 using System.Text.Json;
+using NCH = Notus.Communication.Helper;
 using ND = Notus.Date;
+using NGF = Notus.Variable.Globals.Functions;
 using NGV = Notus.Globals.Variable;
 using NT = Notus.Threads;
+using NVC = Notus.Variable.Constant;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
-using NVC = Notus.Variable.Constant;
-using NGF = Notus.Variable.Globals.Functions;
-using NCH = Notus.Communication.Helper;
 
 namespace Notus
 {
@@ -16,10 +16,8 @@ namespace Notus
     {
         private static bool WaitDotUsed = false;
         private static bool SubTimerIsRunning = false;
-        private static int Counter = 0;
         private static NT.Timer SubTimer = new NT.Timer(100);
-        private static ConcurrentQueue<NGV.PrintQueueList> TextList = new ConcurrentQueue<NGV.PrintQueueList>();
-        //public static ConcurrentDictionary<int, NGV.PrintQueueList> TextList = new ConcurrentDictionary<int, NGV.PrintQueueList>();
+        public static ConcurrentQueue<NGV.PrintQueueList> TextList = new();
         public static void Log(
             NVE.LogLevel logType,
             int logNo,
@@ -198,35 +196,21 @@ namespace Notus
                     SubTimerIsRunning = true;
                     if (TextList.Count > 0)
                     {
-
-                        var? item = TextList.TryEnqueue();
-                        if(item!=null){
-                            if (item.Value.Dot == false)
-                            {
-                                if (WaitDotUsed == true)
-                                {
-                                    Console.WriteLine();
-                                    WaitDotUsed = false;
-                                }
-                                PrintFunction(item.Value.Layer, item.Value.Type, item.Value.Color, item.Value.Text);
-                                //TextList.TryRemove(item.Key, out _);
-                            }
-                        }
-
-                        /*
-                        var item = TextList.First();
-
-                        if (item.Value.Dot == false)
+                        if (TextList.TryDequeue(out NGV.PrintQueueList item))
                         {
-                            if (WaitDotUsed == true)
+                            if (item != null)
                             {
-                                Console.WriteLine();
-                                WaitDotUsed = false;
+                                if (item.Dot == false)
+                                {
+                                    if (WaitDotUsed == true)
+                                    {
+                                        Console.WriteLine();
+                                        WaitDotUsed = false;
+                                    }
+                                    PrintFunction(item.Layer, item.Type, item.Color, item.Text);
+                                }
                             }
-                            PrintFunction(item.Value.Layer, item.Value.Type, item.Value.Color, item.Value.Text);
-                            TextList.TryRemove(item.Key, out _);
                         }
-                        */
                     }
                     SubTimerIsRunning = false;
                 }
@@ -245,8 +229,7 @@ namespace Notus
 
             if (DetailsStr.Length == 0)
                 return;
-
-            TextList.Enqueu(new NGV.PrintQueueList()
+            TextList.Enqueue(new NGV.PrintQueueList()
             {
                 Dot = false,
                 Text = DetailsStr,
@@ -254,17 +237,6 @@ namespace Notus
                 Layer = tmpLayer,
                 Type = tmpType
             });
-            /*
-            TextList.TryAdd(Counter, new NGV.PrintQueueList()
-            {
-                Dot = false,
-                Text = DetailsStr,
-                Color = TextColor,
-                Layer = tmpLayer,
-                Type = tmpType
-            });
-            Counter++;
-            */
         }
     }
 }
