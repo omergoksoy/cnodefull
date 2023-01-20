@@ -481,6 +481,9 @@ namespace Notus.Block
                                         );
                                         tmpBlockCipherData.Out[incomeConvertData.Receiver] = tmpNewReceiverBalance.Balance;
                                         Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData, NVC.JsonSetting));
+                                        burası düzeltilecek
+                                        burası düzeltilecek
+                                        burası düzeltilecek
                                         Environment.Exit(0);
                                         TmpPoolRecord.data = JsonSerializer.Serialize(incomeConvertData);
 
