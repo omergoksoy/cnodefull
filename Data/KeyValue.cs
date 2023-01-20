@@ -188,8 +188,9 @@ namespace Notus.Data
 
             if (isBalance)
             {
-                Console.WriteLine("AFTER PUT " + key + " ==>> " + value + " SETTED");
-                Console.WriteLine("Check if they are equal -> " + value == GetDirectly(value));
+                string newValue = GetDirectly(value);
+                Console.WriteLine("AFTER PUT  " + key + " ==>> " + newValue + " SETTED");
+                Console.WriteLine("Check if they are equal -> " + (string.Equals(value , newValue) ? "true" : "false"));
             }
         }
         public void Set(string? key, string? value)
