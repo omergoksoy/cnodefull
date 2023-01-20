@@ -1,857 +1,839 @@
-﻿14:35:42.059 L1-Dev  -> Activated DevNET for Layer 1 ( Crypto Layer )
-14:35:42.059 L1-Dev  -> Starting As Main Node
-14:35:42.059 L1-Dev  -> Waiting For Time Sync
-14:35:42.059 L1-Dev  -> Time Sync Is Done
-14:35:42.059 L1-Dev  -> Time Synchronizer Has Started
-14:37:03.358 L1-Dev  -> NTP Time Synchronizer Has Started
-14:37:03.358 L1-Dev  -> Burada Diger Genesisler Kontrol Edilmeli
-14:37:03.358 L1-Dev  -> Burada Diger Genesisler Kontrol Edilmeli
-14:37:03.358 L1-Dev  -> Node P2P Port No : 5012
-14:37:03.358 L1-Dev  -> Listining : http://18.156.37.61:5002/
-14:37:03.358 L1-Dev  -> Http Has Started
-14:37:03.404 L1-Dev  -> Checking From -> 3.125.159.102
-14:37:24.442 L1-Dev  -> Notus.Core.Function.Get -> Line 116 -> A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond. (3.125.159.102:5002)
-14:37:24.442 L1-Dev  -> Error Happened While Trying To Get Genesis From Other Node
-14:37:24.563 L1-Dev  -> Statring Time Arrived 14:38:00
-14:37:24.719 L1-Dev  -> All Blocks Checked With Quick Method
-14:37:24.719 L1-Dev  -> Pool Loaded From Local DB
-14:37:24.812 L1-Dev  -> Last Block Row No : 2
-14:37:24.812 L1-Dev  -> CurrentBlockRowNo : 1
-14:37:24.828 L1-Dev  -> addBlockToChain : false
-14:37:24.828 L1-Dev  -> Balance.Control Just Executed For -> 1
-14:37:24.959 -> Error Text [90ecab567]   : ExecuteNonQuery can only be called when the connection is open.
-14:37:24.959 -> Mempool Name [90ecab567] : dev-net\layer-1\wallet\currency_list.db
-14:37:24.959 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Balance.Cs
-14:37:24.959 L1-Dev  -> {}
-14:37:24.959 L1-Dev  -> StoreToDb : -> NSX3kasq7NBaH2hsZEQiLFP49XsemjhgB9BmLK5
-BEFORE PUT NSX3kasq7NBaH2hsZEQiLFP49XsemjhgB9BmLK5 ==>> {"Wallet":"NSX3kasq7NBaH2hsZEQiLFP49XsemjhgB9BmLK5","Balance":{"NOTUS":{"16777216000000000":"1000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
-AFTER PUT  NSX3kasq7NBaH2hsZEQiLFP49XsemjhgB9BmLK5 ==>> {"Wallet":"NSX3kasq7NBaH2hsZEQiLFP49XsemjhgB9BmLK5","Balance":{"NOTUS":{"16777216000000000":"1000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
+﻿16:30:30.064 L1-Dev  -> Activated DevNET for Layer 1 ( Crypto Layer )
+16:30:30.064 L1-Dev  -> Starting As Main Node
+16:30:30.064 L1-Dev  -> Waiting For Time Sync
+16:30:30.064 L1-Dev  -> Time Sync Is Done
+16:30:30.064 L1-Dev  -> Time Synchronizer Has Started
+16:31:19.804 L1-Dev  -> NTP Time Synchronizer Has Started
+16:31:19.804 L1-Dev  -> Burada Diger Genesisler Kontrol Edilmeli
+16:31:19.804 L1-Dev  -> Burada Diger Genesisler Kontrol Edilmeli
+16:31:19.804 L1-Dev  -> Node P2P Port No : 5012
+16:31:19.804 L1-Dev  -> Listining : http://18.156.37.61:5002/
+16:31:19.804 L1-Dev  -> Http Has Started
+16:31:19.858 L1-Dev  -> Checking From -> 3.125.159.102
+16:31:20.280 L1-Dev  -> All Blocks Checked With Quick Method
+16:31:20.280 L1-Dev  -> Pool Loaded From Local DB
+16:31:20.388 L1-Dev  -> Last Block Row No : 2
+16:31:20.388 L1-Dev  -> CurrentBlockRowNo : 1
+16:31:20.388 L1-Dev  -> addBlockToChain : false
+16:31:20.388 L1-Dev  -> Balance.Control Just Executed For -> 1
+16:31:20.516 -> Error Text [90ecab567]   : ExecuteNonQuery can only be called when the connection is open.
+16:31:20.516 -> Mempool Name [90ecab567] : dev-net\layer-1\wallet\currency_list.db
+16:31:20.516 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Balance.Cs
+16:31:20.516 L1-Dev  -> {}
+16:31:20.516 L1-Dev  -> StoreToDb : -> NSX1iVpxUwvdnSfmGNph1AjUXHcE59E4QCwY6DF
+BEFORE PUT NSX1iVpxUwvdnSfmGNph1AjUXHcE59E4QCwY6DF ==>> {"Wallet":"NSX1iVpxUwvdnSfmGNph1AjUXHcE59E4QCwY6DF","Balance":{"NOTUS":{"16777216000000000":"1000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
+AFTER PUT  NSX1iVpxUwvdnSfmGNph1AjUXHcE59E4QCwY6DF ==>> {"Wallet":"NSX1iVpxUwvdnSfmGNph1AjUXHcE59E4QCwY6DF","Balance":{"NOTUS":{"16777216000000000":"1000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
 Check if they are equal -> true
-14:37:24.968 L1-Dev  -> New Balance -> NSX3kasq7NBaH2hsZEQiLFP49XsemjhgB9BmLK5 -> {"NOTUS":{"16777216000000000":"1000000000000000"}}
-14:37:24.968 L1-Dev  -> StoreToDb : -> NSX4zDujYzcfj6DphceHjWGUFoJuLFsCvknngon
-BEFORE PUT NSX4zDujYzcfj6DphceHjWGUFoJuLFsCvknngon ==>> {"Wallet":"NSX4zDujYzcfj6DphceHjWGUFoJuLFsCvknngon","Balance":{"NOTUS":{"16777216000000000":"2000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
-AFTER PUT  NSX4zDujYzcfj6DphceHjWGUFoJuLFsCvknngon ==>> {"Wallet":"NSX4zDujYzcfj6DphceHjWGUFoJuLFsCvknngon","Balance":{"NOTUS":{"16777216000000000":"2000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
+16:31:20.516 L1-Dev  -> New Balance -> NSX1iVpxUwvdnSfmGNph1AjUXHcE59E4QCwY6DF -> {"NOTUS":{"16777216000000000":"1000000000000000"}}
+16:31:20.516 L1-Dev  -> StoreToDb : -> NSX4fkwSxaAeg9xXuBiGGefhyeTYU2p3JsP4FXx
+BEFORE PUT NSX4fkwSxaAeg9xXuBiGGefhyeTYU2p3JsP4FXx ==>> {"Wallet":"NSX4fkwSxaAeg9xXuBiGGefhyeTYU2p3JsP4FXx","Balance":{"NOTUS":{"16777216000000000":"2000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
+AFTER PUT  NSX4fkwSxaAeg9xXuBiGGefhyeTYU2p3JsP4FXx ==>> {"Wallet":"NSX4fkwSxaAeg9xXuBiGGefhyeTYU2p3JsP4FXx","Balance":{"NOTUS":{"16777216000000000":"2000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
 Check if they are equal -> true
-14:37:24.968 L1-Dev  -> New Balance -> NSX4zDujYzcfj6DphceHjWGUFoJuLFsCvknngon -> {"NOTUS":{"16777216000000000":"2000000000000000"}}
-14:37:24.968 L1-Dev  -> StoreToDb : -> NSX5YadKtX96usfmZV8da1ngmSvFhN788sPFjhs
-BEFORE PUT NSX5YadKtX96usfmZV8da1ngmSvFhN788sPFjhs ==>> {"Wallet":"NSX5YadKtX96usfmZV8da1ngmSvFhN788sPFjhs","Balance":{"NOTUS":{"16777216000000000":"10000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
-AFTER PUT  NSX5YadKtX96usfmZV8da1ngmSvFhN788sPFjhs ==>> {"Wallet":"NSX5YadKtX96usfmZV8da1ngmSvFhN788sPFjhs","Balance":{"NOTUS":{"16777216000000000":"10000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
+16:31:20.530 L1-Dev  -> New Balance -> NSX4fkwSxaAeg9xXuBiGGefhyeTYU2p3JsP4FXx -> {"NOTUS":{"16777216000000000":"2000000000000000"}}
+16:31:20.530 L1-Dev  -> StoreToDb : -> NSX51ec7zrX6DXRoeBZvrXy9dttpmzvnawUQ35P
+BEFORE PUT NSX51ec7zrX6DXRoeBZvrXy9dttpmzvnawUQ35P ==>> {"Wallet":"NSX51ec7zrX6DXRoeBZvrXy9dttpmzvnawUQ35P","Balance":{"NOTUS":{"16777216000000000":"10000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
+AFTER PUT  NSX51ec7zrX6DXRoeBZvrXy9dttpmzvnawUQ35P ==>> {"Wallet":"NSX51ec7zrX6DXRoeBZvrXy9dttpmzvnawUQ35P","Balance":{"NOTUS":{"16777216000000000":"10000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
 Check if they are equal -> true
-14:37:24.968 L1-Dev  -> New Balance -> NSX5YadKtX96usfmZV8da1ngmSvFhN788sPFjhs -> {"NOTUS":{"16777216000000000":"10000000000000000"}}
-14:37:24.983 L1-Dev  -> CurrentBlockRowNo : 2
-14:37:24.983 L1-Dev  -> addBlockToChain : false
-14:37:24.983 L1-Dev  -> Balance.Control Just Executed For -> 2
-14:37:24.983 L1-Dev  -> All Blocks Loaded
-14:37:24.983 L1-Dev  -> Main Validator Started
-14:37:25.000 L1-Dev  -> Node Sync Starting
-14:37:25.000 L1-Dev  -> Finding Online Nodes
-14:37:25.000 L1-Dev  -> Removing Offline Nodes From List
-14:37:25.000 L1-Dev  -> Node List Sync With Other Nodes
-14:37:25.015 L1-Dev  -> Send My Node Full Info
-14:37:25.015 L1-Dev  -> Ask Other Nodes Full Info
-14:37:25.030 L1-Dev  -> Distribution Control Timer Has started
-14:37:25.030 L1-Dev  -> Wait Until Nodes Available
-14:37:25.030 L1-Dev  -> First Synchronisation
-14:37:25.030 L1-Dev  -> Node Count : 2 / 2
-14:37:25.046 L1-Dev  -> I'm Waiting Starting (When) Time / Current : 14:38:00.000 /  14:37:25.046
-14:37:25.063 L1-Dev  -> Ping Started
-14:37:25.063 L1-Dev  -> Node Blocks Are Checking For Sync
-14:37:25.078 L1-Dev  -> CurrentBlockRowNo : 3
-{"20230120143802000":{"IpAddress":"3.125.159.102","Port":5002,"Wallet":"NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7","GroupNo":1},"20230120143801500":{"IpAddress":"18.156.37.61","Port":5002,"Wallet":"NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63","GroupNo":1},"20230120143801000":{"IpAddress":"3.125.159.102","Port":5002,"Wallet":"NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7","GroupNo":1},"20230120143800500":{"IpAddress":"18.156.37.61","Port":5002,"Wallet":"NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63","GroupNo":1},"20230120143800000":{"IpAddress":"3.125.159.102","Port":5002,"Wallet":"NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7","GroupNo":1},"20230120143802500":{"IpAddress":"18.156.37.61","Port":5002,"Wallet":"NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63","GroupNo":1}}
+16:31:20.530 L1-Dev  -> New Balance -> NSX51ec7zrX6DXRoeBZvrXy9dttpmzvnawUQ35P -> {"NOTUS":{"16777216000000000":"10000000000000000"}}
+16:31:20.530 L1-Dev  -> CurrentBlockRowNo : 2
+16:31:20.530 L1-Dev  -> addBlockToChain : false
+16:31:20.530 L1-Dev  -> Balance.Control Just Executed For -> 2
+16:31:20.530 L1-Dev  -> All Blocks Loaded
+16:31:20.530 L1-Dev  -> Main Validator Started
+16:31:20.549 L1-Dev  -> Node Sync Starting
+16:31:20.549 L1-Dev  -> Finding Online Nodes
+16:31:20.549 L1-Dev  -> Removing Offline Nodes From List
+16:31:20.549 L1-Dev  -> Node List Sync With Other Nodes
+16:31:20.562 L1-Dev  -> Send My Node Full Info
+16:31:20.562 L1-Dev  -> Ask Other Nodes Full Info
+16:31:20.562 L1-Dev  -> Distribution Control Timer Has started
+16:31:20.582 L1-Dev  -> Wait Until Nodes Available
+16:31:20.582 L1-Dev  -> First Synchronisation
+16:31:20.582 L1-Dev  -> Node Count : 2 / 2
+16:31:25.607 L1-Dev  -> I'm Sending Starting (When) Time / Current : 16:32:00.000 / 16:31:25.607
+16:31:25.607 L1-Dev  -> Ping Started
+16:31:25.625 L1-Dev  -> Node Blocks Are Checking For Sync
+16:31:25.625 L1-Dev  -> CurrentBlockRowNo : 3
+{"20230120163202500":{"IpAddress":"3.125.159.102","Port":5002,"Wallet":"NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7","GroupNo":1},"20230120163202000":{"IpAddress":"18.156.37.61","Port":5002,"Wallet":"NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63","GroupNo":1},"20230120163200000":{"IpAddress":"18.156.37.61","Port":5002,"Wallet":"NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63","GroupNo":1},"20230120163201500":{"IpAddress":"3.125.159.102","Port":5002,"Wallet":"NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7","GroupNo":1},"20230120163201000":{"IpAddress":"18.156.37.61","Port":5002,"Wallet":"NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63","GroupNo":1},"20230120163200500":{"IpAddress":"3.125.159.102","Port":5002,"Wallet":"NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7","GroupNo":1}}
 blockGenarationTime : 16777216000000000
 blockTimeVal : 16777216000000000
 if (NVG.Settings.Nodes.Queue.ContainsKey(blockGenarationTime) == FALSE -> FALSE)
-14:37:25.078 L1-Dev  -> Block Came From The Block Sync [ ______________2 :  200 ]
-14:37:25.078 L1-Dev  -> We Already Processed The Block -> [ 2 ]
-14:37:25.078 L1-Dev  -> Crypto Transfer Timer Has Started
-14:37:25.094 L1-Dev  -> First Synchronization Is Done
-Peer Receive : <block>3:NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7</block>
-incomeMessage [NVG.Settings.PeerManager] : <block>3:NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7</block>
-14:38:00.038 L1-Dev  -> Wait To Get New Block
-14:38:00.039 L1-Dev  -> Income Block Row No -> 3, Validator => NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:00.042 L1-Dev  -> CurrentBlockRowNo : 3
-14:38:00.044 L1-Dev  -> New Block Arrived : 134afe8231b8003
-14:38:00.045 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 2
-14:38:00.046 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 3
-14:38:00.047 L1-Dev  -> Block Came From The Validator Queue [ ______________3 :  300 ]
-14:38:00.047 L1-Dev  -> Block Generated By [ ______________3 ] : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:00.049 L1-Dev  -> addBlockToChain : true
-14:38:00.053 L1-Dev  -> Balance.Control Just Executed For -> 3
-14:38:00.054 L1-Dev  -> Block Is Proccessing   -> 3 -> 134afe8231b80037a6f9 -> 10000000000000000000
-14:38:00.054 L1-Dev  -> New Block Downloaded From Node
-+Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-Balance Text Is Empty
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-Balance Text Is Empty
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-Balance Text Is Empty
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-Balance Text Is Empty
-14:38:04.546 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:04.546 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 3
-14:38:04.546 L1-Dev  -> CurrentBlockRowNo : 4
+16:31:25.639 L1-Dev  -> Block Came From The Block Sync [ ______________2 :  200 ]
+16:31:25.639 L1-Dev  -> We Already Processed The Block -> [ 2 ]
+16:31:25.639 L1-Dev  -> Crypto Transfer Timer Has Started
+16:31:25.639 L1-Dev  -> First Synchronization Is Done
+16:32:00.002 L1-Dev  -> Empty Block Executed
+16:32:00.002 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 2
+16:32:00.015 L1-Dev  -> CurrentBlockRowNo : 3
+16:32:00.015 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 2
+16:32:00.015 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 3
+16:32:00.015 L1-Dev  -> Block Came From The Main Loop [ ______________3 :  300 ]
+16:32:00.015 L1-Dev  -> Block Generated By [ ______________3 ] : ME
+16:32:00.015 L1-Dev  -> addBlockToChain : true
+16:32:00.029 L1-Dev  -> Balance.Control Just Executed For -> 3
+16:32:00.029 L1-Dev  -> Block Is Proccessing   -> 3 -> 134afe827d800007f8fd -> 10000000000000000000
+16:32:00.029 L1-Dev  -> blockIsValid Result : true
+16:32:00.029 L1-Dev  -> Distrubute To All Other Node / Nodes
+16:32:00.029 L1-Dev  -> Distributed [ ______________3 : 300 ] To 3.125.159.102:5002
+16:32:00.029 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:00.029 L1-Dev  -> {}
++Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+Balance Text Is NULL
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+Balance Text Is NULL
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+Balance Text Is NULL
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+Balance Text Is NULL
+16:32:11.563 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:11.563 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 3
+16:32:11.563 L1-Dev  -> CurrentBlockRowNo : 4
 blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
 NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:04.565 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
-14:38:04.565 L1-Dev  -> We Ignored This Block [ ______________4 ] -> 1
-14:38:04.565 L1-Dev  -> blockIsValid Result : false
+16:32:11.577 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+16:32:11.577 L1-Dev  -> We Ignored This Block [ ______________4 ] -> 1
+16:32:11.577 L1-Dev  -> blockIsValid Result : false
 Reload Tx From Temp List
-["134afe8231bc0828f3446cac541348f9da9758d1a7393c6114fb6f21f151b637a49959d63f6787222404f4c54f"]
-14:38:04.565 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:04.565 L1-Dev  -> {"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe":"134afe8231bc0828f3446cac541348f9da9758d1a7393c6114fb6f21f151b637a49959d63f6787222404f4c54f"}
-14:38:04.565 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-Balance Text Is Empty
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-Balance Text Is Empty
-14:38:05.501 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:05.501 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 3
-14:38:05.501 L1-Dev  -> CurrentBlockRowNo : 4
-blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
-NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:05.515 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
-14:38:05.515 L1-Dev  -> We Ignored This Block [ ______________4 ] -> 2
-14:38:05.515 L1-Dev  -> blockIsValid Result : false
-Reload Tx From Temp List
-["134afe8231bc0828f3446cac541348f9da9758d1a7393c6114fb6f21f151b637a49959d63f6787222404f4c54f"]
-14:38:05.515 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:05.515 L1-Dev  -> {}
-14:38:05.515 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-Balance Text Is Empty
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-Balance Text Is Empty
-14:38:06.501 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:06.501 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 3
-14:38:06.501 L1-Dev  -> CurrentBlockRowNo : 4
-blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
-NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:06.501 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
-14:38:06.501 L1-Dev  -> We Ignored This Block [ ______________4 ] -> 3
-14:38:06.501 L1-Dev  -> blockIsValid Result : false
-Reload Tx From Temp List
-["134afe8231bc0828f3446cac541348f9da9758d1a7393c6114fb6f21f151b637a49959d63f6787222404f4c54f"]
-14:38:06.501 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:06.516 L1-Dev  -> {}
-14:38:06.516 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-Balance Text Is Empty
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-Balance Text Is Empty
-14:38:07.501 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:07.501 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 3
-14:38:07.501 L1-Dev  -> CurrentBlockRowNo : 4
-blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
-NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:07.501 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
-14:38:07.501 L1-Dev  -> We Ignored This Block [ ______________4 ] -> 4
-14:38:07.501 L1-Dev  -> blockIsValid Result : false
-Reload Tx From Temp List
-["134afe8231bc0828f3446cac541348f9da9758d1a7393c6114fb6f21f151b637a49959d63f6787222404f4c54f"]
-14:38:07.501 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:07.501 L1-Dev  -> {}
-14:38:07.501 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-Balance Text Is Empty
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-Balance Text Is Empty
-14:38:08.501 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:08.501 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 3
-14:38:08.501 L1-Dev  -> CurrentBlockRowNo : 4
-blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
-NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:08.501 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
-14:38:08.501 L1-Dev  -> We Ignored This Block [ ______________4 ] -> 5
-14:38:08.501 L1-Dev  -> blockIsValid Result : false
-Reload Tx From Temp List
-["134afe8231bc0828f3446cac541348f9da9758d1a7393c6114fb6f21f151b637a49959d63f6787222404f4c54f"]
-14:38:08.515 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:08.515 L1-Dev  -> {}
-14:38:08.515 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-Balance Text Is Empty
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-Balance Text Is Empty
-14:38:09.001 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:09.001 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 3
-14:38:09.001 L1-Dev  -> CurrentBlockRowNo : 4
-14:38:09.001 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 3
-14:38:09.001 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 4
-14:38:09.001 L1-Dev  -> Block Came From The Main Loop [ ______________4 :  125 ]
-14:38:09.001 L1-Dev  -> Block Generated By [ ______________4 ] : ME
-14:38:09.001 L1-Dev  -> addBlockToChain : true
-14:38:09.001 L1-Dev  -> Balance.Control Just Executed For -> 4
-14:38:09.001 L1-Dev  -> StoreToDb : -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-BEFORE PUT NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"} SETTED
-AFTER PUT  NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"} SETTED
+["134afe827d8b086f645dfc8049641d4390a64df46c16b72d73dbcfd6890ef5395251b150fa84485a6ee39fe85e"]
+16:32:11.577 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:11.577 L1-Dev  -> {"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF":"134afe827d8b086f645dfc8049641d4390a64df46c16b72d73dbcfd6890ef5395251b150fa84485a6ee39fe85e"}
+16:32:11.577 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+Balance Text Is NULL
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+Balance Text Is NULL
+16:32:12.001 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:12.001 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 3
+16:32:12.001 L1-Dev  -> CurrentBlockRowNo : 4
+16:32:12.001 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 3
+16:32:12.001 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 4
+16:32:12.001 L1-Dev  -> Block Came From The Main Loop [ ______________4 :  125 ]
+16:32:12.001 L1-Dev  -> Block Generated By [ ______________4 ] : ME
+16:32:12.001 L1-Dev  -> addBlockToChain : true
+16:32:12.015 L1-Dev  -> Balance.Control Just Executed For -> 4
+16:32:12.015 L1-Dev  -> StoreToDb : -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+BEFORE PUT NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"2000000000"}},"RowNo":4,"UID":"134afe827d8c00059c211135895ca24a248b27323e8d74407f5ae7d253460165e110c861333707199a005a526f"} SETTED
+AFTER PUT  NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"2000000000"}},"RowNo":4,"UID":"134afe827d8c00059c211135895ca24a248b27323e8d74407f5ae7d253460165e110c861333707199a005a526f"} SETTED
 Check if they are equal -> true
-14:38:09.015 L1-Dev  -> New Balance -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe -> {"NOTUS":{"20230120143809001":"2000000000"}}
-14:38:09.015 L1-Dev  -> Block Is Proccessing   -> 4 -> 134afe8231c10006c842 -> 134afe8231b80037a6f9
-14:38:09.015 L1-Dev  -> blockIsValid Result : true
-14:38:09.015 L1-Dev  -> Distrubute To All Other Node / Nodes
-14:38:09.015 L1-Dev  -> Distributed [ ______________4 : 125 ] To 3.125.159.102:5002
-14:38:09.015 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:09.015 L1-Dev  -> {}
-14:38:09.015 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"}
-Get From RocksDb
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"}
-Get From RocksDb
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"}
-Get From RocksDb
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"}
+16:32:12.015 L1-Dev  -> New Balance -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF -> {"NOTUS":{"20230120163212001":"2000000000"}}
+16:32:12.015 L1-Dev  -> Block Is Proccessing   -> 4 -> 134afe827d8c00059c21 -> 134afe827d800007f8fd
+16:32:12.015 L1-Dev  -> blockIsValid Result : true
+16:32:12.015 L1-Dev  -> Distrubute To All Other Node / Nodes
+16:32:12.015 L1-Dev  -> Distributed [ ______________4 : 125 ] To 3.125.159.102:5002
+16:32:12.015 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:12.015 L1-Dev  -> {}
+16:32:12.015 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
++Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"2000000000"}},"RowNo":4,"UID":"134afe827d8c00059c211135895ca24a248b27323e8d74407f5ae7d253460165e110c861333707199a005a526f"}
 Get From RocksDb
 Get Wallet Balance : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
-Balance Text Is Empty
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"}
+Balance Text Is NULL
+16:32:22.691 L1-Dev  -> 0 -> true
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"2000000000"}},"RowNo":4,"UID":"134afe827d8c00059c211135895ca24a248b27323e8d74407f5ae7d253460165e110c861333707199a005a526f"}
 Get From RocksDb
-14:38:18.172 L1-Dev  -> 0 -> true
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"}
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+Balance Text Is NULL
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"2000000000"}},"RowNo":4,"UID":"134afe827d8c00059c211135895ca24a248b27323e8d74407f5ae7d253460165e110c861333707199a005a526f"}
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
 Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-Balance Text Is Empty
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"}
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"2000000000"}},"RowNo":4,"UID":"134afe827d8c00059c211135895ca24a248b27323e8d74407f5ae7d253460165e110c861333707199a005a526f"}
 Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-Balance Text Is Empty
-14:38:18.180 L1-Dev  -> entry.Key : 134afe8231c90b41531c5d433e879df0ecccd314d352b71f27d312a1a7ca714f1f00ed326562ec93361522448f
-14:38:18.183 L1-Dev  -> 1 -> false
-14:38:18.184 L1-Dev  -> 1 -> false
-14:38:18.184 L1-Dev  -> 1 -> false
-14:38:18.185 L1-Dev  -> transactionCount : 1
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"}
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+Balance Text Is NULL
+16:32:22.708 L1-Dev  -> entry.Key : 134afe827d9607a2b1d5191506922b1bad607f17fd9e1050b1fda4a875e05d1966fcafb1f4a5661b50a0ebef2d
+16:32:22.732 L1-Dev  -> 1 -> false
+16:32:22.733 L1-Dev  -> transactionCount : 1
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"2000000000"}},"RowNo":4,"UID":"134afe827d8c00059c211135895ca24a248b27323e8d74407f5ae7d253460165e110c861333707199a005a526f"}
 Get From RocksDb
-14:38:18.501 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:18.501 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 4
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"}
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"2000000000"}},"RowNo":4,"UID":"134afe827d8c00059c211135895ca24a248b27323e8d74407f5ae7d253460165e110c861333707199a005a526f"}
 Get From RocksDb
-14:38:18.536 L1-Dev  -> CurrentBlockRowNo : 5
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"2000000000"}},"RowNo":4,"UID":"134afe827d8c00059c211135895ca24a248b27323e8d74407f5ae7d253460165e110c861333707199a005a526f"}
+Get From RocksDb
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"2000000000"}},"RowNo":4,"UID":"134afe827d8c00059c211135895ca24a248b27323e8d74407f5ae7d253460165e110c861333707199a005a526f"}
+Get From RocksDb
+16:32:23.503 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:23.503 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 4
+16:32:23.516 L1-Dev  -> CurrentBlockRowNo : 5
 blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
 NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:18.536 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
-14:38:18.536 L1-Dev  -> We Ignored This Block [ ______________5 ] -> 6
-14:38:18.536 L1-Dev  -> blockIsValid Result : false
+16:32:23.516 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+16:32:23.516 L1-Dev  -> We Ignored This Block [ ______________5 ] -> 2
+16:32:23.516 L1-Dev  -> blockIsValid Result : false
 Reload Tx From Temp List
-["134afe8231ca02d7360618078fad7624d342e6e1f6e016aa9a47eabe5e7be33606738cee59718a6d98f8540cd2"]
-14:38:18.546 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:18.546 L1-Dev  -> {"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe":"456465","NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR":"456465"}
-14:38:18.546 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"}
+["134afe827d960b340d5231d4d2dc7e7a132ae83a8c7f677fdb537f3e5f75e35eab77d7c6627ed8265c66a6aad4"]
+16:32:23.516 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:23.516 L1-Dev  -> {"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF":"456465","NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH":"456465"}
+16:32:23.516 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+Get Wallet Balance : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
+Balance Text Is NULL
+16:32:23.686 L1-Dev  -> 0 -> true
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"2000000000"}},"RowNo":4,"UID":"134afe827d8c00059c211135895ca24a248b27323e8d74407f5ae7d253460165e110c861333707199a005a526f"}
 Get From RocksDb
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"}
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"2000000000"}},"RowNo":4,"UID":"134afe827d8c00059c211135895ca24a248b27323e8d74407f5ae7d253460165e110c861333707199a005a526f"}
+Get From RocksDb
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+Balance Text Is NULL
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"2000000000"}},"RowNo":4,"UID":"134afe827d8c00059c211135895ca24a248b27323e8d74407f5ae7d253460165e110c861333707199a005a526f"}
+Get From RocksDb
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+Balance Text Is NULL
+16:32:23.728 L1-Dev  -> entry.Key : 134afe827d9704f38966870535ae0610524c43ef9270eeb2b19a5a697bd3c8d94d135c8d7efca37a8c7d7887f7
+16:32:23.728 L1-Dev  -> 1 -> false
+16:32:23.729 L1-Dev  -> 1 -> false
+16:32:23.729 L1-Dev  -> 1 -> false
+16:32:23.730 L1-Dev  -> 1 -> false
+16:32:23.730 L1-Dev  -> 1 -> false
+16:32:23.731 L1-Dev  -> transactionCount : 1
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"2000000000"}},"RowNo":4,"UID":"134afe827d8c00059c211135895ca24a248b27323e8d74407f5ae7d253460165e110c861333707199a005a526f"}
+Get From RocksDb
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"2000000000"}},"RowNo":4,"UID":"134afe827d8c00059c211135895ca24a248b27323e8d74407f5ae7d253460165e110c861333707199a005a526f"}
+Get From RocksDb
+16:32:24.202 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:24.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 4
+16:32:24.202 L1-Dev  -> CurrentBlockRowNo : 5
+16:32:24.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 4
+16:32:24.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 5
+16:32:24.202 L1-Dev  -> Block Came From The Main Loop [ ______________5 :  120 ]
+16:32:24.202 L1-Dev  -> Block Generated By [ ______________5 ] : ME
+16:32:24.202 L1-Dev  -> addBlockToChain : true
+16:32:24.218 L1-Dev  -> Balance.Control Just Executed For -> 5
+16:32:24.218 L1-Dev  -> StoreToDb : -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+BEFORE PUT NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1989999850"}},"RowNo":5,"UID":"134afe827d9803172d4aa3eb978cd7a74705a8161d81826a688e658d8539c1bb0c67b99866779c70fd1a38fae3"} SETTED
+AFTER PUT  NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1989999850"}},"RowNo":5,"UID":"134afe827d9803172d4aa3eb978cd7a74705a8161d81826a688e658d8539c1bb0c67b99866779c70fd1a38fae3"} SETTED
+Check if they are equal -> true
+16:32:24.218 L1-Dev  -> New Balance -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF -> {"NOTUS":{"20230120163212001":"1989999850"}}
+16:32:24.218 L1-Dev  -> StoreToDb : -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+BEFORE PUT NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":5,"UID":"134afe827d9803172d4aa3eb978cd7a74705a8161d81826a688e658d8539c1bb0c67b99866779c70fd1a38fae3"} SETTED
+AFTER PUT  NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":5,"UID":"134afe827d9803172d4aa3eb978cd7a74705a8161d81826a688e658d8539c1bb0c67b99866779c70fd1a38fae3"} SETTED
+Check if they are equal -> true
+16:32:24.218 L1-Dev  -> New Balance -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH -> {"NOTUS":{"20230119131500":"10000000"}}
+16:32:24.218 L1-Dev  -> Block Is Proccessing   -> 5 -> 134afe827d9803172d4a -> 134afe827d8c00059c21
+16:32:24.218 L1-Dev  -> blockIsValid Result : true
+16:32:24.218 L1-Dev  -> Distrubute To All Other Node / Nodes
+16:32:24.218 L1-Dev  -> Distributed [ ______________5 : 120 ] To 3.125.159.102:5002
+16:32:24.218 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:24.218 L1-Dev  -> {"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF":"456465","NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH":"456465"}
+16:32:24.234 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1989999850"}},"RowNo":5,"UID":"134afe827d9803172d4aa3eb978cd7a74705a8161d81826a688e658d8539c1bb0c67b99866779c70fd1a38fae3"}
 Get From RocksDb
 Get Wallet Balance : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
-Balance Text Is Empty
-14:38:19.139 L1-Dev  -> 0 -> true
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"}
+Balance Text Is NULL
+16:32:24.682 L1-Dev  -> 0 -> true
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1989999850"}},"RowNo":5,"UID":"134afe827d9803172d4aa3eb978cd7a74705a8161d81826a688e658d8539c1bb0c67b99866779c70fd1a38fae3"}
 Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-Balance Text Is Empty
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"}
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+{"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":5,"UID":"134afe827d9803172d4aa3eb978cd7a74705a8161d81826a688e658d8539c1bb0c67b99866779c70fd1a38fae3"}
 Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-Balance Text Is Empty
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-14:38:19.147 L1-Dev  -> entry.Key : 134afe8231ca0b68f0c32382e97a2085aad659ffd9b2371154ebb5b924f7084b4e086c361061fb340a385d10bb
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"}
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1989999850"}},"RowNo":5,"UID":"134afe827d9803172d4aa3eb978cd7a74705a8161d81826a688e658d8539c1bb0c67b99866779c70fd1a38fae3"}
 Get From RocksDb
-14:38:19.152 L1-Dev  -> 1 -> false
-14:38:19.152 L1-Dev  -> 1 -> false
-14:38:19.158 L1-Dev  -> 1 -> false
-14:38:19.165 L1-Dev  -> 1 -> false
-14:38:19.165 L1-Dev  -> 1 -> false
-14:38:19.172 L1-Dev  -> 1 -> false
-14:38:19.179 L1-Dev  -> 1 -> false
-14:38:19.179 L1-Dev  -> transactionCount : 1
-14:38:19.704 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:19.704 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 4
-14:38:19.704 L1-Dev  -> CurrentBlockRowNo : 5
-blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
-NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:19.704 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
-14:38:19.704 L1-Dev  -> We Ignored This Block [ ______________5 ] -> 7
-14:38:19.704 L1-Dev  -> blockIsValid Result : false
-Reload Tx From Temp List
-["134afe8231ca02d7360618078fad7624d342e6e1f6e016aa9a47eabe5e7be33606738cee59718a6d98f8540cd2"]
-14:38:19.704 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:19.704 L1-Dev  -> {"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe":"456465","NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR":"456465"}
-14:38:19.718 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+{"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":5,"UID":"134afe827d9803172d4aa3eb978cd7a74705a8161d81826a688e658d8539c1bb0c67b99866779c70fd1a38fae3"}
+Get From RocksDb
+16:32:24.690 L1-Dev  -> entry.Key : 134afe827d980455e793517c4671333e40f022c7ccf09bfa0a9cd07429ee0995713982f92963bf87218dfc3ca1
+16:32:24.690 L1-Dev  -> 1 -> false
+16:32:24.693 L1-Dev  -> 1 -> false
+16:32:24.694 L1-Dev  -> 1 -> false
+16:32:24.694 L1-Dev  -> 1 -> false
+16:32:24.695 L1-Dev  -> 1 -> false
+16:32:24.695 L1-Dev  -> 1 -> false
+16:32:24.696 L1-Dev  -> 1 -> false
+16:32:24.696 L1-Dev  -> transactionCount : 1
+16:32:25.202 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:25.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 5
+16:32:25.202 L1-Dev  -> CurrentBlockRowNo : 6
+16:32:25.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 5
+16:32:25.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 6
+16:32:25.202 L1-Dev  -> Block Came From The Main Loop [ ______________6 :  120 ]
+16:32:25.202 L1-Dev  -> Block Generated By [ ______________6 ] : ME
+16:32:25.202 L1-Dev  -> addBlockToChain : true
+16:32:25.202 L1-Dev  -> Balance.Control Just Executed For -> 6
+16:32:25.202 L1-Dev  -> StoreToDb : -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+BEFORE PUT NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1989999850"}},"RowNo":6,"UID":"134afe827d9903177fe40073e8f20000a147ccf253e5d4d09edca046c21815281ceb0d571124da7500d6034d90"} SETTED
+AFTER PUT  NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1989999850"}},"RowNo":6,"UID":"134afe827d9903177fe40073e8f20000a147ccf253e5d4d09edca046c21815281ceb0d571124da7500d6034d90"} SETTED
+Check if they are equal -> true
+16:32:25.218 L1-Dev  -> New Balance -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF -> {"NOTUS":{"20230120163212001":"1989999850"}}
+16:32:25.218 L1-Dev  -> StoreToDb : -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+BEFORE PUT NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":6,"UID":"134afe827d9903177fe40073e8f20000a147ccf253e5d4d09edca046c21815281ceb0d571124da7500d6034d90"} SETTED
+AFTER PUT  NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":6,"UID":"134afe827d9903177fe40073e8f20000a147ccf253e5d4d09edca046c21815281ceb0d571124da7500d6034d90"} SETTED
+Check if they are equal -> true
+16:32:25.218 L1-Dev  -> New Balance -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH -> {"NOTUS":{"20230119131500":"10000000"}}
+16:32:25.218 L1-Dev  -> Block Is Proccessing   -> 6 -> 134afe827d9903177fe4 -> 134afe827d9803172d4a
+16:32:25.218 L1-Dev  -> blockIsValid Result : true
+16:32:25.218 L1-Dev  -> Distrubute To All Other Node / Nodes
+16:32:25.218 L1-Dev  -> Distributed [ ______________6 : 120 ] To 3.125.159.102:5002
+16:32:25.218 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:25.218 L1-Dev  -> {"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF":"456465","NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH":"456465"}
+16:32:25.218 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
 Get Wallet Balance : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
-Balance Text Is Empty
-14:38:20.136 L1-Dev  -> 0 -> true
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"}
+Balance Text Is NULL
+16:32:25.684 L1-Dev  -> 0 -> true
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1989999850"}},"RowNo":6,"UID":"134afe827d9903177fe40073e8f20000a147ccf253e5d4d09edca046c21815281ceb0d571124da7500d6034d90"}
 Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-Balance Text Is Empty
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"}
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+{"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":6,"UID":"134afe827d9903177fe40073e8f20000a147ccf253e5d4d09edca046c21815281ceb0d571124da7500d6034d90"}
 Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-Balance Text Is Empty
-14:38:20.142 L1-Dev  -> entry.Key : 134afe8231cb02bd044ac7acf3878b23d472dadfec169b1f70e41fdfe37a5b46eb910489bac7c78c84a4ce5855
-14:38:20.143 L1-Dev  -> 1 -> false
-14:38:20.143 L1-Dev  -> 1 -> false
-14:38:20.144 L1-Dev  -> 1 -> false
-14:38:20.144 L1-Dev  -> 1 -> false
-14:38:20.145 L1-Dev  -> 1 -> false
-14:38:20.145 L1-Dev  -> 1 -> false
-14:38:20.148 L1-Dev  -> 1 -> false
-14:38:20.148 L1-Dev  -> transactionCount : 1
-14:38:20.704 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:20.704 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 4
-14:38:20.704 L1-Dev  -> CurrentBlockRowNo : 5
-blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
-NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:20.704 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
-14:38:20.704 L1-Dev  -> We Ignored This Block [ ______________5 ] -> 8
-14:38:20.704 L1-Dev  -> blockIsValid Result : false
-Reload Tx From Temp List
-["134afe8231cb02be44b4622dfd2a3843a865644de5b5fa25fa9716638ada9fb15ce27b748472698203a537e0d9"]
-14:38:20.704 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:20.704 L1-Dev  -> {"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe":"456465","NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR":"456465"}
-14:38:20.704 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1989999850"}},"RowNo":6,"UID":"134afe827d9903177fe40073e8f20000a147ccf253e5d4d09edca046c21815281ceb0d571124da7500d6034d90"}
+Get From RocksDb
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+{"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":6,"UID":"134afe827d9903177fe40073e8f20000a147ccf253e5d4d09edca046c21815281ceb0d571124da7500d6034d90"}
+Get From RocksDb
+16:32:25.690 L1-Dev  -> entry.Key : 134afe827d98014678fc06597a79334afa2d445c3af20199021b68615a8ae1149942d1a04dc23ab7db8e9cf13f
+16:32:25.691 L1-Dev  -> 1 -> false
+16:32:25.691 L1-Dev  -> 1 -> false
+16:32:25.692 L1-Dev  -> 1 -> false
+16:32:25.692 L1-Dev  -> 1 -> false
+16:32:25.695 L1-Dev  -> 1 -> false
+16:32:25.695 L1-Dev  -> 1 -> false
+16:32:25.696 L1-Dev  -> transactionCount : 1
+16:32:26.202 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:26.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 6
+16:32:26.202 L1-Dev  -> CurrentBlockRowNo : 7
+16:32:26.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 6
+16:32:26.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 7
+16:32:26.202 L1-Dev  -> Block Came From The Main Loop [ ______________7 :  120 ]
+16:32:26.202 L1-Dev  -> Block Generated By [ ______________7 ] : ME
+16:32:26.202 L1-Dev  -> addBlockToChain : true
+16:32:26.202 L1-Dev  -> Balance.Control Just Executed For -> 7
+16:32:26.202 L1-Dev  -> StoreToDb : -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+BEFORE PUT NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1979999700"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"} SETTED
+AFTER PUT  NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1979999700"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"} SETTED
+Check if they are equal -> true
+16:32:26.218 L1-Dev  -> New Balance -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF -> {"NOTUS":{"20230120163212001":"1979999700"}}
+16:32:26.218 L1-Dev  -> StoreToDb : -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+BEFORE PUT NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"} SETTED
+AFTER PUT  NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"} SETTED
+Check if they are equal -> true
+16:32:26.218 L1-Dev  -> New Balance -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH -> {"NOTUS":{"20230119131500":"20000000"}}
+16:32:26.218 L1-Dev  -> Block Is Proccessing   -> 7 -> 134afe827d9a03172485 -> 134afe827d9903177fe4
+16:32:26.218 L1-Dev  -> blockIsValid Result : true
+16:32:26.218 L1-Dev  -> Distrubute To All Other Node / Nodes
+16:32:26.218 L1-Dev  -> Distributed [ ______________7 : 120 ] To 3.125.159.102:5002
+16:32:26.218 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:26.218 L1-Dev  -> {"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF":"456465"}
+16:32:26.218 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
 Get Wallet Balance : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
-Balance Text Is Empty
-14:38:21.130 L1-Dev  -> 0 -> true
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"}
+Balance Text Is NULL
+16:32:26.681 L1-Dev  -> 0 -> true
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1979999700"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-Balance Text Is Empty
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"2000000000"}},"RowNo":4,"UID":"134afe8231c10006c8424d2c0c589748bf52fdd0b87aa58c7a891ea3d78997191efff0e44e7ebefb1f9e8bc25c"}
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+{"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-Balance Text Is Empty
-14:38:21.140 L1-Dev  -> entry.Key : 134afe8231ca02a14b73a13d57e98fee9296ef8d2c08979babc2d33ddb6cc8acc478a4d08cf87a8b4df5984d4c
-14:38:21.140 L1-Dev  -> 1 -> false
-14:38:21.140 L1-Dev  -> 1 -> false
-14:38:21.140 L1-Dev  -> 1 -> false
-14:38:21.140 L1-Dev  -> 1 -> false
-14:38:21.140 L1-Dev  -> 1 -> false
-14:38:21.140 L1-Dev  -> 1 -> false
-14:38:21.140 L1-Dev  -> transactionCount : 1
-14:38:21.204 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:21.204 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 4
-14:38:21.204 L1-Dev  -> CurrentBlockRowNo : 5
-14:38:21.204 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 4
-14:38:21.204 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 5
-14:38:21.204 L1-Dev  -> Block Came From The Main Loop [ ______________5 :  120 ]
-14:38:21.204 L1-Dev  -> Block Generated By [ ______________5 ] : ME
-14:38:21.204 L1-Dev  -> addBlockToChain : true
-14:38:21.219 L1-Dev  -> Balance.Control Just Executed For -> 5
-14:38:21.219 L1-Dev  -> StoreToDb : -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-BEFORE PUT NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":5,"UID":"134afe8231cd0320a796752a6e478a39d065fbfe3a43cfacd824730a057042f6399d9028002e76734c69ba4bd3"} SETTED
-AFTER PUT  NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":5,"UID":"134afe8231cd0320a796752a6e478a39d065fbfe3a43cfacd824730a057042f6399d9028002e76734c69ba4bd3"} SETTED
-Check if they are equal -> true
-14:38:21.219 L1-Dev  -> New Balance -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe -> {"NOTUS":{"20230120143809001":"1989999850"}}
-14:38:21.219 L1-Dev  -> StoreToDb : -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-BEFORE PUT NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":5,"UID":"134afe8231cd0320a796752a6e478a39d065fbfe3a43cfacd824730a057042f6399d9028002e76734c69ba4bd3"} SETTED
-AFTER PUT  NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":5,"UID":"134afe8231cd0320a796752a6e478a39d065fbfe3a43cfacd824730a057042f6399d9028002e76734c69ba4bd3"} SETTED
-Check if they are equal -> true
-14:38:21.219 L1-Dev  -> New Balance -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR -> {"NOTUS":{"20230119131500":"10000000"}}
-14:38:21.219 L1-Dev  -> Block Is Proccessing   -> 5 -> 134afe8231cd0320a796 -> 134afe8231c10006c842
-14:38:21.219 L1-Dev  -> blockIsValid Result : true
-14:38:21.219 L1-Dev  -> Distrubute To All Other Node / Nodes
-14:38:21.219 L1-Dev  -> Distributed [ ______________5 : 120 ] To 3.125.159.102:5002
-14:38:21.219 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:21.219 L1-Dev  -> {"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe":"456465","NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR":"456465"}
-14:38:21.219 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1979999700"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
+Get From RocksDb
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+{"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
+Get From RocksDb
+16:32:26.691 L1-Dev  -> entry.Key : 134afe827d97022f46f66a5af81db301dffcbe1a43c31fb50db953feec194c56b23eefd71a105b5b5da642c15c
+16:32:26.693 L1-Dev  -> 1 -> false
+16:32:26.694 L1-Dev  -> 1 -> false
+16:32:26.694 L1-Dev  -> 1 -> false
+16:32:26.695 L1-Dev  -> 1 -> false
+16:32:26.696 L1-Dev  -> 1 -> false
+16:32:26.696 L1-Dev  -> transactionCount : 1
 Get Wallet Balance : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
-Balance Text Is Empty
-14:38:22.131 L1-Dev  -> 0 -> true
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":5,"UID":"134afe8231cd0320a796752a6e478a39d065fbfe3a43cfacd824730a057042f6399d9028002e76734c69ba4bd3"}
+Balance Text Is NULL
+16:32:27.676 L1-Dev  -> 0 -> true
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1979999700"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-{"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":5,"UID":"134afe8231cd0320a796752a6e478a39d065fbfe3a43cfacd824730a057042f6399d9028002e76734c69ba4bd3"}
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+{"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":5,"UID":"134afe8231cd0320a796752a6e478a39d065fbfe3a43cfacd824730a057042f6399d9028002e76734c69ba4bd3"}
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1979999700"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-{"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":5,"UID":"134afe8231cd0320a796752a6e478a39d065fbfe3a43cfacd824730a057042f6399d9028002e76734c69ba4bd3"}
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+{"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-14:38:22.141 L1-Dev  -> entry.Key : 134afe8231ca0e6c0babb05aa69a35876e6c5df2f5ae8784ee8bc0e983d5b75e2bb334598373572fb6c25f1a59
-14:38:22.141 L1-Dev  -> 1 -> false
-14:38:22.141 L1-Dev  -> 1 -> false
-14:38:22.141 L1-Dev  -> 1 -> false
-14:38:22.141 L1-Dev  -> 1 -> false
-14:38:22.141 L1-Dev  -> 1 -> false
-14:38:22.141 L1-Dev  -> transactionCount : 1
-14:38:22.204 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:22.204 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 5
-14:38:22.204 L1-Dev  -> CurrentBlockRowNo : 6
-14:38:22.204 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 5
-14:38:22.204 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 6
-14:38:22.204 L1-Dev  -> Block Came From The Main Loop [ ______________6 :  120 ]
-14:38:22.204 L1-Dev  -> Block Generated By [ ______________6 ] : ME
-14:38:22.204 L1-Dev  -> addBlockToChain : true
-14:38:22.219 L1-Dev  -> Balance.Control Just Executed For -> 6
-14:38:22.219 L1-Dev  -> StoreToDb : -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-BEFORE PUT NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":6,"UID":"134afe8231ce0320b5edae3639ea1f25b203f34a953cbf4f8b200cd4fff5ee087da1492532d30e0bc4056f6ee4"} SETTED
-AFTER PUT  NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":6,"UID":"134afe8231ce0320b5edae3639ea1f25b203f34a953cbf4f8b200cd4fff5ee087da1492532d30e0bc4056f6ee4"} SETTED
-Check if they are equal -> true
-14:38:22.219 L1-Dev  -> New Balance -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe -> {"NOTUS":{"20230120143809001":"1989999850"}}
-14:38:22.219 L1-Dev  -> StoreToDb : -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-BEFORE PUT NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":6,"UID":"134afe8231ce0320b5edae3639ea1f25b203f34a953cbf4f8b200cd4fff5ee087da1492532d30e0bc4056f6ee4"} SETTED
-AFTER PUT  NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":6,"UID":"134afe8231ce0320b5edae3639ea1f25b203f34a953cbf4f8b200cd4fff5ee087da1492532d30e0bc4056f6ee4"} SETTED
-Check if they are equal -> true
-14:38:22.219 L1-Dev  -> New Balance -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR -> {"NOTUS":{"20230119131500":"10000000"}}
-14:38:22.219 L1-Dev  -> Block Is Proccessing   -> 6 -> 134afe8231ce0320b5ed -> 134afe8231cd0320a796
-14:38:22.219 L1-Dev  -> blockIsValid Result : true
-14:38:22.219 L1-Dev  -> Distrubute To All Other Node / Nodes
-14:38:22.219 L1-Dev  -> Distributed [ ______________6 : 120 ] To 3.125.159.102:5002
-14:38:22.219 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:22.219 L1-Dev  -> {"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe":"456465","NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR":"456465"}
-14:38:22.219 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:27.689 L1-Dev  -> entry.Key : 134afe827d970dd1c36c653d7104d31da1dacd485ff9c9b4479f3ac483b705cbed66b824dd50ab5a08e6076b52
+16:32:27.689 L1-Dev  -> 1 -> false
+16:32:27.689 L1-Dev  -> 1 -> false
+16:32:27.689 L1-Dev  -> 1 -> false
+16:32:27.689 L1-Dev  -> 1 -> false
+16:32:27.689 L1-Dev  -> transactionCount : 1
+16:32:27.702 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:27.702 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 7
+16:32:27.702 L1-Dev  -> CurrentBlockRowNo : 8
+blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
+NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
+16:32:27.702 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+16:32:27.702 L1-Dev  -> We Ignored This Block [ ______________8 ] -> 3
+16:32:27.702 L1-Dev  -> blockIsValid Result : false
+Reload Tx From Temp List
+["134afe827d990aa277a12fee004500d6f55229660d21a00fdec36a375e25bc5b2383fd9cbb3c39732e9e115559"]
+16:32:27.702 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:27.702 L1-Dev  -> {"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF":"456465","NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH":"456465"}
+16:32:27.718 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
 Get Wallet Balance : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
-Balance Text Is Empty
-14:38:23.130 L1-Dev  -> 0 -> true
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":6,"UID":"134afe8231ce0320b5edae3639ea1f25b203f34a953cbf4f8b200cd4fff5ee087da1492532d30e0bc4056f6ee4"}
+Balance Text Is NULL
+16:32:28.675 L1-Dev  -> 0 -> true
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1979999700"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-{"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":6,"UID":"134afe8231ce0320b5edae3639ea1f25b203f34a953cbf4f8b200cd4fff5ee087da1492532d30e0bc4056f6ee4"}
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+{"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":6,"UID":"134afe8231ce0320b5edae3639ea1f25b203f34a953cbf4f8b200cd4fff5ee087da1492532d30e0bc4056f6ee4"}
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1979999700"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-{"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":6,"UID":"134afe8231ce0320b5edae3639ea1f25b203f34a953cbf4f8b200cd4fff5ee087da1492532d30e0bc4056f6ee4"}
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+{"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-14:38:23.141 L1-Dev  -> entry.Key : 134afe8231c90572b697d8698289caa6dcd5e6a29e95fd9f4e1d6f3917b167faa9cf31691ffd97ef8b861b2fcd
-14:38:23.141 L1-Dev  -> 1 -> false
-14:38:23.141 L1-Dev  -> 1 -> false
-14:38:23.141 L1-Dev  -> 1 -> false
-14:38:23.141 L1-Dev  -> 1 -> false
-14:38:23.141 L1-Dev  -> transactionCount : 1
-14:38:23.205 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:23.205 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 6
-14:38:23.205 L1-Dev  -> CurrentBlockRowNo : 7
-14:38:23.205 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 6
-14:38:23.205 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 7
-14:38:23.205 L1-Dev  -> Block Came From The Main Loop [ ______________7 :  120 ]
-14:38:23.205 L1-Dev  -> Block Generated By [ ______________7 ] : ME
-14:38:23.205 L1-Dev  -> addBlockToChain : true
-14:38:23.205 L1-Dev  -> Balance.Control Just Executed For -> 7
-14:38:23.219 L1-Dev  -> StoreToDb : -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-BEFORE PUT NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"} SETTED
-AFTER PUT  NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"} SETTED
-Check if they are equal -> true
-14:38:23.219 L1-Dev  -> New Balance -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe -> {"NOTUS":{"20230120143809001":"1989999850"}}
-14:38:23.219 L1-Dev  -> StoreToDb : -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-BEFORE PUT NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"} SETTED
-AFTER PUT  NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"} SETTED
-Check if they are equal -> true
-14:38:23.219 L1-Dev  -> New Balance -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR -> {"NOTUS":{"20230119131500":"10000000"}}
-14:38:23.219 L1-Dev  -> Block Is Proccessing   -> 7 -> 134afe8231cf0320dfac -> 134afe8231ce0320b5ed
-14:38:23.219 L1-Dev  -> blockIsValid Result : true
-14:38:23.219 L1-Dev  -> Distrubute To All Other Node / Nodes
-14:38:23.219 L1-Dev  -> Distributed [ ______________7 : 120 ] To 3.125.159.102:5002
-14:38:23.219 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:23.219 L1-Dev  -> {"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe":"456465"}
-14:38:23.219 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:28.688 L1-Dev  -> entry.Key : 134afe827d960e41320bde23fabde4ca563e72e7c30bec3ab497e5c6ab82b489190a5a1995fa0d042f02593448
+16:32:28.688 L1-Dev  -> 1 -> false
+16:32:28.688 L1-Dev  -> 1 -> false
+16:32:28.688 L1-Dev  -> 1 -> false
+16:32:28.688 L1-Dev  -> transactionCount : 1
+16:32:28.702 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:28.702 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 7
+16:32:28.702 L1-Dev  -> CurrentBlockRowNo : 8
+blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
+NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
+16:32:28.702 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+16:32:28.702 L1-Dev  -> We Ignored This Block [ ______________8 ] -> 4
+16:32:28.702 L1-Dev  -> blockIsValid Result : false
+Reload Tx From Temp List
+["134afe827d9a0aa481fa4cedf2cee2e76c75fe0cbc9f67c4991cd385788fb79b7c074823e103cdcd033773115b"]
+16:32:28.702 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:28.702 L1-Dev  -> {"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF":"456465","NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH":"456465"}
+16:32:28.702 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
 Get Wallet Balance : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
-Balance Text Is Empty
-14:38:24.137 L1-Dev  -> 0 -> true
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"}
+Balance Text Is NULL
+16:32:29.675 L1-Dev  -> 0 -> true
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1979999700"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-{"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"}
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+{"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"}
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1979999700"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-{"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"}
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+{"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-14:38:24.144 L1-Dev  -> entry.Key : 134afe8231ca082f69e8cab294e66dbf82b912dce5b1ba5444fd044e055104f9f865d437b7150a85ee37ee2bbe
-14:38:24.144 L1-Dev  -> 1 -> false
-14:38:24.145 L1-Dev  -> 1 -> false
-14:38:24.145 L1-Dev  -> 1 -> false
-14:38:24.146 L1-Dev  -> transactionCount : 1
-14:38:24.704 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:24.704 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 7
-14:38:24.704 L1-Dev  -> CurrentBlockRowNo : 8
+16:32:29.688 L1-Dev  -> entry.Key : 134afe827d970b1c90c735aff45b36e5a1fa5bdd3fd616f01958f70a2b5964a60277fe1ed4ddcd124c503e17f8
+16:32:29.688 L1-Dev  -> 1 -> false
+16:32:29.688 L1-Dev  -> 1 -> false
+16:32:29.688 L1-Dev  -> transactionCount : 1
+16:32:29.702 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:29.702 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 7
+16:32:29.702 L1-Dev  -> CurrentBlockRowNo : 8
 blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
 NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:24.704 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
-14:38:24.704 L1-Dev  -> We Ignored This Block [ ______________8 ] -> 9
-14:38:24.704 L1-Dev  -> blockIsValid Result : false
+16:32:29.702 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+16:32:29.702 L1-Dev  -> We Ignored This Block [ ______________8 ] -> 5
+16:32:29.702 L1-Dev  -> blockIsValid Result : false
 Reload Tx From Temp List
-["134afe8231cd0226aceca45048f3521a641cd48476f30e94aaecdd0cd14f28cad6cd622b5c54bfc63b281bf1ab"]
-14:38:24.704 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:24.704 L1-Dev  -> {}
-14:38:24.704 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+["134afe827d9b0a83a1b864de0d9b26b257a5215141c50b2c45c36dadb0c65ed421252589f8092656394c5e8dbe"]
+16:32:29.702 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:29.702 L1-Dev  -> {"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF":"456465","NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH":"456465"}
+16:32:29.702 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
 Get Wallet Balance : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
-Balance Text Is Empty
-14:38:25.136 L1-Dev  -> 0 -> true
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"}
+Balance Text Is NULL
+16:32:30.675 L1-Dev  -> 0 -> true
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1979999700"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-{"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"}
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+{"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"}
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1979999700"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-{"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"}
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+{"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-14:38:25.142 L1-Dev  -> entry.Key : 134afe8231c9085eb4ad5ac0aa358d728c25a89c0462c44e0b45d1d38fc98409c0116908e3a0ce7aa959a16476
-14:38:25.143 L1-Dev  -> 1 -> false
-14:38:25.143 L1-Dev  -> 1 -> false
-14:38:25.144 L1-Dev  -> transactionCount : 1
-14:38:25.704 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:25.704 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 7
-14:38:25.704 L1-Dev  -> CurrentBlockRowNo : 8
+16:32:30.687 L1-Dev  -> entry.Key : 134afe827d9707ad7de292e0d20d2ecc8d9f4a81b81d2de0e1939de73b0bfc21be41f23677b5add30abe093f4a
+16:32:30.687 L1-Dev  -> 1 -> false
+16:32:30.687 L1-Dev  -> transactionCount : 1
+16:32:30.702 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:30.702 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 7
+16:32:30.702 L1-Dev  -> CurrentBlockRowNo : 8
 blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
 NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:25.704 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
-14:38:25.704 L1-Dev  -> We Ignored This Block [ ______________8 ] -> 10
-14:38:25.704 L1-Dev  -> blockIsValid Result : false
+16:32:30.702 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+16:32:30.702 L1-Dev  -> We Ignored This Block [ ______________8 ] -> 6
+16:32:30.702 L1-Dev  -> blockIsValid Result : false
 Reload Tx From Temp List
-["134afe8231ce0226d27bd6bf62c41c1d187b7969802fe55b7969310640757930408ed962b30a7e90a78cda6481"]
-14:38:25.704 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:25.704 L1-Dev  -> {"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe":"456465"}
-14:38:25.720 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+["134afe827d990aa277a12fee004500d6f55229660d21a00fdec36a375e25bc5b2383fd9cbb3c39732e9e115559"]
+16:32:30.702 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:30.702 L1-Dev  -> {"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF":"456465","NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH":"456465"}
+16:32:30.702 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
 Get Wallet Balance : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
-Balance Text Is Empty
-14:38:26.134 L1-Dev  -> 0 -> true
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"}
+Balance Text Is NULL
+16:32:31.676 L1-Dev  -> 0 -> true
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1979999700"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-{"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"}
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+{"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"}
+Get Wallet Balance : NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+{"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1979999700"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-{"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"}
+Get Wallet Balance : NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+{"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":7,"UID":"134afe827d9a03172485cd8936c80c8422cdab099e7f89d962e9f10d18cf96f065b50460e6d72257b400d9e547"}
 Get From RocksDb
-14:38:26.141 L1-Dev  -> entry.Key : 134afe8231ca055aad70a03dc382521a092283d05b822f944a66c6816265ef8d2dfa706766b51a232a5fbd2a5c
-14:38:26.141 L1-Dev  -> 1 -> false
-14:38:26.142 L1-Dev  -> transactionCount : 1
-14:38:26.704 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:26.704 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 7
-14:38:26.704 L1-Dev  -> CurrentBlockRowNo : 8
+16:32:31.688 L1-Dev  -> entry.Key : 134afe827d960b298f9ed00f1cadf01b97492e3a98e84c4041981d8644dd767b5133218116b68d3083d62d30a3
+16:32:31.688 L1-Dev  -> transactionCount : 1
+16:32:31.702 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:31.702 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 7
+16:32:31.702 L1-Dev  -> CurrentBlockRowNo : 8
 blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
 NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:26.704 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
-14:38:26.704 L1-Dev  -> We Ignored This Block [ ______________8 ] -> 11
-14:38:26.704 L1-Dev  -> blockIsValid Result : false
+16:32:31.702 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+16:32:31.702 L1-Dev  -> We Ignored This Block [ ______________8 ] -> 7
+16:32:31.702 L1-Dev  -> blockIsValid Result : false
 Reload Tx From Temp List
-["134afe8231cf0227460a70b1259c6dbc2fdb48522063454423c3b07d5fe6a52e226f7f53d75961f7d4f9d679be"]
-14:38:26.704 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:26.704 L1-Dev  -> {"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe":"456465","NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR":"456465"}
-14:38:26.704 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-Get Wallet Balance : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
-Balance Text Is Empty
-14:38:27.129 L1-Dev  -> 0 -> true
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"}
-Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-{"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"}
-Get From RocksDb
-Get Wallet Balance : NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-{"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"}
-Get From RocksDb
-Get Wallet Balance : NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-{"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":7,"UID":"134afe8231cf0320dfac2e9c0526a019192f741be94091d0a44ec68f2919b56944c54dbe4939d27654e309bbe4"}
-Get From RocksDb
-14:38:27.142 L1-Dev  -> entry.Key : 134afe8231c90e69ad47d6e9dca6dc7fa140d50aa3cb2159a4eb24daa1a543ff06217c9272112174657ce86bf6
-14:38:27.142 L1-Dev  -> transactionCount : 1
-14:38:27.204 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:27.204 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 7
-14:38:27.204 L1-Dev  -> CurrentBlockRowNo : 8
-14:38:27.204 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 7
-14:38:27.204 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 8
-14:38:27.204 L1-Dev  -> Block Came From The Main Loop [ ______________8 :  120 ]
-14:38:27.204 L1-Dev  -> Block Generated By [ ______________8 ] : ME
-14:38:27.204 L1-Dev  -> addBlockToChain : true
-14:38:27.204 L1-Dev  -> Balance.Control Just Executed For -> 8
-14:38:27.204 L1-Dev  -> StoreToDb : -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-BEFORE PUT NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1979999700"}},"RowNo":8,"UID":"134afe8231d3031d271d38a40e2c007e3463582013a52568d014b9f9ca83b4fb625b3bf1190ef5ea7d1e7dae74"} SETTED
-AFTER PUT  NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1979999700"}},"RowNo":8,"UID":"134afe8231d3031d271d38a40e2c007e3463582013a52568d014b9f9ca83b4fb625b3bf1190ef5ea7d1e7dae74"} SETTED
-Check if they are equal -> true
-14:38:27.220 L1-Dev  -> New Balance -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe -> {"NOTUS":{"20230120143809001":"1979999700"}}
-14:38:27.220 L1-Dev  -> StoreToDb : -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-BEFORE PUT NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":8,"UID":"134afe8231d3031d271d38a40e2c007e3463582013a52568d014b9f9ca83b4fb625b3bf1190ef5ea7d1e7dae74"} SETTED
-AFTER PUT  NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":8,"UID":"134afe8231d3031d271d38a40e2c007e3463582013a52568d014b9f9ca83b4fb625b3bf1190ef5ea7d1e7dae74"} SETTED
-Check if they are equal -> true
-14:38:27.220 L1-Dev  -> New Balance -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR -> {"NOTUS":{"20230119131500":"20000000"}}
-14:38:27.220 L1-Dev  -> Block Is Proccessing   -> 8 -> 134afe8231d3031d271d -> 134afe8231cf0320dfac
-14:38:27.220 L1-Dev  -> blockIsValid Result : true
-14:38:27.220 L1-Dev  -> Distrubute To All Other Node / Nodes
-14:38:27.220 L1-Dev  -> Distributed [ ______________8 : 120 ] To 3.125.159.102:5002
-14:38:27.220 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:27.220 L1-Dev  -> {"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe":"456465","NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR":"456465"}
-14:38:27.220 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-14:38:28.205 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:28.205 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 8
-14:38:28.205 L1-Dev  -> CurrentBlockRowNo : 9
-14:38:28.205 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 8
-14:38:28.205 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 9
-14:38:28.205 L1-Dev  -> Block Came From The Main Loop [ ______________9 :  120 ]
-14:38:28.205 L1-Dev  -> Block Generated By [ ______________9 ] : ME
-14:38:28.205 L1-Dev  -> addBlockToChain : true
-14:38:28.205 L1-Dev  -> Balance.Control Just Executed For -> 9
-14:38:28.219 L1-Dev  -> StoreToDb : -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-BEFORE PUT NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":9,"UID":"134afe8231d4032122370ccfbd2c326fde4e8a6037d5cdcfe4c398f8eec7ef75085f97456d547e0077903238f2"} SETTED
-AFTER PUT  NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1989999850"}},"RowNo":9,"UID":"134afe8231d4032122370ccfbd2c326fde4e8a6037d5cdcfe4c398f8eec7ef75085f97456d547e0077903238f2"} SETTED
-Check if they are equal -> true
-14:38:28.219 L1-Dev  -> New Balance -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe -> {"NOTUS":{"20230120143809001":"1989999850"}}
-14:38:28.219 L1-Dev  -> StoreToDb : -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-BEFORE PUT NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":9,"UID":"134afe8231d4032122370ccfbd2c326fde4e8a6037d5cdcfe4c398f8eec7ef75085f97456d547e0077903238f2"} SETTED
-AFTER PUT  NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"10000000"}},"RowNo":9,"UID":"134afe8231d4032122370ccfbd2c326fde4e8a6037d5cdcfe4c398f8eec7ef75085f97456d547e0077903238f2"} SETTED
-Check if they are equal -> true
-14:38:28.219 L1-Dev  -> New Balance -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR -> {"NOTUS":{"20230119131500":"10000000"}}
-14:38:28.219 L1-Dev  -> Block Is Proccessing   -> 9 -> 134afe8231d403212237 -> 134afe8231d3031d271d
-14:38:28.219 L1-Dev  -> blockIsValid Result : true
-14:38:28.219 L1-Dev  -> Distrubute To All Other Node / Nodes
-14:38:28.219 L1-Dev  -> Distributed [ ______________9 : 120 ] To 3.125.159.102:5002
-14:38:28.219 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:28.219 L1-Dev  -> {}
-14:38:28.219 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-14:38:29.204 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:29.204 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 9
-14:38:29.204 L1-Dev  -> CurrentBlockRowNo : 10
-14:38:29.204 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 9
-14:38:29.204 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 10
-14:38:29.204 L1-Dev  -> Block Came From The Main Loop [ _____________10 :  120 ]
-14:38:29.204 L1-Dev  -> Block Generated By [ _____________10 ] : ME
-14:38:29.204 L1-Dev  -> addBlockToChain : true
-14:38:29.204 L1-Dev  -> Balance.Control Just Executed For -> 10
-14:38:29.204 L1-Dev  -> StoreToDb : -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-BEFORE PUT NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1979999700"}},"RowNo":10,"UID":"134afe8231d5031d7240612124ef7f60b4daad4336d9170ecad46415b2961a8c73409d3e3b9ed42a94c97c1acd"} SETTED
-AFTER PUT  NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1979999700"}},"RowNo":10,"UID":"134afe8231d5031d7240612124ef7f60b4daad4336d9170ecad46415b2961a8c73409d3e3b9ed42a94c97c1acd"} SETTED
-Check if they are equal -> true
-14:38:29.220 L1-Dev  -> New Balance -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe -> {"NOTUS":{"20230120143809001":"1979999700"}}
-14:38:29.220 L1-Dev  -> StoreToDb : -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-BEFORE PUT NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":10,"UID":"134afe8231d5031d7240612124ef7f60b4daad4336d9170ecad46415b2961a8c73409d3e3b9ed42a94c97c1acd"} SETTED
-AFTER PUT  NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":10,"UID":"134afe8231d5031d7240612124ef7f60b4daad4336d9170ecad46415b2961a8c73409d3e3b9ed42a94c97c1acd"} SETTED
-Check if they are equal -> true
-14:38:29.220 L1-Dev  -> New Balance -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR -> {"NOTUS":{"20230119131500":"20000000"}}
-14:38:29.220 L1-Dev  -> Block Is Proccessing   -> 10 -> 134afe8231d5031d7240 -> 134afe8231d403212237
-14:38:29.220 L1-Dev  -> blockIsValid Result : true
-14:38:29.220 L1-Dev  -> Distrubute To All Other Node / Nodes
-14:38:29.220 L1-Dev  -> Distributed [ _____________10 : 120 ] To 3.125.159.102:5002
-14:38:29.220 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:29.220 L1-Dev  -> {}
-14:38:29.220 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-14:38:30.705 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:30.705 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 10
-14:38:30.705 L1-Dev  -> CurrentBlockRowNo : 11
+["134afe827d9c0a81a9196d06456c83995dcb02f84effeb4004b914ca57e9e5c1301c4b9e0c0aaec6ce892221e7"]
+16:32:31.702 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:31.718 L1-Dev  -> {"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF":"456465","NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH":"456465"}
+16:32:31.718 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:32.702 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:32.702 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 7
+16:32:32.702 L1-Dev  -> CurrentBlockRowNo : 8
 blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
 NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:30.705 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
-14:38:30.719 L1-Dev  -> We Ignored This Block [ _____________11 ] -> 12
-14:38:30.719 L1-Dev  -> blockIsValid Result : false
+16:32:32.702 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+16:32:32.702 L1-Dev  -> We Ignored This Block [ ______________8 ] -> 8
+16:32:32.702 L1-Dev  -> blockIsValid Result : false
 Reload Tx From Temp List
-["134afe8231ce0226d27bd6bf62c41c1d187b7969802fe55b7969310640757930408ed962b30a7e90a78cda6481"]
-14:38:30.719 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:30.719 L1-Dev  -> {}
-14:38:30.719 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-14:38:31.705 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:31.705 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 10
-14:38:31.705 L1-Dev  -> CurrentBlockRowNo : 11
+["134afe827d9a0aa481fa4cedf2cee2e76c75fe0cbc9f67c4991cd385788fb79b7c074823e103cdcd033773115b"]
+16:32:32.702 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:32.702 L1-Dev  -> {}
+16:32:32.702 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:33.202 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:33.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 7
+16:32:33.202 L1-Dev  -> CurrentBlockRowNo : 8
+16:32:33.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 7
+16:32:33.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 8
+16:32:33.202 L1-Dev  -> Block Came From The Main Loop [ ______________8 :  120 ]
+16:32:33.202 L1-Dev  -> Block Generated By [ ______________8 ] : ME
+16:32:33.202 L1-Dev  -> addBlockToChain : true
+16:32:33.202 L1-Dev  -> Balance.Control Just Executed For -> 8
+16:32:33.202 L1-Dev  -> StoreToDb : -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+BEFORE PUT NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1969999550"}},"RowNo":8,"UID":"134afe827da103175d784e83c34879b7ec817a0198edffaa4e6f8f87cc3b739c2f062699c9ec6b9d0fbf224941"} SETTED
+AFTER PUT  NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1969999550"}},"RowNo":8,"UID":"134afe827da103175d784e83c34879b7ec817a0198edffaa4e6f8f87cc3b739c2f062699c9ec6b9d0fbf224941"} SETTED
+Check if they are equal -> true
+16:32:33.218 L1-Dev  -> New Balance -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF -> {"NOTUS":{"20230120163212001":"1969999550"}}
+16:32:33.218 L1-Dev  -> StoreToDb : -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+BEFORE PUT NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"30000000"}},"RowNo":8,"UID":"134afe827da103175d784e83c34879b7ec817a0198edffaa4e6f8f87cc3b739c2f062699c9ec6b9d0fbf224941"} SETTED
+AFTER PUT  NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"30000000"}},"RowNo":8,"UID":"134afe827da103175d784e83c34879b7ec817a0198edffaa4e6f8f87cc3b739c2f062699c9ec6b9d0fbf224941"} SETTED
+Check if they are equal -> true
+16:32:33.218 L1-Dev  -> New Balance -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH -> {"NOTUS":{"20230119131500":"30000000"}}
+16:32:33.218 L1-Dev  -> Block Is Proccessing   -> 8 -> 134afe827da103175d78 -> 134afe827d9a03172485
+16:32:33.218 L1-Dev  -> blockIsValid Result : true
+16:32:33.218 L1-Dev  -> Distrubute To All Other Node / Nodes
+16:32:33.218 L1-Dev  -> Distributed [ ______________8 : 120 ] To 3.125.159.102:5002
+16:32:33.218 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:33.218 L1-Dev  -> {}
+16:32:33.218 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:34.203 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:34.203 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 8
+16:32:34.203 L1-Dev  -> CurrentBlockRowNo : 9
+16:32:34.203 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 8
+16:32:34.203 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 9
+16:32:34.203 L1-Dev  -> Block Came From The Main Loop [ ______________9 :  120 ]
+16:32:34.203 L1-Dev  -> Block Generated By [ ______________9 ] : ME
+16:32:34.203 L1-Dev  -> addBlockToChain : true
+16:32:34.203 L1-Dev  -> Balance.Control Just Executed For -> 9
+16:32:34.218 L1-Dev  -> StoreToDb : -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+BEFORE PUT NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1969999550"}},"RowNo":9,"UID":"134afe827da2031b555e86de961221aa5c600d453dd5744c3e05503ad4349aeb1c063bbe8a9cc3db06eccfae6d"} SETTED
+AFTER PUT  NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1969999550"}},"RowNo":9,"UID":"134afe827da2031b555e86de961221aa5c600d453dd5744c3e05503ad4349aeb1c063bbe8a9cc3db06eccfae6d"} SETTED
+Check if they are equal -> true
+16:32:34.218 L1-Dev  -> New Balance -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF -> {"NOTUS":{"20230120163212001":"1969999550"}}
+16:32:34.218 L1-Dev  -> StoreToDb : -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+BEFORE PUT NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"30000000"}},"RowNo":9,"UID":"134afe827da2031b555e86de961221aa5c600d453dd5744c3e05503ad4349aeb1c063bbe8a9cc3db06eccfae6d"} SETTED
+AFTER PUT  NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"30000000"}},"RowNo":9,"UID":"134afe827da2031b555e86de961221aa5c600d453dd5744c3e05503ad4349aeb1c063bbe8a9cc3db06eccfae6d"} SETTED
+Check if they are equal -> true
+16:32:34.218 L1-Dev  -> New Balance -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH -> {"NOTUS":{"20230119131500":"30000000"}}
+16:32:34.218 L1-Dev  -> Block Is Proccessing   -> 9 -> 134afe827da2031b555e -> 134afe827da103175d78
+16:32:34.218 L1-Dev  -> blockIsValid Result : true
+16:32:34.218 L1-Dev  -> Distrubute To All Other Node / Nodes
+16:32:34.218 L1-Dev  -> Distributed [ ______________9 : 120 ] To 3.125.159.102:5002
+16:32:34.218 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:34.218 L1-Dev  -> {}
+16:32:34.218 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:35.202 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:35.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 9
+16:32:35.202 L1-Dev  -> CurrentBlockRowNo : 10
+16:32:35.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 9
+16:32:35.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 10
+16:32:35.202 L1-Dev  -> Block Came From The Main Loop [ _____________10 :  120 ]
+16:32:35.202 L1-Dev  -> Block Generated By [ _____________10 ] : ME
+16:32:35.202 L1-Dev  -> addBlockToChain : true
+16:32:35.202 L1-Dev  -> Balance.Control Just Executed For -> 10
+16:32:35.202 L1-Dev  -> StoreToDb : -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+BEFORE PUT NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1969999550"}},"RowNo":10,"UID":"134afe827da303177b56c34329428cb66a60e9642ab61e1de310d825ec3b6410d1c7a32f6920029ae1cf0b78c0"} SETTED
+AFTER PUT  NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1969999550"}},"RowNo":10,"UID":"134afe827da303177b56c34329428cb66a60e9642ab61e1de310d825ec3b6410d1c7a32f6920029ae1cf0b78c0"} SETTED
+Check if they are equal -> true
+16:32:35.202 L1-Dev  -> New Balance -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF -> {"NOTUS":{"20230120163212001":"1969999550"}}
+16:32:35.219 L1-Dev  -> StoreToDb : -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+BEFORE PUT NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"30000000"}},"RowNo":10,"UID":"134afe827da303177b56c34329428cb66a60e9642ab61e1de310d825ec3b6410d1c7a32f6920029ae1cf0b78c0"} SETTED
+AFTER PUT  NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"30000000"}},"RowNo":10,"UID":"134afe827da303177b56c34329428cb66a60e9642ab61e1de310d825ec3b6410d1c7a32f6920029ae1cf0b78c0"} SETTED
+Check if they are equal -> true
+16:32:35.219 L1-Dev  -> New Balance -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH -> {"NOTUS":{"20230119131500":"30000000"}}
+16:32:35.219 L1-Dev  -> Block Is Proccessing   -> 10 -> 134afe827da303177b56 -> 134afe827da2031b555e
+16:32:35.219 L1-Dev  -> blockIsValid Result : true
+16:32:35.219 L1-Dev  -> Distrubute To All Other Node / Nodes
+16:32:35.219 L1-Dev  -> Distributed [ _____________10 : 120 ] To 3.125.159.102:5002
+16:32:35.219 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:35.219 L1-Dev  -> {}
+16:32:35.219 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:36.703 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:36.703 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 10
+16:32:36.703 L1-Dev  -> CurrentBlockRowNo : 11
 blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
 NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:31.705 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
-14:38:31.705 L1-Dev  -> We Ignored This Block [ _____________11 ] -> 13
-14:38:31.705 L1-Dev  -> blockIsValid Result : false
+16:32:36.703 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+16:32:36.703 L1-Dev  -> We Ignored This Block [ _____________11 ] -> 9
+16:32:36.703 L1-Dev  -> blockIsValid Result : false
 Reload Tx From Temp List
-["134afe8231d2022be13820e843a503537134fd1cea71b0de04a1988bb3c5a93d4cb7e49451fa1b89fabaa3d551"]
-14:38:31.705 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:31.720 L1-Dev  -> {}
-14:38:31.720 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-14:38:32.705 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:32.705 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 10
-14:38:32.705 L1-Dev  -> CurrentBlockRowNo : 11
+["134afe827d990aa277a12fee004500d6f55229660d21a00fdec36a375e25bc5b2383fd9cbb3c39732e9e115559"]
+16:32:36.703 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:36.703 L1-Dev  -> {}
+16:32:36.703 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:37.703 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:37.703 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 10
+16:32:37.703 L1-Dev  -> CurrentBlockRowNo : 11
 blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
 NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:32.705 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
-14:38:32.705 L1-Dev  -> We Ignored This Block [ _____________11 ] -> 14
-14:38:32.705 L1-Dev  -> blockIsValid Result : false
+16:32:37.703 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+16:32:37.703 L1-Dev  -> We Ignored This Block [ _____________11 ] -> 10
+16:32:37.703 L1-Dev  -> blockIsValid Result : false
 Reload Tx From Temp List
-["134afe8231cf0227460a70b1259c6dbc2fdb48522063454423c3b07d5fe6a52e226f7f53d75961f7d4f9d679be"]
-14:38:32.705 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:32.705 L1-Dev  -> {}
-14:38:32.705 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-14:38:33.205 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:33.205 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 10
-14:38:33.205 L1-Dev  -> CurrentBlockRowNo : 11
-14:38:33.205 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 10
-14:38:33.205 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 11
-14:38:33.205 L1-Dev  -> Block Came From The Main Loop [ _____________11 :  120 ]
-14:38:33.205 L1-Dev  -> Block Generated By [ _____________11 ] : ME
-14:38:33.205 L1-Dev  -> addBlockToChain : true
-14:38:33.219 L1-Dev  -> Balance.Control Just Executed For -> 11
-14:38:33.219 L1-Dev  -> StoreToDb : -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-BEFORE PUT NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1979999700"}},"RowNo":11,"UID":"134afe8231d903216a2ed98e14bcb7f4d923c10235b16bb91379bb877056b4d9a43eb083c61d9d8b78a657a1e9"} SETTED
-AFTER PUT  NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1979999700"}},"RowNo":11,"UID":"134afe8231d903216a2ed98e14bcb7f4d923c10235b16bb91379bb877056b4d9a43eb083c61d9d8b78a657a1e9"} SETTED
-Check if they are equal -> true
-14:38:33.219 L1-Dev  -> New Balance -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe -> {"NOTUS":{"20230120143809001":"1979999700"}}
-14:38:33.219 L1-Dev  -> StoreToDb : -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-BEFORE PUT NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":11,"UID":"134afe8231d903216a2ed98e14bcb7f4d923c10235b16bb91379bb877056b4d9a43eb083c61d9d8b78a657a1e9"} SETTED
-AFTER PUT  NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":11,"UID":"134afe8231d903216a2ed98e14bcb7f4d923c10235b16bb91379bb877056b4d9a43eb083c61d9d8b78a657a1e9"} SETTED
-Check if they are equal -> true
-14:38:33.219 L1-Dev  -> New Balance -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR -> {"NOTUS":{"20230119131500":"20000000"}}
-14:38:33.219 L1-Dev  -> Block Is Proccessing   -> 11 -> 134afe8231d903216a2e -> 134afe8231d5031d7240
-14:38:33.219 L1-Dev  -> blockIsValid Result : true
-14:38:33.219 L1-Dev  -> Distrubute To All Other Node / Nodes
-14:38:33.219 L1-Dev  -> Distributed [ _____________11 : 120 ] To 3.125.159.102:5002
-14:38:33.219 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:33.219 L1-Dev  -> {}
-14:38:33.219 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-14:38:34.203 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:34.203 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 11
-14:38:34.203 L1-Dev  -> CurrentBlockRowNo : 12
-14:38:34.203 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 11
-14:38:34.203 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 12
-14:38:34.203 L1-Dev  -> Block Came From The Main Loop [ _____________12 :  120 ]
-14:38:34.203 L1-Dev  -> Block Generated By [ _____________12 ] : ME
-14:38:34.203 L1-Dev  -> addBlockToChain : true
-14:38:34.203 L1-Dev  -> Balance.Control Just Executed For -> 12
-14:38:34.203 L1-Dev  -> StoreToDb : -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-BEFORE PUT NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1979999700"}},"RowNo":12,"UID":"134afe8231da031c12ad2bdd7c43eb535a3d14556ee3a1fed627b74be08c95d168afcc005ea6d8d9d5746bdbc6"} SETTED
-AFTER PUT  NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1979999700"}},"RowNo":12,"UID":"134afe8231da031c12ad2bdd7c43eb535a3d14556ee3a1fed627b74be08c95d168afcc005ea6d8d9d5746bdbc6"} SETTED
-Check if they are equal -> true
-14:38:34.220 L1-Dev  -> New Balance -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe -> {"NOTUS":{"20230120143809001":"1979999700"}}
-14:38:34.220 L1-Dev  -> StoreToDb : -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-BEFORE PUT NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":12,"UID":"134afe8231da031c12ad2bdd7c43eb535a3d14556ee3a1fed627b74be08c95d168afcc005ea6d8d9d5746bdbc6"} SETTED
-AFTER PUT  NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":12,"UID":"134afe8231da031c12ad2bdd7c43eb535a3d14556ee3a1fed627b74be08c95d168afcc005ea6d8d9d5746bdbc6"} SETTED
-Check if they are equal -> true
-14:38:34.220 L1-Dev  -> New Balance -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR -> {"NOTUS":{"20230119131500":"20000000"}}
-14:38:34.220 L1-Dev  -> Block Is Proccessing   -> 12 -> 134afe8231da031c12ad -> 134afe8231d903216a2e
-14:38:34.220 L1-Dev  -> blockIsValid Result : true
-14:38:34.220 L1-Dev  -> Distrubute To All Other Node / Nodes
-14:38:34.220 L1-Dev  -> Distributed [ _____________12 : 120 ] To 3.125.159.102:5002
-14:38:34.220 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:34.220 L1-Dev  -> {}
-14:38:34.220 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-14:38:35.204 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:35.204 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 12
-14:38:35.204 L1-Dev  -> CurrentBlockRowNo : 13
-14:38:35.204 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 12
-14:38:35.204 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 13
-14:38:35.204 L1-Dev  -> Block Came From The Main Loop [ _____________13 :  120 ]
-14:38:35.204 L1-Dev  -> Block Generated By [ _____________13 ] : ME
-14:38:35.204 L1-Dev  -> addBlockToChain : true
-14:38:35.204 L1-Dev  -> Balance.Control Just Executed For -> 13
-14:38:35.219 L1-Dev  -> StoreToDb : -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-BEFORE PUT NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1979999700"}},"RowNo":13,"UID":"134afe8231db0320b0371582e781cefb2d28242a9b17a7eb25fb167f78dad35edabb95e39acece09e19cc6da8e"} SETTED
-AFTER PUT  NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1979999700"}},"RowNo":13,"UID":"134afe8231db0320b0371582e781cefb2d28242a9b17a7eb25fb167f78dad35edabb95e39acece09e19cc6da8e"} SETTED
-Check if they are equal -> true
-14:38:35.219 L1-Dev  -> New Balance -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe -> {"NOTUS":{"20230120143809001":"1979999700"}}
-14:38:35.219 L1-Dev  -> StoreToDb : -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-BEFORE PUT NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":13,"UID":"134afe8231db0320b0371582e781cefb2d28242a9b17a7eb25fb167f78dad35edabb95e39acece09e19cc6da8e"} SETTED
-AFTER PUT  NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":13,"UID":"134afe8231db0320b0371582e781cefb2d28242a9b17a7eb25fb167f78dad35edabb95e39acece09e19cc6da8e"} SETTED
-Check if they are equal -> true
-14:38:35.219 L1-Dev  -> New Balance -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR -> {"NOTUS":{"20230119131500":"20000000"}}
-14:38:35.219 L1-Dev  -> Block Is Proccessing   -> 13 -> 134afe8231db0320b037 -> 134afe8231da031c12ad
-14:38:35.219 L1-Dev  -> blockIsValid Result : true
-14:38:35.219 L1-Dev  -> Distrubute To All Other Node / Nodes
-14:38:35.219 L1-Dev  -> Distributed [ _____________13 : 120 ] To 3.125.159.102:5002
-14:38:35.219 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:35.219 L1-Dev  -> {}
-14:38:35.219 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-14:38:36.501 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:36.501 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 13
-14:38:36.501 L1-Dev  -> CurrentBlockRowNo : 14
+["134afe827d9f0a81ef7ebaf564326d71f4aad6f46b51ed5c34640f907ff21e4f73f024c32b032d081e388fbb2b"]
+16:32:37.703 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:37.703 L1-Dev  -> {}
+16:32:37.703 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:38.703 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:38.703 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 10
+16:32:38.703 L1-Dev  -> CurrentBlockRowNo : 11
 blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
 NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:36.501 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
-14:38:36.501 L1-Dev  -> We Ignored This Block [ _____________14 ] -> 15
-14:38:36.501 L1-Dev  -> blockIsValid Result : false
+16:32:38.703 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+16:32:38.703 L1-Dev  -> We Ignored This Block [ _____________11 ] -> 11
+16:32:38.703 L1-Dev  -> blockIsValid Result : false
 Reload Tx From Temp List
-["134afe8231cf0227460a70b1259c6dbc2fdb48522063454423c3b07d5fe6a52e226f7f53d75961f7d4f9d679be"]
-14:38:36.501 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:36.501 L1-Dev  -> {}
-14:38:36.501 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-14:38:37.501 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:37.502 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 13
-14:38:37.502 L1-Dev  -> CurrentBlockRowNo : 14
+["134afe827d9c0a81a9196d06456c83995dcb02f84effeb4004b914ca57e9e5c1301c4b9e0c0aaec6ce892221e7"]
+16:32:38.703 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:38.703 L1-Dev  -> {}
+16:32:38.703 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:39.703 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:39.703 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 10
+16:32:39.703 L1-Dev  -> CurrentBlockRowNo : 11
 blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
 NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:37.502 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
-14:38:37.502 L1-Dev  -> We Ignored This Block [ _____________14 ] -> 16
-14:38:37.502 L1-Dev  -> blockIsValid Result : false
+16:32:39.703 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+16:32:39.703 L1-Dev  -> We Ignored This Block [ _____________11 ] -> 12
+16:32:39.703 L1-Dev  -> blockIsValid Result : false
 Reload Tx From Temp List
-["134afe8231cf0227460a70b1259c6dbc2fdb48522063454423c3b07d5fe6a52e226f7f53d75961f7d4f9d679be"]
-14:38:37.502 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:37.502 L1-Dev  -> {}
-14:38:37.502 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-14:38:38.501 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:38.502 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 13
-14:38:38.502 L1-Dev  -> CurrentBlockRowNo : 14
+["134afe827d9a0aa481fa4cedf2cee2e76c75fe0cbc9f67c4991cd385788fb79b7c074823e103cdcd033773115b"]
+16:32:39.703 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:39.703 L1-Dev  -> {}
+16:32:39.703 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:40.703 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:40.703 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 10
+16:32:40.703 L1-Dev  -> CurrentBlockRowNo : 11
 blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
 NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
-14:38:38.502 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
-14:38:38.502 L1-Dev  -> We Ignored This Block [ _____________14 ] -> 17
-14:38:38.502 L1-Dev  -> blockIsValid Result : false
+16:32:40.703 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+16:32:40.703 L1-Dev  -> We Ignored This Block [ _____________11 ] -> 13
+16:32:40.703 L1-Dev  -> blockIsValid Result : false
 Reload Tx From Temp List
-["134afe8231cf0227460a70b1259c6dbc2fdb48522063454423c3b07d5fe6a52e226f7f53d75961f7d4f9d679be"]
-14:38:38.502 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:38.502 L1-Dev  -> {}
-14:38:38.502 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-14:38:39.001 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-14:38:39.002 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 13
-14:38:39.002 L1-Dev  -> CurrentBlockRowNo : 14
-14:38:39.002 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 13
-14:38:39.002 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 14
-14:38:39.002 L1-Dev  -> Block Came From The Main Loop [ _____________14 :  120 ]
-14:38:39.002 L1-Dev  -> Block Generated By [ _____________14 ] : ME
-14:38:39.002 L1-Dev  -> addBlockToChain : true
-14:38:39.002 L1-Dev  -> Balance.Control Just Executed For -> 14
-14:38:39.002 L1-Dev  -> StoreToDb : -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe
-BEFORE PUT NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1979999700"}},"RowNo":14,"UID":"134afe8231df0003ee98bd0b3c23ba30e1159e1ff7033f5ca753066579ecc4ec6e1d3e2195b81fa95626114241"} SETTED
-AFTER PUT  NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe ==>> {"Wallet":"NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe","Balance":{"NOTUS":{"20230120143809001":"1979999700"}},"RowNo":14,"UID":"134afe8231df0003ee98bd0b3c23ba30e1159e1ff7033f5ca753066579ecc4ec6e1d3e2195b81fa95626114241"} SETTED
+["134afe827d990aa277a12fee004500d6f55229660d21a00fdec36a375e25bc5b2383fd9cbb3c39732e9e115559"]
+16:32:40.703 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:40.703 L1-Dev  -> {}
+16:32:40.703 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:41.703 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:41.703 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 10
+16:32:41.703 L1-Dev  -> CurrentBlockRowNo : 11
+blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
+NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
+16:32:41.703 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+16:32:41.703 L1-Dev  -> We Ignored This Block [ _____________11 ] -> 14
+16:32:41.703 L1-Dev  -> blockIsValid Result : false
+Reload Tx From Temp List
+["134afe827d9f0a81ef7ebaf564326d71f4aad6f46b51ed5c34640f907ff21e4f73f024c32b032d081e388fbb2b"]
+16:32:41.703 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:41.703 L1-Dev  -> {}
+16:32:41.703 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:42.203 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:42.203 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 10
+16:32:42.203 L1-Dev  -> CurrentBlockRowNo : 11
+16:32:42.203 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 10
+16:32:42.203 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 11
+16:32:42.203 L1-Dev  -> Block Came From The Main Loop [ _____________11 :  120 ]
+16:32:42.203 L1-Dev  -> Block Generated By [ _____________11 ] : ME
+16:32:42.203 L1-Dev  -> addBlockToChain : true
+16:32:42.203 L1-Dev  -> Balance.Control Just Executed For -> 11
+16:32:42.203 L1-Dev  -> StoreToDb : -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+BEFORE PUT NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1969999550"}},"RowNo":11,"UID":"134afe827daa031bef389d449324c74a615128abfb6fb024140480f85f96100b75b6ffed859ca5c0245b43e0c0"} SETTED
+AFTER PUT  NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1969999550"}},"RowNo":11,"UID":"134afe827daa031bef389d449324c74a615128abfb6fb024140480f85f96100b75b6ffed859ca5c0245b43e0c0"} SETTED
 Check if they are equal -> true
-14:38:39.016 L1-Dev  -> New Balance -> NSX6rJZx2AjTB8KcMtCKXqRVUdpgH1RsYQsKyYe -> {"NOTUS":{"20230120143809001":"1979999700"}}
-14:38:39.016 L1-Dev  -> StoreToDb : -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR
-BEFORE PUT NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":14,"UID":"134afe8231df0003ee98bd0b3c23ba30e1159e1ff7033f5ca753066579ecc4ec6e1d3e2195b81fa95626114241"} SETTED
-AFTER PUT  NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR ==>> {"Wallet":"NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":14,"UID":"134afe8231df0003ee98bd0b3c23ba30e1159e1ff7033f5ca753066579ecc4ec6e1d3e2195b81fa95626114241"} SETTED
+16:32:42.219 L1-Dev  -> New Balance -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF -> {"NOTUS":{"20230120163212001":"1969999550"}}
+16:32:42.219 L1-Dev  -> StoreToDb : -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+BEFORE PUT NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"30000000"}},"RowNo":11,"UID":"134afe827daa031bef389d449324c74a615128abfb6fb024140480f85f96100b75b6ffed859ca5c0245b43e0c0"} SETTED
+AFTER PUT  NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"30000000"}},"RowNo":11,"UID":"134afe827daa031bef389d449324c74a615128abfb6fb024140480f85f96100b75b6ffed859ca5c0245b43e0c0"} SETTED
 Check if they are equal -> true
-14:38:39.016 L1-Dev  -> New Balance -> NSX6auzGAJywUqB4CnsbkTWbBA8jDNytsAuAzXR -> {"NOTUS":{"20230119131500":"20000000"}}
-14:38:39.016 L1-Dev  -> Block Is Proccessing   -> 14 -> 134afe8231df0003ee98 -> 134afe8231db0320b037
-14:38:39.016 L1-Dev  -> blockIsValid Result : true
-14:38:39.016 L1-Dev  -> Distrubute To All Other Node / Nodes
-14:38:39.016 L1-Dev  -> Distributed [ _____________14 : 120 ] To 3.125.159.102:5002
-14:38:39.016 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:39.016 L1-Dev  -> {}
-14:38:39.016 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-14:38:40.001 L1-Dev  -> Empty Block Executed
-14:38:40.002 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 14
-14:38:40.002 L1-Dev  -> CurrentBlockRowNo : 15
-14:38:40.002 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 14
-14:38:40.002 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 15
-14:38:40.002 L1-Dev  -> Block Came From The Main Loop [ _____________15 :  300 ]
-14:38:40.002 L1-Dev  -> Block Generated By [ _____________15 ] : ME
-14:38:40.002 L1-Dev  -> addBlockToChain : true
-14:38:40.002 L1-Dev  -> Balance.Control Just Executed For -> 15
-14:38:40.002 L1-Dev  -> Block Is Proccessing   -> 15 -> 134afe8231e00003f107 -> 134afe8231df0003ee98
-14:38:40.002 L1-Dev  -> blockIsValid Result : true
-14:38:40.002 L1-Dev  -> Distrubute To All Other Node / Nodes
-14:38:40.016 L1-Dev  -> Distributed [ _____________15 : 300 ] To 3.125.159.102:5002
-14:38:40.016 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
-14:38:40.016 L1-Dev  -> {}
+16:32:42.219 L1-Dev  -> New Balance -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH -> {"NOTUS":{"20230119131500":"30000000"}}
+16:32:42.219 L1-Dev  -> Block Is Proccessing   -> 11 -> 134afe827daa031bef38 -> 134afe827da303177b56
+16:32:42.219 L1-Dev  -> blockIsValid Result : true
+16:32:42.219 L1-Dev  -> Distrubute To All Other Node / Nodes
+16:32:42.219 L1-Dev  -> Distributed [ _____________11 : 120 ] To 3.125.159.102:5002
+16:32:42.219 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:42.219 L1-Dev  -> {}
+16:32:42.219 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:43.202 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:43.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 11
+16:32:43.202 L1-Dev  -> CurrentBlockRowNo : 12
+16:32:43.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 11
+16:32:43.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 12
+16:32:43.202 L1-Dev  -> Block Came From The Main Loop [ _____________12 :  120 ]
+16:32:43.202 L1-Dev  -> Block Generated By [ _____________12 ] : ME
+16:32:43.202 L1-Dev  -> addBlockToChain : true
+16:32:43.202 L1-Dev  -> Balance.Control Just Executed For -> 12
+16:32:43.202 L1-Dev  -> StoreToDb : -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+BEFORE PUT NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1969999550"}},"RowNo":12,"UID":"134afe827dab03180a6a181a2314a972cd16935c80f7393a561a25faff8fd359753ee22d5faa42bb159f466861"} SETTED
+AFTER PUT  NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1969999550"}},"RowNo":12,"UID":"134afe827dab03180a6a181a2314a972cd16935c80f7393a561a25faff8fd359753ee22d5faa42bb159f466861"} SETTED
+Check if they are equal -> true
+16:32:43.218 L1-Dev  -> New Balance -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF -> {"NOTUS":{"20230120163212001":"1969999550"}}
+16:32:43.218 L1-Dev  -> StoreToDb : -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+BEFORE PUT NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"30000000"}},"RowNo":12,"UID":"134afe827dab03180a6a181a2314a972cd16935c80f7393a561a25faff8fd359753ee22d5faa42bb159f466861"} SETTED
+AFTER PUT  NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"30000000"}},"RowNo":12,"UID":"134afe827dab03180a6a181a2314a972cd16935c80f7393a561a25faff8fd359753ee22d5faa42bb159f466861"} SETTED
+Check if they are equal -> true
+16:32:43.218 L1-Dev  -> New Balance -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH -> {"NOTUS":{"20230119131500":"30000000"}}
+16:32:43.218 L1-Dev  -> Block Is Proccessing   -> 12 -> 134afe827dab03180a6a -> 134afe827daa031bef38
+16:32:43.218 L1-Dev  -> blockIsValid Result : true
+16:32:43.218 L1-Dev  -> Distrubute To All Other Node / Nodes
+16:32:43.218 L1-Dev  -> Distributed [ _____________12 : 120 ] To 3.125.159.102:5002
+16:32:43.218 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:43.218 L1-Dev  -> {}
+16:32:43.218 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:44.202 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:44.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 12
+16:32:44.202 L1-Dev  -> CurrentBlockRowNo : 13
+16:32:44.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 12
+16:32:44.202 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 13
+16:32:44.202 L1-Dev  -> Block Came From The Main Loop [ _____________13 :  120 ]
+16:32:44.202 L1-Dev  -> Block Generated By [ _____________13 ] : ME
+16:32:44.202 L1-Dev  -> addBlockToChain : true
+16:32:44.202 L1-Dev  -> Balance.Control Just Executed For -> 13
+16:32:44.202 L1-Dev  -> StoreToDb : -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+BEFORE PUT NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1979999700"}},"RowNo":13,"UID":"134afe827dac0318220d1163c0049d9041f36e55c07f13de1367ad7bef131c4fa603c13123c5ac95824af7f53d"} SETTED
+AFTER PUT  NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1979999700"}},"RowNo":13,"UID":"134afe827dac0318220d1163c0049d9041f36e55c07f13de1367ad7bef131c4fa603c13123c5ac95824af7f53d"} SETTED
+Check if they are equal -> true
+16:32:44.218 L1-Dev  -> New Balance -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF -> {"NOTUS":{"20230120163212001":"1979999700"}}
+16:32:44.218 L1-Dev  -> StoreToDb : -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+BEFORE PUT NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":13,"UID":"134afe827dac0318220d1163c0049d9041f36e55c07f13de1367ad7bef131c4fa603c13123c5ac95824af7f53d"} SETTED
+AFTER PUT  NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"20000000"}},"RowNo":13,"UID":"134afe827dac0318220d1163c0049d9041f36e55c07f13de1367ad7bef131c4fa603c13123c5ac95824af7f53d"} SETTED
+Check if they are equal -> true
+16:32:44.218 L1-Dev  -> New Balance -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH -> {"NOTUS":{"20230119131500":"20000000"}}
+16:32:44.218 L1-Dev  -> Block Is Proccessing   -> 13 -> 134afe827dac0318220d -> 134afe827dab03180a6a
+16:32:44.218 L1-Dev  -> blockIsValid Result : true
+16:32:44.218 L1-Dev  -> Distrubute To All Other Node / Nodes
+16:32:44.218 L1-Dev  -> Distributed [ _____________13 : 120 ] To 3.125.159.102:5002
+16:32:44.218 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:44.218 L1-Dev  -> {}
+16:32:44.218 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:45.501 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:45.501 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 13
+16:32:45.501 L1-Dev  -> CurrentBlockRowNo : 14
+blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
+NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
+16:32:45.501 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+16:32:45.501 L1-Dev  -> We Ignored This Block [ _____________14 ] -> 15
+16:32:45.501 L1-Dev  -> blockIsValid Result : false
+Reload Tx From Temp List
+["134afe827d9f0a81ef7ebaf564326d71f4aad6f46b51ed5c34640f907ff21e4f73f024c32b032d081e388fbb2b"]
+16:32:45.501 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:45.501 L1-Dev  -> {}
+16:32:45.501 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:46.501 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:46.501 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 13
+16:32:46.501 L1-Dev  -> CurrentBlockRowNo : 14
+blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
+NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
+16:32:46.501 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+16:32:46.501 L1-Dev  -> We Ignored This Block [ _____________14 ] -> 16
+16:32:46.501 L1-Dev  -> blockIsValid Result : false
+Reload Tx From Temp List
+["134afe827d9f0a81ef7ebaf564326d71f4aad6f46b51ed5c34640f907ff21e4f73f024c32b032d081e388fbb2b"]
+16:32:46.501 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:46.501 L1-Dev  -> {}
+16:32:46.501 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:47.501 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:47.501 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 13
+16:32:47.501 L1-Dev  -> CurrentBlockRowNo : 14
+blockValidatorWalletId : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
+NVG.Settings.Nodes.Queue[blockGenarationTime].Wallet : NSX8qaxysDFgnugSdb4KCfeYwUe7wKzmQ6uLGn7
+16:32:47.501 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+16:32:47.501 L1-Dev  -> We Ignored This Block [ _____________14 ] -> 17
+16:32:47.501 L1-Dev  -> blockIsValid Result : false
+Reload Tx From Temp List
+["134afe827d9f0a81ef7ebaf564326d71f4aad6f46b51ed5c34640f907ff21e4f73f024c32b032d081e388fbb2b"]
+16:32:47.501 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:47.501 L1-Dev  -> {}
+16:32:47.501 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:48.001 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+16:32:48.001 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 13
+16:32:48.001 L1-Dev  -> CurrentBlockRowNo : 14
+16:32:48.001 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 13
+16:32:48.001 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 14
+16:32:48.001 L1-Dev  -> Block Came From The Main Loop [ _____________14 :  120 ]
+16:32:48.001 L1-Dev  -> Block Generated By [ _____________14 ] : ME
+16:32:48.001 L1-Dev  -> addBlockToChain : true
+16:32:48.001 L1-Dev  -> Balance.Control Just Executed For -> 14
+16:32:48.015 L1-Dev  -> StoreToDb : -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF
+BEFORE PUT NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1969999550"}},"RowNo":14,"UID":"134afe827db00003ef61faecfb89e4170ebc60ca39db51ec202a3e0183a61f5ca01f55d02c12e833d172cc641c"} SETTED
+AFTER PUT  NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF ==>> {"Wallet":"NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF","Balance":{"NOTUS":{"20230120163212001":"1969999550"}},"RowNo":14,"UID":"134afe827db00003ef61faecfb89e4170ebc60ca39db51ec202a3e0183a61f5ca01f55d02c12e833d172cc641c"} SETTED
+Check if they are equal -> true
+16:32:48.015 L1-Dev  -> New Balance -> NSX7tTLTV8VJmpUWm2SQihXBa1H2DpzFqLyWqzF -> {"NOTUS":{"20230120163212001":"1969999550"}}
+16:32:48.015 L1-Dev  -> StoreToDb : -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH
+BEFORE PUT NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"30000000"}},"RowNo":14,"UID":"134afe827db00003ef61faecfb89e4170ebc60ca39db51ec202a3e0183a61f5ca01f55d02c12e833d172cc641c"} SETTED
+AFTER PUT  NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH ==>> {"Wallet":"NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH","Balance":{"NOTUS":{"20230119131500":"30000000"}},"RowNo":14,"UID":"134afe827db00003ef61faecfb89e4170ebc60ca39db51ec202a3e0183a61f5ca01f55d02c12e833d172cc641c"} SETTED
+Check if they are equal -> true
+16:32:48.015 L1-Dev  -> New Balance -> NSX85rmeUJuSYyzgvaSYmGYZjYp9p4bs5GN4KGH -> {"NOTUS":{"20230119131500":"30000000"}}
+16:32:48.015 L1-Dev  -> Block Is Proccessing   -> 14 -> 134afe827db00003ef61 -> 134afe827dac0318220d
+16:32:48.015 L1-Dev  -> blockIsValid Result : true
+16:32:48.015 L1-Dev  -> Distrubute To All Other Node / Nodes
+16:32:48.015 L1-Dev  -> Distributed [ _____________14 : 120 ] To 3.125.159.102:5002
+16:32:48.015 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:48.015 L1-Dev  -> {}
+16:32:48.015 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+16:32:49.001 L1-Dev  -> Empty Block Executed
+16:32:49.001 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ USED ] : 14
+16:32:49.001 L1-Dev  -> CurrentBlockRowNo : 15
+16:32:49.001 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> before ]: 14
+16:32:49.001 L1-Dev  -> NVG.Settings.LastBlock.info.rowNo [ DEFINED -> after  ]: 15
+16:32:49.001 L1-Dev  -> Block Came From The Main Loop [ _____________15 :  300 ]
+16:32:49.001 L1-Dev  -> Block Generated By [ _____________15 ] : ME
+16:32:49.001 L1-Dev  -> addBlockToChain : true
+16:32:49.001 L1-Dev  -> Balance.Control Just Executed For -> 15
+16:32:49.001 L1-Dev  -> Block Is Proccessing   -> 15 -> 134afe827db10003f19c -> 134afe827db00003ef61
+16:32:49.001 L1-Dev  -> blockIsValid Result : true
+16:32:49.001 L1-Dev  -> Distrubute To All Other Node / Nodes
+16:32:49.001 L1-Dev  -> Distributed [ _____________15 : 300 ] To 3.125.159.102:5002
+16:32:49.016 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Main.cs
+16:32:49.016 L1-Dev  -> {}
 +
