@@ -404,6 +404,9 @@ namespace Notus.Validator
                                 }
                             }
                             tmpBlockCipherData.Validator.Reward = totalBlockReward.ToString();
+                            Console.WriteLine("");
+                            Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
+                            Console.WriteLine("--------  COIN TRANSFER DATA CHANGE -----------");
 
                             // crypto / token transfer
                             NGF.BlockQueue.Add(new NVS.PoolBlockRecordStruct()
