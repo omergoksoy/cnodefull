@@ -491,6 +491,7 @@ namespace Notus.Block
 
                             if (addToList == true)
                             {
+                                Console.WriteLine("Processed : " + tmpTxUid);
                                 txQueue.TryDequeue(out _);
                                 tempRemovePoolList.Add(tmpTxUid);
                                 TempBlockList.Add(TmpPoolRecord.data);
@@ -725,9 +726,11 @@ namespace Notus.Block
                         }
                         TempBlockList.Clear();
                         TempBlockList.Add(JsonSerializer.Serialize(tmpBlockCipherData));
-
-                        Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
-                        Environment.Exit(0);
+                        if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer)
+                        {
+                            Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
+                            Environment.Exit(0);
+                        }
                     }
                 }
 
