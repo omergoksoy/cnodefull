@@ -122,6 +122,7 @@ namespace Notus.Block
             ConcurrentDictionary<string, byte> TempWalletList = new();
             TempWalletList.TryAdd(NVG.Settings.NodeWallet.WalletKey, 1);
 
+            Console.WriteLine("txQueue.Count : " + txQueue.Count.ToString());
             // data elamanı içersine eklenecek olan veri bu dizi içinde tutuluyor
             List<string> TempBlockList = new List<string>();
 
@@ -276,6 +277,7 @@ namespace Notus.Block
                                 if (incomeConvertData == null)
                                 {
                                     addToList = false;
+                                    Console.WriteLine("addToList Status [005] : " + (addToList == true ? "TRUE" : "FALSE"));
                                     WrongTx(tmpTxUid, TmpPoolRecord.data);
                                     tmpTxUid = "";
                                 }
@@ -285,18 +287,15 @@ namespace Notus.Block
                                 Console.WriteLine("----------- Income Data -----------");
                                 if (incomeConvertData != null)
                                 {
-                                    if (
-                                        TempWalletList.ContainsKey(incomeConvertData.Sender) == true
-                                         &&
-                                        TempWalletList.ContainsKey(incomeConvertData.Receiver) == true
-                                    )
-                                    {
-                                        addToList = false;
-                                    }
+                                    addToList = (TempWalletList.ContainsKey(incomeConvertData.Sender) == true ? false : addToList);
+                                    Console.WriteLine("addToList Status [007] : " + (addToList == true ? "TRUE" : "FALSE"));
 
+                                    addToList = (TempWalletList.ContainsKey(incomeConvertData.Receiver) == true ? false : addToList);
+                                    Console.WriteLine("addToList Status [014] : " + (addToList == true ? "TRUE" : "FALSE"));
                                     if (addToList == true)
                                     {
                                         addToList = NGF.Balance.CheckTransactionAvailability(incomeConvertData.Sender, incomeConvertData.Receiver);
+                                        Console.WriteLine("addToList Status [018] : " + (addToList == true ? "TRUE" : "FALSE"));
                                     }
 
                                     BigInteger totalBlockReward = 0;
@@ -398,6 +397,7 @@ namespace Notus.Block
                                             kvPoolDb.Remove(incomeConvertData.TransferId);
                                             tmpTxUid = "";
                                             addToList = false;
+                                            Console.WriteLine("addToList Status [021] : " + (addToList == true ? "TRUE" : "FALSE"));
                                         }
                                     }
 
@@ -495,6 +495,7 @@ namespace Notus.Block
                                     }
                                 }
                             }
+                            Console.WriteLine("addToList Status [077] : " + (addToList == true ? "TRUE" : "FALSE"));
 
                             if (addToList == true)
                             {
