@@ -68,7 +68,7 @@ namespace Notus.Coin
             }
             return false;
         }
-        public string Request(NVS.HttpRequestDetails IncomeData)
+        public string Request(NVS.HttpRequestDetails IncomeData, bool ToDistribute)
         {
             if (NVG.Settings.Genesis == null)
             {
@@ -205,7 +205,7 @@ namespace Notus.Coin
                     Text = "AddedToQueue"
                 });
 
-                Notus.Pool.Sharing.Distribute(IncomeData);
+                Notus.Pool.Sharing.Distribute(IncomeData, ToDistribute);
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
                 {
                     ErrorNo = 0,

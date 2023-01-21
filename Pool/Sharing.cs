@@ -7,8 +7,11 @@ namespace Notus.Pool
 {
     public static class Sharing
     {
-        public static void Distribute(NVS.HttpRequestDetails IncomeData)
+        public static void Distribute(NVS.HttpRequestDetails IncomeData, bool ToDistribute)
         {
+            if (ToDistribute == false)
+                return;
+
             string incomeDataStr = JsonSerializer.Serialize(IncomeData);
             Console.WriteLine(incomeDataStr);
             string poolMsgText = "<poolData>" + incomeDataStr + "</poolData>";
