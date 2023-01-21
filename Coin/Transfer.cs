@@ -45,7 +45,7 @@ namespace Notus.Coin
             CryptoTransferPool_List.TryRemove(txUid, out _);
             CryptoTransferPool.Remove(txUid);
         }
-        public string Request(NVS.HttpRequestDetails IncomeData)
+        public string Request(NVS.HttpRequestDetails IncomeData, bool ToDistribute)
         {
             // 1- data gelip, gelmediği kontrol ediliyor
             NVS.CryptoTransactionStruct? tmpTransfer = null;
@@ -321,6 +321,8 @@ namespace Notus.Coin
                 type = NVE.BlockTypeList.CryptoTransfer,
                 data = JsonSerializer.Serialize(recordStruct)
             });
+            
+            Notus.Pool.Sharing.Distribute(IncomeData, ToDistribute);
 
             /*
             //omergoksoy

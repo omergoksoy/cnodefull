@@ -9,11 +9,12 @@ namespace Notus.Pool
     {
         public static void Distribute(NVS.HttpRequestDetails IncomeData, bool ToDistribute)
         {
+            bu fonksiyon API istekleri ile tetiklenmeli 
+
             if (ToDistribute == false)
                 return;
 
             string incomeDataStr = JsonSerializer.Serialize(IncomeData);
-            Console.WriteLine(incomeDataStr);
             string poolMsgText = "<poolData>" + incomeDataStr + "</poolData>";
             foreach (var validatorItem in NVG.NodeList)
             {
