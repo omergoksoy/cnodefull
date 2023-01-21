@@ -17,6 +17,7 @@ using NVClass = Notus.Variable.Class;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
+
 namespace Notus.Coin
 {
     //aşrdrop üzerinden işlemin pool'a atılması durumunu kontrol et ve key value DB'ye bağla
@@ -130,21 +131,6 @@ namespace Notus.Coin
                 });
             }
 
-            /*
-"rowNo":3,
-{"In":{"134afde3707f":{"Wallet":"NSXhhh","Balance":{"NOTUS":{"20230110225407707":"0"}},"RowNo":0,"UID":""}},"Out":{"NSXhhhhhh888888888888888488888888822222":{"NOTUS":{"20230110225407708":"2000000000"}}},"Validator":"NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63"}
-
-"rowNo":4
-{"In":{"134afde37081":{"Wallet":"NSXhhh","Balance":{"NOTUS":{"20230110225407708":"2000000000"}},"RowNo":3,"UID":"134afde37080000787fff8b6746f19981d5aba47fb78e1143e3f0c99ea5fd7ca6fe0026000ee675560a36bce08"}},"Out":{"NSXhhhhhh888888888888888488888888822222":{"NOTUS":{"20230110225407708":"2000000000","20230110225409591":"2000000000"}}},"Validator":"NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63"}
-
-"rowNo":5
-{"In":{"134afde37080":{"Wallet":"NSXhhh","Balance":{"NOTUS":{"20230110225407708":"2000000000"}},"RowNo":3,"UID":"134afde37080000787fff8b6746f19981d5aba47fb78e1143e3f0c99ea5fd7ca6fe0026000ee675560a36bce08"}},"Out":{"NSXhhhhhh888888888888888488888888822222":{"NOTUS":{"20230110225407708":"2000000000","20230110225408273":"2000000000"}}},"Validator":"NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63"}
-
-"rowNo":6
-{"In":{"134afde3708c":{"Wallet":"NSXhhh","Balance":{"NOTUS":{"20230110225407708":"2000000000","20230110225408273":"2000000000"}},"RowNo":5,"UID":"134afde3708800044df265139bfffe5bec532b792bdee4b3d28ba4b8b8261e78a9dda97eef7de880a47ea971f3"}},"Out":{"NSXhhhhhh888888888888888488888888822222":{"NOTUS":{"20230110225407708":"2000000000","20230110225408273":"2000000000","20230110225420398":"2000000000"}}},"Validator":"NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63"}
-
-
-            */
             lock (NGF.WalletUsageList)
             {
                 bool returnWalletUsing = false;
@@ -182,19 +168,7 @@ namespace Notus.Coin
                 }
             }
 
-            /*
-            // eğer cüzdan başka bir işlem tarafından kilitli ise hata gönderecek
-            http://18.156.37.61:5002/airdrop/NSXhhhhhh888888888888888488888888822222
-            http://18.156.37.61:5002/airdrop/NSXhhhhhh888888888888888488888888844444
-            http://18.156.37.61:5002/balance/NSXhhhhhh888888888888888488888888822222
-            */
-
-            //burada değişken geri dönecek
             NVClass.BlockStruct_125 airDrop = Calculate(ReceiverWalletKey, airdropUid);
-            // Console.WriteLine("---------------------------------------");
-            // Console.WriteLine(JsonSerializer.Serialize(airDrop, NVC.JsonSetting));
-            // Console.WriteLine("---------------------------------------");
-
             bool tmpAddResult = NGF.BlockQueue.Add(new NVS.PoolBlockRecordStruct()
             {
                 uid = airdropUid,
@@ -202,14 +176,6 @@ namespace Notus.Coin
                 data = JsonSerializer.Serialize(airDrop)
             });
 
-            /*
-            
-            control-point-123456
-            // burada listeye eklensin
-            // burada listeye eklensin
-            // burada listeye eklensin
-            control-noktası
-            */
             NVG.TxPool.Add(new Notus.Compiler.TxQueueStruct()
             {
                 Uid = airdropUid,
@@ -239,7 +205,7 @@ namespace Notus.Coin
                     Text = "AddedToQueue"
                 });
 
-
+                Notus.Pool.Sharing.Distribute(IncomeData);
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
                 {
                     ErrorNo = 0,
