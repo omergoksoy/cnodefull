@@ -287,15 +287,15 @@ namespace Notus.Block
 
                                     if (addToList == true)
                                     {
-                                        addToList = NGF.Balance.CheckTransactionAvailability(incomeConvertData.Sender,incomeConvertData.Receiver);
+                                        addToList = NGF.Balance.CheckTransactionAvailability(incomeConvertData.Sender, incomeConvertData.Receiver);
                                     }
 
                                     BigInteger totalBlockReward = 0;
                                     ulong unlockTimeForNodeWallet = NVG.NOW.Int;
                                     NVS.WalletBalanceStruct? tmpValidatorWalletBalance = new();
-                                    NVClass.BlockStruct_120? tmpBlockCipherData=new();
+                                    NVClass.BlockStruct_120? tmpBlockCipherData = new();
                                     Int64 transferFee = 0;
-                                    NVS.WalletBalanceStruct? tmpSenderBalance=new();
+                                    NVS.WalletBalanceStruct? tmpSenderBalance = new();
                                     NVS.WalletBalanceStruct? tmpReceiverBalance = new();
                                     string tmpTokenTagStr = "";
                                     BigInteger tmpTokenVolume = 0;
@@ -372,7 +372,7 @@ namespace Notus.Block
                                         }
 
 
-                                        if(walletHaveEnoughCoinOrToken == false)
+                                        if (walletHaveEnoughCoinOrToken == false)
                                         {
                                             NVG.Settings.TxStatus.Set(incomeConvertData.TransferId, new NVS.CryptoTransferStatus()
                                             {
@@ -392,7 +392,7 @@ namespace Notus.Block
                                         }
                                     }
 
-                                    if(addToList == true)
+                                    if (addToList == true)
                                     {
                                         totalBlockReward = totalBlockReward + transferFee;
                                         //(transactionCount++;
@@ -710,16 +710,15 @@ namespace Notus.Block
                                 if (validatorAssigned == false)
                                 {
                                     innerBlockCipherData.Validator = tmpInnerData.Validator;
+                                    innerBlockCipherData.Validator.Reward = "0";
                                     validatorAssigned = true;
                                 }
-                                else
-                                {
-                                    BigInteger tmpFee =
-                                        BigInteger.Parse(innerBlockCipherData.Validator.Reward)
-                                        +
-                                        BigInteger.Parse(tmpInnerData.Validator.Reward);
-                                    innerBlockCipherData.Validator.Reward = tmpFee.ToString();
-                                }
+
+                                BigInteger tmpFee =
+                                    BigInteger.Parse(innerBlockCipherData.Validator.Reward)
+                                    +
+                                    BigInteger.Parse(tmpInnerData.Validator.Reward);
+                                innerBlockCipherData.Validator.Reward = tmpFee.ToString();
 
                                 foreach (KeyValuePair<string, Variable.Class.BlockStruct_120_In_Struct> iEntry in tmpInnerData.In)
                                 {
@@ -750,7 +749,7 @@ namespace Notus.Block
                     Console.WriteLine("------------ TempBlockList [2] ------------");
                     Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
                     Console.WriteLine("------------ TempBlockList [2] ------------");
-                    Environment.Exit(0);
+                    //Environment.Exit(0);
                 }
 
                 LongNonceText = string.Join(NVC.Delimeter, TempBlockList.ToArray());
