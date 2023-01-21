@@ -166,6 +166,15 @@ namespace Notus.Block
 
                     if (TmpPoolRecord != null)
                     {
+                        if(string.Equals(tmpTxUid, TmpPoolRecord.uid))
+                        {
+                            Console.WriteLine("string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE");
+                        }
+                        else
+                        {
+                            Console.WriteLine("string.Equals(tmpTxUid, TmpPoolRecord.uid) -> FALSE");
+                        }
+                        
                         CurrentBlockType = (CurrentBlockType == -1 ? TmpPoolRecord.type : CurrentBlockType);
 
                         if (CurrentBlockType == TmpPoolRecord.type)
@@ -499,6 +508,14 @@ namespace Notus.Block
                                     Console.WriteLine(TmpPoolRecord.data);
                                     Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
                                     Console.WriteLine("============================================");
+                                }
+                            }
+                            else
+                            {
+                                if (tmpTxUid.Length > 0)
+                                {
+                                    WrongTx(tmpTxUid, TmpPoolRecord.data);
+                                    tmpTxUid = "";
                                 }
                             }
                             //Obj_PoolTransactionList[CurrentBlockType].RemoveAt(0);
