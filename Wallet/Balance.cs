@@ -140,6 +140,7 @@ namespace Notus.Wallet
         }
         public void StopWalletUsage(string walletKey)
         {
+            Console.WriteLine("StopWalletUsage :" + walletKey);
             WalletReleaseTime.Enqueue(new KeyValuePair<DateTime, string>(NVG.NOW.Obj.AddSeconds(1), walletKey));
             /*
             lock (NGF.WalletUsageList)

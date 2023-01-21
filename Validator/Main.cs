@@ -908,6 +908,8 @@ namespace Notus.Validator
                                                 }
                                             }
                                         } // if (TmpBlockStruct != null) ELSE 
+
+                                        NGF.WalletUsageList.Clear();
                                     }
                                 } // if (txExecuted == false)
                             } // while (endingTime >= NGF.NowInt())
