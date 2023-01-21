@@ -730,6 +730,12 @@ namespace Notus.Block
                         Environment.Exit(0);
                     }
                 }
+
+                Console.WriteLine("------------ TempBlockList ------------");
+                Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
+                Console.WriteLine("------------ TempBlockList ------------");
+                Environment.Exit(0);
+
                 LongNonceText = string.Join(NVC.Delimeter, TempBlockList.ToArray());
             }
 
