@@ -1,133 +1,381 @@
-﻿10:27:52.641 L1-Dev  -> Activated DevNET for Layer 1 ( Crypto Layer )
-10:27:52.641 L1-Dev  -> Starting As Main Node
-10:27:52.641 L1-Dev  -> Waiting For Time Sync
-10:27:52.641 L1-Dev  -> Time Sync Is Done
-10:27:52.641 L1-Dev  -> Time Synchronizer Has Started
-10:29:27.786 L1-Dev  -> NTP Time Synchronizer Has Started
-10:29:27.786 L1-Dev  -> Burada Diger Genesisler Kontrol Edilmeli
-10:29:27.786 L1-Dev  -> Burada Diger Genesisler Kontrol Edilmeli
-10:29:27.786 L1-Dev  -> Node P2P Port No : 5012
-10:29:27.786 L1-Dev  -> Listining : http://18.156.37.61:5002/
-10:29:27.786 L1-Dev  -> Http Has Started
-10:29:27.828 L1-Dev  -> Checking From -> 3.125.159.102
-10:29:27.942 L1-Dev  -> The JSON value could not be converted to Notus.Variable.Class.BlockData. Path: $ | LineNumber: 0 | BytePositionInLine: 5.
-10:29:27.942 L1-Dev  -> Error Happened While Trying To Get Genesis From Other Node
-10:29:28.187 L1-Dev  -> All Blocks Checked With Quick Method
-10:29:28.187 L1-Dev  -> Pool Loaded From Local DB
-10:29:28.344 L1-Dev  -> Last Block Row No : 2
-10:29:28.344 L1-Dev  -> Balance.Control Just Executed For -> 1
-10:29:28.452 -> Error Text [90ecab567]   : ExecuteNonQuery can only be called when the connection is open.
-10:29:28.452 -> Mempool Name [90ecab567] : dev-net\layer-1\wallet\currency_list.db
-10:29:28.452 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Balance.Cs
-10:29:28.452 L1-Dev  -> {}
-BEFORE PUT NSX6HbA3Cbx7QkxG8Ntq3YxnYGt79Eq1KFTDBw5 ==>> {"Wallet":"NSX6HbA3Cbx7QkxG8Ntq3YxnYGt79Eq1KFTDBw5","Balance":{"NOTUS":{"16777216000000000":"1000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
-AFTER PUT  NSX6HbA3Cbx7QkxG8Ntq3YxnYGt79Eq1KFTDBw5 ==>> {"Wallet":"NSX6HbA3Cbx7QkxG8Ntq3YxnYGt79Eq1KFTDBw5","Balance":{"NOTUS":{"16777216000000000":"1000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
+﻿11:01:52.515 L1-Dev  -> Activated DevNET for Layer 1 ( Crypto Layer )
+11:01:52.515 L1-Dev  -> Starting As Main Node
+11:01:52.515 L1-Dev  -> Waiting For Time Sync
+11:01:52.515 L1-Dev  -> Time Sync Is Done
+11:01:52.515 L1-Dev  -> Time Synchronizer Has Started
+11:02:42.383 L1-Dev  -> NTP Time Synchronizer Has Started
+11:02:42.383 L1-Dev  -> Burada Diger Genesisler Kontrol Edilmeli
+11:02:42.383 L1-Dev  -> Burada Diger Genesisler Kontrol Edilmeli
+11:02:42.383 L1-Dev  -> Node P2P Port No : 5012
+11:02:42.383 L1-Dev  -> Listining : http://18.156.37.61:5002/
+11:02:42.383 L1-Dev  -> Http Has Started
+11:02:42.428 L1-Dev  -> Checking From -> 3.125.159.102
+11:02:51.600 L1-Dev  -> All Blocks Checked With Quick Method
+11:02:51.600 L1-Dev  -> Pool Loaded From Local DB
+11:02:51.677 L1-Dev  -> Last Block Row No : 3
+11:02:51.694 L1-Dev  -> Balance.Control Just Executed For -> 1
+11:02:51.791 L1-Dev  -> Statring Time Arrived 11:03:20
+11:02:51.822 -> Error Text [90ecab567]   : ExecuteNonQuery can only be called when the connection is open.
+11:02:51.822 -> Mempool Name [90ecab567] : dev-net\layer-1\wallet\currency_list.db
+11:02:51.822 L1-Dev  -> NGF.WalletUsageList.Clear(); -> CLEARED -> Balance.Cs
+11:02:51.822 L1-Dev  -> {}
+BEFORE PUT NSX38u61dmsRxAvhNCNLBajERTSjR96jpEXBEeF ==>> {"Wallet":"NSX38u61dmsRxAvhNCNLBajERTSjR96jpEXBEeF","Balance":{"NOTUS":{"16777216000000000":"1000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
+AFTER PUT  NSX38u61dmsRxAvhNCNLBajERTSjR96jpEXBEeF ==>> {"Wallet":"NSX38u61dmsRxAvhNCNLBajERTSjR96jpEXBEeF","Balance":{"NOTUS":{"16777216000000000":"1000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
 Check if they are equal -> TRUE
-10:29:28.468 L1-Dev  -> New Balance -> NSX6HbA3Cbx7QkxG8Ntq3YxnYGt79Eq1KFTDBw5 -> {"NOTUS":{"16777216000000000":"1000000000000000"}}
-BEFORE PUT NSX8QKuc6y8VBt2fF59mmYjvSz11nn7BpJpWXGY ==>> {"Wallet":"NSX8QKuc6y8VBt2fF59mmYjvSz11nn7BpJpWXGY","Balance":{"NOTUS":{"16777216000000000":"2000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
-AFTER PUT  NSX8QKuc6y8VBt2fF59mmYjvSz11nn7BpJpWXGY ==>> {"Wallet":"NSX8QKuc6y8VBt2fF59mmYjvSz11nn7BpJpWXGY","Balance":{"NOTUS":{"16777216000000000":"2000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
+11:02:51.822 L1-Dev  -> New Balance -> NSX38u61dmsRxAvhNCNLBajERTSjR96jpEXBEeF -> {"NOTUS":{"16777216000000000":"1000000000000000"}}
+BEFORE PUT NSX4rUKr9npjJPn19E38B1FrS5sULsq5gBuJrrK ==>> {"Wallet":"NSX4rUKr9npjJPn19E38B1FrS5sULsq5gBuJrrK","Balance":{"NOTUS":{"16777216000000000":"2000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
+AFTER PUT  NSX4rUKr9npjJPn19E38B1FrS5sULsq5gBuJrrK ==>> {"Wallet":"NSX4rUKr9npjJPn19E38B1FrS5sULsq5gBuJrrK","Balance":{"NOTUS":{"16777216000000000":"2000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
 Check if they are equal -> TRUE
-10:29:28.468 L1-Dev  -> New Balance -> NSX8QKuc6y8VBt2fF59mmYjvSz11nn7BpJpWXGY -> {"NOTUS":{"16777216000000000":"2000000000000000"}}
-BEFORE PUT NSX8mqwGbTxkoZxFzfL4nETUM8vYRL2W9WXZ4J7 ==>> {"Wallet":"NSX8mqwGbTxkoZxFzfL4nETUM8vYRL2W9WXZ4J7","Balance":{"NOTUS":{"16777216000000000":"10000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
-AFTER PUT  NSX8mqwGbTxkoZxFzfL4nETUM8vYRL2W9WXZ4J7 ==>> {"Wallet":"NSX8mqwGbTxkoZxFzfL4nETUM8vYRL2W9WXZ4J7","Balance":{"NOTUS":{"16777216000000000":"10000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
+11:02:51.822 L1-Dev  -> New Balance -> NSX4rUKr9npjJPn19E38B1FrS5sULsq5gBuJrrK -> {"NOTUS":{"16777216000000000":"2000000000000000"}}
+BEFORE PUT NSX7zzmoXfKM4vsK7SAFR6okhNoBZDgf7yH3zbh ==>> {"Wallet":"NSX7zzmoXfKM4vsK7SAFR6okhNoBZDgf7yH3zbh","Balance":{"NOTUS":{"16777216000000000":"10000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
+AFTER PUT  NSX7zzmoXfKM4vsK7SAFR6okhNoBZDgf7yH3zbh ==>> {"Wallet":"NSX7zzmoXfKM4vsK7SAFR6okhNoBZDgf7yH3zbh","Balance":{"NOTUS":{"16777216000000000":"10000000000000000"}},"RowNo":1,"UID":"100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"} SETTED
 Check if they are equal -> TRUE
-10:29:28.468 L1-Dev  -> New Balance -> NSX8mqwGbTxkoZxFzfL4nETUM8vYRL2W9WXZ4J7 -> {"NOTUS":{"16777216000000000":"10000000000000000"}}
-10:29:28.485 L1-Dev  -> Balance.Control Just Executed For -> 2
-10:29:28.485 L1-Dev  -> All Blocks Loaded
-10:29:28.485 L1-Dev  -> Main Validator Started
-10:29:28.485 L1-Dev  -> Node Sync Starting
-10:29:28.499 L1-Dev  -> Finding Online Nodes
-10:29:28.499 L1-Dev  -> Removing Offline Nodes From List
-10:29:28.499 L1-Dev  -> Node List Sync With Other Nodes
-10:29:28.517 L1-Dev  -> Send My Node Full Info
-10:29:28.535 L1-Dev  -> Ask Other Nodes Full Info
-10:29:28.548 L1-Dev  -> Distribution Control Timer Has started
-10:29:28.563 L1-Dev  -> Wait Until Nodes Available
-10:29:28.563 L1-Dev  -> First Synchronisation
-10:29:28.563 L1-Dev  -> Node Count : 2 / 2
-10:29:33.577 L1-Dev  -> I'm Sending Starting (When) Time / Current : 10:30:00.000 / 10:29:33.577
-10:29:33.609 L1-Dev  -> Ping Started
-10:29:33.609 L1-Dev  -> Node Blocks Are Checking For Sync
-10:29:33.640 L1-Dev  -> Block Came From The Block Sync [ ______________2 :  200 ]
-10:29:33.640 L1-Dev  -> We Already Processed The Block -> [ 2 ]
-10:29:33.640 L1-Dev  -> First Synchronization Is Done
-10:30:00.002 L1-Dev  -> Empty Block Executed
-10:30:00.016 L1-Dev  -> Block Came From The Main Loop [ ______________3 :  300 ]
-10:30:00.016 L1-Dev  -> Block Generated By [ ______________3 ] : ME
-10:30:00.016 L1-Dev  -> Balance.Control Just Executed For -> 3
-10:30:00.016 L1-Dev  -> Block Is Proccessing   -> 3 -> 134afe9192580008143c -> 10000000000000000000
-10:30:00.016 L1-Dev  -> blockIsValid Result : true
-10:30:00.016 L1-Dev  -> Distrubute To All Other Node / Nodes
-10:30:00.032 L1-Dev  -> Distributed [ ______________3 : 300 ] To 3.125.159.102:5002
-+Get Wallet Balance : NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV
+11:02:51.835 L1-Dev  -> New Balance -> NSX7zzmoXfKM4vsK7SAFR6okhNoBZDgf7yH3zbh -> {"NOTUS":{"16777216000000000":"10000000000000000"}}
+11:02:51.835 L1-Dev  -> Balance.Control Just Executed For -> 2
+11:02:51.835 L1-Dev  -> Balance.Control Just Executed For -> 3
+11:02:51.835 L1-Dev  -> All Blocks Loaded
+11:02:51.835 L1-Dev  -> Main Validator Started
+11:02:51.854 L1-Dev  -> Node Sync Starting
+11:02:51.854 L1-Dev  -> Finding Online Nodes
+11:02:51.854 L1-Dev  -> Removing Offline Nodes From List
+11:02:51.876 L1-Dev  -> Node List Sync With Other Nodes
+11:02:51.881 L1-Dev  -> Send My Node Full Info
+11:02:51.881 L1-Dev  -> Ask Other Nodes Full Info
+11:02:51.899 L1-Dev  -> Distribution Control Timer Has started
+11:02:51.899 L1-Dev  -> Wait Until Nodes Available
+11:02:51.899 L1-Dev  -> First Synchronisation
+11:02:51.899 L1-Dev  -> Node Count : 2 / 2
+11:02:51.928 L1-Dev  -> I'm Waiting Starting (When) Time / Current : 11:03:20.000 /  11:02:51.928
+11:02:51.928 L1-Dev  -> Ping Started
+11:02:51.944 L1-Dev  -> Node Blocks Are Checking For Sync
+11:02:51.963 L1-Dev  -> Block Came From The Block Sync [ ______________3 :  300 ]
+11:02:51.963 L1-Dev  -> We Already Processed The Block -> [ 3 ]
+11:02:51.963 L1-Dev  -> First Synchronization Is Done
++Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
 Balance Text Is NULL
-Get Wallet Balance : NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
 Balance Text Is NULL
-Get Wallet Balance : NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
 Balance Text Is NULL
-Get Wallet Balance : NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
 Balance Text Is NULL
-10:30:04.001 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
-10:30:04.016 L1-Dev  -> Block Came From The Main Loop [ ______________4 :  125 ]
-10:30:04.016 L1-Dev  -> Block Generated By [ ______________4 ] : ME
-10:30:04.016 L1-Dev  -> Balance.Control Just Executed For -> 4
-BEFORE PUT NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV ==>> {"Wallet":"NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV","Balance":{"NOTUS":{"20230121103004001":"2000000000"}},"RowNo":4,"UID":"134afe91925c0003f157b62457008af19ef1b73127853bc2581493f594660bbe2df427b425e189a433be6c1436"} SETTED
-AFTER PUT  NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV ==>> {"Wallet":"NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV","Balance":{"NOTUS":{"20230121103004001":"2000000000"}},"RowNo":4,"UID":"134afe91925c0003f157b62457008af19ef1b73127853bc2581493f594660bbe2df427b425e189a433be6c1436"} SETTED
+11:03:22.694 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+11:03:22.710 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+11:03:22.710 L1-Dev  -> We Ignored This Block [ ______________4 ] -> 1
+11:03:22.710 L1-Dev  -> blockIsValid Result : false
+["134afe91aef20a6f963c39446893209ba5908b4c485a2ccadfb04be5f18153393e572f510979a103a4b6ffa0a9"]
+11:03:22.710 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
+Balance Text Is NULL
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
+Balance Text Is NULL
+11:03:23.501 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+11:03:23.508 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+11:03:23.508 L1-Dev  -> We Ignored This Block [ ______________4 ] -> 2
+11:03:23.508 L1-Dev  -> blockIsValid Result : false
+["134afe91aef20a6f963c39446893209ba5908b4c485a2ccadfb04be5f18153393e572f510979a103a4b6ffa0a9"]
+11:03:23.508 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
+Balance Text Is NULL
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
+Balance Text Is NULL
+11:03:24.501 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+11:03:24.507 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+11:03:24.507 L1-Dev  -> We Ignored This Block [ ______________4 ] -> 3
+11:03:24.507 L1-Dev  -> blockIsValid Result : false
+["134afe91aef20a6f963c39446893209ba5908b4c485a2ccadfb04be5f18153393e572f510979a103a4b6ffa0a9"]
+11:03:24.507 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
+Balance Text Is NULL
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
+Balance Text Is NULL
+11:03:25.501 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+11:03:25.508 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+11:03:25.508 L1-Dev  -> We Ignored This Block [ ______________4 ] -> 4
+11:03:25.508 L1-Dev  -> blockIsValid Result : false
+["134afe91aef20a6f963c39446893209ba5908b4c485a2ccadfb04be5f18153393e572f510979a103a4b6ffa0a9"]
+11:03:25.508 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
+Balance Text Is NULL
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
+Balance Text Is NULL
+11:03:26.501 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+11:03:26.508 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+11:03:26.508 L1-Dev  -> We Ignored This Block [ ______________4 ] -> 5
+11:03:26.508 L1-Dev  -> blockIsValid Result : false
+["134afe91aef20a6f963c39446893209ba5908b4c485a2ccadfb04be5f18153393e572f510979a103a4b6ffa0a9"]
+11:03:26.508 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
+Balance Text Is NULL
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
+Balance Text Is NULL
+11:03:27.501 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+11:03:27.507 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+11:03:27.507 L1-Dev  -> We Ignored This Block [ ______________4 ] -> 6
+11:03:27.507 L1-Dev  -> blockIsValid Result : false
+["134afe91aef20a6f963c39446893209ba5908b4c485a2ccadfb04be5f18153393e572f510979a103a4b6ffa0a9"]
+11:03:27.507 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
+Balance Text Is NULL
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
+Balance Text Is NULL
+11:03:28.501 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+11:03:28.507 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+11:03:28.507 L1-Dev  -> We Ignored This Block [ ______________4 ] -> 7
+11:03:28.507 L1-Dev  -> blockIsValid Result : false
+["134afe91aef20a6f963c39446893209ba5908b4c485a2ccadfb04be5f18153393e572f510979a103a4b6ffa0a9"]
+11:03:28.507 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
+Balance Text Is NULL
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
+Balance Text Is NULL
+11:03:29.001 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+11:03:29.007 L1-Dev  -> Block Came From The Main Loop [ ______________4 :  125 ]
+11:03:29.007 L1-Dev  -> Block Generated By [ ______________4 ] : ME
+11:03:29.007 L1-Dev  -> Balance.Control Just Executed For -> 4
+BEFORE PUT NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34 ==>> {"Wallet":"NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34","Balance":{"NOTUS":{"20230121110329001":"2000000000"}},"RowNo":4,"UID":"134afe91aef90004e94b99046dfc4cf61799b66f2f4dcbc3274545c40c210ae586b655cca14b6977819acb7340"} SETTED
+AFTER PUT  NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34 ==>> {"Wallet":"NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34","Balance":{"NOTUS":{"20230121110329001":"2000000000"}},"RowNo":4,"UID":"134afe91aef90004e94b99046dfc4cf61799b66f2f4dcbc3274545c40c210ae586b655cca14b6977819acb7340"} SETTED
 Check if they are equal -> TRUE
-10:30:04.016 L1-Dev  -> New Balance -> NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV -> {"NOTUS":{"20230121103004001":"2000000000"}}
-10:30:04.016 L1-Dev  -> Block Is Proccessing   -> 4 -> 134afe91925c0003f157 -> 134afe9192580008143c
-10:30:04.016 L1-Dev  -> blockIsValid Result : true
-10:30:04.016 L1-Dev  -> Distrubute To All Other Node / Nodes
-10:30:04.016 L1-Dev  -> Distributed [ ______________4 : 125 ] To 3.125.159.102:5002
-10:30:04.016 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
-10:30:04.990 L1-Dev  -> P2P Connection Closed ->NSX8qax...Q6uLGn7
-Get Wallet Balance : NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV
-{"Wallet":"NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV","Balance":{"NOTUS":{"20230121103004001":"2000000000"}},"RowNo":4,"UID":"134afe91925c0003f157b62457008af19ef1b73127853bc2581493f594660bbe2df427b425e189a433be6c1436"}
+11:03:29.007 L1-Dev  -> New Balance -> NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34 -> {"NOTUS":{"20230121110329001":"2000000000"}}
+11:03:29.007 L1-Dev  -> Block Is Proccessing   -> 4 -> 134afe91aef90004e94b -> 134afe91ae280030be27
+11:03:29.007 L1-Dev  -> blockIsValid Result : true
+11:03:29.023 L1-Dev  -> Distrubute To All Other Node / Nodes
+11:03:29.023 L1-Dev  -> Distributed [ ______________4 : 125 ] To 3.125.159.102:5002
+11:03:29.023 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
+{"Wallet":"NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34","Balance":{"NOTUS":{"20230121110329001":"2000000000"}},"RowNo":4,"UID":"134afe91aef90004e94b99046dfc4cf61799b66f2f4dcbc3274545c40c210ae586b655cca14b6977819acb7340"}
 Get From RocksDb
-{"CurrentTime":2023011913151000,"UnlockTime":20230119131500000,"Version":1000,"TransferId":"134afe9192600dee5ca0b33e7401d7c7a762d8ba4b4919e6b2772c4d0acd41a58590412d554edf9c1c73242867","Currency":"NOTUS","Sender":"NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV","Receiver":"NSX6T6RLsPQ9S2uUQC9duEAhPMraPhLfeH7gKAt","Fee":"150","Volume":"10000000","PublicKey":"0481a76959022f187d55203be59c9c9fcd651993e6218af0d78e4bba24c5e8d44af8c7f6b683fb067c882db0e5a1b28c5dd600c3e5623d166ba1d450791f1522a6","Sign":"3045022100d82529dbaabf183f71a81c7ca0e56f7fd3208d8c943a229d86a9b7bddbbfc11302204938529f9143e30254a53a22759548e414ec328dbc078ba51bbf6b80dfeaded3"}
+{"CurrentTime":2023011913151000,"UnlockTime":20230119131500000,"Version":1000,"TransferId":"134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4","Currency":"NOTUS","Sender":"NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34","Receiver":"NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8","Fee":"150","Volume":"10000000","PublicKey":"0439917b1ad56ef5d24aceaef06774f871fd24683bbd93b8369e0c69c015918b5248f61147aa2dceee850d3737b823d01767b05180902cd285937f3f82867b6d88","Sign":"3045022100ac8376fbabb1383ef53e68494040a783784a40be45b036fd0bcd94f9ba6c1c8202201bd191900e031afaba5d54c83ff828d4bf840384ea89c2415956cfbacb4f78da"}
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
 ----------- Income Data -----------
 {
   "CurrentTime": 2023011913151000,
   "UnlockTime": 20230119131500000,
   "Version": 1000,
-  "TransferId": "134afe9192600dee5ca0b33e7401d7c7a762d8ba4b4919e6b2772c4d0acd41a58590412d554edf9c1c73242867",
+  "TransferId": "134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4",
   "Currency": "NOTUS",
-  "Sender": "NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV",
-  "Receiver": "NSX6T6RLsPQ9S2uUQC9duEAhPMraPhLfeH7gKAt",
+  "Sender": "NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34",
+  "Receiver": "NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8",
   "Fee": "150",
   "Volume": "10000000",
-  "PublicKey": "0481a76959022f187d55203be59c9c9fcd651993e6218af0d78e4bba24c5e8d44af8c7f6b683fb067c882db0e5a1b28c5dd600c3e5623d166ba1d450791f1522a6",
-  "Sign": "3045022100d82529dbaabf183f71a81c7ca0e56f7fd3208d8c943a229d86a9b7bddbbfc11302204938529f9143e30254a53a22759548e414ec328dbc078ba51bbf6b80dfeaded3"
+  "PublicKey": "0439917b1ad56ef5d24aceaef06774f871fd24683bbd93b8369e0c69c015918b5248f61147aa2dceee850d3737b823d01767b05180902cd285937f3f82867b6d88",
+  "Sign": "3045022100ac8376fbabb1383ef53e68494040a783784a40be45b036fd0bcd94f9ba6c1c8202201bd191900e031afaba5d54c83ff828d4bf840384ea89c2415956cfbacb4f78da"
 }
 ----------- Income Data -----------
 Get Wallet Balance : NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63
 Balance Text Is NULL
-Get Wallet Balance : NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV
-{"Wallet":"NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV","Balance":{"NOTUS":{"20230121103004001":"2000000000"}},"RowNo":4,"UID":"134afe91925c0003f157b62457008af19ef1b73127853bc2581493f594660bbe2df427b425e189a433be6c1436"}
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
+{"Wallet":"NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34","Balance":{"NOTUS":{"20230121110329001":"2000000000"}},"RowNo":4,"UID":"134afe91aef90004e94b99046dfc4cf61799b66f2f4dcbc3274545c40c210ae586b655cca14b6977819acb7340"}
 Get From RocksDb
-Get Wallet Balance : NSX6T6RLsPQ9S2uUQC9duEAhPMraPhLfeH7gKAt
+Get Wallet Balance : NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8
 Balance Text Is NULL
-Get Wallet Balance : NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV
-{"Wallet":"NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV","Balance":{"NOTUS":{"20230121103004001":"2000000000"}},"RowNo":4,"UID":"134afe91925c0003f157b62457008af19ef1b73127853bc2581493f594660bbe2df427b425e189a433be6c1436"}
+Get Wallet Balance : NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34
+{"Wallet":"NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34","Balance":{"NOTUS":{"20230121110329001":"2000000000"}},"RowNo":4,"UID":"134afe91aef90004e94b99046dfc4cf61799b66f2f4dcbc3274545c40c210ae586b655cca14b6977819acb7340"}
 Get From RocksDb
-Get Wallet Balance : NSX6T6RLsPQ9S2uUQC9duEAhPMraPhLfeH7gKAt
+Get Wallet Balance : NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8
 Balance Text Is NULL
 ------- Single Record BEGIN -------
-{"In":{"134afe9192600dee5ca0b33e7401d7c7a762d8ba4b4919e6b2772c4d0acd41a58590412d554edf9c1c73242867":{"Sender":{"Wallet":"NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV","Balance":{"NOTUS":{"20230121103004001":"2000000000"}},"WitnessRowNo":4,"WitnessBlockUid":"134afe91925c0003f157b62457008af19ef1b73127853bc2581493f594660bbe2df427b425e189a433be6c1436"},"Receiver":{"Wallet":"NSX6T6RLsPQ9S2uUQC9duEAhPMraPhLfeH7gKAt","Balance":{"NOTUS":{"20230121103009001":"0"}},"WitnessRowNo":0,"WitnessBlockUid":""},"CurrentTime":2023011913151000,"Currency":"NOTUS","Volume":"10000000","Fee":"150","PublicKey":"0481a76959022f187d55203be59c9c9fcd651993e6218af0d78e4bba24c5e8d44af8c7f6b683fb067c882db0e5a1b28c5dd600c3e5623d166ba1d450791f1522a6","Sign":"3045022100d82529dbaabf183f71a81c7ca0e56f7fd3208d8c943a229d86a9b7bddbbfc11302204938529f9143e30254a53a22759548e414ec328dbc078ba51bbf6b80dfeaded3"}},"Out":{"NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV":{"NOTUS":{"20230121103004001":"1989999850"}},"NSX6T6RLsPQ9S2uUQC9duEAhPMraPhLfeH7gKAt":{"NOTUS":{"20230121103009001":"0","20230119131500000":"10000000"}}},"Validator":{"Reward":"0","NodeWallet":"NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63"}}
+{"In":{"134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4":{"Sender":{"Wallet":"NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34","Balance":{"NOTUS":{"20230121110329001":"2000000000"}},"WitnessRowNo":4,"WitnessBlockUid":"134afe91aef90004e94b99046dfc4cf61799b66f2f4dcbc3274545c40c210ae586b655cca14b6977819acb7340"},"Receiver":{"Wallet":"NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8","Balance":{"NOTUS":{"20230121110334501":"0"}},"WitnessRowNo":0,"WitnessBlockUid":""},"CurrentTime":2023011913151000,"Currency":"NOTUS","Volume":"10000000","Fee":"150","PublicKey":"0439917b1ad56ef5d24aceaef06774f871fd24683bbd93b8369e0c69c015918b5248f61147aa2dceee850d3737b823d01767b05180902cd285937f3f82867b6d88","Sign":"3045022100ac8376fbabb1383ef53e68494040a783784a40be45b036fd0bcd94f9ba6c1c8202201bd191900e031afaba5d54c83ff828d4bf840384ea89c2415956cfbacb4f78da"}},"Out":{"NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34":{"NOTUS":{"20230121110329001":"1989999850"}},"NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8":{"NOTUS":{"20230121110334501":"0","20230119131500000":"10000000"}}},"Validator":{"Reward":"0","NodeWallet":"NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63"}}
 ------- Single Record END   -------
-Processed : 134afe9192600dee5ca0b33e7401d7c7a762d8ba4b4919e6b2772c4d0acd41a58590412d554edf9c1c73242867
+Processed : 134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4
 TmpPoolRecord.data
-{"In":{"134afe9192600dee5ca0b33e7401d7c7a762d8ba4b4919e6b2772c4d0acd41a58590412d554edf9c1c73242867":{"Sender":{"Wallet":"NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV","Balance":{"NOTUS":{"20230121103004001":"2000000000"}},"WitnessRowNo":4,"WitnessBlockUid":"134afe91925c0003f157b62457008af19ef1b73127853bc2581493f594660bbe2df427b425e189a433be6c1436"},"Receiver":{"Wallet":"NSX6T6RLsPQ9S2uUQC9duEAhPMraPhLfeH7gKAt","Balance":{"NOTUS":{"20230121103009001":"0"}},"WitnessRowNo":0,"WitnessBlockUid":""},"CurrentTime":2023011913151000,"Currency":"NOTUS","Volume":"10000000","Fee":"150","PublicKey":"0481a76959022f187d55203be59c9c9fcd651993e6218af0d78e4bba24c5e8d44af8c7f6b683fb067c882db0e5a1b28c5dd600c3e5623d166ba1d450791f1522a6","Sign":"3045022100d82529dbaabf183f71a81c7ca0e56f7fd3208d8c943a229d86a9b7bddbbfc11302204938529f9143e30254a53a22759548e414ec328dbc078ba51bbf6b80dfeaded3"}},"Out":{"NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV":{"NOTUS":{"20230121103004001":"1989999850"}},"NSX6T6RLsPQ9S2uUQC9duEAhPMraPhLfeH7gKAt":{"NOTUS":{"20230121103009001":"0","20230119131500000":"10000000"}}},"Validator":{"Reward":"0","NodeWallet":"NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63"}}
-["{\u0022In\u0022:{\u0022134afe9192600dee5ca0b33e7401d7c7a762d8ba4b4919e6b2772c4d0acd41a58590412d554edf9c1c73242867\u0022:{\u0022Sender\u0022:{\u0022Wallet\u0022:\u0022NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV\u0022,\u0022Balance\u0022:{\u0022NOTUS\u0022:{\u002220230121103004001\u0022:\u00222000000000\u0022}},\u0022WitnessRowNo\u0022:4,\u0022WitnessBlockUid\u0022:\u0022134afe91925c0003f157b62457008af19ef1b73127853bc2581493f594660bbe2df427b425e189a433be6c1436\u0022},\u0022Receiver\u0022:{\u0022Wallet\u0022:\u0022NSX6T6RLsPQ9S2uUQC9duEAhPMraPhLfeH7gKAt\u0022,\u0022Balance\u0022:{\u0022NOTUS\u0022:{\u002220230121103009001\u0022:\u00220\u0022}},\u0022WitnessRowNo\u0022:0,\u0022WitnessBlockUid\u0022:\u0022\u0022},\u0022CurrentTime\u0022:2023011913151000,\u0022Currency\u0022:\u0022NOTUS\u0022,\u0022Volume\u0022:\u002210000000\u0022,\u0022Fee\u0022:\u0022150\u0022,\u0022PublicKey\u0022:\u00220481a76959022f187d55203be59c9c9fcd651993e6218af0d78e4bba24c5e8d44af8c7f6b683fb067c882db0e5a1b28c5dd600c3e5623d166ba1d450791f1522a6\u0022,\u0022Sign\u0022:\u00223045022100d82529dbaabf183f71a81c7ca0e56f7fd3208d8c943a229d86a9b7bddbbfc11302204938529f9143e30254a53a22759548e414ec328dbc078ba51bbf6b80dfeaded3\u0022}},\u0022Out\u0022:{\u0022NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV\u0022:{\u0022NOTUS\u0022:{\u002220230121103004001\u0022:\u00221989999850\u0022}},\u0022NSX6T6RLsPQ9S2uUQC9duEAhPMraPhLfeH7gKAt\u0022:{\u0022NOTUS\u0022:{\u002220230121103009001\u0022:\u00220\u0022,\u002220230119131500000\u0022:\u002210000000\u0022}}},\u0022Validator\u0022:{\u0022Reward\u0022:\u00220\u0022,\u0022NodeWallet\u0022:\u0022NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63\u0022}}"]
+{"In":{"134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4":{"Sender":{"Wallet":"NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34","Balance":{"NOTUS":{"20230121110329001":"2000000000"}},"WitnessRowNo":4,"WitnessBlockUid":"134afe91aef90004e94b99046dfc4cf61799b66f2f4dcbc3274545c40c210ae586b655cca14b6977819acb7340"},"Receiver":{"Wallet":"NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8","Balance":{"NOTUS":{"20230121110334501":"0"}},"WitnessRowNo":0,"WitnessBlockUid":""},"CurrentTime":2023011913151000,"Currency":"NOTUS","Volume":"10000000","Fee":"150","PublicKey":"0439917b1ad56ef5d24aceaef06774f871fd24683bbd93b8369e0c69c015918b5248f61147aa2dceee850d3737b823d01767b05180902cd285937f3f82867b6d88","Sign":"3045022100ac8376fbabb1383ef53e68494040a783784a40be45b036fd0bcd94f9ba6c1c8202201bd191900e031afaba5d54c83ff828d4bf840384ea89c2415956cfbacb4f78da"}},"Out":{"NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34":{"NOTUS":{"20230121110329001":"1989999850"}},"NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8":{"NOTUS":{"20230121110334501":"0","20230119131500000":"10000000"}}},"Validator":{"Reward":"0","NodeWallet":"NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63"}}
+["{\u0022In\u0022:{\u0022134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4\u0022:{\u0022Sender\u0022:{\u0022Wallet\u0022:\u0022NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34\u0022,\u0022Balance\u0022:{\u0022NOTUS\u0022:{\u002220230121110329001\u0022:\u00222000000000\u0022}},\u0022WitnessRowNo\u0022:4,\u0022WitnessBlockUid\u0022:\u0022134afe91aef90004e94b99046dfc4cf61799b66f2f4dcbc3274545c40c210ae586b655cca14b6977819acb7340\u0022},\u0022Receiver\u0022:{\u0022Wallet\u0022:\u0022NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8\u0022,\u0022Balance\u0022:{\u0022NOTUS\u0022:{\u002220230121110334501\u0022:\u00220\u0022}},\u0022WitnessRowNo\u0022:0,\u0022WitnessBlockUid\u0022:\u0022\u0022},\u0022CurrentTime\u0022:2023011913151000,\u0022Currency\u0022:\u0022NOTUS\u0022,\u0022Volume\u0022:\u002210000000\u0022,\u0022Fee\u0022:\u0022150\u0022,\u0022PublicKey\u0022:\u00220439917b1ad56ef5d24aceaef06774f871fd24683bbd93b8369e0c69c015918b5248f61147aa2dceee850d3737b823d01767b05180902cd285937f3f82867b6d88\u0022,\u0022Sign\u0022:\u00223045022100ac8376fbabb1383ef53e68494040a783784a40be45b036fd0bcd94f9ba6c1c8202201bd191900e031afaba5d54c83ff828d4bf840384ea89c2415956cfbacb4f78da\u0022}},\u0022Out\u0022:{\u0022NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34\u0022:{\u0022NOTUS\u0022:{\u002220230121110329001\u0022:\u00221989999850\u0022}},\u0022NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8\u0022:{\u0022NOTUS\u0022:{\u002220230121110334501\u0022:\u00220\u0022,\u002220230119131500000\u0022:\u002210000000\u0022}}},\u0022Validator\u0022:{\u0022Reward\u0022:\u00220\u0022,\u0022NodeWallet\u0022:\u0022NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63\u0022}}"]
 ============================================
 TempBlockList.Count : 1
 ------------ TempBlockList [1] ------------
-["{\u0022In\u0022:{\u0022134afe9192600dee5ca0b33e7401d7c7a762d8ba4b4919e6b2772c4d0acd41a58590412d554edf9c1c73242867\u0022:{\u0022Sender\u0022:{\u0022Wallet\u0022:\u0022NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV\u0022,\u0022Balance\u0022:{\u0022NOTUS\u0022:{\u002220230121103004001\u0022:\u00222000000000\u0022}},\u0022WitnessRowNo\u0022:4,\u0022WitnessBlockUid\u0022:\u0022134afe91925c0003f157b62457008af19ef1b73127853bc2581493f594660bbe2df427b425e189a433be6c1436\u0022},\u0022Receiver\u0022:{\u0022Wallet\u0022:\u0022NSX6T6RLsPQ9S2uUQC9duEAhPMraPhLfeH7gKAt\u0022,\u0022Balance\u0022:{\u0022NOTUS\u0022:{\u002220230121103009001\u0022:\u00220\u0022}},\u0022WitnessRowNo\u0022:0,\u0022WitnessBlockUid\u0022:\u0022\u0022},\u0022CurrentTime\u0022:2023011913151000,\u0022Currency\u0022:\u0022NOTUS\u0022,\u0022Volume\u0022:\u002210000000\u0022,\u0022Fee\u0022:\u0022150\u0022,\u0022PublicKey\u0022:\u00220481a76959022f187d55203be59c9c9fcd651993e6218af0d78e4bba24c5e8d44af8c7f6b683fb067c882db0e5a1b28c5dd600c3e5623d166ba1d450791f1522a6\u0022,\u0022Sign\u0022:\u00223045022100d82529dbaabf183f71a81c7ca0e56f7fd3208d8c943a229d86a9b7bddbbfc11302204938529f9143e30254a53a22759548e414ec328dbc078ba51bbf6b80dfeaded3\u0022}},\u0022Out\u0022:{\u0022NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV\u0022:{\u0022NOTUS\u0022:{\u002220230121103004001\u0022:\u00221989999850\u0022}},\u0022NSX6T6RLsPQ9S2uUQC9duEAhPMraPhLfeH7gKAt\u0022:{\u0022NOTUS\u0022:{\u002220230121103009001\u0022:\u00220\u0022,\u002220230119131500000\u0022:\u002210000000\u0022}}},\u0022Validator\u0022:{\u0022Reward\u0022:\u00220\u0022,\u0022NodeWallet\u0022:\u0022NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63\u0022}}"]
+["{\u0022In\u0022:{\u0022134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4\u0022:{\u0022Sender\u0022:{\u0022Wallet\u0022:\u0022NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34\u0022,\u0022Balance\u0022:{\u0022NOTUS\u0022:{\u002220230121110329001\u0022:\u00222000000000\u0022}},\u0022WitnessRowNo\u0022:4,\u0022WitnessBlockUid\u0022:\u0022134afe91aef90004e94b99046dfc4cf61799b66f2f4dcbc3274545c40c210ae586b655cca14b6977819acb7340\u0022},\u0022Receiver\u0022:{\u0022Wallet\u0022:\u0022NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8\u0022,\u0022Balance\u0022:{\u0022NOTUS\u0022:{\u002220230121110334501\u0022:\u00220\u0022}},\u0022WitnessRowNo\u0022:0,\u0022WitnessBlockUid\u0022:\u0022\u0022},\u0022CurrentTime\u0022:2023011913151000,\u0022Currency\u0022:\u0022NOTUS\u0022,\u0022Volume\u0022:\u002210000000\u0022,\u0022Fee\u0022:\u0022150\u0022,\u0022PublicKey\u0022:\u00220439917b1ad56ef5d24aceaef06774f871fd24683bbd93b8369e0c69c015918b5248f61147aa2dceee850d3737b823d01767b05180902cd285937f3f82867b6d88\u0022,\u0022Sign\u0022:\u00223045022100ac8376fbabb1383ef53e68494040a783784a40be45b036fd0bcd94f9ba6c1c8202201bd191900e031afaba5d54c83ff828d4bf840384ea89c2415956cfbacb4f78da\u0022}},\u0022Out\u0022:{\u0022NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34\u0022:{\u0022NOTUS\u0022:{\u002220230121110329001\u0022:\u00221989999850\u0022}},\u0022NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8\u0022:{\u0022NOTUS\u0022:{\u002220230121110334501\u0022:\u00220\u0022,\u002220230119131500000\u0022:\u002210000000\u0022}}},\u0022Validator\u0022:{\u0022Reward\u0022:\u00220\u0022,\u0022NodeWallet\u0022:\u0022NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63\u0022}}"]
 ------------ TempBlockList [1] ------------
 ------------ TempBlockList [2] ------------
-["{\u0022In\u0022:{\u0022134afe9192600dee5ca0b33e7401d7c7a762d8ba4b4919e6b2772c4d0acd41a58590412d554edf9c1c73242867\u0022:{\u0022Sender\u0022:{\u0022Wallet\u0022:\u0022NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV\u0022,\u0022Balance\u0022:{\u0022NOTUS\u0022:{\u002220230121103004001\u0022:\u00222000000000\u0022}},\u0022WitnessRowNo\u0022:4,\u0022WitnessBlockUid\u0022:\u0022134afe91925c0003f157b62457008af19ef1b73127853bc2581493f594660bbe2df427b425e189a433be6c1436\u0022},\u0022Receiver\u0022:{\u0022Wallet\u0022:\u0022NSX6T6RLsPQ9S2uUQC9duEAhPMraPhLfeH7gKAt\u0022,\u0022Balance\u0022:{\u0022NOTUS\u0022:{\u002220230121103009001\u0022:\u00220\u0022}},\u0022WitnessRowNo\u0022:0,\u0022WitnessBlockUid\u0022:\u0022\u0022},\u0022CurrentTime\u0022:2023011913151000,\u0022Currency\u0022:\u0022NOTUS\u0022,\u0022Volume\u0022:\u002210000000\u0022,\u0022Fee\u0022:\u0022150\u0022,\u0022PublicKey\u0022:\u00220481a76959022f187d55203be59c9c9fcd651993e6218af0d78e4bba24c5e8d44af8c7f6b683fb067c882db0e5a1b28c5dd600c3e5623d166ba1d450791f1522a6\u0022,\u0022Sign\u0022:\u00223045022100d82529dbaabf183f71a81c7ca0e56f7fd3208d8c943a229d86a9b7bddbbfc11302204938529f9143e30254a53a22759548e414ec328dbc078ba51bbf6b80dfeaded3\u0022}},\u0022Out\u0022:{\u0022NSX27QjyXNpsV5P28aWNGaXNbDnFvBw2H5XaAkV\u0022:{\u0022NOTUS\u0022:{\u002220230121103004001\u0022:\u00221989999850\u0022}},\u0022NSX6T6RLsPQ9S2uUQC9duEAhPMraPhLfeH7gKAt\u0022:{\u0022NOTUS\u0022:{\u002220230121103009001\u0022:\u00220\u0022,\u002220230119131500000\u0022:\u002210000000\u0022}}},\u0022Validator\u0022:{\u0022Reward\u0022:\u00220\u0022,\u0022NodeWallet\u0022:\u0022NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63\u0022}}"]
+["{\u0022In\u0022:{\u0022134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4\u0022:{\u0022Sender\u0022:{\u0022Wallet\u0022:\u0022NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34\u0022,\u0022Balance\u0022:{\u0022NOTUS\u0022:{\u002220230121110329001\u0022:\u00222000000000\u0022}},\u0022WitnessRowNo\u0022:4,\u0022WitnessBlockUid\u0022:\u0022134afe91aef90004e94b99046dfc4cf61799b66f2f4dcbc3274545c40c210ae586b655cca14b6977819acb7340\u0022},\u0022Receiver\u0022:{\u0022Wallet\u0022:\u0022NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8\u0022,\u0022Balance\u0022:{\u0022NOTUS\u0022:{\u002220230121110334501\u0022:\u00220\u0022}},\u0022WitnessRowNo\u0022:0,\u0022WitnessBlockUid\u0022:\u0022\u0022},\u0022CurrentTime\u0022:2023011913151000,\u0022Currency\u0022:\u0022NOTUS\u0022,\u0022Volume\u0022:\u002210000000\u0022,\u0022Fee\u0022:\u0022150\u0022,\u0022PublicKey\u0022:\u00220439917b1ad56ef5d24aceaef06774f871fd24683bbd93b8369e0c69c015918b5248f61147aa2dceee850d3737b823d01767b05180902cd285937f3f82867b6d88\u0022,\u0022Sign\u0022:\u00223045022100ac8376fbabb1383ef53e68494040a783784a40be45b036fd0bcd94f9ba6c1c8202201bd191900e031afaba5d54c83ff828d4bf840384ea89c2415956cfbacb4f78da\u0022}},\u0022Out\u0022:{\u0022NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34\u0022:{\u0022NOTUS\u0022:{\u002220230121110329001\u0022:\u00221989999850\u0022}},\u0022NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8\u0022:{\u0022NOTUS\u0022:{\u002220230121110334501\u0022:\u00220\u0022,\u002220230119131500000\u0022:\u002210000000\u0022}}},\u0022Validator\u0022:{\u0022Reward\u0022:\u00220\u0022,\u0022NodeWallet\u0022:\u0022NSX6woSKz9hc4fUtd4K8iJpK99XsK7Y96rArN63\u0022}}"]
 ------------ TempBlockList [2] ------------
-
-C:\Users\Administrator\Documents\GitHub\cnodefull\bin\Debug\net6.0\cnodefull.exe (process 6792) exited with code 0.
-To automatically close the console when debugging stops, enable Tools->Options->Debugging->Automatically close the console when debugging stops.
-Press any key to close this window . . .
+11:03:34.570 L1-Dev  -> ---------------- OrganizeAndDistributeBlock ----------------
+11:03:34.570 L1-Dev  -> That Block Came My Validator But Wrong Queue Order
+11:03:34.586 L1-Dev  -> We Ignored This Block [ ______________5 ] -> 8
+11:03:34.586 L1-Dev  -> blockIsValid Result : false
+["134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4"]
+11:03:34.586 L1-Dev  -> ------------ OrganizeAndDistributeBlock Executed -----------
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+----------- Income Data -----------
+{
+  "CurrentTime": 2023011913151000,
+  "UnlockTime": 20230119131500000,
+  "Version": 1000,
+  "TransferId": "134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4",
+  "Currency": "NOTUS",
+  "Sender": "NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34",
+  "Receiver": "NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8",
+  "Fee": "150",
+  "Volume": "10000000",
+  "PublicKey": "0439917b1ad56ef5d24aceaef06774f871fd24683bbd93b8369e0c69c015918b5248f61147aa2dceee850d3737b823d01767b05180902cd285937f3f82867b6d88",
+  "Sign": "3045022100ac8376fbabb1383ef53e68494040a783784a40be45b036fd0bcd94f9ba6c1c8202201bd191900e031afaba5d54c83ff828d4bf840384ea89c2415956cfbacb4f78da"
+}
+----------- Income Data -----------
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+----------- Income Data -----------
+{
+  "CurrentTime": 2023011913151000,
+  "UnlockTime": 20230119131500000,
+  "Version": 1000,
+  "TransferId": "134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4",
+  "Currency": "NOTUS",
+  "Sender": "NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34",
+  "Receiver": "NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8",
+  "Fee": "150",
+  "Volume": "10000000",
+  "PublicKey": "0439917b1ad56ef5d24aceaef06774f871fd24683bbd93b8369e0c69c015918b5248f61147aa2dceee850d3737b823d01767b05180902cd285937f3f82867b6d88",
+  "Sign": "3045022100ac8376fbabb1383ef53e68494040a783784a40be45b036fd0bcd94f9ba6c1c8202201bd191900e031afaba5d54c83ff828d4bf840384ea89c2415956cfbacb4f78da"
+}
+----------- Income Data -----------
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+----------- Income Data -----------
+{
+  "CurrentTime": 2023011913151000,
+  "UnlockTime": 20230119131500000,
+  "Version": 1000,
+  "TransferId": "134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4",
+  "Currency": "NOTUS",
+  "Sender": "NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34",
+  "Receiver": "NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8",
+  "Fee": "150",
+  "Volume": "10000000",
+  "PublicKey": "0439917b1ad56ef5d24aceaef06774f871fd24683bbd93b8369e0c69c015918b5248f61147aa2dceee850d3737b823d01767b05180902cd285937f3f82867b6d88",
+  "Sign": "3045022100ac8376fbabb1383ef53e68494040a783784a40be45b036fd0bcd94f9ba6c1c8202201bd191900e031afaba5d54c83ff828d4bf840384ea89c2415956cfbacb4f78da"
+}
+----------- Income Data -----------
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+----------- Income Data -----------
+{
+  "CurrentTime": 2023011913151000,
+  "UnlockTime": 20230119131500000,
+  "Version": 1000,
+  "TransferId": "134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4",
+  "Currency": "NOTUS",
+  "Sender": "NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34",
+  "Receiver": "NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8",
+  "Fee": "150",
+  "Volume": "10000000",
+  "PublicKey": "0439917b1ad56ef5d24aceaef06774f871fd24683bbd93b8369e0c69c015918b5248f61147aa2dceee850d3737b823d01767b05180902cd285937f3f82867b6d88",
+  "Sign": "3045022100ac8376fbabb1383ef53e68494040a783784a40be45b036fd0bcd94f9ba6c1c8202201bd191900e031afaba5d54c83ff828d4bf840384ea89c2415956cfbacb4f78da"
+}
+----------- Income Data -----------
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+----------- Income Data -----------
+{
+  "CurrentTime": 2023011913151000,
+  "UnlockTime": 20230119131500000,
+  "Version": 1000,
+  "TransferId": "134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4",
+  "Currency": "NOTUS",
+  "Sender": "NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34",
+  "Receiver": "NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8",
+  "Fee": "150",
+  "Volume": "10000000",
+  "PublicKey": "0439917b1ad56ef5d24aceaef06774f871fd24683bbd93b8369e0c69c015918b5248f61147aa2dceee850d3737b823d01767b05180902cd285937f3f82867b6d88",
+  "Sign": "3045022100ac8376fbabb1383ef53e68494040a783784a40be45b036fd0bcd94f9ba6c1c8202201bd191900e031afaba5d54c83ff828d4bf840384ea89c2415956cfbacb4f78da"
+}
+----------- Income Data -----------
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+----------- Income Data -----------
+{
+  "CurrentTime": 2023011913151000,
+  "UnlockTime": 20230119131500000,
+  "Version": 1000,
+  "TransferId": "134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4",
+  "Currency": "NOTUS",
+  "Sender": "NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34",
+  "Receiver": "NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8",
+  "Fee": "150",
+  "Volume": "10000000",
+  "PublicKey": "0439917b1ad56ef5d24aceaef06774f871fd24683bbd93b8369e0c69c015918b5248f61147aa2dceee850d3737b823d01767b05180902cd285937f3f82867b6d88",
+  "Sign": "3045022100ac8376fbabb1383ef53e68494040a783784a40be45b036fd0bcd94f9ba6c1c8202201bd191900e031afaba5d54c83ff828d4bf840384ea89c2415956cfbacb4f78da"
+}
+----------- Income Data -----------
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+----------- Income Data -----------
+{
+  "CurrentTime": 2023011913151000,
+  "UnlockTime": 20230119131500000,
+  "Version": 1000,
+  "TransferId": "134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4",
+  "Currency": "NOTUS",
+  "Sender": "NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34",
+  "Receiver": "NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8",
+  "Fee": "150",
+  "Volume": "10000000",
+  "PublicKey": "0439917b1ad56ef5d24aceaef06774f871fd24683bbd93b8369e0c69c015918b5248f61147aa2dceee850d3737b823d01767b05180902cd285937f3f82867b6d88",
+  "Sign": "3045022100ac8376fbabb1383ef53e68494040a783784a40be45b036fd0bcd94f9ba6c1c8202201bd191900e031afaba5d54c83ff828d4bf840384ea89c2415956cfbacb4f78da"
+}
+----------- Income Data -----------
++string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+----------- Income Data -----------
+{
+  "CurrentTime": 2023011913151000,
+  "UnlockTime": 20230119131500000,
+  "Version": 1000,
+  "TransferId": "134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4",
+  "Currency": "NOTUS",
+  "Sender": "NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34",
+  "Receiver": "NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8",
+  "Fee": "150",
+  "Volume": "10000000",
+  "PublicKey": "0439917b1ad56ef5d24aceaef06774f871fd24683bbd93b8369e0c69c015918b5248f61147aa2dceee850d3737b823d01767b05180902cd285937f3f82867b6d88",
+  "Sign": "3045022100ac8376fbabb1383ef53e68494040a783784a40be45b036fd0bcd94f9ba6c1c8202201bd191900e031afaba5d54c83ff828d4bf840384ea89c2415956cfbacb4f78da"
+}
+----------- Income Data -----------
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+----------- Income Data -----------
+{
+  "CurrentTime": 2023011913151000,
+  "UnlockTime": 20230119131500000,
+  "Version": 1000,
+  "TransferId": "134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4",
+  "Currency": "NOTUS",
+  "Sender": "NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34",
+  "Receiver": "NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8",
+  "Fee": "150",
+  "Volume": "10000000",
+  "PublicKey": "0439917b1ad56ef5d24aceaef06774f871fd24683bbd93b8369e0c69c015918b5248f61147aa2dceee850d3737b823d01767b05180902cd285937f3f82867b6d88",
+  "Sign": "3045022100ac8376fbabb1383ef53e68494040a783784a40be45b036fd0bcd94f9ba6c1c8202201bd191900e031afaba5d54c83ff828d4bf840384ea89c2415956cfbacb4f78da"
+}
+----------- Income Data -----------
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+----------- Income Data -----------
+{
+  "CurrentTime": 2023011913151000,
+  "UnlockTime": 20230119131500000,
+  "Version": 1000,
+  "TransferId": "134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4",
+  "Currency": "NOTUS",
+  "Sender": "NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34",
+  "Receiver": "NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8",
+  "Fee": "150",
+  "Volume": "10000000",
+  "PublicKey": "0439917b1ad56ef5d24aceaef06774f871fd24683bbd93b8369e0c69c015918b5248f61147aa2dceee850d3737b823d01767b05180902cd285937f3f82867b6d88",
+  "Sign": "3045022100ac8376fbabb1383ef53e68494040a783784a40be45b036fd0bcd94f9ba6c1c8202201bd191900e031afaba5d54c83ff828d4bf840384ea89c2415956cfbacb4f78da"
+}
+----------- Income Data -----------
+string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE
+----------- Income Data -----------
+{
+  "CurrentTime": 2023011913151000,
+  "UnlockTime": 20230119131500000,
+  "Version": 1000,
+  "TransferId": "134afe91aefd0aa2fb50236f709274f062bfaa6fa500dbc50ba121531006705c706dfdd673d93aaa98edcff1b4",
+  "Currency": "NOTUS",
+  "Sender": "NSX1pUF9XGMVcFHpHdE7ukBEF1LGXT51zGQDA34",
+  "Receiver": "NSX7Cq3YA9S9AFDQBdxvpSc98d6WXp3Fcu7pHc8",
+  "Fee": "150",
+  "Volume": "10000000",
+  "PublicKey": "0439917b1ad56ef5d24aceaef06774f871fd24683bbd93b8369e0c69c015918b5248f61147aa2dceee850d3737b823d01767b05180902cd285937f3f82867b6d88",
+  "Sign": "3045022100ac8376fbabb1383ef53e68494040a783784a40be45b036fd0bcd94f9ba6c1c8202201bd191900e031afaba5d54c83ff828d4bf840384ea89c2415956cfbacb4f78da"
+}
+----------- Income Data -----------
