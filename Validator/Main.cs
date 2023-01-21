@@ -888,9 +888,9 @@ namespace Notus.Validator
                                         if (PreBlockData != null)
                                         {
                                             txExecuted = true;
-                                            NP.Basic("---------------- OrganizeAndDistributeBlock ----------------");
+                                            //NP.Basic("---------------- OrganizeAndDistributeBlock ----------------");
                                             OrganizeAndDistributeBlock(PreBlockData, CurrentQueueTime);
-                                            NP.Basic("------------ OrganizeAndDistributeBlock Executed -----------");
+                                            //NP.Basic("------------ OrganizeAndDistributeBlock Executed -----------");
                                         } //if (TmpBlockStruct != null)
 
                                         if (PreBlockData == null)

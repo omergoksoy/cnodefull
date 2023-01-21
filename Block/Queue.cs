@@ -122,7 +122,7 @@ namespace Notus.Block
             ConcurrentDictionary<string, byte> TempWalletList = new();
             TempWalletList.TryAdd(NVG.Settings.NodeWallet.WalletKey, 1);
 
-            Console.WriteLine("txQueue.Count : " + txQueue.Count.ToString());
+            //Console.WriteLine("txQueue.Count : " + txQueue.Count.ToString());
             // data elamanı içersine eklenecek olan veri bu dizi içinde tutuluyor
             List<string> TempBlockList = new List<string>();
 
@@ -167,6 +167,7 @@ namespace Notus.Block
 
                     if (TmpPoolRecord != null)
                     {
+                        /*
                         if(string.Equals(tmpTxUid, TmpPoolRecord.uid))
                         {
                             Console.WriteLine("string.Equals(tmpTxUid, TmpPoolRecord.uid) -> TRUE");
@@ -175,7 +176,8 @@ namespace Notus.Block
                         {
                             Console.WriteLine("string.Equals(tmpTxUid, TmpPoolRecord.uid) -> FALSE");
                         }
-                        
+                        */
+
                         CurrentBlockType = (CurrentBlockType == -1 ? TmpPoolRecord.type : CurrentBlockType);
 
                         if (CurrentBlockType == TmpPoolRecord.type)
@@ -277,25 +279,25 @@ namespace Notus.Block
                                 if (incomeConvertData == null)
                                 {
                                     addToList = false;
-                                    Console.WriteLine("addToList Status [005] : " + (addToList == true ? "TRUE" : "FALSE"));
+                                    //Console.WriteLine("addToList Status [005] : " + (addToList == true ? "TRUE" : "FALSE"));
                                     WrongTx(tmpTxUid, TmpPoolRecord.data);
                                     tmpTxUid = "";
                                 }
 
-                                Console.WriteLine("----------- Income Data -----------");
-                                Console.WriteLine(JsonSerializer.Serialize(incomeConvertData, NVC.JsonSetting));
-                                Console.WriteLine("----------- Income Data -----------");
+                                //Console.WriteLine("----------- Income Data -----------");
+                                //Console.WriteLine(JsonSerializer.Serialize(incomeConvertData, NVC.JsonSetting));
+                                //Console.WriteLine("----------- Income Data -----------");
                                 if (incomeConvertData != null)
                                 {
                                     addToList = (TempWalletList.ContainsKey(incomeConvertData.Sender) == true ? false : addToList);
-                                    Console.WriteLine("addToList Status [007] : " + (addToList == true ? "TRUE" : "FALSE"));
+                                    //Console.WriteLine("addToList Status [007] : " + (addToList == true ? "TRUE" : "FALSE"));
 
                                     addToList = (TempWalletList.ContainsKey(incomeConvertData.Receiver) == true ? false : addToList);
-                                    Console.WriteLine("addToList Status [014] : " + (addToList == true ? "TRUE" : "FALSE"));
+                                    //Console.WriteLine("addToList Status [014] : " + (addToList == true ? "TRUE" : "FALSE"));
                                     if (addToList == true)
                                     {
                                         addToList = NGF.Balance.CheckTransactionAvailability(incomeConvertData.Sender, incomeConvertData.Receiver);
-                                        Console.WriteLine("addToList Status [018] : " + (addToList == true ? "TRUE" : "FALSE"));
+                                        //Console.WriteLine("addToList Status [018] : " + (addToList == true ? "TRUE" : "FALSE"));
                                     }
 
                                     BigInteger totalBlockReward = 0;
@@ -397,7 +399,7 @@ namespace Notus.Block
                                             kvPoolDb.Remove(incomeConvertData.TransferId);
                                             tmpTxUid = "";
                                             addToList = false;
-                                            Console.WriteLine("addToList Status [021] : " + (addToList == true ? "TRUE" : "FALSE"));
+                                            //Console.WriteLine("addToList Status [021] : " + (addToList == true ? "TRUE" : "FALSE"));
                                         }
                                     }
 
@@ -487,15 +489,15 @@ namespace Notus.Block
                                             incomeConvertData.UnlockTime
                                         );
                                         tmpBlockCipherData.Out[incomeConvertData.Receiver] = tmpNewReceiverBalance.Balance;
-                                        Console.WriteLine("------- Single Record BEGIN -------");
-                                        Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
-                                        Console.WriteLine("------- Single Record END   -------");
+                                        //Console.WriteLine("------- Single Record BEGIN -------");
+                                        //Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
+                                        //Console.WriteLine("------- Single Record END   -------");
                                         TmpPoolRecord.data = JsonSerializer.Serialize(tmpBlockCipherData);
 
                                     }
                                 }
                             }
-                            Console.WriteLine("addToList Status [077] : " + (addToList == true ? "TRUE" : "FALSE"));
+                            //Console.WriteLine("addToList Status [077] : " + (addToList == true ? "TRUE" : "FALSE"));
 
                             if (addToList == true)
                             {
@@ -504,11 +506,11 @@ namespace Notus.Block
                                 TempBlockList.Add(TmpPoolRecord.data);
                                 if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer)
                                 {
-                                    Console.WriteLine("Processed : " + tmpTxUid);
-                                    Console.WriteLine("TmpPoolRecord.data");
-                                    Console.WriteLine(TmpPoolRecord.data);
-                                    Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
-                                    Console.WriteLine("============================================");
+                                    //Console.WriteLine("Processed : " + tmpTxUid);
+                                    //Console.WriteLine("TmpPoolRecord.data");
+                                    //Console.WriteLine(TmpPoolRecord.data);
+                                    //Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
+                                    //Console.WriteLine("============================================");
                                 }
                             }
                             else
@@ -537,8 +539,8 @@ namespace Notus.Block
 
             if (TempBlockList.Count == 0)
                 return null;
-            if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer)
-                Console.WriteLine("TempBlockList.Count : " + TempBlockList.Count.ToString());
+            //if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer)
+            //Console.WriteLine("TempBlockList.Count : " + TempBlockList.Count.ToString());
 
             NVClass.BlockData BlockStruct = NVClass.Block.GetOrganizedEmpty(CurrentBlockType);
 

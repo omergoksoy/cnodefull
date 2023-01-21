@@ -140,7 +140,7 @@ namespace Notus.Wallet
         }
         public void StopWalletUsage(string walletKey)
         {
-            Console.WriteLine("StopWalletUsage :" + walletKey);
+            //Console.WriteLine("StopWalletUsage :" + walletKey);
             WalletReleaseTime.Enqueue(new KeyValuePair<DateTime, string>(NVG.NOW.Obj.AddSeconds(1), walletKey));
             /*
             lock (NGF.WalletUsageList)
@@ -154,7 +154,7 @@ namespace Notus.Wallet
         {
             //NP.Basic("StoreToDb : -> " + BalanceObj.Wallet);
             string valueStr = JsonSerializer.Serialize(BalanceObj);
-            Console.WriteLine("BEFORE PUT " + BalanceObj.Wallet+ " ==>> " + valueStr + " SETTED");
+            //Console.WriteLine("BEFORE PUT " + BalanceObj.Wallet+ " ==>> " + valueStr + " SETTED");
 
             SqlObj.Put(BalanceObj.Wallet, JsonSerializer.Serialize(BalanceObj));
 
@@ -162,14 +162,14 @@ namespace Notus.Wallet
             string? resultText = SqlObj.Get(BalanceObj.Wallet);
             if (resultText == null)
             {
-                Console.WriteLine("AFTER PUT  " + BalanceObj.Wallet + " ==>> VALUE IS NULL");
+                //Console.WriteLine("AFTER PUT  " + BalanceObj.Wallet + " ==>> VALUE IS NULL");
             }
             else
             {
-                Console.WriteLine("AFTER PUT  " + BalanceObj.Wallet + " ==>> " + resultText + " SETTED");
+                //Console.WriteLine("AFTER PUT  " + BalanceObj.Wallet + " ==>> " + resultText + " SETTED");
                 newValue = resultText;
             }
-            Console.WriteLine("Check if they are equal -> " + (string.Equals(valueStr, newValue) ? "TRUE" : "FALSE"));
+            //Console.WriteLine("Check if they are equal -> " + (string.Equals(valueStr, newValue) ? "TRUE" : "FALSE"));
 
             NP.Basic("New Balance -> " + BalanceObj.Wallet + " -> " + JsonSerializer.Serialize(BalanceObj.Balance));
             //burada cüzdan kilidi açılacak...
@@ -208,28 +208,28 @@ namespace Notus.Wallet
         }
         public NVS.WalletBalanceStruct Get(string WalletKey, ulong timeYouCanUse)
         {
-            Console.WriteLine("Get Wallet Balance : " + WalletKey);
+            //Console.WriteLine("Get Wallet Balance : " + WalletKey);
             string? returnText = SqlObj.Get(WalletKey);
             if (returnText != null)
             {
                 if (returnText.Length > 0)
                 {
-                    Console.WriteLine(returnText);
+                    //Console.WriteLine(returnText);
                     try
                     {
-                        Console.WriteLine("Get From RocksDb");
+                        //Console.WriteLine("Get From RocksDb");
                         return JsonSerializer.Deserialize<NVS.WalletBalanceStruct>(returnText);
                     }
                     catch { }
                 }
                 else
                 {
-                    Console.WriteLine("Balance Text Is Empty");
+                    //Console.WriteLine("Balance Text Is Empty");
                 }
             }
             else
             {
-                Console.WriteLine("Balance Text Is NULL");
+                //Console.WriteLine("Balance Text Is NULL");
             }
 
             string defaultCoinTag = Notus.Variable.Constant.MainCoinTagName;
