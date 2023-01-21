@@ -250,6 +250,7 @@ namespace Notus.Validator
                 p2pPortNo,
                 (string incomeMessage) =>
                 {
+                    mesajlar bu kitaplık içinden diğer nodelara iletilecek
                     Console.WriteLine("incomeMessage [NVG.Settings.PeerManager] : " + incomeMessage);
                     string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
                     if (string.Equals(innerResultStr, "done") == false)
