@@ -756,6 +756,9 @@ namespace Notus.Block
                         }
                         TempBlockList.Clear();
                         TempBlockList.Add(JsonSerializer.Serialize(tmpBlockCipherData));
+
+                        Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
+                        Environment.Exit(0);
                     }
                 }
                 LongNonceText = string.Join(NVC.Delimeter, TempBlockList.ToArray());
