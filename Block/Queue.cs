@@ -480,34 +480,12 @@ namespace Notus.Block
                                             incomeConvertData.UnlockTime
                                         );
                                         tmpBlockCipherData.Out[incomeConvertData.Receiver] = tmpNewReceiverBalance.Balance;
-                                        Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData, NVC.JsonSetting));
-                                        burası düzeltilecek
-                                        burası düzeltilecek
-                                        burası düzeltilecek
-                                        Environment.Exit(0);
+                                        Console.WriteLine("------- Single Record BEGIN -------");
+                                        Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
+                                        Console.WriteLine("------- Single Record END   -------");
                                         TmpPoolRecord.data = JsonSerializer.Serialize(incomeConvertData);
 
                                     }
-
-                                    /*
-                                    // out işlemindeki cüzdanları kontrol ediyor...
-                                    foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> tmpEntry in tmpBlockCipherData.Out)
-                                    {
-                                        if (TempWalletList.ContainsKey(tmpEntry.Key) == false)
-                                        {
-                                            bool innerAddedToList = TempWalletList.TryAdd(tmpEntry.Key, 1);
-                                            if (innerAddedToList == false)
-                                            {
-                                                Console.WriteLine("Not Added To -> TempWalletList.TryAdd(tmpEntry.Key, 1);");
-                                                addToList = false;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            addToList = false;
-                                        }
-                                    }
-                                    */
                                 }
                             }
 
@@ -516,15 +494,6 @@ namespace Notus.Block
                                 txQueue.TryDequeue(out _);
                                 tempRemovePoolList.Add(tmpTxUid);
                                 TempBlockList.Add(TmpPoolRecord.data);
-                            }
-                            else
-                            {
-                                /*
-                                Console.WriteLine("----------------------------------------------------------");
-                                Console.WriteLine(JsonSerializer.Serialize(new List<string>(txQueue)));
-                                Console.WriteLine("Eklenmeyen Uid : " + tmpTxUid);
-                                Console.WriteLine(JsonSerializer.Serialize(new List<string>(txQueue)));
-                                */
                             }
                             //Obj_PoolTransactionList[CurrentBlockType].RemoveAt(0);
                             exitLoop = (TempBlockList.Count == NVC.BlockTransactionLimit ? true : exitLoop);
