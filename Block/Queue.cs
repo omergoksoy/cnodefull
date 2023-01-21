@@ -706,9 +706,9 @@ namespace Notus.Block
 
                 if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer)
                 {
-                    Console.WriteLine("------------ TempBlockList [1] ------------");
-                    Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
-                    Console.WriteLine("------------ TempBlockList [1] ------------");
+                    //Console.WriteLine("------------ TempBlockList [1] ------------");
+                    //Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
+                    //Console.WriteLine("------------ TempBlockList [1] ------------");
 
                     if (TempBlockList.Count > 1)
                     {
@@ -756,9 +756,9 @@ namespace Notus.Block
                                 Console.WriteLine("TempBlockList[i] IS NULL");
                             }
                         }
-                        Console.WriteLine("JsonSerializer.Serialize(innerBlockCipherData)");
-                        Console.WriteLine(JsonSerializer.Serialize(innerBlockCipherData));
-                        Console.WriteLine("JsonSerializer.Serialize(innerBlockCipherData)");
+                        //Console.WriteLine("JsonSerializer.Serialize(innerBlockCipherData)");
+                        //Console.WriteLine(JsonSerializer.Serialize(innerBlockCipherData));
+                        //Console.WriteLine("JsonSerializer.Serialize(innerBlockCipherData)");
                         TempBlockList.Clear();
                         TempBlockList.Add(JsonSerializer.Serialize(innerBlockCipherData));
                         //tmpBlockCipherData
@@ -766,9 +766,9 @@ namespace Notus.Block
                         //Environment.Exit(0);
                     }
 
-                    Console.WriteLine("------------ TempBlockList [2] ------------");
-                    Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
-                    Console.WriteLine("------------ TempBlockList [2] ------------");
+                    //Console.WriteLine("------------ TempBlockList [2] ------------");
+                    //Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
+                    //Console.WriteLine("------------ TempBlockList [2] ------------");
                     //Environment.Exit(0);
                 }
 
