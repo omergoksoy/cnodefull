@@ -11,7 +11,7 @@ namespace Notus.Wallet
                             Notus.IO.GetFolderName(
                                 networkType,
                                 networkLayer,
-                                Notus.Variable.Constant.StorageFolderName.Wallet
+                                Notus.Variable.Constant.StorageFolderName.Common
                             ) + "currency_list"
             );
             ObjMp_Balance.AsyncActive = false;

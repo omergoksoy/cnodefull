@@ -171,7 +171,7 @@ namespace Notus.Wallet
             }
             //Console.WriteLine("Check if they are equal -> " + (string.Equals(valueStr, newValue) ? "TRUE" : "FALSE"));
 
-            NP.Basic("New Balance -> " + BalanceObj.Wallet + " -> " + JsonSerializer.Serialize(BalanceObj.Balance));
+            //NP.Basic("New Balance -> " + BalanceObj.Wallet + " -> " + JsonSerializer.Serialize(BalanceObj.Balance));
             //burada cüzdan kilidi açılacak...
             StopWalletUsage(BalanceObj.Wallet);
         }
@@ -983,8 +983,8 @@ namespace Notus.Wallet
         {
             NGF.LockWalletList.Clear();
 
-            NP.Basic("NGF.WalletUsageList.Clear(); -> CLEARED -> Balance.Cs");
-            NP.Basic(JsonSerializer.Serialize(NGF.WalletUsageList));
+            //NP.Basic("NGF.WalletUsageList.Clear(); -> CLEARED -> Balance.Cs");
+            //NP.Basic(JsonSerializer.Serialize(NGF.WalletUsageList));
 
             NGF.WalletUsageList.Clear();
             //ObjMp_WalletUsage.Clear();

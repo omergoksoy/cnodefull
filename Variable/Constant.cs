@@ -299,7 +299,7 @@ namespace Notus.Variable
             //public const string BlockInfo = "block_info";
             public const string DB = "db";
             public const string Block = "blocks";
-            public const string Balance = "balance";
+            //public const string Balance = "balance";
             //public const string Node = "node";
             //public const string TxList = "tx_list";
             public const string Common = "common";
