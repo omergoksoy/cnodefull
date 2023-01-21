@@ -481,7 +481,7 @@ namespace Notus.Block
                                         Console.WriteLine("------- Single Record BEGIN -------");
                                         Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
                                         Console.WriteLine("------- Single Record END   -------");
-                                        TmpPoolRecord.data = JsonSerializer.Serialize(incomeConvertData);
+                                        TmpPoolRecord.data = JsonSerializer.Serialize(tmpBlockCipherData);
 
                                     }
                                 }
