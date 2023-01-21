@@ -168,6 +168,16 @@ namespace Notus.Validator
         }
         public string ProcessIncomeData(string incomeData)
         {
+            if (NTT.CheckXmlTag(incomeData, "poolData"))
+            {
+                string incomeDataStr = NTT.GetPureText(incomeData, "block");
+                NVS.HttpRequestDetails? tmpIncomeData = JsonSerializer.Deserialize<NVS.HttpRequestDetails>(incomeDataStr);
+                if (tmpIncomeData != null)
+                {
+                    Console.WriteLine("Gelen Pool : " + JsonSerializer.Serialize(tmpIncomeData));
+                }
+                return "ok";
+            }
             if (NTT.CheckXmlTag(incomeData, "ping"))
             {
                 return "pong";
