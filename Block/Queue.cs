@@ -489,10 +489,17 @@ namespace Notus.Block
 
                             if (addToList == true)
                             {
-                                Console.WriteLine("Processed : " + tmpTxUid);
                                 txQueue.TryDequeue(out _);
                                 tempRemovePoolList.Add(tmpTxUid);
                                 TempBlockList.Add(TmpPoolRecord.data);
+                                if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer)
+                                {
+                                    Console.WriteLine("Processed : " + tmpTxUid);
+                                    Console.WriteLine("TmpPoolRecord.data");
+                                    Console.WriteLine(TmpPoolRecord.data);
+                                    Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
+                                    Console.WriteLine("============================================");
+                                }
                             }
                             //Obj_PoolTransactionList[CurrentBlockType].RemoveAt(0);
                             exitLoop = (TempBlockList.Count == NVC.BlockTransactionLimit ? true : exitLoop);
@@ -512,8 +519,8 @@ namespace Notus.Block
 
             if (TempBlockList.Count == 0)
                 return null;
-
-            Console.WriteLine("TempBlockList.Count : " + TempBlockList.Count.ToString());
+            if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer)
+                Console.WriteLine("TempBlockList.Count : " + TempBlockList.Count.ToString());
 
             NVClass.BlockData BlockStruct = NVClass.Block.GetOrganizedEmpty(CurrentBlockType);
 
@@ -685,7 +692,9 @@ namespace Notus.Block
 
                     if (TempBlockList.Count > 1)
                     {
-                        NVClass.BlockStruct_120 tmpBlockCipherData = new Variable.Class.BlockStruct_120()
+                        if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer) { }
+
+                        NVClass.BlockStruct_120 innerBlockCipherData = new Variable.Class.BlockStruct_120()
                         {
                             In = new Dictionary<string, Variable.Class.BlockStruct_120_In_Struct>(),
                             Out = new Dictionary<string, Dictionary<string, Dictionary<ulong, string>>>(),
@@ -700,25 +709,25 @@ namespace Notus.Block
                             {
                                 if (validatorAssigned == false)
                                 {
-                                    tmpBlockCipherData.Validator = tmpInnerData.Validator;
+                                    innerBlockCipherData.Validator = tmpInnerData.Validator;
                                     validatorAssigned = true;
                                 }
                                 else
                                 {
                                     BigInteger tmpFee =
-                                        BigInteger.Parse(tmpBlockCipherData.Validator.Reward)
+                                        BigInteger.Parse(innerBlockCipherData.Validator.Reward)
                                         +
                                         BigInteger.Parse(tmpInnerData.Validator.Reward);
-                                    tmpBlockCipherData.Validator.Reward = tmpFee.ToString();
+                                    innerBlockCipherData.Validator.Reward = tmpFee.ToString();
                                 }
 
                                 foreach (KeyValuePair<string, Variable.Class.BlockStruct_120_In_Struct> iEntry in tmpInnerData.In)
                                 {
-                                    tmpBlockCipherData.In.Add(iEntry.Key, iEntry.Value);
+                                    innerBlockCipherData.In.Add(iEntry.Key, iEntry.Value);
                                 }
                                 foreach (KeyValuePair<string, Dictionary<string, Dictionary<ulong, string>>> iEntry in tmpInnerData.Out)
                                 {
-                                    tmpBlockCipherData.Out.Add(iEntry.Key, iEntry.Value);
+                                    innerBlockCipherData.Out.Add(iEntry.Key, iEntry.Value);
                                 }
                             }
                             else
@@ -728,8 +737,11 @@ namespace Notus.Block
                                 Console.WriteLine("TempBlockList[i] IS NULL");
                             }
                         }
+                        Console.WriteLine("JsonSerializer.Serialize(innerBlockCipherData)");
+                        Console.WriteLine(JsonSerializer.Serialize(innerBlockCipherData));
+                        Console.WriteLine("JsonSerializer.Serialize(innerBlockCipherData)");
                         TempBlockList.Clear();
-                        TempBlockList.Add(JsonSerializer.Serialize(tmpBlockCipherData));
+                        TempBlockList.Add(JsonSerializer.Serialize(innerBlockCipherData));
                         //tmpBlockCipherData
                         //Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
                         //Environment.Exit(0);
