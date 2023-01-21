@@ -264,8 +264,6 @@ namespace Notus.Block
                             if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer)
                             {
                                 NVS.CryptoTransactionStoreStruct? incomeConvertData = JsonSerializer.Deserialize<NVS.CryptoTransactionStoreStruct>(TmpPoolRecord.data);
-
-                                //NVClass.BlockStruct_120? tmpBlockCipherData = JsonSerializer.Deserialize<NVClass.BlockStruct_120>(TmpPoolRecord.data);
                                 if (incomeConvertData == null)
                                 {
                                     addToList = false;
@@ -273,9 +271,9 @@ namespace Notus.Block
                                     tmpTxUid = "";
                                 }
 
-
+                                Console.WriteLine("----------- Income Data -----------");
                                 Console.WriteLine(JsonSerializer.Serialize(incomeConvertData, NVC.JsonSetting));
-                                //Environment.Exit(0);
+                                Console.WriteLine("----------- Income Data -----------");
                                 if (incomeConvertData != null)
                                 {
                                     if (
@@ -515,6 +513,8 @@ namespace Notus.Block
             if (TempBlockList.Count == 0)
                 return null;
 
+            Console.WriteLine("TempBlockList.Count : " + TempBlockList.Count.ToString());
+
             NVClass.BlockData BlockStruct = NVClass.Block.GetOrganizedEmpty(CurrentBlockType);
 
             string LongNonceText = string.Empty;
@@ -679,9 +679,9 @@ namespace Notus.Block
 
                 if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer)
                 {
-                    Console.WriteLine("------------ TempBlockList ------------");
+                    Console.WriteLine("------------ TempBlockList [1] ------------");
                     Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
-                    Console.WriteLine("------------ TempBlockList ------------");
+                    Console.WriteLine("------------ TempBlockList [1] ------------");
 
                     if (TempBlockList.Count > 1)
                     {
@@ -730,17 +730,14 @@ namespace Notus.Block
                         }
                         TempBlockList.Clear();
                         TempBlockList.Add(JsonSerializer.Serialize(tmpBlockCipherData));
-                        
+                        //tmpBlockCipherData
                         //Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
                         //Environment.Exit(0);
                     }
-                }
 
-                if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer)
-                {
-                    Console.WriteLine("------------ TempBlockList ------------");
+                    Console.WriteLine("------------ TempBlockList [2] ------------");
                     Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
-                    Console.WriteLine("------------ TempBlockList ------------");
+                    Console.WriteLine("------------ TempBlockList [2] ------------");
                     Environment.Exit(0);
                 }
 
