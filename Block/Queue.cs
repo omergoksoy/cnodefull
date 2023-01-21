@@ -679,6 +679,10 @@ namespace Notus.Block
 
                 if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer)
                 {
+                    Console.WriteLine("------------ TempBlockList ------------");
+                    Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
+                    Console.WriteLine("------------ TempBlockList ------------");
+
                     if (TempBlockList.Count > 1)
                     {
                         NVClass.BlockStruct_120 tmpBlockCipherData = new Variable.Class.BlockStruct_120()
@@ -726,18 +730,19 @@ namespace Notus.Block
                         }
                         TempBlockList.Clear();
                         TempBlockList.Add(JsonSerializer.Serialize(tmpBlockCipherData));
-                        if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer)
-                        {
-                            Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
-                            Environment.Exit(0);
-                        }
+                        
+                        //Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
+                        //Environment.Exit(0);
                     }
                 }
 
-                Console.WriteLine("------------ TempBlockList ------------");
-                Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
-                Console.WriteLine("------------ TempBlockList ------------");
-                Environment.Exit(0);
+                if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer)
+                {
+                    Console.WriteLine("------------ TempBlockList ------------");
+                    Console.WriteLine(JsonSerializer.Serialize(TempBlockList));
+                    Console.WriteLine("------------ TempBlockList ------------");
+                    Environment.Exit(0);
+                }
 
                 LongNonceText = string.Join(NVC.Delimeter, TempBlockList.ToArray());
             }
