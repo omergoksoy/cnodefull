@@ -884,30 +884,10 @@ namespace Notus.Block
             PreBlockData.uid = (PreBlockData.uid == null ? NGF.GenerateTxUid() : PreBlockData.uid);
             PreBlockData.uid = (PreBlockData.uid.Length == 0 ? NGF.GenerateTxUid() : PreBlockData.uid);
 
+            burada eklenen işlem diğer nodelara dağıtılacak
             kvPoolDb.Set(PreBlockData.uid, JsonSerializer.Serialize(PreBlockData));
             Add2Queue(PreBlockData);
             return true;
-
-            /*
-            // eğer bu blok tipi veya id'si daha önceden eklendiyse uid kabul edilmesin
-            if (NVG.Settings.UidTypeList.Type(PreBlockData.uid) != NVE.UidTypeCode.Unknown)
-            {
-                return false;
-            }
-            string keyStr = PreBlockData.uid;
-            if (PreBlockData.type == 40)
-            {
-                NVS.LockWalletBeforeStruct? tmpLockWalletData = JsonSerializer.Deserialize<NVS.LockWalletBeforeStruct>(PreBlockData.data);
-                if (tmpLockWalletData != null)
-                {
-                    keyStr = Notus.Toolbox.Text.ToHex("lock-" + tmpLockWalletData.WalletKey);
-                }
-                else
-                {
-                    keyStr = "";
-                }
-            }
-            */
         }
 
         private void Add2Queue(NVS.PoolBlockRecordStruct PreBlockData)

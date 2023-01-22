@@ -682,6 +682,14 @@ namespace Notus.Wallet
                     );
                 if (tmpLockBalance != null)
                 {
+                    foreach (var entry in tmpLockBalance.In)
+                    {
+                        Console.WriteLine("AirDrop Done -> " + entry.Key);
+                        burada kuyruktai iş silinecek
+                        burada kuyruktai iş silinecek
+
+                    }
+
                     foreach (var entry in tmpLockBalance.Out)
                     {
                         StoreToDb(new NVS.WalletBalanceStruct()
