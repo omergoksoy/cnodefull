@@ -220,8 +220,6 @@ namespace Notus.Validator
                 incomeFullUrlPath = incomeFullUrlPath.Substring(0, incomeFullUrlPath.Length - 1);
             }
 
-            IncomeData.RequestUid = (IncomeData.RequestUid.Length == 0 ? NGF.GenerateTxUid() : IncomeData.RequestUid) ;
-            Console.WriteLine("IncomeData.RequestUid : " + IncomeData.RequestUid);
             if (IncomeData.UrlList.Length > 2)
             {
                 if (string.Equals(IncomeData.UrlList[0].ToLower(), "storage"))
@@ -621,6 +619,8 @@ namespace Notus.Validator
 
                 if (string.Equals(IncomeData.UrlList[0].ToLower(), "send") && IncomeData.PostParams.ContainsKey("data") == true)
                 {
+                    IncomeData.RequestUid = (IncomeData.RequestUid.Length == 0 ? NGF.GenerateTxUid() : IncomeData.RequestUid);
+                    Console.WriteLine("IncomeData.RequestUid : " + IncomeData.RequestUid);
                     return NVG.Settings.Transfer.Request(IncomeData);
                 }
 

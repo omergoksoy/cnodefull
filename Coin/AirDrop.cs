@@ -117,6 +117,8 @@ namespace Notus.Coin
                 });
             }
 
+            IncomeData.RequestUid = (IncomeData.RequestUid.Length == 0 ? NGF.GenerateTxUid() : IncomeData.RequestUid);
+            //Console.WriteLine("IncomeData.RequestUid : " + IncomeData.RequestUid);
             string airdropUid = IncomeData.RequestUid;
             Console.WriteLine("airdropUid : " + airdropUid);
 
