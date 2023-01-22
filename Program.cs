@@ -36,7 +36,7 @@ static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEv
     Console.Error.WriteLine(fatalErrorText);
     Console.Error.Close();
     Console.WriteLine();
-    Notus.Print.Danger("Fatal Error : " + fatalErrorText);
+    NP.Danger("Fatal Error : " + fatalErrorText);
 }
 
 static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
