@@ -906,6 +906,7 @@ namespace Notus.Block
             else
             {
                 NP.Danger("txQueueList.TryAdd(PreBlockData.uid, 1) == FALSE");
+                Console.WriteLine(JsonSerializer.Serialize(txQueueList));
             }
         }
         public void LoadFromPoolDb()
