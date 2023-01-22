@@ -169,6 +169,8 @@ namespace Notus.Coin
             }
 
             NVClass.BlockStruct_125 airDrop = Calculate(ReceiverWalletKey, airdropUid);
+            Console.WriteLine("airdropUid : " + airdropUid);
+
             bool tmpAddResult = NGF.BlockQueue.Add(new NVS.PoolBlockRecordStruct()
             {
                 uid = airdropUid,

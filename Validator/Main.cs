@@ -199,16 +199,16 @@ namespace Notus.Validator
             RawBlock = NGF.BlockQueue.OrganizeBlockOrder(RawBlock);
             NVClass.BlockData PreparedBlockData = new Notus.Block.Generate(NVG.Settings.NodeWallet.WalletKey).Make(RawBlock, 1000);
 
-            bool blockIsValid = ProcessBlock(PreparedBlockData, 4);
-            NP.Basic("blockIsValid Result : " + (blockIsValid == true ? "true" : "false"));
-            if (blockIsValid == true)
+            if (ProcessBlock(PreparedBlockData, 4) == true)
             {
+                //NP.Basic("blockIsValid Result : " + (blockIsValid == true ? "true" : "false"));
                 ValidatorQueueObj.Distrubute(
                     RawBlock.info.rowNo,
                     RawBlock.info.type,
                     CurrentQueueTime
                 );
                 NGF.BlockQueue.RemoveTempPoolList();
+                Console.WriteLine("Block uId : " + RawBlock.info.uID);
             }
             else
             {
@@ -252,6 +252,7 @@ namespace Notus.Validator
                 {
                     string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
 
+                    //omergoksoy
                     if (string.Equals(innerResultStr, "distribute") == true)
                     {
                         NVS.HttpRequestDetails? tmpIncomeData =
