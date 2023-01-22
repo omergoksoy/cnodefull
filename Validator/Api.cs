@@ -197,7 +197,7 @@ namespace Notus.Validator
             return "";
         }
 
-        public string Interpret(NVS.HttpRequestDetails IncomeData,bool ToDistribute)
+        public string Interpret(NVS.HttpRequestDetails IncomeData)
         {
             if (PrepareExecuted == false)
             {
@@ -641,7 +641,7 @@ namespace Notus.Validator
                 {
                     if (IncomeData.UrlList.Length > 1)
                     {
-                        return NVG.Settings.Airdrop.Request(IncomeData,ToDistribute);
+                        return NVG.Settings.Airdrop.Request(IncomeData);
                     }
                 }
 

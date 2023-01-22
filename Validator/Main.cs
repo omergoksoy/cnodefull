@@ -1058,7 +1058,7 @@ namespace Notus.Validator
 
         private string Fnc_OnReceiveData(NVS.HttpRequestDetails IncomeData)
         {
-            string resultData = Obj_Api.Interpret(IncomeData,true);
+            string resultData = Obj_Api.Interpret(IncomeData);
             if (string.Equals(resultData, "queue-data"))
             {
                 resultData = ValidatorQueueObj.ProcessIncomeData(IncomeData.PostParams["data"]);
