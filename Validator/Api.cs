@@ -621,7 +621,7 @@ namespace Notus.Validator
 
                 if (string.Equals(IncomeData.UrlList[0].ToLower(), "send") && IncomeData.PostParams.ContainsKey("data") == true)
                 {
-                    return NVG.Settings.Transfer.Request(IncomeData, ToDistribute);
+                    return NVG.Settings.Transfer.Request(IncomeData);
                 }
 
                 /*
