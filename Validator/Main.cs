@@ -252,7 +252,7 @@ namespace Notus.Validator
                 {
                     string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
 
-                    if (string.Equals(innerResultStr, "distribute") == false)
+                    if (string.Equals(innerResultStr, "distribute") == true)
                     {
                         NVS.HttpRequestDetails? tmpIncomeData =
                         JsonSerializer.Deserialize<NVS.HttpRequestDetails>(

@@ -170,15 +170,11 @@ namespace Notus.Validator
         {
             if (NTT.CheckXmlTag(incomeData, "poolData"))
             {
-                string incomeDataStr = NTT.GetPureText(incomeData, "poolData");
-                NVS.HttpRequestDetails? tmpIncomeData = JsonSerializer.Deserialize<NVS.HttpRequestDetails>(incomeDataStr);
-                if (tmpIncomeData == null)
-                {
-                    Console.WriteLine("Gelen Pool : NULL");
-                    return "ok";
-                }
-                Console.WriteLine("Gelen Pool : " + JsonSerializer.Serialize(tmpIncomeData));
-                return "distribute";
+                return (
+                    JsonSerializer.Deserialize<NVS.HttpRequestDetails>(NTT.GetPureText(incomeData, "poolData")) == null
+                    ? "ok"
+                    : "distribute"
+                );
             }
             if (NTT.CheckXmlTag(incomeData, "ping"))
             {
