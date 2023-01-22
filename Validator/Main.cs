@@ -261,7 +261,7 @@ namespace Notus.Validator
                         );
                         if (tmpIncomeData != null)
                         {
-                            Obj_Api.Interpret(tmpIncomeData);
+                            Obj_Api.Interpret(tmpIncomeData,false);
                             Console.WriteLine(
                                 "Distribute Data Income : " +
                                 JsonSerializer.Serialize(tmpIncomeData)
@@ -1064,7 +1064,7 @@ namespace Notus.Validator
 
         private string Fnc_OnReceiveData(NVS.HttpRequestDetails IncomeData)
         {
-            string resultData = Obj_Api.Interpret(IncomeData);
+            string resultData = Obj_Api.Interpret(IncomeData,true);
             if (string.Equals(resultData, "queue-data"))
             {
                 resultData = ValidatorQueueObj.ProcessIncomeData(IncomeData.PostParams["data"]);
