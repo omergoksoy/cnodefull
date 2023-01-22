@@ -250,28 +250,34 @@ namespace Notus.Validator
                 p2pPortNo,
                 (string incomeMessage) =>
                 {
-                    mesajlar bu kitaplık içinden diğer nodelara iletilecek
-                    Console.WriteLine("incomeMessage [NVG.Settings.PeerManager] : " + incomeMessage);
                     string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
+
+                    if (string.Equals(innerResultStr, "distribute") == false)
+                    {
+                        NVS.HttpRequestDetails? tmpIncomeData =
+                        JsonSerializer.Deserialize<NVS.HttpRequestDetails>(
+                            NTT.GetPureText(incomeMessage, "poolData")
+                        );
+                        if (tmpIncomeData != null)
+                        {
+                            Console.WriteLine(
+                                "Distribute Data Income : " +
+                                JsonSerializer.Serialize(tmpIncomeData)
+                            );
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("incomeMessage [NVG.Settings.PeerManager] : " + incomeMessage);
+                    }
+
+                    // mesajlar bu kitaplık içinden diğer nodelara iletilecek
+                    //Obj_Api.Interpret(IncomeData, false);
+
                     if (string.Equals(innerResultStr, "done") == false)
                     {
                         NP.Basic("Function Response : " + innerResultStr);
                     }
-                    /*
-                    if (string.Equals(incomeMessage, "<ping>1</ping>") == false)
-                    {
-                        Console.WriteLine("incomeMessage : " + incomeMessage);
-                    }
-
-                    if (
-                        string.Equals(innerResultStr, "done") == false
-                        &&
-                        string.Equals(innerResultStr, "pong") == false
-                    )
-                    {
-                        NP.Basic("Function Response : " + innerResultStr);
-                    }
-                    */
                 }
             , false);
 
