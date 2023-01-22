@@ -252,9 +252,9 @@ namespace Notus.Validator
                 {
                     string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
 
-                    //omergoksoy
                     if (string.Equals(innerResultStr, "distribute") == true)
                     {
+                        //omergoksoy();
                         NVS.HttpRequestDetails? tmpIncomeData =
                         JsonSerializer.Deserialize<NVS.HttpRequestDetails>(
                             NTT.GetPureText(incomeMessage, "poolData")

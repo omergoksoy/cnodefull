@@ -244,7 +244,7 @@ namespace Notus.Block
                                                 txQueueList.TryRemove(tmpTxUid, out _);
 
                                                 //işlem tekrar gelmemesi için veri tabanından siliniyor
-                                                kvPoolDb.Remove(tmpTxUid);
+                                                RemoveFromDb(tmpTxUid);
 
                                                 tmpTxUid = "";
                                             }
@@ -396,7 +396,7 @@ namespace Notus.Block
                                             // airdrop işlemi çok fazla olduğu için kuyruk listesinden çıkartılıyor
                                             txQueueList.TryRemove(incomeConvertData.TransferId, out _);
                                             //işlem tekrar gelmemesi için veri tabanından siliniyor
-                                            kvPoolDb.Remove(incomeConvertData.TransferId);
+                                            RemoveFromDb(incomeConvertData.TransferId);
                                             tmpTxUid = "";
                                             addToList = false;
                                             //Console.WriteLine("addToList Status [021] : " + (addToList == true ? "TRUE" : "FALSE"));
@@ -792,12 +792,17 @@ namespace Notus.Block
             return BlockStruct;
         }
 
+        public void RemoveFromDb(string dbKey)
+        {
+            kvPoolDb.Remove(dbKey);
+            Console.WriteLine("Remove From Queue : " + dbKey);
+        }
         public void RemoveTempPoolList()
         {
             for (int i = 0; i < tempRemovePoolList.Count; i++)
             {
                 txQueueList.TryRemove(tempRemovePoolList[i], out _);
-                kvPoolDb.Remove(tempRemovePoolList[i]);
+                RemoveFromDb(tempRemovePoolList[i]);
             }
             tempRemovePoolList.Clear();
         }
@@ -884,7 +889,9 @@ namespace Notus.Block
             PreBlockData.uid = (PreBlockData.uid == null ? NGF.GenerateTxUid() : PreBlockData.uid);
             PreBlockData.uid = (PreBlockData.uid.Length == 0 ? NGF.GenerateTxUid() : PreBlockData.uid);
 
-            burada eklenen işlem diğer nodelara dağıtılacak
+            //omergoksoy();
+            //burada eklenen işlem diğer nodelara dağıtılacak
+            Console.WriteLine("Added To Queue : " + PreBlockData.uid);
             kvPoolDb.Set(PreBlockData.uid, JsonSerializer.Serialize(PreBlockData));
             Add2Queue(PreBlockData);
             return true;

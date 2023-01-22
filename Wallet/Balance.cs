@@ -685,8 +685,8 @@ namespace Notus.Wallet
                     foreach (var entry in tmpLockBalance.In)
                     {
                         Console.WriteLine("AirDrop Done -> " + entry.Key);
-                        burada kuyruktai iş silinecek
-                        burada kuyruktai iş silinecek
+                        //omergoksoy();
+                        //burada kuyruktai iş silinecek
 
                     }
 
