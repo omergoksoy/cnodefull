@@ -220,8 +220,8 @@ namespace Notus.Validator
                 incomeFullUrlPath = incomeFullUrlPath.Substring(0, incomeFullUrlPath.Length - 1);
             }
 
-            // storage işlemleri
-
+            IncomeData.RequestUid = (IncomeData.RequestUid.Length == 0 ? NGF.GenerateTxUid() : IncomeData.RequestUid) ;
+            Console.WriteLine("IncomeData.RequestUid : " + IncomeData.RequestUid);
             if (IncomeData.UrlList.Length > 2)
             {
                 if (string.Equals(IncomeData.UrlList[0].ToLower(), "storage"))

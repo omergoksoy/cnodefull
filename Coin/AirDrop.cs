@@ -117,7 +117,8 @@ namespace Notus.Coin
                 });
             }
 
-            string airdropUid = NGF.GenerateTxUid();
+            string airdropUid = IncomeData.RequestUid;
+            Console.WriteLine("airdropUid : " + airdropUid);
 
             // eğer cüzdan kilitli ise hata gönderecek
             if (NGF.Balance.AccountIsLock(ReceiverWalletKey) == true)
@@ -169,7 +170,7 @@ namespace Notus.Coin
             }
 
             NVClass.BlockStruct_125 airDrop = Calculate(ReceiverWalletKey, airdropUid);
-            Console.WriteLine("airdropUid : " + airdropUid);
+            //Console.WriteLine("airdropUid : " + airdropUid);
 
             bool tmpAddResult = NGF.BlockQueue.Add(new NVS.PoolBlockRecordStruct()
             {

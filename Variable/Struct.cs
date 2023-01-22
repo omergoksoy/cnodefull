@@ -257,6 +257,7 @@ namespace Notus.Variable.Struct
         public string RemoteIP { get; set; }
         public int RemotePort { get; set; }
 
+        public string RequestUid { get; set; }
         public string RawUrl { get; set; }
         public string Url { get; set; }
         public string[] UrlList { get; set; }

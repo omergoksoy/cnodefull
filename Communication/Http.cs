@@ -350,7 +350,7 @@ namespace Notus.Communication
                 RemoteEP = "",
                 RemoteIP = "",
                 RemotePort = 500,
-
+                RequestUid="",
                 RawUrl = urlLine,
                 Url = tmpExactUrl,  // buda raw url öncesi
                 UrlList = (tmpExactUrl[0] == '/' ? tmpExactUrl.Substring(1) : tmpExactUrl).Split('/'),  // buda raw url öncesi
