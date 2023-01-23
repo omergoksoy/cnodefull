@@ -68,7 +68,7 @@ namespace Notus.Coin
             }
             return false;
         }
-        public string Request(NVS.HttpRequestDetails IncomeData,bool ToDistribute)
+        public string Request(NVS.HttpRequestDetails IncomeData, bool ToDistribute)
         {
             if (NVG.Settings.Genesis == null)
             {
@@ -120,6 +120,17 @@ namespace Notus.Coin
             IncomeData.RequestUid = (IncomeData.RequestUid.Length == 0 ? NGF.GenerateTxUid() : IncomeData.RequestUid);
             //Console.WriteLine("IncomeData.RequestUid : " + IncomeData.RequestUid);
             string airdropUid = IncomeData.RequestUid;
+            NVG.Settings.TxStatus.Status(airdropUid);
+            /*
+            , new NVS.CryptoTransferStatus()
+            {
+                Code = NVE.BlockStatusCode.AddedToQueue,
+                RowNo = 0,
+                UID = "",
+                Text = "AddedToQueue"
+            });
+            */
+
             Console.WriteLine("airdropUid : " + airdropUid);
 
             // eğer cüzdan kilitli ise hata gönderecek
@@ -172,7 +183,6 @@ namespace Notus.Coin
             }
 
             NVClass.BlockStruct_125 airDrop = Calculate(ReceiverWalletKey, airdropUid);
-            //Console.WriteLine("airdropUid : " + airdropUid);
 
             bool tmpAddResult = NGF.BlockQueue.Add(new NVS.PoolBlockRecordStruct()
             {
@@ -279,8 +289,24 @@ namespace Notus.Coin
                 Validator = NVG.Settings.NodeWallet.WalletKey
             };
             airDrop.In.Add(airdropUid, tmpBalanceBefore);
-            airDrop.Out.Add(ReceiverWalletKey, tmpBalanceAfter.Balance);
+            //airDrop.Out.Add(ReceiverWalletKey, tmpBalanceAfter.Balance);
+            airDrop.Out.Add(ReceiverWalletKey, RemoveZeroBalance(tmpBalanceAfter.Balance));
             return airDrop;
+        }
+        private Dictionary<string, Dictionary<ulong, string>> RemoveZeroBalance(Dictionary<string, Dictionary<ulong, string>> innerBalance)
+        {
+            string tmpCoinCurrency = NVG.Settings.Genesis.CoinInfo.Tag;
+            List<ulong> timeList = new();
+            foreach (var item in innerBalance[tmpCoinCurrency])
+            {
+                if (BigInteger.Parse(item.Value) == 0)
+                {
+                    timeList.Add(item.Key);
+                }
+            }
+            Console.WriteLine("timeList");
+            Console.WriteLine(timeList);
+            return innerBalance;
         }
         public void Process(NVClass.BlockData blockData)
         {
