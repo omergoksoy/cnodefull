@@ -71,7 +71,7 @@ namespace Notus
         {
             try
             {
-                return DateTime.ParseExact(DateTimeStr.Substring(0, 17), Variable.Constant.DefaultDateTimeFormatText, System.Globalization.CultureInfo.InvariantCulture);
+                return DateTime.ParseExact(DateTimeStr.PadRight(17, '0').Substring(0, 17), Variable.Constant.DefaultDateTimeFormatText, System.Globalization.CultureInfo.InvariantCulture);
             }
             catch (Exception err)
             {
