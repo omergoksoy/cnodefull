@@ -488,12 +488,15 @@ namespace Notus.Block
                                             incomeConvertData.Currency,
                                             incomeConvertData.UnlockTime
                                         );
+
+
+                                        /*
                                         tmpBlockCipherData.Out[incomeConvertData.Receiver] = 
                                             RemoveZeroBalance(tmpNewReceiverBalance.Balance);
 
                                         tmpBlockCipherData.Out[incomeConvertData.Receiver] = 
                                             MergeOldBalance(tmpBlockCipherData.Out[incomeConvertData.Receiver], incomeConvertData.TransferId);
-
+                                        */
                                         TmpPoolRecord.data = JsonSerializer.Serialize(tmpBlockCipherData);
 
                                     }
