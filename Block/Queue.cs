@@ -490,6 +490,7 @@ namespace Notus.Block
                                         );
 
 
+                                        tmpBlockCipherData.Out[incomeConvertData.Receiver] = tmpBlockCipherData.Out[incomeConvertData.Receiver];
                                         /*
                                         tmpBlockCipherData.Out[incomeConvertData.Receiver] = 
                                             RemoveZeroBalance(tmpNewReceiverBalance.Balance);
