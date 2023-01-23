@@ -936,7 +936,7 @@ namespace Notus.Block
                 }
             }
             Console.WriteLine("timeList");
-            Console.WriteLine(timeList);
+            Console.WriteLine(JsonSerializer.Serialize( timeList));
             return innerBalance;
         }
         private void Add2Queue(NVS.PoolBlockRecordStruct PreBlockData)
