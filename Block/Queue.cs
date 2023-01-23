@@ -489,9 +489,12 @@ namespace Notus.Block
                                             incomeConvertData.UnlockTime
                                         );
                                         tmpBlockCipherData.Out[incomeConvertData.Receiver] = tmpNewReceiverBalance.Balance;
-                                        //Console.WriteLine("------- Single Record BEGIN -------");
+                                        Console.WriteLine("------- Single Record BEGIN -------");
                                         //Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
-                                        //Console.WriteLine("------- Single Record END   -------");
+                                        Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData.Out));
+                                        //Dictionary<string, Dictionary<ulong, string>> 
+                                        //Dictionary<string, Dictionary<ulong, string>> RemoveZeroBalance(Dictionary<string, Dictionary<ulong, string>> innerBalance)
+                                        Console.WriteLine("------- Single Record END   -------");
                                         TmpPoolRecord.data = JsonSerializer.Serialize(tmpBlockCipherData);
 
                                     }
@@ -897,6 +900,21 @@ namespace Notus.Block
             return true;
         }
 
+        private Dictionary<string, Dictionary<ulong, string>> RemoveZeroBalance(Dictionary<string, Dictionary<ulong, string>> innerBalance)
+        {
+            string tmpCoinCurrency = NVG.Settings.Genesis.CoinInfo.Tag;
+            List<ulong> timeList = new();
+            foreach (var item in innerBalance[tmpCoinCurrency])
+            {
+                if (BigInteger.Parse(item.Value) == 0)
+                {
+                    timeList.Add(item.Key);
+                }
+            }
+            Console.WriteLine("timeList");
+            Console.WriteLine(timeList);
+            return innerBalance;
+        }
         private void Add2Queue(NVS.PoolBlockRecordStruct PreBlockData)
         {
             if (txQueueList.TryAdd(PreBlockData.uid, 1) == true)
