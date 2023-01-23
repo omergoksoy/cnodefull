@@ -9,6 +9,8 @@ namespace Notus.Pool
     {
         public static void Distribute(NVS.HttpRequestDetails IncomeData)
         {
+            Console.WriteLine("******************* Execute Distribute *******************");
+            return;
             string poolMsgText = "<poolData>" + JsonSerializer.Serialize(IncomeData) + "</poolData>";
             foreach (var validatorItem in NVG.NodeList)
             {
