@@ -490,10 +490,10 @@ namespace Notus.Block
                                         );
                                         tmpBlockCipherData.Out[incomeConvertData.Receiver] = tmpNewReceiverBalance.Balance;
 
-                                        /*
                                         tmpBlockCipherData.Out[incomeConvertData.Receiver] = 
                                             RemoveZeroBalance(tmpNewReceiverBalance.Balance);
 
+                                        /*
                                         tmpBlockCipherData.Out[incomeConvertData.Receiver] = 
                                             MergeOldBalance(tmpBlockCipherData.Out[incomeConvertData.Receiver], incomeConvertData.TransferId);
                                         */
@@ -944,6 +944,9 @@ namespace Notus.Block
         }
         private Dictionary<string, Dictionary<ulong, string>> RemoveZeroBalance(Dictionary<string, Dictionary<ulong, string>> innerBalance)
         {
+            Console.WriteLine("----------------------------------------");
+            Console.WriteLine("RemoveZeroBalance");
+            Console.WriteLine(JsonSerializer.Serialize(innerBalance));
             string tmpCoinCurrency = NVG.Settings.Genesis.CoinInfo.Tag;
             List<ulong> timeList = new();
             foreach (var item in innerBalance[tmpCoinCurrency])
@@ -957,6 +960,8 @@ namespace Notus.Block
             {
                 innerBalance[tmpCoinCurrency].Remove(timeList[i]);
             }
+            Console.WriteLine(JsonSerializer.Serialize(innerBalance));
+            Console.WriteLine("****************************************");
             return innerBalance;
         }
         private void Add2Queue(NVS.PoolBlockRecordStruct PreBlockData)
