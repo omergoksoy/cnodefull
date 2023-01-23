@@ -223,6 +223,10 @@ namespace Notus.Coin
                 if (ToDistribute == true)
                 {
                     Console.WriteLine("Islem Dagitilsin");
+                    Console.WriteLine("Islem Dagitilsin");
+                    Console.WriteLine("Islem Dagitilsin");
+                    Console.WriteLine("Islem Dagitilsin");
+                    Console.WriteLine("Islem Dagitilsin");
                     Notus.Pool.Sharing.Distribute(IncomeData);
                 }
                 else
