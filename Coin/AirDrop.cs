@@ -293,25 +293,6 @@ namespace Notus.Coin
             airDrop.Out.Add(ReceiverWalletKey, tmpBalanceAfter.Balance);
             return airDrop;
         }
-<<<<<<< HEAD
-
-=======
-        private Dictionary<string, Dictionary<ulong, string>> RemoveZeroBalance(Dictionary<string, Dictionary<ulong, string>> innerBalance)
-        {
-            string tmpCoinCurrency = NVG.Settings.Genesis.CoinInfo.Tag;
-            List<ulong> timeList = new();
-            foreach (var item in innerBalance[tmpCoinCurrency])
-            {
-                if (BigInteger.Parse(item.Value) == 0)
-                {
-                    timeList.Add(item.Key);
-                }
-            }
-            Console.WriteLine("timeList");
-            Console.WriteLine(timeList);
-            return innerBalance;
-        }
->>>>>>> parent of 63d1c6c (Update AirDrop.cs)
         public void Process(NVClass.BlockData blockData)
         {
             if (blockData.info.type != NVE.BlockTypeList.AirDrop)
