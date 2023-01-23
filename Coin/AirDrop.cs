@@ -290,11 +290,13 @@ namespace Notus.Coin
             };
             airDrop.In.Add(airdropUid, tmpBalanceBefore);
             //airDrop.Out.Add(ReceiverWalletKey, tmpBalanceAfter.Balance);
-            airDrop.Out.Add(ReceiverWalletKey, RemoveZeroBalance(tmpBalanceAfter.Balance));
+            airDrop.Out.Add(
+                ReceiverWalletKey, 
+                RemoveZeroBalance(tmpBalanceAfter.Balance)
+            );
             return airDrop;
         }
 
-        bu fonksiyonu düzelt
         private Dictionary<string, Dictionary<ulong, string>> RemoveZeroBalance(Dictionary<string, Dictionary<ulong, string>> innerBalance)
         {
             string tmpCoinCurrency = NVG.Settings.Genesis.CoinInfo.Tag;
