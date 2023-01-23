@@ -325,6 +325,7 @@ namespace Notus.Coin
             });
             if (ToDistribute == true)
             {
+                Console.WriteLine("Coin Transfer Distribute");
                 Notus.Pool.Sharing.Distribute(IncomeData);
             }
 
