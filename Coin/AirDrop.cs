@@ -289,10 +289,10 @@ namespace Notus.Coin
                 Validator = NVG.Settings.NodeWallet.WalletKey
             };
             airDrop.In.Add(airdropUid, tmpBalanceBefore);
-            //airDrop.Out.Add(ReceiverWalletKey, tmpBalanceAfter.Balance);
             airDrop.Out.Add(ReceiverWalletKey, tmpBalanceAfter.Balance);
             return airDrop;
         }
+
         public void Process(NVClass.BlockData blockData)
         {
             if (blockData.info.type != NVE.BlockTypeList.AirDrop)
