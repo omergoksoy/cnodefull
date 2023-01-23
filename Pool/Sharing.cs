@@ -12,6 +12,9 @@ namespace Notus.Pool
             dağıtım esnasında diğer node'a gidince oda aynı işemi hemen oluşturuyor ve bu sebepten ötürüde 
             aynı işlem 2 kere oluşuyor
 
+            en mantıklı dağıtım şekli, önce requestID'yi iletip, onu DB'ye kaydetmek
+            sonrada eğer aynı kayıt DB'de varsa işleme almamak olarak düşünülebilir
+
             Console.WriteLine("******************* Execute Distribute *******************");
             return;
             string poolMsgText = "<poolData>" + JsonSerializer.Serialize(IncomeData) + "</poolData>";
