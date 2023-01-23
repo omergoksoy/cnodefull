@@ -901,10 +901,11 @@ namespace Notus.Block
 
         private Dictionary<string, Dictionary<ulong, string>> MergeOldBalance(Dictionary<string, Dictionary<ulong, string>> innerBalance, string txUid)
         {
+            DateTime txTime = Notus.Block.Key.BlockIdToTime(txUid);
             Console.WriteLine("------------******************------------");
             Console.WriteLine("------------ Original Version ------------");
             Console.WriteLine(JsonSerializer.Serialize(innerBalance));
-            DateTime txTime = Notus.Block.Key.BlockIdToTime(txUid);
+            Console.WriteLine("txTime :" + Notus.Date.ToString(txTime));
             ulong txTimeVal = Notus.Date.ToLong(txTime);
             string txVolumeVal = "0";
 
