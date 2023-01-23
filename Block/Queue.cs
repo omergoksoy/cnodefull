@@ -488,9 +488,8 @@ namespace Notus.Block
                                             incomeConvertData.Currency,
                                             incomeConvertData.UnlockTime
                                         );
+                                        tmpBlockCipherData.Out[incomeConvertData.Receiver] = tmpNewReceiverBalance.Balance;
 
-
-                                        tmpBlockCipherData.Out[incomeConvertData.Receiver] = tmpBlockCipherData.Out[incomeConvertData.Receiver];
                                         /*
                                         tmpBlockCipherData.Out[incomeConvertData.Receiver] = 
                                             RemoveZeroBalance(tmpNewReceiverBalance.Balance);
