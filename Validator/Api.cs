@@ -621,7 +621,7 @@ namespace Notus.Validator
                 {
                     IncomeData.RequestUid = (IncomeData.RequestUid.Length == 0 ? NGF.GenerateTxUid() : IncomeData.RequestUid);
                     Console.WriteLine("IncomeData.RequestUid : " + IncomeData.RequestUid);
-                    return NVG.Settings.Transfer.Request(IncomeData);
+                    return NVG.Settings.Transfer.Request(IncomeData, bool ToDistribute);
                 }
 
                 /*

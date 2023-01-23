@@ -131,7 +131,7 @@ namespace Notus.Coin
             });
             */
 
-            Console.WriteLine("airdropUid : " + airdropUid);
+            //Console.WriteLine("airdropUid : " + airdropUid);
 
             // eğer cüzdan kilitli ise hata gönderecek
             if (NGF.Balance.AccountIsLock(ReceiverWalletKey) == true)
