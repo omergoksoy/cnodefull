@@ -491,7 +491,11 @@ namespace Notus.Block
                                         tmpBlockCipherData.Out[incomeConvertData.Receiver] = tmpNewReceiverBalance.Balance;
                                         Console.WriteLine("------- Single Record BEGIN -------");
                                         Console.WriteLine("Changed");
-                                        Console.WriteLine(RemoveZeroBalance(tmpNewReceiverBalance.Balance));
+                                        Console.WriteLine(
+                                            JsonSerializer.Serialize(
+                                                RemoveZeroBalance(tmpNewReceiverBalance.Balance)
+                                            )
+                                        );
                                         //tmpBlockCipherData.Out[incomeConvertData.Receiver] = RemoveZeroBalance(tmpNewReceiverBalance.Balance);
                                         /*
                                         {
@@ -517,7 +521,6 @@ namespace Notus.Block
                                         Console.WriteLine("Original");
                                         Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData.Out));
                                         //Dictionary<string, Dictionary<ulong, string>> 
-                                        //Dictionary<string, Dictionary<ulong, string>> RemoveZeroBalance(Dictionary<string, Dictionary<ulong, string>> innerBalance)
                                         Console.WriteLine("------- Single Record END   -------");
                                         TmpPoolRecord.data = JsonSerializer.Serialize(tmpBlockCipherData);
 
@@ -934,6 +937,10 @@ namespace Notus.Block
                 {
                     timeList.Add(item.Key);
                 }
+            }
+            for(int i=0;i< timeList.Count; i++)
+            {
+                innerBalance[tmpCoinCurrency].Remove(timeList[i]);
             }
             Console.WriteLine("timeList");
             Console.WriteLine(JsonSerializer.Serialize( timeList));
