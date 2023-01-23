@@ -9,6 +9,9 @@ namespace Notus.Pool
     {
         public static void Distribute(NVS.HttpRequestDetails IncomeData)
         {
+            dağıtım esnasında diğer node'a gidince oda aynı işemi hemen oluşturuyor ve bu sebepten ötürüde 
+            aynı işlem 2 kere oluşuyor
+
             Console.WriteLine("******************* Execute Distribute *******************");
             return;
             string poolMsgText = "<poolData>" + JsonSerializer.Serialize(IncomeData) + "</poolData>";

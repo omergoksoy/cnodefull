@@ -953,6 +953,9 @@ namespace Notus.Block
             txQueue.Clear();
             //Obj_PoolTransactionList.Clear();
         }
+
+
+        eski tarihli işlemler, işlemin yapıldığı tarihte birleştirilecek
         private Dictionary<string, Dictionary<ulong, string>> MergeOldBalance(Dictionary<string, Dictionary<ulong, string>> innerBalance, string txUid)
         {
             DateTime txTime = Notus.Block.Key.BlockIdToTime(txUid);
@@ -993,6 +996,8 @@ namespace Notus.Block
             Console.WriteLine("------------******************------------");
             return innerBalance;
         }
+
+        balance içindeki sıfır değerlerini silinecek
         private Dictionary<string, Dictionary<ulong, string>> RemoveZeroBalance(Dictionary<string, Dictionary<ulong, string>> innerBalance)
         {
             Console.WriteLine("----------------------------------------");
