@@ -488,42 +488,12 @@ namespace Notus.Block
                                             incomeConvertData.Currency,
                                             incomeConvertData.UnlockTime
                                         );
-                                        tmpBlockCipherData.Out[incomeConvertData.Receiver] = RemoveZeroBalance(tmpNewReceiverBalance.Balance);
+                                        tmpBlockCipherData.Out[incomeConvertData.Receiver] = 
+                                            RemoveZeroBalance(tmpNewReceiverBalance.Balance);
 
-                                        tmpBlockCipherData.Out[incomeConvertData.Receiver] = MergeOldBalance(tmpBlockCipherData.Out[incomeConvertData.Receiver], incomeConvertData.TransferId);
-                                        Console.WriteLine("------- Single Record BEGIN -------");
-                                        Console.WriteLine("Changed");
-                                        Console.WriteLine(
-                                            JsonSerializer.Serialize(
-                                                RemoveZeroBalance(tmpNewReceiverBalance.Balance)
-                                            )
-                                        );
-                                        //tmpBlockCipherData.Out[incomeConvertData.Receiver] = RemoveZeroBalance(tmpNewReceiverBalance.Balance);
-                                        /*
-                                        {
-                                            "NSX38QMECdqjRpTfGkZHza8CiaMSA3aQbohKrRg":{
-                                                "NOTUS":{
-                                                    "20230123210212113":"1899998500"
-                                                }
-                                            },
-                                            "NSX4FeZv5yEhm8ZUgtx8ikbZJuW6Zt7S7jr8Tx7":{
-                                                "NOTUS":{
-                                                    "20230123210217001":"0",
-                                                    "2023012313150000":"20000000",
-                                                    "2023012313150001":"20000000",
-                                                    "2023012313150002":"20000000",
-                                                    "2023012313150003":"20000000",
-                                                    "2023012313150004":"20000000"
-                                                }
-                                            }
-                                        }
-                                        
-                                        */
-                                        //Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
-                                        Console.WriteLine("Original");
-                                        Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData.Out));
-                                        //Dictionary<string, Dictionary<ulong, string>> 
-                                        Console.WriteLine("------- Single Record END   -------");
+                                        tmpBlockCipherData.Out[incomeConvertData.Receiver] = 
+                                            MergeOldBalance(tmpBlockCipherData.Out[incomeConvertData.Receiver], incomeConvertData.TransferId);
+
                                         TmpPoolRecord.data = JsonSerializer.Serialize(tmpBlockCipherData);
 
                                     }
@@ -931,7 +901,8 @@ namespace Notus.Block
 
         private Dictionary<string, Dictionary<ulong, string>> MergeOldBalance(Dictionary<string, Dictionary<ulong, string>> innerBalance, string txUid)
         {
-            Console.WriteLine("Original Version");
+            Console.WriteLine("------------******************------------");
+            Console.WriteLine("------------ Original Version ------------");
             Console.WriteLine(JsonSerializer.Serialize(innerBalance));
             DateTime txTime = Notus.Block.Key.BlockIdToTime(txUid);
             ulong txTimeVal = Notus.Date.ToLong(txTime);
@@ -962,8 +933,9 @@ namespace Notus.Block
             {
                 innerBalance[tmpCoinCurrency].Add(txTimeVal, txVolumeVal);
             }
-            Console.WriteLine("New Version");
+            Console.WriteLine("--------------- New Version --------------");
             Console.WriteLine(JsonSerializer.Serialize(innerBalance));
+            Console.WriteLine("------------******************------------");
             return innerBalance;
         }
         private Dictionary<string, Dictionary<ulong, string>> RemoveZeroBalance(Dictionary<string, Dictionary<ulong, string>> innerBalance)
