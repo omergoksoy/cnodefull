@@ -7,8 +7,11 @@ namespace Notus.Pool
 {
     public static class Sharing
     {
-        public static void Distribute(NVS.HttpRequestDetails IncomeData)
+        public static void Distribute(NVS.HttpRequestDetails IncomeData,bool ToDistribute)
         {
+            if (ToDistribute == false)
+                return;
+
             //omergoksoy();
             /*
             dağıtım esnasında diğer node'a gidince oda aynı işemi hemen oluşturuyor ve bu sebepten ötürüde 

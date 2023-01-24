@@ -220,19 +220,7 @@ namespace Notus.Coin
                     Text = "AddedToQueue"
                 });
 
-                if (ToDistribute == true)
-                {
-                    Console.WriteLine("Islem Dagitilsin");
-                    Console.WriteLine("Islem Dagitilsin");
-                    Console.WriteLine("Islem Dagitilsin");
-                    Console.WriteLine("Islem Dagitilsin");
-                    Console.WriteLine("Islem Dagitilsin");
-                    Notus.Pool.Sharing.Distribute(IncomeData);
-                }
-                else
-                {
-                    Console.WriteLine("Do NOT Distribute");
-                }
+                Notus.Pool.Sharing.Distribute(IncomeData, ToDistribute);
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
                 {
                     ErrorNo = 0,

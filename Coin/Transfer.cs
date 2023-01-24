@@ -323,11 +323,7 @@ namespace Notus.Coin
                 type = NVE.BlockTypeList.CryptoTransfer,
                 data = JsonSerializer.Serialize(recordStruct)
             });
-            if (ToDistribute == true)
-            {
-                Console.WriteLine("Coin Transfer Distribute");
-                Notus.Pool.Sharing.Distribute(IncomeData);
-            }
+            Notus.Pool.Sharing.Distribute(IncomeData, ToDistribute);
 
             /*
             //omergoksoy
