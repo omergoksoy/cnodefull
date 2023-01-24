@@ -970,10 +970,6 @@ namespace Notus.Block
         private Dictionary<string, Dictionary<ulong, string>> MergeOldBalance(Dictionary<string, Dictionary<ulong, string>> innerBalance, string txUid)
         {
             DateTime txTime = Notus.Block.Key.BlockIdToTime(txUid);
-            Console.WriteLine("------------******************------------");
-            Console.WriteLine("------------ Original Version ------------");
-            Console.WriteLine(JsonSerializer.Serialize(innerBalance));
-            Console.WriteLine("txTime :" + Notus.Date.ToString(txTime));
             ulong txTimeVal = Notus.Date.ToLong(txTime);
             string txVolumeVal = "0";
 
@@ -981,17 +977,11 @@ namespace Notus.Block
             List<ulong> timeList = new();
             foreach (var item in innerBalance[tmpCoinCurrency])
             {
-                DateTime oldTxTime = Notus.Date.ToDateTime(item.Key);
-                if (txTime > oldTxTime)
+                if (txTime > Notus.Date.ToDateTime(item.Key))
                 {
                     BigInteger tmpTotalVal = BigInteger.Parse(item.Value) + BigInteger.Parse(txVolumeVal);
                     txVolumeVal = tmpTotalVal.ToString();
                     timeList.Add(item.Key);
-                    Console.WriteLine("OLD");
-                }
-                else
-                {
-                    Console.WriteLine("NEW");
                 }
             }
             for (int i = 0; i < timeList.Count; i++)
@@ -1002,9 +992,6 @@ namespace Notus.Block
             {
                 innerBalance[tmpCoinCurrency].Add(txTimeVal, txVolumeVal);
             }
-            Console.WriteLine("--------------- New Version --------------");
-            Console.WriteLine(JsonSerializer.Serialize(innerBalance));
-            Console.WriteLine("------------******************------------");
             return innerBalance;
         }
 
