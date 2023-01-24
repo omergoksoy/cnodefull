@@ -480,6 +480,7 @@ namespace Notus.Block
                                             Console.ReadLine();
                                         }
                                         tmpBlockCipherData.Out[incomeConvertData.Sender] = RemoveZeroBalance(tmpNewResultForTransaction.Balance);
+                                        
                                         //receiver get coin or token
                                         NVS.WalletBalanceStruct tmpNewReceiverBalance = NGF.Balance.AddVolumeWithUnlockTime(
                                             tmpReceiverBalance,
@@ -489,10 +490,18 @@ namespace Notus.Block
                                         );
                                         tmpBlockCipherData.Out[incomeConvertData.Receiver] = RemoveZeroBalance(tmpNewReceiverBalance.Balance);
                                         Console.WriteLine("------- Single Record BEGIN -------");
+                                        Console.WriteLine(JsonSerializer.Serialize(
+                                            tmpBlockCipherData.Out[incomeConvertData.Receiver],
+                                            NVC.JsonSetting
+                                        ));
                                         tmpBlockCipherData.Out[incomeConvertData.Receiver] = MergeOldBalance(
                                             tmpNewReceiverBalance.Balance,
                                             incomeConvertData.TransferId
                                         );
+                                        Console.WriteLine(JsonSerializer.Serialize(
+                                            tmpBlockCipherData.Out[incomeConvertData.Receiver],
+                                            NVC.JsonSetting
+                                        ));
                                         Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
                                         Console.WriteLine("------- Single Record END   -------");
                                         TmpPoolRecord.data = JsonSerializer.Serialize(tmpBlockCipherData);
