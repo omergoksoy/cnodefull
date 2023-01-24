@@ -480,7 +480,7 @@ namespace Notus.Block
                                             Console.ReadLine();
                                         }
                                         tmpBlockCipherData.Out[incomeConvertData.Sender] = RemoveZeroBalance(tmpNewResultForTransaction.Balance);
-                                        
+
                                         //receiver get coin or token
                                         NVS.WalletBalanceStruct tmpNewReceiverBalance = NGF.Balance.AddVolumeWithUnlockTime(
                                             tmpReceiverBalance,
@@ -1006,7 +1006,16 @@ namespace Notus.Block
             }
             if (txVolumeVal != "0")
             {
-                innerBalance[tmpCoinCurrency].Add(txTimeVal, txVolumeVal);
+                Console.WriteLine(txTimeVal);
+                if (innerBalance[tmpCoinCurrency].ContainsKey(txTimeVal) == false)
+                {
+                    innerBalance[tmpCoinCurrency].Add(txTimeVal, txVolumeVal);
+                }
+                else
+                {
+                    Environment.Exit(0);
+                    innerBalance[tmpCoinCurrency][txTimeVal] = txVolumeVal;
+                }
             }
             return innerBalance;
         }
