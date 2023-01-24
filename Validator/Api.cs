@@ -158,7 +158,7 @@ namespace Notus.Validator
                 {
                     foreach (KeyValuePair<string, NVClass.BlockStruct_120_In_Struct> entry in tmpBalanceVal.In)
                     {
-                        NVG.Settings.TxStatus.Set(entry.Key, new NVS.CryptoTransferStatus()
+                        NVG.Settings.BlockMeta.Status(entry.Key, new NVS.CryptoTransferStatus()
                         {
                             Code = NVE.BlockStatusCode.Completed,
                             RowNo = Obj_BlockData.info.rowNo,
