@@ -174,10 +174,10 @@ namespace Notus.Validator
                 incomeData = NTT.GetPureText(incomeData, "requestId");
                 NVG.Settings.BlockMeta.Status(incomeData, new NVS.CryptoTransferStatus()
                 {
-                    Code = NVE.BlockStatusCode.AddedToQueue,
+                    Code = NVE.BlockStatusCode.WaitingFromOtherNode,
                     RowNo = 0,
                     UID = "",
-                    Text = "AddedToQueue"
+                    Text = "WaitingFromOtherNode"
                 });
                 return "ok";
             }

@@ -1,32 +1,17 @@
-﻿using NVG = Notus.Variable.Globals;
-using NVS = Notus.Variable.Struct;
-using System;
+﻿using System;
 using System.Text.Json;
 using NVClass = Notus.Variable.Class;
+using NVG = Notus.Variable.Globals;
+using NVS = Notus.Variable.Struct;
 namespace Notus.Pool
 {
     public static class Sharing
     {
-        public static void Distribute(NVS.HttpRequestDetails IncomeData,bool ToDistribute)
+        public static void Distribute(NVS.HttpRequestDetails IncomeData, bool ToDistribute)
         {
             if (ToDistribute == false)
                 return;
 
-            //omergoksoy();
-            /*
-            dağıtım esnasında diğer node'a gidince oda aynı işemi hemen oluşturuyor ve bu sebepten ötürüde 
-            aynı işlem 2 kere oluşuyor
-
-            */
-            /*
-            omergoksoy();
-            en mantıklı dağıtım şekli, önce requestID'yi iletip, onu DB'ye kaydetmek
-            sonrada eğer aynı kayıt DB'de varsa işleme almamak olarak düşünülebilir
-            //Console.WriteLine("******************* Execute Distribute *******************");
-            //Console.WriteLine(IncomeData.RequestUid);
-            //return;
-            */
-            
             string requestUidText = "<requestId>" + IncomeData.RequestUid + "</requestId>";
             string poolMsgText = "<poolData>" + JsonSerializer.Serialize(IncomeData) + "</poolData>";
             foreach (var validatorItem in NVG.NodeList)
@@ -37,8 +22,11 @@ namespace Notus.Pool
                     {
                         Task.Run(() =>
                         {
-                            NVG.Settings.PeerManager.Send(validatorItem.Value.IP.Wallet, requestUidText);
-                            NVG.Settings.PeerManager.Send(validatorItem.Value.IP.Wallet, poolMsgText);
+                            bool requestSendStatus = NVG.Settings.PeerManager.Send(validatorItem.Value.IP.Wallet, requestUidText);
+                            if (requestSendStatus == true)
+                            {
+                                NVG.Settings.PeerManager.Send(validatorItem.Value.IP.Wallet, poolMsgText);
+                            }
                         });
                     }
                 }

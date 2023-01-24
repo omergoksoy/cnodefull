@@ -159,6 +159,7 @@ namespace Notus.Variable.Enum
         UnknownTransaction = 79,
         NotSupported = 65,
         TooManyRequest = 44,
+        WaitingFromOtherNode=100,
         Unknown = 9999
     }
 

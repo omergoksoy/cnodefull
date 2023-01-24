@@ -255,14 +255,13 @@ namespace Notus.Validator
                     if (string.Equals(innerResultStr, "distribute") == true)
                     {
                         Console.WriteLine("Distribute : INCOME");
-                        /*
                         NVS.HttpRequestDetails? tmpIncomeData =
                         JsonSerializer.Deserialize<NVS.HttpRequestDetails>(
                             NTT.GetPureText(incomeMessage, "poolData")
                         );
                         if (tmpIncomeData != null)
                         {
-                            Obj_Api.Interpret(tmpIncomeData,false);
+                            //Obj_Api.Interpret(tmpIncomeData,false);
                             Console.WriteLine(
                                 "Distribute Data Income : " +
                                 JsonSerializer.Serialize(tmpIncomeData)
@@ -272,7 +271,6 @@ namespace Notus.Validator
                         {
                             Console.WriteLine("Distribute : NULL");
                         }
-                        */
                     }
                     else
                     {
