@@ -118,22 +118,13 @@ namespace Notus.Coin
             }
 
             IncomeData.RequestUid = (IncomeData.RequestUid.Length == 0 ? NGF.GenerateTxUid() : IncomeData.RequestUid);
-            //Console.WriteLine("IncomeData.RequestUid : " + IncomeData.RequestUid);
+            Console.WriteLine("IncomeData.RequestUid For AirDrop : " + IncomeData.RequestUid);
             string airdropUid = IncomeData.RequestUid;
-            /*
-            omergoksoy();
-            NVG.Settings.TxStatus.Status(airdropUid);
-            , new NVS.CryptoTransferStatus()
+            if (ToDistribute == false)
             {
-                Code = NVE.BlockStatusCode.AddedToQueue,
-                RowNo = 0,
-                UID = "",
-                Text = "AddedToQueue"
-            });
-            */
-
-            //Console.WriteLine("airdropUid : " + airdropUid);
-
+                var status=NVG.Settings.BlockMeta.Status(airdropUid);
+                Console.WriteLine(JsonSerializer.Serialize(status, NVC.JsonSetting));
+            }
             // eğer cüzdan kilitli ise hata gönderecek
             if (NGF.Balance.AccountIsLock(ReceiverWalletKey) == true)
             {

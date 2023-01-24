@@ -912,6 +912,7 @@ namespace Notus.Block
 
             Console.WriteLine("Added To Queue : " + PreBlockData.uid);
             //durum bilgisi eklenecek
+            //omergoksoy();
             NVG.Settings.BlockMeta.Status(PreBlockData.uid, new NVS.CryptoTransferStatus()
             {
                 Code = NVE.BlockStatusCode.AddedToQueue,
@@ -919,7 +920,6 @@ namespace Notus.Block
                 UID = "",
                 Text = "AddedToQueue"
             });
-            //omergoksoy();
             return true;
         }
 

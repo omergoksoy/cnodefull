@@ -87,6 +87,7 @@ namespace Notus.Variable
         public static readonly string AirDropVolume_Default = "2000000000";
 
         // peşpeşe alınabilecek airdrop sınırı
+        //public static readonly int AirDropVolumeCount = 2;  //omergoksoy();
         public static readonly int AirDropVolumeCount = 10;  //omergoksoy();
 
         // alınan airdrop ne zaman silinecek
