@@ -910,6 +910,18 @@ namespace Notus.Block
             Console.WriteLine("Added To Queue : " + PreBlockData.uid);
             kvPoolDb.Set(PreBlockData.uid, JsonSerializer.Serialize(PreBlockData));
             Add2Queue(PreBlockData);
+
+            kuyruğa eklenen her işlem için
+            durum bilgisi eklenecek
+
+            NVG.Settings.TxStatus.Set(airdropUid, new NVS.CryptoTransferStatus()
+            {
+                Code = NVE.BlockStatusCode.AddedToQueue,
+                RowNo = 0,
+                UID = "",
+                Text = "AddedToQueue"
+            });
+
             return true;
         }
 

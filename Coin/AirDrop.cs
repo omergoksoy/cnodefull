@@ -211,15 +211,6 @@ namespace Notus.Coin
                     JsonSerializer.Serialize(RequestList[ReceiverWalletKey])
                 );
 
-                // burada transactionları belleğe alıyor böyle hızlı ulaşım sağlanıyor...
-                NVG.Settings.TxStatus.Set(airdropUid, new NVS.CryptoTransferStatus()
-                {
-                    Code = NVE.BlockStatusCode.AddedToQueue,
-                    RowNo = 0,
-                    UID = "",
-                    Text = "AddedToQueue"
-                });
-
                 Notus.Pool.Sharing.Distribute(IncomeData, ToDistribute);
                 return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
                 {
