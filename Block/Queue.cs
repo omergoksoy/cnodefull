@@ -984,6 +984,7 @@ namespace Notus.Block
         //eski tarihli işlemler, işlemin yapıldığı tarihte birleştirilecek
         private Dictionary<string, Dictionary<ulong, string>> MergeOldBalance(Dictionary<string, Dictionary<ulong, string>> innerBalance, string txUid)
         {
+            Console.WriteLine(JsonSerializer.Serialize(innerBalance));
             DateTime txTime = Notus.Block.Key.BlockIdToTime(txUid);
             ulong txTimeVal = Notus.Date.ToLong(txTime);
             string txVolumeVal = "0";
