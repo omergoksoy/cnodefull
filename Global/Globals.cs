@@ -142,7 +142,7 @@ namespace Notus.Variable
                 BlockOrder = new Notus.Block.Order(),
                 BlockSign = new Notus.Block.Sign(),
                 BlockPrev = new Notus.Block.Prev(),
-                TxStatus = new Notus.Block.TxStatus(),
+                BlockMeta=new Notus.Block.Meta(),
                 Transfer = new Notus.Coin.Transfer(),
                 Airdrop = new Notus.Coin.AirDrop(),
                 ContractDeploy = new Notus.Contract.Deploy()

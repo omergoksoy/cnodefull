@@ -42,7 +42,8 @@ namespace Notus.Globals.Variable
         public Notus.Block.Order BlockOrder { get; set; }
         public Notus.Block.Sign BlockSign { get; set; }
         public Notus.Block.Prev BlockPrev { get; set; }
-        public Notus.Block.TxStatus TxStatus { get; set; }
+        //public Notus.Block.TxStatus TxStatus { get; set; }
+        public Notus.Block.Meta BlockMeta { get; set; }
         public Notus.Coin.Transfer Transfer { get; set; }
         public Notus.Coin.AirDrop Airdrop { get; set; }
         public Notus.Contract.Deploy ContractDeploy { get; set; }

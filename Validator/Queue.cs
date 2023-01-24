@@ -12,6 +12,7 @@ using NTT = Notus.Toolbox.Text;
 using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
 using NVD = Notus.Validator.Date;
+using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVR = Notus.Validator.Register;
@@ -168,6 +169,18 @@ namespace Notus.Validator
         }
         public string ProcessIncomeData(string incomeData)
         {
+            if (NTT.CheckXmlTag(incomeData, "requestId"))
+            {
+                incomeData = NTT.GetPureText(incomeData, "requestId");
+                NVG.Settings.BlockMeta.Status(incomeData, new NVS.CryptoTransferStatus()
+                {
+                    Code = NVE.BlockStatusCode.AddedToQueue,
+                    RowNo = 0,
+                    UID = "",
+                    Text = "AddedToQueue"
+                });
+                return "ok";
+            }
             if (NTT.CheckXmlTag(incomeData, "poolData"))
             {
                 return (

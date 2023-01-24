@@ -120,8 +120,9 @@ namespace Notus.Coin
             IncomeData.RequestUid = (IncomeData.RequestUid.Length == 0 ? NGF.GenerateTxUid() : IncomeData.RequestUid);
             //Console.WriteLine("IncomeData.RequestUid : " + IncomeData.RequestUid);
             string airdropUid = IncomeData.RequestUid;
-            NVG.Settings.TxStatus.Status(airdropUid);
             /*
+            omergoksoy();
+            NVG.Settings.TxStatus.Status(airdropUid);
             , new NVS.CryptoTransferStatus()
             {
                 Code = NVE.BlockStatusCode.AddedToQueue,
@@ -143,6 +144,20 @@ namespace Notus.Coin
                     ID = string.Empty,
                     Result = NVE.BlockStatusCode.WalletNotAllowed
                 });
+            }
+
+            NVS.CryptoTransferStatus airdropStatus = NVG.Settings.BlockMeta.Status(airdropUid);
+            if (airdropStatus.Code != NVE.BlockStatusCode.Unknown)
+            {
+                //omergoksoy();
+                Console.WriteLine("AirDrop -> Line 152");
+                Console.WriteLine(
+                    JsonSerializer.Serialize(
+                        airdropStatus,
+                        NVC.JsonSetting
+                    )
+                );
+                Console.ReadLine();
             }
 
             lock (NGF.WalletUsageList)
@@ -191,6 +206,7 @@ namespace Notus.Coin
                 data = JsonSerializer.Serialize(airDrop)
             });
 
+            /*
             NVG.TxPool.Add(new Notus.Compiler.TxQueueStruct()
             {
                 Uid = airdropUid,
@@ -204,6 +220,8 @@ namespace Notus.Coin
                 },
                 Sign = ""
             });
+            */
+
             if (tmpAddResult == true)
             {
                 RequestList[ReceiverWalletKey].Add(airdropUid);
@@ -220,7 +238,7 @@ namespace Notus.Coin
                     Result = NVE.BlockStatusCode.AddedToQueue
                 });
             }
-            NVG.Settings.TxStatus.Set(airdropUid, new NVS.CryptoTransferStatus()
+            NVG.Settings.BlockMeta.Status(airdropUid, new NVS.CryptoTransferStatus()
             {
                 Code = NVE.BlockStatusCode.Unknown,
                 RowNo = 0,

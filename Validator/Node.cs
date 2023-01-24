@@ -25,10 +25,13 @@ namespace Notus.Validator
         }
         public static void Start()
         {
+            NVG.Settings.BlockMeta.Start();
+
+
             NVG.Settings.BlockOrder.Start();
             NVG.Settings.BlockSign.Start();
             NVG.Settings.BlockPrev.Start();
-            NVG.Settings.TxStatus.Start();
+            //NVG.Settings.TxStatus.Start();
             NVG.Settings.Airdrop.Start();
             NVG.Settings.ContractDeploy.Start();
             NVG.Settings.Transfer.Start();

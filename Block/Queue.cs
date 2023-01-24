@@ -95,7 +95,7 @@ namespace Notus.Block
 
             // tx durumu hatalı olarak işaretleniyor...
             //NVG.Settings.TxStatus.Set(txUid, NVE.BlockStatusCode.WrongTxFormat);
-            NVG.Settings.TxStatus.Set(txUid, new NVS.CryptoTransferStatus()
+            NVG.Settings.BlockMeta.Status(txUid, new NVS.CryptoTransferStatus()
             {
                 Code = NVE.BlockStatusCode.WrongTxFormat,
                 RowNo = 0,
@@ -229,7 +229,7 @@ namespace Notus.Block
                                             if (NVG.Settings.Airdrop.LimitExceeded(airdropReceiver) == true)
                                             {
                                                 addToList = false;
-                                                NVG.Settings.TxStatus.Set(tmpTxUid, new NVS.CryptoTransferStatus()
+                                                NVG.Settings.BlockMeta.Status(tmpTxUid, new NVS.CryptoTransferStatus()
                                                 {
                                                     Code = NVE.BlockStatusCode.TooManyRequest,
                                                     RowNo = 0,
@@ -383,7 +383,7 @@ namespace Notus.Block
 
                                         if (walletHaveEnoughCoinOrToken == false)
                                         {
-                                            NVG.Settings.TxStatus.Set(incomeConvertData.TransferId, new NVS.CryptoTransferStatus()
+                                            NVG.Settings.BlockMeta.Status(incomeConvertData.TransferId, new NVS.CryptoTransferStatus()
                                             {
                                                 Code = NVE.BlockStatusCode.Rejected,
                                                 RowNo = 0,
@@ -871,7 +871,7 @@ namespace Notus.Block
                 {
                     foreach (var entry in tmpLockBalance.In)
                     {
-                        NVG.Settings.TxStatus.Set(entry.Key, new NVS.CryptoTransferStatus()
+                        NVG.Settings.BlockMeta.Status(entry.Key, new NVS.CryptoTransferStatus()
                         {
                             Code = NVE.BlockStatusCode.Completed,
                             RowNo = NewBlock.info.rowNo,
@@ -907,21 +907,19 @@ namespace Notus.Block
             PreBlockData.uid = (PreBlockData.uid.Length == 0 ? NGF.GenerateTxUid() : PreBlockData.uid);
 
             //burada eklenen işlem diğer nodelara dağıtılacak
-            Console.WriteLine("Added To Queue : " + PreBlockData.uid);
             kvPoolDb.Set(PreBlockData.uid, JsonSerializer.Serialize(PreBlockData));
             Add2Queue(PreBlockData);
 
-            kuyruğa eklenen her işlem için
-            durum bilgisi eklenecek
-
-            NVG.Settings.TxStatus.Set(airdropUid, new NVS.CryptoTransferStatus()
+            Console.WriteLine("Added To Queue : " + PreBlockData.uid);
+            //durum bilgisi eklenecek
+            NVG.Settings.BlockMeta.Status(PreBlockData.uid, new NVS.CryptoTransferStatus()
             {
                 Code = NVE.BlockStatusCode.AddedToQueue,
                 RowNo = 0,
                 UID = "",
                 Text = "AddedToQueue"
             });
-
+            //omergoksoy();
             return true;
         }
 
