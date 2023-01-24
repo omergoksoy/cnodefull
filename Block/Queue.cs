@@ -312,7 +312,6 @@ namespace Notus.Block
 
                                     if (addToList == true)
                                     {
-                                        tmpValidatorWalletBalance = NGF.Balance.Get(NVG.Settings.NodeWallet.WalletKey, unlockTimeForNodeWallet);
                                         tmpBlockCipherData = new NVClass.BlockStruct_120()
                                         {
                                             In = new Dictionary<string, NVClass.BlockStruct_120_In_Struct>(),
@@ -419,6 +418,7 @@ namespace Notus.Block
                                         tmpBlockCipherData.In.Add(incomeConvertData.TransferId, new NVClass.BlockStruct_120_In_Struct()
                                         {
                                             Fee = incomeConvertData.Fee,
+                                            UnlockTime = incomeConvertData.UnlockTime,
                                             PublicKey = incomeConvertData.PublicKey,
                                             Sign = incomeConvertData.Sign,
                                             CurrentTime = incomeConvertData.CurrentTime,
@@ -441,7 +441,7 @@ namespace Notus.Block
                                         });
 
                                         // transfer fee added to validator wallet
-
+                                        tmpValidatorWalletBalance = NGF.Balance.Get(NVG.Settings.NodeWallet.WalletKey, unlockTimeForNodeWallet);
                                         tmpValidatorWalletBalance = NGF.Balance.AddVolumeWithUnlockTime(
                                             tmpValidatorWalletBalance,
                                             transferFee.ToString(),
@@ -489,9 +489,15 @@ namespace Notus.Block
                                             incomeConvertData.UnlockTime
                                         );
                                         tmpBlockCipherData.Out[incomeConvertData.Receiver] = tmpNewReceiverBalance.Balance;
-                                        //Console.WriteLine("------- Single Record BEGIN -------");
-                                        //Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
-                                        //Console.WriteLine("------- Single Record END   -------");
+                                        Console.WriteLine("------- Single Record BEGIN -------");
+                                        Console.WriteLine(
+                                            JsonSerializer.Serialize(
+                                                RemoveZeroBalance(tmpBlockCipherData.Out[incomeConvertData.Receiver]),
+                                                NVC.JsonSetting
+                                            )
+                                        );
+                                        Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
+                                        Console.WriteLine("------- Single Record END   -------");
                                         TmpPoolRecord.data = JsonSerializer.Serialize(tmpBlockCipherData);
 
                                     }
@@ -889,7 +895,6 @@ namespace Notus.Block
             PreBlockData.uid = (PreBlockData.uid == null ? NGF.GenerateTxUid() : PreBlockData.uid);
             PreBlockData.uid = (PreBlockData.uid.Length == 0 ? NGF.GenerateTxUid() : PreBlockData.uid);
 
-            //omergoksoy();
             //burada eklenen işlem diğer nodelara dağıtılacak
             Console.WriteLine("Added To Queue : " + PreBlockData.uid);
             kvPoolDb.Set(PreBlockData.uid, JsonSerializer.Serialize(PreBlockData));
@@ -954,8 +959,8 @@ namespace Notus.Block
             //Obj_PoolTransactionList.Clear();
         }
 
-
-        eski tarihli işlemler, işlemin yapıldığı tarihte birleştirilecek
+        //omergoksoy();
+        //eski tarihli işlemler, işlemin yapıldığı tarihte birleştirilecek
         private Dictionary<string, Dictionary<ulong, string>> MergeOldBalance(Dictionary<string, Dictionary<ulong, string>> innerBalance, string txUid)
         {
             DateTime txTime = Notus.Block.Key.BlockIdToTime(txUid);
@@ -997,7 +1002,8 @@ namespace Notus.Block
             return innerBalance;
         }
 
-        balance içindeki sıfır değerlerini silinecek
+        //omergoksoy();
+        //balance içindeki sıfır değerlerini silinecek
         private Dictionary<string, Dictionary<ulong, string>> RemoveZeroBalance(Dictionary<string, Dictionary<ulong, string>> innerBalance)
         {
             Console.WriteLine("----------------------------------------");

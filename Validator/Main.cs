@@ -254,7 +254,6 @@ namespace Notus.Validator
 
                     if (string.Equals(innerResultStr, "distribute") == true)
                     {
-                        //omergoksoy();
                         NVS.HttpRequestDetails? tmpIncomeData =
                         JsonSerializer.Deserialize<NVS.HttpRequestDetails>(
                             NTT.GetPureText(incomeMessage, "poolData")

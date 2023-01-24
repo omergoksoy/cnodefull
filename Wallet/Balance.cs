@@ -686,7 +686,6 @@ namespace Notus.Wallet
                     {
                         Console.WriteLine("AirDrop Done -> " + entry.Key);
                         NGF.BlockQueue.RemoveFromDb(entry.Key);
-                        //omergoksoy();
                     }
 
                     foreach (var entry in tmpLockBalance.Out)
