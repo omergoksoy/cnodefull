@@ -9,6 +9,7 @@ namespace Notus.Pool
     {
         public static void Distribute(NVS.HttpRequestDetails IncomeData, bool ToDistribute)
         {
+            return;
             if (ToDistribute == false)
                 return;
 
