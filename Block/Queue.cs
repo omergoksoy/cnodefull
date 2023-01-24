@@ -988,7 +988,7 @@ namespace Notus.Block
             DateTime txTime = Notus.Block.Key.BlockIdToTime(txUid);
             ulong txTimeVal = Notus.Date.ToLong(txTime);
             string txVolumeVal = "0";
-
+            bool balanceChanged = false;
             string tmpCoinCurrency = NVG.Settings.Genesis.CoinInfo.Tag;
             List<ulong> timeList = new();
             foreach (var item in innerBalance[tmpCoinCurrency])
@@ -998,22 +998,21 @@ namespace Notus.Block
                     BigInteger tmpTotalVal = BigInteger.Parse(item.Value) + BigInteger.Parse(txVolumeVal);
                     txVolumeVal = tmpTotalVal.ToString();
                     timeList.Add(item.Key);
+                    balanceChanged = true;
                 }
             }
             for (int i = 0; i < timeList.Count; i++)
             {
                 innerBalance[tmpCoinCurrency].Remove(timeList[i]);
             }
-            if (txVolumeVal != "0")
+            if (balanceChanged == true)
             {
-                Console.WriteLine(txTimeVal);
                 if (innerBalance[tmpCoinCurrency].ContainsKey(txTimeVal) == false)
                 {
                     innerBalance[tmpCoinCurrency].Add(txTimeVal, txVolumeVal);
                 }
                 else
                 {
-                    Environment.Exit(0);
                     innerBalance[tmpCoinCurrency][txTimeVal] = txVolumeVal;
                 }
             }
