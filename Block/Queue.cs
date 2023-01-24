@@ -479,8 +479,7 @@ namespace Notus.Block
                                             Console.WriteLine("Coin Needed - Main.Cs -> Line 498");
                                             Console.ReadLine();
                                         }
-                                        tmpBlockCipherData.Out[incomeConvertData.Sender] = tmpNewResultForTransaction.Balance;
-
+                                        tmpBlockCipherData.Out[incomeConvertData.Sender] = RemoveZeroBalance(tmpNewResultForTransaction.Balance);
                                         //receiver get coin or token
                                         NVS.WalletBalanceStruct tmpNewReceiverBalance = NGF.Balance.AddVolumeWithUnlockTime(
                                             tmpReceiverBalance,
@@ -488,13 +487,11 @@ namespace Notus.Block
                                             incomeConvertData.Currency,
                                             incomeConvertData.UnlockTime
                                         );
-                                        tmpBlockCipherData.Out[incomeConvertData.Receiver] = tmpNewReceiverBalance.Balance;
+                                        tmpBlockCipherData.Out[incomeConvertData.Receiver] = RemoveZeroBalance(tmpNewReceiverBalance.Balance);
                                         Console.WriteLine("------- Single Record BEGIN -------");
-                                        Console.WriteLine(
-                                            JsonSerializer.Serialize(
-                                                RemoveZeroBalance(tmpBlockCipherData.Out[incomeConvertData.Receiver]),
-                                                NVC.JsonSetting
-                                            )
+                                        tmpBlockCipherData.Out[incomeConvertData.Receiver] = MergeOldBalance(
+                                            tmpNewReceiverBalance.Balance,
+                                            incomeConvertData.TransferId
                                         );
                                         Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
                                         Console.WriteLine("------- Single Record END   -------");
@@ -1006,9 +1003,6 @@ namespace Notus.Block
         //balance içindeki sıfır değerlerini silinecek
         private Dictionary<string, Dictionary<ulong, string>> RemoveZeroBalance(Dictionary<string, Dictionary<ulong, string>> innerBalance)
         {
-            Console.WriteLine("----------------------------------------");
-            Console.WriteLine("RemoveZeroBalance");
-            Console.WriteLine(JsonSerializer.Serialize(innerBalance));
             string tmpCoinCurrency = NVG.Settings.Genesis.CoinInfo.Tag;
             List<ulong> timeList = new();
             foreach (var item in innerBalance[tmpCoinCurrency])
@@ -1022,8 +1016,6 @@ namespace Notus.Block
             {
                 innerBalance[tmpCoinCurrency].Remove(timeList[i]);
             }
-            Console.WriteLine(JsonSerializer.Serialize(innerBalance));
-            Console.WriteLine("****************************************");
             return innerBalance;
         }
         public Queue()
