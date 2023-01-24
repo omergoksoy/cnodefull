@@ -171,6 +171,7 @@ namespace Notus.Coin
                     }
                 }
             }
+
             TxSignListObj.Set(controlKey, tmpTransfer.Sign);
 
             // 9- public key ve gönderilen cüzdan adresi eşleştiriliyor
@@ -292,6 +293,7 @@ namespace Notus.Coin
             IncomeData.RequestUid = (IncomeData.RequestUid.Length == 0 ? NGF.GenerateTxUid() : IncomeData.RequestUid);
             //Console.WriteLine("IncomeData.RequestUid : " + IncomeData.RequestUid);
             string tmpTransferIdKey = IncomeData.RequestUid;
+
             NVG.Settings.BlockMeta.Status(tmpTransferIdKey, new NVS.CryptoTransferStatus()
             {
                 Code = NVE.BlockStatusCode.InQueue,
@@ -323,6 +325,7 @@ namespace Notus.Coin
                 type = NVE.BlockTypeList.CryptoTransfer,
                 data = JsonSerializer.Serialize(recordStruct)
             });
+
             Notus.Pool.Sharing.Distribute(IncomeData, ToDistribute);
 
             /*

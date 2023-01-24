@@ -146,20 +146,6 @@ namespace Notus.Coin
                 });
             }
 
-            NVS.CryptoTransferStatus airdropStatus = NVG.Settings.BlockMeta.Status(airdropUid);
-            if (airdropStatus.Code != NVE.BlockStatusCode.Unknown)
-            {
-                //omergoksoy();
-                Console.WriteLine("AirDrop -> Line 152");
-                Console.WriteLine(
-                    JsonSerializer.Serialize(
-                        airdropStatus,
-                        NVC.JsonSetting
-                    )
-                );
-                Console.ReadLine();
-            }
-
             lock (NGF.WalletUsageList)
             {
                 bool returnWalletUsing = false;
