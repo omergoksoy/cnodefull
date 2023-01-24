@@ -21,6 +21,7 @@ namespace Notus.Pool
             sonrada eğer aynı kayıt DB'de varsa işleme almamak olarak düşünülebilir
             */
             Console.WriteLine("******************* Execute Distribute *******************");
+            Console.WriteLine(IncomeData.RequestUid);
             return;
             string poolMsgText = "<poolData>" + JsonSerializer.Serialize(IncomeData) + "</poolData>";
             foreach (var validatorItem in NVG.NodeList)
