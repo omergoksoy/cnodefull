@@ -142,9 +142,7 @@ namespace Notus.Validator
             }
 
 
-            NVG.Settings.BlockOrder.Add(Obj_BlockData.info.rowNo, Obj_BlockData.info.uID);
-            NVG.Settings.BlockSign.Add(Obj_BlockData.info.rowNo, Obj_BlockData.sign);
-            NVG.Settings.BlockPrev.Add(Obj_BlockData.info.rowNo, Obj_BlockData.prev);
+            NVG.Settings.BlockMeta.Store(Obj_BlockData);
 
             //NP.Basic("Balance.Control Will Execute");
 
@@ -700,7 +698,7 @@ namespace Notus.Validator
                     return NVG.Settings.LastBlock;
                 }
 
-                string tmpBlockKey = NVG.Settings.BlockOrder.Get(BlockRowNo);
+                string tmpBlockKey = NVG.Settings.BlockMeta.Order(BlockRowNo);
                 if (tmpBlockKey.Length > 0)
                 {
                     NVClass.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(tmpBlockKey);

@@ -324,7 +324,7 @@ namespace Notus.Validator
                 NP.Basic(NVG.Settings, "Last Block Row No : " + NVG.Settings.LastBlock.info.rowNo.ToString());
                 using (Notus.Block.Storage Obj_Storage = new Notus.Block.Storage(false))
                 {
-                    Dictionary<long, string> orderListResult = NVG.Settings.BlockOrder.List();
+                    Dictionary<long, string> orderListResult = NVG.Settings.BlockMeta.Order();
                     foreach (KeyValuePair<long, string> item in orderListResult)
                     {
                         NVClass.BlockData? tmpBlockData = Obj_Storage.ReadBlock(item.Value);
@@ -815,9 +815,7 @@ namespace Notus.Validator
                     }
                     if (innerSendToMyChain == true)
                     {
-                        NVG.Settings.BlockOrder.Add(blockData.info.rowNo, blockData.info.uID);
-                        NVG.Settings.BlockSign.Add(blockData.info.rowNo, blockData.sign);
-                        NVG.Settings.BlockPrev.Add(blockData.info.rowNo, blockData.prev);
+                        NVG.Settings.BlockMeta.Store(blockData);
                         if (string.Equals(NVH.BlockValidator(blockData), NVG.Settings.Nodes.My.IP.Wallet) == false)
                         {
                             NP.Info("New Block Arrived : " + blockData.info.uID.Substring(0, 15));
@@ -854,8 +852,8 @@ namespace Notus.Validator
 
                     */
                     innerSendToMyChain = true;
-                    NVG.Settings.BlockOrder.Add(blockData.info.rowNo, blockData.sign);
-                    NVG.Settings.BlockOrder.Add(blockData.info.rowNo, blockData.info.uID);
+                    //NVG.Settings.BlockOrder.Add(blockData.info.rowNo, blockData.sign);
+                    NVG.Settings.BlockMeta.Order(blockData.info.rowNo, blockData.info.uID);
                     if (string.Equals(NVH.BlockValidator(blockData), NVG.Settings.Nodes.My.IP.Wallet) == false)
                     {
                         NP.Info("New Block Arrived : " + blockData.info.uID.Substring(0, 15));

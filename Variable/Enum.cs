@@ -197,4 +197,10 @@ namespace Notus.Variable.Enum
         MajorityRequired = 1,
         Unknown = 9
     }
+    public enum UidTypeList
+    {
+        Block = 0,
+        Transaction = 1,
+        Unknown = 9999
+    }
 }

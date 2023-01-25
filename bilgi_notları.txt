@@ -1,0 +1,314 @@
+﻿/*
+
+control-point-123456
+1- her blok zipli dosya içine kaydedilsin.
+2- kullanılacak Key value tablolarının listesi
+   * Block Uid -> Block No
+   * Block No  -> Block Uid
+   * Block No  -> Block Sign
+   * Block No  -> Block Prev
+   * Block Uid -> Block Type ( Block / Transaction / Contract )
+   * 
+
+
+
+ */
+
+
+/*
+
+akıllı kontrat kodlarını gömmek için bi tane blok yapısı oluştur.
+blok tip numarası 200 olsun
+
+
+
+
+
+
+
+
+
+
+boyut testi yapmak için oluşturulmuş kod grubu
+
+
+
+string ZipFileName = "transfer_1000.zip";
+FileMode fileModeObj = FileMode.Open;
+ZipArchiveMode zipModeObj = ZipArchiveMode.Update;
+if (File.Exists(ZipFileName) == false)
+{
+    fileModeObj = FileMode.Create;
+    zipModeObj = ZipArchiveMode.Create;
+}
+
+
+//string rawData = "{'In':{'134afdd31db0080062d3a85fcca69b3ca52cc05d1d36b2c01aea3f2d2e598c25b0417c5fd18b40ac6559b8b29a':{'Wallet':'NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT','Balance':{'NOTUS':{'20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000'},'NOTUS':{'20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000'},'NOTUS':{'20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000'}},'RowNo':0,'UID':''}},'Out':{'NSX4cPr9DkwDKkB4oEom13MeAm388awj1JfQxQT':{'NOTUS':{'20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000'},'NOTUS':{'20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000'},'NOTUS':{'20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000','20230109204208538':'2000000000'}}},'Validator':'NSX4jmTMPuq5JZnGrXb2DsGxt85B5svJL8PnFKb'}";
+string rawData = "";
+const int length = 2400;
+const string chars = "'{:},QWERTYUOPASDFGHJKLİZXCVBNMABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+NVClass.BlockStruct_120 tmpBlockCipherData = new Notus.Variable.Class.BlockStruct_120()
+{
+    In = new Dictionary<string, Notus.Variable.Class.BlockStruct_120_In_Struct>(),
+    Out = new Dictionary<string, Dictionary<string, Dictionary<ulong, string>>>(),
+    Validator = new Notus.Variable.Struct.ValidatorStruct()
+};
+for (int i = 0; i < 1000; i++) {
+    string blockFileName = NGF.GenerateTxUid();
+    string senderWalletKey = "SENDER_8xuArjhNQ2DDviVWpTSyS8r9Rv7sATAH" + i.ToString();
+    string receiverWalletKey = "RECEIVER_uArjhNQ2DDviVWpTSyS8r9Rv7sATAH" + i.ToString();
+    tmpBlockCipherData.In.Add(blockFileName, new NVClass.BlockStruct_120_In_Struct()
+    {
+        Fee = "5454",
+        PublicKey = "04b8430f330f2132176e09e66723f11fa158053e0f7ef3dfe1628144aaf3132e1a2d237e710e90b5dd2a17ec20119e10d037b0d158461aec96abaaf74e9b748a40",
+        Sign = "3046022100dcdd055d5365833cfb0eeadb7e805248e388dd5b7a1099180e12f701497387c4022100a2847c0cc67f32f473a24eb2c73006f152920e6fe544e42085744dd9553f6419",
+        CurrentTime = 202212121212123565,
+        Volume = "123131321312",
+        Currency = "notus",
+        Receiver = new NVClass.WalletBalanceStructForTransaction()
+        {
+            Balance = new Dictionary<string, Dictionary<ulong, string>>(),
+            Wallet = senderWalletKey,
+            WitnessBlockUid = blockFileName,
+            WitnessRowNo = 4
+        },
+        Sender = new NVClass.WalletBalanceStructForTransaction()
+        {
+            Balance = new Dictionary<string, Dictionary<ulong, string>>(),
+            Wallet = receiverWalletKey,
+            WitnessBlockUid = blockFileName,
+            WitnessRowNo = 4
+        }
+    });
+    tmpBlockCipherData.In[blockFileName].Sender.Balance.Add("notus", new Dictionary<ulong, string>() { });
+    tmpBlockCipherData.In[blockFileName].Sender.Balance["notus"].Add(20230111195310191, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Sender.Balance["notus"].Add(20230111195310192, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Sender.Balance["notus"].Add(20230111195310193, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Sender.Balance["notus"].Add(20230111195310194, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Sender.Balance["notus"].Add(20230111195310195, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Sender.Balance["notus"].Add(20230111195310196, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Sender.Balance["notus"].Add(20230111195310197, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Sender.Balance["notus"].Add(20230111195310198, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Sender.Balance["notus"].Add(20230111195310199, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Sender.Balance["notus"].Add(20230111195310190, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Receiver.Balance.Add("notus", new Dictionary<ulong, string>() { });
+    tmpBlockCipherData.In[blockFileName].Receiver.Balance["notus"].Add(20230111195310191, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Receiver.Balance["notus"].Add(20230111195310192, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Receiver.Balance["notus"].Add(20230111195310193, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Receiver.Balance["notus"].Add(20230111195310194, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Receiver.Balance["notus"].Add(20230111195310195, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Receiver.Balance["notus"].Add(20230111195310196, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Receiver.Balance["notus"].Add(20230111195310197, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Receiver.Balance["notus"].Add(20230111195310198, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Receiver.Balance["notus"].Add(20230111195310199, "365465464654");
+    tmpBlockCipherData.In[blockFileName].Receiver.Balance["notus"].Add(20230111195310190, "365465464654");
+
+    tmpBlockCipherData.Out.Add(senderWalletKey, new Dictionary<string, Dictionary<ulong, string>>()
+    {
+
+    });
+
+    tmpBlockCipherData.Out[senderWalletKey].Add("NOTUS", new Dictionary<ulong, string>() { });
+    tmpBlockCipherData.Out[senderWalletKey]["NOTUS"].Add(20230111195310191, "365465464654");
+    tmpBlockCipherData.Out[senderWalletKey]["NOTUS"].Add(20230111195310192, "365465464654");
+    tmpBlockCipherData.Out[senderWalletKey]["NOTUS"].Add(20230111195310193, "365465464654");
+    tmpBlockCipherData.Out[senderWalletKey]["NOTUS"].Add(20230111195310194, "365465464654");
+    tmpBlockCipherData.Out[senderWalletKey]["NOTUS"].Add(20230111195310195, "365465464654");
+    tmpBlockCipherData.Out[senderWalletKey]["NOTUS"].Add(20230111195310196, "365465464654");
+    tmpBlockCipherData.Out[senderWalletKey]["NOTUS"].Add(20230111195310197, "365465464654");
+    tmpBlockCipherData.Out[senderWalletKey]["NOTUS"].Add(20230111195310198, "365465464654");
+    tmpBlockCipherData.Out[senderWalletKey]["NOTUS"].Add(20230111195310199, "365465464654");
+    tmpBlockCipherData.Out[senderWalletKey]["NOTUS"].Add(20230111195310190, "365465464654");
+
+    tmpBlockCipherData.Out.Add(receiverWalletKey, new Dictionary<string, Dictionary<ulong, string>>()
+    {
+
+    });
+
+    tmpBlockCipherData.Out[receiverWalletKey].Add("NOTUS", new Dictionary<ulong, string>() { });
+    tmpBlockCipherData.Out[receiverWalletKey]["NOTUS"].Add(20230111195310191, "365465464654");
+    tmpBlockCipherData.Out[receiverWalletKey]["NOTUS"].Add(20230111195310192, "365465464654");
+    tmpBlockCipherData.Out[receiverWalletKey]["NOTUS"].Add(20230111195310193, "365465464654");
+    tmpBlockCipherData.Out[receiverWalletKey]["NOTUS"].Add(20230111195310194, "365465464654");
+    tmpBlockCipherData.Out[receiverWalletKey]["NOTUS"].Add(20230111195310195, "365465464654");
+    tmpBlockCipherData.Out[receiverWalletKey]["NOTUS"].Add(20230111195310196, "365465464654");
+    tmpBlockCipherData.Out[receiverWalletKey]["NOTUS"].Add(20230111195310197, "365465464654");
+    tmpBlockCipherData.Out[receiverWalletKey]["NOTUS"].Add(20230111195310198, "365465464654");
+    tmpBlockCipherData.Out[receiverWalletKey]["NOTUS"].Add(20230111195310199, "365465464654");
+    tmpBlockCipherData.Out[receiverWalletKey]["NOTUS"].Add(20230111195310190, "365465464654");
+    //Console.WriteLine(JsonSerializer.Serialize(tmpBlockCipherData));
+    //Console.ReadLine();
+    //Console.ReadLine();
+}
+rawData=JsonSerializer.Serialize(tmpBlockCipherData);
+Console.WriteLine(tmpBlockCipherData.In.Count);
+Console.WriteLine(tmpBlockCipherData.Out.Count);
+//Console.WriteLine(rawData.Length);
+//Console.ReadLine();
+using (FileStream fileStream = new FileStream(ZipFileName, fileModeObj))
+{
+    using (ZipArchive archive = new ZipArchive(fileStream, zipModeObj, true))
+    {
+        Random random = new Random();
+        //for (int i = 0; i < 1000; i++)
+        //{
+        string blockFileName = NGF.GenerateTxUid();
+            ZipArchiveEntry zipArchiveEntry = archive.CreateEntry(blockFileName, CompressionLevel.Optimal);
+            using (Stream zipStream = zipArchiveEntry.Open())
+            {
+                /*
+                rawData = new string(Enumerable.Repeat(chars, length).Select(
+                    s => s[random.Next(s.Length)]).ToArray()
+                );
+                rawData=System.Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(rawData));
+                byte[] blockBytes = Encoding.UTF8.GetBytes(rawData);
+                zipStream.Write(blockBytes, 0, blockBytes.Length);
+            }
+        //}
+    }
+}
+Console.WriteLine("bitti");
+Console.ReadLine();
+Console.ReadLine();
+Console.ReadLine();
+*/
+
+
+
+/*
+DbOptions options = new DbOptions().SetCreateIfMissing(true);
+RocksDb db = RocksDb.Open(options, "dev-net/layer-1/deneme/ornek");
+DateTime baslangic = DateTime.Now;
+
+for (int i = 0; i < 1000000; i++)
+{
+    db.Put(i.ToString(),(i+5).ToString());
+}
+Console.WriteLine(DateTime.Now- baslangic);
+Console.ReadLine();
+
+Iterator iterator = db.NewIterator().SeekToFirst();
+while (iterator.Valid())
+{
+    Console.WriteLine(iterator.StringKey());
+    Console.WriteLine(iterator.StringValue());
+    iterator.Next();
+}
+
+
+Console.ReadLine();
+*/
+//fix-ing-control-point
+
+
+//control-point
+
+
+//key value db'sini kontrol et
+
+/*
+Notus.Data.KeyValue keyValue = new Notus.Data.KeyValue();
+keyValue.SetSettings(
+    new NVS.KeyValueSettings()
+    {
+        MemoryLimitCount = 1000,
+        Name = "balance"
+    }
+);
+
+buyuk küçük harf hassasiyeti var
+keyValue.Set("omer","kucuk_harf");
+keyValue.Set("Omer", "ilk_harf");
+keyValue.Set("OMER", "buyuk_harf");
+string deneme1=keyValue.Get("omer");
+string deneme2=keyValue.Get("Omer");
+string deneme3=keyValue.Get("OMER");
+Console.WriteLine(deneme1);
+Console.WriteLine(deneme2);
+Console.WriteLine(deneme3);
+
+Console.ReadLine();
+*/
+/*
+DateTime baslangic = DateTime.Now;
+Console.WriteLine(JsonSerializer.Serialize(keyValue.GetList()));
+Console.ReadLine();
+//keyValue.Set("0123456789abcdea", "deger");
+keyValue.FirstLoad();
+keyValue.Each((string blockTransactionKey, string TextBlockDataString) =>
+{
+    Console.WriteLine(blockTransactionKey +" ->> " + TextBlockDataString);
+});
+*/
+/*
+for (int i = 0; i < 100; i++)
+{
+    keyValue.Set("deneme-" + i.ToString(), "deger-" + i.ToString());
+}
+//Console.ReadLine();
+for (int i = 0; i < 50; i++)
+{
+    keyValue.Delete("deneme-" + i.ToString());
+}
+Console.WriteLine(DateTime.Now - baslangic);
+*/
+/*
+
+Console.WriteLine(DateTime.Now);
+string rrr = keyValue.Get("deneme-500");
+Console.WriteLine(rrr);
+rrr = keyValue.Get("deneme-100");
+Console.WriteLine(rrr);
+
+Console.ReadLine();
+Console.ReadLine();
+Console.ReadLine();
+*/
+/*
+*/
+
+
+/*
+
+
+auto update uygulaması
+https://gist.github.com/sbrl/7709dfc5268e1acde6f3
+
+
+run multiple exe on console app
+https://www.codeproject.com/Questions/999027/Multiple-Consoles-in-single-Csharp-Console-Applica
+
+*/
+
+/*
+// DLL 'in version bilgisini çekiyor.
+Console.WriteLine("{0}", System.Reflection.AssemblyName.GetAssemblyName("Microsoft.Data.Sqlite.dll").Version);
+Console.WriteLine("{0}", System.Reflection.AssemblyName.GetAssemblyName("cnodefull.dll").Version);
+Console.ReadLine();
+*/
+
+Console.CancelKeyPress += delegate {
+    // call methods to clean up
+};
+
+
+var fastServerName = Notus.Time.FindFasterNtpServer();
+Console.WriteLine(fastServerName);
+Console.ReadLine();
+
+ 
+
+öncelikle node'ların zaman bilgileri alınsın
+alınan zaman bilgileri ile NTP zaman farkı karşılaştırılsın
+iki node arasındaki zaman farkı toplansın böylece iki node
+arasındaki tüm zaman farkı eşitlenecek
+
+Örneğin;
+node-1 UTC saatinin alındığı zaman : 14:45:12.012 ise
+    ve ping timeout süresi         : 0.65429 ise
+
+node-2 UTC saatinin alındığı zaman : 14:46:28.873 ise
+    ve ping timeout süresi         : 0.23510 ise
+
+bu iki node arasındaki süre 
+

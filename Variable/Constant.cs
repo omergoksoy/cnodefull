@@ -242,6 +242,9 @@ namespace Notus.Variable
             { "BlockSignList", "block_sign" },
             { "BlockOrderList", "block_order" },
             { "BlockPrevList", "block_prev" },
+            { "UidTypeList", "uid_type_list" },
+            
+            { "TransactionStatus", "tx_status" },
 
             //{ "BlockStorageList", "block_list" },
             { "MempoolListBeforeBlockStorage", "block_file" },

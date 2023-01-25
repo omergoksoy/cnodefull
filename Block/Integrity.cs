@@ -80,9 +80,6 @@ namespace Notus.Block
         // burası merkezi kontrol noktası
         private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity()
         {
-            NVG.Settings.BlockOrder.Clear();
-            NVG.Settings.BlockSign.Clear();
-            NVG.Settings.BlockPrev.Clear();
             (NVE.BlockIntegrityStatus tmpStatus, NVClass.BlockData? tmpLastBlock) = ControlBlockIntegrity_FastCheck();
 
             if (tmpStatus == NVE.BlockIntegrityStatus.Valid)
@@ -218,7 +215,7 @@ namespace Notus.Block
                 );
             }
             Notus.Wallet.Fee.StoreFeeData("genesis_block", JsonSerializer.Serialize(NVG.Settings.Genesis), NVG.Settings.Network, NVG.Settings.Layer, true);
-            NVG.Settings.BlockOrder.Add(1, CurrentBlockOrder[1].Uid);
+            NVG.Settings.BlockMeta.Order(1, CurrentBlockOrder[1].Uid);
 
             for (int currentRowNo = 2; currentRowNo < (biggestBlockRownNo + 1); currentRowNo++)
             {
@@ -231,9 +228,9 @@ namespace Notus.Block
                 if (string.Equals(CurrentBlockOrder[currentRowNo].Prev, prevBlockUid) == false)
                     return (NVE.BlockIntegrityStatus.CheckAgain, null);
 
-                NVG.Settings.BlockOrder.Add(currentRowNo, CurrentBlockOrder[currentRowNo].Uid);
-                NVG.Settings.BlockSign.Add(currentRowNo, CurrentBlockOrder[currentRowNo].Sign);
-                NVG.Settings.BlockPrev.Add(currentRowNo, CurrentBlockOrder[currentRowNo].Prev);
+                NVG.Settings.BlockMeta.Order(currentRowNo, CurrentBlockOrder[currentRowNo].Uid);
+                NVG.Settings.BlockMeta.Sign(currentRowNo, CurrentBlockOrder[currentRowNo].Sign);
+                NVG.Settings.BlockMeta.Prev(currentRowNo, CurrentBlockOrder[currentRowNo].Prev);
             }
 
             using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
@@ -402,10 +399,7 @@ namespace Notus.Block
                                                         BlockPreviousList.Add(ControlBlock.info.uID, ControlBlock.prev);
                                                         BlockTypeList.Add(ControlBlock.info.uID, ControlBlock.info.type);
 
-
-                                                        NVG.Settings.BlockOrder.Add(ControlBlock.info.rowNo, ControlBlock.info.uID);
-                                                        NVG.Settings.BlockSign.Add(ControlBlock.info.rowNo, ControlBlock.sign);
-                                                        NVG.Settings.BlockPrev.Add(ControlBlock.info.rowNo, ControlBlock.prev);
+                                                        NVG.Settings.BlockMeta.Store(ControlBlock);
                                                     }
                                                 }
                                             }
@@ -543,7 +537,7 @@ namespace Notus.Block
             */
             foreach (KeyValuePair<long, string> item in BlockOrderList)
             {
-                NVG.Settings.BlockOrder.Add(item.Key, item.Value);
+                NVG.Settings.BlockMeta.Order(item.Key, item.Value);
             }
             return (NVE.BlockIntegrityStatus.Valid, LastBlock);
         }
