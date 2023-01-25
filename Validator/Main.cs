@@ -262,7 +262,7 @@ namespace Notus.Validator
                         );
                         if (tmpIncomeData != null)
                         {
-                            //Obj_Api.Interpret(tmpIncomeData,false);
+                            Obj_Api.Interpret(tmpIncomeData,false);
                             Console.WriteLine(
                                 "Distribute Data Income : " +
                                 JsonSerializer.Serialize(tmpIncomeData)

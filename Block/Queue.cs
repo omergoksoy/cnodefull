@@ -177,13 +177,19 @@ namespace Notus.Block
                             Console.WriteLine("string.Equals(tmpTxUid, TmpPoolRecord.uid) -> FALSE");
                         }
                         */
-
                         CurrentBlockType = (CurrentBlockType == -1 ? TmpPoolRecord.type : CurrentBlockType);
 
                         if (CurrentBlockType == TmpPoolRecord.type)
                         {
                             bool addToList = true;
-                            if (CurrentBlockType == NVE.BlockTypeList.MultiWalletCryptoTransfer)
+
+                            NVS.CryptoTransferStatus txStatus = NVG.Settings.BlockMeta.Status(TmpPoolRecord.uid);
+                            if (txStatus.Code == NVE.BlockStatusCode.Completed)
+                            {
+                                addToList = false;
+                            }
+
+                            if (CurrentBlockType == NVE.BlockTypeList.MultiWalletCryptoTransfer && addToList == true)
                             {
                                 Dictionary<string, NVS.MultiWalletTransactionStruct>? multiTx =
                                     JsonSerializer.Deserialize<
@@ -208,7 +214,7 @@ namespace Notus.Block
                                 }
                             }
 
-                            if (CurrentBlockType == NVE.BlockTypeList.AirDrop)
+                            if (CurrentBlockType == NVE.BlockTypeList.AirDrop && addToList == true)
                             {
                                 NVClass.BlockStruct_125? tmpBlockCipherData = JsonSerializer.Deserialize<NVClass.BlockStruct_125>(TmpPoolRecord.data);
                                 if (tmpBlockCipherData == null)
@@ -273,7 +279,7 @@ namespace Notus.Block
                                 }
                             }
 
-                            if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer)
+                            if (CurrentBlockType == NVE.BlockTypeList.CryptoTransfer && addToList == true)
                             {
                                 NVS.CryptoTransactionStoreStruct? incomeConvertData = JsonSerializer.Deserialize<NVS.CryptoTransactionStoreStruct>(TmpPoolRecord.data);
                                 if (incomeConvertData == null)
