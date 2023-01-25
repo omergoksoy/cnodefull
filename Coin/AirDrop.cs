@@ -183,7 +183,7 @@ namespace Notus.Coin
                 data = JsonSerializer.Serialize(airDrop)
             });
 
-            burada airdrop gelince diğer node'a dağıtım işlemi test edilsin, sonrasında coin transfer işlemine geçiş yapılsın'
+            //burada airdrop gelince diğer node'a dağıtım işlemi test edilsin, sonrasında coin transfer işlemine geçiş yapılsın'
             /*
             NVG.TxPool.Add(new Notus.Compiler.TxQueueStruct()
             {
