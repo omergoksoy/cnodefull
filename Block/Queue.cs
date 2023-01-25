@@ -262,6 +262,13 @@ namespace Notus.Block
                                                     airdropTxUid = tmpInnerEntry.Key;
                                                 }
                                                 var newAirdropObj = NVG.Settings.Airdrop.Calculate(airdropReceiver, airdropTxUid);
+
+                                                
+                                                newAirdropObj.Out[airdropReceiver] = RemoveZeroBalance(newAirdropObj.Out[airdropReceiver]);
+                                                newAirdropObj.Out[airdropReceiver] = MergeOldBalance(
+                                                    newAirdropObj.Out[airdropReceiver],airdropTxUid
+                                                );
+
                                                 TmpPoolRecord.data = JsonSerializer.Serialize(newAirdropObj);
                                                 bool innerAddedToList = TempWalletList.TryAdd(tmpEntry.Key, 1);
                                                 if (innerAddedToList == false)

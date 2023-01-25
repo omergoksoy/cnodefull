@@ -277,6 +277,7 @@ namespace Notus.Coin
             };
             airDrop.In.Add(airdropUid, tmpBalanceBefore);
             airDrop.Out.Add(ReceiverWalletKey, tmpBalanceAfter.Balance);
+
             return airDrop;
         }
 
