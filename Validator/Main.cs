@@ -254,6 +254,7 @@ namespace Notus.Validator
 
                     if (string.Equals(innerResultStr, "distribute") == true)
                     {
+                        //omergoksoy();
                         Console.WriteLine("Distribute : INCOME");
                         NVS.HttpRequestDetails? tmpIncomeData =
                         JsonSerializer.Deserialize<NVS.HttpRequestDetails>(

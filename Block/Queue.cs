@@ -910,8 +910,6 @@ namespace Notus.Block
             kvPoolDb.Set(PreBlockData.uid, JsonSerializer.Serialize(PreBlockData));
             Add2Queue(PreBlockData);
 
-            Console.WriteLine("Added To Queue : " + PreBlockData.uid);
-            //durum bilgisi eklenecek
             //omergoksoy();
             NVG.Settings.BlockMeta.Status(PreBlockData.uid, new NVS.CryptoTransferStatus()
             {
@@ -920,6 +918,8 @@ namespace Notus.Block
                 UID = "",
                 Text = "AddedToQueue"
             });
+
+            Console.WriteLine("Added To Queue : " + PreBlockData.uid);
             return true;
         }
 

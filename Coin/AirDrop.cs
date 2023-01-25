@@ -118,12 +118,16 @@ namespace Notus.Coin
             }
 
             IncomeData.RequestUid = (IncomeData.RequestUid.Length == 0 ? NGF.GenerateTxUid() : IncomeData.RequestUid);
-            Console.WriteLine("IncomeData.RequestUid For AirDrop : " + IncomeData.RequestUid);
             string airdropUid = IncomeData.RequestUid;
             if (ToDistribute == false)
             {
-                var status=NVG.Settings.BlockMeta.Status(airdropUid);
+                var status = NVG.Settings.BlockMeta.Status(airdropUid);
+                Console.WriteLine("IncomeData.RequestUid For AirDrop [collector] : " + IncomeData.RequestUid);
                 Console.WriteLine(JsonSerializer.Serialize(status, NVC.JsonSetting));
+            }
+            else
+            {
+                Console.WriteLine("IncomeData.RequestUid For AirDrop [receiver]: " + IncomeData.RequestUid);
             }
             // eğer cüzdan kilitli ise hata gönderecek
             if (NGF.Balance.AccountIsLock(ReceiverWalletKey) == true)
@@ -137,6 +141,7 @@ namespace Notus.Coin
                 });
             }
 
+            /*
             lock (NGF.WalletUsageList)
             {
                 bool returnWalletUsing = false;
@@ -173,6 +178,7 @@ namespace Notus.Coin
                     });
                 }
             }
+            */
 
             NVClass.BlockStruct_125 airDrop = Calculate(ReceiverWalletKey, airdropUid);
 
@@ -182,23 +188,6 @@ namespace Notus.Coin
                 type = NVE.BlockTypeList.AirDrop,
                 data = JsonSerializer.Serialize(airDrop)
             });
-
-            //burada airdrop gelince diğer node'a dağıtım işlemi test edilsin, sonrasında coin transfer işlemine geçiş yapılsın'
-            /*
-            NVG.TxPool.Add(new Notus.Compiler.TxQueueStruct()
-            {
-                Uid = airdropUid,
-                Type = Compiler.TxQueueType.Contract,
-                ContractId = NVC.AirdropBlockUid,
-                Fee = "0",
-                PublicKey = "",
-                FunctionList = new List<Compiler.FunctionList>()
-                {
-
-                },
-                Sign = ""
-            });
-            */
 
             if (tmpAddResult == true)
             {
@@ -216,6 +205,7 @@ namespace Notus.Coin
                     Result = NVE.BlockStatusCode.AddedToQueue
                 });
             }
+
             NVG.Settings.BlockMeta.Status(airdropUid, new NVS.CryptoTransferStatus()
             {
                 Code = NVE.BlockStatusCode.Unknown,
@@ -231,6 +221,24 @@ namespace Notus.Coin
                 ID = string.Empty,
                 Result = NVE.BlockStatusCode.Unknown
             });
+
+
+            //burada airdrop gelince diğer node'a dağıtım işlemi test edilsin, sonrasında coin transfer işlemine geçiş yapılsın'
+            /*
+            NVG.TxPool.Add(new Notus.Compiler.TxQueueStruct()
+            {
+                Uid = airdropUid,
+                Type = Compiler.TxQueueType.Contract,
+                ContractId = NVC.AirdropBlockUid,
+                Fee = "0",
+                PublicKey = "",
+                FunctionList = new List<Compiler.FunctionList>()
+                {
+
+                },
+                Sign = ""
+            });
+            */
         }
 
         public NVClass.BlockStruct_125 Calculate(string ReceiverWalletKey, string airdropUid)

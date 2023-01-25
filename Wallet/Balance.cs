@@ -476,7 +476,6 @@ namespace Notus.Wallet
         */
         public void Control(Notus.Variable.Class.BlockData tmpBlockForBalance)
         {
-            //StoreToTemp(tmpBlockForBalance);
             // genesis block
             if (tmpBlockForBalance.info.type == Notus.Variable.Enum.BlockTypeList.GenesisBlock)
             {
