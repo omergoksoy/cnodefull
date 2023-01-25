@@ -262,7 +262,6 @@ namespace Notus.Block
                                                     airdropTxUid = tmpInnerEntry.Key;
                                                 }
                                                 var newAirdropObj = NVG.Settings.Airdrop.Calculate(airdropReceiver, airdropTxUid);
-
                                                 
                                                 newAirdropObj.Out[airdropReceiver] = RemoveZeroBalance(newAirdropObj.Out[airdropReceiver]);
                                                 newAirdropObj.Out[airdropReceiver] = MergeOldBalance(
