@@ -277,7 +277,6 @@ namespace Notus.Variable
             {
                 Storage.Dispose();
                 BlockQueue.Dispose();
-                //Archiver.
                 Balance.Dispose();
             }
             public static void PreStart()

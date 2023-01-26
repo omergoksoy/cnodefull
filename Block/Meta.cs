@@ -31,6 +31,17 @@ namespace Notus.Block
             Order(blockData.info.rowNo, blockData.info.uID);
         }
 
+        public NVClass.BlockData? Write(NVClass.BlockData blockData)
+        {
+
+            return null;
+        }
+        public NVClass.BlockData? Read(string Uid)
+        {
+
+            return null;
+        }
+
         public NVE.UidTypeList Type(string Uid)
         {
             string tmpResult = typeDb.Get(Uid.ToString());

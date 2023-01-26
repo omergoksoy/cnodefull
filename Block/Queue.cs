@@ -94,7 +94,6 @@ namespace Notus.Block
             kvPoolTxErrorList.Set(txUid, rawTxText);
 
             // tx durumu hatalı olarak işaretleniyor...
-            //NVG.Settings.TxStatus.Set(txUid, NVE.BlockStatusCode.WrongTxFormat);
             NVG.Settings.BlockMeta.Status(txUid, new NVS.CryptoTransferStatus()
             {
                 Code = NVE.BlockStatusCode.WrongTxFormat,
