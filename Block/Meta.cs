@@ -11,6 +11,8 @@ namespace Notus.Block
 {
     public class Meta : IDisposable
     {
+        private Notus.Data.KeyValue blockDb = new();
+
         private Notus.Data.KeyValue typeDb = new();
 
         private Notus.Data.KeyValue orderDb = new();
@@ -31,16 +33,36 @@ namespace Notus.Block
             Order(blockData.info.rowNo, blockData.info.uID);
         }
 
-        public NVClass.BlockData? Write(NVClass.BlockData blockData)
+        public void WriteBlock(NVClass.BlockData blockData)
         {
+            blockDb.Set(blockData.info.uID,JsonSerializer.Serialize(blockData));
+        }
+        public NVClass.BlockData? ReadBlock(string blockUid)
+        {
+            string? blockDataText = blockDb.Get(blockUid);
+            if (blockDataText == null)
+                return null;
+
+            if (blockDataText.Length == 0)
+                return null;
+            try
+            {
+                NVClass.BlockData? tmpBlockData = JsonSerializer.Deserialize<NVClass.BlockData>(blockDataText);
+                return tmpBlockData;
+            }
+            catch { }
 
             return null;
         }
-        public NVClass.BlockData? Read(string Uid)
+        public NVClass.BlockData? Read(long blockRowNo)
         {
+            string blockUid=Order(blockRowNo);
+            if (blockUid.Length == 0)
+                return null;
 
-            return null;
+            return Read(blockUid);
         }
+
 
         public NVE.UidTypeList Type(string Uid)
         {
@@ -196,6 +218,12 @@ namespace Notus.Block
             {
                 MemoryLimitCount = 0,
                 Name = Notus.Variable.Constant.MemoryPoolName["UidTypeList"]
+            });
+
+            blockDb.SetSettings(new NVS.KeyValueSettings()
+            {
+                MemoryLimitCount = 0,
+                Name = Notus.Variable.Constant.MemoryPoolName["BlockData"]
             });
         }
         public Meta()

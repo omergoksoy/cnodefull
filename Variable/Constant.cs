@@ -237,6 +237,7 @@ namespace Notus.Variable
             { "CommonData", "data" },
             { "MasterList", "master_list" },
 
+            { "BlockData", "blocks_raw" },
             { "MainNodeWalletConfig", "node_config" },
             { "BlockPoolList", "pool_list" },
             { "BlockSignList", "block_sign" },
