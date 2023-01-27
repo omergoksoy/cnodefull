@@ -53,6 +53,7 @@ namespace Notus.Block
                 blockDb.Clear();
             }
         }
+        
         public void Store(NVClass.BlockData blockData)
         {
             Sign(blockData.info.rowNo, blockData.sign);
@@ -86,6 +87,7 @@ namespace Notus.Block
             string blockUid = Order(blockRowNo);
             return ReadBlock(blockUid);
         }
+        
         public NVE.UidTypeList Type(string Uid)
         {
             string tmpResult = typeDb.Get(Uid.ToString());

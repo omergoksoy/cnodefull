@@ -5,11 +5,6 @@ namespace Notus
 {
     public static class IO
     {
-        public static void DeleteFile(string fileName)
-        {
-            if (File.Exists(fileName))
-                File.Delete(fileName);
-        }
         public static void DeleteAllFileInsideDirectory(string directoryName,string extension)
         {
             foreach (string fileName in Notus.IO.GetFileList(directoryName, extension))
@@ -20,6 +15,11 @@ namespace Notus
                 }
             }
         }
+        public static void CreateDirectory(string DirectoryName)
+        {
+            if (!Directory.Exists(DirectoryName))
+                Directory.CreateDirectory(DirectoryName);
+        }
         public static string[] GetFileList(string directoryName,string extension)
         {
             if (Directory.Exists(directoryName) == false)
@@ -28,48 +28,6 @@ namespace Notus
             }
             return Directory.GetFiles(directoryName, "*." + extension);
         }
-
-        public static string[] GetFileList(
-            Notus.Variable.Enum.NetworkType networkType,
-            Notus.Variable.Enum.NetworkLayer networkLayer,
-            string directoryName,
-            string extension
-        )
-        {
-            if (Directory.Exists(Notus.IO.GetFolderName(networkType, networkLayer,
-                directoryName)) == false)
-            {
-                return new string[] { };
-            }
-            return Directory.GetFiles(
-                Notus.IO.GetFolderName(networkType,networkLayer,directoryName),"*." + extension
-            );
-        }
-        public static string[] GetFileList(
-            Notus.Globals.Variable.Settings objSettings,
-            string directoryName,
-            string extension
-        )
-        {
-            if (Directory.Exists(Notus.IO.GetFolderName(objSettings,
-                directoryName)) == false)
-            {
-                return new string[] { };
-            }
-            return Directory.GetFiles(
-                Notus.IO.GetFolderName(objSettings, directoryName),"*." + extension
-            );
-        }
-        /*
-        public static string[] GetZipFiles(Notus.Variable.Enum.NetworkType networkType,Notus.Variable.Enum.NetworkLayer networkLayer)
-        {
-            return GetFileList(networkType,networkLayer, DirListConst.Block,"zip");
-        }
-        public static string[] GetZipFiles(Notus.Globals.Variable.Settings objSettings)
-        {
-            return GetZipFiles(objSettings.Network, objSettings.Layer);
-        }
-        */
         public static string GetFolderName(string folderName)
         {
             return GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, folderName);
@@ -87,11 +45,6 @@ namespace Notus
                 Path.DirectorySeparatorChar +
                 folderName +
                 Path.DirectorySeparatorChar;
-        }
-        public static void CreateDirectory(string DirectoryName)
-        {
-            if (!Directory.Exists(DirectoryName))
-                Directory.CreateDirectory(DirectoryName);
         }
         public static void NodeFolderControl()
         {
