@@ -62,8 +62,12 @@ namespace Notus.Ceremony
             NP.Info("My Block Sign : " + BlockSignHash.Substring(0, 10) + "..." + BlockSignHash.Substring(BlockSignHash.Length - 10));
 
             ControlAllBlockSign();
+
             NVG.BlockMeta.WriteBlock(genesisBlock);
+            NVG.BlockMeta.Store(genesisBlock);
+
             NVG.BlockMeta.WriteBlock(airdropBlock);
+            NVG.BlockMeta.Store(airdropBlock);
         }
         private void ControlAllBlockSign()
         {
