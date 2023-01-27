@@ -30,6 +30,27 @@ namespace Notus.Block
         {
             if (tableType == NVE.MetaDataDbTypeList.PreviouseList || tableType == NVE.MetaDataDbTypeList.All)
             {
+                prevDb.Clear();
+            }
+            if (tableType == NVE.MetaDataDbTypeList.SignList || tableType == NVE.MetaDataDbTypeList.All)
+            {
+                signDb.Clear();
+            }
+            if (tableType == NVE.MetaDataDbTypeList.StatusList || tableType == NVE.MetaDataDbTypeList.All)
+            {
+                statusDb.Clear();
+            }
+            if (tableType == NVE.MetaDataDbTypeList.OrderList || tableType == NVE.MetaDataDbTypeList.All)
+            {
+                orderDb.Clear();
+            }
+            if (tableType == NVE.MetaDataDbTypeList.TypeList || tableType == NVE.MetaDataDbTypeList.All)
+            {
+                typeDb.Clear();
+            }
+            if (tableType == NVE.MetaDataDbTypeList.BlockDataList || tableType == NVE.MetaDataDbTypeList.All)
+            {
+                blockDb.Clear();
             }
         }
         public void Store(NVClass.BlockData blockData)

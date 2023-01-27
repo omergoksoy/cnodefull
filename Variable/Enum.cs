@@ -21,6 +21,11 @@ namespace Notus.Variable.Enum
     public enum MetaDataDbTypeList
     {
         All,
+        BlockDataList,
+        TypeList,
+        OrderList,
+        StatusList,
+        SignList,
         PreviouseList
     }
 

@@ -1,11 +1,11 @@
-﻿using NC = Notus.Ceremony;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Text.Json;
 using System.Threading;
+using NC = Notus.Ceremony;
 using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
@@ -19,7 +19,6 @@ namespace Notus.Block
 {
     public class Integrity : IDisposable
     {
-        public ConcurrentDictionary<long, NVS.BlockOrderIntegrityStruct> CurrentBlockOrder = new();
         public NVClass.BlockData? GetSatus(bool ResetBlocksIfNonValid = false)
         {
             NVE.BlockIntegrityStatus Val_Status = NVE.BlockIntegrityStatus.CheckAgain;
@@ -42,8 +41,9 @@ namespace Notus.Block
             }
             if (ResetBlocksIfNonValid == true)
             {
-                NVG.BlockMeta.
-                var NVG.BlockMeta.ReadBlock(NVC.GenesisBlockUid);
+                NVG.BlockMeta.ClearTable(NVE.MetaDataDbTypeList.All);
+                /*
+                var deded=NVG.BlockMeta.ReadBlock(NVC.GenesisBlockUid);
                 string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
                 foreach (string fileName in ZipFileList)
                 {
@@ -56,14 +56,15 @@ namespace Notus.Block
                         NP.Danger(NVG.Settings, "Error Text [7abc63]: " + err.Message);
                     }
                 }
+                */
             }
             return null;
         }
         //genesis bloğu oluşturuldumu diye kontrol ediyor
         public void IsGenesisNeed()
         {
-            string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
-            if (ZipFileList.Length == 0)
+            var blockData = NVG.BlockMeta.ReadBlock(NVC.GenesisBlockUid);
+            if (blockData == null)
             {
                 NP.Success("My Wallet : " + NVG.Settings.Nodes.My.IP.Wallet);
                 NC.Genesis genesisCeremony = new NC.Genesis();
@@ -97,149 +98,71 @@ namespace Notus.Block
             }
 
             NP.Info("All Blocks Checked With Full Method");
-            return ControlBlockIntegrity_FullCheck();
+            return (NVE.BlockIntegrityStatus.NonValid, null);
         }
 
         // burası hızlı kontrol yapılan bölüm, eğer hata oluşursa tam kontrol bölümüne girecek
         private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity_FastCheck()
         {
-            string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
             Notus.Wallet.Fee.ClearFeeData(NVG.Settings.Network, NVG.Settings.Layer);
-            if (ZipFileList.Length == 0)
+            var blockData = NVG.BlockMeta.ReadBlock(NVC.GenesisBlockUid);
+            if (blockData == null)
             {
                 return (NVE.BlockIntegrityStatus.GenesisNeed, null);
             }
-            long biggestBlockRownNo = 0;
-            List<string> deleteZipFile = new();
-
-            foreach (string fileName in ZipFileList)
+            long blockRownNo = 1;
+            bool exitFromLoop = false;
+            bool genesisExist = false;
+            while (exitFromLoop == false)
             {
-                List<string> tmpDeleteFileInzipZip = new List<string>();
-                using (ZipArchive archive = ZipFile.OpenRead(fileName))
+                NVClass.BlockData? ControlBlock = NVG.BlockMeta.ReadBlock(blockRownNo);
+                if (ControlBlock == null)
                 {
-                    int zipInsideFileCount = archive.Entries.Count;
-
-                    if (zipInsideFileCount == 0)
+                    exitFromLoop = true;
+                }
+                else
+                {
+                    if (new Notus.Block.Generate().Verify(ControlBlock))
                     {
-                        deleteZipFile.Add(fileName);
-                    }
-
-                    if (zipInsideFileCount > 0)
-                    {
-                        foreach (ZipArchiveEntry entry in archive.Entries)
+                        if (blockRownNo == 1)
                         {
-                            bool added = false;
-                            long blockRowNo = 0;
-                            string blockUid = string.Empty;
-                            string blockSign = string.Empty;
-                            string blockPrev = string.Empty;
-                            if (entry.FullName.EndsWith(".json", StringComparison.OrdinalIgnoreCase) == true)
-                            {
-                                ZipArchiveEntry? zipEntry = archive.GetEntry(entry.FullName);
-                                if (zipEntry != null)
-                                {
-                                    using (StreamReader zipEntryStream = new StreamReader(zipEntry.Open()))
-                                    {
-                                        try
-                                        {
-                                            NVClass.BlockData? ControlBlock = JsonSerializer.Deserialize<NVClass.BlockData>(zipEntryStream.ReadToEnd());
-                                            if (ControlBlock != null)
-                                            {
-                                                if (new Notus.Block.Generate().Verify(ControlBlock))
-                                                {
-                                                    added = true;
-                                                    blockRowNo = ControlBlock.info.rowNo;
-                                                    blockUid = ControlBlock.info.uID;
-                                                    blockSign = ControlBlock.sign;
-                                                    blockPrev = ControlBlock.prev;
-                                                }
-                                            }
-                                        }
-                                        catch { }
-                                    }
-                                }
-                            }
+                            NVG.Settings.Genesis = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(
+                                System.Convert.FromBase64String(
+                                    ControlBlock.cipher.data
+                                )
+                            );
 
-                            if (added == true)
-                            {
-                                if (CurrentBlockOrder.ContainsKey(blockRowNo) == false)
-                                {
-                                    added = CurrentBlockOrder.TryAdd(blockRowNo, new NVS.BlockOrderIntegrityStruct()
-                                    {
-                                        Uid = blockUid,
-                                        Sign = blockSign,
-                                        Prev = blockPrev
-                                    });
-                                }
-                            }
-
-                            if (added == false)
-                            {
-                                tmpDeleteFileInzipZip.Add(entry.FullName);
-                            }
-
-                            if (added == true && blockRowNo > biggestBlockRownNo)
-                            {
-                                biggestBlockRownNo = blockRowNo;
-                            }
+                            genesisExist = true;
                         }
-
-                        if (tmpDeleteFileInzipZip.Count > 0)
+                        else
                         {
-                            Thread.Sleep(1);
-                            Notus.Archive.DeleteFromInside(fileName, tmpDeleteFileInzipZip, true);
+                            long prevBlockNo = blockRownNo - 1;
+                            NVClass.BlockData? PrevBlock = NVG.BlockMeta.ReadBlock(prevBlockNo);
+
+                            if (string.Equals(ControlBlock.prev, PrevBlock.info.uID + PrevBlock.sign) == false)
+                                return (NVE.BlockIntegrityStatus.CheckAgain, null);
+
                         }
                     }
+                    else
+                    {
+                        return (NVE.BlockIntegrityStatus.CheckAgain, null);
+                    }
+                    blockRownNo++;
                 }
             }
 
-            // boş zip dosyaları siliniyor...
-            for (int count = 0; count < deleteZipFile.Count; count++)
-            {
-                File.Delete(deleteZipFile[count]);
-            }
-
-
-            if (CurrentBlockOrder.ContainsKey(1) == false)
+            if (genesisExist == false)
                 return (NVE.BlockIntegrityStatus.GenesisNeed, null);
-
-
-            NVClass.BlockData? genesisBlock = NVG.BlockMeta.ReadBlock(CurrentBlockOrder[1].Uid);
-            if (genesisBlock == null)
-            {
-                return (NVE.BlockIntegrityStatus.GenesisNeed, null);
-            }
-            NVG.Settings.Genesis = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(
-                System.Convert.FromBase64String(
-                    genesisBlock.cipher.data
-                )
-            );
 
             Notus.Wallet.Fee.StoreFeeData("genesis_block", JsonSerializer.Serialize(NVG.Settings.Genesis), NVG.Settings.Network, NVG.Settings.Layer, true);
-            NVG.BlockMeta.Order(1, CurrentBlockOrder[1].Uid);
-
-            for (int currentRowNo = 2; currentRowNo < (biggestBlockRownNo + 1); currentRowNo++)
-            {
-                if (CurrentBlockOrder.ContainsKey(currentRowNo) == false)
-                    return (NVE.BlockIntegrityStatus.CheckAgain, null);
-
-                int prevRowNo = currentRowNo - 1;
-                string prevBlockUid = CurrentBlockOrder[prevRowNo].Uid + CurrentBlockOrder[prevRowNo].Sign;
-
-                if (string.Equals(CurrentBlockOrder[currentRowNo].Prev, prevBlockUid) == false)
-                    return (NVE.BlockIntegrityStatus.CheckAgain, null);
-
-                NVG.BlockMeta.Order(currentRowNo, CurrentBlockOrder[currentRowNo].Uid);
-                NVG.BlockMeta.Sign(currentRowNo, CurrentBlockOrder[currentRowNo].Sign);
-                NVG.BlockMeta.Prev(currentRowNo, CurrentBlockOrder[currentRowNo].Prev);
-            }
-
             return (
                 NVE.BlockIntegrityStatus.Valid,
-                NVG.BlockMeta.ReadBlock(CurrentBlockOrder[biggestBlockRownNo].Uid)
+                NVG.BlockMeta.ReadBlock(blockRownNo)
             );
         }
 
+        /*
         // tam kontrolün yapıldığı bölüm
         private (NVE.BlockIntegrityStatus, NVClass.BlockData?) ControlBlockIntegrity_FullCheck()
         {
@@ -256,32 +179,12 @@ namespace Notus.Block
             }
 
             NVClass.BlockData LastBlock = NVClass.Block.GetEmpty();
-            string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
-
-            if (ZipFileList.Length == 0)
+            var blockData = NVG.BlockMeta.ReadBlock(NVC.GenesisBlockUid);
+            if (blockData == null)
             {
                 NP.Success(NVG.Settings, "Genesis Block Needs");
                 //NGF.BlockOrder.Clear();
                 return (NVE.BlockIntegrityStatus.GenesisNeed, null);
-            }
-            bool tmpGetListAgain = false;
-            foreach (string fileName in ZipFileList)
-            {
-                int fileCountInZip = 0;
-                using (ZipArchive archive = ZipFile.OpenRead(fileName))
-                {
-                    fileCountInZip = archive.Entries.Count;
-                }
-                if (fileCountInZip == 0)
-                {
-                    tmpGetListAgain = true;
-                    Thread.Sleep(1);
-                    File.Delete(fileName);
-                }
-            }
-            if (tmpGetListAgain == true)
-            {
-                return (NVE.BlockIntegrityStatus.CheckAgain, null);
             }
 
             bool multiBlockFound = false;
@@ -315,7 +218,6 @@ namespace Notus.Block
             }
 
             SortedDictionary<long, string> BlockOrderList = new SortedDictionary<long, string>();
-            Dictionary<string, int> BlockTypeList = new Dictionary<string, int>();
             Dictionary<string, string> BlockPreviousList = new Dictionary<string, string>();
             Dictionary<string, bool> ZipArchiveList = new Dictionary<string, bool>();
             Dictionary<string, NVClass.BlockData> Control_RealBlockList = new Dictionary<string, NVClass.BlockData>();
@@ -396,7 +298,6 @@ namespace Notus.Block
                                                         Control_RealBlockList.Add(ControlBlock.info.uID, ControlBlock);
                                                         BlockOrderList.Add(ControlBlock.info.rowNo, ControlBlock.info.uID);
                                                         BlockPreviousList.Add(ControlBlock.info.uID, ControlBlock.prev);
-                                                        BlockTypeList.Add(ControlBlock.info.uID, ControlBlock.info.type);
 
                                                         NVG.BlockMeta.Store(ControlBlock);
                                                     }
@@ -529,17 +430,13 @@ namespace Notus.Block
             }
             NP.Success(NVG.Settings, "Block Integrity Valid");
 
-            /*
-            NVG.Settings.BlockOrder.Clear();
-            NVG.Settings.BlockSign.Clear();
-            NVG.Settings.BlockPrev.Clear();
-            */
             foreach (KeyValuePair<long, string> item in BlockOrderList)
             {
                 NVG.BlockMeta.Order(item.Key, item.Value);
             }
             return (NVE.BlockIntegrityStatus.Valid, LastBlock);
         }
+        */
 
         private (string, string) GetBlockSign(Int64 BlockRowNo)
         {

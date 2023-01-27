@@ -85,8 +85,7 @@ namespace Notus.Data
             NI.CreateDirectory(DirPath);
 
             PoolName = DirPath + ObjSettings.Name;
-            DbOptions options = new DbOptions().SetCreateIfMissing(true);
-            SqlObj = RocksDb.Open(options, PoolName);
+            OpenDb();
 
             if (ObjSettings.ResetTable == false)
             {
@@ -104,14 +103,22 @@ namespace Notus.Data
                 Clear();
             }
         }
+        private void OpenDb()
+        {
+            DbOptions options = new DbOptions().SetCreateIfMissing(true);
+            SqlObj = RocksDb.Open(options, PoolName);
+        }
         public void Clear()
         {
             if (SettingsDefined == false)
                 return;
             ValueList.Clear();
-            return;
-            SqlObj.
-            NI.DeleteAllFileInsideDirectory(DirPath, "*");
+            SqlObj.Dispose();
+            SqlObj = null;
+            Thread.Sleep(100);
+            Notus.IO.DeleteAllFileInsideDirectory(DirPath, "*.*");
+            Thread.Sleep(100);
+            OpenDb();
         }
         public void Each(System.Action<string, string> incomeAction)
         {
