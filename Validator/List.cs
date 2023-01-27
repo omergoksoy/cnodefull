@@ -10,7 +10,6 @@ namespace Notus.Validator
         new Dictionary<Variable.Enum.NetworkLayer,
         Dictionary<Variable.Enum.NetworkType, List<Variable.Struct.IpInfo>>>()
         {
-            // layer 1
             {
                 Variable.Enum.NetworkLayer.Layer1,
                     new Dictionary<Variable.Enum.NetworkType,List<Variable.Struct.IpInfo>>(){
