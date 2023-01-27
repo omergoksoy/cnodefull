@@ -56,7 +56,6 @@ namespace Notus.Globals.Variable
         public int EmptyBlockCount { get; set; }
         public Notus.Variable.Class.BlockData? LastBlock { get; set; }
     }
-
     public class TimeStruct
     {
         public DateTime LastDiffUpdate { get; set; }
