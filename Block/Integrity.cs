@@ -42,6 +42,8 @@ namespace Notus.Block
             }
             if (ResetBlocksIfNonValid == true)
             {
+                NVG.BlockMeta.
+                var NVG.BlockMeta.ReadBlock(NVC.GenesisBlockUid);
                 string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
                 foreach (string fileName in ZipFileList)
                 {

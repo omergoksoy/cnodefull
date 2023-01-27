@@ -110,6 +110,7 @@ namespace Notus.Data
                 return;
             ValueList.Clear();
             return;
+            SqlObj.
             NI.DeleteAllFileInsideDirectory(DirPath, "*");
         }
         public void Each(System.Action<string, string> incomeAction)

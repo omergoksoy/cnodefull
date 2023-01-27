@@ -60,6 +60,7 @@ namespace Notus
                 Notus.IO.GetFolderName(objSettings, directoryName),"*." + extension
             );
         }
+        /*
         public static string[] GetZipFiles(Notus.Variable.Enum.NetworkType networkType,Notus.Variable.Enum.NetworkLayer networkLayer)
         {
             return GetFileList(networkType,networkLayer, DirListConst.Block,"zip");
@@ -68,6 +69,7 @@ namespace Notus
         {
             return GetZipFiles(objSettings.Network, objSettings.Layer);
         }
+        */
         public static string GetFolderName(string folderName)
         {
             return GetFolderName(NVG.Settings.Network, NVG.Settings.Layer, folderName);

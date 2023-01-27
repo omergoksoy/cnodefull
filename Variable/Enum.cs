@@ -18,6 +18,12 @@ namespace Notus.Variable.Enum
         public const int MultiWalletContract = 90;
     }
 
+    public enum MetaDataDbTypeList
+    {
+        All,
+        PreviouseList
+    }
+
     public enum NetworkNodeType
     {
         All = 2048,

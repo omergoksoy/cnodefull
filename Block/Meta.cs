@@ -26,6 +26,12 @@ namespace Notus.Block
         private Notus.Data.KeyValue prevDb = new();
         private long BiggestCountNumber_ForPrev = 0;
 
+        public void ClearTable(NVE.MetaDataDbTypeList tableType)
+        {
+            if (tableType == NVE.MetaDataDbTypeList.PreviouseList || tableType == NVE.MetaDataDbTypeList.All)
+            {
+            }
+        }
         public void Store(NVClass.BlockData blockData)
         {
             Sign(blockData.info.rowNo, blockData.sign);
