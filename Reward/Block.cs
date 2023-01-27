@@ -56,7 +56,7 @@ namespace Notus.Reward
                                 while (tmpExitLoop == false)
                                 {
                                     //tgz-exception
-                                    Notus.Variable.Class.BlockData? tmpBlockData = NVG.Settings.BlockMeta.ReadBlock(LastBlockUid);
+                                    Notus.Variable.Class.BlockData? tmpBlockData = NVG.BlockMeta.ReadBlock(LastBlockUid);
                                     if (tmpBlockData != null)
                                     {
                                         if (tmpBlockData.info.type == 300)

@@ -39,11 +39,9 @@ namespace Notus.Globals.Variable
         public Notus.Variable.Enum.NetworkType Network { get; set; }
         public Notus.Variable.Enum.NetworkLayer Layer { get; set; }
         public Notus.Variable.Struct.CommunicationPorts? Port { get; set; }
-        public Notus.Block.Meta BlockMeta { get; set; }
         public Notus.Coin.Transfer Transfer { get; set; }
         public Notus.Coin.AirDrop Airdrop { get; set; }
         public Notus.Contract.Deploy ContractDeploy { get; set; }
-        //public Notus.Block.UidTypeList UidTypeList { get; set; }
         public bool DebugMode { get; set; }
         public bool InfoMode { get; set; }
         public bool PrettyJson { get; set; }

@@ -294,7 +294,7 @@ namespace Notus.Coin
             //Console.WriteLine("IncomeData.RequestUid : " + IncomeData.RequestUid);
             string tmpTransferIdKey = IncomeData.RequestUid;
 
-            NVG.Settings.BlockMeta.Status(tmpTransferIdKey, new NVS.CryptoTransferStatus()
+            NVG.BlockMeta.Status(tmpTransferIdKey, new NVS.CryptoTransferStatus()
             {
                 Code = NVE.BlockStatusCode.InQueue,
                 RowNo = 0,
@@ -485,11 +485,6 @@ namespace Notus.Coin
         }
         public Transfer()
         {
-        }
-
-        public NVS.CryptoTransferStatus Status(NVS.HttpRequestDetails IncomeData)
-        {
-            return NVG.Settings.BlockMeta.Status(IncomeData.UrlList[2].ToLower());
         }
         ~Transfer()
         {

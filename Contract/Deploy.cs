@@ -178,7 +178,7 @@ namespace Notus.Contract
                 //);
 
                 // burada transactionları belleğe alıyor böyle hızlı ulaşım sağlanıyor...
-                NVG.Settings.BlockMeta.Status(airdropUid, new NVS.CryptoTransferStatus()
+                NVG.BlockMeta.Status(airdropUid, new NVS.CryptoTransferStatus()
                 {
                     Code = NVE.BlockStatusCode.AddedToQueue,
                     RowNo = 0,
@@ -195,7 +195,7 @@ namespace Notus.Contract
                     Result = NVE.BlockStatusCode.AddedToQueue
                 });
             }
-            NVG.Settings.BlockMeta.Status(airdropUid, new NVS.CryptoTransferStatus()
+            NVG.BlockMeta.Status(airdropUid, new NVS.CryptoTransferStatus()
             {
                 Code = NVE.BlockStatusCode.Unknown,
                 RowNo = 0,

@@ -202,7 +202,7 @@ namespace Notus.Block
                 return (NVE.BlockIntegrityStatus.GenesisNeed, null);
 
 
-            NVClass.BlockData? genesisBlock = NVG.Settings.BlockMeta.ReadBlock(CurrentBlockOrder[1].Uid);
+            NVClass.BlockData? genesisBlock = NVG.BlockMeta.ReadBlock(CurrentBlockOrder[1].Uid);
             if (genesisBlock == null)
             {
                 return (NVE.BlockIntegrityStatus.GenesisNeed, null);
@@ -214,7 +214,7 @@ namespace Notus.Block
             );
 
             Notus.Wallet.Fee.StoreFeeData("genesis_block", JsonSerializer.Serialize(NVG.Settings.Genesis), NVG.Settings.Network, NVG.Settings.Layer, true);
-            NVG.Settings.BlockMeta.Order(1, CurrentBlockOrder[1].Uid);
+            NVG.BlockMeta.Order(1, CurrentBlockOrder[1].Uid);
 
             for (int currentRowNo = 2; currentRowNo < (biggestBlockRownNo + 1); currentRowNo++)
             {
@@ -227,14 +227,14 @@ namespace Notus.Block
                 if (string.Equals(CurrentBlockOrder[currentRowNo].Prev, prevBlockUid) == false)
                     return (NVE.BlockIntegrityStatus.CheckAgain, null);
 
-                NVG.Settings.BlockMeta.Order(currentRowNo, CurrentBlockOrder[currentRowNo].Uid);
-                NVG.Settings.BlockMeta.Sign(currentRowNo, CurrentBlockOrder[currentRowNo].Sign);
-                NVG.Settings.BlockMeta.Prev(currentRowNo, CurrentBlockOrder[currentRowNo].Prev);
+                NVG.BlockMeta.Order(currentRowNo, CurrentBlockOrder[currentRowNo].Uid);
+                NVG.BlockMeta.Sign(currentRowNo, CurrentBlockOrder[currentRowNo].Sign);
+                NVG.BlockMeta.Prev(currentRowNo, CurrentBlockOrder[currentRowNo].Prev);
             }
 
             return (
                 NVE.BlockIntegrityStatus.Valid,
-                NVG.Settings.BlockMeta.ReadBlock(CurrentBlockOrder[biggestBlockRownNo].Uid)
+                NVG.BlockMeta.ReadBlock(CurrentBlockOrder[biggestBlockRownNo].Uid)
             );
         }
 
@@ -396,7 +396,7 @@ namespace Notus.Block
                                                         BlockPreviousList.Add(ControlBlock.info.uID, ControlBlock.prev);
                                                         BlockTypeList.Add(ControlBlock.info.uID, ControlBlock.info.type);
 
-                                                        NVG.Settings.BlockMeta.Store(ControlBlock);
+                                                        NVG.BlockMeta.Store(ControlBlock);
                                                     }
                                                 }
                                             }
@@ -534,7 +534,7 @@ namespace Notus.Block
             */
             foreach (KeyValuePair<long, string> item in BlockOrderList)
             {
-                NVG.Settings.BlockMeta.Order(item.Key, item.Value);
+                NVG.BlockMeta.Order(item.Key, item.Value);
             }
             return (NVE.BlockIntegrityStatus.Valid, LastBlock);
         }
@@ -655,7 +655,7 @@ namespace Notus.Block
                                     if (tmpEmptyBlock != null)
                                     {
                                         NP.Info("Getting Block Row No [ " + nodeUrl + " ]: " + BlockRowNo.ToString());
-                                        NVG.Settings.BlockMeta.WriteBlock(tmpEmptyBlock);
+                                        NVG.BlockMeta.WriteBlock(tmpEmptyBlock);
                                         exitInnerLoop = true;
                                     }
                                 }
@@ -774,7 +774,7 @@ namespace Notus.Block
             if (File.Exists(ZipFileName) == true)
             {
                 //tgz-exception
-                NVClass.BlockData? blockData = NVG.Settings.BlockMeta.ReadBlock(NVC.GenesisBlockUid);
+                NVClass.BlockData? blockData = NVG.BlockMeta.ReadBlock(NVC.GenesisBlockUid);
                 if (blockData != null)
                 {
                     if (blockData.info.type == 360)
@@ -884,7 +884,7 @@ namespace Notus.Block
 
                         //Notus.TGZArchiver.ClearBlocks();
                         Notus.Archive.ClearBlocks(NVG.Settings);
-                        NVG.Settings.BlockMeta.WriteBlock(signBlock[tmpBiggestSign]);
+                        NVG.BlockMeta.WriteBlock(signBlock[tmpBiggestSign]);
                         NP.Basic(NVG.Settings, "Added Block : " + signBlock[tmpBiggestSign].info.uID);
                         bool secondBlockAdded = false;
                         foreach (NVS.IpInfo? entry in signNode[tmpBiggestSign])
@@ -896,7 +896,7 @@ namespace Notus.Block
                                 if (tmpInnerBlockData != null)
                                 {
                                     NP.Basic(NVG.Settings, "Added Block : " + tmpInnerBlockData.info.uID);
-                                    NVG.Settings.BlockMeta.WriteBlock(tmpInnerBlockData);
+                                    NVG.BlockMeta.WriteBlock(tmpInnerBlockData);
                                     secondBlockAdded = true;
                                 }
                             }
@@ -951,10 +951,10 @@ namespace Notus.Block
                         tmpPrevStr
                     );
 
-                NVG.Settings.BlockMeta.WriteBlock(tmpGenesisBlock);
+                NVG.BlockMeta.WriteBlock(tmpGenesisBlock);
                 if (NVG.Settings.Layer == NVE.NetworkLayer.Layer1)
                 {
-                    NVG.Settings.BlockMeta.WriteBlock(tmpEmptyBlock);
+                    NVG.BlockMeta.WriteBlock(tmpEmptyBlock);
                 }
                 NVG.Settings.GenesisCreated = true;
                 if (NVG.Settings.Layer == NVE.NetworkLayer.Layer1)

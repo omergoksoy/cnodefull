@@ -142,7 +142,7 @@ namespace Notus.Validator
             }
 
 
-            NVG.Settings.BlockMeta.Store(Obj_BlockData);
+            NVG.BlockMeta.Store(Obj_BlockData);
 
             //NP.Basic("Balance.Control Will Execute");
 
@@ -156,7 +156,7 @@ namespace Notus.Validator
                 {
                     foreach (KeyValuePair<string, NVClass.BlockStruct_120_In_Struct> entry in tmpBalanceVal.In)
                     {
-                        NVG.Settings.BlockMeta.Status(entry.Key, new NVS.CryptoTransferStatus()
+                        NVG.BlockMeta.Status(entry.Key, new NVS.CryptoTransferStatus()
                         {
                             Code = NVE.BlockStatusCode.Completed,
                             RowNo = Obj_BlockData.info.rowNo,
@@ -570,7 +570,9 @@ namespace Notus.Validator
                         {
                             if (string.Equals(IncomeData.UrlList[1].ToLower(), "status"))
                             {
-                                return JsonSerializer.Serialize(NVG.Settings.Transfer.Status(IncomeData));
+                                return JsonSerializer.Serialize(
+                                    NVG.BlockMeta.Status(IncomeData.UrlList[2].ToLower())
+                                );
                             }
 
                             if (string.Equals(IncomeData.UrlList[1].ToLower(), "hash"))
@@ -589,7 +591,9 @@ namespace Notus.Validator
                         {
                             if (string.Equals(IncomeData.UrlList[1].ToLower(), "status"))
                             {
-                                return JsonSerializer.Serialize(NVG.Settings.Transfer.Status(IncomeData));
+                                return JsonSerializer.Serialize(
+                                    NVG.BlockMeta.Status(IncomeData.UrlList[2].ToLower())
+                                );
                             }
                         }
                     }
@@ -698,10 +702,10 @@ namespace Notus.Validator
                     return NVG.Settings.LastBlock;
                 }
 
-                string tmpBlockKey = NVG.Settings.BlockMeta.Order(BlockRowNo);
+                string tmpBlockKey = NVG.BlockMeta.Order(BlockRowNo);
                 if (tmpBlockKey.Length > 0)
                 {
-                    NVClass.BlockData? tmpStoredBlock = NVG.Settings.BlockMeta.ReadBlock(tmpBlockKey);
+                    NVClass.BlockData? tmpStoredBlock = NVG.BlockMeta.ReadBlock(tmpBlockKey);
                     if (tmpStoredBlock != null)
                     {
                         return tmpStoredBlock;
@@ -712,7 +716,7 @@ namespace Notus.Validator
                 string PrevBlockIdStr = NVG.Settings.LastBlock.prev;
                 while (exitPrevWhile == false)
                 {
-                    NVClass.BlockData? tmpStoredBlock = NVG.Settings.BlockMeta.ReadBlock(PrevBlockIdStr.Substring(0, 90));
+                    NVClass.BlockData? tmpStoredBlock = NVG.BlockMeta.ReadBlock(PrevBlockIdStr.Substring(0, 90));
                     if (tmpStoredBlock != null)
                     {
                         if (tmpStoredBlock.info.rowNo == BlockRowNo)
@@ -1279,7 +1283,7 @@ namespace Notus.Validator
             {
                 try
                 {
-                    NVClass.BlockData? tmpStoredBlock = NVG.Settings.BlockMeta.ReadBlock(IncomeData.UrlList[1]);
+                    NVClass.BlockData? tmpStoredBlock = NVG.BlockMeta.ReadBlock(IncomeData.UrlList[1]);
                     if (tmpStoredBlock != null)
                     {
                         if (prettyJson == true)
@@ -1317,7 +1321,7 @@ namespace Notus.Validator
             {
                 try
                 {
-                    NVClass.BlockData? tmpStoredBlock = NVG.Settings.BlockMeta.ReadBlock(IncomeData.UrlList[2]);
+                    NVClass.BlockData? tmpStoredBlock = NVG.BlockMeta.ReadBlock(IncomeData.UrlList[2]);
                     if (tmpStoredBlock != null)
                     {
                         return tmpStoredBlock.info.uID + tmpStoredBlock.sign;

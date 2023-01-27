@@ -25,7 +25,7 @@ namespace Notus.Validator
         }
         public static void Start()
         {
-            NVG.Settings.BlockMeta.Start();
+            NVG.BlockMeta.Start();
 
 
             NVG.Settings.Airdrop.Start();

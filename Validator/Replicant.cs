@@ -27,7 +27,7 @@ namespace Notus.Validator
                 );
                 if (NoError == true)
                 {
-                    NVG.Settings.BlockMeta.WriteBlock(tmpBlockData);
+                    NVG.BlockMeta.WriteBlock(tmpBlockData);
                     exitWhileLoop = true;
                     if (AssingToLastBlockVar == true)
                     {

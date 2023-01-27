@@ -121,7 +121,7 @@ namespace Notus.Coin
             string airdropUid = IncomeData.RequestUid;
             if (ToDistribute == false)
             {
-                var status = NVG.Settings.BlockMeta.Status(airdropUid);
+                var status = NVG.BlockMeta.Status(airdropUid);
                 Console.WriteLine("IncomeData.RequestUid For AirDrop [collector] : " + IncomeData.RequestUid);
                 Console.WriteLine(JsonSerializer.Serialize(status, NVC.JsonSetting));
             }
@@ -206,7 +206,7 @@ namespace Notus.Coin
                 });
             }
 
-            NVG.Settings.BlockMeta.Status(airdropUid, new NVS.CryptoTransferStatus()
+            NVG.BlockMeta.Status(airdropUid, new NVS.CryptoTransferStatus()
             {
                 Code = NVE.BlockStatusCode.Unknown,
                 RowNo = 0,

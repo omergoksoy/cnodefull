@@ -66,9 +66,11 @@ namespace Notus.Variable
         public static Notus.Globals.Variable.NodeQueueList NodeQueue { get; set; }
         public static ConcurrentDictionary<string, NVS.NodeQueueInfo> NodeList { get; set; }
         public static Notus.Globals.Variable.Settings Settings { get; set; }
+        public static Notus.Block.Meta BlockMeta { get; set; }
         public static Notus.Transaction.Pool TxPool { get; set; }
         static Globals()
         {
+            BlockMeta = new Notus.Block.Meta();
             TxPool = new Notus.Transaction.Pool();
             OtherValidatorSelectedMe = false;
             LocalBlockLoaded = false;
@@ -139,7 +141,6 @@ namespace Notus.Variable
                     TestNet = 0,
                     DevNet = 0
                 },
-                BlockMeta=new Notus.Block.Meta(),
                 Transfer = new Notus.Coin.Transfer(),
                 Airdrop = new Notus.Coin.AirDrop(),
                 ContractDeploy = new Notus.Contract.Deploy()

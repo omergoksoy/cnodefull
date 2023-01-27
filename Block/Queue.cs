@@ -94,7 +94,7 @@ namespace Notus.Block
             kvPoolTxErrorList.Set(txUid, rawTxText);
 
             // tx durumu hatalı olarak işaretleniyor...
-            NVG.Settings.BlockMeta.Status(txUid, new NVS.CryptoTransferStatus()
+            NVG.BlockMeta.Status(txUid, new NVS.CryptoTransferStatus()
             {
                 Code = NVE.BlockStatusCode.WrongTxFormat,
                 RowNo = 0,
@@ -182,7 +182,7 @@ namespace Notus.Block
                         {
                             bool addToList = true;
 
-                            NVS.CryptoTransferStatus txStatus = NVG.Settings.BlockMeta.Status(TmpPoolRecord.uid);
+                            NVS.CryptoTransferStatus txStatus = NVG.BlockMeta.Status(TmpPoolRecord.uid);
                             if (txStatus.Code == NVE.BlockStatusCode.Completed)
                             {
                                 addToList = false;
@@ -234,7 +234,7 @@ namespace Notus.Block
                                             if (NVG.Settings.Airdrop.LimitExceeded(airdropReceiver) == true)
                                             {
                                                 addToList = false;
-                                                NVG.Settings.BlockMeta.Status(tmpTxUid, new NVS.CryptoTransferStatus()
+                                                NVG.BlockMeta.Status(tmpTxUid, new NVS.CryptoTransferStatus()
                                                 {
                                                     Code = NVE.BlockStatusCode.TooManyRequest,
                                                     RowNo = 0,
@@ -394,7 +394,7 @@ namespace Notus.Block
 
                                         if (walletHaveEnoughCoinOrToken == false)
                                         {
-                                            NVG.Settings.BlockMeta.Status(incomeConvertData.TransferId, new NVS.CryptoTransferStatus()
+                                            NVG.BlockMeta.Status(incomeConvertData.TransferId, new NVS.CryptoTransferStatus()
                                             {
                                                 Code = NVE.BlockStatusCode.Rejected,
                                                 RowNo = 0,
@@ -847,7 +847,7 @@ namespace Notus.Block
         //yeni blok hesaplanması tamamlandığı zaman buraya gelecek ve geçerli blok ise eklenecek.
         public void AddToChain(NVClass.BlockData NewBlock)
         {
-            NVG.Settings.BlockMeta.WriteBlock(NewBlock);
+            NVG.BlockMeta.WriteBlock(NewBlock);
 
             string rawDataStr = NTT.RawCipherData2String(
                 NewBlock.cipher.data
@@ -861,7 +861,7 @@ namespace Notus.Block
                 {
                     foreach (var entry in tmpLockBalance.In)
                     {
-                        NVG.Settings.BlockMeta.Status(entry.Key, new NVS.CryptoTransferStatus()
+                        NVG.BlockMeta.Status(entry.Key, new NVS.CryptoTransferStatus()
                         {
                             Code = NVE.BlockStatusCode.Completed,
                             RowNo = NewBlock.info.rowNo,
@@ -901,7 +901,7 @@ namespace Notus.Block
             Add2Queue(PreBlockData);
 
             //omergoksoy();
-            NVG.Settings.BlockMeta.Status(PreBlockData.uid, new NVS.CryptoTransferStatus()
+            NVG.BlockMeta.Status(PreBlockData.uid, new NVS.CryptoTransferStatus()
             {
                 Code = NVE.BlockStatusCode.AddedToQueue,
                 RowNo = 0,

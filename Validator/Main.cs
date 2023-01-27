@@ -322,10 +322,10 @@ namespace Notus.Validator
             if (NVG.Settings.GenesisCreated == false && NVG.Settings.Genesis != null)
             {
                 NP.Basic(NVG.Settings, "Last Block Row No : " + NVG.Settings.LastBlock.info.rowNo.ToString());
-                Dictionary<long, string> orderListResult = NVG.Settings.BlockMeta.Order();
+                Dictionary<long, string> orderListResult = NVG.BlockMeta.Order();
                 foreach (KeyValuePair<long, string> item in orderListResult)
                 {
-                    NVClass.BlockData? tmpBlockData = NVG.Settings.BlockMeta.ReadBlock(item.Value);
+                    NVClass.BlockData? tmpBlockData = NVG.BlockMeta.ReadBlock(item.Value);
                     if (tmpBlockData != null)
                     {
                         ProcessBlock(tmpBlockData, 1);
@@ -812,7 +812,7 @@ namespace Notus.Validator
                     }
                     if (innerSendToMyChain == true)
                     {
-                        NVG.Settings.BlockMeta.Store(blockData);
+                        NVG.BlockMeta.Store(blockData);
                         if (string.Equals(NVH.BlockValidator(blockData), NVG.Settings.Nodes.My.IP.Wallet) == false)
                         {
                             NP.Info("New Block Arrived : " + blockData.info.uID.Substring(0, 15));
@@ -850,7 +850,7 @@ namespace Notus.Validator
                     */
                     innerSendToMyChain = true;
                     //NVG.Settings.BlockOrder.Add(blockData.info.rowNo, blockData.sign);
-                    NVG.Settings.BlockMeta.Order(blockData.info.rowNo, blockData.info.uID);
+                    NVG.BlockMeta.Order(blockData.info.rowNo, blockData.info.uID);
                     if (string.Equals(NVH.BlockValidator(blockData), NVG.Settings.Nodes.My.IP.Wallet) == false)
                     {
                         NP.Info("New Block Arrived : " + blockData.info.uID.Substring(0, 15));

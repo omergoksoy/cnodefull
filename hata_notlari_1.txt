@@ -1,4 +1,4 @@
-﻿            NVS.CryptoTransferStatus transactionStatus = NVG.Settings.BlockMeta.Status(tmpTransferIdKey);
+﻿            NVS.CryptoTransferStatus transactionStatus = NVG.BlockMeta.Status(tmpTransferIdKey);
             if (transactionStatus.Code != NVE.BlockStatusCode.Unknown)
             {
                 //omergoksoy();
@@ -14,7 +14,7 @@
 
 
 
-            NVS.CryptoTransferStatus airdropStatus = NVG.Settings.BlockMeta.Status(airdropUid);
+            NVS.CryptoTransferStatus airdropStatus = NVG.BlockMeta.Status(airdropUid);
             if (airdropStatus.Code != NVE.BlockStatusCode.Unknown)
             {
                 //omergoksoy();
