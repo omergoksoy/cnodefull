@@ -30,7 +30,6 @@ namespace Notus.Validator
             NVG.Settings.ContractDeploy.Start();
             NVG.Settings.Transfer.Start();
             //NGF.BlockQueue.Start();
-            //NVG.Settings.UidTypeList.Start();
 
             NP.PrintOnScreenTimer();
 

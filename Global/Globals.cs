@@ -72,6 +72,7 @@ namespace Notus.Variable
         {
             BlockMeta = new Notus.Block.Meta();
             TxPool = new Notus.Transaction.Pool();
+
             OtherValidatorSelectedMe = false;
             LocalBlockLoaded = false;
             GroupNo = 1;
@@ -144,7 +145,6 @@ namespace Notus.Variable
                 Transfer = new Notus.Coin.Transfer(),
                 Airdrop = new Notus.Coin.AirDrop(),
                 ContractDeploy = new Notus.Contract.Deploy()
-                // , UidTypeList = new Notus.Block.UidTypeList()
             };
         }
 
