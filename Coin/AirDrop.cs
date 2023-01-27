@@ -122,6 +122,14 @@ namespace Notus.Coin
             if (ToDistribute == false)
             {
                 var status = NVG.BlockMeta.Status(airdropUid);
+                if (status.Code == NVE.BlockStatusCode.Completed)
+                {
+                    Console.WriteLine("AirDrop Already Done");
+                }
+                else
+                {
+                    Console.WriteLine("AirDrop Still Watis");
+                }
                 Console.WriteLine("IncomeData.RequestUid For AirDrop [collector] : " + IncomeData.RequestUid);
                 Console.WriteLine(JsonSerializer.Serialize(status, NVC.JsonSetting));
             }

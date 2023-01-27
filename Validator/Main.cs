@@ -254,19 +254,26 @@ namespace Notus.Validator
 
                     if (string.Equals(innerResultStr, "distribute") == true)
                     {
-                        //omergoksoy();
-                        Console.WriteLine("Distribute : INCOME");
                         NVS.HttpRequestDetails? tmpIncomeData =
                         JsonSerializer.Deserialize<NVS.HttpRequestDetails>(
                             NTT.GetPureText(incomeMessage, "poolData")
                         );
                         if (tmpIncomeData != null)
                         {
-                            Obj_Api.Interpret(tmpIncomeData, false);
-                            Console.WriteLine(
-                                "Distribute Data Income : " +
-                                JsonSerializer.Serialize(tmpIncomeData)
-                            );
+                            NVS.CryptoTransferStatus requestStatus = NVG.Settings.BlockMeta.Status(tmpIncomeData.RequestUid);
+
+                            if (requestStatus.Code == NVE.BlockStatusCode.Completed)
+                            {
+                                Console.WriteLine("Distribute Data Income But It's Already Done: ");
+                            }
+                            else
+                            {
+                                Obj_Api.Interpret(tmpIncomeData, false);
+                                Console.WriteLine(
+                                    "Distribute Data Income : " +
+                                    JsonSerializer.Serialize(tmpIncomeData)
+                                );
+                            }
                         }
                         else
                         {
