@@ -14,6 +14,9 @@ namespace Notus.Pool
 
             string requestUidText = "<requestId>" + IncomeData.RequestUid + "</requestId>";
             string poolMsgText = "<poolData>" + JsonSerializer.Serialize(IncomeData) + "</poolData>";
+            Console.WriteLine(requestUidText);
+            Console.WriteLine(poolMsgText);
+            return;
             foreach (var validatorItem in NVG.NodeList)
             {
                 if (validatorItem.Value.Status == NVS.NodeStatus.Online)
