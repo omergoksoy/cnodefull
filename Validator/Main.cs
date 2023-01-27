@@ -849,7 +849,6 @@ namespace Notus.Validator
 
                     */
                     innerSendToMyChain = true;
-                    //NVG.Settings.BlockOrder.Add(blockData.info.rowNo, blockData.sign);
                     NVG.BlockMeta.Order(blockData.info.rowNo, blockData.info.uID);
                     if (string.Equals(NVH.BlockValidator(blockData), NVG.Settings.Nodes.My.IP.Wallet) == false)
                     {
