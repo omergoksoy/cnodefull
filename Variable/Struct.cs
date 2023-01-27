@@ -5,7 +5,6 @@ using System.Numerics;
 
 namespace Notus.Variable.Struct
 {
-
     public class FileTransferStruct
     {
         public int BlockType { get; set; }
@@ -26,9 +25,6 @@ namespace Notus.Variable.Struct
         public int Count { get; set; }
         public string Data { get; set; }
     }
-
-
-
     // currency list struct
     public class CurrencyList
     {
