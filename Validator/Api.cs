@@ -701,7 +701,7 @@ namespace Notus.Validator
                 string tmpBlockKey = NVG.Settings.BlockMeta.Order(BlockRowNo);
                 if (tmpBlockKey.Length > 0)
                 {
-                    NVClass.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(tmpBlockKey);
+                    NVClass.BlockData? tmpStoredBlock = NVG.Settings.BlockMeta.ReadBlock(tmpBlockKey);
                     if (tmpStoredBlock != null)
                     {
                         return tmpStoredBlock;
@@ -712,7 +712,7 @@ namespace Notus.Validator
                 string PrevBlockIdStr = NVG.Settings.LastBlock.prev;
                 while (exitPrevWhile == false)
                 {
-                    NVClass.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(PrevBlockIdStr.Substring(0, 90));
+                    NVClass.BlockData? tmpStoredBlock = NVG.Settings.BlockMeta.ReadBlock(PrevBlockIdStr.Substring(0, 90));
                     if (tmpStoredBlock != null)
                     {
                         if (tmpStoredBlock.info.rowNo == BlockRowNo)
@@ -1279,7 +1279,7 @@ namespace Notus.Validator
             {
                 try
                 {
-                    NVClass.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(IncomeData.UrlList[1]);
+                    NVClass.BlockData? tmpStoredBlock = NVG.Settings.BlockMeta.ReadBlock(IncomeData.UrlList[1]);
                     if (tmpStoredBlock != null)
                     {
                         if (prettyJson == true)
@@ -1317,7 +1317,7 @@ namespace Notus.Validator
             {
                 try
                 {
-                    NVClass.BlockData? tmpStoredBlock = NGF.BlockQueue.ReadFromChain(IncomeData.UrlList[2]);
+                    NVClass.BlockData? tmpStoredBlock = NVG.Settings.BlockMeta.ReadBlock(IncomeData.UrlList[2]);
                     if (tmpStoredBlock != null)
                     {
                         return tmpStoredBlock.info.uID + tmpStoredBlock.sign;

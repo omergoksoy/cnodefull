@@ -10,12 +10,13 @@ using NP = Notus.Print;
 
 namespace Notus.Block
 {
+    /*
     bu kitaplık Meta Sınıfındaki ReadBlock ve WriteBlock ile değiştirilecek
 
     RocksDb'nin tablo sıfırla özelliği kontrol edilsin.
+    */
 
-
-    public class Storage : IDisposable
+    public class Storage__Devre_Disi_Birakildi : IDisposable
     {
         private int DefaultBlockGenerateInterval = 3000;
 
@@ -252,7 +253,7 @@ namespace Notus.Block
                 }
             }, true);
         }
-        public Storage(bool AutoStart = true)
+        public Storage__Devre_Disi_Birakildi(bool AutoStart = true)
         {
             AutoStartObj = AutoStart;
             if (AutoStart == true)
@@ -264,7 +265,7 @@ namespace Notus.Block
         {
             Close();
         }
-        ~Storage()
+        ~Storage__Devre_Disi_Birakildi()
         {
             Dispose();
         }

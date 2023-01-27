@@ -62,27 +62,8 @@ namespace Notus.Ceremony
             NP.Info("My Block Sign : " + BlockSignHash.Substring(0, 10) + "..." + BlockSignHash.Substring(BlockSignHash.Length - 10));
 
             ControlAllBlockSign();
-
-            using (Notus.Block.Storage BS_Storage = new Notus.Block.Storage(false))
-            {
-                BS_Storage.AddSync(genesisBlock, true);
-                BS_Storage.AddSync(airdropBlock, true);
-
-                /*
-                if (NVG.Settings.Network != Variable.Enum.NetworkType.MainNet)
-                {
-                    airdrop kontratı çalıştırıldığı zaman,
-                    para transferi olarak ekleyecek ancak
-                    geçerli ağ testTet / devNet ise ve
-                    gönderici adresi NSX111111111111111111111111111111111111 ise
-                    yapılan gönderim işlemindeki sign veya verify işlemini kontrol etmeyecek
-                    // NSX7w199qpQUvYV5iebfvXgAeP51HJx2aApUqti
-                    airdrop işlemi için gerekli işlemleri bu kontrat ile blok zinciri içine sabit olarak eklenecek
-
-                    omergoksoy
-                }
-                */
-            }
+            NVG.Settings.BlockMeta.WriteBlock(genesisBlock);
+            NVG.Settings.BlockMeta.WriteBlock(airdropBlock);
         }
         private void ControlAllBlockSign()
         {

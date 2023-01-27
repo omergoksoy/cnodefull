@@ -180,7 +180,7 @@ namespace Notus.Variable
             //public static Notus.Mempool BlockOrder { get; set; }
             //public static ConcurrentDictionary<long, string> BlockOrder { get; set; }
 
-            public static Notus.Block.Storage Storage { get; set; }
+            //public static Notus.Block.Storage Storage { get; set; }
             public static Notus.Wallet.Balance Balance { get; set; }
             //public static Notus.TGZArchiver Archiver { get; set; }
             public static Notus.Block.Queue BlockQueue { get; set; }
@@ -275,7 +275,6 @@ namespace Notus.Variable
             }
             public static void Dispose()
             {
-                Storage.Dispose();
                 BlockQueue.Dispose();
                 Balance.Dispose();
             }
@@ -295,7 +294,6 @@ namespace Notus.Variable
                 WalletUsageList = new ConcurrentDictionary<string, string>();
                 LockWalletList = new ConcurrentDictionary<string, string>();
                 //BlockOrder = new ConcurrentDictionary<long, string>();
-                Storage = new Notus.Block.Storage();
                 BlockQueue = new Notus.Block.Queue();
                 //Archiver = new Notus.TGZArchiver();
                 Balance = new Notus.Wallet.Balance();

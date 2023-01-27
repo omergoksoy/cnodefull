@@ -24,7 +24,7 @@ namespace Notus.Block
     ////bu kitaplık üzerinde çalışmaya devam et
     public class Queue : IDisposable
     {
-        private Notus.Block.Storage BS_Storage;
+        //private Notus.Block.Storage BS_Storage;
 
         // tüm işlemlerin kayıt altına alındığı Key-Value DB
         private Notus.Data.KeyValue kvPoolDb = new();
@@ -844,31 +844,10 @@ namespace Notus.Block
             tempRemovePoolList.Clear();
             //LoadFromPoolDb();
         }
-        public NVClass.BlockData? ReadFromChain(string BlockId)
-        {
-            //tgz-exception
-            return BS_Storage.ReadBlock(BlockId);
-        }
         //yeni blok hesaplanması tamamlandığı zaman buraya gelecek ve geçerli blok ise eklenecek.
         public void AddToChain(NVClass.BlockData NewBlock)
         {
-            /*
-            if (NewBlock.prev.Length < 20)
-            {
-                NP.Info("Block Added To Chain -> " +
-                    NewBlock.info.rowNo.ToString() + " -> " +
-                    "Prev is Empty [ " + NewBlock.prev + " ]"
-                );
-            }
-            else
-            {
-                NP.Info("Block Added To Chain -> " + 
-                    NewBlock.info.rowNo.ToString() + " -> " + 
-                    NewBlock.prev.Substring(0,20)
-                );
-            }
-            */
-            BS_Storage.AddSync(NewBlock);
+            NVG.Settings.BlockMeta.WriteBlock(NewBlock);
 
             string rawDataStr = NTT.RawCipherData2String(
                 NewBlock.cipher.data
@@ -964,8 +943,6 @@ namespace Notus.Block
         public void Start()
         {
             NP.Info("Pool Loaded From Local DB");
-            BS_Storage = new Notus.Block.Storage(false);
-            BS_Storage.Start();
             txQueueList.Clear();
 
             kvPoolDb.SetSettings(new NVS.KeyValueSettings()

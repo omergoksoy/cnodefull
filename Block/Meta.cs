@@ -19,7 +19,7 @@ namespace Notus.Block
         private long BiggestCountNumber_ForOrder = 0;
 
         private Notus.Data.KeyValue statusDb = new();
-        
+
         private Notus.Data.KeyValue signDb = new();
         private long BiggestCountNumber_ForSign = 0;
 
@@ -35,7 +35,7 @@ namespace Notus.Block
 
         public void WriteBlock(NVClass.BlockData blockData)
         {
-            blockDb.Set(blockData.info.uID,JsonSerializer.Serialize(blockData));
+            blockDb.Set(blockData.info.uID, JsonSerializer.Serialize(blockData));
         }
         public NVClass.BlockData? ReadBlock(string blockUid)
         {
@@ -54,16 +54,11 @@ namespace Notus.Block
 
             return null;
         }
-        public NVClass.BlockData? Read(long blockRowNo)
+        public NVClass.BlockData? ReadBlock(long blockRowNo)
         {
-            string blockUid=Order(blockRowNo);
-            if (blockUid.Length == 0)
-                return null;
-
-            return Read(blockUid);
+            string blockUid = Order(blockRowNo);
+            return ReadBlock(blockUid);
         }
-
-
         public NVE.UidTypeList Type(string Uid)
         {
             string tmpResult = typeDb.Get(Uid.ToString());
@@ -103,7 +98,7 @@ namespace Notus.Block
         }
         public string Order(long blockRowNo)
         {
-            string tmpResult =orderDb.Get(blockRowNo.ToString());
+            string tmpResult = orderDb.Get(blockRowNo.ToString());
             if (tmpResult == null)
                 return string.Empty;
 
@@ -123,7 +118,7 @@ namespace Notus.Block
 
         public string Sign(long blockRowNo)
         {
-            string tmpResult=signDb.Get(blockRowNo.ToString());
+            string tmpResult = signDb.Get(blockRowNo.ToString());
             if (tmpResult == null)
                 return string.Empty;
 

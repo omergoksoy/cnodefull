@@ -262,7 +262,7 @@ namespace Notus.Validator
                         );
                         if (tmpIncomeData != null)
                         {
-                            Obj_Api.Interpret(tmpIncomeData,false);
+                            Obj_Api.Interpret(tmpIncomeData, false);
                             Console.WriteLine(
                                 "Distribute Data Income : " +
                                 JsonSerializer.Serialize(tmpIncomeData)
@@ -322,22 +322,19 @@ namespace Notus.Validator
             if (NVG.Settings.GenesisCreated == false && NVG.Settings.Genesis != null)
             {
                 NP.Basic(NVG.Settings, "Last Block Row No : " + NVG.Settings.LastBlock.info.rowNo.ToString());
-                using (Notus.Block.Storage Obj_Storage = new Notus.Block.Storage(false))
+                Dictionary<long, string> orderListResult = NVG.Settings.BlockMeta.Order();
+                foreach (KeyValuePair<long, string> item in orderListResult)
                 {
-                    Dictionary<long, string> orderListResult = NVG.Settings.BlockMeta.Order();
-                    foreach (KeyValuePair<long, string> item in orderListResult)
+                    NVClass.BlockData? tmpBlockData = NVG.Settings.BlockMeta.ReadBlock(item.Value);
+                    if (tmpBlockData != null)
                     {
-                        NVClass.BlockData? tmpBlockData = Obj_Storage.ReadBlock(item.Value);
-                        if (tmpBlockData != null)
-                        {
-                            ProcessBlock(tmpBlockData, 1);
-                        }
-                        else
-                        {
-                            NP.Danger("Notus.Block.Integrity -> Block Does Not Exist");
-                            NP.Danger("Reset Block");
-                            NP.ReadLine();
-                        }
+                        ProcessBlock(tmpBlockData, 1);
+                    }
+                    else
+                    {
+                        NP.Danger("Notus.Block.Integrity -> Block Does Not Exist");
+                        NP.Danger("Reset Block");
+                        NP.ReadLine();
                     }
                 }
                 NP.Info("All Blocks Loaded");
@@ -1063,7 +1060,7 @@ namespace Notus.Validator
 
         private string Fnc_OnReceiveData(NVS.HttpRequestDetails IncomeData)
         {
-            string resultData = Obj_Api.Interpret(IncomeData,true);
+            string resultData = Obj_Api.Interpret(IncomeData, true);
             if (string.Equals(resultData, "queue-data"))
             {
                 resultData = ValidatorQueueObj.ProcessIncomeData(IncomeData.PostParams["data"]);

@@ -7,7 +7,7 @@ namespace Notus.Validator
     {
         private Notus.Block.Integrity Obj_Integrity;
 
-        private Notus.Block.Storage Obj_Storage;
+        //private Notus.Block.Storage Obj_Storage;
 
         private Dictionary<string, Notus.Variable.Class.BlockData> AllMainList = new Dictionary<string, Notus.Variable.Class.BlockData>();
         private Dictionary<string, Notus.Variable.Class.BlockData> AllMasterList = new Dictionary<string, Notus.Variable.Class.BlockData>();
@@ -27,7 +27,7 @@ namespace Notus.Validator
                 );
                 if (NoError == true)
                 {
-                    Obj_Storage.AddSync(tmpBlockData);
+                    NVG.Settings.BlockMeta.WriteBlock(tmpBlockData);
                     exitWhileLoop = true;
                     if (AssingToLastBlockVar == true)
                     {
@@ -75,7 +75,6 @@ namespace Notus.Validator
                 }
             }
 
-            Obj_Storage = new Notus.Block.Storage(false);
             Obj_Integrity = new Notus.Block.Integrity();
 
             Notus.Variable.Class.BlockData tmpLastBlock = Obj_Integrity.GetSatus(true);

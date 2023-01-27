@@ -51,13 +51,12 @@ namespace Notus.Reward
                                 };
                                 ulong rewardCount = 0;
                                 Dictionary<long, ulong> blockRowTimeList = new Dictionary<long, ulong>();
-                                Notus.Block.Storage storageObj = new Notus.Block.Storage(false);
                                 bool tmpNullPrinted = false;
                                 bool tmpExitLoop = false;
                                 while (tmpExitLoop == false)
                                 {
                                     //tgz-exception
-                                    Notus.Variable.Class.BlockData? tmpBlockData = storageObj.ReadBlock(LastBlockUid);
+                                    Notus.Variable.Class.BlockData? tmpBlockData = NVG.Settings.BlockMeta.ReadBlock(LastBlockUid);
                                     if (tmpBlockData != null)
                                     {
                                         if (tmpBlockData.info.type == 300)
