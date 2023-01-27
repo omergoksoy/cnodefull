@@ -156,10 +156,10 @@ namespace Notus.Block
                 return (NVE.BlockIntegrityStatus.GenesisNeed, null);
 
             Notus.Wallet.Fee.StoreFeeData("genesis_block", JsonSerializer.Serialize(NVG.Settings.Genesis), NVG.Settings.Network, NVG.Settings.Layer, true);
-            NVG.Settings.LastBlock = NVG.BlockMeta.ReadBlock(blockRownNo);
+            NVG.Settings.LastBlock = NVG.BlockMeta.ReadBlock(blockRownNo-1);
             return (
                 NVE.BlockIntegrityStatus.Valid,
-                NVG.BlockMeta.ReadBlock(blockRownNo)
+                NVG.BlockMeta.ReadBlock(blockRownNo-1)
             );
         }
 
