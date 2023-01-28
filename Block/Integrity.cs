@@ -118,12 +118,14 @@ namespace Notus.Block
                 NVClass.BlockData? ControlBlock = NVG.BlockMeta.ReadBlock(blockRownNo);
                 if (ControlBlock == null)
                 {
+                    Console.WriteLine("Last Block No [ null ]: " + blockRownNo.ToString());
                     exitFromLoop = true;
                 }
                 else
                 {
                     if (new Notus.Block.Generate().Verify(ControlBlock))
                     {
+                        Console.WriteLine("Last Block No [ valid ]: " + blockRownNo.ToString());
                         if (blockRownNo == 1)
                         {
                             NVG.Settings.Genesis = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(
