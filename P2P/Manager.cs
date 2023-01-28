@@ -169,6 +169,19 @@ namespace Notus.P2P
         {
             return this.Peers.ContainsKey(peerId);
         }
+        public void SendWithTask(NVS.NodeQueueInfo nodeItem, string messageText)
+        {
+            if (nodeItem.Status != NVS.NodeStatus.Online)
+                return;
+
+            if (string.Equals(nodeItem.IP.Wallet, NVG.Settings.Nodes.My.IP.Wallet) == true)
+                return;
+
+            Task.Run(() =>
+            {
+                NVG.Settings.PeerManager.Send(nodeItem.IP.Wallet, messageText);
+            });
+        }
         public bool Send(string peerId, string message, bool removePeerIfOffline = true)
         {
             //Console.WriteLine("Peer Send : " + peerId + " -> " + message);

@@ -12,30 +12,19 @@ namespace Notus.Pool
             if (ToDistribute == false)
                 return;
 
-            //string requestUidText = "<requestId>" + IncomeData.RequestUid + "</requestId>";
+            string requestUidText = "<requestId>" + IncomeData.RequestUid + "</requestId>";
             string poolMsgText = "<poolData>" + JsonSerializer.Serialize(IncomeData) + "</poolData>";
-            //Console.WriteLine(requestUidText);
+            Console.WriteLine(requestUidText);
             Console.WriteLine(poolMsgText);
-            //return;
+
             foreach (var validatorItem in NVG.NodeList)
             {
-                if (validatorItem.Value.Status == NVS.NodeStatus.Online)
-                {
-                    if (string.Equals(validatorItem.Value.IP.Wallet, NVG.Settings.Nodes.My.IP.Wallet) == false)
-                    {
-                        Task.Run(() =>
-                        {
-                            NVG.Settings.PeerManager.Send(validatorItem.Value.IP.Wallet, poolMsgText);
+                NVG.Settings.PeerManager.SendWithTask(validatorItem.Value, requestUidText);
+            }
 
-                            /*
-                            bool requestSendStatus = NVG.Settings.PeerManager.Send(validatorItem.Value.IP.Wallet, requestUidText);
-                            if (requestSendStatus == true)
-                            {
-                            }
-                            */
-                        });
-                    }
-                }
+            foreach (var validatorItem in NVG.NodeList)
+            {
+                NVG.Settings.PeerManager.SendWithTask(validatorItem.Value, poolMsgText);
             }
         }
     }
