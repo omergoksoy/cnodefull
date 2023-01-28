@@ -283,24 +283,17 @@ namespace Notus.Validator
                     for (int innerCount = 0; innerCount < incomeMsgList.Count(); innerCount++)
                     {
                         string tmpMessage = incomeMsgList[innerCount];
-                        Console.WriteLine("tmpMessage : " + tmpMessage);
+                        NP.Basic("incomeMessage [NVG.Settings.PeerManager] : " + incomeMessage);
                         if (tmpMessage.Length > 0)
                         {
                             if (tmpMessage.Substring(tmpMessage.Length - 1) != ">")
                                 tmpMessage = tmpMessage + ">";
 
                             string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
+                            NP.Basic("Function Response : " + innerResultStr);
                             if (string.Equals(innerResultStr, "distribute") == true)
                             {
                                 StartExecuteDistribiton(innerResultStr);
-                            }
-                            else
-                            {
-                                Console.WriteLine("incomeMessage [NVG.Settings.PeerManager] : " + incomeMessage);
-                                if (string.Equals(innerResultStr, "done") == false)
-                                {
-                                    NP.Basic("Function Response : " + innerResultStr);
-                                }
                             }
                         }
                     }
