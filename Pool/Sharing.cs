@@ -13,14 +13,14 @@ namespace Notus.Pool
                 return;
 
             string requestUidText = "<requestId>" + IncomeData.RequestUid + "</requestId>";
-            string poolMsgText = "<poolData>" + JsonSerializer.Serialize(IncomeData) + "</poolData>";
             Console.WriteLine(requestUidText);
-            Console.WriteLine(poolMsgText);
-
             foreach (var validatorItem in NVG.NodeList)
             {
                 NVG.Settings.PeerManager.SendWithTask(validatorItem.Value, requestUidText);
             }
+
+            string poolMsgText = "<poolData>" + JsonSerializer.Serialize(IncomeData) + "</poolData>";
+            Console.WriteLine(poolMsgText);
 
             foreach (var validatorItem in NVG.NodeList)
             {

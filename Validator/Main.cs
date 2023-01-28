@@ -222,6 +222,33 @@ namespace Notus.Validator
             //NP.Basic(JsonSerializer.Serialize(NGF.WalletUsageList
             //NGF.WalletUsageList.Clear();
         }
+        private void StartExecuteDistribiton(string incomeMessage) {
+            NVS.HttpRequestDetails? tmpIncomeData =
+            JsonSerializer.Deserialize<NVS.HttpRequestDetails>(
+                NTT.GetPureText(incomeMessage, "poolData")
+            );
+            if (tmpIncomeData != null)
+            {
+                NVS.CryptoTransferStatus requestStatus = NVG.BlockMeta.Status(tmpIncomeData.RequestUid);
+
+                if (requestStatus.Code == NVE.BlockStatusCode.Completed)
+                {
+                    Console.WriteLine("Distribute Data Income But It's Already Done: ");
+                }
+                else
+                {
+                    Obj_Api.Interpret(tmpIncomeData, false);
+                    Console.WriteLine(
+                        "Distribute Data Income : " +
+                        JsonSerializer.Serialize(tmpIncomeData)
+                    );
+                }
+            }
+            else
+            {
+                Console.WriteLine("Distribute : NULL");
+            }
+        }
         public void Start()
         {
             NP.PrintOnScreenTimer();
@@ -254,43 +281,15 @@ namespace Notus.Validator
 
                     if (string.Equals(innerResultStr, "distribute") == true)
                     {
-                        NVS.HttpRequestDetails? tmpIncomeData =
-                        JsonSerializer.Deserialize<NVS.HttpRequestDetails>(
-                            NTT.GetPureText(incomeMessage, "poolData")
-                        );
-                        if (tmpIncomeData != null)
-                        {
-                            NVS.CryptoTransferStatus requestStatus = NVG.Settings.BlockMeta.Status(tmpIncomeData.RequestUid);
-
-                            if (requestStatus.Code == NVE.BlockStatusCode.Completed)
-                            {
-                                Console.WriteLine("Distribute Data Income But It's Already Done: ");
-                            }
-                            else
-                            {
-                                Obj_Api.Interpret(tmpIncomeData, false);
-                                Console.WriteLine(
-                                    "Distribute Data Income : " +
-                                    JsonSerializer.Serialize(tmpIncomeData)
-                                );
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Distribute : NULL");
-                        }
+                        StartExecuteDistribiton(innerResultStr);
                     }
                     else
                     {
                         Console.WriteLine("incomeMessage [NVG.Settings.PeerManager] : " + incomeMessage);
-                    }
-
-                    // mesajlar bu kitaplık içinden diğer nodelara iletilecek
-                    //Obj_Api.Interpret(IncomeData, false);
-
-                    if (string.Equals(innerResultStr, "done") == false)
-                    {
-                        NP.Basic("Function Response : " + innerResultStr);
+                        if (string.Equals(innerResultStr, "done") == false)
+                        {
+                            NP.Basic("Function Response : " + innerResultStr);
+                        }
                     }
                 }
             , false);

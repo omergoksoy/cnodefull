@@ -169,15 +169,13 @@ namespace Notus.Validator
         }
         public string ProcessIncomeData(string incomeData)
         {
-            /*
             if (NTT.CheckXmlTag(incomeData, "requestId"))
             {
                 incomeData = NTT.GetPureText(incomeData, "requestId");
                 Console.WriteLine("Request Id Came From Other Node : " + incomeData);
-                NVS.CryptoTransferStatus requestStatus = NVG.Settings.BlockMeta.Status(incomeData);
+                NVS.CryptoTransferStatus requestStatus = NVG.BlockMeta.Status(incomeData);
 
-                if(requestStatus)
-                NVG.Settings.BlockMeta.Status(incomeData, new NVS.CryptoTransferStatus()
+                NVG.BlockMeta.Status(incomeData, new NVS.CryptoTransferStatus()
                 {
                     Code = NVE.BlockStatusCode.WaitingFromOtherNode,
                     RowNo = 0,
@@ -186,7 +184,7 @@ namespace Notus.Validator
                 });
                 return "ok";
             }
-            */
+
             if (NTT.CheckXmlTag(incomeData, "poolData"))
             {
                 return (
