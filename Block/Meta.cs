@@ -27,6 +27,33 @@ namespace Notus.Block
         private Notus.Data.KeyValue prevDb = new();
         private long BiggestCountNumber_ForPrev = 0;
 
+        public void Remove(string dbKey,NVE.MetaDataDbTypeList tableType)
+        {
+            if (tableType == NVE.MetaDataDbTypeList.PreviouseList || tableType == NVE.MetaDataDbTypeList.All)
+            {
+                prevDb.Remove(dbKey);
+            }
+            if (tableType == NVE.MetaDataDbTypeList.SignList || tableType == NVE.MetaDataDbTypeList.All)
+            {
+                signDb.Remove(dbKey);
+            }
+            if (tableType == NVE.MetaDataDbTypeList.StatusList || tableType == NVE.MetaDataDbTypeList.All)
+            {
+                statusDb.Remove(dbKey);
+            }
+            if (tableType == NVE.MetaDataDbTypeList.OrderList || tableType == NVE.MetaDataDbTypeList.All)
+            {
+                orderDb.Remove(dbKey);
+            }
+            if (tableType == NVE.MetaDataDbTypeList.TypeList || tableType == NVE.MetaDataDbTypeList.All)
+            {
+                typeDb.Remove(dbKey);
+            }
+            if (tableType == NVE.MetaDataDbTypeList.BlockDataList || tableType == NVE.MetaDataDbTypeList.All)
+            {
+                blockDb.Remove(dbKey);
+            }
+        }
         public void ClearTable(NVE.MetaDataDbTypeList tableType)
         {
             if (tableType == NVE.MetaDataDbTypeList.PreviouseList || tableType == NVE.MetaDataDbTypeList.All)
@@ -164,8 +191,8 @@ namespace Notus.Block
                 }
                 resultList.Add(nextCount, orderDb.List[orderListKey].Value);
             }
-            Console.WriteLine(JsonSerializer.Serialize(resultList));
-            Console.ReadLine();
+            //Console.WriteLine(JsonSerializer.Serialize(resultList));
+            //Console.ReadLine();
             return resultList;
         }
         public string Order(long blockRowNo)

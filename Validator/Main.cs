@@ -342,18 +342,26 @@ namespace Notus.Validator
             {
                 NP.Basic(NVG.Settings, "Last Block Row No : " + NVG.Settings.LastBlock.info.rowNo.ToString());
                 Dictionary<long, string> orderListResult = NVG.BlockMeta.Order();
+                bool removeAllNextData = false;
                 foreach (KeyValuePair<long, string> item in orderListResult)
                 {
-                    NVClass.BlockData? tmpBlockData = NVG.BlockMeta.ReadBlock(item.Value);
-                    if (tmpBlockData != null)
+                    if (removeAllNextData == false)
                     {
-                        ProcessBlock(tmpBlockData, 1);
+                        NVClass.BlockData? tmpBlockData = NVG.BlockMeta.ReadBlock(item.Value);
+                        if (tmpBlockData != null)
+                        {
+                            ProcessBlock(tmpBlockData, 1);
+                        }
+                        else
+                        {
+                            removeAllNextData = true;
+                        }
                     }
-                    else
+
+                    if (removeAllNextData == true)
                     {
-                        NP.Danger("Notus.Block.Integrity -> Block Does Not Exist");
-                        NP.Danger("Reset Block");
-                        NP.ReadLine();
+                        NP.Danger("Notus.Block.Integrity -> Block Does Not Exist -> [" + item.Key.ToString() + " ]");
+                        NVG.BlockMeta.Remove(item.Key.ToString(), NVE.MetaDataDbTypeList.All);
                     }
                 }
                 NP.Info("All Blocks Loaded");
