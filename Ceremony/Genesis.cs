@@ -146,6 +146,8 @@ namespace Notus.Ceremony
             );
             airdropBlock.info.time = Notus.Block.Key.GetTimeFromKey(airdropBlock.info.uID, true);
 
+            
+            kontrat ile etkileşime girmek için senaryo düşün
 
             //burada airdrop kontratı olacak ve o kontrat ile etkileşime girilecek
             string airDropContractCode = 

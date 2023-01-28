@@ -621,6 +621,8 @@ namespace Notus.Validator
 
                 if (string.Equals(IncomeData.UrlList[0].ToLower(), "send") && IncomeData.PostParams.ContainsKey("data") == true)
                 {
+                    Coin transferi için kontrol mekanizmaları ekle ve test et
+
                     IncomeData.RequestUid = (IncomeData.RequestUid.Length == 0 ? NGF.GenerateTxUid() : IncomeData.RequestUid);
                     Console.WriteLine("IncomeData.RequestUid : " + IncomeData.RequestUid);
                     return NVG.Settings.Transfer.Request(IncomeData, ToDistribute);
