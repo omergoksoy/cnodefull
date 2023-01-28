@@ -125,6 +125,13 @@ namespace Notus.Coin
                 if (status.Code == NVE.BlockStatusCode.Completed)
                 {
                     Console.WriteLine("AirDrop Already Done");
+                    return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
+                    {
+                        ErrorNo = 0,
+                        ErrorText = "Completed",
+                        ID = airdropUid,
+                        Result = NVE.BlockStatusCode.Completed
+                    });
                 }
                 else
                 {
