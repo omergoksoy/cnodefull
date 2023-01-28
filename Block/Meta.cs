@@ -131,6 +131,7 @@ namespace Notus.Block
                         foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
                         {
                             bool getFromNode = (entry.Value.Status == NVS.NodeStatus.Online ? true : false);
+                            getFromNode = true;
 
                             if (string.Equals(entry.Value.IP.Wallet, NVG.Settings.NodeWallet.WalletKey) == true)
                                 getFromNode = false;
