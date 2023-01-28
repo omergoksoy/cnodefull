@@ -215,11 +215,11 @@ namespace Notus.Validator
             //NP.Basic(JsonSerializer.Serialize(NGF.WalletUsageList
             //NGF.WalletUsageList.Clear();
         }
-        private void StartExecuteDistribiton(string incomeMessage)
+        private void StartExecuteDistribiton(string incomeMessage, string messageResponse)
         {
             Console.WriteLine("StartExecuteDistribiton : " + incomeMessage);
 
-            if (string.Equals(incomeMessage, "distribute") != true)
+            if (string.Equals(messageResponse, "distribute") != true)
             {
                 return;
             }
@@ -241,7 +241,7 @@ namespace Notus.Validator
                 Console.WriteLine("Distribute Data Income But It's Already Done: ");
                 return;
             }
-            Obj_Api.Interpret(tmpIncomeData, false);
+            //Obj_Api.Interpret(tmpIncomeData, false);
             Console.WriteLine(
                 "Distribute Data Income : " +
                 JsonSerializer.Serialize(tmpIncomeData)
@@ -285,9 +285,9 @@ namespace Notus.Validator
                             if (tmpMessage.Substring(tmpMessage.Length - 1) != ">")
                                 tmpMessage = tmpMessage + ">";
 
-                            string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
-                            NP.Basic("Function Response : " + innerResultStr);
-                            StartExecuteDistribiton(innerResultStr);
+                            string innerResponseStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
+                            NP.Basic("Function Response : " + innerResponseStr);
+                            StartExecuteDistribiton(incomeMessage, innerResponseStr);
                         }
                     }
                 }
