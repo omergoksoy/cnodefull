@@ -234,6 +234,7 @@ namespace Notus.Block
 
             orderDb.SetSettings(new NVS.KeyValueSettings()
             {
+                LoadFromBeginning=true,
                 MemoryLimitCount = 0,
                 Name = Notus.Variable.Constant.MemoryPoolName["BlockOrderList"]
             });
