@@ -232,31 +232,16 @@ namespace Notus.Block
         }
         public bool ControlGenesisBlock()
         {
-            //string[] ZipFileList = Notus.IO.GetZipFiles(NVG.Settings);
-            string ZipFileName = Notus.IO.GetFolderName(
-                NVG.Settings.Network,
-                NVG.Settings.Layer,
-                NVC.StorageFolderName.Block
-            ) +
-            Notus.Block.Key.GetBlockStorageFileName(
-                NVC.GenesisBlockUid,
-                true
-            ) + ".zip";
             string myGenesisSign = string.Empty;
-
             DateTime myGenesisTime = NVG.NOW.Obj.AddDays(1);
-            //if (ZipFileList.Length > 0)
-            if (File.Exists(ZipFileName) == true)
+
+            NVClass.BlockData? blockData = NVG.BlockMeta.ReadBlock(NVC.GenesisBlockUid);
+            if (blockData != null)
             {
-                //tgz-exception
-                NVClass.BlockData? blockData = NVG.BlockMeta.ReadBlock(NVC.GenesisBlockUid);
-                if (blockData != null)
+                if (blockData.info.type == 360)
                 {
-                    if (blockData.info.type == 360)
-                    {
-                        myGenesisSign = blockData.sign;
-                        myGenesisTime = ND.GetGenesisCreationTimeFromString(blockData);
-                    }
+                    myGenesisSign = blockData.sign;
+                    myGenesisTime = ND.GetGenesisCreationTimeFromString(blockData);
                 }
             }
             if (NVG.Settings.LocalNode == false)
