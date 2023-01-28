@@ -164,6 +164,8 @@ namespace Notus.Block
                 }
                 resultList.Add(nextCount, orderDb.List[orderListKey].Value);
             }
+            Console.WriteLine(JsonSerializer.Serialize(resultList));
+            Console.ReadLine();
             return resultList;
         }
         public string Order(long blockRowNo)
