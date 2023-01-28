@@ -53,7 +53,7 @@ namespace Notus.Block
                 blockDb.Clear();
             }
         }
-        
+
         public void Store(NVClass.BlockData blockData)
         {
             Sign(blockData.info.rowNo, blockData.sign);
@@ -87,7 +87,7 @@ namespace Notus.Block
             string blockUid = Order(blockRowNo);
             return ReadBlock(blockUid);
         }
-        
+
         public NVE.UidTypeList Type(string Uid)
         {
             string tmpResult = typeDb.Get(Uid.ToString());
@@ -121,7 +121,16 @@ namespace Notus.Block
             for (long count = 0; count < tmpObj_DataList.Count(); count++)
             {
                 long nextCount = count + 1;
-                resultList.Add(nextCount, orderDb.List[nextCount.ToString()].Value);
+                string orderListKey = nextCount.ToString();
+                if (orderDb.List.ContainsKey(orderListKey) == true)
+                {
+                    resultList.Add(nextCount, orderDb.List[orderListKey].Value);
+                }
+                else
+                {
+                    Console.WriteLine("get block from other nodes");
+                    Console.ReadLine();
+                }
             }
             return resultList;
         }
@@ -234,7 +243,7 @@ namespace Notus.Block
 
             orderDb.SetSettings(new NVS.KeyValueSettings()
             {
-                LoadFromBeginning=true,
+                LoadFromBeginning = true,
                 MemoryLimitCount = 0,
                 Name = Notus.Variable.Constant.MemoryPoolName["BlockOrderList"]
             });
