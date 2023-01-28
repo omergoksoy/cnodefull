@@ -6,7 +6,8 @@ using NVC = Notus.Variable.Constant;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
-
+using NTN = Notus.Toolbox.Network;
+using NP = Notus.Print;
 namespace Notus.Block
 {
     public class Meta : IDisposable
@@ -114,23 +115,53 @@ namespace Notus.Block
         {
             KeyValuePair<string, NVS.ValueTimeStruct>[]? tmpObj_DataList = orderDb.List.ToArray();
             if (tmpObj_DataList == null)
-            {
                 return new Dictionary<long, string>();
-            }
+
             Dictionary<long, string> resultList = new();
             for (long count = 0; count < tmpObj_DataList.Count(); count++)
             {
                 long nextCount = count + 1;
                 string orderListKey = nextCount.ToString();
-                if (orderDb.List.ContainsKey(orderListKey) == true)
+                if (orderDb.List.ContainsKey(orderListKey) == false)
                 {
-                    resultList.Add(nextCount, orderDb.List[orderListKey].Value);
-                }
-                else
-                {
+                    NP.Warning(NVG.Settings, "Block Missing: " + orderListKey);
+                    bool exitFromInnerWhileLoop = false;
+                    while (exitFromInnerWhileLoop == false)
+                    {
+                        foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
+                        {
+                            bool getFromNode = (entry.Value.Status == NVS.NodeStatus.Online ? true : false);
+
+                            if (string.Equals(entry.Value.IP.Wallet, NVG.Settings.NodeWallet.WalletKey) == true)
+                                getFromNode = false;
+
+                            if (getFromNode == true)
+                            {
+                                NVClass.BlockData? tmpInnerBlockData = NTN.GetBlockFromNode(
+                                    entry.Value.IP.IpAddress,
+                                    entry.Value.IP.Port,
+                                    nextCount,
+                                    NVG.Settings
+                                );
+                                if (tmpInnerBlockData != null)
+                                {
+                                    NP.Basic(NVG.Settings, "Added Block : " + tmpInnerBlockData.info.uID);
+                                    NVG.BlockMeta.WriteBlock(tmpInnerBlockData);
+                                    NVG.BlockMeta.Store(tmpInnerBlockData);
+                                    exitFromInnerWhileLoop = true;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Block Does Not Get From Node");
+                                }
+                            }
+                        }
+                    }
+
                     Console.WriteLine("get block from other nodes");
                     Console.ReadLine();
                 }
+                resultList.Add(nextCount, orderDb.List[orderListKey].Value);
             }
             return resultList;
         }
