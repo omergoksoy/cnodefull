@@ -2,10 +2,6 @@
 {
     public static class Text
     {
-        public static string NetworkTypeStr(Notus.Variable.Enum.NetworkType networkType)
-        {
-            return (networkType == Notus.Variable.Enum.NetworkType.MainNet ? "main_" : "test_");
-        }
         public static string NetworkTypeText(Notus.Variable.Enum.NetworkType networkType)
         {
             if (networkType == Notus.Variable.Enum.NetworkType.MainNet)
