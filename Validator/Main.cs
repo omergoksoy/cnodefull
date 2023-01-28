@@ -278,10 +278,12 @@ namespace Notus.Validator
                 p2pPortNo,
                 (string incomeMessage) =>
                 {
+                    //Console.WriteLine(incomeMessage)
                     var incomeMsgList = incomeMessage.Split("><");
-                    for (int innerCount = 0; innerCount > incomeMsgList.Count(); innerCount++)
+                    for (int innerCount = 0; innerCount < incomeMsgList.Count(); innerCount++)
                     {
                         string tmpMessage = incomeMsgList[innerCount];
+                        Console.WriteLine("tmpMessage : " + tmpMessage);
                         if (tmpMessage.Length > 0)
                         {
                             if (tmpMessage.Substring(tmpMessage.Length - 1) != ">")
