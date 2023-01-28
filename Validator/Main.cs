@@ -222,7 +222,8 @@ namespace Notus.Validator
             //NP.Basic(JsonSerializer.Serialize(NGF.WalletUsageList
             //NGF.WalletUsageList.Clear();
         }
-        private void StartExecuteDistribiton(string incomeMessage) {
+        private void StartExecuteDistribiton(string incomeMessage)
+        {
             NVS.HttpRequestDetails? tmpIncomeData =
             JsonSerializer.Deserialize<NVS.HttpRequestDetails>(
                 NTT.GetPureText(incomeMessage, "poolData")
@@ -277,18 +278,28 @@ namespace Notus.Validator
                 p2pPortNo,
                 (string incomeMessage) =>
                 {
-                    string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
-
-                    if (string.Equals(innerResultStr, "distribute") == true)
+                    var incomeMsgList = incomeMessage.Split("><");
+                    for (int innerCount = 0; innerCount > incomeMsgList.Count(); innerCount++)
                     {
-                        StartExecuteDistribiton(innerResultStr);
-                    }
-                    else
-                    {
-                        Console.WriteLine("incomeMessage [NVG.Settings.PeerManager] : " + incomeMessage);
-                        if (string.Equals(innerResultStr, "done") == false)
+                        string tmpMessage = incomeMsgList[innerCount];
+                        if (tmpMessage.Length > 0)
                         {
-                            NP.Basic("Function Response : " + innerResultStr);
+                            if (tmpMessage.Substring(tmpMessage.Length - 1) != ">")
+                                tmpMessage = tmpMessage + ">";
+
+                            string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
+                            if (string.Equals(innerResultStr, "distribute") == true)
+                            {
+                                StartExecuteDistribiton(innerResultStr);
+                            }
+                            else
+                            {
+                                Console.WriteLine("incomeMessage [NVG.Settings.PeerManager] : " + incomeMessage);
+                                if (string.Equals(innerResultStr, "done") == false)
+                                {
+                                    NP.Basic("Function Response : " + innerResultStr);
+                                }
+                            }
                         }
                     }
                 }
