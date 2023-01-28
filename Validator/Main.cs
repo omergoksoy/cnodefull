@@ -241,7 +241,7 @@ namespace Notus.Validator
                 Console.WriteLine("Distribute Data Income But It's Already Done: ");
                 return;
             }
-            //Obj_Api.Interpret(tmpIncomeData, false);
+            Obj_Api.Interpret(tmpIncomeData, false);
             Console.WriteLine(
                 "Distribute Data Income : " +
                 JsonSerializer.Serialize(tmpIncomeData)
