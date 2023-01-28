@@ -149,13 +149,6 @@ namespace Notus.Validator
                                     {
                                         NP.Danger(NVG.Settings, "Error Text : [9abc546ac] : " + err3.Message);
                                     }
-                                    //}
-                                    //catch (Exception err)
-                                    //{
-                                    //Console.WriteLine("Notus.Node.Validator.Main -> Convertion Error - Line 271");
-                                    //Console.WriteLine(err.Message);
-                                    //Console.WriteLine("Notus.Node.Validator.Main -> Convertion Error - Line 271");
-                                    //}
                                 }
                             }
                         }, 0);
@@ -224,31 +217,35 @@ namespace Notus.Validator
         }
         private void StartExecuteDistribiton(string incomeMessage)
         {
+            Console.WriteLine("StartExecuteDistribiton : " + incomeMessage);
+
+            if (string.Equals(incomeMessage, "distribute") != true)
+            {
+                return;
+            }
+
             NVS.HttpRequestDetails? tmpIncomeData =
             JsonSerializer.Deserialize<NVS.HttpRequestDetails>(
                 NTT.GetPureText(incomeMessage, "poolData")
             );
-            if (tmpIncomeData != null)
-            {
-                NVS.CryptoTransferStatus requestStatus = NVG.BlockMeta.Status(tmpIncomeData.RequestUid);
-
-                if (requestStatus.Code == NVE.BlockStatusCode.Completed)
-                {
-                    Console.WriteLine("Distribute Data Income But It's Already Done: ");
-                }
-                else
-                {
-                    Obj_Api.Interpret(tmpIncomeData, false);
-                    Console.WriteLine(
-                        "Distribute Data Income : " +
-                        JsonSerializer.Serialize(tmpIncomeData)
-                    );
-                }
-            }
-            else
+            if (tmpIncomeData == null)
             {
                 Console.WriteLine("Distribute : NULL");
+                return;
             }
+
+            NVS.CryptoTransferStatus requestStatus = NVG.BlockMeta.Status(tmpIncomeData.RequestUid);
+
+            if (requestStatus.Code == NVE.BlockStatusCode.Completed)
+            {
+                Console.WriteLine("Distribute Data Income But It's Already Done: ");
+                return;
+            }
+            Obj_Api.Interpret(tmpIncomeData, false);
+            Console.WriteLine(
+                "Distribute Data Income : " +
+                JsonSerializer.Serialize(tmpIncomeData)
+            );
         }
         public void Start()
         {
@@ -278,7 +275,6 @@ namespace Notus.Validator
                 p2pPortNo,
                 (string incomeMessage) =>
                 {
-                    //Console.WriteLine(incomeMessage)
                     var incomeMsgList = incomeMessage.Split("><");
                     for (int innerCount = 0; innerCount < incomeMsgList.Count(); innerCount++)
                     {
@@ -291,10 +287,7 @@ namespace Notus.Validator
 
                             string innerResultStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
                             NP.Basic("Function Response : " + innerResultStr);
-                            if (string.Equals(innerResultStr, "distribute") == true)
-                            {
-                                StartExecuteDistribiton(innerResultStr);
-                            }
+                            StartExecuteDistribiton(innerResultStr);
                         }
                     }
                 }
