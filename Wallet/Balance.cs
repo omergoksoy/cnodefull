@@ -683,7 +683,9 @@ namespace Notus.Wallet
                 {
                     foreach (var entry in tmpLockBalance.In)
                     {
-                        Console.WriteLine("AirDrop Done -> " + entry.Key);
+                        if(NVG.Settings.SyncBlockIsDone==true)
+                            Console.WriteLine("AirDrop Done -> " + entry.Key);
+
                         NGF.BlockQueue.RemoveFromDb(entry.Key);
                     }
 

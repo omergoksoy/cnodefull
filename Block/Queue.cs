@@ -823,7 +823,8 @@ namespace Notus.Block
         public void RemoveFromDb(string dbKey)
         {
             kvPoolDb.Remove(dbKey);
-            Console.WriteLine("Remove From Queue : " + dbKey);
+            if (NVG.Settings.SyncBlockIsDone == true)
+                Console.WriteLine("Remove From Queue : " + dbKey);
         }
         public void RemoveTempPoolList()
         {
