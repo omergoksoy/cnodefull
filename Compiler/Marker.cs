@@ -1,5 +1,4 @@
-﻿
-namespace Notus.Compiler
+﻿namespace Notus.Compiler
 {
     public struct Marker
     {

@@ -1,5 +1,4 @@
 using System;
-
 namespace Notus.Compiler
 {
     public class Lexer
@@ -7,12 +6,9 @@ namespace Notus.Compiler
         private readonly string source;
         private Marker sourceMarker; // current position in source string
         private char lastChar;
-
         public Marker TokenMarker { get; set; }
-
         public string Identifier { get; set; } // Last encountered identifier
         public Value Value { get; set; } // Last number or string
-
         public void Reset()
         {
             sourceMarker = new Marker(0, 1, 1);
@@ -24,39 +20,30 @@ namespace Notus.Compiler
             sourceMarker = new Marker(0, 1, 1);
             lastChar = source[0];
         }
-
         public void GoTo(Marker marker)
         {
             sourceMarker = marker;
         }
-
         public string GetLine(Marker marker)
         {
             Marker oldMarker = sourceMarker;
             marker.Pointer--;
             GoTo(marker);
-
             string line = "";
             do
             {
                 line += GetChar();
             } while (lastChar != '\n' && lastChar != (char)0);
-
             line.Remove(line.Length - 1);
-
             GoTo(oldMarker);
-
             return line;
         }
-
         char GetChar()
         {
             sourceMarker.Column++;
             sourceMarker.Pointer++;
-
             if (sourceMarker.Pointer >= source.Length)
                 return lastChar = (char)0;
-            //Console.WriteLine(lastChar);
             if ((lastChar = source[sourceMarker.Pointer]) == '\n')
             {
                 sourceMarker.Column = 1;
@@ -64,25 +51,14 @@ namespace Notus.Compiler
             }
             return lastChar;
         }
-
         public Token GetToken()
         {
             // skip white chars
             while (lastChar == ' ' || lastChar == '\t' || lastChar == '\r')
                 GetChar();
-
-            /*
-            if (lastChar == '.')
-            {
-                GetChar();
-            }
-            */
-
             if (char.IsLetter(lastChar) || lastChar=='_')
             {
                 Identifier = lastChar.ToString();
-                //Console.WriteLine("ch : " + lastChar);
-                //Console.WriteLine(Identifier);
                 while (char.IsLetterOrDigit(GetChar()) || lastChar=='_')
                     Identifier += lastChar;
 
@@ -204,4 +180,3 @@ namespace Notus.Compiler
         }
     }
 }
-

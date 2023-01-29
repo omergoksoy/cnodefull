@@ -1,5 +1,4 @@
 ﻿using System;
-
 namespace Notus.Compiler
 {
     public enum TxQueueType

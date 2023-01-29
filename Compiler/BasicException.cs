@@ -1,5 +1,4 @@
 ﻿using System;
-
 namespace Notus.Compiler
 {
     class BasicException : Exception
@@ -8,7 +7,6 @@ namespace Notus.Compiler
         public BasicException()
         {
         }
-
         public BasicException(string message, int line)
             : base(message)
         {
