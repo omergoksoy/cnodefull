@@ -84,7 +84,7 @@ namespace Notus.Block
 
         public void WriteBlock(NVClass.BlockData blockData,string senderLocation)
         {
-            Console.WriteLine("Saving Block Data -> " + blockData.info.rowNo.ToString());
+            Console.WriteLine("Saving Block Data -> " + blockData.info.rowNo.ToString() + " - [ " + senderLocation + " ]");
             blockDb.Set(blockData.info.uID, JsonSerializer.Serialize(blockData));
 
             signDb.Set(blockData.info.rowNo.ToString(), blockData.sign);
