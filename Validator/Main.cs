@@ -52,10 +52,6 @@ namespace Notus.Validator
         //private Notus.Block.Queue Obj_BlockQueue = new Notus.Block.Queue();
         private Notus.Validator.Queue ValidatorQueueObj = new Notus.Validator.Queue();
 
-        public void GarbageCollector()
-        {
-            //buradan kaldırılacak ve timer kitaplığı oluşturulup onun içie eklenecek
-        }
         public void FileStorageTimer()
         {
             NP.Basic(NVG.Settings, "File Storage Timer Has Started");
@@ -458,7 +454,6 @@ namespace Notus.Validator
 
                 NVG.Settings.SyncBlockIsDone = true;
                 NP.Success("First Synchronization Is Done");
-                GarbageCollector();
             }
             DateTime LastPrintTime = NVG.NOW.Obj;
             bool tmpExitMainLoop = false;
