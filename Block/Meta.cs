@@ -104,14 +104,14 @@ namespace Notus.Block
             ulong blockTimeVal = ND.ToLong(blockData.info.time);
             ulong blockGenarationTime = blockTimeVal - (blockTimeVal % queueTimePeriod);
             string validatorWalletId=Validator(blockGenarationTime);
+            string validatorWalletId_FromBlock = blockData.validator.count.First().Key;
             if (validatorWalletId.Length == 0)
             {
-                Console.WriteLine("Validasyon Yapilamadi");
+                Console.WriteLine("Validasyon Yapilamadi -> " + blockGenarationTime.ToString() + " : " + validatorWalletId_FromBlock);
             }
             else
             {
-                string blockValidaotrWalletId=blockData.validator.count.First().Key;
-                if (string.Equals(blockValidaotrWalletId, validatorWalletId))
+                if (string.Equals(validatorWalletId_FromBlock, validatorWalletId))
                 {
                     Console.WriteLine("Dogru kisi tarafindan uretilen blok");
                 }
