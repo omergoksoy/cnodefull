@@ -172,10 +172,13 @@ namespace Notus.Validator
                 }
                 */
             }
+            
+            /*
             if (blockSource != 1)
             {
                 NVG.BlockMeta.WriteBlock(Obj_BlockData, "Api -> Line -> 177");
             }
+            */
         }
 
         //layer -1 kontrolünü sağla

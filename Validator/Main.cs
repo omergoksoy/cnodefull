@@ -825,7 +825,7 @@ namespace Notus.Validator
                     }
                     if (innerSendToMyChain == true)
                     {
-                        NVG.BlockMeta.WriteBlock(blockData, "Main -> Line -> 828");
+                        //NVG.BlockMeta.WriteBlock(blockData, "Main -> Line -> 828");
                         if (string.Equals(NVH.BlockValidator(blockData), NVG.Settings.Nodes.My.IP.Wallet) == false)
                         {
                             NP.Info("New Block Arrived : " + blockData.info.uID.Substring(0, 15));
@@ -862,7 +862,7 @@ namespace Notus.Validator
 
                     */
                     innerSendToMyChain = true;
-                    NVG.BlockMeta.WriteBlock(blockData, "Main -> Line -> 865");
+                    //NVG.BlockMeta.WriteBlock(blockData, "Main -> Line -> 865");
                     if (string.Equals(NVH.BlockValidator(blockData), NVG.Settings.Nodes.My.IP.Wallet) == false)
                     {
                         NP.Info("New Block Arrived : " + blockData.info.uID.Substring(0, 15));
