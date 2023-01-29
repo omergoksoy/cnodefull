@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using ND = Notus.Date;
+using System.Globalization;
 using System.Net;
 using System.Numerics;
 using System.Text.Json;
@@ -62,7 +63,8 @@ namespace Notus.Ceremony
             NP.Info("My Block Sign : " + BlockSignHash.Substring(0, 10) + "..." + BlockSignHash.Substring(BlockSignHash.Length - 10));
 
             ControlAllBlockSign();
-
+            Console.WriteLine(ND.ToLong(genesisBlock.info.time).ToString());
+            Console.WriteLine(genesisBlock.validator.count.First().Key);
             //NVG.BlockMeta.Validator(peerStaringTime, NVG.Settings.Nodes.Queue[peerStaringTime].Wallet);
             NVG.BlockMeta.WriteBlock(genesisBlock, "Genesis -> Line -> 66");
 
