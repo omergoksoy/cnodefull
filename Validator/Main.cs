@@ -509,6 +509,8 @@ namespace Notus.Validator
                 ValidatorQueueObj.StartingPing();
             }
 
+            NVG.BlockMeta.StartBlockSyncTimer();
+
             while (
                 tmpExitMainLoop == false &&
                 NVG.Settings.NodeClosing == false &&

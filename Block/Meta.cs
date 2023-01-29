@@ -1,17 +1,25 @@
-﻿using NVClass = Notus.Variable.Class;
+﻿using ND = Notus.Date;
+using NVD = Notus.Validator.Date;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using NP = Notus.Print;
+using NT = Notus.Threads;
+using NTN = Notus.Toolbox.Network;
 using NVC = Notus.Variable.Constant;
+using NVH = Notus.Validator.Helper;
+using NVClass = Notus.Variable.Class;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
-using NTN = Notus.Toolbox.Network;
-using NP = Notus.Print;
 namespace Notus.Block
 {
     public class Meta : IDisposable
     {
+        private bool SubTimerIsRunning = false;
+        private NT.Timer SubTimer = new NT.Timer();
+        private Notus.Data.KeyValue validatorDb = new();
+        
         private Notus.Data.KeyValue blockDb = new();
 
         private Notus.Data.KeyValue typeDb = new();
@@ -27,8 +35,12 @@ namespace Notus.Block
         private Notus.Data.KeyValue prevDb = new();
         private long BiggestCountNumber_ForPrev = 0;
 
-        public void Remove(string dbKey,NVE.MetaDataDbTypeList tableType)
+        public void Remove(string dbKey, NVE.MetaDataDbTypeList tableType)
         {
+            if (tableType == NVE.MetaDataDbTypeList.ValidatorOrderList || tableType == NVE.MetaDataDbTypeList.All)
+            {
+                validatorDb.Remove(dbKey);
+            }
             if (tableType == NVE.MetaDataDbTypeList.PreviouseList || tableType == NVE.MetaDataDbTypeList.All)
             {
                 prevDb.Remove(dbKey);
@@ -60,6 +72,10 @@ namespace Notus.Block
             {
                 prevDb.Clear();
             }
+            if (tableType == NVE.MetaDataDbTypeList.ValidatorOrderList || tableType == NVE.MetaDataDbTypeList.All)
+            {
+                validatorDb.Clear();
+            }
             if (tableType == NVE.MetaDataDbTypeList.SignList || tableType == NVE.MetaDataDbTypeList.All)
             {
                 signDb.Clear();
@@ -82,8 +98,34 @@ namespace Notus.Block
             }
         }
 
-        public void WriteBlock(NVClass.BlockData blockData,string senderLocation)
+        private void CheckBlockValidator(NVClass.BlockData blockData)
         {
+            ulong queueTimePeriod = NVD.Calculate();
+            ulong blockTimeVal = ND.ToLong(blockData.info.time);
+            ulong blockGenarationTime = blockTimeVal - (blockTimeVal % queueTimePeriod);
+            string validatorWalletId=Validator(blockGenarationTime);
+            if (validatorWalletId.Length == 0)
+            {
+                Console.WriteLine("Validasyon Yapilamadi");
+            }
+            else
+            {
+                string blockValidaotrWalletId=blockData.validator.count.First().Key;
+                if (string.Equals(blockValidaotrWalletId, validatorWalletId))
+                {
+                    Console.WriteLine("Dogru kisi tarafindan uretilen blok");
+                }
+                else
+                {
+                    Console.WriteLine("HATALI kisi tarafindan uretilen blok - DEGISTIR");
+                }
+            }
+        }
+        public void WriteBlock(NVClass.BlockData blockData, string senderLocation)
+        {
+            CheckBlockValidator(blockData);
+            //NVH.RightBlockValidator(blockData, "Block Meta - WriteBlock");
+            //NVG.BlockMeta.Validator(peerStaringTime, NVG.Settings.Nodes.Queue[peerStaringTime].Wallet);
             Console.WriteLine("Saving Block Data -> " + blockData.info.rowNo.ToString() + " - [ " + senderLocation + " ]");
             blockDb.Set(blockData.info.uID, JsonSerializer.Serialize(blockData));
 
@@ -224,6 +266,22 @@ namespace Notus.Block
 
             return tmpResult;
         }
+        public string Validator(ulong blockTime)
+        {
+            string tmpResult = validatorDb.Get(blockTime.ToString());
+            if (tmpResult == null)
+                return string.Empty;
+
+            if (tmpResult.Length == 0)
+                return string.Empty;
+
+            return tmpResult;
+        }
+        public void Validator(ulong blockTime,string validatorWalletId)
+        {
+            Console.WriteLine("Validator -> " + blockTime.ToString() + " : " + validatorWalletId);
+            validatorDb.Set(blockTime.ToString(), validatorWalletId);
+        }
 
         public string Prev(long blockRowNo)
         {
@@ -266,6 +324,18 @@ namespace Notus.Block
             statusDb.Set(blockUid, JsonSerializer.Serialize(statusCode));
         }
 
+        public void StartBlockSyncTimer()
+        {
+            SubTimer.Start(3000,() =>
+            {
+                if (SubTimerIsRunning == false)
+                {
+                    SubTimerIsRunning = true;
+
+                    SubTimerIsRunning = false;
+                }
+            });
+        }
         public void Start()
         {
             statusDb.SetSettings(new NVS.KeyValueSettings()
@@ -314,6 +384,48 @@ namespace Notus.Block
         }
         public void Dispose()
         {
+            try
+            {
+                SubTimer.Dispose();
+            }
+            catch { }
+
+            try
+            {
+                orderDb.Dispose();
+            }
+            catch { }
+
+            try
+            {
+                typeDb.Dispose();
+            }
+            catch { }
+
+            try
+            {
+                blockDb.Dispose();
+            }
+            catch { }
+
+
+            try
+            {
+                prevDb.Dispose();
+            }
+            catch { }
+
+            try
+            {
+                signDb.Dispose();
+            }
+            catch { }
+
+            try
+            {
+                statusDb.Dispose();
+            }
+            catch { }
         }
     }
 }

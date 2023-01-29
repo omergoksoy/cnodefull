@@ -1097,9 +1097,12 @@ namespace Notus.Validator
                                 WalletId = NVG.Settings.Nodes.Queue[peerStaringTime].Wallet
                             }
                         );
+                        NVG.BlockMeta.Validator(peerStaringTime, NVG.Settings.Nodes.Queue[peerStaringTime].Wallet);
+
                         peerStaringTime = ND.AddMiliseconds(
                             peerStaringTime, NVD.Calculate()
                         );
+
                     }
                     NVG.Settings.PeerManager.StartAllPeers();
                     StartingPing();
