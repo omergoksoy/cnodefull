@@ -242,10 +242,12 @@ namespace Notus.Validator
                 return;
             }
             Obj_Api.Interpret(tmpIncomeData, false);
+            /*
             Console.WriteLine(
                 "Distribute Data Income : " +
                 JsonSerializer.Serialize(tmpIncomeData)
             );
+            */
         }
         public void Start()
         {

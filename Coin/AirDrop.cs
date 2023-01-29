@@ -138,7 +138,7 @@ namespace Notus.Coin
                     Console.WriteLine("AirDrop Still Waits");
                 }
                 Console.WriteLine("IncomeData.RequestUid For AirDrop [collector] : " + IncomeData.RequestUid);
-                Console.WriteLine(JsonSerializer.Serialize(status, NVC.JsonSetting));
+                Console.WriteLine(JsonSerializer.Serialize(status));
             }
             else
             {

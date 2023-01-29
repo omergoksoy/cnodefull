@@ -262,9 +262,18 @@ namespace Notus.Variable
                         }
                     }
                 }
-                Thread.Sleep(OnlineNodeCount * 1000);
+                Console.Write("Sleep Time : ");
+                Console.WriteLine(OnlineNodeCount * 1000);
+                if (OnlineNodeCount == 0)
+                {
+                    Thread.Sleep(1000);
+                }
+                else
+                {
+                    Thread.Sleep(OnlineNodeCount * 1000);
+                }
                 NVG.Settings.PeerManager.RemoveAll();
-                Settings.ClosingCompleted = true;
+                NVG.Settings.ClosingCompleted = true;
             }
             public static string GenerateTxUid()
             {
