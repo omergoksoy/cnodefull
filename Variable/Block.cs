@@ -97,10 +97,18 @@ namespace Notus.Variable.Class
                     data = "",
                     info = ""
                 },
+
+                // ceremony içeriği şimdilik boş kalsın
+                //ceremony = new Dictionary<int, BlockCeremonyOrderType>(),
                 prev = "",
                 sign = ""
             };
         }
+    }
+    public class BlockCeremonyOrderType
+    {
+        public string PublicKey { get; set; }
+        public string Sign { get; set; }           // daily lucky node reward
     }
 
     public class BlockData
@@ -117,6 +125,7 @@ namespace Notus.Variable.Class
         public ValidatorGroupType group { get; set; }
         */
         public NonceType nonce { get; set; }
+        //public Dictionary<int, BlockCeremonyOrderType> ceremony { get; set; }
         public string prev { get; set; }
         public string sign { get; set; }
         public BlockData Clone()

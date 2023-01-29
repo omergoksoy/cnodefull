@@ -49,7 +49,7 @@ namespace Notus.Communication
                 {
                     if (TimeOut > 0)
                     {
-                        client.Timeout = (UseTimeoutAsSecond == true ? TimeSpan.FromSeconds(TimeOut * 1000) : TimeSpan.FromMilliseconds(TimeOut));
+                        client.Timeout = (UseTimeoutAsSecond == true ? TimeSpan.FromSeconds(TimeOut) : TimeSpan.FromMilliseconds(TimeOut));
                     }
 
                     //bu işlem 0.3 saniye ile 0.6 saniye arasında işlem süresi geciktiriyor...
@@ -58,6 +58,7 @@ namespace Notus.Communication
                     //bu işlem 0.3 saniye ile 0.6 saniye arasında işlem süresi geciktiriyor...
                     HttpResponseMessage response = client.PostAsync(UrlAddress, formContent).GetAwaiter().GetResult();
                     HttpContent responseContent = response.Content;
+                    
                     if (response.IsSuccessStatusCode)
                     {
                         string? result =responseContent.ReadAsStringAsync().GetAwaiter().GetResult();
