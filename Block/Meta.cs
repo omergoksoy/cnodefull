@@ -374,6 +374,12 @@ namespace Notus.Block
                 MemoryLimitCount = 0,
                 Name = Notus.Variable.Constant.MemoryPoolName["BlockData"]
             });
+
+            validatorDb.SetSettings(new NVS.KeyValueSettings()
+            {
+                MemoryLimitCount = 0,
+                Name = Notus.Variable.Constant.MemoryPoolName["ValidatorOrderList"]
+            });
         }
         public Meta()
         {
