@@ -7,14 +7,11 @@ namespace Notus.Compiler
         public BasicException()
         {
         }
-        public BasicException(string message, int line)
-            : base(message)
+        public BasicException(string message, int line) : base(message)
         {
             this.line = line;
         }
-
-        public BasicException(string message, int line, Exception inner)
-            : base(message, inner)
+        public BasicException(string message, int line, Exception inner) : base(message, inner)
         {
             this.line = line;
         }

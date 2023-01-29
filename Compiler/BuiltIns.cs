@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace Notus.Compiler
 {
     class BuiltIns
@@ -17,7 +16,6 @@ namespace Notus.Compiler
             interpreter.AddFunction("max", Max);
             interpreter.AddFunction("not", Not);
         }
-
         public static Value Str(Interpreter interpreter, List<Value> args)
         {
             if (args.Count < 1)
@@ -25,7 +23,6 @@ namespace Notus.Compiler
 
             return args[0].Convert(ValueType.String);
         }
-
         public static Value Num(Interpreter interpreter, List<Value> args)
         {
             if (args.Count < 1)
@@ -33,7 +30,6 @@ namespace Notus.Compiler
 
             return args[0].Convert(ValueType.Real);
         }
-
         public static Value Abs(Interpreter interpreter, List<Value> args)
         {
             if (args.Count < 1)
@@ -41,7 +37,6 @@ namespace Notus.Compiler
 
             return new Value(Math.Abs(args[0].Real));
         }
-
         public static Value Min(Interpreter interpreter, List<Value> args)
         {
             if (args.Count < 2)
@@ -49,7 +44,6 @@ namespace Notus.Compiler
 
             return new Value(Math.Min(args[0].Real, args[1].Real));
         }
-
         public static Value Max(Interpreter interpreter, List<Value> args)
         {
             if (args.Count < 1)
@@ -57,7 +51,6 @@ namespace Notus.Compiler
 
             return new Value(Math.Max(args[0].Real, args[1].Real));
         }
-
         public static Value Not(Interpreter interpreter, List<Value> args)
         {
             if (args.Count < 1)
