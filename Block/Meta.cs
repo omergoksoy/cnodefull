@@ -82,7 +82,7 @@ namespace Notus.Block
             }
         }
 
-        public void WriteBlock(NVClass.BlockData blockData)
+        public void WriteBlock(NVClass.BlockData blockData,string senderLocation)
         {
             Console.WriteLine("Saving Block Data -> " + blockData.info.rowNo.ToString());
             blockDb.Set(blockData.info.uID, JsonSerializer.Serialize(blockData));
@@ -180,7 +180,7 @@ namespace Notus.Block
                                 if (tmpInnerBlockData != null)
                                 {
                                     NP.Basic(NVG.Settings, "Added Block : " + tmpInnerBlockData.info.uID);
-                                    NVG.BlockMeta.WriteBlock(tmpInnerBlockData);
+                                    NVG.BlockMeta.WriteBlock(tmpInnerBlockData, "Meta -> Line -> 183");
                                     exitFromInnerWhileLoop = true;
                                 }
                                 else

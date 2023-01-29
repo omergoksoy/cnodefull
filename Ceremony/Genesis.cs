@@ -63,7 +63,7 @@ namespace Notus.Ceremony
 
             ControlAllBlockSign();
 
-            NVG.BlockMeta.WriteBlock(genesisBlock);
+            NVG.BlockMeta.WriteBlock(genesisBlock, "Genesis -> Line -> 66");
 
             NP.Warning("Air Drop Contract Block Deactivated");
             /*

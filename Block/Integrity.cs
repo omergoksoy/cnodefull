@@ -343,7 +343,7 @@ namespace Notus.Block
 
                         //Notus.TGZArchiver.ClearBlocks();
                         Notus.Archive.ClearBlocks(NVG.Settings);
-                        NVG.BlockMeta.WriteBlock(signBlock[tmpBiggestSign]);
+                        NVG.BlockMeta.WriteBlock(signBlock[tmpBiggestSign], "Integrity -> Line -> 346");
                         NP.Basic(NVG.Settings, "Added Block : " + signBlock[tmpBiggestSign].info.uID);
                         bool secondBlockAdded = false;
                         foreach (NVS.IpInfo? entry in signNode[tmpBiggestSign])
@@ -355,7 +355,7 @@ namespace Notus.Block
                                 if (tmpInnerBlockData != null)
                                 {
                                     NP.Basic(NVG.Settings, "Added Block : " + tmpInnerBlockData.info.uID);
-                                    NVG.BlockMeta.WriteBlock(tmpInnerBlockData);
+                                    NVG.BlockMeta.WriteBlock(tmpInnerBlockData, "Integrity -> Line -> 358");
                                     secondBlockAdded = true;
                                 }
                             }
@@ -499,11 +499,13 @@ namespace Notus.Block
                         tmpPrevStr
                     );
 
-                NVG.BlockMeta.WriteBlock(tmpGenesisBlock);
+                NVG.BlockMeta.WriteBlock(tmpGenesisBlock, "Replicant -> Line -> 502");
                 if (NVG.Settings.Layer == NVE.NetworkLayer.Layer1)
                 {
-                    NVG.BlockMeta.WriteBlock(tmpEmptyBlock);
+                    NVG.BlockMeta.WriteBlock(tmpEmptyBlock, "Replicant -> Line -> 505");
                 }
+                /*
+                */
                 NVG.Settings.GenesisCreated = true;
                 if (NVG.Settings.Layer == NVE.NetworkLayer.Layer1)
                 {

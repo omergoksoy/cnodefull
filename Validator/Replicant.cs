@@ -19,15 +19,15 @@ namespace Notus.Validator
             bool exitWhileLoop = false;
             while (exitWhileLoop == false)
             {
-                (bool NoError, Notus.Variable.Class.BlockData tmpBlockData) = 
+                (bool NoError, Notus.Variable.Class.BlockData tmpBlockData) =
                 Notus.Validator.Query.GetBlock(
-                    NodeAddress, BlockRowNo, 
+                    NodeAddress, BlockRowNo,
                     NVG.Settings.DebugMode,
                     NVG.Settings
                 );
                 if (NoError == true)
                 {
-                    NVG.BlockMeta.WriteBlock(tmpBlockData);
+                    NVG.BlockMeta.WriteBlock(tmpBlockData, "Replicant -> Line -> 30");
                     exitWhileLoop = true;
                     if (AssingToLastBlockVar == true)
                     {
@@ -123,8 +123,8 @@ namespace Notus.Validator
                     if (NVG.Settings.LastBlock.info.rowNo == MN_LastBlockRowNo)
                     {
                         Notus.Print.Basic(NVG.Settings, "Checking Block Height");
-                        Notus.Variable.Struct.LastBlockInfo? tmpLastBlockInfo = Notus.Validator.Query.GetLastBlockInfo(NodeAddress,NVG.Settings);
-                        if (tmpLastBlockInfo!=null)
+                        Notus.Variable.Struct.LastBlockInfo? tmpLastBlockInfo = Notus.Validator.Query.GetLastBlockInfo(NodeAddress, NVG.Settings);
+                        if (tmpLastBlockInfo != null)
                         {
                             if (MN_LastBlockRowNo == tmpLastBlockInfo.RowNo)
                             {

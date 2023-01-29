@@ -847,7 +847,7 @@ namespace Notus.Block
         //yeni blok hesaplanması tamamlandığı zaman buraya gelecek ve geçerli blok ise eklenecek.
         public void AddToChain(NVClass.BlockData NewBlock)
         {
-            NVG.BlockMeta.WriteBlock(NewBlock);
+            NVG.BlockMeta.WriteBlock(NewBlock, "Queue -> Line -> 850");
 
             string rawDataStr = NTT.RawCipherData2String(
                 NewBlock.cipher.data
