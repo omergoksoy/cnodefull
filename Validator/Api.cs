@@ -13,8 +13,6 @@ namespace Notus.Validator
 {
     public class Api : IDisposable
     {
-
-        private Notus.Data.KeyValue BlockDbObj = new Notus.Data.KeyValue();
         private DateTime LastNtpTime = Notus.Variable.Constant.DefaultTime;
         private TimeSpan NtpTimeDifference;
         private bool NodeTimeAfterNtpTime = false;      // time difference before or after NTP Server
@@ -93,12 +91,6 @@ namespace Notus.Validator
                 return;
             }
             PrepareExecuted = true;
-            BlockDbObj.SetSettings(new NVS.KeyValueSettings()
-            {
-                MemoryLimitCount = 1000,
-                Name = "blocks"
-            });
-
 
             if (NVG.Settings.Layer == NVE.NetworkLayer.Layer1)
             {
@@ -141,9 +133,6 @@ namespace Notus.Validator
                 }
             }
 
-
-            NVG.BlockMeta.Store(Obj_BlockData);
-
             //NP.Basic("Balance.Control Will Execute");
 
             // airdrop ise burada yapılan istekler veri tabanına kaydedilecek
@@ -185,8 +174,7 @@ namespace Notus.Validator
                 }
                 */
             }
-
-            BlockDbObj.Set(blockRowNoStr, JsonSerializer.Serialize(Obj_BlockData));
+            NVG.BlockMeta.WriteBlock(Obj_BlockData);
         }
 
         //layer -1 kontrolünü sağla
@@ -2884,14 +2872,6 @@ namespace Notus.Validator
                 try
                 {
                     NGF.Balance.Dispose();
-                }
-                catch { }
-            }
-            if (BlockDbObj != null)
-            {
-                try
-                {
-                    BlockDbObj.Dispose();
                 }
                 catch { }
             }

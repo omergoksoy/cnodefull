@@ -82,16 +82,22 @@ namespace Notus.Block
             }
         }
 
-        public void Store(NVClass.BlockData blockData)
-        {
-            Sign(blockData);
-            Prev(blockData);
-            Order(blockData);
-        }
-
         public void WriteBlock(NVClass.BlockData blockData)
         {
+            Console.WriteLine("Saving Block Data -> " + blockData.info.rowNo.ToString());
             blockDb.Set(blockData.info.uID, JsonSerializer.Serialize(blockData));
+
+            signDb.Set(blockData.info.rowNo.ToString(), blockData.sign);
+            if (blockData.info.rowNo > BiggestCountNumber_ForSign)
+                BiggestCountNumber_ForSign = blockData.info.rowNo;
+
+            prevDb.Set(blockData.info.rowNo.ToString(), blockData.prev);
+            if (blockData.info.rowNo > BiggestCountNumber_ForPrev)
+                BiggestCountNumber_ForPrev = blockData.info.rowNo;
+
+            orderDb.Set(blockData.info.rowNo.ToString(), blockData.info.uID);
+            if (blockData.info.rowNo > BiggestCountNumber_ForOrder)
+                BiggestCountNumber_ForOrder = blockData.info.rowNo;
         }
         public NVClass.BlockData? ReadBlock(string blockUid)
         {
@@ -175,7 +181,6 @@ namespace Notus.Block
                                 {
                                     NP.Basic(NVG.Settings, "Added Block : " + tmpInnerBlockData.info.uID);
                                     NVG.BlockMeta.WriteBlock(tmpInnerBlockData);
-                                    NVG.BlockMeta.Store(tmpInnerBlockData);
                                     exitFromInnerWhileLoop = true;
                                 }
                                 else
@@ -207,12 +212,6 @@ namespace Notus.Block
             return tmpResult;
 
         }
-        public void Order(NVClass.BlockData blockData)
-        {
-            orderDb.Set(blockData.info.rowNo.ToString(), blockData.info.uID);
-            if (blockData.info.rowNo > BiggestCountNumber_ForOrder)
-                BiggestCountNumber_ForOrder = blockData.info.rowNo;
-        }
 
         public string Sign(long blockRowNo)
         {
@@ -224,13 +223,6 @@ namespace Notus.Block
                 return string.Empty;
 
             return tmpResult;
-        }
-        public void Sign(NVClass.BlockData blockData)
-        {
-            signDb.Set(blockData.info.rowNo.ToString(), blockData.sign);
-
-            if (blockData.info.rowNo > BiggestCountNumber_ForSign)
-                BiggestCountNumber_ForSign = blockData.info.rowNo;
         }
 
         public string Prev(long blockRowNo)
@@ -244,13 +236,6 @@ namespace Notus.Block
                 return string.Empty;
 
             return tmpResult;
-        }
-        public void Prev(NVClass.BlockData blockData)
-        {
-            prevDb.Set(blockData.info.rowNo.ToString(), blockData.prev);
-
-            if (blockData.info.rowNo > BiggestCountNumber_ForPrev)
-                BiggestCountNumber_ForPrev = blockData.info.rowNo;
         }
 
         public NVS.CryptoTransferStatus Status(string blockUid)

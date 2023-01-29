@@ -500,11 +500,9 @@ namespace Notus.Block
                     );
 
                 NVG.BlockMeta.WriteBlock(tmpGenesisBlock);
-                NVG.BlockMeta.Store(tmpGenesisBlock);
                 if (NVG.Settings.Layer == NVE.NetworkLayer.Layer1)
                 {
                     NVG.BlockMeta.WriteBlock(tmpEmptyBlock);
-                    NVG.BlockMeta.Store(tmpEmptyBlock);
                 }
                 NVG.Settings.GenesisCreated = true;
                 if (NVG.Settings.Layer == NVE.NetworkLayer.Layer1)
