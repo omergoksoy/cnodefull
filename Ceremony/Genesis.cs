@@ -63,9 +63,10 @@ namespace Notus.Ceremony
             NP.Info("My Block Sign : " + BlockSignHash.Substring(0, 10) + "..." + BlockSignHash.Substring(BlockSignHash.Length - 10));
 
             ControlAllBlockSign();
-            Console.WriteLine(ND.ToLong(genesisBlock.info.time).ToString());
-            Console.WriteLine(genesisBlock.validator.count.First().Key);
-            //NVG.BlockMeta.Validator(peerStaringTime, NVG.Settings.Nodes.Queue[peerStaringTime].Wallet);
+            NVG.BlockMeta.Validator(
+                ND.ToLong(genesisBlock.info.time), 
+                genesisBlock.validator.count.First().Key
+            );
             NVG.BlockMeta.WriteBlock(genesisBlock, "Genesis -> Line -> 66");
 
             NP.Warning("Air Drop Contract Block Deactivated");
