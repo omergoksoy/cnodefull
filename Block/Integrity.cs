@@ -98,7 +98,7 @@ namespace Notus.Block
             }
 
             NP.Info("All Blocks Checked With Full Method");
-            return (NVE.BlockIntegrityStatus.NonValid, null);
+            return (tmpStatus, null);
         }
 
         // burası hızlı kontrol yapılan bölüm, eğer hata oluşursa tam kontrol bölümüne girecek
@@ -107,9 +107,8 @@ namespace Notus.Block
             Notus.Wallet.Fee.ClearFeeData(NVG.Settings.Network, NVG.Settings.Layer);
             var blockData = NVG.BlockMeta.ReadBlock(NVC.GenesisBlockUid);
             if (blockData == null)
-            {
                 return (NVE.BlockIntegrityStatus.GenesisNeed, null);
-            }
+
             long blockRownNo = 1;
             bool exitFromLoop = false;
             bool genesisExist = false;
@@ -371,14 +370,98 @@ namespace Notus.Block
             }
             return true;
         }
+        public void SyncAllBlockFromOtherNodes()
+        {
+            // önce diğer nodeların blok yükseklikleri kontrol edilecek
+            // sonra sırasıyla teker teker kontrol edilecek
+
+            /*
+                    {
+                        NP.Info("Checking From -> " + item.IpAddress);
+                        NVClass.BlockData? tmpInnerBlockData =
+                            Notus.Toolbox.Network.GetBlockFromNode(
+                                item.IpAddress,
+                                item.Port,
+                                1,
+                                NVG.Settings
+                            );
+
+                        if (tmpInnerBlockData != null)
+                        {
+                            if (signCount.ContainsKey(tmpInnerBlockData.sign) == false)
+                            {
+                                signNode.Add(tmpInnerBlockData.sign, new List<NVS.IpInfo>() { });
+                                signCount.Add(tmpInnerBlockData.sign, 0);
+                                signBlock.Add(tmpInnerBlockData.sign, tmpInnerBlockData);
+                            }
+                            signNode[tmpInnerBlockData.sign].Add(
+                                new NVS.IpInfo()
+                                {
+                                    IpAddress = item.IpAddress,
+                                    Port = item.Port
+                                }
+                            );
+                            signCount[tmpInnerBlockData.sign] = signCount[tmpInnerBlockData.sign] + 1;
+                        }
+                        else
+                        {
+                            NP.Danger("Error Happened While Trying To Get Genesis From Other Node");
+                            ND.SleepWithoutBlocking(100);
+                        }
+                    }
+                }
+            */
+            long blockRownNo = 1;
+            bool exitFromLoop = false;
+            bool genesisExist = false;
+            while (exitFromLoop == false)
+            {
+                bool checkBlockFromOtherNode = true;
+                NVClass.BlockData? ControlBlock = NVG.BlockMeta.ReadBlock(blockRownNo);
+                if (ControlBlock == null)
+                {
+                    Console.WriteLine("Last Block No [ null ]: " + blockRownNo.ToString());
+                    exitFromLoop = true;
+                }
+                else
+                {
+                    if (new Notus.Block.Generate().Verify(ControlBlock))
+                    {
+                        Console.WriteLine("Last Block No [ valid ]: " + blockRownNo.ToString());
+                        if (blockRownNo == 1)
+                        {
+                            NVG.Settings.Genesis = JsonSerializer.Deserialize<Notus.Variable.Genesis.GenesisBlockData>(
+                                System.Convert.FromBase64String(
+                                    ControlBlock.cipher.data
+                                )
+                            );
+
+                            genesisExist = true;
+                        }
+                        else
+                        {
+                            long prevBlockNo = blockRownNo - 1;
+                            NVClass.BlockData? PrevBlock = NVG.BlockMeta.ReadBlock(prevBlockNo);
+
+                            if (string.Equals(ControlBlock.prev, PrevBlock.info.uID + PrevBlock.sign) == false)
+                            {
+
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //return (NVE.BlockIntegrityStatus.CheckAgain, null);
+                    }
+                    blockRownNo++;
+                }
+            }
+        }
         public void GetLastBlock()
         {
-            DateTime baslangic = DateTime.Now;
-
             NVE.BlockIntegrityStatus Val_Status = NVE.BlockIntegrityStatus.CheckAgain;
             NVClass.BlockData? LastBlock = new NVClass.BlockData();
             bool exitInnerLoop = false;
-            baslangic = DateTime.Now;
             while (exitInnerLoop == false)
             {
                 (
@@ -392,6 +475,11 @@ namespace Notus.Block
                     LastBlock = tmpLastBlock;
                     exitInnerLoop = true;
                 }
+                else
+                {
+                    SyncAllBlockFromOtherNodes();
+                }
+                
             }
 
             if (Val_Status == NVE.BlockIntegrityStatus.GenesisNeed)
