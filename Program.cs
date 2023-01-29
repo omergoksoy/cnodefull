@@ -44,7 +44,8 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     NVG.Settings.NodeClosing = true;
     e.Cancel = true;
     Console.WriteLine();
-    NGF.CloseMyNode();
+    NGF.CloseMyNode(false);
+    System.Environment.Exit(0);
 }
 
 

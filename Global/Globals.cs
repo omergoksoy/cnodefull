@@ -380,9 +380,9 @@ namespace Notus.Variable
                     return;
                 if (NVG.Settings.SyncBlockIsDone == false)
                     return;
-                CloseMyNode();
+                CloseMyNode(true);
             }
-            public static void CloseMyNode()
+            public static void CloseMyNode(bool triggerExit)
             {
                 NP.Warning(NVG.Settings, "Please Wait While Node Terminating");
                 if (NVG.Settings.CommEstablished == true)
@@ -391,14 +391,15 @@ namespace Notus.Variable
                     {
                         SendKillMessage();
                     }
-                    Console.WriteLine(NVG.Settings.ClosingCompleted);
                     while (NVG.Settings.ClosingCompleted == false)
                     {
                         Thread.Sleep(10);
                     }
-                    Console.WriteLine("Exit From While Loop");
                 }
-                Environment.Exit(0);
+                if (triggerExit == true)
+                {
+                    System.Environment.Exit(0);
+                }
             }
             public static void GetUtcTimeFromNode(int howManySeconds, bool beginingRoutine)
             {

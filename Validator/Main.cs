@@ -540,7 +540,7 @@ namespace Notus.Validator
                     if (NVC.MinimumNodeCount > NVG.OnlineNodeCount)
                     {
                         NP.Warning("Closing The Node Because There Are Not Enough Nodes");
-                        NGF.CloseMyNode();
+                        NGF.CloseMyNode(true);
                     }
                     if (prepareNextQueue == false)
                     {
@@ -698,7 +698,7 @@ namespace Notus.Validator
                             if (NVC.MinimumNodeCount > NVG.OnlineNodeCount)
                             {
                                 NP.Warning("Closing The Node Because There Are Not Enough Nodes");
-                                NGF.CloseMyNode();
+                                NGF.CloseMyNode(true);
                             }
                             else
                             {
