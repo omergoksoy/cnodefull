@@ -928,7 +928,10 @@ namespace Notus.Validator
                     else
                     {
                         ProcessBlock_PrintSection(blockData, blockSource);
-                        NP.Warning("We Already Processed The Block -> [ " + blockData.info.rowNo.ToString() + " ]");
+                        if (NVG.Settings.SyncBlockIsDone == true)
+                        {
+                            NP.Warning("We Already Processed The Block -> [ " + blockData.info.rowNo.ToString() + " ]");
+                        }
                         return false;
                     }
                 }
