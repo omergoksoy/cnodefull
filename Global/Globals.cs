@@ -245,20 +245,24 @@ namespace Notus.Variable
                         if (entry.Value.Status == NVS.NodeStatus.Online)
                         {
                             NP.Warning(NVG.Settings, "Sending Kill Message To -> " + entry.Value.IP.Wallet);
-                            SendMessage(entry.Value.IP.IpAddress,
-                                entry.Value.IP.Port,
-                                "<kill>" +
-                                    Settings.Nodes.My.IP.Wallet +
-                                    NVC.Delimeter +
-                                    nowUtcValue.ToString() +
-                                    NVC.Delimeter +
-                                    controlSignForKillMsg +
-                                "</kill>",
-                                entry.Key
-                            );
+                            Task.Run(() =>
+                            {
+                                SendMessage(entry.Value.IP.IpAddress,
+                                    entry.Value.IP.Port,
+                                    "<kill>" +
+                                        Settings.Nodes.My.IP.Wallet +
+                                        NVC.Delimeter +
+                                        nowUtcValue.ToString() +
+                                        NVC.Delimeter +
+                                        controlSignForKillMsg +
+                                    "</kill>",
+                                    entry.Key
+                                );
+                            });
                         }
                     }
                 }
+                Thread.Sleep(OnlineNodeCount * 1000);
                 NVG.Settings.PeerManager.RemoveAll();
                 Settings.ClosingCompleted = true;
             }
