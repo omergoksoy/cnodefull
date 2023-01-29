@@ -387,7 +387,10 @@ namespace Notus.Variable
                 NP.Warning(NVG.Settings, "Please Wait While Node Terminating");
                 if (NVG.Settings.CommEstablished == true)
                 {
-                    SendKillMessage();
+                    if (NVG.Settings.ClosingCompleted == false)
+                    {
+                        SendKillMessage();
+                    }
                     Console.WriteLine(NVG.Settings.ClosingCompleted);
                     while (NVG.Settings.ClosingCompleted == false)
                     {
