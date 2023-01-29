@@ -133,8 +133,6 @@ namespace Notus.Validator
                 }
             }
 
-            //NP.Basic("Balance.Control Will Execute");
-
             // airdrop ise burada yapılan istekler veri tabanına kaydedilecek
             NVG.Settings.Airdrop.Process(Obj_BlockData);
 
@@ -174,7 +172,10 @@ namespace Notus.Validator
                 }
                 */
             }
-            NVG.BlockMeta.WriteBlock(Obj_BlockData);
+            if (blockSource != 1)
+            {
+                NVG.BlockMeta.WriteBlock(Obj_BlockData);
+            }
         }
 
         //layer -1 kontrolünü sağla
