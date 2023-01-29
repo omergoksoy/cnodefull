@@ -140,6 +140,14 @@ namespace Notus.Block
             orderDb.Set(blockData.info.rowNo.ToString(), blockData.info.uID);
             if (blockData.info.rowNo > BiggestCountNumber_ForOrder)
                 BiggestCountNumber_ForOrder = blockData.info.rowNo;
+
+
+            ilk aşamada yapılacak işlem
+            Her 100 blokta veya belirlenen sayıdaki blokta 1 defa özet bloğu oluşturulsun.
+            
+
+            bu işlem ikinci aşamada yapılacak bir işlem
+            ayrıca günlük ödül dağıtım bloğu burada devre girsin
         }
         public NVClass.BlockData? ReadBlock(string blockUid)
         {
