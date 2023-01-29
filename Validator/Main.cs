@@ -279,7 +279,6 @@ namespace Notus.Validator
                     for (int innerCount = 0; innerCount < incomeMsgList.Count(); innerCount++)
                     {
                         string tmpMessage = incomeMsgList[innerCount];
-                        NP.Basic("incomeMessage [NVG.Settings.PeerManager] : " + incomeMessage);
                         if (tmpMessage.Length > 0)
                         {
                             if (tmpMessage.Substring(tmpMessage.Length - 1) != ">")
