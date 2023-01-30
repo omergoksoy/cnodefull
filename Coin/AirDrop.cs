@@ -62,6 +62,9 @@ namespace Notus.Coin
 
                 if (RequestList[ReceiverWalletKey].Count >= NVC.AirDropVolumeCount)
                 {
+                    Console.WriteLine("Limit Exceed Wallet -> " + ReceiverWalletKey);
+                    Console.WriteLine(JsonSerializer.Serialize(RequestList[ReceiverWalletKey]));
+                    Console.WriteLine("-----------------------------------------------------");
                     LimitDb.Set(ReceiverWalletKey, JsonSerializer.Serialize(RequestList[ReceiverWalletKey]));
                     return true;
                 }
