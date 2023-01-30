@@ -213,11 +213,12 @@ namespace Notus.Validator
         }
         private void StartExecuteDistribiton(string incomeMessage, string messageResponse)
         {
+            //Console.WriteLine("Distribution Temporarily Disabled");
+            //return;
             Console.WriteLine("StartExecuteDistribiton : " + incomeMessage);
 
             if (string.Equals(messageResponse, "distribute") != true)
             {
-                return;
             }
 
             NVS.HttpRequestDetails? tmpIncomeData =

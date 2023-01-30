@@ -823,7 +823,7 @@ namespace Notus.Block
         public void RemoveFromDb(string dbKey)
         {
             kvPoolDb.Remove(dbKey);
-            if (NVG.Settings.SyncBlockIsDone == true)
+            //if (NVG.Settings.SyncBlockIsDone == true)
                 Console.WriteLine("Remove From Queue : " + dbKey);
         }
         public void RemoveTempPoolList()
@@ -961,6 +961,8 @@ namespace Notus.Block
         }
         public void Reset()
         {
+            Console.WriteLine("Queue reset -> Queue.cs -> Line 964");
+
             Notus.Archive.ClearBlocks(NVG.Settings);
             tempRemovePoolList.Clear();
             kvPoolDb.Clear();
