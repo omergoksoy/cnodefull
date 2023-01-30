@@ -231,6 +231,10 @@ namespace Notus.Block
                                         if (TempWalletList.ContainsKey(tmpEntry.Key) == false)
                                         {
                                             string airdropReceiver = tmpEntry.Key;
+                                            /*
+                                            
+                                            LİMİT KONTROLÜ API ENTRY KISMINDA YAPILDIĞI İÇİN BURADA YAPILMIYOR
+
                                             if (NVG.Settings.Airdrop.LimitExceeded(airdropReceiver) == true)
                                             {
                                                 addToList = false;
@@ -255,6 +259,8 @@ namespace Notus.Block
                                             }
                                             else
                                             {
+                                            }
+                                            */
                                                 string airdropTxUid = string.Empty;
                                                 foreach (var tmpInnerEntry in tmpBlockCipherData.In)
                                                 {
@@ -274,7 +280,6 @@ namespace Notus.Block
                                                     Console.WriteLine("Not Added To List -> Line 284");
                                                     addToList = false;
                                                 }
-                                            }
                                         }
                                         else
                                         {
