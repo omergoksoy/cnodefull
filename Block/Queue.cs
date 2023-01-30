@@ -249,7 +249,7 @@ namespace Notus.Block
                                                 txQueueList.TryRemove(tmpTxUid, out _);
 
                                                 //işlem tekrar gelmemesi için veri tabanından siliniyor
-                                                RemoveFromDb(tmpTxUid);
+                                                RemoveFromDb(tmpTxUid, "NVG.Settings.Airdrop.LimitExceeded(airdropReceiver)");
 
                                                 tmpTxUid = "";
                                             }
@@ -406,7 +406,7 @@ namespace Notus.Block
                                             // airdrop işlemi çok fazla olduğu için kuyruk listesinden çıkartılıyor
                                             txQueueList.TryRemove(incomeConvertData.TransferId, out _);
                                             //işlem tekrar gelmemesi için veri tabanından siliniyor
-                                            RemoveFromDb(incomeConvertData.TransferId);
+                                            RemoveFromDb(incomeConvertData.TransferId,"walletHaveEnoughCoinOrToken == false");
                                             tmpTxUid = "";
                                             addToList = false;
                                             //Console.WriteLine("addToList Status [021] : " + (addToList == true ? "TRUE" : "FALSE"));
@@ -820,18 +820,18 @@ namespace Notus.Block
             return BlockStruct;
         }
 
-        public void RemoveFromDb(string dbKey)
+        public void RemoveFromDb(string dbKey, string sender)
         {
             kvPoolDb.Remove(dbKey);
             //if (NVG.Settings.SyncBlockIsDone == true)
-                Console.WriteLine("Remove From Queue : " + dbKey);
+                Console.WriteLine("Remove From Queue : " + dbKey + " [ " + sender + " ]");
         }
         public void RemoveTempPoolList()
         {
             for (int i = 0; i < tempRemovePoolList.Count; i++)
             {
                 txQueueList.TryRemove(tempRemovePoolList[i], out _);
-                RemoveFromDb(tempRemovePoolList[i]);
+                RemoveFromDb(tempRemovePoolList[i], "RemoveTempPoolList()");
             }
             tempRemovePoolList.Clear();
         }
