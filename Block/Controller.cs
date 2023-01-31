@@ -14,7 +14,7 @@ namespace Notus.Block
     {
         public long LastBlockRowNo= 1;
         private long currentBlockNo= 1;
-        private int timerInterval = 3000;
+        private int timerInterval = 250;
         private bool timerRunning = false;
         private Notus.Threads.Timer UtcTimerObj = new Notus.Threads.Timer();
 
@@ -129,6 +129,14 @@ namespace Notus.Block
                     {
                         ControlBlock(currentBlockNo);
                         currentBlockNo++;
+                        if(Math.Abs(LastBlockRowNo - currentBlockNo) > 10)
+                        {
+                            UtcTimerObj.SetInterval(250);
+                        }
+                    }
+                    else
+                    {
+                        UtcTimerObj.SetInterval(3000);
                     }
                     timerRunning = false;
                 }
