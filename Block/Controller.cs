@@ -18,20 +18,32 @@ namespace Notus.Block
         private bool timerRunning = false;
         private Notus.Threads.Timer UtcTimerObj = new Notus.Threads.Timer();
 
+        private void ControlBlock(long rownNo)
+        {
+            string blockUid = NVG.BlockMeta.Order(rownNo);
+            string blockSign = NVG.BlockMeta.Sign(rownNo);
+            string blockPrev = NVG.BlockMeta.Prev(rownNo);
+
+            Console.WriteLine("blockUid : " + blockUid);
+            Console.WriteLine("blockSign : "  +blockSign);
+            Console.WriteLine("blockPrev : " + blockPrev);
+
+            var blockData = NVG.BlockMeta.ReadBlock(blockUid);
+            Console.WriteLine("blockData : " + JsonSerializer.Serialize(blockData));
+            Environment.Exit(0);
+        }
         public void Start()
         {
-            Console.WriteLine("Last Block Number : " + NVG.BlockController.LastBlockRowNo.ToString());
             if (NVG.Settings.LocalNode == true)
                 return;
-            NP.Success(NVG.Settings, "Block Controller Timer Has Started");
+
+            Console.WriteLine("Last Block Number : " + LastBlockRowNo.ToString());
             UtcTimerObj.Start(timerInterval, () =>
             {
                 if(timerRunning==false)
                 {
                     timerRunning = true;
-                    var currentBlock=NVG.BlockMeta.ReadBlock(currentBlockNo);
-
-
+                    ControlBlock(currentBlockNo);
                     timerRunning = false;
                 }
             }, true);  //TimerObj.Start(() =>            

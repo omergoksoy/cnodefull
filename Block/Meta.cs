@@ -263,7 +263,6 @@ namespace Notus.Block
             return tmpResult;
 
         }
-
         public string Sign(long blockRowNo)
         {
             string tmpResult = signDb.Get(blockRowNo.ToString());
