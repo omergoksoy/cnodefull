@@ -16,8 +16,6 @@ namespace Notus.Block
 {
     public class Meta : IDisposable
     {
-        private bool SubTimerIsRunning = false;
-        private NT.Timer SubTimer = new NT.Timer();
         private Notus.Data.KeyValue validatorDb = new();
         
         private Notus.Data.KeyValue blockDb = new();
@@ -142,6 +140,7 @@ namespace Notus.Block
                 BiggestCountNumber_ForOrder = blockData.info.rowNo;
 
 
+            NVG.BlockController.LastBlockRowNo = blockData.info.rowNo;
 
             /*
             ilk aşamada yapılacak işlem
@@ -332,19 +331,6 @@ namespace Notus.Block
         {
             statusDb.Set(blockUid, JsonSerializer.Serialize(statusCode));
         }
-
-        public void StartBlockSyncTimer()
-        {
-            SubTimer.Start(3000,() =>
-            {
-                if (SubTimerIsRunning == false)
-                {
-                    SubTimerIsRunning = true;
-
-                    SubTimerIsRunning = false;
-                }
-            });
-        }
         public void Start()
         {
             statusDb.SetSettings(new NVS.KeyValueSettings()
@@ -399,11 +385,6 @@ namespace Notus.Block
         }
         public void Dispose()
         {
-            try
-            {
-                SubTimer.Dispose();
-            }
-            catch { }
 
             try
             {

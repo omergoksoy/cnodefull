@@ -32,7 +32,6 @@ namespace Notus.Validator
         private int WrongBlockCount = 0;
 
         private Notus.Validator.Register ValidatorRegisterObj = new Notus.Validator.Register();
-        private Notus.Sync.Validator ValidatorCountObj = new Notus.Sync.Validator();
         private Notus.Sync.Time TimeSyncObj = new Notus.Sync.Time();
         private Notus.Sync.Date NtpDateSyncObj = new Notus.Sync.Date();
         private Notus.Reward.Block RewardBlockObj = new Notus.Reward.Block();
@@ -506,7 +505,7 @@ namespace Notus.Validator
                 ValidatorQueueObj.StartingPing();
             }
 
-            NVG.BlockMeta.StartBlockSyncTimer();
+            NVG.BlockController.Start();
 
             while (
                 tmpExitMainLoop == false &&

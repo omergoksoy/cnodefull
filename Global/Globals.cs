@@ -67,10 +67,12 @@ namespace Notus.Variable
         public static ConcurrentDictionary<string, NVS.NodeQueueInfo> NodeList { get; set; }
         public static Notus.Globals.Variable.Settings Settings { get; set; }
         public static Notus.Block.Meta BlockMeta { get; set; }
+        public static Notus.Block.Controller BlockController { get; set; }
         public static Notus.Transaction.Pool TxPool { get; set; }
         static Globals()
         {
             BlockMeta = new Notus.Block.Meta();
+            BlockController = new Notus.Block.Controller();
             TxPool = new Notus.Transaction.Pool();
 
             OtherValidatorSelectedMe = false;
