@@ -124,7 +124,7 @@ namespace Notus.Block
                 if(timerRunning==false)
                 {
                     timerRunning = true;
-                    if(currentBlockNo> LastBlockRowNo)
+                    if(LastBlockRowNo>currentBlockNo)
                     {
                         ControlBlock(currentBlockNo);
                         currentBlockNo++;
