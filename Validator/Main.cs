@@ -505,6 +505,11 @@ namespace Notus.Validator
                 ValidatorQueueObj.StartingPing();
             }
 
+            try
+            {
+                NVG.BlockController.LastBlockRowNo = NVG.Settings.LastBlock.info.rowNo;
+            }
+            catch { }
             NVG.BlockController.Start();
 
             while (
