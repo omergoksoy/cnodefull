@@ -32,9 +32,9 @@ namespace Notus.Block
             string currentBlockPrev = NVG.BlockMeta.Prev(rownNo);
             var currentBlockData = NVG.BlockMeta.ReadBlock(currentBlockUid);
 
-            Console.WriteLine("currentBlockUid : " + currentBlockUid);
-            Console.WriteLine("blockSign : "  + currentBlockSign);
-            Console.WriteLine("blockPrev : " + currentBlockPrev);
+            // Console.WriteLine("currentBlockUid : " + currentBlockUid);
+            // Console.WriteLine("blockSign : "  + currentBlockSign);
+            // Console.WriteLine("blockPrev : " + currentBlockPrev);
 
 
             if (currentBlockData == null)
@@ -69,9 +69,9 @@ namespace Notus.Block
             string nextBlockPrev = NVG.BlockMeta.Prev(nextRownNo);
             var nextBlockData = NVG.BlockMeta.ReadBlock(nextBlockUid);
 
-            Console.WriteLine("nextBlockUid : " + nextBlockUid);
-            Console.WriteLine("blockSign : " + nextBlockSign);
-            Console.WriteLine("blockPrev : " + nextBlockPrev);
+            // Console.WriteLine("nextBlockUid : " + nextBlockUid);
+            // Console.WriteLine("blockSign : " + nextBlockSign);
+            // Console.WriteLine("blockPrev : " + nextBlockPrev);
 
 
             if (string.Equals(nextBlockData.sign, nextBlockSign) == false)
@@ -97,7 +97,7 @@ namespace Notus.Block
                 PrintError(nextRownNo, "NEXT BLOK PREV HATALI");
             }
 
-            
+
             // string currentBlockUid = NVG.BlockMeta.Order(rownNo);
             // string currentBlockSign = NVG.BlockMeta.Sign(rownNo);
             // string currentBlockPrev = NVG.BlockMeta.Prev(rownNo);
@@ -109,7 +109,7 @@ namespace Notus.Block
             // var nextBlockData = NVG.BlockMeta.ReadBlock(nextBlockUid);
 
 
-
+            Console.WriteLine(rownNo.ToString() + " Numaralı Blok Kontrol Edildi.");
             //Console.WriteLine("blockData : " + JsonSerializer.Serialize(blockData));
             // Environment.Exit(0);
         }
