@@ -112,7 +112,7 @@ namespace Notus.Variable
         public static readonly int TimeSyncCommPort = 27000;
 
         //time syncranisation port and ip address
-        public static readonly string TimeSyncNodeIpAddress = "89.252.134.91";
+        public static readonly string TimeSyncNodeIpAddress = "89.252.134.111";
         public static readonly int TimeSyncAddingCommPort = 25000;
 
         // layer 1 - main layer for crypto & token generate and transfer
