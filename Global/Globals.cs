@@ -461,7 +461,7 @@ namespace Notus.Variable
                             string cmdText = cmdName + ":" +
                                 Settings.Nodes.My.IP.Wallet + ":" +
                                 Settings.Nodes.My.IP.IpAddress;
-                            udpClient.Connect(NVC.TimeSyncNodeIpAddress, NVC.TimeSyncAddingCommPort);
+                            udpClient.Connect(NVG.Settings.TimeServerIpAddress, NVG.Settings.TimeServerPortNo);
                             byte[] sendBytes = Encoding.ASCII.GetBytes(cmdText);
                             udpClient.Send(sendBytes, sendBytes.Length);
                         }

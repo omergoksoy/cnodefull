@@ -83,14 +83,13 @@ namespace Notus.Variable
         private static readonly int DefaultPortNo = 5000;
         public static readonly int DefaultChunkSize = 2048;
 
-        // hiç bir tanımlamanın olmadığı yerde kullanılacak olan airdrop miktarı
+        // default airdrop volume
         public static readonly string AirDropVolume_Default = "2000000000";
 
-        // peşpeşe alınabilecek airdrop sınırı
-        //public static readonly int AirDropVolumeCount = 2;  //omergoksoy();
-        public static readonly int AirDropVolumeCount = 10;  //omergoksoy();
+        // daily airdrop limit count
+        public static readonly int AirDropVolumeCount = 10;
 
-        // alınan airdrop ne zaman silinecek
+        // airdrop time limit
         public static readonly int AirDropTimeLimit = 24;
         
 
@@ -111,10 +110,8 @@ namespace Notus.Variable
         //özel iletişim için kullanılan port numarası ( gossip yapılacak hat )
         public static readonly int TimeSyncCommPort = 27000;
 
-        //zaman senkronizasyonu için kullanılan ip ve port
-        //public static readonly string TimeSyncNodeIpAddress = "89.252.134.111";
+        //time syncranisation port and ip address
         public static readonly string TimeSyncNodeIpAddress = "89.252.134.91";
-
         public static readonly int TimeSyncAddingCommPort = 25000;
 
         // layer 1 - main layer for crypto & token generate and transfer
@@ -349,15 +346,11 @@ namespace Notus.Variable
             public const string ApplicationXml = "application/xml";
         }
 
-
         public class MempoolNameList
         {
             public const string TokenStructList = "token_detail";
             public const string TokenTagList = "token_tag_list";
             public const string TokenTagListForLock = "lock_token_tag_name";
         }
-
-
-
     }
 }

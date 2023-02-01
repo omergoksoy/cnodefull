@@ -4,9 +4,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using NGF = Notus.Variable.Globals.Functions;
-using NVG = Notus.Variable.Globals;
 using NVC = Notus.Variable.Constant;
 using NVE = Notus.Variable.Enum;
+using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
 namespace Notus.Validator
 {
@@ -1108,7 +1108,7 @@ namespace Notus.Validator
             if (NVG.Settings.DevelopmentNode == true)
             {
                 NVG.Settings.Network = NVE.NetworkType.DevNet;
-                NVG.Settings.NodeWallet.WalletKey = NVC.SingleWalletPrefix+ nodeObj.Wallet.Key.Substring(NVC.SingleWalletPrefix.Length);
+                NVG.Settings.NodeWallet.WalletKey = NVC.SingleWalletPrefix + nodeObj.Wallet.Key.Substring(NVC.SingleWalletPrefix.Length);
             }
             NVG.Settings.Port = nodeObj.Layer.Port;
             NVG.Settings.EncryptKey = new Notus.Hash().CommonHash("sha512", NVG.Settings.NodeWallet.WalletKey);
@@ -1119,13 +1119,27 @@ namespace Notus.Validator
             NVG.Settings.Nodes.My.IP.Wallet = NVG.Settings.NodeWallet.WalletKey;
             NVG.Settings.Nodes.My.PrivateKey = nodeObj.Wallet.PrivateKey;
             NVG.Settings.Nodes.My.PublicKey = nodeObj.Wallet.PublicKey;
+
+
+            NVG.Settings.TimeServerIpAddress = MP_NodeList.Get("TimeSyncNodeIpAddress", "");
+            if (NVG.Settings.TimeServerIpAddress.Length == 0)
+            {
+                NVG.Settings.TimeServerIpAddress = NVC.TimeSyncNodeIpAddress;
+                MP_NodeList.Set("TimeSyncNodeIpAddress", NVC.TimeSyncNodeIpAddress);
+            }
+            NVG.Settings.TimeServerPortNo = int.Parse(MP_NodeList.Get("TimeSyncNodePortNo", "0"));
+            if (NVG.Settings.TimeServerPortNo == 0)
+            {
+                NVG.Settings.TimeServerPortNo = NVC.TimeSyncAddingCommPort;
+                MP_NodeList.Set("TimeSyncNodePortNo", NVG.Settings.TimeServerPortNo.ToString());
+            }
         }
         public void Start()
         {
             Console.ResetColor();
             MP_NodeList = new Notus.Mempool(NVC.MemoryPoolName["MainNodeWalletConfig"]);
             MP_NodeList.AsyncActive = false;
-            //MP_NodeList.Clear();
+            //MP_NodeList.Clear();            
             string tmpWalletStr = MP_NodeList.Get("Node_WalletKey", "");
             string tmpPublicKeyStr = MP_NodeList.Get("Node_PublicKey", "");
             string tmpPrivateKeyStr = MP_NodeList.Get("Node_PrivateKey", "");
