@@ -283,6 +283,10 @@ namespace Notus.Block
 
             return tmpResult;
         }
+        private string GetStateKey(string chainId, long rowNo)
+        {
+            return chainId + ":" + rowNo.ToString().PadLeft(30, '0');
+        }
         public string State(ulong blockTime)
         {
             string tmpResult = stateDb.Get(blockTime.ToString());
@@ -294,20 +298,33 @@ namespace Notus.Block
 
             return tmpResult;
         }
+        public void State(string chainId, NVS.NodeStateStruct currentState)
+        {
+            string allSignStr = JsonSerializer.Serialize(currentState);
+
+            // current state
+            stateDb.Set(chainId, allSignStr);
+
+            // every time "NVC.NodeValidationModCount" mod is Zero
+            stateDb.Set(GetStateKey(chainId, currentState.rowNo), allSignStr);
+
+            string stateText = "<state>" + allSignStr + "</state>";
+            Console.WriteLine(stateText);
+            /*
+            foreach (var validatorItem in NVG.NodeList)
+            {
+                NVG.Settings.PeerManager.SendWithTask(validatorItem.Value, stateText);
+            }
+            */
+        }
         public void State(string chainId, long rowNo, string blockUid, string sign)
         {
-            string allSignStr = JsonSerializer.Serialize(new NVS.NodeStateStruct()
+            State(chainId, new NVS.NodeStateStruct()
             {
                 rowNo = rowNo,
                 blockUid = blockUid,
                 sign = sign
             });
-
-            // current state
-            //stateDb.Set(chainId, allSignStr);
-
-            Console.WriteLine(chainId + ":" +rowNo.ToString().PadLeft(30,'0') + " -> " + allSignStr);
-            //stateDb.Set(chainId + ":" +rowNo.ToString().PadLeft(30,'0'), allSignStr);
         }
         public NVS.NodeStateStruct? State(string chainId)
         {
