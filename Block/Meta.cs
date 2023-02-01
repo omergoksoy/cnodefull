@@ -302,7 +302,12 @@ namespace Notus.Block
                 blockUid = blockUid,
                 sign = sign
             });
-            stateDb.Set(chainId, allSignStr);
+
+            // current state
+            //stateDb.Set(chainId, allSignStr);
+
+            Console.WriteLine(chainId + ":" +rowNo.ToString().PadLeft(30,'0') + " -> " + allSignStr);
+            //stateDb.Set(chainId + ":" +rowNo.ToString().PadLeft(30,'0'), allSignStr);
         }
         public NVS.NodeStateStruct? State(string chainId)
         {
