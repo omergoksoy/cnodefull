@@ -492,6 +492,7 @@ namespace Notus.Variable.Struct
     }
     public class NodeQueueInfo
     {
+        public string ChainId { get; set; }
         public string PublicKey { get; set; }
         public string PrivateKey { get; set; }
         public string HexKey { get; set; }

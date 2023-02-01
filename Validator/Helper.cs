@@ -1,5 +1,4 @@
-﻿using NVE = Notus.Variable.Enum;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text.Json;
 using NCH = Notus.Communication.Helper;
 using ND = Notus.Date;
@@ -7,6 +6,7 @@ using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
 using NVC = Notus.Variable.Constant;
 using NVD = Notus.Validator.Date;
+using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVS = Notus.Variable.Struct;
@@ -31,6 +31,7 @@ namespace Notus.Validator
                 },
                 JoinTime = 0,
                 PublicKey = NVG.Settings.Nodes.My.PublicKey,
+                ChainId = NVG.Settings.Nodes.My.ChainId
             }, true);
         }
         public static void GenerateNodeInfoListViaValidatorList()
@@ -53,7 +54,8 @@ namespace Notus.Validator
                             Wallet = "#"
                         },
                         JoinTime = 0,
-                        PublicKey = ""
+                        PublicKey = "",
+                        ChainId = ""
                     }, false);
                 }
             }

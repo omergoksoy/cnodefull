@@ -32,7 +32,7 @@ namespace Notus.Validator
             //NGF.BlockQueue.Start();
 
             NP.PrintOnScreenTimer();
-            NP.Info("Chain Id : " + NVG.Settings.ChainId);
+            NP.Info("Chain Id : " + NVG.Settings.Nodes.My.ChainId);
             if (NVG.Settings.LocalNode == true)
             {
                 NP.Info(NVG.Settings, "LocalNode Activated");

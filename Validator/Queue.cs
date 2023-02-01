@@ -169,6 +169,14 @@ namespace Notus.Validator
         }
         public string ProcessIncomeData(string incomeData)
         {
+            if (NTT.CheckXmlTag(incomeData, "nodeState"))
+            {
+                // burada gelen state ve public imza ile kontrol edilecek ve onaylanırsa
+                // kayıt altına alınacak
+                incomeData = NTT.GetPureText(incomeData, "nodeState");
+                control_noktasi();
+            }
+
             if (NTT.CheckXmlTag(incomeData, "requestId"))
             {
                 incomeData = NTT.GetPureText(incomeData, "requestId");

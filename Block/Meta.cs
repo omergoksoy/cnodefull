@@ -308,7 +308,11 @@ namespace Notus.Block
             // every time "NVC.NodeValidationModCount" mod is Zero
             stateDb.Set(GetStateKey(chainId, currentState.rowNo), allSignStr);
 
-            string stateText = "<state>" + allSignStr + "</state>";
+            // burada node kendi priate adresi ile imzalayıp
+            // diğer node'a imzalı halini gönderecek
+            // kayıt altına alınacak
+            control_noktasi();
+            string stateText = "<nodeState>" + allSignStr + "</nodeState>";
             Console.WriteLine(stateText);
             /*
             foreach (var validatorItem in NVG.NodeList)

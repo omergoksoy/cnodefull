@@ -104,9 +104,10 @@ namespace Notus.Block
             long modNo = rownNo % NVC.NodeValidationModCount;
             if (modNo == 0)
             {
+                
                 //Console.WriteLine("Send Current Block Info To Other Validators");
                 NVG.BlockMeta.State(
-                    NVG.Settings.ChainId,
+                    NVG.Settings.Nodes.My.ChainId,
                     rownNo,
                     currentBlockUid,
                     currentBlockSign

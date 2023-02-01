@@ -109,6 +109,7 @@ namespace Notus.Variable
                 {
                     My = new Struct.NodeQueueInfo()
                     {
+                        ChainId = "",
                         PrivateKey = "",
                         PublicKey = "",
                         Begin = 0,
