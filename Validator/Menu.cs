@@ -1127,11 +1127,11 @@ namespace Notus.Validator
                 NVG.Settings.TimeServerIpAddress = NVC.TimeSyncNodeIpAddress;
                 MP_NodeList.Set("TimeSyncNodeIpAddress", NVC.TimeSyncNodeIpAddress, true);
             }
-            NVG.Settings.TimeServerPortNo = int.Parse(MP_NodeList.Get("TimeSyncNodePortNo", "0", true));
+            NVG.Settings.TimeServerPortNo = int.Parse(MP_NodeList.Get("TimeSyncNodePortNo", "0"));
             if (NVG.Settings.TimeServerPortNo == 0)
             {
                 NVG.Settings.TimeServerPortNo = NVC.TimeSyncAddingCommPort;
-                MP_NodeList.Set("TimeSyncNodePortNo", NVG.Settings.TimeServerPortNo.ToString());
+                MP_NodeList.Set("TimeSyncNodePortNo", NVG.Settings.TimeServerPortNo.ToString(), true);
             }
         }
         public void Start()
