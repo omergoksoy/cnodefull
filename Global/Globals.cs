@@ -452,6 +452,7 @@ namespace Notus.Variable
             }
             public static void SendMessageToTimeServer(string cmdName, int howManyMsg)
             {
+                Console.WriteLine("UDP Mesaj gonderiliyor");
                 using (UdpClient udpClient = new UdpClient())
                 {
                     for (int i = 0; i < howManyMsg; i++)
