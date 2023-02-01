@@ -387,7 +387,6 @@ namespace Notus.Variable.Struct
         public bool InfoMode { get; set; }
         public bool LocalMode { get; set; }
         public bool DevelopmentMode { get; set; }
-        public string ChainId { get; set; }
     }
 
     public class ConnectionDetailStruct
