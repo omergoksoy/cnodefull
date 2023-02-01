@@ -102,7 +102,10 @@ namespace Notus.Block
 
 
             long modNo = rownNo % NVC.NodeValidationModCount;
-            Console.WriteLine(modNo.ToString() + " - " + rownNo.ToString());
+            if (modNo == 0)
+            {
+                Console.WriteLine("Send Current Block Info To Other Validators");
+            }
 
 
             // string currentBlockUid = NVG.BlockMeta.Order(rownNo);
