@@ -33,6 +33,7 @@ namespace Notus.Variable
         public static readonly ulong NodeStartingSync = 20;
         public static readonly ulong NodeSortFrequency = 2;
         public static readonly int NodePingErrorLimit = 2;
+        public static readonly long NodeValidationModCount = 50;
 
         // wallet constant
         public static readonly int WalletEncodeTextLength = 36;

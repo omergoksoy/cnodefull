@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
 using NVG = Notus.Variable.Globals;
+using NVC = Notus.Variable.Constant;
 using NVS = Notus.Variable.Struct;
 namespace Notus.Block
 {
@@ -98,6 +99,10 @@ namespace Notus.Block
             {
                 PrintError(nextRownNo, "NEXT BLOK PREV HATALI");
             }
+
+
+            long modNo = rownNo % NVC.NodeValidationModCount;
+            Console.WriteLine(modNo.ToString() + " - " + rownNo.ToString());
 
 
             // string currentBlockUid = NVG.BlockMeta.Order(rownNo);
