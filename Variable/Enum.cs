@@ -27,6 +27,7 @@ namespace Notus.Variable.Enum
         StatusList,
         SignList,
         ValidatorOrderList,
+        ValidatorStateList,
         PreviouseList
     }
 

@@ -51,6 +51,7 @@ namespace Notus.Globals.Variable
         public bool EncryptMode { get; set; }
         public string EncryptKey { get; set; }
         public string HashSalt { get; set; }
+        public string ChainId { get; set; }
         public string TimeServerIpAddress { get; set; }
         public int TimeServerPortNo { get; set; }
 

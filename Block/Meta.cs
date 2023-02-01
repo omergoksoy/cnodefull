@@ -1,23 +1,24 @@
-﻿using ND = Notus.Date;
-using NVD = Notus.Validator.Date;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using ND = Notus.Date;
 using NP = Notus.Print;
 using NT = Notus.Threads;
 using NTN = Notus.Toolbox.Network;
 using NVC = Notus.Variable.Constant;
-using NVH = Notus.Validator.Helper;
 using NVClass = Notus.Variable.Class;
+using NVD = Notus.Validator.Date;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
+using NVH = Notus.Validator.Helper;
 using NVS = Notus.Variable.Struct;
 namespace Notus.Block
 {
     public class Meta : IDisposable
     {
+        private Notus.Data.KeyValue stateDb = new();
         private Notus.Data.KeyValue validatorDb = new();
-        
+
         private Notus.Data.KeyValue blockDb = new();
 
         private Notus.Data.KeyValue typeDb = new();
@@ -70,6 +71,10 @@ namespace Notus.Block
             {
                 prevDb.Clear();
             }
+            if (tableType == NVE.MetaDataDbTypeList.ValidatorStateList || tableType == NVE.MetaDataDbTypeList.All)
+            {
+                stateDb.Clear();
+            }
             if (tableType == NVE.MetaDataDbTypeList.ValidatorOrderList || tableType == NVE.MetaDataDbTypeList.All)
             {
                 validatorDb.Clear();
@@ -96,12 +101,12 @@ namespace Notus.Block
             }
         }
 
-        private void CheckBlockValidator(NVClass.BlockData blockData)
+        private bool CheckBlockValidator(NVClass.BlockData blockData)
         {
             ulong queueTimePeriod = NVD.Calculate();
             ulong blockTimeVal = ND.ToLong(blockData.info.time);
             ulong blockGenarationTime = blockTimeVal - (blockTimeVal % queueTimePeriod);
-            string validatorWalletId=Validator(blockGenarationTime);
+            string validatorWalletId = Validator(blockGenarationTime);
             string validatorWalletId_FromBlock = blockData.validator.count.First().Key;
             if (validatorWalletId.Length == 0)
             {
@@ -112,16 +117,20 @@ namespace Notus.Block
                 if (string.Equals(validatorWalletId_FromBlock, validatorWalletId))
                 {
                     Console.WriteLine("Dogru kisi tarafindan uretilen blok");
+                    return true;
                 }
                 else
                 {
                     Console.WriteLine("HATALI kisi tarafindan uretilen blok - DEGISTIR");
                 }
             }
+            return false;
         }
+
         public void WriteBlock(NVClass.BlockData blockData, string senderLocation)
         {
             CheckBlockValidator(blockData);
+
             //NVH.RightBlockValidator(blockData, "Block Meta - WriteBlock");
             //NVG.BlockMeta.Validator(peerStaringTime, NVG.Settings.Nodes.Queue[peerStaringTime].Wallet);
             Console.WriteLine("Saving Block Data -> " + blockData.info.rowNo.ToString() + " - [ " + senderLocation + " ]");
@@ -274,6 +283,45 @@ namespace Notus.Block
 
             return tmpResult;
         }
+        public string State(ulong blockTime)
+        {
+            string tmpResult = stateDb.Get(blockTime.ToString());
+            if (tmpResult == null)
+                return string.Empty;
+
+            if (tmpResult.Length == 0)
+                return string.Empty;
+
+            return tmpResult;
+        }
+        public void State(string chainId, long rowNo, string blockUid, string sign)
+        {
+            string allSignStr = JsonSerializer.Serialize(new NVS.NodeStateStruct()
+            {
+                rowNo = rowNo,
+                blockUid = blockUid,
+                sign = sign
+            });
+            stateDb.Set(chainId, allSignStr);
+        }
+        public NVS.NodeStateStruct? State(string chainId)
+        {
+            string tmpResult = stateDb.Get(chainId);
+            if (tmpResult == null)
+                return null;
+
+            if (tmpResult.Length == 0)
+                return null;
+
+            try
+            {
+                NVS.NodeStateStruct? tmpChainState= JsonSerializer.Deserialize<NVS.NodeStateStruct>(tmpResult);
+                return tmpChainState;
+            }
+            catch { }
+
+            return null;
+        }
         public string Validator(ulong blockTime)
         {
             string tmpResult = validatorDb.Get(blockTime.ToString());
@@ -285,7 +333,7 @@ namespace Notus.Block
 
             return tmpResult;
         }
-        public void Validator(ulong blockTime,string validatorWalletId)
+        public void Validator(ulong blockTime, string validatorWalletId)
         {
             validatorDb.Set(blockTime.ToString(), validatorWalletId);
         }
@@ -373,6 +421,12 @@ namespace Notus.Block
             {
                 MemoryLimitCount = 0,
                 Name = Notus.Variable.Constant.MemoryPoolName["ValidatorOrderList"]
+            });
+
+            stateDb.SetSettings(new NVS.KeyValueSettings()
+            {
+                MemoryLimitCount = 0,
+                Name = Notus.Variable.Constant.MemoryPoolName["ValidatorStateList"]
             });
         }
         public Meta()

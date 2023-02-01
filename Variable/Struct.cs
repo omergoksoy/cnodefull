@@ -387,6 +387,7 @@ namespace Notus.Variable.Struct
         public bool InfoMode { get; set; }
         public bool LocalMode { get; set; }
         public bool DevelopmentMode { get; set; }
+        public string ChainId { get; set; }
     }
 
     public class ConnectionDetailStruct
@@ -641,6 +642,12 @@ namespace Notus.Variable.Struct
         public string Name { get; set; }
     }
 
+    public class NodeStateStruct
+    {
+        public long rowNo { get; set; }
+        public string blockUid { get; set; }
+        public string sign { get; set; }
+    }
     /*
     public class MultiWalletTransactionVoteStruct
     {

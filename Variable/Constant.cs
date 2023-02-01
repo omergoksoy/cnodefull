@@ -33,7 +33,7 @@ namespace Notus.Variable
         public static readonly ulong NodeStartingSync = 20;
         public static readonly ulong NodeSortFrequency = 2;
         public static readonly int NodePingErrorLimit = 2;
-        public static readonly long NodeValidationModCount = 50;
+        public static readonly long NodeValidationModCount = 30;
 
         // wallet constant
         public static readonly int WalletEncodeTextLength = 36;
@@ -234,6 +234,7 @@ namespace Notus.Variable
             { "CommonData", "data" },
             { "MasterList", "master_list" },
 
+            { "ValidatorStateList", "validator_state_list" },
             { "ValidatorOrderList", "validator_order_list" },
             { "BlockData", "blocks_raw" },
             { "MainNodeWalletConfig", "node_config" },
