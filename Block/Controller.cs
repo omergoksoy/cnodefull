@@ -131,7 +131,7 @@ namespace Notus.Block
                     currentBlockUid,
                     currentBlockSign
                 );
-                //CheckAllNodeState(rownNo);
+                CheckAllNodeState(rownNo);
             }
 
 
@@ -154,18 +154,13 @@ namespace Notus.Block
         }
         public void CheckAllNodeState(long rownNo)
         {
-            /*
-
-            stateDb.Set(chainId, allSignStr);
-            */
-
-            // every time "NVC.NodeValidationModCount" mod is Zero
-            //stateDb.Set(GetStateKey(chainId, currentState.rowNo), allSignStr);
-
-            Console.WriteLine("NVG.Settings.Nodes.My.HexKey : " + NVG.Settings.Nodes.My.HexKey);
             foreach (var validatorItem in NVG.NodeList)
             {
-                Console.WriteLine(validatorItem.Key + " -> " + JsonSerializer.Serialize(validatorItem.Value.State));
+                var nodeState=NVG.BlockMeta.State(validatorItem.Value.ChainId, validatorItem.Value.State.rowNo);
+                Console.WriteLine(
+                    validatorItem.Key + " -> " + 
+                    JsonSerializer.Serialize(nodeState)
+                );
             }
         }
         public void Start()

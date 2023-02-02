@@ -284,7 +284,7 @@ namespace Notus.Block
 
             return tmpResult;
         }
-        private string GetStateKey(string chainId, long rowNo)
+        public string GetStateKey(string chainId, long rowNo)
         {
             return chainId + ":" + Math.Round((decimal)(rowNo / NVC.NodeValidationModCount)).ToString().ToString().PadLeft(30, '0');
         }
@@ -315,7 +315,7 @@ namespace Notus.Block
 
             // every time "NVC.NodeValidationModCount" mod is Zero
             string tmpstateKey = GetStateKey(chainId, currentState.rowNo);
-            Console.WriteLine(tmpstateKey);
+            //Console.WriteLine(tmpstateKey);
             stateDb.Set(tmpstateKey, allSignStr);
 
             // control_noktasi();
@@ -383,9 +383,17 @@ namespace Notus.Block
                 sign = sign
             });
         }
-        public NVS.NodeStateStruct? State(string chainId)
+        public NVS.NodeStateStruct? State(string chainId,long rowNo=0)
         {
-            string tmpResult = stateDb.Get(chainId);
+            string tmpResult = string.Empty;
+            if (rowNo > 0)
+            {
+                tmpResult = stateDb.Get(GetStateKey(chainId, rowNo));
+            }
+            else
+            {
+                tmpResult = stateDb.Get(chainId);
+            }
             if (tmpResult == null)
                 return null;
 
