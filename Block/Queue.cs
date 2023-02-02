@@ -825,11 +825,14 @@ namespace Notus.Block
             return BlockStruct;
         }
 
-        public void RemoveFromDb(string dbKey, string sender)
+        public void RemoveFromDb(string dbKey,string sender)
         {
-            kvPoolDb.Remove(dbKey);
             //if (NVG.Settings.SyncBlockIsDone == true)
+            kvPoolDb.Remove(dbKey);
+            if (NVG.Settings.SyncBlockIsDone == true)
+            {
                 Console.WriteLine("Remove From Queue : " + dbKey + " [ " + sender + " ]");
+            }
         }
         public void RemoveTempPoolList()
         {

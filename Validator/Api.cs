@@ -111,7 +111,7 @@ namespace Notus.Validator
         {
             string blockRowNoStr = Obj_BlockData.info.rowNo.ToString();
             // NP.Basic("Balance.Control Just Executed For -> " + blockRowNoStr);
-            NGF.Balance.Control(Obj_BlockData);
+            NGF.Balance.Control(Obj_BlockData,(blockSource==1 ? false:true));
 
             if (blockSource == 2 || blockSource == 4)
             {

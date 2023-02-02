@@ -474,7 +474,7 @@ namespace Notus.Wallet
             }
         }
         */
-        public void Control(Notus.Variable.Class.BlockData tmpBlockForBalance)
+        public void Control(Notus.Variable.Class.BlockData tmpBlockForBalance,bool newBlock)
         {
             // genesis block
             if (tmpBlockForBalance.info.type == Notus.Variable.Enum.BlockTypeList.GenesisBlock)
@@ -683,10 +683,12 @@ namespace Notus.Wallet
                 {
                     foreach (var entry in tmpLockBalance.In)
                     {
-                        if(NVG.Settings.SyncBlockIsDone==true)
+                        if (NVG.Settings.SyncBlockIsDone == true)
+                        {
                             Console.WriteLine("AirDrop Done -> " + entry.Key);
-
-                        NGF.BlockQueue.RemoveFromDb(entry.Key, "if (tmpBlockForBalance.info.type == Notus.Variable.Enum.BlockTypeList.AirDrop)");
+                            NGF.BlockQueue.RemoveFromDb(entry.Key, "if (tmpLockBalance != null)");
+                        }
+                        
                     }
 
                     foreach (var entry in tmpLockBalance.Out)
