@@ -314,12 +314,10 @@ namespace Notus.Block
             //control_noktasi();
             string stateText = "<nodeState>" + allSignStr + "</nodeState>";
             Console.WriteLine(stateText);
-            /*
             foreach (var validatorItem in NVG.NodeList)
             {
                 NVG.Settings.PeerManager.SendWithTask(validatorItem.Value, stateText);
             }
-            */
         }
         public void State(string chainId, long rowNo, string blockUid, string sign)
         {
