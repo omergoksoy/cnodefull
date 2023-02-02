@@ -174,25 +174,30 @@ namespace Notus.Validator
                 // burada gelen state ve public imza ile kontrol edilecek ve onaylanırsa
                 // kayıt altına alınacak
                 incomeData = NTT.GetPureText(incomeData, "nodeState");
-                //Console.WriteLine(incomeData);
                 try
                 {
                     NVS.NodeStateInfoStruct? nodeState = JsonSerializer.Deserialize<NVS.NodeStateInfoStruct>(incomeData);
-                    if (nodeState != null)
+                    if (nodeState == null)
                     {
-                        const ulong howManySecondsIsAcceptable = 60 * 1000;
-                        if (Math.Round((decimal)(NVG.NOW.Int - nodeState.time)) > howManySecondsIsAcceptable)
-                        {
-                            if (Notus.Wallet.ID.Verify(
-                                NVG.BlockMeta.GenerateRawTextForStateSign(nodeState),
-                                nodeState.sign,
-                                NGF.GetNodePublicKey(nodeState.chainId)
-                            ) == true)
-                            {
-                                Console.WriteLine("stateVerify == true");
-                            }
-                        }
+                        Console.WriteLine("stateVerify == VARIABLE NULL");
+                        return "ok";
                     }
+                    const ulong howManySecondsIsAcceptable = 60 * 1000;
+                    if (Math.Round((decimal)(NVG.NOW.Int - nodeState.time)) > howManySecondsIsAcceptable)
+                    {
+                        Console.WriteLine("stateVerify == TIME OUT");
+                        return "ok";
+                    }
+                    if (Notus.Wallet.ID.Verify(
+                        NVG.BlockMeta.GenerateRawTextForStateSign(nodeState),
+                        nodeState.sign,
+                        NGF.GetNodePublicKey(nodeState.chainId)
+                    ) == false)
+                    {
+                        Console.WriteLine("stateVerify == FALSE");
+                        return "ok";
+                    }
+                    Console.WriteLine("stateVerify == true");
                 }
                 catch { }
                 //control_noktasi();
