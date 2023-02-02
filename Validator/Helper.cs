@@ -31,7 +31,14 @@ namespace Notus.Validator
                 },
                 JoinTime = 0,
                 PublicKey = NVG.Settings.Nodes.My.PublicKey,
-                ChainId = NVG.Settings.Nodes.My.ChainId
+                ChainId = NVG.Settings.Nodes.My.ChainId,
+                PrivateKey = "",
+                State = new NVS.NodeStateStruct()
+                {
+                    blockUid = "",
+                    rowNo = 0,
+                    sign = ""
+                }
             }, true);
         }
         public static void GenerateNodeInfoListViaValidatorList()
@@ -55,7 +62,14 @@ namespace Notus.Validator
                         },
                         JoinTime = 0,
                         PublicKey = "",
-                        ChainId = ""
+                        ChainId = "",
+                        PrivateKey = "",
+                        State = new NVS.NodeStateStruct()
+                        {
+                            sign = "",
+                            rowNo = 0,
+                            blockUid = ""
+                        }
                     }, false);
                 }
             }
