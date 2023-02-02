@@ -181,7 +181,7 @@ namespace Notus.Validator
                         JsonSerializer.Deserialize<NVS.NodeStateInfoStruct>(incomeData);
                     if (nodeState != null)
                     {
-                        ulong timeDiffForState = NVG.NOW.Int - nodeState;
+                        ulong timeDiffForState = NVG.NOW.Int - nodeState.time;
                         Console.WriteLine(timeDiffForState.ToString());
                         Console.WriteLine(timeDiffForState.ToString());
                         string nodePublicKey = NGF.GetNodePublicKey(nodeState.chainId);
