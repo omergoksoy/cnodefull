@@ -181,6 +181,9 @@ namespace Notus.Validator
                         JsonSerializer.Deserialize<NVS.NodeStateInfoStruct>(incomeData);
                     if (nodeState != null)
                     {
+                        ulong timeDiffForState = NVG.NOW.Int - nodeState;
+                        Console.WriteLine(timeDiffForState.ToString());
+                        Console.WriteLine(timeDiffForState.ToString());
                         string nodePublicKey = NGF.GetNodePublicKey(nodeState.chainId);
                         bool stateVerify = Notus.Wallet.ID.Verify(
                             NVG.BlockMeta.GenerateRawTextForStateSign(nodeState),
@@ -190,13 +193,6 @@ namespace Notus.Validator
                         if (stateVerify == true)
                         {
                             Console.WriteLine("stateVerify == true");
-                            Console.WriteLine("stateVerify == true");
-                        }
-                        else
-                        {
-                            Console.WriteLine("stateVerify == FALSE ");
-                            Console.WriteLine("stateVerify == FALSE ");
-                            Console.WriteLine("stateVerify == FALSE ");
                         }
                     }
                 }
