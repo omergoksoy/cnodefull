@@ -198,7 +198,7 @@ namespace Notus.Validator
 
                         return "ok";
                     }
-                    Console.WriteLine("stateVerify == true");
+                    //Console.WriteLine("stateVerify == true");
                     NVG.BlockMeta.State(nodeState.chainId, nodeState.state);
                 }
                 catch { }
