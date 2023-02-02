@@ -311,7 +311,7 @@ namespace Notus.Block
             // burada node kendi priate adresi ile imzalayıp
             // diğer node'a imzalı halini gönderecek
             // kayıt altına alınacak
-            //control_noktasi();
+            // control_noktasi();
             string stateText = "<nodeState>" + allSignStr + "</nodeState>";
                 
             NP.Basic(Math.Round((decimal)(currentState.rowNo / NVC.NodeValidationModCount)).ToString() + ". State [ "+ currentState.rowNo.ToString() + ". Block ] Generated");

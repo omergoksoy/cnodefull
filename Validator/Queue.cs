@@ -649,6 +649,7 @@ namespace Notus.Validator
             if (NTT.CheckXmlTag(incomeData, "node"))
             {
                 incomeData = NTT.GetPureText(incomeData, "node");
+                Console.WriteLine("incomeData : " + incomeData);
                 try
                 {
                     NVS.NodeQueueInfo? tmpNodeQueueInfo =
