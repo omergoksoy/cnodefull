@@ -286,7 +286,7 @@ namespace Notus.Block
         }
         private string GetStateKey(string chainId, long rowNo)
         {
-            return chainId + ":" + rowNo.ToString().PadLeft(30, '0');
+            return chainId + ":" + Math.Round((decimal)(rowNo / NVC.NodeValidationModCount)).ToString().ToString().PadLeft(30, '0');
         }
         public string State(ulong blockTime)
         {
@@ -314,7 +314,9 @@ namespace Notus.Block
             stateDb.Set(chainId, allSignStr);
 
             // every time "NVC.NodeValidationModCount" mod is Zero
-            stateDb.Set(GetStateKey(chainId, currentState.rowNo), allSignStr);
+            string tmpstateKey = GetStateKey(chainId, currentState.rowNo);
+            Console.WriteLine(tmpstateKey);
+            stateDb.Set(tmpstateKey, allSignStr);
 
             // control_noktasi();
             if (string.Equals(chainId, NVG.Settings.Nodes.My.ChainId))
@@ -366,11 +368,11 @@ namespace Notus.Block
                 }
             }
 
-            Console.WriteLine("NVG.Settings.Nodes.My.HexKey : " + NVG.Settings.Nodes.My.HexKey);
-            foreach (var validatorItem in NVG.NodeList)
-            {
-                Console.WriteLine(validatorItem.Key + " -> " + JsonSerializer.Serialize(validatorItem.Value.State));
-            }
+            //Console.WriteLine("NVG.Settings.Nodes.My.HexKey : " + NVG.Settings.Nodes.My.HexKey);
+            //foreach (var validatorItem in NVG.NodeList)
+            //{
+            //Console.WriteLine(validatorItem.Key + " -> " + JsonSerializer.Serialize(validatorItem.Value.State));
+            //}
         }
         public void State(string chainId, long rowNo, string blockUid, string sign)
         {

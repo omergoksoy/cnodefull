@@ -131,6 +131,7 @@ namespace Notus.Block
                     currentBlockUid,
                     currentBlockSign
                 );
+                //CheckAllNodeState(rownNo);
             }
 
 
@@ -150,6 +151,22 @@ namespace Notus.Block
             // blok kontrolu yapıldıktan sonra her 100 blokta bir diğer node ile karşılıklı kontrol yapılacak...
             //Console.WriteLine("blockData : " + JsonSerializer.Serialize(blockData));
             // Environment.Exit(0);
+        }
+        public void CheckAllNodeState(long rownNo)
+        {
+            /*
+
+            stateDb.Set(chainId, allSignStr);
+            */
+
+            // every time "NVC.NodeValidationModCount" mod is Zero
+            //stateDb.Set(GetStateKey(chainId, currentState.rowNo), allSignStr);
+
+            Console.WriteLine("NVG.Settings.Nodes.My.HexKey : " + NVG.Settings.Nodes.My.HexKey);
+            foreach (var validatorItem in NVG.NodeList)
+            {
+                Console.WriteLine(validatorItem.Key + " -> " + JsonSerializer.Serialize(validatorItem.Value.State));
+            }
         }
         public void Start()
         {
