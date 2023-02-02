@@ -6,20 +6,20 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
-using NVG = Notus.Variable.Globals;
 using NVC = Notus.Variable.Constant;
+using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
 namespace Notus.Block
 {
     public class Controller : IDisposable
     {
-        public long LastBlockRowNo= 1;
-        private long currentBlockNo= 1;
+        public long LastBlockRowNo = 1;
+        private long currentBlockNo = 1;
         private int timerInterval = 250;
         private bool timerRunning = false;
         private Notus.Threads.Timer UtcTimerObj = new Notus.Threads.Timer();
 
-        private void PrintError(long rownNo,string errorText,bool isNextBlock)
+        private void PrintError(long rownNo, string errorText, bool isNextBlock)
         {
             Console.WriteLine("******************************************************");
             Console.WriteLine(errorText + " : " + rownNo.ToString());
@@ -33,7 +33,7 @@ namespace Notus.Block
 
             Console.WriteLine("------------------------------------------------------------------------");
             Console.WriteLine("currentBlockUid : " + currentBlockUid);
-            Console.WriteLine("blockSign : "  + currentBlockSign);
+            Console.WriteLine("blockSign : " + currentBlockSign);
             Console.WriteLine("blockPrev : " + currentBlockPrev);
             Console.WriteLine("blockData : " + JsonSerializer.Serialize(currentBlockData));
             if (isNextBlock == true)
@@ -55,45 +55,45 @@ namespace Notus.Block
             Console.WriteLine("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
             Environment.Exit(0);
         }
-        private void ControlBlock(long rownNo)
+        private void ControlBlock(long rowNo)
         {
             //Console.WriteLine(rownNo.ToString() + " Numaralı Blok Kontrol Edildi.");
 
-            string currentBlockUid = NVG.BlockMeta.Order(rownNo);
-            string currentBlockSign = NVG.BlockMeta.Sign(rownNo);
-            string currentBlockPrev = NVG.BlockMeta.Prev(rownNo);
+            string currentBlockUid = NVG.BlockMeta.Order(rowNo);
+            string currentBlockSign = NVG.BlockMeta.Sign(rowNo);
+            string currentBlockPrev = NVG.BlockMeta.Prev(rowNo);
             var currentBlockData = NVG.BlockMeta.ReadBlock(currentBlockUid);
 
             if (currentBlockData == null)
             {
-                PrintError(rownNo, "BLOK EKSIK",false);
+                PrintError(rowNo, "BLOK EKSIK", false);
                 Environment.Exit(0);
             }
 
-            if(string.Equals(currentBlockData.sign, currentBlockSign) == false)
+            if (string.Equals(currentBlockData.sign, currentBlockSign) == false)
             {
-                PrintError(rownNo, "SIGN HATALI", false);
+                PrintError(rowNo, "SIGN HATALI", false);
             }
 
-            if(string.Equals(currentBlockData.prev, currentBlockPrev) == false)
+            if (string.Equals(currentBlockData.prev, currentBlockPrev) == false)
             {
-                PrintError(rownNo, "PREV HATALI", false);
+                PrintError(rowNo, "PREV HATALI", false);
             }
 
-            if(string.Equals(currentBlockData.info.uID, currentBlockUid) == false)
+            if (string.Equals(currentBlockData.info.uID, currentBlockUid) == false)
             {
-                PrintError(rownNo, "BLOK UID HATALI", false);
+                PrintError(rowNo, "BLOK UID HATALI", false);
             }
 
-            if (rownNo < 2)
+            if (rowNo < 2)
             {
                 Console.WriteLine("İlk Blok oldugu için timer'a geri dönüyor.");
                 return;
             }
-            long nextRownNo = rownNo + 1;
-            string nextBlockUid = NVG.BlockMeta.Order(nextRownNo);
-            string nextBlockSign = NVG.BlockMeta.Sign(nextRownNo);
-            string nextBlockPrev = NVG.BlockMeta.Prev(nextRownNo);
+            long nextRowNo = rowNo + 1;
+            string nextBlockUid = NVG.BlockMeta.Order(nextRowNo);
+            string nextBlockSign = NVG.BlockMeta.Sign(nextRowNo);
+            string nextBlockPrev = NVG.BlockMeta.Prev(nextRowNo);
             var nextBlockData = NVG.BlockMeta.ReadBlock(nextBlockUid);
 
             // Console.WriteLine("nextBlockUid : " + nextBlockUid);
@@ -102,36 +102,37 @@ namespace Notus.Block
 
             if (string.Equals(nextBlockData.sign, nextBlockSign) == false)
             {
-                PrintError(rownNo, "SIGN HATALI",true);
+                PrintError(rowNo, "SIGN HATALI", true);
             }
 
             if (string.Equals(nextBlockData.prev, nextBlockPrev) == false)
             {
-                PrintError(rownNo, "PREV HATALI", true);
+                PrintError(rowNo, "PREV HATALI", true);
             }
 
             if (string.Equals(nextBlockData.info.uID, nextBlockUid) == false)
             {
-                PrintError(rownNo, "BLOK UID HATALI", true);
+                PrintError(rowNo, "BLOK UID HATALI", true);
             }
 
             if (string.Equals(nextBlockPrev, currentBlockUid + currentBlockSign) == false)
             {
-                PrintError(nextRownNo, "NEXT BLOK PREV HATALI", true);
+                PrintError(nextRowNo, "NEXT BLOK PREV HATALI", true);
             }
 
-
-            long modNo = rownNo % NVC.NodeValidationModCount;
+            long modNo = rowNo % NVC.NodeValidationModCount;
             if (modNo == 0)
             {
-                //Console.WriteLine("Send Current Block Info To Other Validators");
                 NVG.BlockMeta.State(
                     NVG.Settings.Nodes.My.ChainId,
-                    rownNo,
-                    currentBlockUid,
-                    currentBlockSign
+                    new NVS.NodeStateStruct()
+                    {
+                        rowNo = rowNo,
+                        blockUid = currentBlockUid,
+                        sign = currentBlockSign
+                    }
                 );
-                CheckAllNodeState(rownNo);
+                CheckAllNodeState(rowNo);
             }
 
 
@@ -156,14 +157,14 @@ namespace Notus.Block
         {
             foreach (var validatorItem in NVG.NodeList)
             {
-                var nodeState=NVG.BlockMeta.State(
+                var nodeState = NVG.BlockMeta.State(
                     NVG.BlockMeta.GetStateKey(
-                        validatorItem.Value.ChainId, 
+                        validatorItem.Value.ChainId,
                         validatorItem.Value.State.rowNo
                     )
                 );
                 Console.WriteLine(
-                   "s : " + validatorItem.Key + " -> " + 
+                   "s : " + validatorItem.Key + " -> " +
                     JsonSerializer.Serialize(nodeState)
                 );
             }
@@ -176,14 +177,14 @@ namespace Notus.Block
             Console.WriteLine("Last Block Number : " + LastBlockRowNo.ToString());
             UtcTimerObj.Start(timerInterval, () =>
             {
-                if(timerRunning==false)
+                if (timerRunning == false)
                 {
                     timerRunning = true;
-                    if(LastBlockRowNo>currentBlockNo)
+                    if (LastBlockRowNo > currentBlockNo)
                     {
                         ControlBlock(currentBlockNo);
                         currentBlockNo++;
-                        if(Math.Abs(LastBlockRowNo - currentBlockNo) > 10)
+                        if (Math.Abs(LastBlockRowNo - currentBlockNo) > 10)
                         {
                             UtcTimerObj.SetInterval(250);
                         }
