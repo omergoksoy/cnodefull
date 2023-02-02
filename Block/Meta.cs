@@ -319,6 +319,12 @@ namespace Notus.Block
             // control_noktasi();
             if (string.Equals(chainId, NVG.Settings.Nodes.My.ChainId))
             {
+                // assign block state to node list my node info
+                NVG.NodeList[NVG.Settings.Nodes.My.HexKey].State.rowNo = currentState.rowNo;
+                NVG.NodeList[NVG.Settings.Nodes.My.HexKey].State.blockUid = currentState.blockUid;
+                NVG.NodeList[NVG.Settings.Nodes.My.HexKey].State.sign = currentState.sign;
+
+                // assign block state to my Node Info
                 NVG.Settings.Nodes.My.State.rowNo = currentState.rowNo;
                 NVG.Settings.Nodes.My.State.blockUid = currentState.blockUid;
                 NVG.Settings.Nodes.My.State.sign = currentState.sign;
@@ -352,7 +358,6 @@ namespace Notus.Block
             else
             {
                 string nodeKey = NGF.GetNodeListKey(chainId);
-                Console.WriteLine("nodeKey : " + nodeKey);
                 if (nodeKey.Length > 0)
                 {
                     NVG.NodeList[nodeKey].State.rowNo = currentState.rowNo;
@@ -360,6 +365,8 @@ namespace Notus.Block
                     NVG.NodeList[nodeKey].State.sign = currentState.sign;
                 }
             }
+
+            Console.WriteLine("NVG.Settings.Nodes.My.HexKey : " + NVG.Settings.Nodes.My.HexKey);
             foreach (var validatorItem in NVG.NodeList)
             {
                 Console.WriteLine(validatorItem.Key + " -> " + JsonSerializer.Serialize(validatorItem.Value.State));
