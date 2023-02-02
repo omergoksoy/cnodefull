@@ -174,7 +174,7 @@ namespace Notus.Validator
                 // burada gelen state ve public imza ile kontrol edilecek ve onaylanırsa
                 // kayıt altına alınacak
                 incomeData = NTT.GetPureText(incomeData, "nodeState");
-                //control_noktasi();
+                control_noktasi();
                 return "ok";
             }
 
