@@ -125,6 +125,12 @@ namespace Notus.Variable
                         },
                         //Ready = false,
                         Status = NVS.NodeStatus.Unknown,
+                        State = new NVS.NodeStateStruct()
+                        {
+                            blockUid = "",
+                            rowNo = 0,
+                            sign = ""
+                        }
                     },
                     Lists = new List<NVS.IpInfo>() { },
                     Queue = new ConcurrentDictionary<ulong, NVS.NodeInfo> { },
@@ -190,6 +196,17 @@ namespace Notus.Variable
             public static Notus.Block.Queue BlockQueue { get; set; }
             public static string ValidatorListHash { get; set; }
             public static SortedDictionary<string, NVS.IpInfo> ValidatorList { get; set; }
+            public static string GetNodeListKey(string nodeChainId)
+            {
+                foreach (var validatorItem in NVG.NodeList)
+                {
+                    if (string.Equals(nodeChainId, validatorItem.Value.ChainId) == true)
+                    {
+                        return validatorItem.Key;
+                    }
+                }
+                return string.Empty;
+            }
             public static string GetNodePublicKey(string nodeChainId)
             {
                 foreach (var validatorItem in NVG.NodeList)

@@ -503,6 +503,7 @@ namespace Notus.Variable.Struct
         public ulong Begin { get; set; }             // node'un son hata verme zamanı
         public ulong SyncNo { get; set; }             // node'ların senkronizasyon için kullandıkları numara
         public ulong JoinTime { get; set; }             // node'ların senkronizasyon için kullandıkları numara
+        public NodeStateStruct State { get; set; }     // node'ların senkronizasyon için kullandıkları numara
     }
 
     public class UTCTimeStruct
@@ -644,7 +645,6 @@ namespace Notus.Variable.Struct
 
     public class NodeStateStruct
     {
-
         public long rowNo { get; set; }
         public string blockUid { get; set; }
         public string sign { get; set; }

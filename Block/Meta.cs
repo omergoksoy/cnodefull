@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using ND = Notus.Date;
+using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
 using NT = Notus.Threads;
 using NTN = Notus.Toolbox.Network;
@@ -309,43 +310,58 @@ namespace Notus.Block
         public void State(string chainId, NVS.NodeStateStruct currentState)
         {
             string allSignStr = JsonSerializer.Serialize(currentState);
-
             // current state
             stateDb.Set(chainId, allSignStr);
 
             // every time "NVC.NodeValidationModCount" mod is Zero
             stateDb.Set(GetStateKey(chainId, currentState.rowNo), allSignStr);
 
-            // burada node kendi priate adresi ile imzalayıp
-            // diğer node'a imzalı halini gönderecek
-            // kayıt altına alınacak
             // control_noktasi();
-            NP.Basic(Math.Round((decimal)(currentState.rowNo / NVC.NodeValidationModCount)).ToString() + ". State [ " + currentState.rowNo.ToString() + ". Block ] Generated");
-            ulong rightNow = NVG.NOW.Int;
-
-            NVS.NodeStateInfoStruct stateTransfer = new NVS.NodeStateInfoStruct()
+            if (string.Equals(chainId, NVG.Settings.Nodes.My.ChainId))
             {
-                chainId = NVG.Settings.Nodes.My.ChainId,
-                time = rightNow,
-                state = new NVS.NodeStateStruct()
+                NVG.Settings.Nodes.My.State.rowNo = currentState.rowNo;
+                NVG.Settings.Nodes.My.State.blockUid = currentState.blockUid;
+                NVG.Settings.Nodes.My.State.sign = currentState.sign;
+
+                NP.Basic(Math.Round((decimal)(currentState.rowNo / NVC.NodeValidationModCount)).ToString() + ". State [ " + currentState.rowNo.ToString() + ". Block ] Generated");
+
+                NVS.NodeStateInfoStruct stateTransfer = new NVS.NodeStateInfoStruct()
                 {
-                    blockUid = currentState.blockUid,
-                    rowNo = currentState.rowNo,
-                    sign = currentState.sign
-                },
-                sign = ""
-            };
+                    chainId = NVG.Settings.Nodes.My.ChainId,
+                    time = NVG.NOW.Int,
+                    state = new NVS.NodeStateStruct()
+                    {
+                        blockUid = currentState.blockUid,
+                        rowNo = currentState.rowNo,
+                        sign = currentState.sign
+                    },
+                    sign = ""
+                };
 
-            stateTransfer.sign = Notus.Wallet.ID.Sign(
-                GenerateRawTextForStateSign(stateTransfer), 
-                NVG.Settings.Nodes.My.PrivateKey
-            );
+                stateTransfer.sign = Notus.Wallet.ID.Sign(
+                    GenerateRawTextForStateSign(stateTransfer),
+                    NVG.Settings.Nodes.My.PrivateKey
+                );
 
-            string stateText = "<nodeState>" + JsonSerializer.Serialize(stateTransfer) + "</nodeState>";
-            //Console.WriteLine(stateText);
+                string stateText = "<nodeState>" + JsonSerializer.Serialize(stateTransfer) + "</nodeState>";
+                foreach (var validatorItem in NVG.NodeList)
+                {
+                    NVG.Settings.PeerManager.SendWithTask(validatorItem.Value, stateText);
+                }
+            }
+            else
+            {
+                string nodeKey = NGF.GetNodeListKey(chainId);
+                if (nodeKey.Length > 0)
+                {
+                    NVG.NodeList[nodeKey].State.rowNo = currentState.rowNo;
+                    NVG.NodeList[nodeKey].State.blockUid = currentState.blockUid;
+                    NVG.NodeList[nodeKey].State.sign = currentState.sign;
+                }
+            }
             foreach (var validatorItem in NVG.NodeList)
             {
-                NVG.Settings.PeerManager.SendWithTask(validatorItem.Value, stateText);
+                Console.WriteLine(validatorItem.Key + " -> " + JsonSerializer.Serialize(validatorItem.Value.State));
             }
         }
         public void State(string chainId, long rowNo, string blockUid, string sign)
