@@ -19,11 +19,40 @@ namespace Notus.Block
         private bool timerRunning = false;
         private Notus.Threads.Timer UtcTimerObj = new Notus.Threads.Timer();
 
-        private void PrintError(long rownNo,string errorText)
+        private void PrintError(long rownNo,string errorText,bool isNextBlock)
         {
+            Console.WriteLine("******************************************************");
             Console.WriteLine(errorText + " : " + rownNo.ToString());
             Console.WriteLine(errorText + " : " + rownNo.ToString());
             Console.WriteLine(errorText + " : " + rownNo.ToString());
+
+            string currentBlockUid = NVG.BlockMeta.Order(rownNo);
+            string currentBlockSign = NVG.BlockMeta.Sign(rownNo);
+            string currentBlockPrev = NVG.BlockMeta.Prev(rownNo);
+            var currentBlockData = NVG.BlockMeta.ReadBlock(currentBlockUid);
+
+            Console.WriteLine("------------------------------------------------------------------------");
+            Console.WriteLine("currentBlockUid : " + currentBlockUid);
+            Console.WriteLine("blockSign : "  + currentBlockSign);
+            Console.WriteLine("blockPrev : " + currentBlockPrev);
+            Console.WriteLine("blockData : " + JsonSerializer.Serialize(currentBlockData));
+            if (isNextBlock == true)
+            {
+                Console.WriteLine("========================================================================");
+                long nextRownNo = rownNo + 1;
+                string nextBlockUid = NVG.BlockMeta.Order(nextRownNo);
+                string nextBlockSign = NVG.BlockMeta.Sign(nextRownNo);
+                string nextBlockPrev = NVG.BlockMeta.Prev(nextRownNo);
+                var nextBlockData = NVG.BlockMeta.ReadBlock(nextBlockUid);
+
+                Console.WriteLine("nextBlockUid : " + nextBlockUid);
+                Console.WriteLine("nextBlockSign : " + nextBlockSign);
+                Console.WriteLine("nextBlockPrev : " + nextBlockPrev);
+                Console.WriteLine("nextBlockData : " + JsonSerializer.Serialize(nextBlockData));
+
+            }
+
+            Console.WriteLine("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
             Environment.Exit(0);
         }
         private void ControlBlock(long rownNo)
@@ -35,30 +64,25 @@ namespace Notus.Block
             string currentBlockPrev = NVG.BlockMeta.Prev(rownNo);
             var currentBlockData = NVG.BlockMeta.ReadBlock(currentBlockUid);
 
-            // Console.WriteLine("currentBlockUid : " + currentBlockUid);
-            // Console.WriteLine("blockSign : "  + currentBlockSign);
-            // Console.WriteLine("blockPrev : " + currentBlockPrev);
-
-
             if (currentBlockData == null)
             {
-                PrintError(rownNo, "BLOK EKSIK");
+                PrintError(rownNo, "BLOK EKSIK",false);
                 Environment.Exit(0);
             }
 
             if(string.Equals(currentBlockData.sign, currentBlockSign) == false)
             {
-                PrintError(rownNo, "SIGN HATALI");
+                PrintError(rownNo, "SIGN HATALI", false);
             }
 
             if(string.Equals(currentBlockData.prev, currentBlockPrev) == false)
             {
-                PrintError(rownNo, "PREV HATALI");
+                PrintError(rownNo, "PREV HATALI", false);
             }
 
             if(string.Equals(currentBlockData.info.uID, currentBlockUid) == false)
             {
-                PrintError(rownNo, "BLOK UID HATALI");
+                PrintError(rownNo, "BLOK UID HATALI", false);
             }
 
             if (rownNo < 2)
@@ -76,28 +100,24 @@ namespace Notus.Block
             // Console.WriteLine("blockSign : " + nextBlockSign);
             // Console.WriteLine("blockPrev : " + nextBlockPrev);
 
-
             if (string.Equals(nextBlockData.sign, nextBlockSign) == false)
             {
-                PrintError(rownNo, "SIGN HATALI");
+                PrintError(rownNo, "SIGN HATALI",true);
             }
 
             if (string.Equals(nextBlockData.prev, nextBlockPrev) == false)
             {
-                PrintError(rownNo, "PREV HATALI");
+                PrintError(rownNo, "PREV HATALI", true);
             }
 
             if (string.Equals(nextBlockData.info.uID, nextBlockUid) == false)
             {
-                PrintError(rownNo, "BLOK UID HATALI");
+                PrintError(rownNo, "BLOK UID HATALI", true);
             }
-
-
-            
 
             if (string.Equals(nextBlockPrev, currentBlockUid + currentBlockSign) == false)
             {
-                PrintError(nextRownNo, "NEXT BLOK PREV HATALI");
+                PrintError(nextRownNo, "NEXT BLOK PREV HATALI", true);
             }
 
 
