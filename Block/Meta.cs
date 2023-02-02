@@ -318,6 +318,7 @@ namespace Notus.Block
 
             // every time "NVC.NodeValidationModCount" mod is Zero
             string tmpstateKey = GetStateKey(chainId, currentState.rowNo);
+            Console.WriteLine("tmpstateKey : " + tmpstateKey);
             stateDb.Set(tmpstateKey, allSignStr);
 
             // control_noktasi();
