@@ -383,17 +383,9 @@ namespace Notus.Block
                 sign = sign
             });
         }
-        public NVS.NodeStateStruct? State(string chainId,long rowNo=0)
+        public NVS.NodeStateStruct? State(string chainId)
         {
-            string tmpResult = string.Empty;
-            if (rowNo > 0)
-            {
-                tmpResult = stateDb.Get(GetStateKey(chainId, rowNo));
-            }
-            else
-            {
-                tmpResult = stateDb.Get(chainId);
-            }
+            string tmpResult = stateDb.Get(chainId);
             if (tmpResult == null)
                 return null;
 

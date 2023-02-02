@@ -156,9 +156,14 @@ namespace Notus.Block
         {
             foreach (var validatorItem in NVG.NodeList)
             {
-                var nodeState=NVG.BlockMeta.State(validatorItem.Value.ChainId, validatorItem.Value.State.rowNo);
+                var nodeState=NVG.BlockMeta.State(
+                    NVG.BlockMeta.GetStateKey(
+                        validatorItem.Value.ChainId, 
+                        validatorItem.Value.State.rowNo
+                    )
+                );
                 Console.WriteLine(
-                    validatorItem.Key + " -> " + 
+                   "s : " + validatorItem.Key + " -> " + 
                     JsonSerializer.Serialize(nodeState)
                 );
             }
