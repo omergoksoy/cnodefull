@@ -57,7 +57,7 @@ namespace Notus.Block
         }
         private void ControlBlock(long rownNo)
         {
-            Console.WriteLine(rownNo.ToString() + " Numaralı Blok Kontrol Edildi.");
+            //Console.WriteLine(rownNo.ToString() + " Numaralı Blok Kontrol Edildi.");
 
             string currentBlockUid = NVG.BlockMeta.Order(rownNo);
             string currentBlockSign = NVG.BlockMeta.Sign(rownNo);

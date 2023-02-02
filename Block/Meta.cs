@@ -313,7 +313,8 @@ namespace Notus.Block
             // kayıt altına alınacak
             //control_noktasi();
             string stateText = "<nodeState>" + allSignStr + "</nodeState>";
-            Console.WriteLine(stateText);
+            NP.Basic(currentState.rowNo + ". State Generated");
+            //Console.WriteLine(stateText);
             foreach (var validatorItem in NVG.NodeList)
             {
                 NVG.Settings.PeerManager.SendWithTask(validatorItem.Value, stateText);
