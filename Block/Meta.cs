@@ -352,6 +352,7 @@ namespace Notus.Block
             else
             {
                 string nodeKey = NGF.GetNodeListKey(chainId);
+                Console.WriteLine("nodeKey : " + nodeKey);
                 if (nodeKey.Length > 0)
                 {
                     NVG.NodeList[nodeKey].State.rowNo = currentState.rowNo;
