@@ -298,6 +298,14 @@ namespace Notus.Block
 
             return tmpResult;
         }
+        public string GenerateRawTextForStateSign(NVS.NodeStateInfoStruct currentState)
+        {
+            return currentState.chainId + ":" +
+                currentState.time.ToString() + ":" +
+                currentState.state.blockUid + ":" +
+                currentState.state.rowNo.ToString() + ":" +
+                currentState.state.sign;
+        }
         public void State(string chainId, NVS.NodeStateStruct currentState)
         {
             string allSignStr = JsonSerializer.Serialize(currentState);
@@ -312,9 +320,28 @@ namespace Notus.Block
             // diğer node'a imzalı halini gönderecek
             // kayıt altına alınacak
             // control_noktasi();
-            string stateText = "<nodeState>" + allSignStr + "</nodeState>";
-                
-            NP.Basic(Math.Round((decimal)(currentState.rowNo / NVC.NodeValidationModCount)).ToString() + ". State [ "+ currentState.rowNo.ToString() + ". Block ] Generated");
+            NP.Basic(Math.Round((decimal)(currentState.rowNo / NVC.NodeValidationModCount)).ToString() + ". State [ " + currentState.rowNo.ToString() + ". Block ] Generated");
+            ulong rightNow = NVG.NOW.Int;
+
+            NVS.NodeStateInfoStruct stateTransfer = new NVS.NodeStateInfoStruct()
+            {
+                chainId = NVG.Settings.Nodes.My.ChainId,
+                time = rightNow,
+                state = new NVS.NodeStateStruct()
+                {
+                    blockUid = currentState.blockUid,
+                    rowNo = currentState.rowNo,
+                    sign = currentState.sign
+                },
+                sign = ""
+            };
+
+            stateTransfer.sign = Notus.Wallet.ID.Sign(
+                GenerateRawTextForStateSign(stateTransfer), 
+                NVG.Settings.Nodes.My.PrivateKey
+            );
+
+            string stateText = "<nodeState>" + JsonSerializer.Serialize(stateTransfer) + "</nodeState>";
             //Console.WriteLine(stateText);
             foreach (var validatorItem in NVG.NodeList)
             {
@@ -341,7 +368,7 @@ namespace Notus.Block
 
             try
             {
-                NVS.NodeStateStruct? tmpChainState= JsonSerializer.Deserialize<NVS.NodeStateStruct>(tmpResult);
+                NVS.NodeStateStruct? tmpChainState = JsonSerializer.Deserialize<NVS.NodeStateStruct>(tmpResult);
                 return tmpChainState;
             }
             catch { }

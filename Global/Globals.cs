@@ -190,6 +190,17 @@ namespace Notus.Variable
             public static Notus.Block.Queue BlockQueue { get; set; }
             public static string ValidatorListHash { get; set; }
             public static SortedDictionary<string, NVS.IpInfo> ValidatorList { get; set; }
+            public static string GetNodePublicKey(string nodeChainId)
+            {
+                foreach (var validatorItem in NVG.NodeList)
+                {
+                    if (string.Equals(nodeChainId, validatorItem.Value.ChainId) == true)
+                    {
+                        return validatorItem.Value.PublicKey;
+                    }
+                }
+                return string.Empty;
+            }
             public static string SendMessage(string receiverIpAddress, int receiverPortNo, string messageText, string nodeHexStr = "")
             {
                 if (nodeHexStr == "")

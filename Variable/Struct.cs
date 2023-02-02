@@ -644,8 +644,16 @@ namespace Notus.Variable.Struct
 
     public class NodeStateStruct
     {
+
         public long rowNo { get; set; }
         public string blockUid { get; set; }
+        public string sign { get; set; }
+    }
+    public class NodeStateInfoStruct
+    {
+        public string chainId { get; set; }
+        public ulong time { get; set; }
+        public NodeStateStruct state { get; set; }
         public string sign { get; set; }
     }
     /*

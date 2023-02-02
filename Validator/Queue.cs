@@ -174,7 +174,34 @@ namespace Notus.Validator
                 // burada gelen state ve public imza ile kontrol edilecek ve onaylanırsa
                 // kayıt altına alınacak
                 incomeData = NTT.GetPureText(incomeData, "nodeState");
-                Console.WriteLine(incomeData);
+                //Console.WriteLine(incomeData);
+                try
+                {
+                    NVS.NodeStateInfoStruct? nodeState =
+                        JsonSerializer.Deserialize<NVS.NodeStateInfoStruct>(incomeData);
+                    if (nodeState != null)
+                    {
+                        string nodePublicKey = NGF.GetNodePublicKey(nodeState.chainId);
+                        bool stateVerify = Notus.Wallet.ID.Verify(
+                            NVG.BlockMeta.GenerateRawTextForStateSign(nodeState),
+                            nodeState.sign,
+                            nodePublicKey
+                        );
+                        if (stateVerify == true)
+                        {
+                            Console.WriteLine("stateVerify == true");
+                            Console.WriteLine("stateVerify == true");
+                        }
+                        else
+                        {
+                            Console.WriteLine("stateVerify == FALSE ");
+                            Console.WriteLine("stateVerify == FALSE ");
+                            Console.WriteLine("stateVerify == FALSE ");
+                        }
+                    }
+                }
+                catch { }
+
                 //control_noktasi();
                 return "ok";
             }
@@ -649,7 +676,7 @@ namespace Notus.Validator
             if (NTT.CheckXmlTag(incomeData, "node"))
             {
                 incomeData = NTT.GetPureText(incomeData, "node");
-                Console.WriteLine("incomeData : " + incomeData);
+                //Console.WriteLine("incomeData : " + incomeData);
                 try
                 {
                     NVS.NodeQueueInfo? tmpNodeQueueInfo =
