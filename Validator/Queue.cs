@@ -175,6 +175,7 @@ namespace Notus.Validator
                 // kayıt altına alınacak
                 incomeData = NTT.GetPureText(incomeData, "nodeState");
                 //control_noktasi();
+                return "ok";
             }
 
             if (NTT.CheckXmlTag(incomeData, "requestId"))
@@ -201,10 +202,12 @@ namespace Notus.Validator
                     : "distribute"
                 );
             }
+
             if (NTT.CheckXmlTag(incomeData, "ping"))
             {
                 return "pong";
             }
+
             if (NTT.CheckXmlTag(incomeData, "block"))
             {
                 if (Notus.Toolbox.Text.CountChar(incomeData, '/') > 1)
@@ -278,6 +281,7 @@ namespace Notus.Validator
                 NP.Danger("Error Occurred While Getting New Block");
                 return "fncResult-false";
             }
+
             if (NTT.CheckXmlTag(incomeData, "kill"))
             {
                 incomeData = NTT.GetPureText(incomeData, "kill");
@@ -327,6 +331,7 @@ namespace Notus.Validator
                 StartingTimeAfterEnoughNode_Arrived = true;
                 return "done";
             }
+
             if (NTT.CheckXmlTag(incomeData, "hash"))
             {
                 incomeData = NTT.GetPureText(incomeData, "hash");
@@ -342,10 +347,12 @@ namespace Notus.Validator
                 }
                 return "0";
             }
+
             if (NTT.CheckXmlTag(incomeData, "lhash"))
             {
                 return (string.Equals(NTT.GetPureText(incomeData, "lhash"), NGF.ValidatorListHash) == true ? "1" : "0");
             }
+
             if (NTT.CheckXmlTag(incomeData, "nList"))
             {
                 //burada eğer liste içeriği farklı ise yeni listeyi gönder
@@ -376,6 +383,7 @@ namespace Notus.Validator
                 }
                 return "done";
             }
+
             if (NTT.CheckXmlTag(incomeData, "sNode"))
             {
                 incomeData = NTT.GetPureText(incomeData, "sNode");
@@ -392,6 +400,7 @@ namespace Notus.Validator
                 }
                 return "done";
             }
+
             if (NTT.CheckXmlTag(incomeData, "rNode"))
             {
                 return "<node>" + JsonSerializer.Serialize(NVG.NodeList[NVG.Settings.Nodes.My.HexKey]) + "</node>";
@@ -478,6 +487,7 @@ namespace Notus.Validator
                 }
                 return "0";
             }
+
             if (NTT.CheckXmlTag(incomeData, "syncNo"))
             {
                 //NP.Basic("IncomeText : " + incomeData);
@@ -675,6 +685,7 @@ namespace Notus.Validator
                 catch { }
                 return "0";
             }
+
             if (NTT.CheckXmlTag(incomeData, "list"))
             {
                 incomeData = NTT.GetPureText(incomeData, "list");
@@ -683,6 +694,7 @@ namespace Notus.Validator
                 {
                     return "<err>1</err>";
                 }
+
                 foreach (KeyValuePair<string, NVS.IpInfo> entry in tmpNodeList)
                 {
                     NVH.AddToValidatorList(entry.Value.IpAddress, entry.Value.Port);
@@ -690,6 +702,8 @@ namespace Notus.Validator
                 return "<list>" + JsonSerializer.Serialize(NGF.ValidatorList) + "</list>";
             }
 
+            NP.Basic("Unknown IncomeText : " + incomeData);
+            NP.Basic("Unknown IncomeText : " + incomeData);
             NP.Basic("Unknown IncomeText : " + incomeData);
             return "<err>1</err>";
         }
