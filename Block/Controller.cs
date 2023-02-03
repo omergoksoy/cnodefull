@@ -155,8 +155,8 @@ namespace Notus.Block
         }
         public void CheckAllNodeState(long rownNo)
         {
-            diğer nodelar ile block stateleri karşılaştırılsın
-            diğer nodelar ile block stateleri karşılaştırılsın
+            // diğer nodelar ile block stateleri karşılaştırılsın
+            // diğer nodelar ile block stateleri karşılaştırılsın
 
             foreach (var validatorItem in NVG.NodeList)
             {
