@@ -88,6 +88,8 @@ namespace Notus.Block
             if (rowNo < 2)
             {
                 Console.WriteLine("İlk Blok oldugu için timer'a geri dönüyor.");
+                long tmpModNo = rowNo % NVC.NodeValidationModCount;
+                Console.WriteLine("tmpModNo : " + tmpModNo.ToString());
                 return;
             }
             long nextRowNo = rowNo + 1;
@@ -155,8 +157,8 @@ namespace Notus.Block
         }
         public void CheckAllNodeState(long rownNo)
         {
-            // diğer nodelar ile block stateleri karşılaştırılsın
-            // diğer nodelar ile block stateleri karşılaştırılsın
+            //diğer nodelar ile block stateleri karşılaştırılsın
+            //diğer nodelar ile block stateleri karşılaştırılsın
 
             foreach (var validatorItem in NVG.NodeList)
             {
