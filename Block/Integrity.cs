@@ -14,6 +14,7 @@ using NVClass = Notus.Variable.Class;
 using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
+using NTN = Notus.Toolbox.Network;
 
 namespace Notus.Block
 {
@@ -141,7 +142,18 @@ namespace Notus.Block
                             NVClass.BlockData? PrevBlock = NVG.BlockMeta.ReadBlock(prevBlockNo);
 
                             if (string.Equals(ControlBlock.prev, PrevBlock.info.uID + PrevBlock.sign) == false)
+                            {
+                                Console.WriteLine("*************************************");
+                                Console.WriteLine(JsonSerializer.Serialize(ControlBlock));
+                                Console.WriteLine();
+                                Console.WriteLine();
+                                Console.WriteLine(JsonSerializer.Serialize(PrevBlock));
+                                Console.WriteLine("*************************************");
+                                Environment.Exit(0);
+                                // omergoksoy();
+                                // NTN.GetBlockFromNode(entry.IpAddress, entry.Port, 2, NVG.Settings);
                                 return (NVE.BlockIntegrityStatus.CheckAgain, null);
+                            }
 
                         }
                     }
@@ -283,7 +295,7 @@ namespace Notus.Block
                     {
                         NP.Info("Checking From -> " + item.IpAddress);
                         NVClass.BlockData? tmpInnerBlockData =
-                            Notus.Toolbox.Network.GetBlockFromNode(
+                            NTN.GetBlockFromNode(
                                 item.IpAddress,
                                 item.Port,
                                 1,
@@ -351,7 +363,7 @@ namespace Notus.Block
                             if (secondBlockAdded == false)
                             {
                                 NVClass.BlockData? tmpInnerBlockData =
-                                Notus.Toolbox.Network.GetBlockFromNode(entry.IpAddress, entry.Port, 2, NVG.Settings);
+                                NTN.GetBlockFromNode(entry.IpAddress, entry.Port, 2, NVG.Settings);
                                 if (tmpInnerBlockData != null)
                                 {
                                     NP.Basic(NVG.Settings, "Added Block : " + tmpInnerBlockData.info.uID);
@@ -379,7 +391,7 @@ namespace Notus.Block
                     {
                         NP.Info("Checking From -> " + item.IpAddress);
                         NVClass.BlockData? tmpInnerBlockData =
-                            Notus.Toolbox.Network.GetBlockFromNode(
+                            NTN.GetBlockFromNode(
                                 item.IpAddress,
                                 item.Port,
                                 1,
