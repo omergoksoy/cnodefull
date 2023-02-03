@@ -160,9 +160,21 @@ namespace Notus.Block
         {
             //diğer nodelar ile block stateleri karşılaştırılsın
             //diğer nodelar ile block stateleri karşılaştırılsın
-
+            long smallestStateNo = long.MaxValue;
             foreach (var validatorItem in NVG.NodeList)
             {
+                long tmpModNo = validatorItem.Value.State.rowNo % NVC.NodeValidationModCount;
+                if(smallestStateNo> tmpModNo)
+                {
+                    smallestStateNo = tmpModNo;
+                }
+            }
+            Console.WriteLine("smallestStateNo : " + smallestStateNo.ToString());
+
+            /*
+            foreach (var validatorItem in NVG.NodeList)
+            {
+                long tmpModNo = validatorItem.Value.State.rowNo % NVC.NodeValidationModCount;
                 if (validatorItem.Value.State.rowNo > 0)
                 {
                     var nodeState = NVG.BlockMeta.State(
@@ -173,13 +185,12 @@ namespace Notus.Block
                     );
                     string whoIsStr = (string.Equals(NVG.Settings.Nodes.My.HexKey, validatorItem.Key) == true ? "ME" : "HIM");
                     Console.WriteLine(
-                       "s : " + "[ " + validatorItem.Value.State.rowNo.ToString() + " ] " + validatorItem.Key + "["+ whoIsStr + "] -> " +
+                       "s : " + "[ " + validatorItem.Value.State.rowNo.ToString() + " ] " + validatorItem.Key + "[" + whoIsStr + "] -> " +
                         JsonSerializer.Serialize(nodeState)
                     );
-                    /*
-                    */
                 }
             }
+            */
         }
         public void Start()
         {
