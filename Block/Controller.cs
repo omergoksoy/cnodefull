@@ -161,18 +161,23 @@ namespace Notus.Block
             //diğer nodelar ile block stateleri karşılaştırılsın
             //diğer nodelar ile block stateleri karşılaştırılsın
             long smallestStateNo = long.MaxValue;
+            bool stateAssigned = false;
             foreach (var validatorItem in NVG.NodeList)
             {
                 long tmpModNo = System.Convert.ToInt64(Math.Round((decimal)(validatorItem.Value.State.rowNo / NVC.NodeValidationModCount)));
-                Console.WriteLine("validatorItem.Value.State.rowNo : " + validatorItem.Value.State.rowNo.ToString());
-                Console.WriteLine("tmpModNo : " + tmpModNo.ToString());
-
-                if (smallestStateNo> tmpModNo)
+                if (tmpModNo > 0)
                 {
-                    smallestStateNo = tmpModNo;
+                    stateAssigned = true;
+                    if (smallestStateNo> tmpModNo)
+                    {
+                        smallestStateNo = tmpModNo;
+                    }
                 }
             }
-            Console.WriteLine("smallestStateNo : " + smallestStateNo.ToString());
+            if (stateAssigned == true)
+            {
+                Console.WriteLine("smallestStateNo : " + smallestStateNo.ToString());
+            }
 
             /*
             foreach (var validatorItem in NVG.NodeList)
