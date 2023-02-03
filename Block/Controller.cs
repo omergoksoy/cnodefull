@@ -89,7 +89,7 @@ namespace Notus.Block
             {
                 Console.WriteLine("İlk Blok oldugu için timer'a geri dönüyor.");
                 long tmpModNo = rowNo % NVC.NodeValidationModCount;
-                Console.WriteLine("tmpModNo : " + tmpModNo.ToString());
+                //Console.WriteLine("tmpModNo : " + tmpModNo.ToString());
                 return;
             }
             long nextRowNo = rowNo + 1;
@@ -134,7 +134,7 @@ namespace Notus.Block
                         sign = currentBlockSign
                     }
                 );
-                Console.WriteLine("rowNo : " + rowNo.ToString());
+                //Console.WriteLine("rowNo : " + rowNo.ToString());
                 CheckAllNodeState(rowNo);
             }
 
@@ -163,18 +163,22 @@ namespace Notus.Block
 
             foreach (var validatorItem in NVG.NodeList)
             {
-                var nodeState = NVG.BlockMeta.State(
-                    NVG.BlockMeta.GetStateKey(
-                        validatorItem.Value.ChainId,
-                        validatorItem.Value.State.rowNo
-                    )
-                );
-
-                string whoIsStr = (string.Equals(NVG.Settings.Nodes.My.HexKey, validatorItem.Key) == true ? "ME" : "HIM");
-                Console.WriteLine(
-                   "s : " + "[ " + validatorItem.Value.State.rowNo.ToString() + " ] " + validatorItem.Key + "["+ whoIsStr + "] -> " +
-                    JsonSerializer.Serialize(nodeState)
-                );
+                if (validatorItem.Value.State.rowNo > 0)
+                {
+                    var nodeState = NVG.BlockMeta.State(
+                        NVG.BlockMeta.GetStateKey(
+                            validatorItem.Value.ChainId,
+                            validatorItem.Value.State.rowNo
+                        )
+                    );
+                    string whoIsStr = (string.Equals(NVG.Settings.Nodes.My.HexKey, validatorItem.Key) == true ? "ME" : "HIM");
+                    Console.WriteLine(
+                       "s : " + "[ " + validatorItem.Value.State.rowNo.ToString() + " ] " + validatorItem.Key + "["+ whoIsStr + "] -> " +
+                        JsonSerializer.Serialize(nodeState)
+                    );
+                    /*
+                    */
+                }
             }
         }
         public void Start()
