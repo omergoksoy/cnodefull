@@ -163,7 +163,7 @@ namespace Notus.Block
             long smallestStateNo = long.MaxValue;
             foreach (var validatorItem in NVG.NodeList)
             {
-                long tmpModNo = System.Convert.ToInt64(Math.Round((decimal)(validatorItem.Value.State.rowNo / NVC.NodeValidationModCount)))
+                long tmpModNo = System.Convert.ToInt64(Math.Round((decimal)(validatorItem.Value.State.rowNo / NVC.NodeValidationModCount)));
                 Console.WriteLine("validatorItem.Value.State.rowNo : " + validatorItem.Value.State.rowNo.ToString());
                 Console.WriteLine("tmpModNo : " + tmpModNo.ToString());
 
