@@ -134,6 +134,7 @@ namespace Notus.Block
                         sign = currentBlockSign
                     }
                 );
+                Console.WriteLine("rowNo : " + rowNo.ToString());
                 CheckAllNodeState(rowNo);
             }
 
