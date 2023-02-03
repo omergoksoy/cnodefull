@@ -149,7 +149,57 @@ namespace Notus.Block
                                 Console.WriteLine();
                                 Console.WriteLine(JsonSerializer.Serialize(PrevBlock));
                                 Console.WriteLine("*************************************");
+
+                                
+                                Console.WriteLine("================================================");
+                                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
+                                {
+                                    bool getFromNode = (entry.Value.Status == NVS.NodeStatus.Online ? true : false);
+                                    getFromNode = (string.Equals(entry.Value.IP.Wallet, NVG.Settings.NodeWallet.WalletKey) == true ? false : getFromNode);
+                                    if (getFromNode == true)
+                                    {
+                                        NVClass.BlockData? tmpInnerBlockData = NTN.GetBlockFromNode(
+                                            entry.Value.IP.IpAddress,
+                                            entry.Value.IP.Port,
+                                            blockRownNo,
+                                            NVG.Settings
+                                        );
+                                        if (tmpInnerBlockData != null)
+                                        {
+                                            //NP.Basic(NVG.Settings, "Added Block : " + tmpInnerBlockData.info.uID);
+                                            //NVG.BlockMeta.WriteBlock(tmpInnerBlockData, "Meta -> Line -> 183");
+                                            Console.WriteLine(JsonSerializer.Serialize(tmpInnerBlockData));
+                                        }
+                                    }
+                                }
+
+                                Console.WriteLine();
+                                Console.WriteLine();
+                                foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
+                                {
+                                    bool getFromNode = (entry.Value.Status == NVS.NodeStatus.Online ? true : false);
+                                    getFromNode = (string.Equals(entry.Value.IP.Wallet, NVG.Settings.NodeWallet.WalletKey) == true ? false : getFromNode);
+                                    if (getFromNode == true)
+                                    {
+                                        NVClass.BlockData? tmpInnerBlockData = NTN.GetBlockFromNode(
+                                            entry.Value.IP.IpAddress,
+                                            entry.Value.IP.Port,
+                                            prevBlockNo,
+                                            NVG.Settings
+                                        );
+                                        if (tmpInnerBlockData != null)
+                                        {
+                                            //NVG.BlockMeta.WriteBlock(tmpInnerBlockData, "Meta -> Line -> 183");
+                                            Console.WriteLine(JsonSerializer.Serialize(tmpInnerBlockData));
+                                        }
+                                    }
+                                }
+                                Console.WriteLine("================================================");
+
                                 Environment.Exit(0);
+                                /*
+
+                                */
                                 // omergoksoy();
                                 // NTN.GetBlockFromNode(entry.IpAddress, entry.Port, 2, NVG.Settings);
                                 return (NVE.BlockIntegrityStatus.CheckAgain, null);
