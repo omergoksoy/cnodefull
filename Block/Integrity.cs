@@ -477,6 +477,8 @@ namespace Notus.Block
                 }
                 else
                 {
+                    Console.WriteLine("CheckAgain : Status");
+                    Console.WriteLine("CheckAgain : Status");
                     SyncAllBlockFromOtherNodes();
                 }
                 
