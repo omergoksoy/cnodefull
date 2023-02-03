@@ -163,9 +163,9 @@ namespace Notus.Block
             long smallestStateNo = long.MaxValue;
             foreach (var validatorItem in NVG.NodeList)
             {
+                long tmpModNo = System.Convert.ToInt64(Math.Round((decimal)(validatorItem.Value.State.rowNo / NVC.NodeValidationModCount)))
                 Console.WriteLine("validatorItem.Value.State.rowNo : " + validatorItem.Value.State.rowNo.ToString());
-                long tmpModNo = validatorItem.Value.State.rowNo % NVC.NodeValidationModCount;
-                //NP.Basic(Math.Round((decimal)(currentState.rowNo / NVC.NodeValidationModCount)).ToString() + ". State [ " + currentState.rowNo.ToString() + ". Block ] Generated");
+                Console.WriteLine("tmpModNo : " + tmpModNo.ToString());
 
                 if (smallestStateNo> tmpModNo)
                 {
