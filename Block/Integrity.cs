@@ -140,7 +140,7 @@ namespace Notus.Block
                         {
                             long prevBlockNo = blockRownNo - 1;
                             NVClass.BlockData? PrevBlock = NVG.BlockMeta.ReadBlock(prevBlockNo);
-
+                            //omergoksoy();
                             if (string.Equals(ControlBlock.prev, PrevBlock.info.uID + PrevBlock.sign) == false)
                             {
                                 Console.WriteLine("*************************************");

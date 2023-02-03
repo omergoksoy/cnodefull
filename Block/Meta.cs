@@ -111,7 +111,12 @@ namespace Notus.Block
             string validatorWalletId_FromBlock = blockData.validator.count.First().Key;
             if (validatorWalletId.Length == 0)
             {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("Validasyon Yapilamadi -> " + blockGenarationTime.ToString() + " : " + validatorWalletId_FromBlock);
+                Console.WriteLine("Validasyon Yapilamadi -> " + blockGenarationTime.ToString() + " : " + validatorWalletId_FromBlock);
+                Console.WriteLine("Validasyon Yapilamadi -> " + blockGenarationTime.ToString() + " : " + validatorWalletId_FromBlock);
+                Console.WriteLine("Validasyon Yapilamadi -> " + blockGenarationTime.ToString() + " : " + validatorWalletId_FromBlock);
+                Environment.Exit(0);
             }
             else
             {
@@ -122,7 +127,12 @@ namespace Notus.Block
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("HATALI kisi tarafindan uretilen blok - DEGISTIR");
+                    Console.WriteLine("HATALI kisi tarafindan uretilen blok - DEGISTIR");
+                    Console.WriteLine("HATALI kisi tarafindan uretilen blok - DEGISTIR");
+                    Console.WriteLine("HATALI kisi tarafindan uretilen blok - DEGISTIR");
+                    Environment.Exit(0);
                 }
             }
             return false;
