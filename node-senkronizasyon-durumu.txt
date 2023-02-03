@@ -1,4 +1,49 @@
-﻿21:11:30.184 L1-Dev  -> Chain Id : 134b03b338ba02d22820fe72fe5eb85f4fa1e07da2405597ae2f346f4955a9a102f323e3560d30fef2ed619d79
+﻿
+// geçerli empty blok yapısı
+0,5 saniyede	-> 3.431 byte
+1 saniyede		-> 6.862 byte
+1 dakikada		-> 411.720 byte
+1 saatte		-> 24.703.200 byte
+1 günde			-> 592.876.800 byte
+1 yılda			-> 216.400.032.000 byte
+
+
+// örnek yapı
+{"info":{"version":1000,"type":300,"uID":"134b03b31b50000871c03e4fb022067cb79c9705cbacf30d37f62d25be75824a067a5db0a596da7b72704298cd","multi":false,"rowNo":2556,"nonce":{"method":1,"type":1,"difficulty":1}},"cipher":{"ver":"NE","data":"MjU1NQ==","sign":"7fc337638fca0d90ee8de54fe7c79af0ffbaee1a7337db43979e5547a0900b929824db0305c085664ef6ed00b6151a3c5a308659429e662661daa98440e3082d66f2a2da97dc757fe5c704fbd9acdeb9dc2ce222ebc5adfcd1c2a9a6160745635851c08ac2bdf3bf2abf98afa8c01a63d4a445f8a8330683"},"hash":{"block":"71yqk4e12m456hhggqwl6yedf6zzkvjdhynxdfvb9n35su1p5c1afhr8efmi7ohsdinhfyfz87etxf8e48k5bkqjbe6p9fz29sryqox26ax45cz844y9fjip62gb2imj2o4kkozd2xvieq8s6rifz9ce7r1o8twxdv4gll6h0elhkky3bim81zp3ffzujn3k","data":"3cmlynwj5si8c76nfywfwwqx4rlgfm3ngqmx6w2y07xrdzak8u889san9b646r1teuvq3t68fo8spnpq8h2dvzmfawsbpccwgb3duz3m8idekqo1es2plcre0b6cqkhq4t5vt8rgdh15j8o54919alv4c3kpxa71hzzvkyw5at7gnjoc9ot5eaa98x6xdalw","info":"3iv56ulj4cn2y1a18flwnisr5jtf677ddez1rb58fk1kfh3v4ikrfgfu3ys9u1k5bnpygib2cw7b1dsl4bxkjzj28djoah5p056stit2b3jofhhu8zz5hkfk2e6n9tbqb9z63mz7ekwdfh1548ud9jszbv3naarnbk739tsz0c568bj3an5kbsam7x8nltbu","FINAL":"2ldhe7rybscdj488hl3noahqfnkv81uoh92szhwc2ecs3k4p0pk71pqnb1xmozkzcsbsm2h28w4znhy3bdre1fnc03r1v4z53q5n4bpdc2run58q2lblp8xz4jwy7hmb725b7hi5cvvw5pbyanhplkp54nci22xz32iq5nx4akx9fvom4axc6b5h2zdmh4lg"},"validator":{"count":{"NSX5bUemx6FRUioqG8BqDRtCgN1cZxSMCA8E3aJ":96},"map":{"block":{"1000":"NSX5bUemx6FRUioqG8BqDRtCgN1cZxSMCA8E3aJ"},"data":{"1000":"NSX5bUemx6FRUioqG8BqDRtCgN1cZxSMCA8E3aJ"},"info":{"1000":"NSX5bUemx6FRUioqG8BqDRtCgN1cZxSMCA8E3aJ"}},"sign":"db4e6da1a59144501823b2b67e0e786f4a8ad7bc9bc07dfa6e5570dbef09ee503714c81ce28bb341bd612791fd59516315de90f68f0ea952cddd5499abf5ef1d036a73ec90bcbbe5029119ce1716fc50cf96419bf9cadd4cb1fa8cc1dde7147fd3b9d84152d88b20763d6b497ff4313a2fa05afaba28c695"},"nonce":{"block":"11:12:05:03:04:09:1b:0f:15:0e:21:07:02:19:02:04:0c:0b:03:0a:19:03:14:21:05:07:02:01:25:04:14:04","data":"13:03:13:03:07:02:01:1b:32:06:2e:09:11:05:1e:02:02:12:10:09:0a:0a:06:0a:02:1e:11:05:02:08:0f:24","info":"18:07:05:19:18:11:09:04:0d:01:0d:01:1f:07:09:13:1d:2b:06:08:3e:18:14:06:0b:02:07:05:10:0c:11:1a"},"prev":"134b03b315380003ec9f8108b39a88a78ae94419e0ec436150c60634924a15bdbe9b4afc580855b95fd3b0a12d8zvhkuxd23cvwzctbz8hpnd6flwiohsyc4a4kwh7ddxtouxmbnfvi8n44y9p9fv1681kywya3w3hygyn4wu7dil22dtzvmlx6c88cvdvfezu582d3f7lq9wv35d163py8kq916of2vr7rbf5elqmy4d4d7zayfn3941bhwi42w4ogh2tf22u8u8gel7ok1zc","sign":"bnelgdv9dwlewvzq73ry75vfh5jywpzsbc5odos43cynkc6xbqnlkr8fc356h5mubu4rhk553v5q56wc6so67b5d4ghqr13l6qmuey3nff1adtw503ekbgge3pj1l6mj63a1alib5vcg69ps4wnkg7ea9xa2mqg22d2dlcny4mebn4owf1f8arfg4ur64lco"}
+
+// biraz kırpınca ortaya çıkan değer
+0,5 saniyede	-> 2.639 byte
+1 saniyede		-> 5.278 byte
+1 dakikada		-> 316.680 byte
+1 saatte		-> 19.000.800 byte
+1 günde			-> 456.019.200 byte
+1 yılda			-> 166.447.008.000 byte
+
+
+
+// örnek yapı
+{"info":{"version":1000,"type":300,"uID":"134b03b31b50000871c03e4fb022067cb79c9705cbacf30d37f62d25be75824a067a5db0a596da7b72704298cd","multi":false,"rowNo":2556,"nonce":{"method":1,"type":1,"difficulty":1}},"cipher":{"ver":"","data":"","sign":""},"validator":"NSX5bUemx6FRUioqG8BqDRtCgN1cZxSMCA8E3aJ","nonce":"18:07:05:19:18:11:09:04:0d:01:0d:01:1f:07:09:13:1d:2b:06:08:3e:18:14:06:0b:02:07:05:10:0c:11:1a","prev":"134b03b315380003ec9f8108b39a88a78ae94419e0ec436150c60634924a15bdbe9b4afc580855b95fd3b0a12d8zvhkuxd23cvwzctbz8hpnd6flwiohsyc4a4kwh7ddxtouxmbnfvi8n44y9p9fv1681kywya3w3hygyn4wu7dil22dtzvmlx6c88cvdvfezu582d3f7lq9wv35d163py8kq916of2vr7rbf5elqmy4d4d7zayfn3941bhwi42w4ogh2tf22u8u8gel7ok1zc","sign":"bnelgdv9dwlewvzq73ry75vfh5jywpzsbc5odos43cynkc6xbqnlkr8fc356h5mubu4rhk553v5q56wc6so67b5d4ghqr13l6qmuey3nff1adtw503ekbgge3pj1l6mj63a1alib5vcg69ps4wnkg7ea9xa2mqg22d2dlcny4mebn4owf1f8arfg4ur64lco"}
+
+// hedeflenen değerler
+0,5 saniyede	-> 902 byte
+1 saniyede		-> 1.804 byte
+1 dakikada		-> 108.240 byte
+1 saatte		-> 6.494.400 byte
+1 günde			-> 155.865.600 byte
+1 yılda			-> 56.890.944.000 byte
+
+
+// hedeflenen değerler
+0,5 saniyede	-> 1.000 byte
+1 saniyede		-> 2.000 byte
+1 dakikada		-> 120.000 byte
+1 saatte		-> 7.200.000 byte
+1 günde			-> 172.800.000 byte
+1 yılda			-> 63.072.000.000 byte
+
+
+
+21:11:30.184 L1-Dev  -> Chain Id : 134b03b338ba02d22820fe72fe5eb85f4fa1e07da2405597ae2f346f4955a9a102f323e3560d30fef2ed619d79
 21:11:30.184 L1-Dev  -> Activated DevNET for Layer 1 ( Crypto Layer )
 21:11:30.184 L1-Dev  -> Starting As Main Node
 21:11:30.184 L1-Dev  -> Waiting For Time Sync
