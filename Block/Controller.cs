@@ -168,8 +168,10 @@ namespace Notus.Block
                         validatorItem.Value.State.rowNo
                     )
                 );
+
+                string whoIsStr = (string.Equals(NVG.Settings.Nodes.My.HexKey, validatorItem.Key) == true ? "ME" : "HIM");
                 Console.WriteLine(
-                   "s : " + validatorItem.Key + " -> " +
+                   "s : " + "[ " + validatorItem.Value.State.rowNo.ToString() + " ] " + validatorItem.Key + "["+ whoIsStr + "]" -> " +
                     JsonSerializer.Serialize(nodeState)
                 );
             }
