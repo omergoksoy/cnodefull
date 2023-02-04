@@ -294,9 +294,13 @@ namespace Notus.Block
 
             return tmpResult;
         }
-        public string GetStateKey(string chainId, long rowNo)
+        public string GetStateKey(string chainId, long rowOrStateNo,bool isRowNo)
         {
-            return chainId + ":" + Math.Round((decimal)(rowNo / NVC.NodeValidationModCount)).ToString().ToString().PadLeft(30, '0');
+            if (isRowNo == true)
+            {
+                return chainId + ":" + Math.Round((decimal)(rowOrStateNo / NVC.NodeValidationModCount)).ToString().PadLeft(30, '0');
+            }
+            return chainId + ":" + Math.Round((decimal)rowOrStateNo).ToString().PadLeft(30, '0');
         }
         /*
         public string State(ulong blockTime)
@@ -327,7 +331,7 @@ namespace Notus.Block
             stateDb.Set(chainId, allSignStr);
 
             // every time "NVC.NodeValidationModCount" mod is Zero
-            string tmpstateKey = GetStateKey(chainId, currentState.rowNo);
+            string tmpstateKey = GetStateKey(chainId, currentState.rowNo,true);
 
             //Console.WriteLine("tmpstateKey : " + tmpstateKey);
             stateDb.Set(tmpstateKey, allSignStr);

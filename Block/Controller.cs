@@ -179,6 +179,18 @@ namespace Notus.Block
                 Console.WriteLine("smallestStateNo : " + smallestStateNo.ToString());
             }
 
+            foreach (var validatorItem in NVG.NodeList)
+            {
+                var nodeState = NVG.BlockMeta.State(
+                    NVG.BlockMeta.GetStateKey(
+                        validatorItem.Value.ChainId,
+                        smallestStateNo,
+                        false
+                    )
+                );
+                Console.WriteLine(validatorItem.Key + " -> " + JsonSerializer.Serialize(nodeState));
+            }
+
             /*
             foreach (var validatorItem in NVG.NodeList)
             {
