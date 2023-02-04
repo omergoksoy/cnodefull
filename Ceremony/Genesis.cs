@@ -22,7 +22,6 @@ namespace Notus.Ceremony
         private SortedDictionary<BigInteger, string> ValidatorOrder = new SortedDictionary<BigInteger, string>();
         private int CeremonyMemberCount = 2;
         private bool Signed = false;
-        private Dictionary<int, string> validatorOrderQueue = new();
         private NVClass.BlockData genesisBlock = new();
         private NVClass.BlockData airdropBlock = new();
         private NVClass.BlockData emptyBlock1 = new();
@@ -75,9 +74,8 @@ namespace Notus.Ceremony
                 ND.ToLong(genesisBlock.info.time), 
                 genesisBlock.validator.count.First().Key
             );
+            
             NVG.BlockMeta.WriteBlock(genesisBlock, "Genesis -> Line -> 66");
-
-            //NP.Warning("Air Drop Contract Block Deactivated");
             NVG.BlockMeta.WriteBlock(airdropBlock, "Genesis -> Line -> 80");
             NVG.BlockMeta.WriteBlock(emptyBlock1, "Genesis -> Line -> 81");
             NVG.BlockMeta.WriteBlock(emptyBlock2, "Genesis -> Line -> 82");
@@ -123,7 +121,30 @@ namespace Notus.Ceremony
         }
         private void RealGeneration()
         {
+            int tmpOrderNo = 1;
+            Dictionary<int,string> validatorOrderQueue = new();
+            while (validatorOrderQueue.Count < 6)
+            {
+                foreach (var item in ValidatorOrder)
+                {
+                    if(validatorOrderQueue.Count < 6)
+                    {
+                        validatorOrderQueue.Add(tmpOrderNo,item.Value);
+                        tmpOrderNo++;
+                    }
+                }
+            }
+            Console.WriteLine("-----------------------------------------------------");
             Console.WriteLine(JsonSerializer.Serialize(validatorOrderQueue));
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine(JsonSerializer.Serialize(GenesisObj));
+            Console.WriteLine("-----------------------------------------------------");
+            Environment.Exit(0);
+            //omergoksoy();
+
+            //string leaderWalletId = ValidatorOrder.Values.ElementAt(CeremonyMemberCount - 1);
+
             genesisBlock = NVClass.Block.GetEmpty();
 
             genesisBlock.info.type = NVE.BlockTypeList.GenesisBlock;
@@ -375,7 +396,7 @@ namespace Notus.Ceremony
                 NVG.Settings.Network,
                 NVG.Settings.Layer
             );
-
+            
             //burada birinci sıradaki validatörün imzası eklenece
             GenesisObj.Ceremony.Clear();
             for (int i = 1; i < CeremonyMemberCount + 1; i++)
@@ -391,7 +412,6 @@ namespace Notus.Ceremony
         }
         private void MakeMembersOrders()
         {
-            int nodeOrder = 1;
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
                 if (entry.Value.Status == NVS.NodeStatus.Online)
@@ -417,9 +437,6 @@ namespace Notus.Ceremony
                         {
                             ValidatorOrder.Add(intWalletNo, entry.Value.IP.Wallet);
                             exitInnerWhileLoop = true;
-
-                            validatorOrderQueue.Add(nodeOrder, entry.Value.IP.Wallet);
-                            nodeOrder++;
                         }
                         else
                         {
