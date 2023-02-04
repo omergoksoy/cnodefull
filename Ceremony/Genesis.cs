@@ -36,21 +36,16 @@ namespace Notus.Ceremony
         private Notus.Communication.Http HttpObj = new Notus.Communication.Http(true);
         public void SaveCurrentState()
         {
-            /*
-            Console.WriteLine("Save Current State");
-            Console.WriteLine("Save Current State");
-            Console.WriteLine("Save Current State");
-            */
-
             FirstState.sign = Notus.Wallet.ID.Sign(
                 NVG.BlockMeta.GenerateRawTextForStateSign(FirstState),
                 NVG.Settings.Nodes.My.PrivateKey
             );
             FirstStateIsReady = true;
-
-            //string stateText = "<nodeState>" + JsonSerializer.Serialize(FirstState) + "</nodeState>";
-            //Console.WriteLine(stateText);
             GetAllState();
+            Console.ForegroundColor= ConsoleColor.Green;
+            Console.WriteLine("Imza ve zaman kontrolü yapılarak");
+            Console.WriteLine("Gelen state'in dogru kisi tarafindan geldigini dogrula");
+            Console.WriteLine("Dogrulama islemi bitince kayit altina alinsin");
             Console.ReadLine();
         }
         public void Start()
@@ -105,21 +100,10 @@ namespace Notus.Ceremony
             ControlAllBlockSign();
             NVG.BlockMeta.Validator(genesisBlock.info.uID, ValidatorQueue[1]);
             NVG.BlockMeta.Validator(airdropBlock.info.uID, ValidatorQueue[2]);
-            //NVG.BlockMeta.Validator(ND.ToLong(genesisBlock.info.time), ValidatorQueue[1]);
-            //NVG.BlockMeta.Validator(ND.ToLong(airdropBlock.info.time), ValidatorQueue[2]);
-            Console.WriteLine("-----------------------------------------------------");
-            Console.WriteLine(JsonSerializer.Serialize(ValidatorQueue));
-            Console.WriteLine("-----------------------------------------------------");
-
-            Console.WriteLine("control-point-1");
-            NVG.BlockMeta.WriteBlock(genesisBlock, "Genesis -> Line -> 66");
-            Console.WriteLine("control-point-2");
-            NVG.BlockMeta.WriteBlock(airdropBlock, "Genesis -> Line -> 80");
-            Console.WriteLine("control-point-3");
+            NVG.BlockMeta.WriteBlock(genesisBlock, "");
+            NVG.BlockMeta.WriteBlock(airdropBlock, "");
             string prevText = airdropBlock.info.uID + airdropBlock.sign;
 
-            Console.WriteLine(genesisBlock.info.time);
-            Console.WriteLine(airdropBlock.info.time);
             for (int counter = 0; counter < 4; counter++)
             {
                 string blockValidatorWalletId = ValidatorQueue[counter + 3];
@@ -145,12 +129,10 @@ namespace Notus.Ceremony
                 emptyBlock = new Notus.Block.Generate(blockValidatorWalletId).Make(emptyBlock, 1000);
 
                 NVG.BlockMeta.Validator(emptyBlock.info.uID, blockValidatorWalletId);
-                //NVG.BlockMeta.Validator(airdropBlock.info.uID, ValidatorQueue[2]);
-                Console.WriteLine(emptyBlock.info.time);
 
                 prevText = emptyBlock.info.uID + emptyBlock.sign;
 
-                NVG.BlockMeta.WriteBlock(emptyBlock, "Genesis -> Line -> 107");
+                NVG.BlockMeta.WriteBlock(emptyBlock, "");
                 FirstState.state.blockUid = emptyBlock.info.uID;
                 FirstState.state.rowNo = emptyBlock.info.rowNo;
                 FirstState.state.sign = emptyBlock.sign;

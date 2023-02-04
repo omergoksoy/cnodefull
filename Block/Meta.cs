@@ -104,11 +104,11 @@ namespace Notus.Block
 
         private bool CheckBlockValidator(NVClass.BlockData blockData)
         {
-            Console.WriteLine("------ CheckBlockValidator ------");
+            //Console.WriteLine("------ CheckBlockValidator ------");
             ulong queueTimePeriod = NVD.Calculate();
             ulong blockTimeVal = ND.ToLong(blockData.info.time);
             ulong blockGenarationTime = blockTimeVal - (blockTimeVal % queueTimePeriod);
-            Console.WriteLine("blockGenarationTime : " + blockGenarationTime.ToString());
+            //Console.WriteLine("blockGenarationTime : " + blockGenarationTime.ToString());
             string validatorWalletId = Validator(blockGenarationTime);
             string validatorWalletId_FromBlock = blockData.validator.count.First().Key;
             if (validatorWalletId.Length == 0)
@@ -149,7 +149,14 @@ namespace Notus.Block
 
             //NVH.RightBlockValidator(blockData, "Block Meta - WriteBlock");
             //NVG.BlockMeta.Validator(peerStaringTime, NVG.Settings.Nodes.Queue[peerStaringTime].Wallet);
-            Console.WriteLine("Saving Block Data -> " + blockData.info.rowNo.ToString() + " - [ " + senderLocation + " ]");
+            if (senderLocation.Length ==0)
+            {
+                NP.Info("Saving Block Data -> " + blockData.info.rowNo.ToString());
+            }
+            else
+            {
+                Console.WriteLine("Saving Block Data -> " + blockData.info.rowNo.ToString() + " - [ " + senderLocation + " ]");
+            }
             blockDb.Set(blockData.info.uID, JsonSerializer.Serialize(blockData));
 
             signDb.Set(blockData.info.rowNo.ToString(), blockData.sign);
