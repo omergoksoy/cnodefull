@@ -22,6 +22,7 @@ namespace Notus.Ceremony
         private SortedDictionary<BigInteger, string> ValidatorOrder = new SortedDictionary<BigInteger, string>();
         private int CeremonyMemberCount = 2;
         private bool Signed = false;
+        private Dictionary<int, string> validatorOrderQueue = new();
         private NVClass.BlockData genesisBlock = new();
         private NVClass.BlockData airdropBlock = new();
         private NVClass.BlockData emptyBlock1 = new();
@@ -122,24 +123,7 @@ namespace Notus.Ceremony
         }
         private void RealGeneration()
         {
-            int tmpOrderNo = 1;
-            Dictionary<int,string> validatorOrderQueue = new();
-            while (validatorOrderQueue.Count < 6)
-            {
-                foreach (var item in ValidatorOrder)
-                {
-                    if(validatorOrderQueue.Count < 6)
-                    {
-                        validatorOrderQueue.Add(tmpOrderNo,item.Value);
-                        tmpOrderNo++;
-                    }
-                }
-            }
-            // Console.WriteLine(JsonSerializer.Serialize(validatorOrderQueue));
-            // Environment.Exit(0);
-
-            //string leaderWalletId = ValidatorOrder.Values.ElementAt(CeremonyMemberCount - 1);
-
+            Console.WriteLine(JsonSerializer.Serialize(validatorOrderQueue));
             genesisBlock = NVClass.Block.GetEmpty();
 
             genesisBlock.info.type = NVE.BlockTypeList.GenesisBlock;
@@ -407,6 +391,7 @@ namespace Notus.Ceremony
         }
         private void MakeMembersOrders()
         {
+            int nodeOrder = 1;
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
                 if (entry.Value.Status == NVS.NodeStatus.Online)
@@ -432,6 +417,9 @@ namespace Notus.Ceremony
                         {
                             ValidatorOrder.Add(intWalletNo, entry.Value.IP.Wallet);
                             exitInnerWhileLoop = true;
+
+                            validatorOrderQueue.Add(nodeOrder, entry.Value.IP.Wallet);
+                            nodeOrder++;
                         }
                         else
                         {
