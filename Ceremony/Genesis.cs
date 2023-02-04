@@ -1,22 +1,22 @@
-﻿using NVD = Notus.Validator.Date;
-using ND = Notus.Date;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Net;
 using System.Numerics;
 using System.Text.Json;
+using NBK = Notus.Block.Key;
 using NCR = Notus.Communication.Request;
+using ND = Notus.Date;
 using NGF = Notus.Variable.Globals.Functions;
 using NH = Notus.Hash;
+using NNN = Notus.Network.Node;
 using NP = Notus.Print;
-using NBK = Notus.Block.Key;
+using NTT = Notus.Toolbox.Text;
 using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
+using NVD = Notus.Validator.Date;
+using NVE = Notus.Variable.Enum;
 using NVG = Notus.Variable.Globals;
 using NVH = Notus.Validator.Helper;
 using NVS = Notus.Variable.Struct;
-using NNN = Notus.Network.Node;
-using NTT = Notus.Toolbox.Text;
-using NVE = Notus.Variable.Enum;
 namespace Notus.Ceremony
 {
     public class Genesis : IDisposable
@@ -69,8 +69,10 @@ namespace Notus.Ceremony
             NP.Info("My Block Sign : " + BlockSignHash.Substring(0, 10) + "..." + BlockSignHash.Substring(BlockSignHash.Length - 10));
 
             ControlAllBlockSign();
-            NVG.BlockMeta.Validator(ND.ToLong(genesisBlock.info.time),ValidatorQueue[1]);
-            NVG.BlockMeta.Validator(ND.ToLong(airdropBlock.info.time), ValidatorQueue[2]);
+            NVG.BlockMeta.Validator(genesisBlock.info.uID, ValidatorQueue[1]);
+            NVG.BlockMeta.Validator(airdropBlock.info.uID, ValidatorQueue[2]);
+            //NVG.BlockMeta.Validator(ND.ToLong(genesisBlock.info.time), ValidatorQueue[1]);
+            //NVG.BlockMeta.Validator(ND.ToLong(airdropBlock.info.time), ValidatorQueue[2]);
             Console.WriteLine("-----------------------------------------------------");
             Console.WriteLine(JsonSerializer.Serialize(ValidatorQueue));
             Console.WriteLine("-----------------------------------------------------");
@@ -80,15 +82,15 @@ namespace Notus.Ceremony
             Console.WriteLine("control-point-2");
             NVG.BlockMeta.WriteBlock(airdropBlock, "Genesis -> Line -> 80");
             Console.WriteLine("control-point-3");
-            string prevText= airdropBlock.info.uID + airdropBlock.sign;
+            string prevText = airdropBlock.info.uID + airdropBlock.sign;
 
             Console.WriteLine(genesisBlock.info.time);
             Console.WriteLine(airdropBlock.info.time);
-            for(int counter=0; counter<4; counter++)
+            for (int counter = 0; counter < 4; counter++)
             {
                 string blockValidatorWalletId = ValidatorQueue[counter + 3];
                 ulong emptyBlockTime = ND.AddMiliseconds(ND.ToLong(GenesisObj.Info.Creation), NVD.Calculate((ulong)counter + 2));
-                
+
                 NVClass.BlockData emptyBlock = new();
                 emptyBlock = NVClass.Block.GetEmpty();
                 emptyBlock.info.prevList.Clear();
@@ -112,7 +114,7 @@ namespace Notus.Ceremony
                 Console.WriteLine(emptyBlock.info.time);
 
                 prevText = emptyBlock.info.uID + emptyBlock.sign;
-                
+
                 NVG.BlockMeta.WriteBlock(emptyBlock, "Genesis -> Line -> 107");
 
             }
@@ -159,9 +161,9 @@ namespace Notus.Ceremony
             {
                 foreach (var item in ValidatorOrder)
                 {
-                    if(ValidatorQueue.Count < 6)
+                    if (ValidatorQueue.Count < 6)
                     {
-                        ValidatorQueue.Add(tmpOrderNo,item.Value);
+                        ValidatorQueue.Add(tmpOrderNo, item.Value);
                         tmpOrderNo++;
                     }
                 }
@@ -193,17 +195,17 @@ namespace Notus.Ceremony
             airdropBlock.info.multi = false;
             airdropBlock.info.uID = NVC.AirdropBlockUid;
             airdropBlock.prev = genesisBlock.info.uID + genesisBlock.sign;
-            airdropBlock.info.prevList.Add( NVE.BlockTypeList.GenesisBlock, genesisBlock.info.uID + genesisBlock.sign);
+            airdropBlock.info.prevList.Add(NVE.BlockTypeList.GenesisBlock, genesisBlock.info.uID + genesisBlock.sign);
             airdropBlock.info.time = Notus.Block.Key.GetTimeFromKey(airdropBlock.info.uID, true);
 
             //kontrat ile etkileşime girmek için senaryo düşün
             //burada airdrop kontratı olacak ve o kontrat ile etkileşime girilecek
-            string airDropContractCode = 
+            string airDropContractCode =
                 "IF current_network='main' THEN " + NVC.NewLine +
                     "PRINT 'AIRDROP NOT AVAILABLE FOR MAIN NETWORK' " + NVC.NewLine +
                     "KILL " + NVC.NewLine +
                 "ENDIF " + NVC.NewLine +
-                    
+
                 "CONST AIRDROP_VOLUME = '2000000'  " + NVC.NewLine +
                 "AIRDROP msg_sender " + NVC.NewLine +
                 "KILL ";
@@ -438,7 +440,7 @@ namespace Notus.Ceremony
                 NVG.Settings.Network,
                 NVG.Settings.Layer
             );
-            
+
             //burada birinci sıradaki validatörün imzası eklenece
             GenesisObj.Ceremony.Clear();
             for (int i = 1; i < CeremonyMemberCount + 1; i++)

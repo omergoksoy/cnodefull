@@ -420,6 +420,12 @@ namespace Notus.Block
 
             return tmpResult;
         }
+        public void Validator(string blockUid, string validatorWalletId)
+        {
+            ulong blockTimeVal = ND.ToLong(Notus.Block.Key.GetTimeFromKey(blockUid, true));
+            ulong blockGenarationTime = blockTimeVal - (blockTimeVal % NVD.Calculate());
+            Validator(blockGenarationTime, validatorWalletId);
+        }
         public void Validator(ulong blockTime, string validatorWalletId)
         {
             Console.WriteLine("------ SET VALIDATOR -----");
