@@ -204,7 +204,7 @@ namespace Notus.Ceremony
                     }
                 }
             }
-            NP.Success("All Sign Are Equals");
+            NP.Success("State Are Equals");
         }
         private void ControlAllBlockSign()
         {
