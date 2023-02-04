@@ -217,6 +217,11 @@ namespace Notus.Validator
             Console.WriteLine("StartExecuteDistribiton : " + incomeMessage);
             Console.WriteLine("messageResponse: " + messageResponse);
 
+            if (string.Equals(messageResponse, "state") == true)
+            {
+                return;
+            }
+
             if (string.Equals(messageResponse, "distribute") != true)
             {
             }

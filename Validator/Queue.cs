@@ -180,13 +180,13 @@ namespace Notus.Validator
                     if (nodeState == null)
                     {
                         Console.WriteLine("stateVerify == VARIABLE NULL");
-                        return "ok";
+                        return "state";
                     }
                     const ulong howManySecondsIsAcceptable = 60 * 1000;
                     if (Math.Round((decimal)(NVG.NOW.Int - nodeState.time)) > howManySecondsIsAcceptable)
                     {
                         Console.WriteLine("stateVerify == TIME OUT");
-                        return "ok";
+                        return "state";
                     }
                     if (Notus.Wallet.ID.Verify(
                         NVG.BlockMeta.GenerateRawTextForStateSign(nodeState),
@@ -196,14 +196,14 @@ namespace Notus.Validator
                     {
                         Console.WriteLine("stateVerify == FALSE");
 
-                        return "ok";
+                        return "state";
                     }
                     //Console.WriteLine("stateVerify == true");
                     NVG.BlockMeta.State(nodeState.chainId, nodeState.state);
                 }
                 catch { }
                 //control_noktasi();
-                return "ok";
+                return "state";
             }
 
             if (NTT.CheckXmlTag(incomeData, "requestId"))
