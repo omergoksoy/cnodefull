@@ -31,12 +31,34 @@ namespace Notus.Ceremony
         private string BlockSignHash = string.Empty;
         private Notus.Variable.Genesis.GenesisBlockData GenesisObj = new();
         private int MyOrderNo = 0;
+        private NVS.NodeStateStruct FirstState = new NVS.NodeStateStruct();
         private Notus.Communication.Http HttpObj = new Notus.Communication.Http(true);
         public void SaveCurrentState()
         {
             Console.WriteLine("Save Current State");
             Console.WriteLine("Save Current State");
             Console.WriteLine("Save Current State");
+            NVS.NodeStateInfoStruct stateTransfer = new NVS.NodeStateInfoStruct()
+            {
+                chainId = NVG.Settings.Nodes.My.ChainId,
+                time = NVG.NOW.Int,
+                state = new NVS.NodeStateStruct()
+                {
+                    blockUid = FirstState.blockUid,
+                    rowNo = FirstState.rowNo,
+                    sign = FirstState.sign
+                },
+                sign = ""
+            };
+
+            stateTransfer.sign = Notus.Wallet.ID.Sign(
+                NVG.BlockMeta.GenerateRawTextForStateSign(stateTransfer),
+                NVG.Settings.Nodes.My.PrivateKey
+            );
+
+            string stateText = "<nodeState>" + JsonSerializer.Serialize(stateTransfer) + "</nodeState>";
+            Console.WriteLine(stateText);
+
             Console.ReadLine();
         }
         public void Start()
@@ -124,6 +146,9 @@ namespace Notus.Ceremony
                 prevText = emptyBlock.info.uID + emptyBlock.sign;
 
                 NVG.BlockMeta.WriteBlock(emptyBlock, "Genesis -> Line -> 107");
+                FirstState.blockUid = emptyBlock.info.uID;
+                FirstState.rowNo = emptyBlock.info.rowNo;
+                FirstState.sign = emptyBlock.sign;
             }
         }
         private void ControlAllBlockSign()

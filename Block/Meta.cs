@@ -428,9 +428,9 @@ namespace Notus.Block
         }
         public void Validator(ulong blockTime, string validatorWalletId)
         {
-            Console.WriteLine("------ SET VALIDATOR -----");
-            Console.WriteLine("blockTime : " + blockTime.ToString());
-            Console.WriteLine("validatorWalletId : " + validatorWalletId);
+            //Console.WriteLine("------ SET VALIDATOR -----");
+            //Console.WriteLine("blockTime : " + blockTime.ToString());
+            //Console.WriteLine("validatorWalletId : " + validatorWalletId);
             validatorDb.Set(blockTime.ToString(), validatorWalletId);
         }
 
