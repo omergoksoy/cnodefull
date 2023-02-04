@@ -187,7 +187,7 @@ namespace Notus.Block
                 NVS.NodeStateStruct? nodeState = NVG.BlockMeta.State(
                     NVG.BlockMeta.GetStateKey(validatorItem.Value.ChainId,smallestStateNo,false)
                 );
-                stateList.Add(validatorItem.Key, nodeState == null ? "0" : nodeState.rowNo);
+                stateList.Add(validatorItem.Key, nodeState == null ? 0 : nodeState.rowNo);
                 string stateValueText = nodeState == null ? "null" : nodeState.sign;
                 if (stateCountList.ContainsKey(stateValueText) == false)
                 {
