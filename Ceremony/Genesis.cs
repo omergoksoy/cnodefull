@@ -192,16 +192,14 @@ namespace Notus.Ceremony
             airdropBlock = new Notus.Block.Generate(ValidatorQueue[2]).Make(airdropBlock, 1000);
 
             ulong creationTimeAsLong = ND.ToLong(GenesisObj.Info.Creation);
-            DateTime generationTime = ND.ToDateTime(creationTimeAsLong - (creationTimeAsLong % NVD.Calculate()));
             
-            ulong emptBlockTime1 = ND.AddMiliseconds(ND.ToLong(generationTime), NVD.Calculate(2));
-            ulong emptBlockTime2 = ND.AddMiliseconds(ND.ToLong(generationTime), NVD.Calculate(3));
-            ulong emptBlockTime3 = ND.AddMiliseconds(ND.ToLong(generationTime), NVD.Calculate(4));
-            ulong emptBlockTime4 = ND.AddMiliseconds(ND.ToLong(generationTime), NVD.Calculate(5));
+            ulong airdropTime = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(1));
+            ulong emptBlockTime1 = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(2));
+            ulong emptBlockTime2 = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(3));
+            ulong emptBlockTime3 = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(4));
+            ulong emptBlockTime4 = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(5));
             Console.WriteLine(creationTimeAsLong);
-            Console.WriteLine(creationTimeAsLong);
-            Console.WriteLine(ND.ToLong(generationTime));
-            Console.WriteLine(ND.ToLong(generationTime));
+            Console.WriteLine(airdropTime);
             Console.WriteLine(emptBlockTime1);
             Console.WriteLine(emptBlockTime2);
             Console.WriteLine(emptBlockTime3);
