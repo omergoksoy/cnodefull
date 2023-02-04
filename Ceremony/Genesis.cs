@@ -27,10 +27,10 @@ namespace Notus.Ceremony
         private bool Signed = false;
         private NVClass.BlockData genesisBlock = new();
         private NVClass.BlockData airdropBlock = new();
-        private NVClass.BlockData emptyBlock1 = new();
-        private NVClass.BlockData emptyBlock2 = new();
-        private NVClass.BlockData emptyBlock3 = new();
-        private NVClass.BlockData emptyBlock4 = new();
+        //private NVClass.BlockData emptyBlock1 = new();
+        //private NVClass.BlockData emptyBlock2 = new();
+        //private NVClass.BlockData emptyBlock3 = new();
+        //private NVClass.BlockData emptyBlock4 = new();
 
         private string BlockSignHash = string.Empty;
         private Notus.Variable.Genesis.GenesisBlockData GenesisObj = new();
@@ -75,19 +75,51 @@ namespace Notus.Ceremony
             ControlAllBlockSign();
             NVG.BlockMeta.Validator(ND.ToLong(genesisBlock.info.time),ValidatorQueue[1]);
 
-            Console.WriteLine("-----------------------------------------------------");
-            Console.WriteLine(JsonSerializer.Serialize(ValidatorQueue));
-            Console.WriteLine("-----------------------------------------------------");
-            Environment.Exit(0);
+            //Console.WriteLine("-----------------------------------------------------");
+            //Console.WriteLine(JsonSerializer.Serialize(ValidatorQueue));
+            //Console.WriteLine("-----------------------------------------------------");
+            //Environment.Exit(0);
             // omergoksoy();
 
             NVG.BlockMeta.WriteBlock(genesisBlock, "Genesis -> Line -> 66");
             NVG.BlockMeta.WriteBlock(airdropBlock, "Genesis -> Line -> 80");
+            string prevText= airdropBlock.info.uID + airdropBlock.sign;
+
+            for(int counter=0; counter<4; counter++)
+            {
+                /*
+                */
+                string blockValidatorWalletId = ValidatorQueue[counter + 3];
+                ulong emptyBlockTime = ND.AddMiliseconds(ND.ToLong(GenesisObj.Info.Creation), NVD.Calculate((ulong)counter + 2));
+                NBK.GenerateStatic(ND.ToDateTime(emptyBlockTime), blockValidatorWalletId);
+                NVClass.BlockData emptyBlock = new();
+                emptyBlock = NVClass.Block.GetEmpty();
+                emptyBlock.info.prevList.Clear();
+                emptyBlock.info.type = NVE.BlockTypeList.EmptyBlock;
+                emptyBlock.info.rowNo = 3;
+                emptyBlock.info.multi = false;
+                emptyBlock.info.uID = NVC.AirdropBlockUid;
+                emptyBlock.prev = prevText;
+                emptyBlock.info.prevList.Add(NVE.BlockTypeList.GenesisBlock, genesisBlock.info.uID + genesisBlock.sign);
+                emptyBlock.info.prevList.Add(NVE.BlockTypeList.SmartContract, airdropBlock.info.uID + airdropBlock.sign);
+                if (counter > 0)
+                {
+                    emptyBlock.info.prevList.Add(NVE.BlockTypeList.EmptyBlock, prevText);
+                }
+                emptyBlock.info.time = Notus.Block.Key.GetTimeFromKey(emptyBlock.info.uID, true);
+                emptyBlock.cipher.ver = "NE";
+                emptyBlock.cipher.data = NTT.NumberToBase64(counter + 1);
+                emptyBlock = new Notus.Block.Generate(blockValidatorWalletId).Make(emptyBlock, 1000);
+                
+                NVG.BlockMeta.WriteBlock(emptyBlock, "Genesis -> Line -> 107");
+
+                prevText = emptyBlock.info.uID + emptyBlock.sign;
+            }
+            /*
             NVG.BlockMeta.WriteBlock(emptyBlock1, "Genesis -> Line -> 81");
             NVG.BlockMeta.WriteBlock(emptyBlock2, "Genesis -> Line -> 82");
             NVG.BlockMeta.WriteBlock(emptyBlock3, "Genesis -> Line -> 83");
             NVG.BlockMeta.WriteBlock(emptyBlock4, "Genesis -> Line -> 84");
-            /*
             */
         }
         private void ControlAllBlockSign()
@@ -189,8 +221,8 @@ namespace Notus.Ceremony
 
             airdropBlock = new Notus.Block.Generate(ValidatorQueue[2]).Make(airdropBlock, 1000);
 
+            /*
             ulong creationTimeAsLong = ND.ToLong(GenesisObj.Info.Creation);
-            
             
             ulong airdropTime = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(1));
             ulong emptBlockTime1 = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(2));
@@ -283,8 +315,7 @@ namespace Notus.Ceremony
             emptyBlock4 = new Notus.Block.Generate(ValidatorQueue[6]).Make(emptyBlock4, 1000);
 
             BlockSignHash = emptyBlock4.sign;
-
-
+            */
         }
         private void GetAllSignedGenesisFromValidator()
         {

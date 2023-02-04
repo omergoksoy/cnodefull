@@ -59,13 +59,13 @@ namespace Notus
         {
             return time.ToString("HH:mm:ss.fff");
         }
-        public static DateTime ToDateTime(ulong ConverTime)
+        public static DateTime ToDateTime(ulong ConvertTime)
         {
-            return ToDateTime(ConverTime.ToString().PadRight(17, '0'));
+            return ToDateTime(ConvertTime.ToString().PadRight(17, '0'));
         }
-        public static DateTime ToDateTime(long ConverTime)
+        public static DateTime ToDateTime(long ConvertTime)
         {
-            return ToDateTime(ConverTime.ToString().PadRight(17, '0'));
+            return ToDateTime(ConvertTime.ToString().PadRight(17, '0'));
         }
         public static DateTime ToDateTime(string DateTimeStr)
         {
