@@ -31,38 +31,43 @@ namespace Notus.Ceremony
         private string BlockSignHash = string.Empty;
         private Notus.Variable.Genesis.GenesisBlockData GenesisObj = new();
         private int MyOrderNo = 0;
-        private NVS.NodeStateStruct FirstState = new NVS.NodeStateStruct();
+        private bool FirstStateIsReady = false;
+        private NVS.NodeStateInfoStruct FirstState;
         private Notus.Communication.Http HttpObj = new Notus.Communication.Http(true);
         public void SaveCurrentState()
         {
+            /*
             Console.WriteLine("Save Current State");
             Console.WriteLine("Save Current State");
             Console.WriteLine("Save Current State");
-            NVS.NodeStateInfoStruct stateTransfer = new NVS.NodeStateInfoStruct()
+            */
+
+            FirstState.sign = Notus.Wallet.ID.Sign(
+                NVG.BlockMeta.GenerateRawTextForStateSign(FirstState),
+                NVG.Settings.Nodes.My.PrivateKey
+            );
+            FirstStateIsReady = true;
+
+            //string stateText = "<nodeState>" + JsonSerializer.Serialize(FirstState) + "</nodeState>";
+            //Console.WriteLine(stateText);
+            GetAllState();
+            Console.ReadLine();
+        }
+        public void Start()
+        {
+            FirstState = new NVS.NodeStateInfoStruct()
             {
                 chainId = NVG.Settings.Nodes.My.ChainId,
                 time = NVG.NOW.Int,
                 state = new NVS.NodeStateStruct()
                 {
-                    blockUid = FirstState.blockUid,
-                    rowNo = FirstState.rowNo,
-                    sign = FirstState.sign
+                    blockUid = "",
+                    rowNo = 0,
+                    sign = ""
                 },
                 sign = ""
             };
 
-            stateTransfer.sign = Notus.Wallet.ID.Sign(
-                NVG.BlockMeta.GenerateRawTextForStateSign(stateTransfer),
-                NVG.Settings.Nodes.My.PrivateKey
-            );
-
-            string stateText = "<nodeState>" + JsonSerializer.Serialize(stateTransfer) + "</nodeState>";
-            Console.WriteLine(stateText);
-
-            Console.ReadLine();
-        }
-        public void Start()
-        {
             //kontrollü bir şekilde dosyayı silerek sıfırlıyor
             Notus.Data.Helper.ClearTable(NVC.MemoryPoolName["ValidatorList"]);
             bool predefinedValidator = false;
@@ -146,10 +151,60 @@ namespace Notus.Ceremony
                 prevText = emptyBlock.info.uID + emptyBlock.sign;
 
                 NVG.BlockMeta.WriteBlock(emptyBlock, "Genesis -> Line -> 107");
-                FirstState.blockUid = emptyBlock.info.uID;
-                FirstState.rowNo = emptyBlock.info.rowNo;
-                FirstState.sign = emptyBlock.sign;
+                FirstState.state.blockUid = emptyBlock.info.uID;
+                FirstState.state.rowNo = emptyBlock.info.rowNo;
+                FirstState.state.sign = emptyBlock.sign;
             }
+        }
+        private void GetAllState()
+        {
+            int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
+            foreach (var validatorItem in NVG.NodeList)
+            {
+                if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, validatorItem.Value.IP.Wallet) == false)
+                {
+                    bool exitFromWhileLoop = false;
+                    while (exitFromWhileLoop == false)
+                    {
+                        string requestUrl = NNN.MakeHttpListenerPath( validatorItem.Value.IP.IpAddress, SelectedPortVal ) + "state";
+                        string MainResultStr = NCR.GetSync(requestUrl, 2, true, false);
+                        if (MainResultStr.Length > 10)
+                        {
+                            NVS.NodeStateInfoStruct? tmpValidatorState = null;
+                            try
+                            {
+                                tmpValidatorState = JsonSerializer.Deserialize<NVS.NodeStateInfoStruct>(MainResultStr);
+                            }
+                            catch { }
+
+                            if (tmpValidatorState != null)
+                            {
+                                if(string.Equals(tmpValidatorState.state.blockUid, FirstState.state.blockUid) == false)
+                                {
+                                    NP.Danger("Block Uid Is Different");
+                                    Environment.Exit(0);
+                                }
+                                if(string.Equals(tmpValidatorState.state.sign, FirstState.state.sign) == false)
+                                {
+                                    NP.Danger("Block Sign Is Different");
+                                    Environment.Exit(0);
+                                }
+                                if(tmpValidatorState.state.rowNo!= FirstState.state.rowNo)
+                                {
+                                    NP.Danger("Block Row No Is Different");
+                                    Environment.Exit(0);
+                                }
+                                exitFromWhileLoop = true;
+                            }
+                        }
+                        else
+                        {
+                            Thread.Sleep(500);
+                        }
+                    }
+                }
+            }
+            NP.Success("All Sign Are Equals");
         }
         private void ControlAllBlockSign()
         {
@@ -248,102 +303,6 @@ namespace Notus.Ceremony
             );
 
             airdropBlock = new Notus.Block.Generate(ValidatorQueue[2]).Make(airdropBlock, 1000);
-
-            /*
-            ulong creationTimeAsLong = ND.ToLong(GenesisObj.Info.Creation);
-            
-            ulong airdropTime = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(1));
-            ulong emptBlockTime1 = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(2));
-            ulong emptBlockTime2 = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(3));
-            ulong emptBlockTime3 = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(4));
-            ulong emptBlockTime4 = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(5));
-            
-            Console.WriteLine(
-                NBK.GenerateStatic(ND.ToDateTime(genesisBlock.info.uID), "123456789")
-            );
-            Console.WriteLine(genesisBlock.info.time);
-            Console.WriteLine(airdropBlock.info.time);
-            Console.WriteLine(creationTimeAsLong);
-            Console.WriteLine(airdropTime);
-            Console.WriteLine(emptBlockTime1);
-            Console.WriteLine(emptBlockTime2);
-            Console.WriteLine(emptBlockTime3);
-            Console.WriteLine(emptBlockTime4);
-            Environment.Exit(0);
-
-
-            // 1. empty blok
-            emptyBlock1 = NVClass.Block.GetEmpty();
-            emptyBlock1.info.prevList.Clear();
-            emptyBlock1.info.type = NVE.BlockTypeList.EmptyBlock;
-            emptyBlock1.info.rowNo = 3;
-            emptyBlock1.info.multi = false;
-            emptyBlock1.info.uID = NVC.AirdropBlockUid;
-            emptyBlock1.prev = airdropBlock.info.uID + airdropBlock.sign;
-            emptyBlock1.info.prevList.Add(NVE.BlockTypeList.GenesisBlock, genesisBlock.info.uID + genesisBlock.sign);
-            emptyBlock1.info.prevList.Add(NVE.BlockTypeList.SmartContract, airdropBlock.info.uID + airdropBlock.sign);
-
-            emptyBlock1.info.time = Notus.Block.Key.GetTimeFromKey(emptyBlock1.info.uID, true);
-            emptyBlock1.cipher.ver = "NE";
-            emptyBlock1.cipher.data = NTT.NumberToBase64(1);
-            emptyBlock1 = new Notus.Block.Generate(ValidatorQueue[3]).Make(emptyBlock1, 1000);
-
-
-
-            // 2. empty blok
-            emptyBlock2 = NVClass.Block.GetEmpty();
-            emptyBlock2.info.prevList.Clear();
-            emptyBlock2.info.type = NVE.BlockTypeList.EmptyBlock;
-            emptyBlock2.info.rowNo = 4;
-            emptyBlock2.info.multi = false;
-            emptyBlock2.info.uID = NVC.AirdropBlockUid;
-            emptyBlock2.prev = emptyBlock1.info.uID + emptyBlock1.sign;
-            emptyBlock2.info.prevList.Add(NVE.BlockTypeList.GenesisBlock, genesisBlock.info.uID + genesisBlock.sign);
-            emptyBlock2.info.prevList.Add(NVE.BlockTypeList.SmartContract, airdropBlock.info.uID + airdropBlock.sign);
-            emptyBlock2.info.prevList.Add(NVE.BlockTypeList.EmptyBlock, emptyBlock1.info.uID + emptyBlock1.sign);
-
-            emptyBlock2.info.time = Notus.Block.Key.GetTimeFromKey(emptyBlock2.info.uID, true);
-            emptyBlock2.cipher.ver = "NE";
-            emptyBlock2.cipher.data = NTT.NumberToBase64(1);
-            emptyBlock2 = new Notus.Block.Generate(ValidatorQueue[4]).Make(emptyBlock2, 1000);
-
-
-            // 3. empty blok
-            emptyBlock3 = NVClass.Block.GetEmpty();
-            emptyBlock3.info.prevList.Clear();
-            emptyBlock3.info.type = NVE.BlockTypeList.EmptyBlock;
-            emptyBlock3.info.rowNo = 5;
-            emptyBlock3.info.multi = false;
-            emptyBlock3.info.uID = NVC.AirdropBlockUid;
-            emptyBlock3.prev = emptyBlock2.info.uID + emptyBlock2.sign;
-            emptyBlock3.info.prevList.Add(NVE.BlockTypeList.GenesisBlock, genesisBlock.info.uID + genesisBlock.sign);
-            emptyBlock3.info.prevList.Add(NVE.BlockTypeList.SmartContract, airdropBlock.info.uID + airdropBlock.sign);
-            emptyBlock3.info.prevList.Add(NVE.BlockTypeList.EmptyBlock, emptyBlock2.info.uID + emptyBlock2.sign);
-
-            emptyBlock3.info.time = Notus.Block.Key.GetTimeFromKey(emptyBlock3.info.uID, true);
-            emptyBlock3.cipher.ver = "NE";
-            emptyBlock3.cipher.data = NTT.NumberToBase64(1);
-            emptyBlock3 = new Notus.Block.Generate(ValidatorQueue[5]).Make(emptyBlock3, 1000);
-
-            // 4. empty blok
-            emptyBlock4 = NVClass.Block.GetEmpty();
-            emptyBlock4.info.prevList.Clear();
-            emptyBlock4.info.type = NVE.BlockTypeList.EmptyBlock;
-            emptyBlock4.info.rowNo = 3;
-            emptyBlock4.info.multi = false;
-            emptyBlock4.info.uID = NVC.AirdropBlockUid;
-            emptyBlock4.prev = emptyBlock3.info.uID + emptyBlock3.sign;
-            emptyBlock4.info.prevList.Add(NVE.BlockTypeList.GenesisBlock, genesisBlock.info.uID + genesisBlock.sign);
-            emptyBlock4.info.prevList.Add(NVE.BlockTypeList.SmartContract, airdropBlock.info.uID + airdropBlock.sign);
-            emptyBlock4.info.prevList.Add(NVE.BlockTypeList.EmptyBlock, emptyBlock3.info.uID + emptyBlock3.sign);
-
-            emptyBlock4.info.time = Notus.Block.Key.GetTimeFromKey(emptyBlock4.info.uID, true);
-            emptyBlock4.cipher.ver = "NE";
-            emptyBlock4.cipher.data = NTT.NumberToBase64(1);
-            emptyBlock4 = new Notus.Block.Generate(ValidatorQueue[6]).Make(emptyBlock4, 1000);
-
-            BlockSignHash = emptyBlock4.sign;
-            */
         }
         private void GetAllSignedGenesisFromValidator()
         {
@@ -543,6 +502,11 @@ namespace Notus.Ceremony
             if (string.Equals(incomeFullUrlPath.Substring(incomeFullUrlPath.Length - 1), "/"))
             {
                 incomeFullUrlPath = incomeFullUrlPath.Substring(0, incomeFullUrlPath.Length - 1);
+            }
+
+            if (string.Equals(incomeFullUrlPath, "state"))
+            {
+                return (FirstStateIsReady == true ? JsonSerializer.Serialize(FirstState) : "false");
             }
 
             if (string.Equals(incomeFullUrlPath, "nodeinfo"))
