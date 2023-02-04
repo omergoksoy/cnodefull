@@ -349,8 +349,6 @@ namespace Notus.Block
                 NVG.Settings.Nodes.My.State.blockUid = currentState.blockUid;
                 NVG.Settings.Nodes.My.State.sign = currentState.sign;
 
-                NP.Basic(Math.Round((decimal)(currentState.rowNo / NVC.NodeValidationModCount)).ToString() + ". State [ " + currentState.rowNo.ToString() + ". Block ] Generated");
-
                 NVS.NodeStateInfoStruct stateTransfer = new NVS.NodeStateInfoStruct()
                 {
                     chainId = NVG.Settings.Nodes.My.ChainId,
@@ -374,6 +372,8 @@ namespace Notus.Block
                 {
                     NVG.Settings.PeerManager.SendWithTask(validatorItem.Value, stateText);
                 }
+
+                NP.Basic(Math.Round((decimal)(currentState.rowNo / NVC.NodeValidationModCount)).ToString() + ". State [ " + currentState.rowNo.ToString() + ". Block ] Generated");
             }
             else
             {
@@ -385,12 +385,6 @@ namespace Notus.Block
                     NVG.NodeList[nodeKey].State.sign = currentState.sign;
                 }
             }
-
-            //Console.WriteLine("NVG.Settings.Nodes.My.HexKey : " + NVG.Settings.Nodes.My.HexKey);
-            //foreach (var validatorItem in NVG.NodeList)
-            //{
-            //Console.WriteLine(validatorItem.Key + " -> " + JsonSerializer.Serialize(validatorItem.Value.State));
-            //}
         }
         public NVS.NodeStateStruct? State(string chainId)
         {
