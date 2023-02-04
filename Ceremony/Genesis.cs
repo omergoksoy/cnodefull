@@ -113,11 +113,11 @@ namespace Notus.Ceremony
         private void RealGeneration()
         {
             List<string> validatorOrderQueue = new List<string>();
-            while (validatorOrderQueue.Count < 7)
+            while (validatorOrderQueue.Count < 6)
             {
                 foreach (var item in ValidatorOrder)
                 {
-                    if(validatorOrderQueue.Count < 7)
+                    if(validatorOrderQueue.Count < 6)
                     {
                         validatorOrderQueue.Add(item.Value);
                     }
