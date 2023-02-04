@@ -138,7 +138,8 @@ namespace Notus.Ceremony
             Console.WriteLine(JsonSerializer.Serialize(validatorOrderQueue));
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine(JsonSerializer.Serialize(ValidatorOrder));
+            
+            //Console.WriteLine(JsonSerializer.Serialize(ValidatorOrder));
             Console.WriteLine("-----------------------------------------------------");
             Environment.Exit(0);
             //omergoksoy();
@@ -446,7 +447,9 @@ namespace Notus.Ceremony
                 }
             }
 
+
             MyOrderNo = 0;
+            Console.WriteLine("=====================================");
             for (int i = 0; i < ValidatorOrder.Count; i++)
             {
                 string? currentWalletId = ValidatorOrder.Values.ElementAt(i);
@@ -454,7 +457,9 @@ namespace Notus.Ceremony
                 {
                     MyOrderNo = i + 1;
                 }
+                Console.WriteLine("currentWalletId : " + currentWalletId);
             }
+            Console.WriteLine("=====================================");
         }
         private string Fnc_OnReceiveData(NVS.HttpRequestDetails IncomeData)
         {
