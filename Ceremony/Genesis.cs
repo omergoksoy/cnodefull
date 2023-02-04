@@ -177,7 +177,7 @@ namespace Notus.Ceremony
             airdropBlock.info.uID = NVC.AirdropBlockUid;
             airdropBlock.prev = genesisBlock.info.uID + genesisBlock.sign;
             airdropBlock.info.prevList.Add( NVE.BlockTypeList.GenesisBlock, genesisBlock.info.uID + genesisBlock.sign);
-            airdropBlock.info.time = Notus.Block.Key.GetTimeFromKey(airdropBlock.info.uID, true)
+            airdropBlock.info.time = Notus.Block.Key.GetTimeFromKey(airdropBlock.info.uID, true);
 
             //kontrat ile etkileşime girmek için senaryo düşün
             //burada airdrop kontratı olacak ve o kontrat ile etkileşime girilecek
