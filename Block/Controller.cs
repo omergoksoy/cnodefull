@@ -168,7 +168,7 @@ namespace Notus.Block
                 if (tmpModNo > 0)
                 {
                     stateAssigned = true;
-                    if (smallestStateNo> tmpModNo)
+                    if (smallestStateNo > tmpModNo)
                     {
                         smallestStateNo = tmpModNo;
                     }
@@ -180,8 +180,7 @@ namespace Notus.Block
             }
 
             Dictionary<string, string> stateList = new();
-            string stateControlText = string.Empty;
-            bool stateControlTextAssign = false;
+            Dictionary<string, int> stateCountList = new();
             foreach (var validatorItem in NVG.NodeList)
             {
                 NVS.NodeStateStruct? nodeState = NVG.BlockMeta.State(
@@ -191,16 +190,16 @@ namespace Notus.Block
                         false
                     )
                 );
-                if(nodeState ==null)
+
+                string stateValueText = nodeState == null ? "null" : nodeState.sign;
+                stateList.Add(validatorItem.Key, stateValueText);
+                if (stateCountList.ContainsKey(stateValueText) == false)
                 {
-                    stateList.Add(validatorItem.Key, "null");
+                    stateCountList.Add(stateValueText, 0);
                 }
-                else
-                {
-                    stateList.Add(validatorItem.Key, nodeState.sign);
-                }
+                stateCountList[stateValueText] = stateCountList[stateValueText] + 1;
             }
-            Console.WriteLine(JsonSerializer.Serialize(stateList,NVC.JsonSetting));
+            Console.WriteLine(JsonSerializer.Serialize(stateList, NVC.JsonSetting));
 
             /*
             foreach (var validatorItem in NVG.NodeList)
