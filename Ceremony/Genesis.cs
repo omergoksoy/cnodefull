@@ -138,7 +138,7 @@ namespace Notus.Ceremony
             Console.WriteLine(JsonSerializer.Serialize(validatorOrderQueue));
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine(JsonSerializer.Serialize(GenesisObj));
+            Console.WriteLine(JsonSerializer.Serialize(ValidatorOrder));
             Console.WriteLine("-----------------------------------------------------");
             Environment.Exit(0);
             //omergoksoy();
