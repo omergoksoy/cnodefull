@@ -181,6 +181,7 @@ namespace Notus.Block
 
             Dictionary<string, string> stateList = new();
             Dictionary<string, int> stateCountList = new();
+
             foreach (var validatorItem in NVG.NodeList)
             {
                 NVS.NodeStateStruct? nodeState = NVG.BlockMeta.State(
@@ -199,7 +200,8 @@ namespace Notus.Block
                 }
                 stateCountList[stateValueText] = stateCountList[stateValueText] + 1;
             }
-            Console.WriteLine(JsonSerializer.Serialize(stateList, NVC.JsonSetting));
+            //Console.WriteLine(JsonSerializer.Serialize(stateList, NVC.JsonSetting));
+            Console.WriteLine(JsonSerializer.Serialize(stateCountList, NVC.JsonSetting));
 
             /*
             foreach (var validatorItem in NVG.NodeList)
