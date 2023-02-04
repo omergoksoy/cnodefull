@@ -214,13 +214,13 @@ namespace Notus.Validator
         {
             //Console.WriteLine("Distribution Temporarily Disabled");
             //return;
-            Console.WriteLine("StartExecuteDistribiton : " + incomeMessage);
-            Console.WriteLine("messageResponse: " + messageResponse);
-
             if (string.Equals(messageResponse, "state") == true)
             {
                 return;
             }
+
+            Console.WriteLine("StartExecuteDistribiton : " + incomeMessage);
+            Console.WriteLine("messageResponse: " + messageResponse);
 
             if (string.Equals(messageResponse, "distribute") != true)
             {
