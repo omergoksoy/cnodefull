@@ -71,14 +71,15 @@ namespace Notus.Ceremony
             ControlAllBlockSign();
             NVG.BlockMeta.Validator(ND.ToLong(genesisBlock.info.time),ValidatorQueue[1]);
             NVG.BlockMeta.Validator(ND.ToLong(airdropBlock.info.time), ValidatorQueue[2]);
-            //Console.WriteLine("-----------------------------------------------------");
-            //Console.WriteLine(JsonSerializer.Serialize(ValidatorQueue));
-            //Console.WriteLine("-----------------------------------------------------");
-            //Environment.Exit(0);
-            // omergoksoy();
+            Console.WriteLine("-----------------------------------------------------");
+            Console.WriteLine(JsonSerializer.Serialize(ValidatorQueue));
+            Console.WriteLine("-----------------------------------------------------");
 
+            Console.WriteLine("control-point-1");
             NVG.BlockMeta.WriteBlock(genesisBlock, "Genesis -> Line -> 66");
+            Console.WriteLine("control-point-2");
             NVG.BlockMeta.WriteBlock(airdropBlock, "Genesis -> Line -> 80");
+            Console.WriteLine("control-point-3");
             string prevText= airdropBlock.info.uID + airdropBlock.sign;
 
             Console.WriteLine(genesisBlock.info.time);
