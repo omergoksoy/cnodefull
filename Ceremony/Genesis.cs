@@ -76,22 +76,13 @@ namespace Notus.Ceremony
             );
             NVG.BlockMeta.WriteBlock(genesisBlock, "Genesis -> Line -> 66");
 
-            NP.Warning("Air Drop Contract Block Deactivated");
+            //NP.Warning("Air Drop Contract Block Deactivated");
+            NVG.BlockMeta.WriteBlock(airdropBlock, "Genesis -> Line -> 80");
+            NVG.BlockMeta.WriteBlock(emptyBlock1, "Genesis -> Line -> 81");
+            NVG.BlockMeta.WriteBlock(emptyBlock2, "Genesis -> Line -> 82");
+            NVG.BlockMeta.WriteBlock(emptyBlock3, "Genesis -> Line -> 83");
+            NVG.BlockMeta.WriteBlock(emptyBlock4, "Genesis -> Line -> 84");
             /*
-            NVG.BlockMeta.WriteBlock(airdropBlock);
-            NVG.BlockMeta.Store(airdropBlock);
-            
-            NVG.BlockMeta.WriteBlock(emptyBlock1);
-            NVG.BlockMeta.Store(emptyBlock1);
-            
-            NVG.BlockMeta.WriteBlock(emptyBlock2);
-            NVG.BlockMeta.Store(emptyBlock2);
-            
-            NVG.BlockMeta.WriteBlock(emptyBlock3);
-            NVG.BlockMeta.Store(emptyBlock3);
-            
-            NVG.BlockMeta.WriteBlock(emptyBlock4);
-            NVG.BlockMeta.Store(emptyBlock4);
             */
         }
         private void ControlAllBlockSign()
