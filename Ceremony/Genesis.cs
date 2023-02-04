@@ -193,10 +193,19 @@ namespace Notus.Ceremony
 
             ulong creationTimeAsLong = ND.ToLong(GenesisObj.Info.Creation);
             DateTime generationTime = ND.ToDateTime(creationTimeAsLong - (creationTimeAsLong % NVD.Calculate()));
+            
+            ulong emptBlockTime1 = ND.AddMiliseconds(ND.ToLong(generationTime), NVD.Calculate(2));
+            ulong emptBlockTime2 = ND.AddMiliseconds(ND.ToLong(generationTime), NVD.Calculate(3));
+            ulong emptBlockTime3 = ND.AddMiliseconds(ND.ToLong(generationTime), NVD.Calculate(4));
+            ulong emptBlockTime4 = ND.AddMiliseconds(ND.ToLong(generationTime), NVD.Calculate(5));
             Console.WriteLine(creationTimeAsLong);
             Console.WriteLine(creationTimeAsLong);
             Console.WriteLine(ND.ToLong(generationTime));
             Console.WriteLine(ND.ToLong(generationTime));
+            Console.WriteLine(emptBlockTime1);
+            Console.WriteLine(emptBlockTime2);
+            Console.WriteLine(emptBlockTime3);
+            Console.WriteLine(emptBlockTime4);
             Environment.Exit(0);
 
 
