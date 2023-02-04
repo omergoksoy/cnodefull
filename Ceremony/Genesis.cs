@@ -117,10 +117,16 @@ namespace Notus.Ceremony
             {
                 foreach (var item in ValidatorOrder)
                 {
-                    validatorOrderQueue.Add(item.Value);
+                    if(validatorOrderQueue.Count < 7)
+                    {
+                        validatorOrderQueue.Add(item.Value);
+                    }
                 }
-                    Console.WriteLine(JsonSerializer.Serialize(validatorOrderQueue));
             }
+            Console.WriteLine(validatorOrderQueue.Count);
+            Console.WriteLine(validatorOrderQueue.Count);
+            Console.WriteLine(validatorOrderQueue.Count);
+            Console.WriteLine(JsonSerializer.Serialize(validatorOrderQueue));
             Environment.Exit(0);
 
             string leaderWalletId = ValidatorOrder.Values.ElementAt(CeremonyMemberCount - 1);
