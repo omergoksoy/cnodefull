@@ -32,6 +32,13 @@ namespace Notus.Ceremony
         private Notus.Variable.Genesis.GenesisBlockData GenesisObj = new();
         private int MyOrderNo = 0;
         private Notus.Communication.Http HttpObj = new Notus.Communication.Http(true);
+        public void SaveCurrentState()
+        {
+            Console.WriteLine("Save Current State");
+            Console.WriteLine("Save Current State");
+            Console.WriteLine("Save Current State");
+            Console.ReadLine();
+        }
         public void Start()
         {
             //kontrollü bir şekilde dosyayı silerek sıfırlıyor
