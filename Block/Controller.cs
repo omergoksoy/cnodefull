@@ -179,56 +179,32 @@ namespace Notus.Block
                 Console.WriteLine("smallestStateNo : " + smallestStateNo.ToString());
             }
 
-            Dictionary<string, string> stateList = new();
+            //Dictionary<string, string> stateList = new();
             Dictionary<string, int> stateCountList = new();
 
             foreach (var validatorItem in NVG.NodeList)
             {
                 NVS.NodeStateStruct? nodeState = NVG.BlockMeta.State(
-                    NVG.BlockMeta.GetStateKey(
-                        validatorItem.Value.ChainId,
-                        smallestStateNo,
-                        false
-                    )
+                    NVG.BlockMeta.GetStateKey(validatorItem.Value.ChainId,smallestStateNo,false)
                 );
-
                 string stateValueText = nodeState == null ? "null" : nodeState.sign;
-                stateList.Add(validatorItem.Key, stateValueText);
                 if (stateCountList.ContainsKey(stateValueText) == false)
                 {
                     stateCountList.Add(stateValueText, 0);
                 }
                 stateCountList[stateValueText] = stateCountList[stateValueText] + 1;
             }
-            //Console.WriteLine(JsonSerializer.Serialize(stateList, NVC.JsonSetting));
-            Console.WriteLine(JsonSerializer.Serialize(stateCountList, NVC.JsonSetting));
-
-            /*
-            foreach (var validatorItem in NVG.NodeList)
+            if (stateCountList.Count > 1)
             {
-                long tmpModNo = validatorItem.Value.State.rowNo % NVC.NodeValidationModCount;
-                if (validatorItem.Value.State.rowNo > 0)
-                {
-                    var nodeState = NVG.BlockMeta.State(
-                        NVG.BlockMeta.GetStateKey(
-                            validatorItem.Value.ChainId,
-                            validatorItem.Value.State.rowNo
-                        )
-                    );
-                    string whoIsStr = (string.Equals(NVG.Settings.Nodes.My.HexKey, validatorItem.Key) == true ? "ME" : "HIM");
-                    Console.WriteLine(
-                       "s : " + "[ " + validatorItem.Value.State.rowNo.ToString() + " ] " + validatorItem.Key + "[" + whoIsStr + "] -> " +
-                        JsonSerializer.Serialize(nodeState)
-                    );
-                }
+                Console.WriteLine("State'ler Farkli");
+                Console.WriteLine("State'ler Farkli");
+                Console.WriteLine("State'ler Farkli");
+                Console.WriteLine(JsonSerializer.Serialize(stateCountList, NVC.JsonSetting));
             }
-            */
-        }
-        private string StateToText(NVS.NodeStateStruct? nodeState)
-        {
-            if (nodeState == null)
-                return "null:null:null";
-            return nodeState.blockUid + ":" + nodeState.sign + ":" + nodeState.rowNo.ToString();
+            else
+            {
+
+            }
         }
         public void Start()
         {
