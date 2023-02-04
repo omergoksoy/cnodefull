@@ -19,7 +19,8 @@ namespace Notus.Ceremony
 {
     public class Genesis : IDisposable
     {
-        private SortedDictionary<BigInteger, string> ValidatorOrder = new SortedDictionary<BigInteger, string>();
+        private Dictionary<int, string> ValidatorQueue = new();
+        private SortedDictionary<BigInteger, string> ValidatorOrder = new();
         private int CeremonyMemberCount = 2;
         private bool Signed = false;
         private NVClass.BlockData genesisBlock = new();
@@ -122,20 +123,20 @@ namespace Notus.Ceremony
         private void RealGeneration()
         {
             int tmpOrderNo = 1;
-            Dictionary<int,string> validatorOrderQueue = new();
-            while (validatorOrderQueue.Count < 6)
+            while (ValidatorQueue.Count < 6)
             {
                 foreach (var item in ValidatorOrder)
                 {
-                    if(validatorOrderQueue.Count < 6)
+                    if(ValidatorQueue.Count < 6)
                     {
-                        validatorOrderQueue.Add(tmpOrderNo,item.Value);
+                        ValidatorQueue.Add(tmpOrderNo,item.Value);
+                        Console.WriteLine("item.Value : " + item.Value);
                         tmpOrderNo++;
                     }
                 }
             }
             Console.WriteLine("-----------------------------------------------------");
-            Console.WriteLine(JsonSerializer.Serialize(validatorOrderQueue));
+            Console.WriteLine(JsonSerializer.Serialize(ValidatorQueue));
             Console.WriteLine();
             Console.WriteLine();
             
@@ -161,7 +162,7 @@ namespace Notus.Ceremony
                     JsonSerializer.Serialize(GenesisObj)
                 )
             );
-            genesisBlock = new Notus.Block.Generate(validatorOrderQueue[1]).Make(genesisBlock, 1000);
+            genesisBlock = new Notus.Block.Generate(ValidatorQueue[1]).Make(genesisBlock, 1000);
             BlockSignHash = genesisBlock.sign;
 
 
@@ -193,7 +194,7 @@ namespace Notus.Ceremony
                 System.Text.Encoding.ASCII.GetBytes(airDropContractCode.Replace("'", "\""))
             );
 
-            airdropBlock = new Notus.Block.Generate(validatorOrderQueue[2]).Make(airdropBlock, 1000);
+            airdropBlock = new Notus.Block.Generate(ValidatorQueue[2]).Make(airdropBlock, 1000);
 
 
             // 1. empty blok
@@ -210,7 +211,7 @@ namespace Notus.Ceremony
             emptyBlock1.info.time = Notus.Block.Key.GetTimeFromKey(emptyBlock1.info.uID, true);
             emptyBlock1.cipher.ver = "NE";
             emptyBlock1.cipher.data = NTT.NumberToBase64(1);
-            emptyBlock1 = new Notus.Block.Generate(validatorOrderQueue[3]).Make(emptyBlock1, 1000);
+            emptyBlock1 = new Notus.Block.Generate(ValidatorQueue[3]).Make(emptyBlock1, 1000);
 
 
 
@@ -229,7 +230,7 @@ namespace Notus.Ceremony
             emptyBlock2.info.time = Notus.Block.Key.GetTimeFromKey(emptyBlock2.info.uID, true);
             emptyBlock2.cipher.ver = "NE";
             emptyBlock2.cipher.data = NTT.NumberToBase64(1);
-            emptyBlock2 = new Notus.Block.Generate(validatorOrderQueue[4]).Make(emptyBlock2, 1000);
+            emptyBlock2 = new Notus.Block.Generate(ValidatorQueue[4]).Make(emptyBlock2, 1000);
 
 
             // 3. empty blok
@@ -247,7 +248,7 @@ namespace Notus.Ceremony
             emptyBlock3.info.time = Notus.Block.Key.GetTimeFromKey(emptyBlock3.info.uID, true);
             emptyBlock3.cipher.ver = "NE";
             emptyBlock3.cipher.data = NTT.NumberToBase64(1);
-            emptyBlock3 = new Notus.Block.Generate(validatorOrderQueue[5]).Make(emptyBlock3, 1000);
+            emptyBlock3 = new Notus.Block.Generate(ValidatorQueue[5]).Make(emptyBlock3, 1000);
 
             // 4. empty blok
             emptyBlock4 = NVClass.Block.GetEmpty();
@@ -264,7 +265,7 @@ namespace Notus.Ceremony
             emptyBlock4.info.time = Notus.Block.Key.GetTimeFromKey(emptyBlock4.info.uID, true);
             emptyBlock4.cipher.ver = "NE";
             emptyBlock4.cipher.data = NTT.NumberToBase64(1);
-            emptyBlock4 = new Notus.Block.Generate(validatorOrderQueue[6]).Make(emptyBlock4, 1000);
+            emptyBlock4 = new Notus.Block.Generate(ValidatorQueue[6]).Make(emptyBlock4, 1000);
 
             BlockSignHash = emptyBlock4.sign;
 
