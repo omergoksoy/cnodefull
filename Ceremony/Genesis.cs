@@ -75,7 +75,13 @@ namespace Notus.Ceremony
                 ND.ToLong(genesisBlock.info.time), 
                 genesisBlock.validator.count.First().Key
             );
-            
+
+            Console.WriteLine("-----------------------------------------------------");
+            Console.WriteLine(JsonSerializer.Serialize(ValidatorQueue));
+            Console.WriteLine("-----------------------------------------------------");
+            Environment.Exit(0);
+            // omergoksoy();
+
             NVG.BlockMeta.WriteBlock(genesisBlock, "Genesis -> Line -> 66");
             NVG.BlockMeta.WriteBlock(airdropBlock, "Genesis -> Line -> 80");
             NVG.BlockMeta.WriteBlock(emptyBlock1, "Genesis -> Line -> 81");
@@ -130,23 +136,11 @@ namespace Notus.Ceremony
                     if(ValidatorQueue.Count < 6)
                     {
                         ValidatorQueue.Add(tmpOrderNo,item.Value);
-                        Console.WriteLine("item.Value : " + item.Value);
+                        //Console.WriteLine("item.Value : " + item.Value);
                         tmpOrderNo++;
                     }
                 }
             }
-            Console.WriteLine("-----------------------------------------------------");
-            Console.WriteLine(JsonSerializer.Serialize(ValidatorQueue));
-            Console.WriteLine();
-            Console.WriteLine();
-            
-            //Console.WriteLine(JsonSerializer.Serialize(ValidatorOrder));
-            Console.WriteLine("-----------------------------------------------------");
-            Environment.Exit(0);
-            //omergoksoy();
-
-            //string leaderWalletId = ValidatorOrder.Values.ElementAt(CeremonyMemberCount - 1);
-
             genesisBlock = NVClass.Block.GetEmpty();
 
             genesisBlock.info.type = NVE.BlockTypeList.GenesisBlock;
