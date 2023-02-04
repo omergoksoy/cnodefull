@@ -112,6 +112,17 @@ namespace Notus.Ceremony
         }
         private void RealGeneration()
         {
+            List<string> validatorOrderQueue = new List<string>();
+            while (validatorOrderQueue.Count < 7)
+            {
+                foreach (var item in ValidatorOrder)
+                {
+                    validatorOrderQueue.Add(item.Value);
+                }
+                    Console.WriteLine(JsonSerializer.Serialize(validatorOrderQueue));
+            }
+            Environment.Exit(0);
+
             string leaderWalletId = ValidatorOrder.Values.ElementAt(CeremonyMemberCount - 1);
 
             genesisBlock = NVClass.Block.GetEmpty();
