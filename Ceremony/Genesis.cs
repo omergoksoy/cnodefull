@@ -1,4 +1,5 @@
-﻿using ND = Notus.Date;
+﻿using NVD = Notus.Validator.Date;
+using ND = Notus.Date;
 using System.Globalization;
 using System.Net;
 using System.Numerics;
@@ -189,6 +190,14 @@ namespace Notus.Ceremony
             );
 
             airdropBlock = new Notus.Block.Generate(ValidatorQueue[2]).Make(airdropBlock, 1000);
+
+            ulong creationTimeAsLong = ND.ToLong(GenesisObj.Info.Creation);
+            DateTime generationTime = ND.ToDateTime(creationTimeAsLong - (creationTimeAsLong % NVD.Calculate()));
+            Console.WriteLine(creationTimeAsLong);
+            Console.WriteLine(creationTimeAsLong);
+            Console.WriteLine(ND.ToLong(generationTime));
+            Console.WriteLine(ND.ToLong(generationTime));
+            Environment.Exit(0);
 
 
             // 1. empty blok
