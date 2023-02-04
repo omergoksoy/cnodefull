@@ -27,10 +27,6 @@ namespace Notus.Ceremony
         private bool Signed = false;
         private NVClass.BlockData genesisBlock = new();
         private NVClass.BlockData airdropBlock = new();
-        //private NVClass.BlockData emptyBlock1 = new();
-        //private NVClass.BlockData emptyBlock2 = new();
-        //private NVClass.BlockData emptyBlock3 = new();
-        //private NVClass.BlockData emptyBlock4 = new();
 
         private string BlockSignHash = string.Empty;
         private Notus.Variable.Genesis.GenesisBlockData GenesisObj = new();
@@ -74,7 +70,7 @@ namespace Notus.Ceremony
 
             ControlAllBlockSign();
             NVG.BlockMeta.Validator(ND.ToLong(genesisBlock.info.time),ValidatorQueue[1]);
-
+            NVG.BlockMeta.Validator(ND.ToLong(airdropBlock.info.time), ValidatorQueue[2]);
             //Console.WriteLine("-----------------------------------------------------");
             //Console.WriteLine(JsonSerializer.Serialize(ValidatorQueue));
             //Console.WriteLine("-----------------------------------------------------");
@@ -85,20 +81,20 @@ namespace Notus.Ceremony
             NVG.BlockMeta.WriteBlock(airdropBlock, "Genesis -> Line -> 80");
             string prevText= airdropBlock.info.uID + airdropBlock.sign;
 
+            Console.WriteLine(genesisBlock.info.time);
+            Console.WriteLine(airdropBlock.info.time);
             for(int counter=0; counter<4; counter++)
             {
-                /*
-                */
                 string blockValidatorWalletId = ValidatorQueue[counter + 3];
                 ulong emptyBlockTime = ND.AddMiliseconds(ND.ToLong(GenesisObj.Info.Creation), NVD.Calculate((ulong)counter + 2));
-                NBK.GenerateStatic(ND.ToDateTime(emptyBlockTime), blockValidatorWalletId);
+                
                 NVClass.BlockData emptyBlock = new();
                 emptyBlock = NVClass.Block.GetEmpty();
                 emptyBlock.info.prevList.Clear();
                 emptyBlock.info.type = NVE.BlockTypeList.EmptyBlock;
-                emptyBlock.info.rowNo = 3;
+                emptyBlock.info.rowNo = counter + 3;
                 emptyBlock.info.multi = false;
-                emptyBlock.info.uID = NVC.AirdropBlockUid;
+                emptyBlock.info.uID = NBK.GenerateStatic(ND.ToDateTime(emptyBlockTime), blockValidatorWalletId);
                 emptyBlock.prev = prevText;
                 emptyBlock.info.prevList.Add(NVE.BlockTypeList.GenesisBlock, genesisBlock.info.uID + genesisBlock.sign);
                 emptyBlock.info.prevList.Add(NVE.BlockTypeList.SmartContract, airdropBlock.info.uID + airdropBlock.sign);
@@ -110,17 +106,15 @@ namespace Notus.Ceremony
                 emptyBlock.cipher.ver = "NE";
                 emptyBlock.cipher.data = NTT.NumberToBase64(counter + 1);
                 emptyBlock = new Notus.Block.Generate(blockValidatorWalletId).Make(emptyBlock, 1000);
+
+                NVG.BlockMeta.Validator(ND.ToLong(emptyBlock.info.time), blockValidatorWalletId);
+                Console.WriteLine(emptyBlock.info.time);
+
+                prevText = emptyBlock.info.uID + emptyBlock.sign;
                 
                 NVG.BlockMeta.WriteBlock(emptyBlock, "Genesis -> Line -> 107");
 
-                prevText = emptyBlock.info.uID + emptyBlock.sign;
             }
-            /*
-            NVG.BlockMeta.WriteBlock(emptyBlock1, "Genesis -> Line -> 81");
-            NVG.BlockMeta.WriteBlock(emptyBlock2, "Genesis -> Line -> 82");
-            NVG.BlockMeta.WriteBlock(emptyBlock3, "Genesis -> Line -> 83");
-            NVG.BlockMeta.WriteBlock(emptyBlock4, "Genesis -> Line -> 84");
-            */
         }
         private void ControlAllBlockSign()
         {
@@ -167,7 +161,6 @@ namespace Notus.Ceremony
                     if(ValidatorQueue.Count < 6)
                     {
                         ValidatorQueue.Add(tmpOrderNo,item.Value);
-                        //Console.WriteLine("item.Value : " + item.Value);
                         tmpOrderNo++;
                     }
                 }
@@ -496,7 +489,6 @@ namespace Notus.Ceremony
 
 
             MyOrderNo = 0;
-            Console.WriteLine("=====================================");
             for (int i = 0; i < ValidatorOrder.Count; i++)
             {
                 string? currentWalletId = ValidatorOrder.Values.ElementAt(i);
@@ -504,9 +496,7 @@ namespace Notus.Ceremony
                 {
                     MyOrderNo = i + 1;
                 }
-                Console.WriteLine("currentWalletId : " + currentWalletId);
             }
-            Console.WriteLine("=====================================");
         }
         private string Fnc_OnReceiveData(NVS.HttpRequestDetails IncomeData)
         {
