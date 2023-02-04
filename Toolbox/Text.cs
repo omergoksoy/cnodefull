@@ -50,6 +50,10 @@ namespace Notus.Toolbox
 
             return Notus.Convert.Byte2Hex(resultArray);
         }
+        public static string NumberToBase64(int number)
+        {
+            return System.Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(number.ToString()));
+        }
         public static string HexAlphabetIteration(string KeyForIteration)
         {
             return BaseAlphabetIteration(16, KeyForIteration);
