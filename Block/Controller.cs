@@ -179,7 +179,7 @@ namespace Notus.Block
                 Console.WriteLine("smallestStateNo : " + smallestStateNo.ToString());
             }
 
-            //Dictionary<string, string> stateList = new();
+            Dictionary<string, long> stateList = new();
             Dictionary<string, int> stateCountList = new();
 
             foreach (var validatorItem in NVG.NodeList)
@@ -187,6 +187,7 @@ namespace Notus.Block
                 NVS.NodeStateStruct? nodeState = NVG.BlockMeta.State(
                     NVG.BlockMeta.GetStateKey(validatorItem.Value.ChainId,smallestStateNo,false)
                 );
+                stateList.Add(validatorItem.Key, nodeState == null ? "0" : nodeState.rowNo);
                 string stateValueText = nodeState == null ? "null" : nodeState.sign;
                 if (stateCountList.ContainsKey(stateValueText) == false)
                 {
@@ -205,6 +206,7 @@ namespace Notus.Block
             {
 
             }
+            Console.WriteLine(JsonSerializer.Serialize(stateList, NVC.JsonSetting));
         }
         public void Start()
         {
