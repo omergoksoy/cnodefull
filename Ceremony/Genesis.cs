@@ -8,6 +8,7 @@ using NCR = Notus.Communication.Request;
 using NGF = Notus.Variable.Globals.Functions;
 using NH = Notus.Hash;
 using NP = Notus.Print;
+using NBK = Notus.Block.Key;
 using NVC = Notus.Variable.Constant;
 using NVClass = Notus.Variable.Class;
 using NVG = Notus.Variable.Globals;
@@ -190,11 +191,16 @@ namespace Notus.Ceremony
 
             ulong creationTimeAsLong = ND.ToLong(GenesisObj.Info.Creation);
             
+            
             ulong airdropTime = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(1));
             ulong emptBlockTime1 = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(2));
             ulong emptBlockTime2 = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(3));
             ulong emptBlockTime3 = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(4));
             ulong emptBlockTime4 = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(5));
+            
+            Console.WriteLine(
+                NBK.GenerateStatic(ND.ToDateTime(genesisBlock.info.uID), "123456789")
+            );
             Console.WriteLine(genesisBlock.info.time);
             Console.WriteLine(airdropBlock.info.time);
             Console.WriteLine(creationTimeAsLong);

@@ -4,7 +4,7 @@ namespace Notus.Block
 {
     public static class Key
     {
-        private static string SubGenerateBlockKey(DateTime ExactTimeVal, string SeedForKey = "", string PreText = "")
+        private static string SubGenerateBlockKey(DateTime ExactTimeVal, string SeedForKey = "", string PreText = "",bool useRandomNumber=true)
         {
             string tmpTimeHexStr =
                 int.Parse(ExactTimeVal.ToString("yyyyMMdd")).ToString("x") +
@@ -16,7 +16,10 @@ namespace Notus.Block
                 SeedForKey = "#a;s<c>4.t,j8s4j[a]q";
             }
 
-            SeedForKey = SeedForKey + NVC.Delimeter + new Random().Next(1, 42949295).ToString();
+            if (useRandomNumber == true)
+            {
+                SeedForKey = SeedForKey + NVC.Delimeter + new Random().Next(1, 42949295).ToString();
+            }
 
             string RandomHashStr1 = new Notus.Hash().CommonHash("ripemd160",
                 tmpTimeHexStr +
@@ -42,6 +45,10 @@ namespace Notus.Block
             return tmpTimeHexStr +
                 new Notus.Hash().CommonHash("ripemd160", PreText).Substring(0, 10) +
                 RandomHashStr1.Substring(0, 31) + RandomHashStr2.Substring(0, 31);
+        }
+        public static string GenerateStatic(DateTime currentUtcTime, string nodeWalletKey)
+        {
+            return SubGenerateBlockKey(currentUtcTime, nodeWalletKey, "",false);
         }
         public static string Generate(DateTime currentUtcTime, string nodeWalletKey)
         {
