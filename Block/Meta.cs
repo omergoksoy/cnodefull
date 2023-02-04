@@ -104,9 +104,11 @@ namespace Notus.Block
 
         private bool CheckBlockValidator(NVClass.BlockData blockData)
         {
+            Console.WriteLine("------ CheckBlockValidator ------");
             ulong queueTimePeriod = NVD.Calculate();
             ulong blockTimeVal = ND.ToLong(blockData.info.time);
             ulong blockGenarationTime = blockTimeVal - (blockTimeVal % queueTimePeriod);
+            Console.WriteLine("blockGenarationTime : " + blockGenarationTime.ToString());
             string validatorWalletId = Validator(blockGenarationTime);
             string validatorWalletId_FromBlock = blockData.validator.count.First().Key;
             if (validatorWalletId.Length == 0)
@@ -127,6 +129,9 @@ namespace Notus.Block
                 }
                 else
                 {
+                    Console.WriteLine("validatorWalletId_FromBlock : " + validatorWalletId_FromBlock);
+                    Console.WriteLine("validatorWalletId : " + validatorWalletId);
+
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("HATALI kisi tarafindan uretilen blok - DEGISTIR");
                     Console.WriteLine("HATALI kisi tarafindan uretilen blok - DEGISTIR");
@@ -417,6 +422,9 @@ namespace Notus.Block
         }
         public void Validator(ulong blockTime, string validatorWalletId)
         {
+            Console.WriteLine("------ SET VALIDATOR -----");
+            Console.WriteLine("blockTime : " + blockTime.ToString());
+            Console.WriteLine("validatorWalletId : " + validatorWalletId);
             validatorDb.Set(blockTime.ToString(), validatorWalletId);
         }
 
