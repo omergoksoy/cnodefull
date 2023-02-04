@@ -72,10 +72,7 @@ namespace Notus.Ceremony
             NP.Info("My Block Sign : " + BlockSignHash.Substring(0, 10) + "..." + BlockSignHash.Substring(BlockSignHash.Length - 10));
 
             ControlAllBlockSign();
-            NVG.BlockMeta.Validator(
-                ND.ToLong(genesisBlock.info.time), 
-                genesisBlock.validator.count.First().Key
-            );
+            NVG.BlockMeta.Validator(ND.ToLong(genesisBlock.info.time),ValidatorQueue[1]);
 
             Console.WriteLine("-----------------------------------------------------");
             Console.WriteLine(JsonSerializer.Serialize(ValidatorQueue));
@@ -198,6 +195,8 @@ namespace Notus.Ceremony
             ulong emptBlockTime2 = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(3));
             ulong emptBlockTime3 = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(4));
             ulong emptBlockTime4 = ND.AddMiliseconds(creationTimeAsLong, NVD.Calculate(5));
+            Console.WriteLine(genesisBlock.info.time);
+            Console.WriteLine(airdropBlock.info.time);
             Console.WriteLine(creationTimeAsLong);
             Console.WriteLine(airdropTime);
             Console.WriteLine(emptBlockTime1);
