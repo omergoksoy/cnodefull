@@ -110,13 +110,13 @@ namespace Notus.Ceremony
                 emptyBlock.cipher.data = NTT.NumberToBase64(counter + 1);
                 emptyBlock = new Notus.Block.Generate(blockValidatorWalletId).Make(emptyBlock, 1000);
 
-                NVG.BlockMeta.Validator(ND.ToLong(emptyBlock.info.time), blockValidatorWalletId);
+                NVG.BlockMeta.Validator(emptyBlock.info.uID, blockValidatorWalletId);
+                //NVG.BlockMeta.Validator(airdropBlock.info.uID, ValidatorQueue[2]);
                 Console.WriteLine(emptyBlock.info.time);
 
                 prevText = emptyBlock.info.uID + emptyBlock.sign;
 
                 NVG.BlockMeta.WriteBlock(emptyBlock, "Genesis -> Line -> 107");
-
             }
         }
         private void ControlAllBlockSign()
