@@ -196,7 +196,7 @@ namespace Notus.Validator
                     CurrentQueueTime
                 );
                 NGF.BlockQueue.RemoveTempPoolList();
-                Console.WriteLine("Block uId : " + RawBlock.info.uID);
+                //Console.WriteLine("Block uId : " + RawBlock.info.uID);
             }
             else
             {
@@ -212,24 +212,19 @@ namespace Notus.Validator
         }
         private void StartExecuteDistribiton(string incomeMessage, string messageResponse)
         {
-            //Console.WriteLine("Distribution Temporarily Disabled");
-            //return;
             if (string.Equals(messageResponse, "state") == true)
             {
                 return;
             }
 
-            Console.WriteLine("StartExecuteDistribiton : " + incomeMessage);
-            Console.WriteLine("messageResponse: " + messageResponse);
-
             if (string.Equals(messageResponse, "distribute") != true)
             {
+                Console.WriteLine("StartExecuteDistribiton : " + incomeMessage);
+                Console.WriteLine("messageResponse: " + messageResponse);
             }
 
             NVS.HttpRequestDetails? tmpIncomeData =
-            JsonSerializer.Deserialize<NVS.HttpRequestDetails>(
-                NTT.GetPureText(incomeMessage, "poolData")
-            );
+                JsonSerializer.Deserialize<NVS.HttpRequestDetails>(NTT.GetPureText(incomeMessage, "poolData"));
             if (tmpIncomeData == null)
             {
                 Console.WriteLine("Distribute : NULL");
@@ -237,19 +232,12 @@ namespace Notus.Validator
             }
 
             NVS.CryptoTransferStatus requestStatus = NVG.BlockMeta.Status(tmpIncomeData.RequestUid);
-
             if (requestStatus.Code == NVE.BlockStatusCode.Completed)
             {
                 Console.WriteLine("Distribute Data Income But It's Already Done: ");
                 return;
             }
             Obj_Api.Interpret(tmpIncomeData, false);
-            /*
-            Console.WriteLine(
-                "Distribute Data Income : " +
-                JsonSerializer.Serialize(tmpIncomeData)
-            );
-            */
         }
         public void Start()
         {
