@@ -40,7 +40,7 @@ namespace Notus.Wallet
         {
             Notus.Mempool mp_CurrencyList = GiveCurrencyListDb(networkType, networkLayer);
             mp_CurrencyList.AsyncActive = false;
-            mp_CurrencyList.Clear("mp_CurrencyList");
+            mp_CurrencyList.Clear();
             mp_CurrencyList.Dispose();
         }
         public static string Add2List(Notus.Variable.Enum.NetworkType networkType, Notus.Variable.Enum.NetworkLayer networkLayer, Notus.Variable.Struct.CurrencyListStorageStruct CurrencyData)

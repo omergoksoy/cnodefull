@@ -49,7 +49,7 @@ namespace Notus
             ExecuteWithClass(PoolName);
             if (ClearPoolData == true)
             {
-                Clear(PoolName + "-str");
+                Clear();
             }
         }
         private void ExecuteWithClass(string PoolName)
@@ -252,10 +252,8 @@ namespace Notus
                 return AddToTable(KeyName);
             }
         }
-        public void Clear(string senderLoc)
+        public void Clear()
         {
-            Console.WriteLine("Clear Trigged -> " + senderLoc);
-            Console.WriteLine("Clear Trigged -> " + PoolNameForDb);
             Obj_DataList.Clear();
             SqlObj.Clear("key_value");
         }

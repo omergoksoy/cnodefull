@@ -156,7 +156,7 @@ namespace Notus.Wallet
                 using (Notus.Mempool ObjMp_FeeData = new Notus.Mempool(FeeDataStorageDbName(networkType, networkLayer)))
                 {
                     ObjMp_FeeData.AsyncActive = false;
-                    ObjMp_FeeData.Clear("ObjMp_FeeData");
+                    ObjMp_FeeData.Clear();
                 }
             }
             catch{}

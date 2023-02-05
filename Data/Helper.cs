@@ -11,7 +11,7 @@ namespace Notus.Data
             using (Notus.Mempool objMpNodeList = new Notus.Mempool(DbFileName))
             {
                 objMpNodeList.AsyncActive = false;
-                objMpNodeList.Clear("ClearTable");
+                objMpNodeList.Clear();
                 objMpNodeList.Dispose();
             }
         }
