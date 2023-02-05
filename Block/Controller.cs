@@ -87,9 +87,9 @@ namespace Notus.Block
 
             if (rowNo < 2)
             {
-                Console.WriteLine("İlk Blok oldugu için timer'a geri dönüyor.");
-                long tmpModNo = rowNo % NVC.NodeValidationModCount;
-                //Console.WriteLine("tmpModNo : " + tmpModNo.ToString());
+                // Console.WriteLine("Ilk Blok oldugu icin timer'a geri dönüyor.");
+                // long tmpModNo = rowNo % NVC.NodeValidationModCount;
+                // Console.WriteLine("tmpModNo : " + tmpModNo.ToString());
                 return;
             }
             long nextRowNo = rowNo + 1;
