@@ -254,7 +254,8 @@ namespace Notus
         }
         public void Clear(string senderLoc)
         {
-            //Console.WriteLine("Clear Trigged");
+            Console.WriteLine("Clear Trigged -> " + senderLoc);
+            Console.WriteLine("Clear Trigged -> " + PoolNameForDb);
             Obj_DataList.Clear();
             SqlObj.Clear("key_value");
         }
