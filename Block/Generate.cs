@@ -131,9 +131,15 @@ namespace Notus.Block
 
         private Notus.Variable.Class.BlockData Make_FINAL(Notus.Variable.Class.BlockData BlockData)
         {
-
             string TmpText = FirstString_Block(BlockData);
             Notus.HashLib.Sasha sashaObj = new Notus.HashLib.Sasha();
+
+            string sashaText = sashaObj.ComputeHash(TmpText, true);
+            string base64Text=Notus.Convert.HexToBase64(sashaText);
+
+            Console.WriteLine(sashaText);
+            Console.WriteLine(base64Text);
+
             BlockData.hash.FINAL = sashaObj.ComputeHash(
                 TmpText,
                 false

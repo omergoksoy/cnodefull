@@ -22,7 +22,19 @@ namespace Notus
     /// </summary>
     public static class Convert
     {
-
+        /// <summary>
+        /// Converts the specified Hex <see cref="string"/> to Base64 <see cref="string"/>
+        /// </summary>
+        /// <param name="hexText">Hex <see cref="string"/> to convert</param>
+        /// <returns>Returns Base64 <see cref="string"/></returns>
+        public static string HexToBase64(string hexText)
+        {
+            return System.Convert.ToBase64String(
+                Notus.Convert.Hex2Byte(
+                    hexText
+                )
+            );
+        }
         /// <summary>
         /// Converts the specified <see cref="byte"/>[] to Base32 <see cref="string"/>
         /// </summary>
