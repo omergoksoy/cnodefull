@@ -310,9 +310,9 @@ namespace Notus.Block
         {
             if (isRowNo == true)
             {
-                return chainId + ":" + Math.Round((decimal)(rowOrStateNo / NVC.NodeValidationModCount)).ToString().PadLeft(30, '0');
+                return Math.Round((decimal)(rowOrStateNo / NVC.NodeValidationModCount)).ToString().PadLeft(30, '0') + ":" + chainId;
             }
-            return chainId + ":" + Math.Round((decimal)rowOrStateNo).ToString().PadLeft(30, '0');
+            return Math.Round((decimal)rowOrStateNo).ToString().PadLeft(30, '0') + ":" + chainId;
         }
         /*
         public string State(ulong blockTime)
