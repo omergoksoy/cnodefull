@@ -1140,7 +1140,16 @@ namespace Notus.Validator
             MP_NodeList = new Notus.Mempool(NVC.MemoryPoolName["MainNodeWalletConfig"]);
             MP_NodeList.AsyncActive = false;
 
-            NVG.Settings.Nodes.My.ChainId = MP_NodeList.Get("Chain_Id", NGF.GenerateTxUid());
+            string tmpChainId = MP_NodeList.Get("Chain_Id", "");
+            if (tmpChainId.Length == 0)
+            {
+                tmpChainId = NGF.GenerateTxUid();
+                MP_NodeList.Set("Chain_Id", tmpChainId,true);
+            }
+            else
+            {
+                NVG.Settings.Nodes.My.ChainId = tmpChainId;
+            }
 
             //MP_NodeList.Clear();            
             string tmpWalletStr = MP_NodeList.Get("Node_WalletKey", "");
