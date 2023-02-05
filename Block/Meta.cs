@@ -565,7 +565,6 @@ namespace Notus.Block
                 Name = Notus.Variable.Constant.MemoryPoolName["ValidatorStateList"]
             });
             NP.Info("All Node Info DB Started");
-            LoadState();
         }
         public Meta()
         {

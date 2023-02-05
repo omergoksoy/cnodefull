@@ -263,6 +263,8 @@ namespace Notus.Validator
 
             TimeBaseBlockUidList.Clear();
 
+            NVG.BlockMeta.LoadState();
+
             if (NVG.Settings.GenesisCreated == false)
             {
                 TimeSyncObj.Start();
