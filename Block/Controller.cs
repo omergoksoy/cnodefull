@@ -175,10 +175,13 @@ namespace Notus.Block
                     }
                 }
             }
+            
+            /*
             if (stateAssigned == true)
             {
                 Console.WriteLine("smallestStateNo : " + smallestStateNo.ToString());
             }
+            */
 
             Dictionary<string, long> stateList = new();
             Dictionary<string, int> stateCountList = new();
@@ -189,6 +192,7 @@ namespace Notus.Block
                     NVG.BlockMeta.GetStateKey(validatorItem.Value.ChainId,smallestStateNo,false)
                 );
 
+                /*
                 if (nodeState == null)
                 {
                     Console.WriteLine("------------------------------------------------------------------");
@@ -197,6 +201,7 @@ namespace Notus.Block
                     Console.WriteLine(JsonSerializer.Serialize(validatorItem.Value));
                     Console.WriteLine("------------------------------------------------------------------");
                 }
+                */
 
                 stateList.Add(validatorItem.Key, nodeState == null ? 0 : nodeState.rowNo);
                 string stateValueText = nodeState == null ? "null" : nodeState.sign;
@@ -208,23 +213,19 @@ namespace Notus.Block
             }
             if (stateCountList.Count > 1)
             {
-                Console.WriteLine("State'ler Farkli");
-                Console.WriteLine("State'ler Farkli");
-                Console.WriteLine("State'ler Farkli");
+                NP.Danger("Node State Not Compatible");
+                Console.WriteLine("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
                 Console.WriteLine(JsonSerializer.Serialize(stateCountList, NVC.JsonSetting));
+                Console.WriteLine(JsonSerializer.Serialize(stateList, NVC.JsonSetting));
+                Console.WriteLine("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
             }
-            else
-            {
-
-            }
-            Console.WriteLine(JsonSerializer.Serialize(stateList, NVC.JsonSetting));
         }
         public void Start()
         {
             if (NVG.Settings.LocalNode == true)
                 return;
 
-            Console.WriteLine("Last Block Number : " + LastBlockRowNo.ToString());
+            //Console.WriteLine("Last Block Number : " + LastBlockRowNo.ToString());
             UtcTimerObj.Start(timerInterval, () =>
             {
                 if (timerRunning == false)
