@@ -143,20 +143,11 @@ namespace Notus.Block
             return false;
         }
 
-        public void WriteBlock(NVClass.BlockData blockData, string senderLocation)
+        public void WriteBlock(NVClass.BlockData blockData)
         {
             CheckBlockValidator(blockData);
 
-            //NVH.RightBlockValidator(blockData, "Block Meta - WriteBlock");
-            //NVG.BlockMeta.Validator(peerStaringTime, NVG.Settings.Nodes.Queue[peerStaringTime].Wallet);
-            if (senderLocation.Length == 0)
-            {
-                NP.Info("Saving Block Data -> " + blockData.info.rowNo.ToString());
-            }
-            else
-            {
-                Console.WriteLine("Saving Block Data -> " + blockData.info.rowNo.ToString() + " - [ " + senderLocation + " ]");
-            }
+            NP.Info("Saving Block Data -> " + blockData.info.rowNo.ToString());
             blockDb.Set(blockData.info.uID, JsonSerializer.Serialize(blockData));
 
             signDb.Set(blockData.info.rowNo.ToString(), blockData.sign);
@@ -263,7 +254,7 @@ namespace Notus.Block
                                 if (tmpInnerBlockData != null)
                                 {
                                     NP.Basic(NVG.Settings, "Added Block : " + tmpInnerBlockData.info.uID);
-                                    NVG.BlockMeta.WriteBlock(tmpInnerBlockData, "Meta -> Line -> 183");
+                                    NVG.BlockMeta.WriteBlock(tmpInnerBlockData);
                                     exitFromInnerWhileLoop = true;
                                 }
                                 else

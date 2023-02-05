@@ -27,7 +27,7 @@ namespace Notus.Validator
                 );
                 if (NoError == true)
                 {
-                    NVG.BlockMeta.WriteBlock(tmpBlockData, "Replicant -> Line -> 30");
+                    NVG.BlockMeta.WriteBlock(tmpBlockData);
                     exitWhileLoop = true;
                     if (AssingToLastBlockVar == true)
                     {

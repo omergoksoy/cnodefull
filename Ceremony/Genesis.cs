@@ -96,8 +96,8 @@ namespace Notus.Ceremony
             ControlAllBlockSign();
             NVG.BlockMeta.Validator(genesisBlock.info.uID, ValidatorQueue[1]);
             NVG.BlockMeta.Validator(airdropBlock.info.uID, ValidatorQueue[2]);
-            NVG.BlockMeta.WriteBlock(genesisBlock, "");
-            NVG.BlockMeta.WriteBlock(airdropBlock, "");
+            NVG.BlockMeta.WriteBlock(genesisBlock);
+            NVG.BlockMeta.WriteBlock(airdropBlock);
             string prevText = airdropBlock.info.uID + airdropBlock.sign;
 
             for (int counter = 0; counter < 4; counter++)
@@ -128,7 +128,7 @@ namespace Notus.Ceremony
 
                 prevText = emptyBlock.info.uID + emptyBlock.sign;
 
-                NVG.BlockMeta.WriteBlock(emptyBlock, "");
+                NVG.BlockMeta.WriteBlock(emptyBlock);
                 FirstState.state.blockUid = emptyBlock.info.uID;
                 FirstState.state.rowNo = emptyBlock.info.rowNo;
                 FirstState.state.sign = emptyBlock.sign;
