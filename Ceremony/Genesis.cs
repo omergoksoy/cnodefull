@@ -625,9 +625,8 @@ namespace Notus.Ceremony
             {
                 HttpObj.Dispose();
             }
-            catch
-            {
-            }
+            catch{}
+            NVG.BlockMeta.Dispose();
         }
 
     }

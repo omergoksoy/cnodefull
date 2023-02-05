@@ -74,6 +74,7 @@ namespace Notus.Block
                 genesisCeremony.SaveCurrentState();
                 Thread.Sleep(60000);
                 genesisCeremony.Dispose();
+                Thread.Sleep(1000);
                 NP.Success("Genesis Build With Ceremony");
                 Environment.Exit(0);
             }

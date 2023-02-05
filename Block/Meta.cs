@@ -579,6 +579,12 @@ namespace Notus.Block
 
             try
             {
+                stateDb.Dispose();
+            }
+            catch { }
+
+            try
+            {
                 typeDb.Dispose();
             }
             catch { }
