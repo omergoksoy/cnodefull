@@ -199,7 +199,7 @@ namespace Notus.Validator
                         return "state";
                     }
                     //Console.WriteLine("stateVerify == true");
-                    NVG.BlockMeta.State(nodeState.chainId, nodeState.state);
+                    NVG.BlockMeta.State(nodeState.chainId, nodeState.state,true);
                 }
                 catch { }
                 //control_noktasi();

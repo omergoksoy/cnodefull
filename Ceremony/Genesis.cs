@@ -41,8 +41,11 @@ namespace Notus.Ceremony
                 NVG.Settings.Nodes.My.PrivateKey
             );
             FirstStateIsReady = true;
+            NVG.BlockMeta.State(NVG.Settings.Nodes.My.ChainId, FirstState.state, false);
             GetAllState();
             Console.ForegroundColor= ConsoleColor.Green;
+            //string tmpstateKey = GetStateKey(chainId, currentState.rowNo, true);
+            //State(string chainId, NVS.NodeStateStruct currentState)
             Console.WriteLine("Imza ve zaman kontrolü yapılarak");
             Console.WriteLine("Gelen state'in dogru kisi tarafindan geldigini dogrula");
             Console.WriteLine("Dogrulama islemi bitince kayit altina alinsin");
@@ -176,7 +179,21 @@ namespace Notus.Ceremony
                                     NP.Danger("Block Row No Is Different");
                                     Environment.Exit(0);
                                 }
-                                exitFromWhileLoop = true;
+                                bool stateVerified=Notus.Wallet.ID.Verify(
+                                    NVG.BlockMeta.GenerateRawTextForStateSign(tmpValidatorState),
+                                    tmpValidatorState.sign,
+                                    validatorItem.Value.PublicKey
+                                );
+                                if (stateVerified == true)
+                                {
+                                    NVG.BlockMeta.State(validatorItem.Value.ChainId, tmpValidatorState.state, false);
+                                    exitFromWhileLoop = true;
+                                }
+                                else
+                                {
+                                    NP.Danger("State Signature Is Wrong");
+                                    Environment.Exit(0);
+                                }
                             }
                         }
                         else

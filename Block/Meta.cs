@@ -149,7 +149,7 @@ namespace Notus.Block
 
             //NVH.RightBlockValidator(blockData, "Block Meta - WriteBlock");
             //NVG.BlockMeta.Validator(peerStaringTime, NVG.Settings.Nodes.Queue[peerStaringTime].Wallet);
-            if (senderLocation.Length ==0)
+            if (senderLocation.Length == 0)
             {
                 NP.Info("Saving Block Data -> " + blockData.info.rowNo.ToString());
             }
@@ -306,7 +306,7 @@ namespace Notus.Block
 
             return tmpResult;
         }
-        public string GetStateKey(string chainId, long rowOrStateNo,bool isRowNo)
+        public string GetStateKey(string chainId, long rowOrStateNo, bool isRowNo)
         {
             if (isRowNo == true)
             {
@@ -336,14 +336,14 @@ namespace Notus.Block
                 currentState.state.rowNo.ToString() + ":" +
                 currentState.state.sign;
         }
-        public void State(string chainId, NVS.NodeStateStruct currentState)
+        public void State(string chainId, NVS.NodeStateStruct currentState, bool canBeSendToOtherNodes)
         {
             string allSignStr = JsonSerializer.Serialize(currentState);
             // current state
             stateDb.Set(chainId, allSignStr);
 
             // every time "NVC.NodeValidationModCount" mod is Zero
-            string tmpstateKey = GetStateKey(chainId, currentState.rowNo,true);
+            string tmpstateKey = GetStateKey(chainId, currentState.rowNo, true);
 
             //Console.WriteLine("tmpstateKey : " + tmpstateKey);
             stateDb.Set(tmpstateKey, allSignStr);
@@ -361,28 +361,33 @@ namespace Notus.Block
                 NVG.Settings.Nodes.My.State.blockUid = currentState.blockUid;
                 NVG.Settings.Nodes.My.State.sign = currentState.sign;
 
-                NVS.NodeStateInfoStruct stateTransfer = new NVS.NodeStateInfoStruct()
+
+                if (canBeSendToOtherNodes == true)
                 {
-                    chainId = NVG.Settings.Nodes.My.ChainId,
-                    time = NVG.NOW.Int,
-                    state = new NVS.NodeStateStruct()
+
+                    NVS.NodeStateInfoStruct stateTransfer = new NVS.NodeStateInfoStruct()
                     {
-                        blockUid = currentState.blockUid,
-                        rowNo = currentState.rowNo,
-                        sign = currentState.sign
-                    },
-                    sign = ""
-                };
+                        chainId = NVG.Settings.Nodes.My.ChainId,
+                        time = NVG.NOW.Int,
+                        state = new NVS.NodeStateStruct()
+                        {
+                            blockUid = currentState.blockUid,
+                            rowNo = currentState.rowNo,
+                            sign = currentState.sign
+                        },
+                        sign = ""
+                    };
 
-                stateTransfer.sign = Notus.Wallet.ID.Sign(
-                    GenerateRawTextForStateSign(stateTransfer),
-                    NVG.Settings.Nodes.My.PrivateKey
-                );
+                    stateTransfer.sign = Notus.Wallet.ID.Sign(
+                        GenerateRawTextForStateSign(stateTransfer),
+                        NVG.Settings.Nodes.My.PrivateKey
+                    );
 
-                string stateText = "<nodeState>" + JsonSerializer.Serialize(stateTransfer) + "</nodeState>";
-                foreach (var validatorItem in NVG.NodeList)
-                {
-                    NVG.Settings.PeerManager.SendWithTask(validatorItem.Value, stateText);
+                    string stateText = "<nodeState>" + JsonSerializer.Serialize(stateTransfer) + "</nodeState>";
+                    foreach (var validatorItem in NVG.NodeList)
+                    {
+                        NVG.Settings.PeerManager.SendWithTask(validatorItem.Value, stateText);
+                    }
                 }
 
                 NP.Basic(Math.Round((decimal)(currentState.rowNo / NVC.NodeValidationModCount)).ToString() + ". State [ " + currentState.rowNo.ToString() + ". Block ] Generated");

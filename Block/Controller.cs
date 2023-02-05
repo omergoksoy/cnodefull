@@ -132,7 +132,8 @@ namespace Notus.Block
                         rowNo = rowNo,
                         blockUid = currentBlockUid,
                         sign = currentBlockSign
-                    }
+                    },
+                    true
                 );
                 //Console.WriteLine("rowNo : " + rowNo.ToString());
                 CheckAllNodeState(rowNo);
