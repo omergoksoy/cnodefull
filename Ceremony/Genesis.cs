@@ -43,13 +43,13 @@ namespace Notus.Ceremony
             FirstStateIsReady = true;
             NVG.BlockMeta.State(NVG.Settings.Nodes.My.ChainId, FirstState.state, false);
             GetAllState();
-            Console.ForegroundColor= ConsoleColor.Green;
+            //Console.ForegroundColor= ConsoleColor.Green;
             //string tmpstateKey = GetStateKey(chainId, currentState.rowNo, true);
             //State(string chainId, NVS.NodeStateStruct currentState)
-            Console.WriteLine("Imza ve zaman kontrolü yapılarak");
-            Console.WriteLine("Gelen state'in dogru kisi tarafindan geldigini dogrula");
-            Console.WriteLine("Dogrulama islemi bitince kayit altina alinsin");
-            Console.ReadLine();
+            //Console.WriteLine("Imza ve zaman kontrolü yapılarak");
+            //Console.WriteLine("Gelen state'in dogru kisi tarafindan geldigini dogrula");
+            //Console.WriteLine("Dogrulama islemi bitince kayit altina alinsin");
+            //Console.ReadLine();
         }
         public void Start()
         {
@@ -143,6 +143,7 @@ namespace Notus.Ceremony
         }
         private void GetAllState()
         {
+            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
             int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
             foreach (var validatorItem in NVG.NodeList)
             {
@@ -153,6 +154,7 @@ namespace Notus.Ceremony
                     {
                         string requestUrl = NNN.MakeHttpListenerPath( validatorItem.Value.IP.IpAddress, SelectedPortVal ) + "state";
                         string MainResultStr = NCR.GetSync(requestUrl, 2, true, false);
+                        Console.WriteLine(MainResultStr);
                         if (MainResultStr.Length > 10)
                         {
                             NVS.NodeStateInfoStruct? tmpValidatorState = null;
@@ -195,6 +197,10 @@ namespace Notus.Ceremony
                                     Environment.Exit(0);
                                 }
                             }
+                            else
+                            {
+                                Console.WriteLine("State Data Is NULL");
+                            }
                         }
                         else
                         {
@@ -203,7 +209,7 @@ namespace Notus.Ceremony
                     }
                 }
             }
-            NP.Success("State Are Equals");
+            NP.Success("State Are Equals And Stored");
         }
         private void ControlAllBlockSign()
         {
