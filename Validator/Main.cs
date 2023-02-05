@@ -279,7 +279,6 @@ namespace Notus.Validator
                                 tmpMessage = tmpMessage + ">";
 
                             string innerResponseStr = ValidatorQueueObj.ProcessIncomeData(incomeMessage);
-                            //NP.Basic("Function Response : " + innerResponseStr);
                             StartExecuteDistribiton(incomeMessage, innerResponseStr);
                         }
                     }
