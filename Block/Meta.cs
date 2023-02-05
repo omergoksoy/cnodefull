@@ -486,6 +486,7 @@ namespace Notus.Block
         public void LoadState()
         {
             Console.WriteLine("LoadState()");
+            Console.WriteLine(NVG.Settings.Nodes.My.ChainId);
             Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
             NVS.NodeStateStruct? myCurrentState = State(NVG.Settings.Nodes.My.ChainId);
             if (myCurrentState != null)
