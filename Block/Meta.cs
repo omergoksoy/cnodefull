@@ -362,7 +362,6 @@ namespace Notus.Block
 
                 if (canBeSendToOtherNodes == true)
                 {
-
                     NVS.NodeStateInfoStruct stateTransfer = new NVS.NodeStateInfoStruct()
                     {
                         chainId = NVG.Settings.Nodes.My.ChainId,
@@ -484,6 +483,21 @@ namespace Notus.Block
         {
             statusDb.Set(blockUid, JsonSerializer.Serialize(statusCode));
         }
+        public void LoadState()
+        {
+            NVS.NodeStateStruct? myCurrentState = State(NVG.Settings.Nodes.My.ChainId);
+            if (myCurrentState != null)
+            {
+                NVG.NodeList[NVG.Settings.Nodes.My.HexKey].State.rowNo = myCurrentState.rowNo;
+                NVG.NodeList[NVG.Settings.Nodes.My.HexKey].State.blockUid = myCurrentState.blockUid;
+                NVG.NodeList[NVG.Settings.Nodes.My.HexKey].State.sign = myCurrentState.sign;
+
+                // assign block state to my Node Info
+                NVG.Settings.Nodes.My.State.rowNo = myCurrentState.rowNo;
+                NVG.Settings.Nodes.My.State.blockUid = myCurrentState.blockUid;
+                NVG.Settings.Nodes.My.State.sign = myCurrentState.sign;
+            }
+        }
         public void Start()
         {
             statusDb.SetSettings(new NVS.KeyValueSettings()
@@ -534,6 +548,7 @@ namespace Notus.Block
                 MemoryLimitCount = 0,
                 Name = Notus.Variable.Constant.MemoryPoolName["ValidatorStateList"]
             });
+            LoadState();
         }
         public Meta()
         {
