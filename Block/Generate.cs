@@ -137,6 +137,9 @@ namespace Notus.Block
             string sashaText = sashaObj.ComputeHash(TmpText, true);
             string base64Text=Notus.Convert.HexToBase64(sashaText);
 
+            burada Once Final hash'ini azalt ve base64'e çevir
+            sonra da sırasıyla diğerlerini de çevir
+
             Console.WriteLine(sashaText);
             Console.WriteLine(base64Text);
 
