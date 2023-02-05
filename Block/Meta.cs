@@ -485,6 +485,8 @@ namespace Notus.Block
         }
         public void LoadState()
         {
+            Console.WriteLine("LoadState()");
+            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
             NVS.NodeStateStruct? myCurrentState = State(NVG.Settings.Nodes.My.ChainId);
             if (myCurrentState != null)
             {
@@ -497,6 +499,13 @@ namespace Notus.Block
                 NVG.Settings.Nodes.My.State.blockUid = myCurrentState.blockUid;
                 NVG.Settings.Nodes.My.State.sign = myCurrentState.sign;
             }
+            else
+            {
+                Console.WriteLine("State Data Is NULL");
+                Console.WriteLine(stateDb.Get(NVG.Settings.Nodes.My.ChainId));
+                Console.WriteLine("State Data Is NULL");
+            }
+            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
         }
         public void Start()
         {
