@@ -517,7 +517,8 @@ namespace Notus.Validator
             }
             catch { }
             NVG.BlockController.Start();
-
+            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
             while (
                 tmpExitMainLoop == false &&
                 NVG.Settings.NodeClosing == false &&

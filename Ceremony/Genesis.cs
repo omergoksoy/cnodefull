@@ -152,7 +152,7 @@ namespace Notus.Ceremony
                     bool exitFromWhileLoop = false;
                     while (exitFromWhileLoop == false)
                     {
-                        string requestUrl = NNN.MakeHttpListenerPath( validatorItem.Value.IP.IpAddress, SelectedPortVal ) + "state";
+                        string requestUrl = NNN.MakeHttpListenerPath(validatorItem.Value.IP.IpAddress, SelectedPortVal) + "state";
                         string MainResultStr = NCR.GetSync(requestUrl, 2, true, false);
                         if (MainResultStr.Length > 10)
                         {
@@ -165,29 +165,29 @@ namespace Notus.Ceremony
 
                             if (tmpValidatorState != null)
                             {
-                                if(string.Equals(tmpValidatorState.state.blockUid, FirstState.state.blockUid) == false)
+                                if (string.Equals(tmpValidatorState.state.blockUid, FirstState.state.blockUid) == false)
                                 {
                                     NP.Danger("Block Uid Is Different");
                                     Environment.Exit(0);
                                 }
-                                if(string.Equals(tmpValidatorState.state.sign, FirstState.state.sign) == false)
+                                if (string.Equals(tmpValidatorState.state.sign, FirstState.state.sign) == false)
                                 {
                                     NP.Danger("Block Sign Is Different");
                                     Environment.Exit(0);
                                 }
-                                if(tmpValidatorState.state.rowNo!= FirstState.state.rowNo)
+                                if (tmpValidatorState.state.rowNo != FirstState.state.rowNo)
                                 {
                                     NP.Danger("Block Row No Is Different");
                                     Environment.Exit(0);
                                 }
-                                bool stateVerified=Notus.Wallet.ID.Verify(
+                                bool stateVerified = Notus.Wallet.ID.Verify(
                                     NVG.BlockMeta.GenerateRawTextForStateSign(tmpValidatorState),
                                     tmpValidatorState.sign,
                                     validatorItem.Value.PublicKey
                                 );
                                 if (stateVerified == true)
                                 {
-                                    NP.Danger(validatorItem.Value.ChainId.Substring(0,10) + " State Stored");
+                                    NP.Danger(validatorItem.Value.ChainId.Substring(0, 20) + " Validators State Stored");
                                     NVG.BlockMeta.State(validatorItem.Value.ChainId, tmpValidatorState.state, false);
                                     exitFromWhileLoop = true;
                                 }

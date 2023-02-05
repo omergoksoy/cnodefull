@@ -104,11 +104,9 @@ namespace Notus.Block
 
         private bool CheckBlockValidator(NVClass.BlockData blockData)
         {
-            //Console.WriteLine("------ CheckBlockValidator ------");
             ulong queueTimePeriod = NVD.Calculate();
             ulong blockTimeVal = ND.ToLong(blockData.info.time);
             ulong blockGenarationTime = blockTimeVal - (blockTimeVal % queueTimePeriod);
-            //Console.WriteLine("blockGenarationTime : " + blockGenarationTime.ToString());
             string validatorWalletId = Validator(blockGenarationTime);
             string validatorWalletId_FromBlock = blockData.validator.count.First().Key;
             if (validatorWalletId.Length == 0)
