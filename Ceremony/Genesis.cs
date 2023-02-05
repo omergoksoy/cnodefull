@@ -143,7 +143,7 @@ namespace Notus.Ceremony
         }
         private void GetAllState()
         {
-            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
+            //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
             int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
             foreach (var validatorItem in NVG.NodeList)
             {
@@ -154,7 +154,6 @@ namespace Notus.Ceremony
                     {
                         string requestUrl = NNN.MakeHttpListenerPath( validatorItem.Value.IP.IpAddress, SelectedPortVal ) + "state";
                         string MainResultStr = NCR.GetSync(requestUrl, 2, true, false);
-                        Console.WriteLine(MainResultStr);
                         if (MainResultStr.Length > 10)
                         {
                             NVS.NodeStateInfoStruct? tmpValidatorState = null;
@@ -188,6 +187,7 @@ namespace Notus.Ceremony
                                 );
                                 if (stateVerified == true)
                                 {
+                                    NP.Danger(validatorItem.Value.ChainId.Substring(0,10) + " State Stored");
                                     NVG.BlockMeta.State(validatorItem.Value.ChainId, tmpValidatorState.state, false);
                                     exitFromWhileLoop = true;
                                 }
