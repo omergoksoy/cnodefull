@@ -41,16 +41,8 @@ namespace Notus.Ceremony
                 NVG.Settings.Nodes.My.PrivateKey
             );
             FirstStateIsReady = true;
-            Console.WriteLine("NVG.Settings.Nodes.My.ChainId : " + NVG.Settings.Nodes.My.ChainId);
             NVG.BlockMeta.State(NVG.Settings.Nodes.My.ChainId, FirstState.state, false);
             GetAllState();
-            //Console.ForegroundColor= ConsoleColor.Green;
-            //string tmpstateKey = GetStateKey(chainId, currentState.rowNo, true);
-            //State(string chainId, NVS.NodeStateStruct currentState)
-            //Console.WriteLine("Imza ve zaman kontrolü yapılarak");
-            //Console.WriteLine("Gelen state'in dogru kisi tarafindan geldigini dogrula");
-            //Console.WriteLine("Dogrulama islemi bitince kayit altina alinsin");
-            //Console.ReadLine();
         }
         public void Start()
         {
@@ -144,7 +136,6 @@ namespace Notus.Ceremony
         }
         private void GetAllState()
         {
-            //Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
             int SelectedPortVal = NVG.Settings.Nodes.My.IP.Port + 5;
             foreach (var validatorItem in NVG.NodeList)
             {
