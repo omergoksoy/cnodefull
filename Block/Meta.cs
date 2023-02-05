@@ -68,6 +68,8 @@ namespace Notus.Block
         }
         public void ClearTable(NVE.MetaDataDbTypeList tableType)
         {
+            NP.Danger("All Block Info DB Cleared");
+            NP.Danger("All Block Info DB Cleared");
             if (tableType == NVE.MetaDataDbTypeList.PreviouseList || tableType == NVE.MetaDataDbTypeList.All)
             {
                 prevDb.Clear();
@@ -338,6 +340,7 @@ namespace Notus.Block
         {
             string allSignStr = JsonSerializer.Serialize(currentState);
             // current state
+            Console.WriteLine(chainId + " -> " + allSignStr);
             stateDb.Set(chainId, allSignStr);
 
             // every time "NVC.NodeValidationModCount" mod is Zero
@@ -345,7 +348,10 @@ namespace Notus.Block
 
             //Console.WriteLine("tmpstateKey : " + tmpstateKey);
             stateDb.Set(tmpstateKey, allSignStr);
+            Console.WriteLine(tmpstateKey + " -> " + allSignStr);
 
+            Console.WriteLine(stateDb.Get(chainId));
+            Console.WriteLine(stateDb.Get(tmpstateKey));
             // control_noktasi();
             if (string.Equals(chainId, NVG.Settings.Nodes.My.ChainId))
             {
