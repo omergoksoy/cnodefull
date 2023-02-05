@@ -122,7 +122,7 @@ namespace Notus.Block
             {
                 if (string.Equals(validatorWalletId_FromBlock, validatorWalletId))
                 {
-                    Console.WriteLine("Dogru kisi tarafindan uretilen blok");
+                    //Console.WriteLine("Dogru kisi tarafindan uretilen blok");
                     return true;
                 }
                 else
