@@ -231,7 +231,7 @@ namespace Notus.Block
 
         private NVClass.BlockData GiveMeEmptyBlock(NVClass.BlockData FreeBlockStruct, string PrevStr)
         {
-            FreeBlockStruct.info.type = 300;
+            FreeBlockStruct.info.type = NVE.BlockTypeList.EmptyBlock;
             FreeBlockStruct.info.rowNo = 2;
             FreeBlockStruct.info.multi = false;
             FreeBlockStruct.info.uID = Notus.Block.Key.Generate(
