@@ -70,7 +70,6 @@ namespace Notus.Block
                 NP.Success("My Wallet : " + NVG.Settings.Nodes.My.IP.Wallet);
                 NC.Genesis genesisCeremony = new NC.Genesis();
                 genesisCeremony.Start();
-                Console.WriteLine("genesisCeremony.SaveCurrentState();"); 
                 genesisCeremony.SaveCurrentState();
                 Thread.Sleep(60000);
                 genesisCeremony.Dispose();
