@@ -279,8 +279,6 @@ namespace Notus.Block
                 }
                 resultList.Add(nextCount, orderDb.List[orderListKey].Value);
             }
-            //Console.WriteLine(JsonSerializer.Serialize(resultList));
-            //Console.ReadLine();
             return resultList;
         }
         public string Order(long blockRowNo)
@@ -340,7 +338,6 @@ namespace Notus.Block
         {
             string allSignStr = JsonSerializer.Serialize(currentState);
             // current state
-            Console.WriteLine(chainId + " -> " + allSignStr);
             stateDb.Set(chainId, allSignStr);
 
             // every time "NVC.NodeValidationModCount" mod is Zero
@@ -348,10 +345,6 @@ namespace Notus.Block
 
             //Console.WriteLine("tmpstateKey : " + tmpstateKey);
             stateDb.Set(tmpstateKey, allSignStr);
-            Console.WriteLine(tmpstateKey + " -> " + allSignStr);
-
-            Console.WriteLine(stateDb.Get(chainId));
-            Console.WriteLine(stateDb.Get(tmpstateKey));
             // control_noktasi();
             if (string.Equals(chainId, NVG.Settings.Nodes.My.ChainId))
             {
@@ -443,9 +436,6 @@ namespace Notus.Block
         }
         public void Validator(ulong blockTime, string validatorWalletId)
         {
-            //Console.WriteLine("------ SET VALIDATOR -----");
-            //Console.WriteLine("blockTime : " + blockTime.ToString());
-            //Console.WriteLine("validatorWalletId : " + validatorWalletId);
             validatorDb.Set(blockTime.ToString(), validatorWalletId);
         }
 
@@ -491,9 +481,6 @@ namespace Notus.Block
         }
         public void LoadState()
         {
-            Console.WriteLine("LoadState()");
-            Console.WriteLine(NVG.Settings.Nodes.My.ChainId);
-            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
             NVS.NodeStateStruct? myCurrentState = State(NVG.Settings.Nodes.My.ChainId);
             if (myCurrentState != null)
             {
@@ -506,13 +493,6 @@ namespace Notus.Block
                 NVG.Settings.Nodes.My.State.blockUid = myCurrentState.blockUid;
                 NVG.Settings.Nodes.My.State.sign = myCurrentState.sign;
             }
-            else
-            {
-                Console.WriteLine("State Data Is NULL");
-                Console.WriteLine(stateDb.Get(NVG.Settings.Nodes.My.ChainId));
-                Console.WriteLine("State Data Is NULL");
-            }
-            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList));
         }
         public void Start()
         {
