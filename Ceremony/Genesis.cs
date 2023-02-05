@@ -41,6 +41,7 @@ namespace Notus.Ceremony
                 NVG.Settings.Nodes.My.PrivateKey
             );
             FirstStateIsReady = true;
+            Console.WriteLine("NVG.Settings.Nodes.My.ChainId : " + NVG.Settings.Nodes.My.ChainId);
             NVG.BlockMeta.State(NVG.Settings.Nodes.My.ChainId, FirstState.state, false);
             GetAllState();
             //Console.ForegroundColor= ConsoleColor.Green;
