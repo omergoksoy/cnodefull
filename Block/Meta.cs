@@ -17,6 +17,7 @@ namespace Notus.Block
 {
     public class Meta : IDisposable
     {
+        private Notus.Data.KeyValue nonceDb = new();
         private Notus.Data.KeyValue stateDb = new();
         private Notus.Data.KeyValue validatorDb = new();
 
@@ -40,6 +41,10 @@ namespace Notus.Block
             if (tableType == NVE.MetaDataDbTypeList.ValidatorOrderList || tableType == NVE.MetaDataDbTypeList.All)
             {
                 validatorDb.Remove(dbKey);
+            }
+            if (tableType == NVE.MetaDataDbTypeList.NonceList || tableType == NVE.MetaDataDbTypeList.All)
+            {
+                nonceDb.Remove(dbKey);
             }
             if (tableType == NVE.MetaDataDbTypeList.PreviouseList || tableType == NVE.MetaDataDbTypeList.All)
             {
@@ -73,6 +78,10 @@ namespace Notus.Block
             if (tableType == NVE.MetaDataDbTypeList.PreviouseList || tableType == NVE.MetaDataDbTypeList.All)
             {
                 prevDb.Clear();
+            }
+            if (tableType == NVE.MetaDataDbTypeList.NonceList || tableType == NVE.MetaDataDbTypeList.All)
+            {
+                nonceDb.Clear();
             }
             if (tableType == NVE.MetaDataDbTypeList.ValidatorStateList || tableType == NVE.MetaDataDbTypeList.All)
             {
@@ -428,6 +437,35 @@ namespace Notus.Block
             validatorDb.Set(blockTime.ToString(), validatorWalletId);
         }
 
+        public int Nonce(string walletId)
+        {
+            burada nonce kaydı tutulacak ve güncellenecek
+
+            string tmpResult = nonceDb.Get(walletId);
+
+            if (tmpResult == null)
+                return 0;
+
+            if (tmpResult.Length == 0)
+                return 0;
+
+            if (int.TryParse(tmpResult, out _) == false)
+                return 1;
+
+            return int.Parse(tmpResult);
+        }
+
+        public bool Nonce(string walletId, int nonceValue)
+        {
+            int currentNonce = Nonce(walletId);
+
+            //currentNonce
+            //if (storedNonceValue+1==
+            //nonceDb.Set()
+
+            return false;
+        }
+
         public string Prev(long blockRowNo)
         {
             string tmpResult = prevDb.Get(blockRowNo.ToString());
@@ -533,6 +571,12 @@ namespace Notus.Block
                 MemoryLimitCount = 0,
                 Name = Notus.Variable.Constant.MemoryPoolName["ValidatorStateList"]
             });
+
+            nonceDb.SetSettings(new NVS.KeyValueSettings()
+            {
+                MemoryLimitCount = 0,
+                Name = Notus.Variable.Constant.MemoryPoolName["AccountNonceList"]
+            });
             NP.Info("All Node Info DB Started");
         }
         public Meta()
@@ -544,6 +588,12 @@ namespace Notus.Block
         }
         public void Dispose()
         {
+            try
+            {
+                nonceDb.Dispose();
+            }
+            catch { }
+
             try
             {
                 orderDb.Dispose();

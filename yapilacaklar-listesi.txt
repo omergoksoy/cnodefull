@@ -4,7 +4,7 @@
 
 5- yapılan işlemlerin listesi bir veri tabanı listesinde olsun
 
-6- 
+6- cüzdan Nonce sayıları BlockMeta kitaplığı içinde tutulsun.
 
 7- 
 
