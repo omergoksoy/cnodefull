@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using NVE = Notus.Variable.Enum;
+using NC = Notus.Convert;
 namespace Notus.Encode
 {
 
@@ -63,7 +64,7 @@ namespace Notus.Encode
             if (returnType == NVE.ReturnType.AsBase64)
                 return System.Convert.ToBase64String(Encode(input));
 
-            return Notus.Convert.Byte2Hex(Encode(input));
+            return NC.Byte2Hex(Encode(input));
         }
         public static byte[] Encode(IEnumerable<string> input)
         {
@@ -94,7 +95,16 @@ namespace Notus.Encode
 
             return items.SelectMany(x => x).ToArray();
         }
+        public static IList<string> Decode(string input, NVE.ReturnType returnType = NVE.ReturnType.AsHex)
+        {
+            return Decode(NC.Hex2Byte(input));
+            /*
+            if (returnType == NVE.ReturnType.AsBase64)
+                return System.Convert.ToBase64String(Encode(input));
 
+            return NC.Byte2Hex(Encode(input));
+            */
+        }
         public static IList<string> Decode(byte[] input)
         {
             var message = new RLPMessage(input);

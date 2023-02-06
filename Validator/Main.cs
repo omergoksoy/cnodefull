@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using Notus.API;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Numerics;
 using System.Text.Json;
@@ -37,7 +38,7 @@ namespace Notus.Validator
         private Notus.Reward.Block RewardBlockObj = new Notus.Reward.Block();
         private Notus.Communication.Http HttpObj = new Notus.Communication.Http(true);
         private Notus.Block.Integrity Obj_Integrity;
-        private Notus.Validator.Api Obj_Api;
+        private Notus.API.Controller Obj_Api = new Notus.API.Controller();
 
         private bool FileStorageTimerIsRunning = false;
         private DateTime FileStorageTime = NVG.NOW.Obj;
@@ -285,7 +286,7 @@ namespace Notus.Validator
                 }
             , false);
 
-            Obj_Api = new Notus.Validator.Api();
+            //Obj_Api = new Notus.API.Controller();
 
             Start_HttpListener();
 
