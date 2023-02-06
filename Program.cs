@@ -51,6 +51,14 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 
 
 /*
+
+bu link ile test edilebilir
+
+http://18.156.37.61:5002/tx/f84583312e308b616c6963695f61647265738574757461728c69736c656d5f7563726574698c6e6f6e63655f646567657269846461746184696d7a618a7075626c69635f6b6579
+
+
+
+
 List<string> tmpIslemList = new List<string> {
     "1.0",          // version
     "alici_adres",  // alıcı adresi
