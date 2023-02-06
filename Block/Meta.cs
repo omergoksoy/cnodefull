@@ -334,9 +334,7 @@ namespace Notus.Block
             // every time "NVC.NodeValidationModCount" mod is Zero
             string tmpstateKey = GetStateKey(chainId, currentState.rowNo, true);
 
-            //Console.WriteLine("tmpstateKey : " + tmpstateKey);
             stateDb.Set(tmpstateKey, allSignStr);
-            // control_noktasi();
             if (string.Equals(chainId, NVG.Settings.Nodes.My.ChainId))
             {
                 // assign block state to node list my node info
@@ -546,7 +544,6 @@ namespace Notus.Block
         }
         public void Dispose()
         {
-
             try
             {
                 orderDb.Dispose();
