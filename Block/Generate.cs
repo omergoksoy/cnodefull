@@ -83,10 +83,9 @@ namespace Notus.Block
         {
             string TmpText = FirstString_Info(BlockData);
             BlockData.nonce.info = GenerateNonce(TmpText, BlockData);
-            Notus.HashLib.Sasha hashObj = new Notus.HashLib.Sasha();
-            BlockData.hash.info = hashObj.ComputeHash(
+            BlockData.hash.info = new Notus.HashLib.Sasha().ComputeHash(
                 TmpText + NVC.Delimeter + BlockData.nonce.info,
-                false
+                true
             );
             return BlockData;
         }
@@ -94,17 +93,14 @@ namespace Notus.Block
         private Notus.Variable.Class.BlockData Make_Validator(Notus.Variable.Class.BlockData BlockData)
         {
             string TmpText = FirstString_Validator(BlockData);
-            Notus.Hash hashObj = new Notus.Hash();
-            BlockData.validator.sign = hashObj.CommonHash("sasha", TmpText);
-
+            BlockData.validator.sign = new Notus.HashLib.Sasha().ComputeHash(TmpText,true);
             return BlockData;
         }
         private Notus.Variable.Class.BlockData Make_Data(Notus.Variable.Class.BlockData BlockData)
         {
             string TmpText = BlockData.cipher.data + NVC.Delimeter + BlockData.cipher.ver;
-            Notus.Hash hashObj = new Notus.Hash();
 
-            BlockData.cipher.sign = hashObj.CommonHash("sasha", TmpText);
+            BlockData.cipher.sign = new Notus.HashLib.Sasha().ComputeHash(TmpText,true);
 
             TmpText = TmpText + NVC.Delimeter + BlockData.cipher.sign;
 
@@ -112,7 +108,7 @@ namespace Notus.Block
 
             BlockData.hash.data = new Notus.HashLib.Sasha().ComputeHash(
                 TmpText + NVC.Delimeter + BlockData.nonce.data,
-                false
+                true
             );
             return BlockData;
         }
@@ -121,10 +117,9 @@ namespace Notus.Block
         {
             string TmpText = BlockData.hash.data + NVC.Delimeter + BlockData.hash.info;
             BlockData.nonce.block = GenerateNonce(TmpText, BlockData);
-            Notus.HashLib.Sasha sashaObj = new Notus.HashLib.Sasha();
-            BlockData.hash.block = sashaObj.ComputeHash(
+            BlockData.hash.block = new Notus.HashLib.Sasha().ComputeHash(
                 TmpText + NVC.Delimeter + BlockData.nonce.block,
-                false
+                true
             );
             return BlockData;
         }
@@ -132,9 +127,8 @@ namespace Notus.Block
         private Notus.Variable.Class.BlockData Make_FINAL(Notus.Variable.Class.BlockData BlockData)
         {
             string TmpText = FirstString_Block(BlockData);
-            Notus.HashLib.Sasha sashaObj = new Notus.HashLib.Sasha();
 
-            string sashaText = sashaObj.ComputeHash(TmpText, true);
+            string sashaText = new Notus.HashLib.Sasha().ComputeHash(TmpText, true);
             string base64Text = Notus.Convert.HexToBase64(sashaText);
 
             //omergoksoy();
@@ -144,17 +138,16 @@ namespace Notus.Block
             Console.WriteLine("sashaText : " + sashaText);
             Console.WriteLine("base64Text : "+ base64Text);
 
-            BlockData.hash.FINAL = sashaObj.ComputeHash(
+            BlockData.hash.FINAL = new Notus.HashLib.Sasha().ComputeHash(
                 TmpText,
-                false
+                true
             );
-            Notus.HashLib.Sasha sashaObj2 = new Notus.HashLib.Sasha();
-            BlockData.sign = sashaObj2.ComputeHash(
+            BlockData.sign = new Notus.HashLib.Sasha().ComputeHash(
                 BlockData.hash.info + NVC.Delimeter +
                 BlockData.hash.data + NVC.Delimeter +
                 BlockData.hash.block + NVC.Delimeter +
                 BlockData.hash.FINAL,
-                false
+                true
             );
             return BlockData;
         }
@@ -197,7 +190,7 @@ namespace Notus.Block
         {
             string TmpText = BlockData.cipher.data + NVC.Delimeter + BlockData.cipher.ver;
 
-            string ControlStr = new Notus.Hash().CommonHash("sasha", TmpText);
+            string ControlStr = new Notus.HashLib.Sasha().ComputeHash(TmpText,true);
             if (string.Equals(BlockData.cipher.sign, ControlStr) == false)
                 return false;
 
@@ -207,7 +200,7 @@ namespace Notus.Block
 
             ControlStr = new Notus.HashLib.Sasha().ComputeHash(
                 TmpText + NVC.Delimeter + BlockData.nonce.data,
-                false
+                true
             );
             if (string.Equals(BlockData.hash.data, ControlStr) == false)
                 return false;
@@ -218,7 +211,7 @@ namespace Notus.Block
 
             ControlStr = new Notus.HashLib.Sasha().ComputeHash(
                 TmpText + NVC.Delimeter + BlockData.nonce.info,
-                false
+                true
             );
             if (string.Equals(BlockData.hash.info, ControlStr) == false)
                 return false;
@@ -229,18 +222,18 @@ namespace Notus.Block
 
             ControlStr = new Notus.HashLib.Sasha().ComputeHash(
                 TmpText + NVC.Delimeter + BlockData.nonce.block,
-                false
+                true
             );
             if (string.Equals(BlockData.hash.block, ControlStr) == false)
                 return false;
 
             TmpText = FirstString_Validator(BlockData);
-            ControlStr = new Notus.Hash().CommonHash("sasha", TmpText);
+            ControlStr = new Notus.HashLib.Sasha().ComputeHash(TmpText,true);
             if (string.Equals(BlockData.validator.sign, ControlStr) == false)
                 return false;
 
             TmpText = FirstString_Block(BlockData);
-            ControlStr = new Notus.HashLib.Sasha().ComputeHash(TmpText, false);
+            ControlStr = new Notus.HashLib.Sasha().ComputeHash(TmpText, true);
             if (string.Equals(BlockData.hash.FINAL, ControlStr) == false)
                 return false;
 
@@ -249,7 +242,7 @@ namespace Notus.Block
                 BlockData.hash.data + NVC.Delimeter +
                 BlockData.hash.block + NVC.Delimeter +
                 BlockData.hash.FINAL,
-                false
+                true
             );
             if (string.Equals(BlockData.sign, ControlStr) == false)
                 return false;
