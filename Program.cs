@@ -14,6 +14,7 @@ using NP = Notus.Print;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
 using System.IO.Compression;
+using Notus.Encode;
 
 static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 {
@@ -48,6 +49,13 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     System.Environment.Exit(0);
 }
 
+var bytes = Notus.Encode.RLP.Encode(new List<string> { "cat", "dog" });
+
+var result = Notus.Encode.RLP.Decode(bytes);
+
+Console.WriteLine(JsonSerializer.Serialize(bytes));
+Console.WriteLine(JsonSerializer.Serialize(result));
+Console.ReadLine();
 
 System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;

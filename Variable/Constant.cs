@@ -235,6 +235,7 @@ namespace Notus.Variable
             { "CommonData", "data" },
             { "MasterList", "master_list" },
 
+            { "AccountNonceList", "account_nonce" },
             { "ValidatorStateList", "validator_state_list" },
             { "ValidatorOrderList", "validator_order_list" },
             { "BlockData", "blocks_raw" },
