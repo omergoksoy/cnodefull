@@ -24,12 +24,6 @@ namespace Notus.HashLib
         private readonly string SimpleKeyTextForSign = "sasha-key-text";
         private readonly string SimpleHashAlphabetForSign = "zyxwvutsrqponmlkjihgfedcba987654321";
 
-        private bool KeyEquals = true;
-        public void SetKey(string key = "")
-        {
-            KeyEquals = string.Equals(key, "deneme");
-        }
-
         /// <summary>
         /// Converts the specified <see cref="byte"/>[] to Sasha Hash <see cref="string"/>
         /// </summary>
@@ -128,10 +122,6 @@ namespace Notus.HashLib
         /// <returns>Returns Sasha Signature <see cref="string"/>.</returns>
         public string ComputeSign(string rawInput, bool returnAsHex = false, string newHashAlphabet = "", string signKeyText = "")
         {
-            if (KeyEquals == false)
-            {
-                return "err";
-            }
             Notus.HashLib.SHA1 hashObjSha1 = new Notus.HashLib.SHA1();
             Notus.HashLib.RIPEMD160 hashObj160 = new Notus.HashLib.RIPEMD160();
             Notus.HashLib.BLAKE2B hashObj2b = new Notus.HashLib.BLAKE2B();
@@ -181,11 +171,6 @@ namespace Notus.HashLib
         /// <returns>Returns Sasha Hash <see cref="string"/>.</returns>
         public string ComputeHash(string rawInput, bool returnAsHex = false, string newHashAlphabet = "")
         {
-            if (KeyEquals == false)
-            {
-                return "err";
-            }
-
             if (returnAsHex == true)
             {
                 return PureCalculate(Encoding.UTF8.GetBytes(rawInput));
