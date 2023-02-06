@@ -1297,6 +1297,7 @@ namespace Notus.Validator
                 return JsonSerializer.Serialize(false);
             
             NVClass.BlockData? tmpResultBlock = GetBlockWithRowNo(BlockNumber);
+
             if (tmpResultBlock == null)
                 return JsonSerializer.Serialize(false);
 
