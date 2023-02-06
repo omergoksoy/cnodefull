@@ -18,7 +18,9 @@ namespace Notus.API
             string tmpText = IncomeData.UrlList[1];
 
             IList<string> result = NE.RLP.Decode(tmpText);
-            return JsonSerializer.Serialize(result);
+            return 
+                (string.Equals(result[0].Trim(), "1.0" ? "true":"false")) + 
+                JsonSerializer.Serialize(result);
 
             if (result.Count != 8)
                 return JsonSerializer.Serialize(false);
