@@ -1,20 +1,20 @@
-﻿using NVClass = Notus.Variable.Class;
-using RocksDbSharp;
-using Notus.Communication;
+﻿using Notus.Communication;
 using Notus.Network;
+using RocksDbSharp;
 using System.Globalization;
+using System.IO.Compression;
 using System.Net;
 using System.Net.Sockets;
 using System.Numerics;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Text.Json;
+using NE = Notus.Encode;
 using NGF = Notus.Variable.Globals.Functions;
 using NP = Notus.Print;
+using NVClass = Notus.Variable.Class;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
-using System.IO.Compression;
-using NE=Notus.Encode;
 
 static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 {
@@ -49,15 +49,21 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     System.Environment.Exit(0);
 }
 
-var bytes = NE.RLP.Encode(new List<string> { "omer", "goksoy" });
+byte[] bytes = NE.RLP.Encode(
+    new List<string> {
+        "1.0",          //version
+        "alici_adres",  // alıcı adresi
+        "tutar",        // gönderilmek istenen tutar
+        "islem_ucreti", // işlem ücreti
+        "nonce_degeri", // geçerli nonce değeri
+        "data",         // varsa işlem datası
+        "imza",         // işlem imzası
+        "public_key",   // işlemi yapan public key
+    }
+);
 
-var result = NE.RLP.Decode(bytes);
+IList<string> result = NE.RLP.Decode(bytes);
 
-/*
-cc846f6d657286676f6b736f79
-"zIRvbWVyhmdva3NveQ=="
-["omer","goksoy"]
-*/
 Console.WriteLine(Notus.Convert.Byte2Hex(bytes));
 Console.WriteLine(JsonSerializer.Serialize(bytes));
 Console.WriteLine(JsonSerializer.Serialize(result));

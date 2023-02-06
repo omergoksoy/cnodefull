@@ -5,6 +5,9 @@ using System.Linq;
 using NVE = Notus.Variable.Enum;
 namespace Notus.Encode
 {
+
+    // bu kitaplık https://github.com/minicheddar/RLP adresinden alındı
+
     public static class RLP
     {
         private static readonly BigEndianBitConverter converter = new BigEndianBitConverter();
@@ -55,7 +58,7 @@ namespace Notus.Encode
             throw new ArgumentOutOfRangeException("input", "input is too long");
         }
 
-        public static string Encode(IEnumerable<string> input, NVE.ReturnType returnType=NVE.ReturnType.AsHex)
+        public static string Encode(IEnumerable<string> input, NVE.ReturnType returnType = NVE.ReturnType.AsHex)
         {
             if (returnType == NVE.ReturnType.AsBase64)
                 return System.Convert.ToBase64String(Encode(input));
