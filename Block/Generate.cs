@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
-
+using NC = Notus.Convert;
 namespace Notus.Block
 {
     public class Generate : IDisposable
@@ -19,7 +19,7 @@ namespace Notus.Block
                 return ValidatorWalletKeyStr;
             }
         }
-        
+
         private Notus.Variable.Class.BlockData FillValidatorKeyData(Notus.Variable.Class.BlockData BlockData)
         {
             using (Notus.Nonce.Calculate CalculateObj = new Notus.Nonce.Calculate())
@@ -135,13 +135,14 @@ namespace Notus.Block
             Notus.HashLib.Sasha sashaObj = new Notus.HashLib.Sasha();
 
             string sashaText = sashaObj.ComputeHash(TmpText, true);
-            string base64Text=Notus.Convert.HexToBase64(sashaText);
+            string base64Text = Notus.Convert.HexToBase64(sashaText);
 
-            burada Once Final hash'ini azalt ve base64'e çevir
-            sonra da sırasıyla diğerlerini de çevir
+            //omergoksoy();
+            //burada Once Final hash'ini azalt ve base64'e çevir
+            //sonra da sırasıyla diğerlerini de çevir
 
-            Console.WriteLine(sashaText);
-            Console.WriteLine(base64Text);
+            Console.WriteLine("sashaText : " + sashaText);
+            Console.WriteLine("base64Text : "+ base64Text);
 
             BlockData.hash.FINAL = sashaObj.ComputeHash(
                 TmpText,
@@ -195,71 +196,55 @@ namespace Notus.Block
         public bool Verify(Notus.Variable.Class.BlockData BlockData)
         {
             string TmpText = BlockData.cipher.data + NVC.Delimeter + BlockData.cipher.ver;
-            Notus.Hash hashObj = new Notus.Hash();
-            string ControlStr = hashObj.CommonHash("sasha", TmpText);
+
+            string ControlStr = new Notus.Hash().CommonHash("sasha", TmpText);
             if (string.Equals(BlockData.cipher.sign, ControlStr) == false)
-            {
                 return false;
-            }
+
             TmpText = TmpText + NVC.Delimeter + BlockData.cipher.sign;
             if (CheckValidNonce(TmpText, BlockData, BlockData.nonce.data) == false)
-            {
                 return false;
-            }
-            Notus.HashLib.Sasha sashaObj = new Notus.HashLib.Sasha();
-            ControlStr = sashaObj.ComputeHash(
+
+            ControlStr = new Notus.HashLib.Sasha().ComputeHash(
                 TmpText + NVC.Delimeter + BlockData.nonce.data,
                 false
             );
             if (string.Equals(BlockData.hash.data, ControlStr) == false)
-            {
                 return false;
-            }
+
             TmpText = FirstString_Info(BlockData);
             if (CheckValidNonce(TmpText, BlockData, BlockData.nonce.info) == false)
-            {
                 return false;
-            }
-            Notus.HashLib.Sasha sashaObj2 = new Notus.HashLib.Sasha();
-            ControlStr = sashaObj2.ComputeHash(
+
+            ControlStr = new Notus.HashLib.Sasha().ComputeHash(
                 TmpText + NVC.Delimeter + BlockData.nonce.info,
                 false
             );
             if (string.Equals(BlockData.hash.info, ControlStr) == false)
-            {
                 return false;
-            }
+
             TmpText = BlockData.hash.data + NVC.Delimeter + BlockData.hash.info;
             if (CheckValidNonce(TmpText, BlockData, BlockData.nonce.block) == false)
-            {
                 return false;
-            }
-            Notus.HashLib.Sasha sashaObj3 = new Notus.HashLib.Sasha();
-            ControlStr = sashaObj3.ComputeHash(
+
+            ControlStr = new Notus.HashLib.Sasha().ComputeHash(
                 TmpText + NVC.Delimeter + BlockData.nonce.block,
                 false
             );
             if (string.Equals(BlockData.hash.block, ControlStr) == false)
-            {
                 return false;
-            }
+
             TmpText = FirstString_Validator(BlockData);
-            Notus.Hash hashObj2 = new Notus.Hash();
-            ControlStr = hashObj2.CommonHash("sasha", TmpText);
+            ControlStr = new Notus.Hash().CommonHash("sasha", TmpText);
             if (string.Equals(BlockData.validator.sign, ControlStr) == false)
-            {
                 return false;
-            }
 
             TmpText = FirstString_Block(BlockData);
-            Notus.HashLib.Sasha sashaObj4 = new Notus.HashLib.Sasha();
-            ControlStr = sashaObj4.ComputeHash(TmpText, false);
+            ControlStr = new Notus.HashLib.Sasha().ComputeHash(TmpText, false);
             if (string.Equals(BlockData.hash.FINAL, ControlStr) == false)
-            {
                 return false;
-            }
-            Notus.HashLib.Sasha sashaObj5 = new Notus.HashLib.Sasha();
-            ControlStr = sashaObj5.ComputeHash(
+
+            ControlStr = new Notus.HashLib.Sasha().ComputeHash(
                 BlockData.hash.info + NVC.Delimeter +
                 BlockData.hash.data + NVC.Delimeter +
                 BlockData.hash.block + NVC.Delimeter +
@@ -267,9 +252,7 @@ namespace Notus.Block
                 false
             );
             if (string.Equals(BlockData.sign, ControlStr) == false)
-            {
                 return false;
-            }
             return true;
         }
 
