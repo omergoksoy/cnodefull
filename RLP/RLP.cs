@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-
+using NVE = Notus.Variable.Enum;
 namespace Notus.Encode
 {
     public static class RLP
@@ -55,6 +55,13 @@ namespace Notus.Encode
             throw new ArgumentOutOfRangeException("input", "input is too long");
         }
 
+        public static string Encode(IEnumerable<string> input, NVE.ReturnType returnType=NVE.ReturnType.AsHex)
+        {
+            if (returnType == NVE.ReturnType.AsBase64)
+                return System.Convert.ToBase64String(Encode(input));
+
+            return Notus.Convert.Byte2Hex(Encode(input));
+        }
         public static byte[] Encode(IEnumerable<string> input)
         {
             var items = new List<byte[]>();

@@ -14,7 +14,7 @@ using NP = Notus.Print;
 using NVG = Notus.Variable.Globals;
 using NVS = Notus.Variable.Struct;
 using System.IO.Compression;
-using Notus.Encode;
+using NE=Notus.Encode;
 
 static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 {
@@ -49,10 +49,16 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     System.Environment.Exit(0);
 }
 
-var bytes = Notus.Encode.RLP.Encode(new List<string> { "cat", "dog" });
+var bytes = NE.RLP.Encode(new List<string> { "omer", "goksoy" });
 
-var result = Notus.Encode.RLP.Decode(bytes);
+var result = NE.RLP.Decode(bytes);
 
+/*
+cc846f6d657286676f6b736f79
+"zIRvbWVyhmdva3NveQ=="
+["omer","goksoy"]
+*/
+Console.WriteLine(Notus.Convert.Byte2Hex(bytes));
 Console.WriteLine(JsonSerializer.Serialize(bytes));
 Console.WriteLine(JsonSerializer.Serialize(result));
 Console.ReadLine();

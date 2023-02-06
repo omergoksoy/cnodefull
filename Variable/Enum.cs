@@ -32,6 +32,11 @@ namespace Notus.Variable.Enum
         PreviouseList
     }
 
+    public enum ReturnType
+    {
+        AsHex,
+        AsBase64
+    }
     public enum NetworkNodeType
     {
         All = 2048,
