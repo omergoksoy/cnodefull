@@ -49,6 +49,47 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     System.Environment.Exit(0);
 }
 
+
+/*
+
+  // byte[] emptyStr = RLP.Encode("");
+            // Console.WriteLine(BitConverter.ToString(emptyStr));
+            // System.Console.WriteLine(RLP.Decode(emptyStr));
+
+            // [ 0x83, 'd', 'o', 'g' ]
+            // byte[] shortStr = RLP.Encode("dog");
+            // Console.WriteLine(BitConverter.ToString(shortStr));
+
+            // [ 0xb8, 0x38, 'L', 'o', 'r', 'e', 'm', ' ', ... , 'e', 'l', 'i', 't' ]
+            // byte[] longStr = RLP.Encode("Lorem ipsum dolor sit amet, consectetur adipisicing elit");
+            // Console.WriteLine(BitConverter.ToString(longStr));
+
+            // [ 0xc8, 0x83, 'c', 'a', 't', 0x83, 'd', 'o', 'g' ]
+            // byte[] bytes = RLP.Encode(new string[]{"cat", "dog"});
+
+            // byte[] bytes = RLP.Encode(new string[]{"this is a very long list", "you never guess how long it is", "indeed, how did you know it was this long", "good job, that I can tell you in honestlyyyyy"});
+            // Console.Write(String.Join(',', bytes));
+*/
+object obj = new List<object>(){
+    new List<string>(),
+    "dog",
+    new List<string>(){"cat"},
+    ""
+};
+byte[] bytes = Notus.Encode.TestRLP.Encode(obj);
+Console.WriteLine(JsonSerializer.Serialize(NE.RLP.Decode(bytes)));
+/*
+Console.WriteLine(Notus.Convert.Byte2Hex(bytes));
+Console.WriteLine(Notus.Encode.TestRLP.Decode(Notus.Convert.Hex2Byte("cbc083646f67c48363617480")));
+
+Console.WriteLine(BitConverter.ToString(bytes));
+Console.WriteLine(BitConverter.ToString(Encoding.UTF8.GetBytes("dog")));
+Console.WriteLine(BitConverter.ToString(Encoding.UTF8.GetBytes("cat")));
+*/
+Console.ReadLine();
+
+
+
 /*
 // "1.0:alici_adres:tutar:islem_ucreti:nonce_degeri:data"
 
