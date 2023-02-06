@@ -112,7 +112,7 @@ namespace Notus.Validator
         {
             string blockRowNoStr = Obj_BlockData.info.rowNo.ToString();
             // NP.Basic("Balance.Control Just Executed For -> " + blockRowNoStr);
-            NGF.Balance.Control(Obj_BlockData,(blockSource==1 ? false:true));
+            NGF.Balance.Control(Obj_BlockData, (blockSource == 1 ? false : true));
 
             if (blockSource == 2 || blockSource == 4)
             {
@@ -173,7 +173,7 @@ namespace Notus.Validator
                 }
                 */
             }
-            
+
             /*
             if (blockSource != 1)
             {
@@ -188,7 +188,7 @@ namespace Notus.Validator
             return "";
         }
 
-        public string Interpret(NVS.HttpRequestDetails IncomeData,bool ToDistribute)
+        public string Interpret(NVS.HttpRequestDetails IncomeData, bool ToDistribute)
         {
             if (PrepareExecuted == false)
             {
@@ -1295,7 +1295,7 @@ namespace Notus.Validator
 
             if (Int64.TryParse(IncomeData.UrlList[1], out Int64 BlockNumber) == false)
                 return JsonSerializer.Serialize(false);
-            
+
             NVClass.BlockData? tmpResultBlock = GetBlockWithRowNo(BlockNumber);
 
             if (tmpResultBlock == null)
@@ -1313,27 +1313,23 @@ namespace Notus.Validator
                 try
                 {
                     NVClass.BlockData? tmpStoredBlock = NVG.BlockMeta.ReadBlock(IncomeData.UrlList[2]);
-                    if (tmpStoredBlock != null)
-                    {
-                        return tmpStoredBlock.info.uID + tmpStoredBlock.sign;
-                    }
+                    if (tmpStoredBlock == null)
+                        return JsonSerializer.Serialize(false);
+
+                    return tmpStoredBlock.info.uID + tmpStoredBlock.sign;
                 }
-                catch (Exception err)
-                {
-                    //NP.Danger(NVG.Settings, "Error Text [1f95ce]: " + err.Message);
-                }
+                catch { }
                 return JsonSerializer.Serialize(false);
             }
 
             bool isNumeric2 = Int64.TryParse(IncomeData.UrlList[2], out Int64 BlockNumber2);
-            if (isNumeric2 == true)
-            {
-                NVClass.BlockData? tmpResultBlock = GetBlockWithRowNo(BlockNumber2);
-                if (tmpResultBlock != null)
-                {
-                    return tmpResultBlock.info.uID + tmpResultBlock.sign;
-                }
-            }
+            if (isNumeric2 == false)
+                return JsonSerializer.Serialize(false);
+
+            NVClass.BlockData? tmpResultBlock = GetBlockWithRowNo(BlockNumber2);
+            if (tmpResultBlock != null)
+                return tmpResultBlock.info.uID + tmpResultBlock.sign;
+
             return JsonSerializer.Serialize(false);
         }
         private bool PrettyCheckForRaw(NVS.HttpRequestDetails IncomeData, int indexNo)
@@ -1342,9 +1338,8 @@ namespace Notus.Validator
             if (IncomeData.UrlList.Length > indexNo)
             {
                 if (string.Equals(IncomeData.UrlList[indexNo].ToLower(), "raw"))
-                {
                     prettyJson = false;
-                }
+
             }
             return prettyJson;
         }
@@ -1352,9 +1347,8 @@ namespace Notus.Validator
         private string Request_BlockLast(NVS.HttpRequestDetails IncomeData)
         {
             if (PrettyCheckForRaw(IncomeData, 2) == true)
-            {
                 return JsonSerializer.Serialize(NVG.Settings.LastBlock, NVC.JsonSetting);
-            }
+
             return JsonSerializer.Serialize(NVG.Settings.LastBlock);
         }
         private string Request_BlockSummary(NVS.HttpRequestDetails IncomeData)
@@ -1407,10 +1401,6 @@ namespace Notus.Validator
                     const int transferTimeOut = 86400;
                     string CurrentCurrency = NVG.Settings.Genesis.CoinInfo.Tag;
                     NVS.WalletBalanceStruct tmpGeneratorBalanceObj = NGF.Balance.Get(WalletKeyStr, 0);
-                    //Console.WriteLine("WalletKeyStr           : " + WalletKeyStr);
-                    ////Console.WriteLine("WalletKeyStr           : " + WalletKeyStr);
-                    //Console.WriteLine("tmpGeneratorBalanceObj : " + JsonSerializer.Serialize(tmpGeneratorBalanceObj));
-                    //Console.WriteLine("tmpGeneratorBalanceObj : " + JsonSerializer.Serialize(tmpGeneratorBalanceObj));
                     if (tmpGeneratorBalanceObj.Balance.ContainsKey(CurrentCurrency) == false)
                     {
                         return JsonSerializer.Serialize(new NVS.BlockResponseStruct()
