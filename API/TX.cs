@@ -19,7 +19,7 @@ namespace Notus.API
 
             IList<string> result = NE.RLP.Decode(tmpText);
             return 
-                (string.Equals(result[0].Trim(), "1.0" ? "true":"false")) + 
+                (string.Equals(result[0].Trim(), "1.0")==true ? "true":"false") + 
                 JsonSerializer.Serialize(result);
 
             if (result.Count != 8)
