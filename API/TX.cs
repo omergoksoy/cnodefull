@@ -18,14 +18,11 @@ namespace Notus.API
             string tmpText = IncomeData.UrlList[1];
 
             IList<string> result = NE.RLP.Decode(tmpText);
-            return 
-                (string.Equals(result[0].Trim(), "1.0")==true ? "true":"false") + 
-                JsonSerializer.Serialize(result);
 
             if (result.Count != 8)
                 return JsonSerializer.Serialize(false);
 
-            if (string.Equals(result[0], "1.0") != false)
+            if (string.Equals(result[0], "1.0") == false)
                 return JsonSerializer.Serialize(false);
 
             if (result[1].Length != NVC.WalletFullTextLength)

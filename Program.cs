@@ -49,8 +49,28 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     System.Environment.Exit(0);
 }
 
-
 /*
+// "1.0:alici_adres:tutar:islem_ucreti:nonce_degeri:data"
+
+var newKey = Notus.Wallet.ID.GenerateKeyPair();
+string signStr=Notus.Wallet.ID.Sign("1.0:NSX6PPCjyiaBpA37d5JX2uHNQ3KELerXHFAEZ8g:100000000000000:25000000:125:data", newKey.PrivateKey);
+
+Console.WriteLine(signStr);
+Console.WriteLine(JsonSerializer.Serialize(newKey));
+Console.ReadLine();
+
+    "NSX6PPCjyiaBpA37d5JX2uHNQ3KELerXHFAEZ8g",  // alıcı adresi
+    "100000000000000",        // gönderilmek istenen tutar
+    "25000000", // işlem ücreti
+    "125", // geçerli nonce değeri
+    "data",         // varsa işlem datası
+
+30440220381975c8e029386eb86974b74561fdfbf0997712c6015c001ebb106408a6fbec0220621441855f847b9eda1f2a6cbc4469a814f3567e6cf26404a46af0363c6c5e37
+{"CurveName":"prime256v1","Words":["soup","client","monitor","debate","boss","attack","cute","utility","reunion","custom","lazy","frost","analyst","father","torch","abuse"],"PrivateKey":"d8a4cd6d4961561777f1fa1ad1d27c9111c2a633779f889ebf7bc96197b2068e","PublicKey":"aef3fb47cfbaf6aa2db0678a6bc73e18d0c6f266bc3621b5884169a793a31c74a309b1c7ef2ce8c097adc97f273168083515bba3242b2eda2b8fb3b2bff12117","WalletKey":"NSX36AA8Jg8zXyCxprJNvH1QWzA3oVVWmJsF3jg"}
+
+
+
+
 
 bu link ile test edilebilir
 
@@ -58,47 +78,20 @@ http://18.156.37.61:5002/tx/f84583312e308b616c6963695f61647265738574757461728c69
 
 
 
-
-List<string> tmpIslemList = new List<string> {
-    "1.0",          // version
-    "alici_adres",  // alıcı adresi
-    "tutar",        // gönderilmek istenen tutar
-    "islem_ucreti", // işlem ücreti
-    "nonce_degeri", // geçerli nonce değeri
-    "data",         // varsa işlem datası
-    "imza",         // işlem imzası
-    "public_key",   // işlemi yapan public key
-};
-string rawDataText = string.Empty;
-for (int i = 0; i < 6; i++)
-{
-    rawDataText += tmpIslemList[i];
-    if (i < 5)
-        rawDataText += ":";
-}
-
-Console.WriteLine(rawDataText);
-Console.ReadLine();
-Console.ReadLine();
-
 List<string> islemList = new List<string> {
     "1.0",          // version
-    "alici_adres",  // alıcı adresi
-    "tutar",        // gönderilmek istenen tutar
-    "islem_ucreti", // işlem ücreti
-    "nonce_degeri", // geçerli nonce değeri
+    "NSX6PPCjyiaBpA37d5JX2uHNQ3KELerXHFAEZ8g",  // alıcı adresi
+    "100000000000000",        // gönderilmek istenen tutar
+    "25000000", // işlem ücreti
+    "125", // geçerli nonce değeri
     "data",         // varsa işlem datası
-    "imza",         // işlem imzası
-    "public_key",   // işlemi yapan public key
+    "30440220381975c8e029386eb86974b74561fdfbf0997712c6015c001ebb106408a6fbec0220621441855f847b9eda1f2a6cbc4469a814f3567e6cf26404a46af0363c6c5e37",         // işlem imzası
+    "aef3fb47cfbaf6aa2db0678a6bc73e18d0c6f266bc3621b5884169a793a31c74a309b1c7ef2ce8c097adc97f273168083515bba3242b2eda2b8fb3b2bff12117",   // işlemi yapan public key
 };
-
 
 byte[] bytes = NE.RLP.Encode(islemList);
 IList<string> result = NE.RLP.Decode(bytes);
 
-f84583312e308b616c6963695f61647265738574757461728c69736c656d5f7563726574698c6e6f6e63655f646567657269846461746184696d7a618a7075626c69635f6b6579
-"+EWDMS4wi2FsaWNpX2FkcmVzhXR1dGFyjGlzbGVtX3VjcmV0aYxub25jZV9kZWdlcmmEZGF0YYRpbXphinB1YmxpY19rZXk="
-["1.0","alici_adres","tutar","islem_ucreti","nonce_degeri","data","imza","public_key"]
 
 Console.WriteLine(islemList.Count);
 Console.WriteLine(islemList.Count);
@@ -110,7 +103,12 @@ Console.WriteLine(NE.RLP.Encode(islemList, Notus.Variable.Enum.ReturnType.AsBase
 Console.WriteLine(JsonSerializer.Serialize(bytes));
 Console.WriteLine(JsonSerializer.Serialize(result));
 Console.ReadLine();
+
+byte[] bytes = NE.RLP.Encode("30440220381975c8e029386eb86974b74561fdfbf0997712c6015c001ebb106408a6fbec0220621441855f847b9eda1f2a6cbc4469a814f3567e6cf26404a46af0363c6c5e37");
+Console.WriteLine(JsonSerializer.Serialize(bytes));
+Console.ReadLine();
 */
+
 
 System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
