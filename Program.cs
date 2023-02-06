@@ -50,6 +50,7 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
 }
 
 
+/*
 List<string> tmpIslemList = new List<string> {
     "1.0",          // version
     "alici_adres",  // alıcı adresi
@@ -84,7 +85,6 @@ List<string> islemList = new List<string> {
 };
 
 
-/*
 byte[] bytes = NE.RLP.Encode(islemList);
 IList<string> result = NE.RLP.Decode(bytes);
 
