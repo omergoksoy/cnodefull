@@ -437,10 +437,10 @@ namespace Notus.Block
             validatorDb.Set(blockTime.ToString(), validatorWalletId);
         }
 
+
+        // Wallet Current Nonce Value
         public int Nonce(string walletId)
         {
-            burada nonce kaydı tutulacak ve güncellenecek
-
             string tmpResult = nonceDb.Get(walletId);
 
             if (tmpResult == null)
@@ -450,7 +450,7 @@ namespace Notus.Block
                 return 0;
 
             if (int.TryParse(tmpResult, out _) == false)
-                return 1;
+                return 0;
 
             return int.Parse(tmpResult);
         }
@@ -458,12 +458,11 @@ namespace Notus.Block
         public bool Nonce(string walletId, int nonceValue)
         {
             int currentNonce = Nonce(walletId);
+            if (currentNonce + 1 != nonceValue)
+                return false;
 
-            //currentNonce
-            //if (storedNonceValue+1==
-            //nonceDb.Set()
-
-            return false;
+            nonceDb.Set(walletId,nonceValue.ToString());
+            return true;
         }
 
         public string Prev(long blockRowNo)
