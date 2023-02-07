@@ -41,10 +41,12 @@ namespace Notus.Encode
                         System.Convert.FromBase64String(input)
                     );
                 for (int i = 0; i < decodedElements64.Count; i++)
+                {
                     if (decodedElements64[i].RLPData == null)
                         resultList.Add("");
                     else
                         resultList.Add(Encoding.UTF8.GetString(decodedElements64[i].RLPData));
+                }
                 return resultList;
             }
 
