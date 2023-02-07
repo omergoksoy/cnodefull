@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using NVE = Notus.Variable.Enum;
+using System.Text;
 using NC = Notus.Convert;
+using NVE = Notus.Variable.Enum;
+
 namespace Notus.Encode
 {
 
@@ -11,181 +13,50 @@ namespace Notus.Encode
 
     public static class RLP
     {
-        private static readonly BigEndianBitConverter converter = new BigEndianBitConverter();
-
-        private const int SizeThreshold = 55;
-        private const int ShortItemOffset = 128;
-        private const int LargeItemOffset = 183;
-        private const int ShortCollectionOffset = 192;
-        private const int LargeCollectionOffset = 247;
-        private const int MaxItemLength = 255;
-
-        public static byte[] Encode(int data)
+        public static string Encode(List<string> data, NVE.InputOrOutputType returnType = NVE.InputOrOutputType.AsHex)
         {
-            var bytes = converter.GetBytes(data);
-
-            if (data < ShortItemOffset)
+            var returnByteArray = new List<byte[]>();
+            for (int i = 0; i < data.Count; i++)
             {
-                return new[] { bytes[bytes.Length - 1] };
+                returnByteArray.Add(
+                    Notus.ExternalResources.Nethereum.RLP.RLP.EncodeElement(
+                        System.Text.Encoding.ASCII.GetBytes(data[i])
+                    )
+                );
             }
 
-            return Encode(data.ToString(CultureInfo.InvariantCulture));
+            if (returnType == NVE.InputOrOutputType.AsBase64)
+                return System.Convert.ToBase64String(Notus.ExternalResources.Nethereum.RLP.RLP.EncodeList(returnByteArray.ToArray()));
+
+            return Notus.Convert.Byte2Hex(Notus.ExternalResources.Nethereum.RLP.RLP.EncodeList(returnByteArray.ToArray()));
         }
-
-        public static byte[] Encode(string input)
+        //public static List<string> Decode(string input, NVE.ReturnType returnType = NVE.ReturnType.AsHex)
+        public static List<string> Decode(string input, NVE.InputOrOutputType inputType = NVE.InputOrOutputType.AsHex)
         {
-            var bytes = System.Text.Encoding.ASCII.GetBytes(input);
-            var length = bytes.Length;
-
-            if (length <= SizeThreshold)
+            List<string> resultList = new();
+            if (inputType == NVE.InputOrOutputType.AsBase64)
             {
-                var newBytes = new byte[length + 1];
-                newBytes[0] = System.Convert.ToByte(ShortItemOffset + length);
-                Array.Copy(bytes, 0, newBytes, 1, length);
-
-                return newBytes;
+                Notus.ExternalResources.Nethereum.RLP.RLPCollection decodedElements64 =
+                    (Notus.ExternalResources.Nethereum.RLP.RLPCollection)Notus.ExternalResources.Nethereum.RLP.RLP.Decode(
+                        System.Convert.FromBase64String(input)
+                    );
+                for (int i = 0; i < decodedElements64.Count; i++)
+                    if (decodedElements64[i].RLPData == null)
+                        resultList.Add("");
+                    else
+                        resultList.Add(Encoding.UTF8.GetString(decodedElements64[i].RLPData));
+                return resultList;
             }
 
-            if (length > SizeThreshold && length <= MaxItemLength)
-            {
-                var newBytes = new byte[length + 2];
-                newBytes[0] = System.Convert.ToByte(LargeItemOffset + 1);  // TODO: 183 + length of length of bytes (how many bytes it needed to fit into)
-                newBytes[1] = System.Convert.ToByte(length);
-                Array.Copy(bytes, 0, newBytes, 2, length);
+            Notus.ExternalResources.Nethereum.RLP.RLPCollection decodedElements16 =
+                (Notus.ExternalResources.Nethereum.RLP.RLPCollection)Notus.ExternalResources.Nethereum.RLP.RLP.Decode(
+                    NC.Hex2Byte(input)
+                );
 
-                return newBytes;
-            }
+            for (int i = 0; i < decodedElements16.Count; i++)
+                resultList.Add(Encoding.UTF8.GetString(decodedElements16[i].RLPData));
 
-            throw new ArgumentOutOfRangeException("input", "input is too long");
-        }
-
-        public static string Encode(IEnumerable<string> input, NVE.ReturnType returnType = NVE.ReturnType.AsHex)
-        {
-            if (returnType == NVE.ReturnType.AsBase64)
-                return System.Convert.ToBase64String(Encode(input));
-
-            return NC.Byte2Hex(Encode(input));
-        }
-        public static byte[] Encode(IEnumerable<string> input)
-        {
-            var items = new List<byte[]>();
-            var totalLength = 0;
-
-            foreach (var bytes in input.Select(Encode))
-            {
-                totalLength += bytes.Length;
-                items.Add(bytes);
-            }
-
-            if (totalLength <= SizeThreshold)
-            {
-                items.Insert(0, new[] { System.Convert.ToByte(ShortCollectionOffset + totalLength) });
-            }
-
-            if (totalLength > SizeThreshold && totalLength <= MaxItemLength)
-            {
-                items.Insert(0, new[] { System.Convert.ToByte(LargeCollectionOffset + 1) }); // TODO: 247 + length of length of bytes (how many bytes it needed to fit into)
-                items.Insert(1, new[] { System.Convert.ToByte(totalLength) });
-            }
-
-            if (totalLength > MaxItemLength)
-            {
-                throw new ArgumentOutOfRangeException("input", "input is too long");
-            }
-
-            return items.SelectMany(x => x).ToArray();
-        }
-        public static IList<string> Decode(string input, NVE.ReturnType returnType = NVE.ReturnType.AsHex)
-        {
-            return Decode(NC.Hex2Byte(input));
-            /*
-            if (returnType == NVE.ReturnType.AsBase64)
-                return System.Convert.ToBase64String(Encode(input));
-
-            return NC.Byte2Hex(Encode(input));
-            */
-        }
-        public static IList<string> Decode(byte[] input)
-        {
-            var message = new RLPMessage(input);
-
-            while (message.Remainder.Offset < input.Length)
-            {
-                Decode(message);
-            }
-
-            return message.Decoded;
-        }
-
-        private static void Decode(RLPMessage msg)
-        {
-            var firstByte = System.Convert.ToInt16(msg.Remainder.Array[msg.Remainder.Offset]);
-
-            // single byte
-            if (firstByte <= 0x7f)
-            {
-                msg.Decoded.Add(firstByte.ToString(CultureInfo.InvariantCulture));
-                msg.Remainder = msg.Remainder.Slice(1);
-                return;
-            }
-
-            // string <55 bytes
-            if (firstByte <= 0xb7)
-            {
-                var itemLength = Math.Abs(128 - firstByte);
-                var data = firstByte == 0x80 ? new ArraySegment<byte>(new byte[0]) : msg.Remainder.Slice(1, itemLength);
-
-                msg.Decoded.Add(System.Text.Encoding.ASCII.GetString(data.Array, data.Offset, data.Count));
-                msg.Remainder = msg.Remainder.Slice(data.Count + 1);
-                return;
-            }
-
-            // string >55 bytes
-            if (firstByte <= 0xbf)
-            {
-                var listLength = Math.Abs(183 - firstByte);
-                var itemLength = System.Convert.ToInt16(msg.Remainder.Array[msg.Remainder.Offset + 1]);
-                var data = msg.Remainder.Slice(listLength + 1, itemLength);
-
-                msg.Decoded.Add(System.Text.Encoding.ASCII.GetString(msg.Remainder.Array, data.Offset, data.Count));
-                msg.Remainder = msg.Remainder.Slice(data.Offset + data.Count);
-                return;
-            }
-
-            // collection <55 bytes
-            if (firstByte <= 0xf7)
-            {
-                var itemLength = Math.Abs(192 - firstByte);
-                var data = msg.Remainder.Slice(1, itemLength).ToArray();
-
-                while (msg.Remainder.Offset < msg.Remainder.Array.Length)
-                {
-                    var decoded = Decode(data);
-                    msg.Decoded.AddRange(decoded);
-                    msg.Remainder = msg.Remainder.Slice(msg.Remainder.Count);
-                }
-
-                return;
-            }
-
-            // collection >55 bytes
-            if (firstByte <= 0xff)
-            {
-                var listLength = Math.Abs(247 - firstByte);
-                var itemLength = System.Convert.ToInt16(msg.Remainder.Array[msg.Remainder.Offset + 1]);
-                var data = msg.Remainder.Slice(listLength + 1, itemLength).ToArray();
-
-                while (msg.Remainder.Offset < msg.Remainder.Array.Length)
-                {
-                    var decoded = Decode(data);
-                    msg.Decoded.AddRange(decoded);
-                    msg.Remainder = msg.Remainder.Slice(msg.Remainder.Count);
-                }
-
-                return;
-            }
-
-            throw new ArgumentOutOfRangeException("msg", "msg is too long");
+            return resultList;
         }
     }
 }

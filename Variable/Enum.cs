@@ -32,7 +32,7 @@ namespace Notus.Variable.Enum
         PreviouseList
     }
 
-    public enum ReturnType
+    public enum InputOrOutputType
     {
         AsHex,
         AsBase64
