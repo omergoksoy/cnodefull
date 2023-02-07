@@ -40,6 +40,7 @@ namespace Notus.Variable
         public static readonly int WalletFullTextLength = 39;
         //public static readonly int WalletFullTextLength = 39;
         //public static readonly int WalletFullTextLength = 39;
+        public static readonly string ContractAddressPrefix = "NCX";
         public static readonly string SingleWalletPrefix = "NSX";
         public static readonly string MultiWalletPrefix= "NMX";
 

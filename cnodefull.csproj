@@ -23,5 +23,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Ceremony\" />
+    <Folder Include="Data\PatriciaTrie\" />
   </ItemGroup>
 </Project>
