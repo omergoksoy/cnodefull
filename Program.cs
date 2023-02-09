@@ -1,5 +1,6 @@
 ﻿using Notus.MsgPack;
-    using Notus.Communication;
+using Notus.Communication;
+using NH = Notus.HashLib;
 using Notus.Network;
 using RocksDbSharp;
 using System.Globalization;
@@ -51,7 +52,18 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     System.Environment.Exit(0);
 }
 
+//10.000 'lik döngüde aşağıdaki metin için ortalama değerler
+//("NSX6PPCjyiaBpA37d5JX2uHNQ3KELerXHFAEZ8g" + i.ToString()));
+//sha1      ->  0,002774100999997264
+//md5       ->  0,005158651999998687
+//RIPEMD160 ->  0,008106142999993727
+//blake3    ->  0,011409777000002041
+//blake2b   ->  0,011670115000006021
+
+
+//Console.WriteLine(Notus.Data.Sharding.Node.BelongsToMe("NSX6PPCjyiaBpA37d5JX2uHNQ3KELerXHFAEZ8g"));
 /*
+Console.ReadLine();
 Console.WriteLine(Notus.Contract.Address.Generate("NSX6PPCjyiaBpA37d5JX2uHNQ3KELerXHFAEZ8g",1453));
 Console.WriteLine(Notus.Contract.Address.Generate("NSX6PPCjyiaBpA37d5JX2uHNQ3KELerXHFAEZ8g",1454));
 Console.WriteLine(Notus.Contract.Address.Generate("NSX6PPCjyiaBpA37d5JX2uHNQ3KELerXHFAEZ8g",1455));
