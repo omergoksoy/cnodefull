@@ -24,11 +24,13 @@ namespace Notus.Data.Sharding
 {
     public static class Node
     {
+
         public static string BelongsToMe(string walletId)
         {
             DateTime baslangic = DateTime.Now;
             Notus.HashLib.SHA1 hashObj = new Notus.HashLib.SHA1();
             hashObj.Calculate(System.Text.Encoding.UTF8.GetBytes(walletId));
+            return "";
         }
     }
 }

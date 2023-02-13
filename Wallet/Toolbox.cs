@@ -372,7 +372,7 @@ namespace Notus.Wallet
                 });
 
         }
-
+        /*
         public static byte[] Der_encodeBitString(byte[] t)
         {
             return Der_combineByteArrays(new List<byte[]> {
@@ -381,7 +381,7 @@ namespace Notus.Wallet
                     t
                 });
         }
-
+        */
         public static byte[] Der_encodeOctetString(byte[] t)
         {
             return Der_combineByteArrays(new List<byte[]> {
@@ -473,7 +473,7 @@ namespace Notus.Wallet
                 rest
             );
         }
-
+        /*
         public static Tuple<byte[], byte[]> Der_removeBitString(byte[] bytes)
         {
             Der_checkSequenceError(bytes, hexC, "03");
@@ -487,7 +487,7 @@ namespace Notus.Wallet
 
             return new Tuple<byte[], byte[]>(body, rest);
         }
-
+        */
         public static Tuple<byte[], byte[]> Der_removeOctetString(byte[] bytes)
         {
             Der_checkSequenceError(bytes, hexD, "04");

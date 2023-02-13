@@ -567,6 +567,7 @@ namespace Notus.Wallet
             });
             }
 
+            /*
             public byte[] toDer()
             {
                 int[] oidEcPublicKey = { 1, 2, 840, 10045, 2, 1 };
@@ -589,7 +590,6 @@ namespace Notus.Wallet
             {
                 return Notus.Wallet.Toolbox.Der_toPem(toDer(), "PUBLIC KEY");
             }
-
 
             public static PublicKey fromPem(string pem)
             {
@@ -658,7 +658,7 @@ namespace Notus.Wallet
                 return fromString(Notus.Wallet.Toolbox.Bytes_sliceByteArray(pointString, 2), curve.name);
 
             }
-
+            */
             public static PublicKey fromString(byte[] str, string curve = "secp256k1", bool validatePoint = true)
             {
                 CurveFp curveObject = Curves.getCurveByName(curve);
