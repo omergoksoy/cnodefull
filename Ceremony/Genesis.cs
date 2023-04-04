@@ -548,6 +548,7 @@ namespace Notus.Ceremony
                     :
                 NVG.Settings.IpInfo.Local
             );
+            NP.Basic("StartGenesisConnection()");
             NP.Basic("Listining : " + NNN.MakeHttpListenerPath(NodeIpAddress.ToString(), SelectedPortVal));
             HttpObj.OnReceive(Fnc_OnReceiveData);
             HttpObj.ResponseType = "application/json";

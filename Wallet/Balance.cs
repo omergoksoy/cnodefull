@@ -427,6 +427,10 @@ namespace Notus.Wallet
         }
         public bool AccountIsLock(string WalletKey)
         {
+            Console.WriteLine("AccountIsLock(string WalletKey)");
+            Console.WriteLine("WalletKey : " + WalletKey);
+            Console.WriteLine(NVG.NOW.Obj);
+            Console.WriteLine(JsonSerializer.Serialize(NGF.LockWalletList));
             string unlockTimeStr = "";
             lock (NGF.LockWalletList)
             {
@@ -657,6 +661,17 @@ namespace Notus.Wallet
                             tmpLockBalance.UnlockTime.ToString()
                         );
                     }
+                    else
+                    {
+                        ulong.TryParse(NGF.LockWalletList[tmpLockBalance.WalletKey], out ulong gecerliZaman);
+
+                        if (tmpLockBalance.UnlockTime>gecerliZaman)
+                        {
+                            NGF.LockWalletList[tmpLockBalance.WalletKey] = gecerliZaman.ToString();
+                        }
+                    }
+                    Console.WriteLine("JsonSerializer.Serialize(NGF.LockWalletList)");
+                    Console.WriteLine(JsonSerializer.Serialize(NGF.LockWalletList));
                     /*
                     ObjMp_LockWallet.Set(
                         Notus.Toolbox.Text.ToHex(tmpLockBalance.WalletKey),

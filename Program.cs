@@ -52,7 +52,7 @@ static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
     System.Environment.Exit(0);
 }
 
-
+/*
 Console.WriteLine(Notus.Toolbox.Text.ShrinkHex("a80bfb19e29f52310b61d18dce08cb9a904fdf37a141726ff5598fec5e2cdcda", 8));
 Console.ReadLine();
 
@@ -60,6 +60,7 @@ Console.WriteLine(JsonSerializer.Serialize(Notus.Wallet.ID.GenerateKeyPair()));
 Console.WriteLine();
 Console.WriteLine(new Notus.Hash().CommonHash("sasha", "denemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedeneme"));
 Console.ReadLine();
+*/
 //10.000 'lik döngüde aşağıdaki metin için ortalama değerler
 //("NSX6PPCjyiaBpA37d5JX2uHNQ3KELerXHFAEZ8g" + i.ToString()));
 //sha1      ->  0,002774100999997264

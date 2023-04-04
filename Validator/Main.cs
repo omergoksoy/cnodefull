@@ -1060,7 +1060,7 @@ namespace Notus.Validator
                         :
                     NVG.Settings.IpInfo.Local
                 );
-
+                NP.Basic("Start_HttpListener()");
                 NP.Basic("Listining : " + Notus.Network.Node.MakeHttpListenerPath(NodeIpAddress.ToString(), SelectedPortVal));
                 HttpObj.DefaultResult_OK = "null";
                 HttpObj.DefaultResult_ERR = "null";
