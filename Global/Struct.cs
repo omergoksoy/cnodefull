@@ -22,6 +22,7 @@ namespace Notus.Globals.Variable
         public bool CommEstablished { get; set; }
 
         public bool SyncStarted { get; set; }
+        public int LocalNodeCount { get; set; }
         public bool LocalNode { get; set; }
         public bool DevelopmentNode { get; set; }
 

@@ -356,7 +356,8 @@ namespace Notus.Validator
                 NP.Basic("Main Validator Started");
             }
             //BlockStatObj = Obj_BlockQueue.CurrentBlockStatus();
-            if (NVG.Settings.LocalNode == false)
+            
+            if (NVG.Settings.LocalNode == false || NVG.Settings.LocalNodeCount > 1)
             {
                 // her gelen blok bir listeye eklenmeli ve o liste ile sıra ile eklenmeli
                 ValidatorQueueObj.Func_NewBlockIncome = tmpNewBlockIncome =>

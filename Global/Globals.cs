@@ -95,6 +95,7 @@ namespace Notus.Variable
                 PrettyJson = true,
                 GenesisAssigned = false,
                 DevelopmentNode = false,
+                LocalNodeCount=2,
 
                 WaitTickCount = 4,
 

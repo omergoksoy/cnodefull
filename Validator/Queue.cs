@@ -961,7 +961,7 @@ namespace Notus.Validator
         }
         public void PreStart()
         {
-            if (NVG.Settings.LocalNode == true)
+            if (NVG.Settings.LocalNode == true && NVG.Settings.LocalNodeCount == 1)
                 return;
             if (NVG.Settings.GenesisCreated == true)
                 return;
