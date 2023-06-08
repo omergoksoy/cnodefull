@@ -224,10 +224,18 @@ namespace Notus.Toolbox
 
         public static NVS.NodeIpInfo GetNodeIP()
         {
+            if (NVG.Settings.LocalNode == false)
+            {
+                return new NVS.NodeIpInfo()
+                {
+                    Local = GetLocalIPAddress(false),
+                    Public = GetPublicIPAddress()
+                };
+            }
             return new NVS.NodeIpInfo()
             {
                 Local = GetLocalIPAddress(false),
-                Public = GetPublicIPAddress()
+                Public = ""
             };
         }
 
