@@ -69,11 +69,14 @@ namespace Notus.Ceremony
                     predefinedValidator = true;
                 }
             }
-            if (predefinedValidator == false)
+            if (NVG.Settings.LocalNode == false)
             {
-                NP.Danger("Diger nodelardan tanımlanmış Validatorlerden tarafından olusturulmus Genesis blogunu iste");
-                NP.Danger("Genesis Ceremony Works With Only Defined Validators");
-                Environment.Exit(0);
+                if (predefinedValidator == false)
+                {
+                    NP.Danger("Diger nodelardan tanımlanmış Validatorlerden tarafından olusturulmus Genesis blogunu iste");
+                    NP.Danger("Genesis Ceremony Works With Only Defined Validators");
+                    Environment.Exit(0);
+                }
             }
 
             NVH.DefineMyNodeInfo();
