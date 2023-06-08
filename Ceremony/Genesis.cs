@@ -570,6 +570,10 @@ namespace Notus.Ceremony
                     if (validatorItem.Value.Status != NVS.NodeStatus.Online)
                     {
                         allValidatorIsOnline = false;
+                        if (NVG.Settings.LocalNode == true)
+                        {
+                            SelectedPortVal = validatorItem.Value.IP.Port + 5;
+                        }
                         string requestUrl = NNN.MakeHttpListenerPath(
                                 validatorItem.Value.IP.IpAddress, SelectedPortVal
                             ) + "nodeinfo";

@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using NVG = Notus.Variable.Globals;
+using System.Collections.Generic;
 
 namespace Notus.Validator
 {
     public static class List
     {
-        public static readonly Dictionary<Variable.Enum.NetworkLayer,
+        public static Dictionary<Variable.Enum.NetworkLayer,
                 Dictionary<Variable.Enum.NetworkType, List<Variable.Struct.IpInfo>>> Main
         =
         new Dictionary<Variable.Enum.NetworkLayer,
@@ -17,16 +18,16 @@ namespace Notus.Validator
                         Variable.Enum.NetworkType.MainNet,
                         new List<Variable.Struct.IpInfo>()
                         {
-                            { new Variable.Struct.IpInfo() { IpAddress = "3.68.233.67", Port = 5000 } },
-                            { new Variable.Struct.IpInfo() { IpAddress = "3.75.243.44", Port = 5000 } }
+                            { new Variable.Struct.IpInfo() { IpAddress = "127.0.0.1", Port = 5000 } },
+                            { new Variable.Struct.IpInfo() { IpAddress = "127.0.0.1", Port = 15000 } }
                         }
                     },
                     {
                         Variable.Enum.NetworkType.TestNet,
                         new List<Variable.Struct.IpInfo>()
                         {
-                            { new Variable.Struct.IpInfo() { IpAddress = "3.68.233.67", Port = 5001 } },
-                            { new Variable.Struct.IpInfo() { IpAddress = "3.75.243.44", Port = 5001 } }
+                            { new Variable.Struct.IpInfo() { IpAddress = "127.0.0.1", Port = 5001 } },
+                            { new Variable.Struct.IpInfo() { IpAddress = "127.0.0.1", Port = 15001 } }
                         }
                     },
                     {
@@ -49,6 +50,36 @@ namespace Notus.Validator
                 returnList.Add(Notus.Validator.List.Main[networkLayer][networkType][i].IpAddress);
             }
             return returnList;
+        }
+        public static void DefineLocalNodes()
+        {
+            Notus.Validator.List.Main.Clear();
+            Notus.Validator.List.Main.Add(Variable.Enum.NetworkLayer.Layer1, new Dictionary<Variable.Enum.NetworkType, List<Variable.Struct.IpInfo>>(){
+                {
+                    Variable.Enum.NetworkType.MainNet,
+                    new List<Variable.Struct.IpInfo>()
+                    {
+                        { new Variable.Struct.IpInfo() { IpAddress = NVG.Settings.IpInfo.Local, Port = 5000 } },
+                        { new Variable.Struct.IpInfo() { IpAddress = NVG.Settings.IpInfo.Local, Port = 15000 } }
+                    }
+                },
+                {
+                    Variable.Enum.NetworkType.TestNet,
+                    new List<Variable.Struct.IpInfo>()
+                    {
+                        { new Variable.Struct.IpInfo() { IpAddress = NVG.Settings.IpInfo.Local, Port = 5001 } },
+                        { new Variable.Struct.IpInfo() { IpAddress = NVG.Settings.IpInfo.Local, Port = 15001 } }
+                    }
+                },
+                {
+                    Variable.Enum.NetworkType.DevNet,
+                    new List<Variable.Struct.IpInfo>()
+                    {
+                        { new Variable.Struct.IpInfo() { IpAddress = NVG.Settings.IpInfo.Local, Port = 5002 } },
+                        { new Variable.Struct.IpInfo() { IpAddress = NVG.Settings.IpInfo.Local, Port = 15002 } }
+                    }
+                }
+            });
         }
     }
 }

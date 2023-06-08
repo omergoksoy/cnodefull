@@ -140,7 +140,7 @@ namespace Notus.Toolbox
             NVG.Settings.IpInfo = NTN.GetNodeIP();
             if (NVG.Settings.LocalNode == true)
             {
-                //NP.Basic(NVG.Settings, "Starting As Main Node");
+                Notus.Validator.List.DefineLocalNodes();
                 NVG.Settings.NodeType = NVE.NetworkNodeType.Main;
                 NVG.Settings.Nodes.My.IP.IpAddress = NVG.Settings.IpInfo.Local;
                 //NVG.Settings.Nodes.My.IP.IpAddress = "127.0.0.1";
