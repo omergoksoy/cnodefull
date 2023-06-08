@@ -248,6 +248,10 @@ namespace Notus.Network
         }
         public static int GetNetworkPort(NVE.NetworkType currentNetwork, NVE.NetworkLayer currentLayer)
         {
+            if (NVG.Settings.LocalNode == true)
+            {
+                return NVG.Settings.Nodes.My.IP.Port;
+            }
             return NVC.PortNo[currentLayer][currentNetwork];
         }
         public static string MakeHttpListenerPath(string IpAddress, int PortNo = 0, bool UseSSL = false)

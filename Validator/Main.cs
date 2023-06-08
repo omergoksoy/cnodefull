@@ -263,8 +263,12 @@ namespace Notus.Validator
             Obj_Integrity = new Notus.Block.Integrity();
             Obj_Integrity.IsGenesisNeed();
 
+            //P2P noktasında sorun var
+            //burdaki port'u tutacaklar.
+
             int p2pPortNo = Notus.Network.Node.GetP2PPort();
             NP.Info("Node P2P Port No : " + p2pPortNo.ToString());
+            Console.ReadLine();
             NVG.Settings.PeerManager = new NP2P.Manager(
                 new IPEndPoint(IPAddress.Any, p2pPortNo),
                 p2pPortNo,
