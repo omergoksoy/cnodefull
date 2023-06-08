@@ -85,7 +85,8 @@ namespace Notus.Ceremony
             MakeMembersOrders();
 
             NP.Success("Ceremony Order No : " + MyOrderNo.ToString() + " / " + NVG.NodeList.Count.ToString());
-
+            NP.Success("NVG.Settings.Nodes.My.IP.Wallet : " + NVG.Settings.Nodes.My.IP.Wallet);
+            
             if (MyOrderNo == 1)
             {
                 Generate();
