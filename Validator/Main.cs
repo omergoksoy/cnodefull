@@ -169,8 +169,12 @@ namespace Notus.Validator
                     NVG.Settings.Genesis.Empty.SlowBlock.Multiply
                 );
             }
-            //fast-empty-block-generation
-            //howManySeconds = 15;
+            if (NVG.Settings.LocalNode == true)
+            {
+                //fast-empty-block-generation
+                howManySeconds = 15;
+            }
+
             ulong earliestTime = ND.ToLong(ND.ToDateTime(NVG.Settings.LastBlock.info.time).AddSeconds(howManySeconds));
             bool executeEmptyBlock = false;
             if (NVG.NOW.Int > earliestTime)
@@ -513,7 +517,10 @@ namespace Notus.Validator
             }
             catch { }
             NVG.BlockController.Start();
-
+            if (NVG.Settings.LocalNode == true)
+            {
+                NP.Info("LocalNode Calistigi Icin - Empty Blok suresi Hizlandirildi");
+            }
             while (
                 tmpExitMainLoop == false &&
                 NVG.Settings.NodeClosing == false &&
