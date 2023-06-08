@@ -153,8 +153,11 @@ namespace Notus.Toolbox
             NVG.Settings.Nodes.My.HexKey = NTN.IpAndPortToHex(NVG.Settings.Nodes.My.IP.IpAddress, NVG.Settings.Nodes.My.IP.Port);
 
             List<string> ListMainNodeIp = Notus.Validator.List.Get(NVG.Settings.Layer, NVG.Settings.Network);
-            Console.WriteLine("Public Ip Address : " + NVG.Settings.IpInfo.Public);
-            Console.WriteLine("Main Node Ip List : " + JsonSerializer.Serialize(ListMainNodeIp));
+            if (NVG.Settings.LocalNode == false)
+            {
+                Console.WriteLine("Public Ip Address : " + NVG.Settings.IpInfo.Public);
+                Console.WriteLine("Main Node Ip List : " + JsonSerializer.Serialize(ListMainNodeIp));
+            }
             if (ListMainNodeIp.IndexOf(NVG.Settings.IpInfo.Public) >= 0 || NVG.Settings.LocalNode == true)
             {
                 //NVG.Settings.Nodes.My.InTheCode = true;
