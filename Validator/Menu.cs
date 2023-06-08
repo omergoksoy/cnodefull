@@ -1108,8 +1108,8 @@ namespace Notus.Validator
             if (NVG.Settings.DevelopmentNode == true)
             {
                 NVG.Settings.Network = NVE.NetworkType.DevNet;
-                NVG.Settings.NodeWallet.WalletKey = NVC.SingleWalletPrefix + nodeObj.Wallet.Key.Substring(NVC.SingleWalletPrefix.Length);
             }
+                NVG.Settings.NodeWallet.WalletKey = NVC.SingleWalletPrefix + nodeObj.Wallet.Key.Substring(NVC.SingleWalletPrefix.Length);
             NVG.Settings.Port = nodeObj.Layer.Port;
             NVG.Settings.EncryptKey = new Notus.Hash().CommonHash("sha512", NVG.Settings.NodeWallet.WalletKey);
 
