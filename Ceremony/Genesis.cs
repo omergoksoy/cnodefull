@@ -145,6 +145,10 @@ namespace Notus.Ceremony
             {
                 if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, validatorItem.Value.IP.Wallet) == false)
                 {
+                    if (NVG.Settings.LocalNode == true)
+                    {
+                        SelectedPortVal = validatorItem.Value.IP.Port + 5;
+                    }
                     bool exitFromWhileLoop = false;
                     while (exitFromWhileLoop == false)
                     {
@@ -214,6 +218,10 @@ namespace Notus.Ceremony
             {
                 if (string.Equals(NVG.Settings.Nodes.My.IP.Wallet, validatorItem.Value.IP.Wallet) == false)
                 {
+                    if (NVG.Settings.LocalNode == true)
+                    {
+                        SelectedPortVal = validatorItem.Value.IP.Port + 5;
+                    }
                     bool exitFromWhileLoop = false;
                     while (exitFromWhileLoop == false)
                     {
@@ -317,6 +325,10 @@ namespace Notus.Ceremony
             {
                 if (string.Equals(waitingWalletId, validatorItem.Value.IP.Wallet))
                 {
+                    if (NVG.Settings.LocalNode == true)
+                    {
+                        SelectedPortVal = validatorItem.Value.IP.Port + 5;
+                    }
                     bool exitFromWhileLoop = false;
                     while (exitFromWhileLoop == false)
                     {
@@ -370,6 +382,11 @@ namespace Notus.Ceremony
                 {
                     if (string.Equals(waitingWalletId, validatorItem.Value.IP.Wallet))
                     {
+                        if (NVG.Settings.LocalNode == true)
+                        {
+                            SelectedPortVal = validatorItem.Value.IP.Port + 5;
+                        }
+
                         bool exitFromWhileLoop = false;
                         while (exitFromWhileLoop == false)
                         {
@@ -552,6 +569,7 @@ namespace Notus.Ceremony
                     :
                 NVG.Settings.IpInfo.Local
             );
+
             NP.Basic("StartGenesisConnection()");
             NP.Basic("Listining : " + NNN.MakeHttpListenerPath(NodeIpAddress.ToString(), SelectedPortVal));
             HttpObj.OnReceive(Fnc_OnReceiveData);
