@@ -268,9 +268,9 @@ namespace Notus.Validator
 
             int p2pPortNo = Notus.Network.Node.GetP2PPort();
             NP.Info("Node P2P Port No : " + p2pPortNo.ToString());
-            Console.ReadLine();
+            var p2pIpAddress = (NVG.Settings.LocalNode == true ? IPAddress.Any : IPAddress.Parse(NVG.Settings.IpInfo.Local));
             NVG.Settings.PeerManager = new NP2P.Manager(
-                new IPEndPoint(IPAddress.Any, p2pPortNo),
+                new IPEndPoint(IPAddress.Parse(NVG.Settings.IpInfo.Local), p2pPortNo),
                 p2pPortNo,
                 (string incomeMessage) =>
                 {
@@ -289,7 +289,7 @@ namespace Notus.Validator
                     }
                 }
             , false);
-
+            //Console.ReadLine();
             //Obj_Api = new Notus.API.Controller();
 
             Start_HttpListener();
