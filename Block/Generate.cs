@@ -135,8 +135,8 @@ namespace Notus.Block
             //burada Once Final hash'ini azalt ve base64'e çevir
             //sonra da sırasıyla diğerlerini de çevir
 
-            Console.WriteLine("sashaText : " + sashaText);
-            Console.WriteLine("base64Text : "+ base64Text);
+            //Console.WriteLine("sashaText : " + sashaText);
+            //Console.WriteLine("base64Text : "+ base64Text);
 
             BlockData.hash.FINAL = new Notus.HashLib.Sasha().ComputeHash(
                 TmpText,
