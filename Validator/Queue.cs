@@ -770,7 +770,6 @@ namespace Notus.Validator
                         {
                             if (exitFromInnerWhile == false)
                             {
-                                //Console.WriteLine(firstListcount);
                                 bool addingResult = NVG.Settings.Nodes.Queue.TryAdd(tmpSyncNo, new NVS.NodeInfo()
                                 {
                                     IpAddress = entry.Value.IP.IpAddress,
@@ -809,66 +808,17 @@ namespace Notus.Validator
                 }
             }
 
-            /*
-            //önce soket server başlatılacak
-            foreach (KeyValuePair<int, NVS.NodeInfo> entry in tmpNodeList)
-            {
-                StartPrivateSockerServer(entry.Value.Wallet);
-            }
-
-            //şimdi kuyruktaki her node için istemci başlatılacak...
-            foreach (KeyValuePair<int, NVS.NodeInfo> entry in tmpNodeList)
-            {
-                if (NVG.Settings.Nodes.Queue[tmpTimeList[entry.Key]].Client.ContainsKey(entry.Value.Wallet) == false)
-                {
-                    NVG.Settings.Nodes.Queue[tmpTimeList[entry.Key]].Client.Add(
-                        entry.Value.Wallet,
-                        new Notus.Communication.Sync.Socket.Client()
-                    );
-                }
-                //StartPrivateSockerServer(entry.Value.Wallet);
-            }
-            */
-
-            /*
-            burada her node, diğer nodeların client'larını başlatacak ve çalışır hale getirecek...
-
-            veya doğrudan gossip protokolü benzeri bir yapı ekleyelim
-            ve bu yapı daha ilk başlangıçta kurulsun ve gerekli durumlarda kullanılsın
-
-            //şimdi burada her node diğer nodeların hepsine bağlanacak...
-            foreach (KeyValuePair<int, NVS.NodeInfo> entry in tmpNodeList)
-            {
-                if (string.Equals(entry.Value.Wallet, NVG.Settings.Nodes.My.IP.Wallet) == false)
-                {
-                    if (NVG.Settings.Nodes.Queue[tmpTimeList[entry.Key]].Client.ContainsKey(entry.Value.Wallet) == false)
-                    {
-
-                    }
-                }
-            }
-            */
-
-            // sonra client nesneleri başlatılacak
             NVG.GroupNo = NVG.GroupNo + 1;
 
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
-                //Console.WriteLine(entry.Value.JoinTime.ToString() + " - " + NVG.NOW.Int.ToString());
                 if (entry.Value.Status == NVS.NodeStatus.Online && entry.Value.SyncNo == biggestSyncNo)
                 {
                     NVG.NodeList[entry.Key].SyncNo = syncStaringTime;
                 }
             }
-            /*
-            if (biggestSyncNo > 0)
-            {
-                Console.WriteLine(JsonSerializer.Serialize(NodeList, NVC.JsonSetting));
-                Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue, NVC.JsonSetting));
-            }
-            */
-            //Console.WriteLine("Node-Siralama-Fonksiyon-111");
-            //Console.WriteLine("---------------------------------------");
+            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
+            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue, NVC.JsonSetting));
         }
         public SortedDictionary<BigInteger, string> MakeOrderToNode(ulong biggestSyncNo, string seedForQueue)
         {
