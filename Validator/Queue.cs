@@ -749,7 +749,14 @@ namespace Notus.Validator
 
             // her node için ayrılan süre
             ulong queueTimePeriod = NVD.Calculate();
-
+            if (NVG.Settings.LocalNode==true)
+            {
+                while (nodeWalletList.Count > 1)
+                {
+                    var lastKeyId= nodeWalletList.Last().Key;
+                    nodeWalletList.Remove(lastKeyId);
+                }
+            }
             Dictionary<int, ulong> tmpTimeList = new Dictionary<int, ulong>();
             Dictionary<int, NVS.NodeInfo> tmpNodeList = new Dictionary<int, NVS.NodeInfo>();
             int tmpOrderNo = 1;
