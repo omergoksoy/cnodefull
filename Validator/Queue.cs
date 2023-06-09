@@ -742,12 +742,6 @@ namespace Notus.Validator
             SortedDictionary<BigInteger, string> nodeWalletList
         )
         {
-            /*
-            kontrol noktası
-            burada sadece 1 adet validator seçilsin
-            eğer local node ise
-            */
-
             ulong tmpSyncNo = syncStaringTime;
 
             bool exitFromInnerWhile = false;
