@@ -742,9 +742,11 @@ namespace Notus.Validator
             SortedDictionary<BigInteger, string> nodeWalletList
         )
         {
+            /*
             kontrol noktası
             burada sadece 1 adet validator seçilsin
             eğer local node ise
+            */
 
             ulong tmpSyncNo = syncStaringTime;
 
@@ -875,6 +877,11 @@ namespace Notus.Validator
                 seedForQueue = "beginning";
                 atTheBeginnig = true;
             }
+            if (NVG.Settings.LocalNode == true)
+            {
+                seedForQueue = "local-node";
+            }
+
             SortedDictionary<BigInteger, string> resultList = new SortedDictionary<BigInteger, string>();
             foreach (KeyValuePair<string, NVS.NodeQueueInfo> entry in NVG.NodeList)
             {
