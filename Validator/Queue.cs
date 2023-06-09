@@ -817,8 +817,6 @@ namespace Notus.Validator
                     NVG.NodeList[entry.Key].SyncNo = syncStaringTime;
                 }
             }
-            Console.WriteLine(JsonSerializer.Serialize(NVG.NodeList, NVC.JsonSetting));
-            Console.WriteLine(JsonSerializer.Serialize(NVG.Settings.Nodes.Queue, NVC.JsonSetting));
         }
         public SortedDictionary<BigInteger, string> MakeOrderToNode(ulong biggestSyncNo, string seedForQueue)
         {
