@@ -121,8 +121,19 @@ namespace Notus.P2P
             if (this.Peers.ContainsKey(peerId))
                 return;
 
+            var localPortNo = Notus.Network.Node.GetP2PPort();
+            if (NVG.Settings.LocalNode == true)
+            {
+                foreach (var iE in NVG.NodeList)
+                {
+                    if (string.Equals(iE.Value.IP.Wallet, peerId) == true)
+                    {
+                        localPortNo = iE.Value.IP.Port + 10;
+                    }
+                }
+            }
             IPAddress ipObj = IPAddress.Parse(ipAddress);
-            IPEndPoint localEndPoint = new IPEndPoint(ipObj, Notus.Network.Node.GetP2PPort());
+            IPEndPoint localEndPoint = new IPEndPoint(ipObj, localPortNo);
             bool result = this.Peers.TryAdd(peerId, new NP2P.Connection(peerId, localEndPoint, this.onReceive));
             if (result == true)
             {
