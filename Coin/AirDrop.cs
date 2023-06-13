@@ -84,16 +84,18 @@ namespace Notus.Coin
                 });
             }
 
-            // mainnet ise hata gönderecek
-            if (NVG.Settings.Network == Variable.Enum.NetworkType.MainNet)
-            {
-                return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
+            if (NVG.Settings.LocalNode==false){
+                // mainnet ise hata gönderecek
+                if (NVG.Settings.Network == Variable.Enum.NetworkType.MainNet)
                 {
-                    ErrorNo = 35496,
-                    ErrorText = "NotSupported",
-                    ID = string.Empty,
-                    Result = NVE.BlockStatusCode.NotSupported
-                });
+                    return JsonSerializer.Serialize(new NVS.CryptoTransactionResult()
+                    {
+                        ErrorNo = 35496,
+                        ErrorText = "NotSupported",
+                        ID = string.Empty,
+                        Result = NVE.BlockStatusCode.NotSupported
+                    });
+                }
             }
 
             string ReceiverWalletKey = IncomeData.UrlList[1];
